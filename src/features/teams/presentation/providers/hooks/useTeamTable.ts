@@ -1,11 +1,12 @@
-import useGraphql from 'features/teams/domain/graphql/teams_graphql'
+import useGraphql from 'features/teams/domain/graphql/graphql'
 import useCustomTable from 'shared/hooks/useCustomTable'
 
 const useTeamTable = () => {
-  const { buildQueryReturn } = useGraphql()
+  const { getAllJobTitles, queryKey } = useGraphql()
   const useTableReturn = useCustomTable({
-    buildQuery: buildQueryReturn,
+    buildQuery: getAllJobTitles,
     variables: {},
+    queryKey,
   })
   return {
     useTableReturn,

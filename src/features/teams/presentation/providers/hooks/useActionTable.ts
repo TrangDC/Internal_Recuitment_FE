@@ -1,20 +1,20 @@
-import { Employee } from 'features/teams/domain/interfaces'
+import { JobTitle } from 'features/teams/domain/interfaces'
 import { useRef, useState } from 'react'
 
 const useActionTable = () => {
   const rowId = useRef('')
-  const rowData = useRef<Employee>()
+  const rowData = useRef<JobTitle>()
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDetail, setOpenDetail] = useState(false)
 
-  function handleOpenEdit<T>(id: string, data: Employee) {
+  function handleOpenEdit(id: string, data: JobTitle) {
     rowId.current = id
     rowData.current = data
     setOpenEdit(true)
   }
 
-  function handleOpenDetail(id: string, data: Employee) {
+  function handleOpenDetail(id: string, data: JobTitle) {
     rowId.current = id
     rowData.current = data
     setOpenDetail(true)

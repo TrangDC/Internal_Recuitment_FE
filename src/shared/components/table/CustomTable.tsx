@@ -17,7 +17,7 @@ import AppPagination from '../AppPagination'
 import { useMemo } from 'react'
 import { IuseCustomTableReturn } from 'shared/hooks/useCustomTable'
 import { BodyTableCell, HeadTableCell } from './styles'
-
+import { v4 as uuidv4 } from 'uuid'
 interface ICustomTable<T> {
   columns: ColumnDef<T, any>[]
   useTableReturn: IuseCustomTableReturn
@@ -25,7 +25,7 @@ interface ICustomTable<T> {
 
 const CustomTable = <T extends object>(props: ICustomTable<T>) => {
   const { columns, useTableReturn } = props
-  const { sortData, pagination, handleChangePage, totalPage, loading } =
+  const { sortData, pagination, handleChangePage, totalPage, isLoading } =
     useTableReturn
   const columnData = useMemo(() => columns, [columns])
   const { getHeaderGroups, getRowModel } = useReactTable({
@@ -65,9 +65,9 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
           ))}
         </TableHead>
         <TableBody>
-          {loading
+          {isLoading
             ? [...Array(pagination.perPage)].map((row) => (
-                <TableRow key={row}>
+                <TableRow key={uuidv4()}>
                   {getHeaderGroups()
                     .map((x) => x.headers)
                     .flat()

@@ -6,3 +6,16 @@ export type Employee = {
   code: string
   gender: number
 }
+
+export type JobTitle = {
+  id: string
+  code: string
+  name: string
+  description: string
+}
+
+export type NewJobTitleInput = {
+  code: string
+  name: string
+  description: string
+}
