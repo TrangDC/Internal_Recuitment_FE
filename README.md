@@ -60,10 +60,10 @@ src
 │ │   │ │ └──  useTeamTable.ts
 │ │   │ ├── constants
 │ │   │ │ └──  columns.tsx
-│ │   │ ├── page-sections
-│ │   │ │ ├──  CreateTeamModal.tsx
-│ │   │ │ ├──  DetailTeamModal.tsx
-│ │   │ │ └──  EditTeamModal.tsx
+│ │   ├── page-sections
+│ │   │ ├──  CreateTeamModal.tsx
+│ │   │ ├──  DetailTeamModal.tsx
+│ │   │ └──  EditTeamModal.tsx
 │ │   ├──  pages
 │ │   │ └── teams-list.tsx
 │ ├──  dashboard

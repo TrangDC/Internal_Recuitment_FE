@@ -1,14 +1,13 @@
-import { ApolloClient, DocumentNode, InMemoryCache, gql } from '@apollo/client'
-import { graphqlLink } from 'middleware/graphql-middleware'
-export const graphqlClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: graphqlLink,
-})
-
+import appConfig from 'configs/appConfig'
+import { GraphQLClient } from 'graphql-request'
+import {
+  requestMiddleware,
+  responseMiddleware,
+} from 'middleware/graphql-middleware'
 interface IbuildQuery {
   operation: string
   node: string
-  params: Record<string, string>
+  params?: Record<string, string>
   options: {
     type: 'query' | 'mutation'
   }
@@ -16,20 +15,20 @@ interface IbuildQuery {
 
 export interface IbuildQueryReturn {
   operation: string
-  query: DocumentNode
+  query: string
 }
 
 export const buildQuery = (props: IbuildQuery): IbuildQueryReturn => {
   const { operation, node, params, options } = props
   let paramsQuery = ''
   let operationQuery = ''
-  if (Object.keys(params).length > 0) {
+  if (params && Object.keys(params).length > 0) {
     Object.keys(params).forEach((key) => {
       paramsQuery += `$${key}: ${params[key]}\n`
       operationQuery += `${key}: $${key}\n`
     })
   }
-  const query = gql`
+  const query = `
       ${options.type} ${operation}(
         ${paramsQuery}
       ) {
@@ -44,4 +43,16 @@ export const buildQuery = (props: IbuildQuery): IbuildQueryReturn => {
     query,
     operation,
   }
+}
+
+export const graphQLClient = new GraphQLClient(appConfig.endpoint_api, {
+  requestMiddleware,
+  responseMiddleware,
+})
+
+export const fetchGraphQL = async <T extends object>(
+  query: any,
+  variables?: any
+): Promise<T> => {
+  return await graphQLClient.request(query, variables)
 }

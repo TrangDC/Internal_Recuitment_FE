@@ -7,18 +7,22 @@ import SettingsProvider from 'contexts/settingsContext'
 import App from './App'
 import 'nprogress/nprogress.css'
 import 'simplebar-react/dist/simplebar.min.css'
-import { ApolloProvider } from '@apollo/client'
-import { graphqlClient } from 'services/graphql-services'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-
+const queryClient = new QueryClient()
 root.render(
   <React.StrictMode>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <SettingsProvider>
         <JWTAuthProvider>
-          <ApolloProvider client={graphqlClient}>
+          <QueryClientProvider client={queryClient}>
             <App />
-          </ApolloProvider>
+            <ReactQueryDevtools
+              initialIsOpen={true}
+              buttonPosition="bottom-right"
+            />
+          </QueryClientProvider>
         </JWTAuthProvider>
       </SettingsProvider>
     </LocalizationProvider>

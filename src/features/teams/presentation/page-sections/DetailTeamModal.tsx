@@ -1,4 +1,4 @@
-import { Employee } from 'features/teams/domain/interfaces'
+import { JobTitle } from 'features/teams/domain/interfaces'
 import { H1 } from 'shared/components/Typography'
 import BaseModal from 'shared/components/modal'
 
@@ -6,7 +6,7 @@ interface IDetailTeamModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  rowData?: Employee
+  rowData?: JobTitle
 }
 
 function DetailTeamModal({ open, setOpen, rowData }: IDetailTeamModal) {
@@ -17,11 +17,9 @@ function DetailTeamModal({ open, setOpen, rowData }: IDetailTeamModal) {
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain>
-        <H1>{rowData?.fullName}</H1>
+        <H1>{rowData?.id}</H1>
         <H1>{rowData?.code}</H1>
-        <H1>{rowData?.companyAccountId}</H1>
-        <H1>{rowData?.gender}</H1>
-        <H1>{rowData?.nickName}</H1>
+        <H1>{rowData?.name}</H1>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <H1></H1>

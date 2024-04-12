@@ -1,11 +1,12 @@
-import { ApolloError, OperationVariables, useQuery } from '@apollo/client'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { IbuildQueryReturn } from 'services/graphql-services'
-
+import { IbuildQueryReturn, fetchGraphQL } from 'services/graphql-services'
+import { BaseRecord } from 'shared/interfaces'
 interface IuseCustomTable {
   buildQuery: IbuildQueryReturn
-  variables: OperationVariables
+  variables: any
+  queryKey: string
 }
 
 interface IPagination {
@@ -14,17 +15,19 @@ interface IPagination {
 }
 
 export interface IuseCustomTableReturn {
-  loading: boolean
-  error?: ApolloError
+  isLoading: boolean
+  error: Error | null
   sortData: []
   handleChangePage: (page: number) => void
   pagination: IPagination
   totalPage: number
+  refetch: () => void
 }
 
 const useCustomTable = ({
   buildQuery,
   variables,
+  queryKey,
 }: IuseCustomTable): IuseCustomTableReturn => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -37,39 +40,39 @@ const useCustomTable = ({
     page: initialPage,
     perPage: initialPerPage,
   })
-  const { loading, error, data } = useQuery(buildQuery.query, {
-    variables: {
-      ...variables,
-      pagination: {
-        page: pagination.page,
-        perPage: pagination.perPage,
-      },
-    },
-  })
 
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: [queryKey, pagination.page, pagination.perPage],
+    queryFn: async () =>
+      fetchGraphQL<BaseRecord>(buildQuery.query, {
+        ...variables,
+        pagination: {
+          page: pagination.page,
+          perPage: pagination.perPage,
+        },
+      }),
+  })
   const sortData =
     data?.[buildQuery.operation]?.edges?.map((item: any) => item?.node) ?? []
-
   const totalPage = Math.ceil(
     (data?.[buildQuery.operation]?.pagination?.total ?? 0) / 10
   )
 
   function handleChangePage(page: number) {
-    params.set('page', page.toString())
     navigate(`${location.pathname}?page=${page}&perPage=${10}`, {
       replace: true,
       state: { current: initialPage },
     })
     setPagination((prev) => ({ ...prev, page: page }))
   }
-
   return {
-    loading,
+    isLoading,
     error,
     sortData,
     handleChangePage,
     pagination,
     totalPage,
+    refetch,
   }
 }
 

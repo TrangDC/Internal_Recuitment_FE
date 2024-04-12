@@ -9,12 +9,12 @@ import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
 import useTeamTable from '../providers/hooks/useTeamTable'
-import CreateTeamModal from '../providers/page-sections/CreateTeamModal'
+import CreateTeamModal from '../page-sections/CreateTeamModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import Accounts from 'shared/components/icons/Accounts'
 import useActionTable from '../providers/hooks/useActionTable'
-import EditTeamModal from '../providers/page-sections/EditTeamModal'
-import DetailTeamModal from '../providers/page-sections/DetailTeamModal'
+import EditTeamModal from '../page-sections/EditTeamModal'
+import DetailTeamModal from '../page-sections/DetailTeamModal'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -30,7 +30,7 @@ const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   },
 }))
 
-const ProductList = () => {
+const TeamList = () => {
   const {
     openCreate,
     setOpenCreate,
@@ -108,4 +108,4 @@ const ProductList = () => {
   )
 }
 
-export default ProductList
+export default TeamList
