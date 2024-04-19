@@ -17,7 +17,17 @@ const Login = Loadable(
 )
 
 // admin ecommerce
-const TeamsPage = Loadable(lazy(() => import('./pages/teams/index')))
+const TeamList = Loadable(
+  lazy(() => import("./features/teams/presentation/pages/teams-list"))
+);
+
+const JobList = Loadable(
+  lazy(() => import("./pages/jobs"))
+);
+
+const JobDetail = Loadable(
+  lazy(() => import("./pages/jobs/job-detail"))
+);
 
 // 404/Error page
 const Error = Loadable(lazy(() => import('./pages/404')))
@@ -46,6 +56,10 @@ const authRoutes = [
   { path: 'login', element: <Login /> },
 ]
 
-const dashboardRoutes = [{ path: 'teams', element: <TeamsPage /> }]
+const dashboardRoutes = [
+  { path: "teams", element: <TeamList /> },
+  { path: "jobs", element: <JobList /> },
+  { path: "job-detail", element: <JobDetail /> },
+];
 
 export default routes

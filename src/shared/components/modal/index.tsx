@@ -63,10 +63,11 @@ const Header = ({
         )}
         <FlexBox flexDirection={'column'} justifyContent={'center'} gap={1}>
           <H4
-            color={primary[200]}
+            color={primary.main}
             fontSize={'18px'}
             fontWeight={'600'}
             lineHeight={'21.94px'}
+            textTransform={'uppercase'}
           >
             {t(title)}
           </H4>
@@ -135,7 +136,7 @@ const ContentMain = ({
 }) => {
   return (
     <Box padding={'20px 32px'}>
-      <Scrollbar sx={{ maxHeight: maxHeight }}>{children}</Scrollbar>
+      <Scrollbar sx={{ maxHeight: maxHeight}}>{children}</Scrollbar>
     </Box>
   )
 }

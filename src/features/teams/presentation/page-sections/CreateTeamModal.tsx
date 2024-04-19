@@ -12,6 +12,7 @@ interface ICreateTeamModal {
 function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
   const { onSubmit, useFormReturn } = useCreateTeam()
   const { control } = useFormReturn
+  
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header

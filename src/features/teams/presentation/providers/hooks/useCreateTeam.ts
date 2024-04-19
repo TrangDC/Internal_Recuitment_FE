@@ -13,6 +13,7 @@ function useCreateTeam() {
       description: '',
     },
   })
+
   const { createJobTitle, queryKey } = useGraphql()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
@@ -26,6 +27,7 @@ function useCreateTeam() {
   function onSubmit() {
     handleSubmit((value) => mutate(value))()
   }
+  
   return {
     onSubmit,
     useFormReturn: {

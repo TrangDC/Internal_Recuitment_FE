@@ -5,7 +5,6 @@
   "dependencies": {
     "@apollo/client": "^3.9.10",
     "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
     "@fullcalendar/daygrid": "^6.1.5",
     "@fullcalendar/interaction": "^6.1.5",
     "@fullcalendar/react": "^6.1.5",

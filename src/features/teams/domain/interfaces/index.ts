@@ -7,6 +7,18 @@ export type Employee = {
   gender: number
 }
 
+export type Team = {
+  id: string,
+  name: string,
+  open_request: number,
+}
+
+export type Managers = {
+  id: number,
+  name: string,
+  email: string,
+}
+
 export type JobTitle = {
   id: string
   code: string

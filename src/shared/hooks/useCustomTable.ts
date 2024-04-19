@@ -14,14 +14,23 @@ interface IPagination {
   perPage: number
 }
 
+interface ISorting {
+  direction: 'ASC' | 'DESC'
+  field: string
+}
+
 export interface IuseCustomTableReturn {
   isLoading: boolean
   error: Error | null
   sortData: []
   handleChangePage: (page: number) => void
-  pagination: IPagination
+  handleSorTable: (id: string) => void
   totalPage: number
   refetch: () => void
+  variables: {
+    pagination: IPagination,
+    sortBy: ISorting,
+  }
 }
 
 const useCustomTable = ({
@@ -40,11 +49,19 @@ const useCustomTable = ({
     page: initialPage,
     perPage: initialPerPage,
   })
+  const [sorting, setSorting] = useState<ISorting>({
+    direction: 'DESC',
+    field: 'CREATED_AT',
+  })
 
   const { isLoading, error, data, refetch } = useQuery({
-    queryKey: [queryKey, pagination.page, pagination.perPage],
+    gcTime: 0,
+    queryKey: [queryKey, pagination.page, pagination.perPage, sorting],
     queryFn: async () =>
       fetchGraphQL<BaseRecord>(buildQuery.query, {
+        sortBy: {
+          ...sorting,
+        },
         ...variables,
         pagination: {
           page: pagination.page,
@@ -65,14 +82,27 @@ const useCustomTable = ({
     })
     setPagination((prev) => ({ ...prev, page: page }))
   }
+
+  function handleSorTable(id: string) {
+    setSorting((prev) => ({
+      direction:
+        id !== prev.field ? 'DESC' : prev.direction === 'DESC' ? 'ASC' : 'DESC',
+      field: id ? id : 'CREATED_AT',
+    }))
+  }
+
   return {
     isLoading,
     error,
     sortData,
     handleChangePage,
-    pagination,
+    handleSorTable,
     totalPage,
     refetch,
+    variables: {
+      pagination: pagination,
+      sortBy: sorting,
+    }
   }
 }
 
