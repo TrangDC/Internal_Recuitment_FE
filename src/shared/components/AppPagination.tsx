@@ -1,6 +1,29 @@
 import { Pagination, PaginationProps, styled } from '@mui/material'
 
 export const StyledPagination = styled(Pagination)(({ theme }) => ({
+  padding: '16px 0',
+
+  '& .MuiPagination-ul': {
+    justifyContent: 'center',
+  },
+  '& .MuiPagination-ul .MuiButtonBase-root': {
+    color: theme.palette.grey[300],
+    border: 'none',
+  },
+  '& .MuiPagination-ul .Mui-selected': {
+    backgroundColor: theme.palette.primary[100],
+    color: theme.palette.primary[500],
+  },
+  '&  .MuiPagination-ul .MuiPaginationItem-previousNext': {
+    border: '2px solid',
+    borderColor: theme.palette.primary[500],
+    color: theme.palette.primary[600],
+  },
+  '& .MuiPagination-ul .Mui-disabled': {
+    borderColor: theme.palette.primary[300],
+    color: theme.palette.primary[300],
+    opacity: 1,
+  },
   //   '& .MuiPaginationItem-root': { fontWeight: 600 },
   //   '& .MuiPaginationItem-page:hover': {
   //     color: '#fff',

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useReducer } from 'react'
+import { createContext, ReactNode, useEffect, useReducer } from 'react'
 import LoadingScreen from 'shared/components/LoadingScreen'
 import axios from '../shared/utils/axios'
 
@@ -79,8 +79,50 @@ export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     // setSession(null);
-    dispatch({ type: 'LOGOUT' })
-  }
+    dispatch({ type: "LOGOUT" });
+  };
+
+  useEffect(() => {
+    // (async () => {
+    //   try {
+    //     // const accessToken = localStorage.getItem("accessToken");
+
+    //     // if (accessToken && isValidToken(accessToken)) {
+    //     //   setSession(accessToken);
+    //     //   const { data } = await axios.get("/api/auth/profile");
+    //     //   dispatch({
+    //     //     type: "INIT",
+    //     //     payload: { user: data.user, isAuthenticated: true },
+    //     //   });
+    //     // } else {
+    //     //   dispatch({
+    //     //     type: "INIT",
+    //     //     payload: { user: null, isAuthenticated: false },
+    //     //   });
+    //     // }
+
+    //     const { data } = await axios.get("/api/auth/profile");
+
+    //     if (data?.user) {
+    //       dispatch({
+    //         type: "INIT",
+    //         payload: { user: data.user, isAuthenticated: true },
+    //       });
+    //     } else {
+    //       dispatch({
+    //         type: "INIT",
+    //         payload: { user: null, isAuthenticated: false },
+    //       });
+    //     }
+    //   } catch (err) {
+    //     console.error(err);
+    //     dispatch({
+    //       type: "INIT",
+    //       payload: { user: null, isAuthenticated: false },
+    //     });
+    //   }
+    // })();
+  }, []);
 
   if (!state.isInitialized) <LoadingScreen />
 

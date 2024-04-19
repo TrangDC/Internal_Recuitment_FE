@@ -2,6 +2,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
 import {
@@ -12,22 +13,41 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  styled
 } from '@mui/material'
 import AppPagination from '../AppPagination'
 import { useMemo } from 'react'
 import { IuseCustomTableReturn } from 'shared/hooks/useCustomTable'
 import { BodyTableCell, HeadTableCell } from './styles'
 import { v4 as uuidv4 } from 'uuid'
+import IconSortBy from './components/IconSortBy'
 interface ICustomTable<T> {
   columns: ColumnDef<T, any>[]
   useTableReturn: IuseCustomTableReturn
 }
 
+const DivHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  '&:hover .sort_enabled': {
+    visibility: 'visible',
+  },
+
+  '& span': {
+    flex: 1,
+  },
+}))
+
 const CustomTable = <T extends object>(props: ICustomTable<T>) => {
   const { columns, useTableReturn } = props
-  const { sortData, pagination, handleChangePage, totalPage, isLoading } =
+  const { handleSorTable } = useTableReturn
+  const { sortData, handleChangePage, totalPage, isLoading, variables } =
     useTableReturn
+  const { pagination, sortBy } = variables
   const columnData = useMemo(() => columns, [columns])
+
   const { getHeaderGroups, getRowModel } = useReactTable({
     data: sortData,
     columns: columnData,
@@ -39,6 +59,14 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
         pageSize: pagination.perPage,
       },
     },
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting: [sortBy].map((sort) => ({
+        desc: sort.direction === 'DESC',
+        id: sort.field,
+      })),
+    },
+    sortDescFirst: true,
   })
 
   function onChange(page: number) {
@@ -52,13 +80,26 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
           {getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <HeadTableCell key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                <HeadTableCell
+                  key={header.id}
+                  onClick={(event) => {
+                    header.column.getCanSort() && handleSorTable(header.id)
+                  }}
+                >
+                  <DivHeader>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    <IconSortBy
+                      className={
+                        header.column.getCanSort() ? 'sort_enabled' : undefined
+                      }
+                      type={header.column.getIsSorted()}
+                    />
+                  </DivHeader>
                 </HeadTableCell>
               ))}
             </TableRow>
@@ -91,13 +132,14 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                 </TableRow>
               ))}
         </TableBody>
-        <AppPagination
-          count={totalPage}
-          page={pagination.page}
-          onChange={(_, page) => onChange(page)}
-          defaultPage={1}
-        />
       </Table>
+      <AppPagination
+        count={totalPage}
+        page={pagination.page}
+        onChange={(_, page) => onChange(page)}
+        defaultPage={1}
+        variant="outlined"
+      />
     </TableContainer>
   )
 }

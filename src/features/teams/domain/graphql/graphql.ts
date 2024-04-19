@@ -24,11 +24,10 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'JobTitleFilter',
-      orderBy: 'JobTitleOrder',
+      orderBy: 'JobTitleOrder', 
       freeWord: 'JobTitleFreeWord',
     },
   })
-
   const createJobTitle = buildQuery({
     operation: 'CreateJobTitle',
     options: {
