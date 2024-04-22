@@ -1,5 +1,4 @@
 import {
-  Button,
   IconButton,
   InputAdornment,
 } from '@mui/material'
@@ -12,20 +11,27 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import useTeamTable from '../providers/hooks/useTeamTable'
-import CreateTeamModal from '../page-sections/CreateTeamModal'
+import useTeamTable from '../providers/hooks/useJobTable'
+import CreateJobModal from '../page-sections/CreateJobModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import Accounts from 'shared/components/icons/Accounts'
 import useActionTable from '../providers/hooks/useActionTable'
-import EditTeamModal from '../page-sections/EditTeamModal'
-import DetailTeamModal from '../page-sections/DetailTeamModal'
+import EditJobModal from '../page-sections/EditJobModal'
+import DetailJobModal from '../page-sections/DetailJobModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
+import {
+  ButtonHeader,
+  DivFilter,
+  DivHeaderWrapper,
+} from '../providers/styles'
+import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   gap: 8,
   flexWrap: 'wrap',
+  flexDirection: 'column',
   backgroundColor: '#ffffff',
   padding: '12px',
   borderWidth: '0px 0px 1px 0px',
@@ -42,7 +48,7 @@ const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   },
 }))
 
-const TeamList = () => {
+const JobsList = () => {
   const {
     openCreate,
     setOpenCreate,
@@ -79,6 +85,76 @@ const TeamList = () => {
     columns,
   })
 
+  type BaseType = {
+    id: number
+    name: string
+  }
+
+  const team: BaseType[] = [
+    {
+      id: 1,
+      name: 'DES',
+    },
+    {
+      id: 2,
+      name: 'D1',
+    },
+    {
+      id: 3,
+      name: 'D2',
+    },
+    {
+      id: 3,
+      name: 'D3',
+    },
+    {
+      id: 3,
+      name: 'D4',
+    },
+    {
+      id: 3,
+      name: 'Sale',
+    },
+  ]
+
+  const all: BaseType[] = [
+    {
+      id: 1,
+      name: 'Sofware Engineer',
+    },
+    {
+      id: 2,
+      name: 'Automation Tester',
+    },
+    {
+      id: 3,
+      name: 'Quality Assurence',
+    },
+    {
+      id: 3,
+      name: 'AI Engineer',
+    },
+    {
+      id: 3,
+      name: 'Senior Frontend',
+    },
+    {
+      id: 3,
+      name: 'Junior Devops',
+    },
+  ]
+
+  const statusFilter: BaseType[] = [
+    {
+      id: 1,
+      name: 'OPEN',
+    },
+    {
+      id: 1,
+      name: 'CLOSED',
+    },
+  ]
+
   return (
     <Box pt={2} pb={4}>
       <Box>
@@ -86,43 +162,58 @@ const TeamList = () => {
           <IconWrapper>
             <ShoppingBasket sx={{ color: 'primary.main' }} />
           </IconWrapper>
-          <H5>Teams</H5>
+          <H5>Jobs</H5>
         </FlexBox>
       </Box>
-
       <HeadingWrapper>
-        <CustomTextField
-          id="outlined-basic"
-          label="Search"
-          variant="outlined"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton>
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <Button
-          variant="contained"
-          startIcon={<Add />}
-          onClick={() => setOpenCreate(true)}
-        >
-          Add team
-        </Button>
+        <DivFilter>
+          <ButtonFilter<BaseType> listData={all} inputLabel="All" />
+          <ButtonFilter<BaseType> listData={team} inputLabel="Team" />
+          <ButtonFilter<BaseType>
+            listData={statusFilter}
+            inputLabel="Status"
+            multiple={false}
+          />
+        </DivFilter>
+        <DivHeaderWrapper>
+          <CustomTextField
+            id="outlined-basic"
+            label="Enter Jobs Title"
+            variant="outlined"
+            size="small"
+            sx={{ width: '400px' }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <ButtonHeader
+            variant="contained"
+            startIcon={<Add />}
+            onClick={() => setOpenCreate(true)}
+          >
+            Add a new job
+          </ButtonHeader>
+        </DivHeaderWrapper>
       </HeadingWrapper>
       <Box>
         {useTableReturn && (
-          <CustomTable columns={colummTable} useTableReturn={useTableReturn} />
+          <CustomTable
+            columns={colummTable}
+            useTableReturn={useTableReturn}
+          />
         )}
       </Box>
       {openCreate && (
-        <CreateTeamModal open={openCreate} setOpen={setOpenCreate} />
+        <CreateJobModal open={openCreate} setOpen={setOpenCreate} />
       )}
       {openEdit && (
-        <EditTeamModal
+        <EditJobModal
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
@@ -130,7 +221,7 @@ const TeamList = () => {
         />
       )}
       {openDetail && (
-        <DetailTeamModal
+        <DetailJobModal
           open={openDetail}
           setOpen={setOpenDetail}
           id={rowId.current}
@@ -141,4 +232,4 @@ const TeamList = () => {
   )
 }
 
-export default TeamList
+export default JobsList
