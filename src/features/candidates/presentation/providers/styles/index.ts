@@ -11,6 +11,20 @@ export const ButtonHeader = styled(Button)`
   margin-left: auto;
 `
 
+export const ButtonImport = styled(Button)(({ theme }) => ({
+  marginLeft: 'auto',
+  border: `1px solid ${theme.palette.primary[300]}`,
+  backgroundColor: theme.palette.primary[50],
+  fontSize: '13px',
+  fontWeight: 600,
+  color: theme.palette.primary[600],
+
+  '& span': {
+    margin: 0,
+    marginTop: '5px',
+  }
+}))
+
 export const DivHeaderWrapper = styled('div')`
   display: flex;
   align-items: end;
