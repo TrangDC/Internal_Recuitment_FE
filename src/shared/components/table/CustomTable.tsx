@@ -13,7 +13,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  styled
+  styled,
 } from '@mui/material'
 import AppPagination from '../AppPagination'
 import { useMemo } from 'react'
@@ -43,8 +43,15 @@ const DivHeader = styled('div')(({ theme }) => ({
 const CustomTable = <T extends object>(props: ICustomTable<T>) => {
   const { columns, useTableReturn } = props
   const { handleSorTable } = useTableReturn
-  const { sortData, handleChangePage, totalPage, isLoading, variables } =
-    useTableReturn
+
+  const {
+    sortData,
+    handleChangePage,
+    totalPage,
+    isLoading,
+    variables,
+  } = useTableReturn
+
   const { pagination, sortBy } = variables
   const columnData = useMemo(() => columns, [columns])
 

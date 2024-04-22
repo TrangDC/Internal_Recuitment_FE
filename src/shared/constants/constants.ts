@@ -19,10 +19,6 @@ export const LOCATION_STATE = {
     JAPAN: 'Japan'
 }
 
-interface baseInstanceState {
-    [key: string]: string,
-}
-
 export const SALARY_DATA = {
     RANGE: 'Range',
     UP_TO: 'Up to',
@@ -30,15 +26,16 @@ export const SALARY_DATA = {
     NEGOTITATION: 'Negotitation',
 }
 
-export const CURRENCY_DATA: baseInstanceState = {
+export const CURRENCY_DATA = {
     VND: 'VND',
     USD: 'USD',
     JPY: 'JPY',
 }
 
-export const LOCATION_DATA: baseInstanceState = {
+export const LOCATION_DATA = {
     HA_NOI: 'Ha Noi',
     DA_NANG: 'Da Nang',
     HO_CHI_MINH: 'Ho Chi Minh',
     JAPAN: 'Japan',
 }
+

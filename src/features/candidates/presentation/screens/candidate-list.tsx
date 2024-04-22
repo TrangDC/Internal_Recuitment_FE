@@ -11,21 +11,20 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import useTeamTable from '../providers/hooks/useJobTable'
-import CreateJobModal from '../page-sections/CreateJobModal'
+import useCandidateTable from '../providers/hooks/useCandidateTable'
+import CreateCandiateModal from '../page-sections/CreateCandidateModal/index'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import Accounts from 'shared/components/icons/Accounts'
 import useActionTable from '../providers/hooks/useActionTable'
-import EditJobModal from '../page-sections/EditJobModal'
-import DetailJobModal from '../page-sections/DetailJobModal'
+import EditCandidateModal from '../page-sections/EditCandidateModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import {
   ButtonHeader,
-  DivFilter,
+  ButtonImport,
   DivHeaderWrapper,
 } from '../providers/styles'
-import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
+import Import from 'shared/components/icons/ImportIcon'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -54,14 +53,12 @@ const JobsList = () => {
     setOpenCreate,
     handleOpenDetail,
     handleOpenEdit,
-    openDetail,
     openEdit,
     rowId,
     rowData,
-    setOpenDetail,
     setOpenEdit,
   } = useActionTable()
-  const { useTableReturn } = useTeamTable()
+  const { useTableReturn } = useCandidateTable()
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -85,76 +82,6 @@ const JobsList = () => {
     columns,
   })
 
-  type BaseType = {
-    id: number
-    name: string
-  }
-
-  const team: BaseType[] = [
-    {
-      id: 1,
-      name: 'DES',
-    },
-    {
-      id: 2,
-      name: 'D1',
-    },
-    {
-      id: 3,
-      name: 'D2',
-    },
-    {
-      id: 3,
-      name: 'D3',
-    },
-    {
-      id: 3,
-      name: 'D4',
-    },
-    {
-      id: 3,
-      name: 'Sale',
-    },
-  ]
-
-  const all: BaseType[] = [
-    {
-      id: 1,
-      name: 'Sofware Engineer',
-    },
-    {
-      id: 2,
-      name: 'Automation Tester',
-    },
-    {
-      id: 3,
-      name: 'Quality Assurence',
-    },
-    {
-      id: 3,
-      name: 'AI Engineer',
-    },
-    {
-      id: 3,
-      name: 'Senior Frontend',
-    },
-    {
-      id: 3,
-      name: 'Junior Devops',
-    },
-  ]
-
-  const statusFilter: BaseType[] = [
-    {
-      id: 1,
-      name: 'OPEN',
-    },
-    {
-      id: 1,
-      name: 'CLOSED',
-    },
-  ]
-
   return (
     <Box pt={2} pb={4}>
       <Box>
@@ -162,23 +89,13 @@ const JobsList = () => {
           <IconWrapper>
             <ShoppingBasket sx={{ color: 'primary.main' }} />
           </IconWrapper>
-          <H5>Jobs</H5>
+          <H5>Candidates</H5>
         </FlexBox>
       </Box>
       <HeadingWrapper>
-        <DivFilter>
-          <ButtonFilter<BaseType> listData={all} inputLabel="All" />
-          <ButtonFilter<BaseType> listData={team} inputLabel="Team" />
-          <ButtonFilter<BaseType>
-            listData={statusFilter}
-            inputLabel="Status"
-            multiple={false}
-          />
-        </DivFilter>
         <DivHeaderWrapper>
           <CustomTextField
-            id="outlined-basic"
-            label="Enter Jobs Title"
+            label="Search"
             variant="outlined"
             size="small"
             sx={{ width: '400px' }}
@@ -192,13 +109,22 @@ const JobsList = () => {
               ),
             }}
           />
+          <FlexBox gap={'10px'}>
+          <ButtonImport
+            startIcon={<Import />}
+            onClick={() => setOpenCreate(true)}
+          >
+            Import
+          </ButtonImport>
           <ButtonHeader
             variant="contained"
             startIcon={<Add />}
             onClick={() => setOpenCreate(true)}
           >
-            Add a new job
+            Add new candidate
           </ButtonHeader>
+          </FlexBox>
+          
         </DivHeaderWrapper>
       </HeadingWrapper>
       <Box>
@@ -210,20 +136,12 @@ const JobsList = () => {
         )}
       </Box>
       {openCreate && (
-        <CreateJobModal open={openCreate} setOpen={setOpenCreate} />
-      )}
+        <CreateCandiateModal open={openCreate} setOpen={setOpenCreate} />
+      )} 
       {openEdit && (
-        <EditJobModal
+        <EditCandidateModal
           open={openEdit}
           setOpen={setOpenEdit}
-          id={rowId.current}
-          rowData={rowData.current}
-        />
-      )}
-      {openDetail && (
-        <DetailJobModal
-          open={openDetail}
-          setOpen={setOpenDetail}
           id={rowId.current}
           rowData={rowData.current}
         />

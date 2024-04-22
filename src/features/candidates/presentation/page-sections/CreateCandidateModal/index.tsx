@@ -1,51 +1,28 @@
 import BaseModal from 'shared/components/modal'
-import { useForm, Controller } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { Button, Grid } from '@mui/material'
-import { yupResolver } from '@hookform/resolvers/yup'
 import InputComponent from 'shared/components/form/inputComponent'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { schema, FormDataSchema } from '../../providers/constants/schema'
-import { CURRENCY, Job, LOCATION, TEAM } from 'features/jobs/domain/interfaces'
+import { FormDataSchema } from '../../providers/constants/schema'
+import { TEAM } from 'features/jobs/domain/interfaces'
 import { useEffect, useState } from 'react'
-import {
-  mockApiGetListLocation,
-  mockApiGetListTeam,
-} from '../../providers/hooks/useJobTable'
+import useCreateCandidate from '../../providers/hooks/useCreateCandidate'
+import { mockApiGetListTeam } from 'features/jobs/presentation/providers/hooks/useJobTable'
+import DatePickerComponent from 'shared/components/form/datePickerComponent'
 
-interface IDetailJobModal {
+interface ICreateCandidateModal {
   open: boolean
   setOpen: (value: boolean) => void
-  id: string
-  rowData?: Job
 }
 
-function DetailJobModal({ open, setOpen, rowData }: IDetailJobModal) {
+function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
+  const { onSubmit, useFormReturn } = useCreateCandidate()
   const {
     control,
-    handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      // team_name: '',
-      // managers: [],
-      // teams: rowData?.team,
-      // title: rowData?.title,
-
-    },
-  })
-
-  //watch values
-  // useWatch({
-  //   control,
-  //   name: ['managers'],
-  // })
-
-  const onSubmit = (data: any) => {
-    console.log('data', data)
-  }
+  } = useFormReturn
 
   //MockAPI
   const [teams, setTeams] = useState<TEAM[]>([])
@@ -57,40 +34,13 @@ function DetailJobModal({ open, setOpen, rowData }: IDetailJobModal) {
     })
   }, [])
 
-  const [location, setLocation] = useState<LOCATION[]>([])
-  useEffect(() => {
-    new Promise((resolve, reject) => {
-      resolve(mockApiGetListLocation())
-    }).then((response: any) => {
-      setLocation(response.sortData)
-    })
-  }, [])
-  //
-
-  const currency: CURRENCY[] = [
-    {
-      id: 1,
-      name: 'VND',
-    },
-    {
-      id: 2,
-      name: 'USD',
-    },
-    {
-      id: 3,
-      name: 'JPY',
-    },
-  ]
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header
-        title="Detail Job"
-        setOpen={setOpen}
-      ></BaseModal.Header>
+      <BaseModal.Header title="Add New Candidate" setOpen={setOpen}></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Controller
                 name="teams"
                 control={control}
@@ -98,88 +48,73 @@ function DetailJobModal({ open, setOpen, rowData }: IDetailJobModal) {
                   <AutoCompleteComponent<FormDataSchema, TEAM>
                     options={teams}
                     label="name"
-                    inputLabel="Team's"
+                    inputLabel="Team"
                     errors={errors}
                     field={field}
                     keySelect="id"
+                    fullWidth
                   />
                 )}
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Controller
-                name="title"
+                name="phone_number"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Job Title"
-                    field={field}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Controller
-                name="location"
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, LOCATION>
-                    options={location}
-                    label="name"
-                    inputLabel="Location"
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={5}>
-              <Controller
-                name="salary_from"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchema>
-                    errors={errors}
-                    label="Salary From"
+                    label="Phone number"
                     field={field}
                     fullWidth
-                    type='number'
+                    required
+                    type="number"
                   />
                 )}
               />
             </Grid>
-
-            <Grid item xs={5}>
+            <Grid item xs={6}>
               <Controller
-                name="salary_to"
+                name="email"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Salary To"
+                    label="Email"
+                    size="small"
                     field={field}
                     fullWidth
-                    type='number'
+                    required
                   />
                 )}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={6}>
               <Controller
-                name="currency"
+                name="dateOfBirth"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, CURRENCY>
-                    options={currency}
-                    label="name"
-                    inputLabel="Currentcy"
+                  <DatePickerComponent<FormDataSchema>
+                  textFieldProps={{fullWidth: true, size: 'small', required: true}}
                     errors={errors}
-                    // multiple={true}
+                    label="DOB"
                     field={field}
-                    keySelect="id"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <InputComponent<FormDataSchema>
+                    errors={errors}
+                    label="Description"
+                    field={field}
+                    fullWidth
+                    multiline
+                    minRows={4}
                   />
                 )}
               />
@@ -196,7 +131,7 @@ function DetailJobModal({ open, setOpen, rowData }: IDetailJobModal) {
             type="button"
             variant="contained"
             color="primary"
-            onClick={handleSubmit(onSubmit)}
+            onClick={onSubmit}
           >
             Save
           </Button>
@@ -206,4 +141,4 @@ function DetailJobModal({ open, setOpen, rowData }: IDetailJobModal) {
   )
 }
 
-export default DetailJobModal
+export default CreateCandidateModal
