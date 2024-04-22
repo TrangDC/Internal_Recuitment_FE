@@ -1,4 +1,4 @@
-import JobDetail from 'features/jobs/presenttation/screens/job-detail';
+import JobDetail from 'features/jobs/presentation/screens/job-detail';
 
 function JobDetailPage() {
   return <JobDetail />
