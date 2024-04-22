@@ -1,5 +1,5 @@
 import useGraphql from 'features/teams/domain/graphql/graphql'
-import useCustomTable, { IuseCustomTableReturn } from 'shared/hooks/useCustomTable'
+import useCustomTable from 'shared/hooks/useCustomTable'
 
 const useCandidateTable = () => {
   const { getAllJobTitles, queryKey } = useGraphql()

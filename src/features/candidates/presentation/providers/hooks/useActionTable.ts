@@ -1,5 +1,4 @@
 import { Candidate } from 'features/candidates/domain/interfaces'
-import { Job } from 'features/jobs/domain/interfaces'
 import { useRef, useState } from 'react'
 
 const useActionTable = () => {
@@ -9,7 +8,7 @@ const useActionTable = () => {
   const [openEdit, setOpenEdit] = useState(false)
   const [openDetail, setOpenDetail] = useState(false)
 
-  function handleOpenEdit<T>(id: string, data: Candidate) {
+  function handleOpenEdit(id: string, data: Candidate) {
     rowId.current = id
     rowData.current = data
     setOpenEdit(true)
