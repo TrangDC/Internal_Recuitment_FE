@@ -25,6 +25,7 @@ import {
   DivHeaderWrapper,
 } from '../providers/styles'
 import Import from 'shared/components/icons/ImportIcon'
+import { Candidate } from 'features/candidates/domain/interfaces'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -57,7 +58,7 @@ const JobsList = () => {
     rowId,
     rowData,
     setOpenEdit,
-  } = useActionTable()
+  } = useActionTable<Candidate>()
   const { useTableReturn } = useCandidateTable()
 
   const { colummTable } = useBuildColumnTable({

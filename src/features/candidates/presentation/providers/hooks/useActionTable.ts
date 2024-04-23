@@ -1,20 +1,19 @@
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { useRef, useState } from 'react'
 
-const useActionTable = () => {
+const useActionTable = <T extends object>() => {
   const rowId = useRef('')
-  const rowData = useRef<Candidate>()
+  const rowData = useRef<T>()
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDetail, setOpenDetail] = useState(false)
 
-  function handleOpenEdit(id: string, data: Candidate) {
+  function handleOpenEdit(id: string, data: T) {
     rowId.current = id
     rowData.current = data
     setOpenEdit(true)
   }
 
-  function handleOpenDetail(id: string, data: Candidate) {
+  function handleOpenDetail(id: string, data: T) {
     rowId.current = id
     rowData.current = data
     setOpenDetail(true)

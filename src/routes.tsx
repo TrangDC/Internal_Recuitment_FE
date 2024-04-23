@@ -33,6 +33,10 @@ const CandiateList = Loadable(
   lazy(() => import("./pages/candidates/index"))
 );
 
+const CandiateDetail = Loadable(
+  lazy(() => import("./pages/candidates/candidate-detail"))
+);
+
 // 404/Error page
 const Error = Loadable(lazy(() => import('./pages/404')))
 
@@ -65,6 +69,7 @@ const dashboardRoutes = [
   { path: "jobs", element: <JobList /> },
   { path: "job-detail", element: <JobDetail /> },
   { path: "candidates", element: <CandiateList /> },
+  { path: "candidate-detail", element: <CandiateDetail /> },
 ];
 
 export default routes
