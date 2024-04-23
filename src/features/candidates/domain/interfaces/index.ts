@@ -14,3 +14,8 @@ export type Interview = {
   applied_date: string,
   status: string,
 }
+
+export type FeedBack = {
+  name: string,
+  description: string,
+}

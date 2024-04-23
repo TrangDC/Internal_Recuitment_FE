@@ -1,16 +1,12 @@
-import { Box, styled } from '@mui/material'
 import GeneralInformationField from '../GeneralInformationField'
 import GenaralInformationInterview from '../GenerateInformationInterview'
-
-const DivContainerWrapper = styled(Box)(({ theme }) => ({
-  width: '100%',
-}))
+import { DivContainerWrapper } from '../../providers/styles'
 
 const GeneralInformation = () => {
   return (
     <DivContainerWrapper>
       <GeneralInformationField />
-     <GenaralInformationInterview />
+      <GenaralInformationInterview />
     </DivContainerWrapper>
   )
 }

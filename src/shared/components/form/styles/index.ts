@@ -1,5 +1,5 @@
 import { Autocomplete, Button, TextField, styled} from "@mui/material";
-import { greyLight } from "shared/theme/colors";
+import { primary } from "shared/theme/colors";
 
 export const CustomTextField = styled(TextField)`
   max-width: 100%;
@@ -58,10 +58,11 @@ export const CustomStyleManage = styled('div')`
   }
 `
 export const CustomeButtonCancel = styled(Button)`
-  background-color: ${greyLight[700]};
-
+  background-color: ${primary[100]};
+  border: 1px solid ${primary[200]};
+  color: ${primary[700]};
   
   &:hover {
-    background-color: ${greyLight[500]};
+    background-color: ${primary[50]};
   }
 `

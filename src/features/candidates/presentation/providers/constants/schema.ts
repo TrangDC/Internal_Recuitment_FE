@@ -21,3 +21,10 @@ export const schemaInterview = yup.object({
 })
 
 export type FormDataSchemaInterview = yup.InferType<typeof schemaInterview>
+
+export const schemaFeedback = yup.object({
+  name: yup.string().required(),
+  description: yup.string(),
+})
+
+export type FormDataSchemaFeedback = yup.InferType<typeof schemaFeedback>

@@ -1,8 +1,7 @@
 import { Add } from '@mui/icons-material'
-import { Box, styled } from '@mui/material'
-import { Span } from 'shared/components/Typography'
+import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { ButtonHeader } from '../../providers/styles'
+import { ButtonHeader, DivWrapperProcess, SpanGenaration } from '../../providers/styles'
 import CustomTable from 'shared/components/table/CustomTable'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import Accounts from 'shared/components/icons/Accounts'
@@ -12,20 +11,6 @@ import { Interview } from 'features/candidates/domain/interfaces'
 import useActionTable from '../../providers/hooks/useActionTable'
 import CreateInterviewModal from '../CreateInterviewModal'
 import EditInterviewModal from '../EditInterviewModal'
-
-const DivWrapperProcess = styled(Box)(({ theme }) => ({
-  width: '100%',
-  padding: '24px 16px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-}))
-
-const SpanGenaration = styled(Span)(({ theme }) => ({
-  fontSize: '15px',
-  color: theme.palette.primary[800],
-  lineHeight: '18.29px',
-}))
 
 const GenaralInformationInterview = () => {
   const {
