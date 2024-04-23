@@ -24,7 +24,7 @@ const ButtonFilterStyled = styled(Button)(({ theme }) => ({
   border: 'none',
 
   '& span': {
-    color: '#00508A',
+    color: theme.palette.primary[800],
   },
 
   '&:hover': {

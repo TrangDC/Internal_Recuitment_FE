@@ -29,7 +29,7 @@ export const primary = {
   500: alpha(primaryMain, 0.5),
   600: alpha(primaryMain, 0.6),
   700: alpha(primaryMain, 0.7),
-  800: alpha(primaryMain, 0.8),
+  800: '#00508A',
   red: '#FF6B93',
   purple: '#A798FF',
   yellow: '#FF9777',

@@ -39,9 +39,9 @@ const DatePickerComponent = <T extends object>({
   return (
     <DivWrapper>
       <StyleDateField
+       textFieldProps={{ fullWidth: true, size: 'small', required: true }}
         {...props}
         {...field}
-        textFieldProps={{ fullWidth: true, size: 'small', required: true }}
         value={field.value}
         onChange={(value) => {
           field.onChange(value)

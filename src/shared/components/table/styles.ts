@@ -14,7 +14,7 @@ export const TableCellStyle = styled(TableCell)(({ theme }) => ({
 
 export const HeadTableCell = styled(TableCellStyle)(({ theme }) => ({
   height: '48px',
-  color: '#00508A',
+  color: theme.palette.primary[800],
   backgroundColor: theme.palette.primary[50],
   '&.column-sticky, &.action-column': {
     zIndex: 5,
