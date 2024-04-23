@@ -1,27 +1,12 @@
 import { Box, Grid, styled } from '@mui/material'
 import { H3, Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
+import { DivField } from '../../providers/styles'
 
 const DivWrapperField = styled(Box)(({ theme }) => ({
   width: '100%',
   padding: '24px 16px',
   borderBottom: `1px solid ${theme.palette.grey[200]}`,
-}))
-
-const DivField = styled(Box)(({ theme }) => ({  
-  '& span': {
-    width: '12px',
-    fontWeight: 500,
-    color: theme.palette.grey[500],
-    lineHeight: '14.63px',
-  },
-
-  '& p': {
-    color: theme.palette.grey[900],
-    fontWeight: 600,
-    fontSize: '13px',
-    lineHeight: '15.85px',
-  },
 }))
 
 const GeneralInformationField = () => {

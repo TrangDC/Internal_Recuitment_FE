@@ -63,7 +63,7 @@ const Header = ({
         )}
         <FlexBox flexDirection={'column'} justifyContent={'center'} gap={1}>
           <H4
-            color={primary.main}
+            color={primary[800]}
             fontSize={'18px'}
             fontWeight={'600'}
             lineHeight={'21.94px'}

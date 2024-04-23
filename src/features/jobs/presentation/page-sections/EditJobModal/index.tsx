@@ -228,7 +228,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
       </form>
     </BaseModal.ContentMain>
     <BaseModal.Footer>
-      <FlexBox gap={'10px'} justifyContent={'center'} width={'100%'}>
+      <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
         <CustomeButtonCancel type="button" variant="contained">
           Cancel
         </CustomeButtonCancel>
