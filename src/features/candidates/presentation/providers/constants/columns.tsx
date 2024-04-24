@@ -6,7 +6,8 @@ import {
 import { StyleSpanName } from '../styles/index'
 import { Candidate, Interview } from 'features/candidates/domain/interfaces'
 import { CANDIDATE_STATUS } from '.'
-import { Chip } from '@mui/material'
+import { format } from 'date-fns'
+import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 
 const columnHelper = createColumnHelper<Candidate>()
 const columnHelperInterview = createColumnHelper<Interview>()
@@ -33,13 +34,16 @@ export const columns = (
   columnHelper.accessor((row) => row.created_at, {
     id: 'created_at',
     header: () => <span>Created date</span>,
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    size: 200,
+    cell: (info) => <StyleSpanName>
+    {format(new Date(info.getValue()), "hh:mm a, MM/dd/yyyy")}
+    </StyleSpanName>,
   }),
   columnHelper.accessor((row) => row.status, {
     id: 'status',
     header: () => <span>Interview status</span>,
     cell: (info) => (
-      <Chip
+      <ChipFieldStatus
       //@ts-ignore
         label={CANDIDATE_STATUS[info.getValue()]['text']}
         style={{
@@ -52,6 +56,8 @@ export const columns = (
   }),
   columnHelper.accessor('id', {
     header: () => <span>ACTION</span>,
+    size: 100,
+    enableSorting: false,
     cell: (info) => {
       const id = info.row.original.id
 
@@ -84,14 +90,15 @@ export const columnsInterview = (
   }),
   columnHelperInterview.accessor((row) => row.applied_date, {
     id: 'applied_date',
+    size: 200,
     header: () => <span>Applied date</span>,
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => <StyleSpanName> {format(new Date(info.getValue()), "hh:mm a, MM/dd/yyyy")}</StyleSpanName>,
   }),
   columnHelperInterview.accessor((row) => row.status, {
     id: 'status',
     header: () => <span>Interview status</span>,
     cell: (info) => (
-      <Chip
+      <ChipFieldStatus
       //@ts-ignore
         label={CANDIDATE_STATUS[info.getValue()]['text']}
         style={{
@@ -104,6 +111,7 @@ export const columnsInterview = (
   }),
   columnHelperInterview.accessor('id', {
     header: () => <span>ACTION</span>,
+    size: 100,
     cell: (info) => {
       const id = info.row.original.id
 
@@ -117,5 +125,6 @@ export const columnsInterview = (
         </>
       )
     },
+    enableSorting: false,
   }),
 ]

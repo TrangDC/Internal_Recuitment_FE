@@ -4,13 +4,15 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { ButtonHeader, DivWrapperProcess, SpanGenaration } from '../../providers/styles'
 import CustomTable from 'shared/components/table/CustomTable'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
-import Accounts from 'shared/components/icons/Accounts'
 import { columnsInterview as columns } from '../../providers/constants/columns'
-import useInterviewTable from '../../providers/hooks/useInterviewTable'
+import { mockApiGetListInterview } from '../../providers/hooks/useInterviewTable'
 import { Interview } from 'features/candidates/domain/interfaces'
 import useActionTable from '../../providers/hooks/useActionTable'
 import CreateInterviewModal from '../CreateInterviewModal'
 import EditInterviewModal from '../EditInterviewModal'
+import { useEffect, useState } from 'react'
+import EyeIcon from 'shared/components/icons/EyeIcon'
+import EditIcon from 'shared/components/icons/EditIcon'
 
 const GenaralInformationInterview = () => {
   const {
@@ -24,7 +26,15 @@ const GenaralInformationInterview = () => {
     setOpenEdit,
   } = useActionTable<Interview>()
 
-  const { useTableReturn } = useInterviewTable()
+  // const { useTableReturn } = useInterviewTable()
+  const [useTableReturn, setUseTableReturn] = useState()
+  useEffect(() => {
+    new Promise((resolve, reject) => {
+      resolve(mockApiGetListInterview())
+    }).then((response: any) => {
+      setUseTableReturn(response)
+    })
+  }, [])
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -34,7 +44,7 @@ const GenaralInformationInterview = () => {
             handleOpenEdit(id, rowData)
         },
         title: 'Edit',
-        Icon: <Accounts />,
+        Icon: <EditIcon />,
       },
       {
         id: 'detail',
@@ -42,7 +52,7 @@ const GenaralInformationInterview = () => {
             handleOpenDetail(id, rowData)
         },
         title: 'Detail',
-        Icon: <Accounts />,
+        Icon: <EyeIcon />,
       },
     ],
     columns,
