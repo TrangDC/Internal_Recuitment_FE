@@ -1,8 +1,8 @@
 import { Box, Grid, styled } from '@mui/material'
-import React from 'react'
 import { H3, Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { DivField } from '../../providers/styles'
+import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 
 const BoxImage = styled(Box)(({ theme }) => ({
   width: '140px',
@@ -16,7 +16,17 @@ const FeedbackInformation = () => {
     <Grid container spacing={1}>
       <Grid item xs={12} md={10}>
         <FlexBox flexDirection={'column'} gap={'20px'}>
-          <H3>HARA NGUYEN</H3>
+          <FlexBox gap={'10px'} alignItems={'center'}>
+            <H3>HARA NGUYEN</H3>
+            <ChipFieldStatus
+              label="Accepted"
+              style={{
+                backgroundColor: '#20A4A9',
+                color: 'white',
+              }}
+            />
+          </FlexBox >
+
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <DivField>

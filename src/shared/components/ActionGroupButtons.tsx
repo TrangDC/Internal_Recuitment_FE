@@ -1,6 +1,19 @@
 import { MoreHoriz } from '@mui/icons-material'
-import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material'
+import { IconButton, ListItemIcon, Menu, MenuItem, styled } from '@mui/material'
 import { MouseEvent, ReactNode, useState } from 'react'
+import { Span } from './Typography'
+
+export const StyleListItemIcon = styled(ListItemIcon)(({ theme }) => ({
+  minWidth: 'auto !important',
+  marginRight: '8px'
+}))
+
+export const StyleLabel = styled(Span)(({ theme }) => ({
+ fontSize: '13px',
+ fontWeight: 500,
+ lineHeight: '15.85px',
+ color: theme.palette.grey[800]
+}))
 
 export type TOptionItem<T> = {
   disabled?: boolean
@@ -62,8 +75,8 @@ export const ActionGroupButtons = <T extends object>({
               disabled={disabled}
               sx={{ '&:hover': { color: 'primary.main' } }}
             >
-              <ListItemIcon>{Icon}</ListItemIcon>
-              {title}
+              <StyleListItemIcon>{Icon}</StyleListItemIcon>
+              <StyleLabel>{title}</StyleLabel>
             </MenuItem>
           ))}
       </Menu>

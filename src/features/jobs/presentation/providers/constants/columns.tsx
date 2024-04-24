@@ -5,6 +5,7 @@ import {
 } from 'shared/components/ActionGroupButtons'
 import { StyleSpanName } from '../styles/index'
 import { Job } from 'features/jobs/domain/interfaces'
+import { format } from 'date-fns'
 
 const columnHelper = createColumnHelper<Job>()
 
@@ -37,9 +38,10 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   }),
   columnHelper.accessor((row) => row.createdAt, {
     id: 'createdAt',
+    size: 200,
     header: () => <span>Created date</span>,
     cell: (info) => <StyleSpanName>
-      {/* {format(new Date(info.getValue()), "hh:mm a, MM/dd/yyyy")} */}
+      {format(new Date(info.getValue()), "hh:mm a, MM/dd/yyyy")}
       </StyleSpanName>,
   }),
   columnHelper.accessor((row) => row.hired, {
@@ -49,6 +51,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   }),
   columnHelper.accessor('id', {
     header: () => <span>ACTION</span>,
+    size: 100,
     cell: (info) => {
       const id = info.row.original.id
 

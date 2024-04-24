@@ -11,10 +11,9 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import useCandidateTable from '../providers/hooks/useCandidateTable'
+import { mockApiGetCandiates } from '../providers/hooks/useCandidateTable'
 import CreateCandiateModal from '../page-sections/CreateCandidateModal/index'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
-import Accounts from 'shared/components/icons/Accounts'
 import useActionTable from '../providers/hooks/useActionTable'
 import EditCandidateModal from '../page-sections/EditCandidateModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
@@ -26,6 +25,10 @@ import {
 } from '../providers/styles'
 import Import from 'shared/components/icons/ImportIcon'
 import { Candidate } from 'features/candidates/domain/interfaces'
+import { useEffect, useState } from 'react'
+import EditIcon from 'shared/components/icons/EditIcon'
+import EyeIcon from 'shared/components/icons/EyeIcon'
+import { useNavigate } from 'react-router-dom'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -52,14 +55,24 @@ const JobsList = () => {
   const {
     openCreate,
     setOpenCreate,
-    handleOpenDetail,
     handleOpenEdit,
     openEdit,
     rowId,
     rowData,
     setOpenEdit,
   } = useActionTable<Candidate>()
-  const { useTableReturn } = useCandidateTable()
+
+  const navigate = useNavigate()
+
+  // const { useTableReturn } = useCandidateTable()
+  const [useTableReturn, setUseTableReturn] = useState()
+  useEffect(() => {
+    new Promise((resolve, reject) => {
+      resolve(mockApiGetCandiates())
+    }).then((response: any) => {
+      setUseTableReturn(response)
+    })
+  }, [])
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -69,15 +82,15 @@ const JobsList = () => {
           handleOpenEdit(id, rowData)
         },
         title: 'Edit',
-        Icon: <Accounts />,
+        Icon: <EditIcon />,
       },
       {
         id: 'detail',
         onClick: (id, rowData) => {
-          handleOpenDetail(id, rowData)
+          navigate('/dashboard/candidate-detail')
         },
         title: 'Detail',
-        Icon: <Accounts />,
+        Icon: <EyeIcon />,
       },
     ],
     columns,

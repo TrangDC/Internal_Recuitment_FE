@@ -1,16 +1,18 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import useGraphql from 'features/teams/domain/graphql/graphql'
+import useGraphql from 'features/jobs/domain/graphql/graphql'
 import { NewJobTitleInput } from 'features/teams/domain/interfaces'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
-function useCreateTeam() {
+import { schema,FormDataSchema } from '../../providers/constants/schema'
+
+function useCreateTeam(defaultValues: Partial<FormDataSchema> = {}) {
   const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm({
+  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
+    resolver: yupResolver(schema),
     defaultValues: {
-      name: '',
-      code: '',
-      description: '',
+      ...defaultValues
     },
   })
 
@@ -25,7 +27,11 @@ function useCreateTeam() {
   })
 
   function onSubmit() {
-    handleSubmit((value) => mutate(value))()
+    handleSubmit((value: FormDataSchema) => {
+    console.log("🚀 ~ handleSubmit ~ value:", value)
+
+      // mutate(value)
+    })()
   }
   
   return {

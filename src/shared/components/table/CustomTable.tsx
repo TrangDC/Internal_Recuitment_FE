@@ -90,8 +90,11 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                 <HeadTableCell
                   key={header.id}
                   onClick={(event) => {
+                    console.log("header", header, header.getContext())
                     header.column.getCanSort() && handleSorTable(header.id)
                   }}
+                  style={{width: header.getSize()}}
+                  {...header.column.columnDef.meta}
                 >
                   <DivHeader>
                     {header.isPlaceholder

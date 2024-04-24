@@ -1,20 +1,14 @@
 import { FieldValues, FieldErrors } from 'react-hook-form'
 import {
-  CustomStyleManage,
   DivError,
-  DivListOption,
   DivWrapper,
 } from '../styles'
 import {
   AutocompleteProps,
   AutocompleteRenderInputParams,
-  Chip,
 } from '@mui/material'
 import { get } from 'lodash'
 import { ReactNode } from 'react'
-import FlexBox from 'shared/components/flexbox/FlexBox'
-import CloseIcon from '@mui/icons-material/Close'
-import { greyLight } from 'shared/theme/colors'
 import AutoCompleteField from 'shared/components/input-fields/AutoCompleteField'
 
 interface AdditionalProps<T extends FieldValues, Option> {
@@ -63,7 +57,7 @@ const AutoCompleteComponent = <T extends object, Option>({
         }}
         inputProps={{ label: inputLabel, required: true }}
       />
-      {multiple && (
+      {/* {multiple && (
         <DivListOption>
           <FlexBox gap={'10px'} flexWrap={'wrap'}>
             {(field.value as Option[]).map((option, index) => {
@@ -102,7 +96,7 @@ const AutoCompleteComponent = <T extends object, Option>({
             })}
           </FlexBox>
         </DivListOption>
-      )}
+      )} */}
       {error && (
         <DivError>
           <span>{error.message}</span>{' '}

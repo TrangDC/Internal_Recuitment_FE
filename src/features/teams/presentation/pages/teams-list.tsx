@@ -12,7 +12,7 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import useTeamTable from '../providers/hooks/useTeamTable'
+import useTeamTable, { mockApiGetTeams } from '../providers/hooks/useTeamTable'
 import CreateTeamModal from '../page-sections/CreateTeamModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import Accounts from 'shared/components/icons/Accounts'
@@ -21,6 +21,11 @@ import EditTeamModal from '../page-sections/EditTeamModal'
 import DetailTeamModal from '../page-sections/DetailTeamModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
+import { useEffect, useState } from 'react'
+import { TEAM } from 'features/jobs/domain/interfaces'
+import DeleteIcon from 'shared/components/icons/DeleteIcon'
+import EditIcon from 'shared/components/icons/EditIcon'
+import EyeIcon from 'shared/components/icons/EyeIcon'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -55,7 +60,15 @@ const TeamList = () => {
     setOpenDetail,
     setOpenEdit,
   } = useActionTable()
-  const { useTableReturn } = useTeamTable()
+  // const { useTableReturn } = useTeamTable()
+  const [useTableReturn, setUseTableReturn] = useState()
+  useEffect(() => {
+    new Promise((resolve, reject) => {
+      resolve(mockApiGetTeams())
+    }).then((response: any) => {
+      setUseTableReturn(response)
+    })
+  }, [])
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -65,7 +78,7 @@ const TeamList = () => {
           handleOpenEdit(id, rowData)
         },
         title: 'Edit',
-        Icon: <Accounts />,
+        Icon: <EditIcon />,
       },
       {
         id: 'detail',
@@ -73,7 +86,15 @@ const TeamList = () => {
           handleOpenDetail(id, rowData)
         },
         title: 'Detail',
-        Icon: <Accounts />,
+        Icon: <EyeIcon />,
+      },
+      {
+        id: 'delete',
+        onClick: (id, rowData) => {
+          handleOpenDetail(id, rowData)
+        },
+        title: 'Delete',
+        Icon: <DeleteIcon />,
       },
     ],
     columns,
@@ -89,12 +110,12 @@ const TeamList = () => {
           <H5>Teams</H5>
         </FlexBox>
       </Box>
-
       <HeadingWrapper>
         <CustomTextField
           id="outlined-basic"
-          label="Search"
+          label="Enter Team's name"
           variant="outlined"
+          size='small'
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -110,7 +131,7 @@ const TeamList = () => {
           startIcon={<Add />}
           onClick={() => setOpenCreate(true)}
         >
-          Add team
+          Add a new team
         </Button>
       </HeadingWrapper>
       <Box>

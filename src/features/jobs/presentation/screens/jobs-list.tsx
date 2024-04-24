@@ -11,13 +11,11 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import useTeamTable from '../providers/hooks/useJobTable'
+import useJobTable, { mockApiGetJobs } from '../providers/hooks/useJobTable'
 import CreateJobModal from '../page-sections/CreateJobModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
-import Accounts from 'shared/components/icons/Accounts'
 import useActionTable from '../providers/hooks/useActionTable'
 import EditJobModal from '../page-sections/EditJobModal'
-import DetailJobModal from '../page-sections/DetailJobModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import {
@@ -26,6 +24,10 @@ import {
   DivHeaderWrapper,
 } from '../providers/styles'
 import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
+import { useEffect, useState } from 'react'
+import EditIcon from 'shared/components/icons/EditIcon'
+import EyeIcon from 'shared/components/icons/EyeIcon'
+import { useNavigate } from 'react-router-dom'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -52,16 +54,24 @@ const JobsList = () => {
   const {
     openCreate,
     setOpenCreate,
-    handleOpenDetail,
     handleOpenEdit,
-    openDetail,
     openEdit,
     rowId,
     rowData,
-    setOpenDetail,
     setOpenEdit,
   } = useActionTable()
-  const { useTableReturn } = useTeamTable()
+
+  const navigate = useNavigate();
+
+  // const { useTableReturn } = useJobTable()
+  const [useTableReturn, setUseTableReturn] = useState()
+  useEffect(() => {
+    new Promise((resolve, reject) => {
+      resolve(mockApiGetJobs())
+    }).then((response: any) => {
+      setUseTableReturn(response)
+    })
+  }, [])
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -71,15 +81,15 @@ const JobsList = () => {
           handleOpenEdit(id, rowData)
         },
         title: 'Edit',
-        Icon: <Accounts />,
+        Icon: <EditIcon />,
       },
       {
         id: 'detail',
         onClick: (id, rowData) => {
-          handleOpenDetail(id, rowData)
+          navigate('/dashboard/job-detail')
         },
         title: 'Detail',
-        Icon: <Accounts />,
+        Icon: <EyeIcon />,
       },
     ],
     columns,
@@ -216,14 +226,6 @@ const JobsList = () => {
         <EditJobModal
           open={openEdit}
           setOpen={setOpenEdit}
-          id={rowId.current}
-          rowData={rowData.current}
-        />
-      )}
-      {openDetail && (
-        <DetailJobModal
-          open={openDetail}
-          setOpen={setOpenDetail}
           id={rowId.current}
           rowData={rowData.current}
         />
