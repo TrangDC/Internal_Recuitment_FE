@@ -31,7 +31,7 @@ const DivHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
 
-  '&:hover .sort_enabled': {
+  '&:hover .iconSort': {
     visibility: 'visible',
   },
 
@@ -44,13 +44,8 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
   const { columns, useTableReturn } = props
   const { handleSorTable } = useTableReturn
 
-  const {
-    sortData,
-    handleChangePage,
-    totalPage,
-    isLoading,
-    variables,
-  } = useTableReturn
+  const { sortData, handleChangePage, totalPage, isLoading, variables } =
+    useTableReturn
 
   const { pagination, sortBy } = variables
   const columnData = useMemo(() => columns, [columns])
@@ -90,10 +85,10 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                 <HeadTableCell
                   key={header.id}
                   onClick={(event) => {
-                    console.log("header", header, header.getContext())
+                    console.log('header', header, header.getContext())
                     header.column.getCanSort() && handleSorTable(header.id)
                   }}
-                  style={{width: header.getSize()}}
+                  style={{ width: header.getSize() }}
                   {...header.column.columnDef.meta}
                 >
                   <DivHeader>
@@ -103,12 +98,9 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                    <IconSortBy
-                      className={
-                        header.column.getCanSort() ? 'sort_enabled' : undefined
-                      }
-                      type={header.column.getIsSorted()}
-                    />
+                    {header.column.getCanSort() && (
+                      <IconSortBy type={header.column.getIsSorted()} />
+                    )}
                   </DivHeader>
                 </HeadTableCell>
               ))}

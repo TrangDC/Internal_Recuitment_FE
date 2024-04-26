@@ -20,6 +20,11 @@ export const navigations = [
     icon: duotone.MessagesDollar,
   },
   {
+    name: 'Hiring team',
+    path: '/dashboard/hiring',
+    icon: duotone.MessagesDollar,
+  },
+  {
     name: 'Settings',
     path: '/dashboard/settings',
     icon: duotone.MessagesDollar,

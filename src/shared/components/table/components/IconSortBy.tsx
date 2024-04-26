@@ -19,9 +19,9 @@ interface IconSort extends IconSortProps {
   className?: string | undefined
 }
 
-const IconSortBy = ({ type = false, className = '' }: IconSort) => {
+const IconSortBy = ({ type = false}: IconSort) => {
   return (
-    <DivIcon className={`${!!type && 'enabled_icon'} ${className}`}>
+    <DivIcon className={`${!!type && 'enabled_icon'} iconSort`}>
       {type === 'asc' ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
     </DivIcon>
   )

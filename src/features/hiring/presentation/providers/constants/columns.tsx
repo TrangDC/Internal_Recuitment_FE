@@ -1,25 +1,32 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import { Team } from 'features/teams/domain/interfaces'
+import { Hiring } from 'features/hiring/domain/interfaces'
 import {
   ActionGroupButtons,
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
-import { StyleSpanName } from '../styles/style'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Span } from 'shared/components/Typography'
 
-const columnHelper = createColumnHelper<Team>()
+const columnHelper = createColumnHelper<Hiring>()
 
 export const columns = (
-  actions: TOptionItem<Team>[]
-): ColumnDef<Team, any>[] => [
+  actions: TOptionItem<Hiring>[]
+): ColumnDef<Hiring, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => info.getValue(),
     header: () => <span>NAME</span>,
   }),
-  columnHelper.accessor('open_request', {
-    header: () => <span>OPEN REQUESTS</span>,
+  columnHelper.accessor('email', {
+    header: () => <span>Email</span>,
+    cell: (info) => info.renderValue(),
+  }),
+  columnHelper.accessor('team', {
+    header: () => <span>Team</span>,
+    cell: (info) => info.renderValue(),
+  }),
+  columnHelper.accessor('position', {
+    header: () => <span>Position</span>,
     cell: (info) => info.renderValue(),
   }),
   columnHelper.accessor('id', {
@@ -38,7 +45,7 @@ export const columns = (
 
       return (
         <>
-            <ActionGroupButtons<Team>
+            <ActionGroupButtons<Hiring>
               rowId={id}
               actions={actions}
               rowData={info.row.original}
