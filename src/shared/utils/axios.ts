@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosInstance = axios.create(
   {
-  baseURL: 'https://api.mockfly.dev/mocks/74fd0c52-92b5-4518-a76b-f0f6ef3239b4',
+  baseURL: 'http://127.0.0.1:3658/m1/489853-447852-default',
   timeout: 5000,
   headers: {
 		"content-type": "application/json",

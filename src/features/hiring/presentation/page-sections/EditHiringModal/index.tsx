@@ -5,39 +5,53 @@ import InputComponent from 'shared/components/form/inputComponent'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../providers/constants/schema'
+import { FormDataSchema } from '../../providers/constants/schema'
 import { TEAM } from 'features/jobs/domain/interfaces'
 import { baseInstance } from 'shared/interfaces'
-import useCreateTeam from '../providers/hooks/useCreateTeam'
+import useCreateTeam from '../../providers/hooks/useCreateHiring'
+import { Hiring } from 'features/hiring/domain/interfaces'
+import { useEffect, useState } from 'react'
+import { mockApiGetListTeam } from 'features/jobs/presentation/providers/hooks/useJobTable'
 
-interface ICreateTeamModal {
+interface IEditHiringModal {
   open: boolean
   setOpen: (value: boolean) => void
+  id: string
+  rowData?: Hiring
 }
 
-function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
+function EditHiringModal({ open, setOpen }: IEditHiringModal) {
   const { onSubmit, useFormReturn } = useCreateTeam()
   const {
     control,
     formState: { errors },
   } = useFormReturn
 
-  const managers: baseInstance[] = [
-    { id: 1, name: 'durinnguyen@techvify.com.vn' },
-    { id: 2, name: 'arianne@techvify.com.vn' },
-    { id: 3, name: 'helena@techvify.com.vn' },
-    { id: 4, name: 'annapham@techvify.com.vn' },
-    { id: 5, name: 'anniehoang@techvify.com.vn' },
+  const [teams, setTeams] = useState<TEAM[]>([])
+  useEffect(() => {
+    new Promise((resolve, reject) => {
+      resolve(mockApiGetListTeam())
+    }).then((response: any) => {
+      setTeams(response.sortData)
+    })
+  }, [])
+
+  const position: baseInstance[] = [
+    { id: 1, name: 'UI/UX Designer' },
+    { id: 2, name: 'Software Engineer' },
+    { id: 3, name: 'Sale' },
+    { id: 4, name: 'Front-end Developer' },
+    { id: 5, name: 'Back-end Developer' },
   ]
 
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Add a new team" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header title="Edit hiring team" setOpen={setOpen}></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <Controller
                 name="name"
                 control={control}
@@ -53,20 +67,52 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                 )}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <Controller
-                name="managers"
+                name="team"
                 control={control}
                 render={({ field }) => (
                   <AutoCompleteComponent<FormDataSchema, TEAM>
-                    options={managers}
+                    options={teams}
                     label="name"
                     inputLabel="Team"
                     errors={errors}
                     field={field}
                     keySelect="id"
                     fullWidth
-                    multiple
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <InputComponent<FormDataSchema>
+                    errors={errors}
+                    label="Email"
+                    size="small"
+                    field={field}
+                    fullWidth
+                    required
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+            <Controller
+                name="position"
+                control={control}
+                render={({ field }) => (
+                  <AutoCompleteComponent<FormDataSchema, baseInstance>
+                    options={position}
+                    label="name"
+                    inputLabel="Position"
+                    errors={errors}
+                    field={field}
+                    keySelect="id"
+                    fullWidth
                   />
                 )}
               />
@@ -93,4 +139,4 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
   )
 }
 
-export default CreateTeamModal
+export default EditHiringModal

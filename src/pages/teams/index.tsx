@@ -1,4 +1,4 @@
-import TeamList from 'features/teams/presentation/pages/teams-list'
+import TeamList from 'features/teams/presentation/screens/teams-list'
 function TeamsPage() {
   return <TeamList />
 }

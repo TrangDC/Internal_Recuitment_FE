@@ -12,13 +12,13 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import useTeamTable, { mockApiGetTeams } from '../providers/hooks/useTeamTable'
-import CreateTeamModal from '../page-sections/CreateTeamModal'
+import useTeamTable, { mockApiGetHirings } from '../providers/hooks/useHiringTable'
+import CreateHiringModal from '../page-sections/CreateHiringModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import Accounts from 'shared/components/icons/Accounts'
 import useActionTable from '../providers/hooks/useActionTable'
-import EditTeamModal from '../page-sections/EditTeamModal'
-import DetailTeamModal from '../page-sections/DetailTeamModal'
+import EditHiringModal from '../page-sections/EditHiringModal'
+import DetailHiringModal from '../page-sections/DetailHiringModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import { useEffect, useState } from 'react'
@@ -47,7 +47,7 @@ const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   },
 }))
 
-const TeamList = () => {
+const HiringList = () => {
   const {
     openCreate,
     setOpenCreate,
@@ -64,7 +64,7 @@ const TeamList = () => {
   const [useTableReturn, setUseTableReturn] = useState()
   useEffect(() => {
     new Promise((resolve, reject) => {
-      resolve(mockApiGetTeams())
+      resolve(mockApiGetHirings())
     }).then((response: any) => {
       setUseTableReturn(response)
     })
@@ -91,7 +91,7 @@ const TeamList = () => {
       {
         id: 'delete',
         onClick: (id, rowData) => {
-          handleOpenDetail(id, rowData)
+          // handleOpenDetail(id, rowData)
         },
         title: 'Delete',
         Icon: <DeleteIcon />,
@@ -107,13 +107,13 @@ const TeamList = () => {
           <IconWrapper>
             <ShoppingBasket sx={{ color: 'primary.main' }} />
           </IconWrapper>
-          <H5>Teams</H5>
+          <H5>Hiring Team</H5>
         </FlexBox>
       </Box>
       <HeadingWrapper>
         <CustomTextField
           id="outlined-basic"
-          label="Enter Team's name"
+          label="Search"
           variant="outlined"
           size='small'
           InputProps={{
@@ -131,7 +131,7 @@ const TeamList = () => {
           startIcon={<Add />}
           onClick={() => setOpenCreate(true)}
         >
-          Add a new team
+          Add a new hiring team
         </Button>
       </HeadingWrapper>
       <Box>
@@ -140,10 +140,10 @@ const TeamList = () => {
         )}
       </Box>
       {openCreate && (
-        <CreateTeamModal open={openCreate} setOpen={setOpenCreate} />
+        <CreateHiringModal open={openCreate} setOpen={setOpenCreate} />
       )}
       {openEdit && (
-        <EditTeamModal
+        <EditHiringModal
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
@@ -151,7 +151,7 @@ const TeamList = () => {
         />
       )}
       {openDetail && (
-        <DetailTeamModal
+        <DetailHiringModal
           open={openDetail}
           setOpen={setOpenDetail}
           id={rowId.current}
@@ -162,4 +162,4 @@ const TeamList = () => {
   )
 }
 
-export default TeamList
+export default HiringList

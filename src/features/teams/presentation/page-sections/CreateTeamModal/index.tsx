@@ -5,21 +5,18 @@ import InputComponent from 'shared/components/form/inputComponent'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../providers/constants/schema'
+import { FormDataSchema } from '../../providers/constants/schema'
 import { TEAM } from 'features/jobs/domain/interfaces'
 import { baseInstance } from 'shared/interfaces'
-import useCreateTeam from '../providers/hooks/useCreateTeam'
-import { Team } from 'features/teams/domain/interfaces'
+import useCreateTeam from '../../providers/hooks/useCreateTeam'
 
-interface IEditTeamModal {
+interface ICreateTeamModal {
   open: boolean
   setOpen: (value: boolean) => void
-  id: string
-  rowData?: Team
 }
 
-function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
-  const { onSubmit, useFormReturn } = useCreateTeam({name: rowData?.name})
+function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
+  const { onSubmit, useFormReturn } = useCreateTeam()
   const {
     control,
     formState: { errors },
@@ -36,7 +33,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Edit team" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header title="Add a new team" setOpen={setOpen}></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
@@ -64,7 +61,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
                   <AutoCompleteComponent<FormDataSchema, TEAM>
                     options={managers}
                     label="name"
-                    inputLabel="Team"
+                    inputLabel="Team's Manager"
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -96,4 +93,4 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
   )
 }
 
-export default EditTeamModal
+export default CreateTeamModal
