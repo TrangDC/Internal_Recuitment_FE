@@ -1,4 +1,4 @@
-import { TableCell, styled } from '@mui/material'
+import { TableCell, TableHead, styled } from '@mui/material'
 
 export const TableCellStyle = styled(TableCell)(({ theme }) => ({
  fontSize: '13px',
@@ -15,7 +15,7 @@ export const TableCellStyle = styled(TableCell)(({ theme }) => ({
 export const HeadTableCell = styled(TableCellStyle)(({ theme }) => ({
   height: '48px',
   color: theme.palette.primary[800],
-  backgroundColor: theme.palette.primary[50],
+  backgroundColor: theme.palette.primary.light,
   '&.column-sticky, &.action-column': {
     zIndex: 5,
   },
@@ -28,7 +28,8 @@ export const HeadTableCell = styled(TableCellStyle)(({ theme }) => ({
 }))
 
 export const BodyTableCell = styled(TableCellStyle)(({ theme }) => ({
-  backgroundColor: '#ffffff',
+  color: theme.palette.text.secondary,
+  backgroundColor: theme.palette.background.paper,
   '&.column-sticky': {
     position: 'sticky',
   },

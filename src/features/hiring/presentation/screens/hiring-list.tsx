@@ -12,17 +12,15 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import useTeamTable, { mockApiGetHirings } from '../providers/hooks/useHiringTable'
+import { mockApiGetHirings } from '../providers/hooks/useHiringTable'
 import CreateHiringModal from '../page-sections/CreateHiringModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
-import Accounts from 'shared/components/icons/Accounts'
 import useActionTable from '../providers/hooks/useActionTable'
 import EditHiringModal from '../page-sections/EditHiringModal'
 import DetailHiringModal from '../page-sections/DetailHiringModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import { useEffect, useState } from 'react'
-import { TEAM } from 'features/jobs/domain/interfaces'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import EyeIcon from 'shared/components/icons/EyeIcon'
@@ -31,7 +29,7 @@ import EyeIcon from 'shared/components/icons/EyeIcon'
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   gap: 8,
   flexWrap: 'wrap',
-  backgroundColor: '#ffffff',
+  backgroundColor: theme.palette.background.paper,
   padding: '12px',
   borderWidth: '0px 0px 1px 0px',
   borderStyle: 'solid',
@@ -45,6 +43,10 @@ const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
       '& .MuiTabs-flexContainer': { justifyContent: 'space-between' },
     },
   },
+
+  '& .MuiTextField-root': {
+    marginTop: 0
+  }
 }))
 
 const HiringList = () => {

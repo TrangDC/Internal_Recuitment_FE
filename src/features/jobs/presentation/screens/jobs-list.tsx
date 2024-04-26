@@ -1,7 +1,4 @@
-import {
-  IconButton,
-  InputAdornment,
-} from '@mui/material'
+import { IconButton, InputAdornment } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import FlexBetween from 'shared/components/flexbox/FlexBetween'
 import FlexBox from 'shared/components/flexbox/FlexBox'
@@ -11,18 +8,14 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import useJobTable, { mockApiGetJobs } from '../providers/hooks/useJobTable'
+import { mockApiGetJobs } from '../providers/hooks/useJobTable'
 import CreateJobModal from '../page-sections/CreateJobModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../providers/hooks/useActionTable'
 import EditJobModal from '../page-sections/EditJobModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
-import {
-  ButtonHeader,
-  DivFilter,
-  DivHeaderWrapper,
-} from '../providers/styles'
+import { ButtonHeader, DivFilter, DivHeaderWrapper } from '../providers/styles'
 import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
 import { useEffect, useState } from 'react'
 import EditIcon from 'shared/components/icons/EditIcon'
@@ -34,7 +27,7 @@ const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   gap: 8,
   flexWrap: 'wrap',
   flexDirection: 'column',
-  backgroundColor: '#ffffff',
+  backgroundColor: theme.palette.background.paper,
   padding: '12px',
   borderWidth: '0px 0px 1px 0px',
   borderStyle: 'solid',
@@ -47,6 +40,10 @@ const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
       width: '100%',
       '& .MuiTabs-flexContainer': { justifyContent: 'space-between' },
     },
+  },
+
+  '& .MuiTextField-root': {
+    marginTop: 0,
   },
 }))
 
@@ -61,7 +58,7 @@ const JobsList = () => {
     setOpenEdit,
   } = useActionTable()
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // const { useTableReturn } = useJobTable()
   const [useTableReturn, setUseTableReturn] = useState()
@@ -177,7 +174,6 @@ const JobsList = () => {
       </Box>
       <HeadingWrapper>
         <DivFilter>
-          <ButtonFilter<BaseType> listData={all} inputLabel="All" />
           <ButtonFilter<BaseType> listData={team} inputLabel="Team" />
           <ButtonFilter<BaseType>
             listData={statusFilter}
@@ -213,10 +209,7 @@ const JobsList = () => {
       </HeadingWrapper>
       <Box>
         {useTableReturn && (
-          <CustomTable
-            columns={colummTable}
-            useTableReturn={useTableReturn}
-          />
+          <CustomTable columns={colummTable} useTableReturn={useTableReturn} />
         )}
       </Box>
       {openCreate && (

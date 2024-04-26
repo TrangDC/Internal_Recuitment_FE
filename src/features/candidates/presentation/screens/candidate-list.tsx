@@ -35,7 +35,7 @@ const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   gap: 8,
   flexWrap: 'wrap',
   flexDirection: 'column',
-  backgroundColor: '#ffffff',
+  backgroundColor: theme.palette.background.paper,
   padding: '12px',
   borderWidth: '0px 0px 1px 0px',
   borderStyle: 'solid',

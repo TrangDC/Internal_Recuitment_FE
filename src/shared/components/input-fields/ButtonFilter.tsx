@@ -4,7 +4,7 @@ import {
   Typography,
   Popper,
   ClickAwayListener,
-  styled
+  styled,
 } from '@mui/material'
 import React, { useCallback, useMemo, useState } from 'react'
 import DownIcon from '../icons/DownIcon'
@@ -34,9 +34,9 @@ const ButtonFilterStyled = styled(Button)(({ theme }) => ({
 }))
 
 const TypographyStyled = styled(Typography)(({ theme }) => ({
-  width: '300px',
+  width: '285px',
   maxWidth: '500px',
-  backgroundColor: 'rgb(241, 249, 255)',
+  backgroundColor: theme.palette.primary.light,
   boxShadow:
     'rgba(40, 41, 61, 0.04) 0px 2px 4px 0px, rgba(96, 97, 112, 0.16) 0px 8px 16px 0px',
 }))

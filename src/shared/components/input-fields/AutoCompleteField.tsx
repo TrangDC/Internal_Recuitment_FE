@@ -26,22 +26,22 @@ const AutoCompleteStyle = styled(Autocomplete)(({ theme }) => ({
   maxWidth: '100%',
 }))
 
-const TextFieldStyle = styled(TextField)`
-  max-width: 100%;
-  margin-top: 10px;
+export const CustomTextField = styled(TextField)(({ theme }) => ({
+  maxWidth: '100%',
+  marginTop: '10px',
 
-  .MuiInputBase-root {
-    height: 100%;
-    background-color: white;
-  }
+  '& .MuiInputBase-root': {
+    height: '100%',
+    backgroundColor: 'white'
+  },
 
-  .MuiFormLabel-root span{
-    font-size: 13px;
-    font-weight: 500;
-    color: #DB6C56;
-    line-height: 15.85px;
+  '& .MuiFormLabel-root span': {
+    fontSize: '13px',
+    fontWeight: 500,
+    color: '#DB6C56',
+    lineHeight: '15.85px',
   }
-`
+ }))
 
 const AutoCompleteField = <T extends object>({
   options,
@@ -76,11 +76,10 @@ const AutoCompleteField = <T extends object>({
     <AutoCompleteStyle
       sx={{ width: props?.fullWidth ? '100%' : '400px' }}
       size={size}
-      // open
       limitTags={limitTags}
       options={options}
       renderInput={(params) => (
-        <TextFieldStyle {...inputProps} {...params} fullWidth />
+        <CustomTextField {...inputProps} {...params} fullWidth />
       )}
       value={value}
       //@ts-ignore

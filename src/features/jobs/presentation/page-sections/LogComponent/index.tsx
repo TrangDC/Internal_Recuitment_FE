@@ -4,6 +4,7 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import DateIcon from 'shared/components/icons/DateIcon'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FlexRowAlign from 'shared/components/flexbox/FlexRowAlign'
+import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus';
 
 const DateFieldContainer = styled(FlexBox)(({ theme }) => ({
   width: '100%',
@@ -38,7 +39,7 @@ const DateFieldTime = styled(Box)(({ theme }) => ({
     fontSize: '13px',
     lineHeight: '15.85px',
     fontWeight: 600,
-    color: '#2A2E37',
+    color: theme.palette.text.secondary,
   },
 }))
 
@@ -55,13 +56,11 @@ const DateFieldBody = styled(FlexBox)(({ theme }) => ({
 
 const DateFieldInformation = styled(Box)(({ theme }) => ({}))
 
-const StyleChip = styled(Chip)(({ theme }) => ({
+const StyleChip = styled(ChipFieldStatus)(({ theme }) => ({
   backgroundColor: theme.palette.primary[500],
   
   '& span': {
     color: 'white',
-    fontSize: '10px',
-    fontWeight: 600,
   }
 }))
 
@@ -73,6 +72,10 @@ const DateFieldDivison = styled(FlexBox)(({ theme }) => ({
     fontSize: '13px',
     color: theme.palette.primary[700]
   }
+}))
+
+const StyleDivider = styled(Divider)(({ theme }) => ({
+  borderColor: theme.palette.text.secondary
 }))
 
 const LogsComponent = () => {
@@ -89,7 +92,7 @@ const LogsComponent = () => {
               </DateFieldTime>
             </DateFieldHeader>
             <DateFieldBody>
-              <Divider orientation="vertical"  />
+              <StyleDivider orientation="vertical"  />
               <DateFieldInformation>
                 <FlexBox alignItems={'center'} gap={'8px'}>
                   <Tiny>Job name</Tiny>
@@ -116,19 +119,7 @@ const LogsComponent = () => {
               </DateFieldTime>
             </DateFieldHeader>
             <DateFieldBody>
-              <Divider orientation="vertical"  />
-              {/* <DateFieldInformation>
-                <FlexBox alignItems={'center'} gap={'8px'}>
-                  <Tiny>Job name</Tiny>
-                  <StyleChip label="Update" />
-                </FlexBox>
-                <FlexBox alignItems={'center'} gap={'8px'}>
-                  <Span>Team: </Span>
-                  <DateFieldDivison>
-                    <Tiny>D2</Tiny> <ArrowForwardIcon/> <Tiny>D4</Tiny>
-                  </DateFieldDivison>
-                </FlexBox>
-              </DateFieldInformation> */}
+            <StyleDivider orientation="vertical"  />
             </DateFieldBody>
           </DateFieldContainer>
 
@@ -143,19 +134,7 @@ const LogsComponent = () => {
               </DateFieldTime>
             </DateFieldHeader>
             <DateFieldBody>
-              <Divider orientation="vertical"  />
-              {/* <DateFieldInformation>
-                <FlexBox alignItems={'center'} gap={'8px'}>
-                  <Tiny>Job name</Tiny>
-                  <StyleChip label="Update" />
-                </FlexBox>
-                <FlexBox alignItems={'center'} gap={'8px'}>
-                  <Span>Team: </Span>
-                  <DateFieldDivison>
-                    <Tiny>D2</Tiny> <ArrowForwardIcon/> <Tiny>D4</Tiny>
-                  </DateFieldDivison>
-                </FlexBox>
-              </DateFieldInformation> */}
+            <StyleDivider orientation="vertical"  />
             </DateFieldBody>
           </DateFieldContainer>
         </FlexBox>
