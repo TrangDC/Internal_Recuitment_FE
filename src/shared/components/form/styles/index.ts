@@ -1,30 +1,35 @@
 import { Autocomplete, Button, TextField, styled} from "@mui/material";
 import { primary } from "shared/theme/colors";
 
-export const CustomTextField = styled(TextField)`
-  max-width: 100%;
-  margin-top: 10px;
+export const CustomTextField = styled(TextField)(({ theme }) => ({
+  maxWidth: '100%',
+  marginTop: '10px',
 
-  .MuiInputBase-root {
-    height: 100%;
-    background-color: white;
+  '& .MuiInputBase-root' : {
+    height: '100%',
+    backgroundColor: theme.palette.background.paper
+  },
+
+  '& .MuiFormLabel-root span': {
+    fontSize: '13px',
+    fontWeight: 500,
+    color: '#DB6C56',
+    lineHeight: '15.85px',
   }
+ }))
 
-  .MuiFormLabel-root span{
-    font-size: 13px;
-    font-weight: 500;
-    color: #DB6C56;
-    line-height: 15.85px;
+export const CustomAutoComplete = styled(Autocomplete)(({ theme }) => ({
+  maxWidth: '100%',
+
+  '&.MuiInputBase-root' : {
+    backgroundColor: theme.palette.background.paper
+  },
+
+  '&.MuiInputBase-root .MuiAutocomplete-input': {
+    padding: '0px 4px 7.5px 6px'
   }
-`
+ }))
 
-export const CustomAutoComplete = styled(Autocomplete)`
-  max-width: 100%;
-
-  .MuiInputBase-root .MuiAutocomplete-input {
-    padding: 0px 4px 7.5px 6px;
-  }
-`
 
 export const DivWrapper = styled('div')`
   width: 100%;
@@ -66,3 +71,4 @@ export const CustomeButtonCancel = styled(Button)`
     background-color: ${primary[50]};
   }
 `
+

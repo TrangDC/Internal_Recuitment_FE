@@ -29,7 +29,7 @@ import EyeIcon from 'shared/components/icons/EyeIcon'
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   gap: 8,
   flexWrap: 'wrap',
-  backgroundColor: '#ffffff',
+  backgroundColor: theme.palette.background.paper,
   padding: '12px',
   borderWidth: '0px 0px 1px 0px',
   borderStyle: 'solid',
@@ -43,6 +43,10 @@ const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
       '& .MuiTabs-flexContainer': { justifyContent: 'space-between' },
     },
   },
+
+  '& .MuiTextField-root': {
+    marginTop: 0
+  }
 }))
 
 const TeamList = () => {

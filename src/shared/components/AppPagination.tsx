@@ -2,6 +2,7 @@ import { Pagination, PaginationProps, styled } from '@mui/material'
 
 export const StyledPagination = styled(Pagination)(({ theme }) => ({
   padding: '16px 0',
+  backgroundColor: '#ffffff',
 
   '& .MuiPagination-ul': {
     justifyContent: 'center',

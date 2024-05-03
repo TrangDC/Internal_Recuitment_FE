@@ -22,8 +22,8 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      team_name: '',
-      managers: [],
+      // team_name: '',
+      // managers: [],
     },
   })
 
@@ -55,7 +55,7 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Controller
-                name="team_name"
+                name="name"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>

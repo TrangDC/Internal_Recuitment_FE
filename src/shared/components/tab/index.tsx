@@ -2,10 +2,11 @@ import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { Box, Tab, styled } from '@mui/material'
 import React, { useState } from 'react'
 import FlexBetween from '../flexbox/FlexBetween'
+import { Height } from '@mui/icons-material'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
-  backgroundColor: '#ffffff',
+  backgroundColor: theme.palette.background.paper,
   borderWidth: '0px 0px 1px 0px',
   borderStyle: 'solid',
   borderColor: '#E3E6EB',
@@ -24,7 +25,7 @@ const TabWrapper = styled(Tab)(({ theme }) => ({
   margin: 0,
   padding: '0 20px',
   height: '40px',
-  backgroundColor: '#F1F9FF',
+  backgroundColor: theme.palette.primary.light,
   boxShadow: 'rgba(96, 97, 112, 0.16) 0px 2px 4px 0px',
 
   '&.Mui-selected': {
@@ -48,6 +49,11 @@ const TabListWrapper = styled(TabList)(({ theme }) => ({
   width: 'fit-content',
   alignItems: 'center',
   borderRadius: '4px',
+  minHeight: '40px',
+
+  '& .MuiTabs-flexContainer': {
+    height: '40px'
+  }
 }))
 
 interface renderItem {
@@ -68,7 +74,7 @@ const TabCustomize = ({ renderItem }: TabProps) => {
 
   return (
     <TabContext value={value}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
         <TabListWrapper onChange={handleChange}>
           {renderItem.map((item, index) => {
             return (
