@@ -13,8 +13,13 @@ const Loadable = (Component: LazyExoticComponent<FC>) => (props: any) => {
 
 // authentication
 const Login = Loadable(
-  lazy(() => import('./features/authentication/presentation/pages/login'))
+  lazy(() => import('./features/authentication/presentation/screens/login'))
 )
+
+const AuthCallback = Loadable(
+  lazy(() => import('./features/authentication/presentation/screens/auth'))
+)
+
 
 // admin ecommerce
 const TeamList = Loadable(
@@ -64,8 +69,9 @@ const routes = () => {
 }
 
 const authRoutes = [
-  { path: '/', element: <Navigate to="/dashboard" /> },
+  { path: '/', element: <Navigate to="/dashboard/teams" /> },
   { path: 'login', element: <Login /> },
+  { path: '/auth/redirect', element: <AuthCallback /> },
 ]
 
 const dashboardRoutes = [

@@ -1,11 +1,11 @@
 import useGraphql from 'features/teams/domain/graphql/graphql'
-import useCustomTable, { IuseCustomTableReturn } from 'shared/hooks/useCustomTable'
-import axiosInstance from 'shared/utils/axios'
+import useCustomTable from 'shared/hooks/useCustomTable'
 
 const useTeamTable = () => {
-  const { getAllJobTitles, queryKey } = useGraphql()
+  const { getAllTeam, queryKey } = useGraphql()
+
   const useTableReturn = useCustomTable({
-    buildQuery: getAllJobTitles,
+    buildQuery: getAllTeam,
     variables: {},
     queryKey,
   })
@@ -13,12 +13,6 @@ const useTeamTable = () => {
   return {
     useTableReturn,
   }
-}
-
-export const mockApiGetTeams = async (): Promise<IuseCustomTableReturn> => {
-  const url = '/api/teams';
-
-  return await axiosInstance.get(url);
 }
 
 export default useTeamTable

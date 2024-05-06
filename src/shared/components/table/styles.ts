@@ -1,4 +1,4 @@
-import { TableCell, TableHead, styled } from '@mui/material'
+import { TableCell, styled } from '@mui/material'
 
 export const TableCellStyle = styled(TableCell)(({ theme }) => ({
  fontSize: '13px',

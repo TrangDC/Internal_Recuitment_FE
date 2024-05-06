@@ -12,7 +12,7 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import { mockApiGetTeams } from '../providers/hooks/useTeamTable'
+import useTeamTable from '../providers/hooks/useTeamTable'
 import CreateTeamModal from '../page-sections/CreateTeamModal/index'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../providers/hooks/useActionTable'
@@ -20,7 +20,6 @@ import EditTeamModal from '../page-sections/EditTeamModal/index'
 import DetailTeamModal from '../page-sections/DetailTeamModal/index'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
-import { useEffect, useState } from 'react'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import EyeIcon from 'shared/components/icons/EyeIcon'
@@ -62,15 +61,7 @@ const TeamList = () => {
     setOpenDetail,
     setOpenEdit,
   } = useActionTable()
-  // const { useTableReturn } = useTeamTable()
-  const [useTableReturn, setUseTableReturn] = useState()
-  useEffect(() => {
-    new Promise((resolve, reject) => {
-      resolve(mockApiGetTeams())
-    }).then((response: any) => {
-      setUseTableReturn(response)
-    })
-  }, [])
+  const { useTableReturn } = useTeamTable()
 
   const { colummTable } = useBuildColumnTable({
     actions: [
