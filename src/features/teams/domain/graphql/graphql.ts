@@ -2,8 +2,8 @@ import { buildQuery } from 'services/graphql-services'
 
 const useGraphql = () => {
   const queryKey = 'team'
-  const getAllJobTitles = buildQuery({
-    operation: 'GetAllJobTitles',
+  const getAllTeam = buildQuery({
+    operation: 'GetAllTeams',
     options: {
       type: 'query',
     },
@@ -11,8 +11,11 @@ const useGraphql = () => {
       edges {
         node {
           id
-          code
           name
+          slug
+          created_at
+          updated_at
+          deleted_at
         }
       }
       pagination {
@@ -23,11 +26,12 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'JobTitleFilter',
-      orderBy: 'JobTitleOrder', 
-      freeWord: 'JobTitleFreeWord',
+      filter: 'TeamFilter',
+      orderBy: 'TeamOrder', 
+      freeWord: 'TeamFreeWord',
     },
   })
+
   const createJobTitle = buildQuery({
     operation: 'CreateJobTitle',
     options: {
@@ -44,7 +48,7 @@ const useGraphql = () => {
   })
 
   return {
-    getAllJobTitles,
+    getAllTeam,
     queryKey,
     createJobTitle,
   }

@@ -4,7 +4,7 @@ import { FC, Fragment, useState, ReactNode } from 'react'
 import { Outlet } from 'react-router'
 import DashboardHeader from '../layout-parts/DashboardHeader'
 import DashboardSidebar from './DashboardSidebar'
-
+import IsLogin from 'shared/hoc/IsLogin'
 // --------------------------------------------
 type DashboardLayoutProps = {
   children?: ReactNode
@@ -45,4 +45,4 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   )
 }
 
-export default DashboardLayout
+export default IsLogin(DashboardLayout)

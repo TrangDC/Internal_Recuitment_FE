@@ -12,3 +12,11 @@ export interface baseInstance {
   id: number,
   name: string,
 }
+
+export interface ResponRefreshToken {
+  accessToken: string,
+  email: string,
+  expiresAt: string,
+  refreshToken: string,
+  tokenType: string,
+}

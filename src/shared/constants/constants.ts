@@ -39,3 +39,14 @@ export const LOCATION_DATA = {
     JAPAN: 'Japan',
 }
 
+export const TREC_REFRESH_TOKEN: string = 'refreshToken';
+export const TREC_ACCESS_TOKEN: string = 'accessToken';
+
+export const HEADER = {
+  API_KEY: "x-api-key",
+  CLIENT_ID: "x-client-id",
+  AUTHORIZATION: "Authorization",
+  REFRESHTOKEN: "x-rtoken-id",
+  CONTENT_TYPE: "Content-Type"
+};
+
