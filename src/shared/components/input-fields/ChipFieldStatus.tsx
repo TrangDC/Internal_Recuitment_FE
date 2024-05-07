@@ -11,7 +11,7 @@ const ChipStyled = styled(Chip)(({ theme }) => ({
   }))
 
 const ChipFieldStatus = ({...props}) => {
-    return <ChipStyled {...props} />
+    return <ChipStyled {...props}/>
 }
 
 export default ChipFieldStatus

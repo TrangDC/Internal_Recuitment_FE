@@ -15,6 +15,14 @@ export function getRefreshToken() {
   return getStatusByKey(TREC_REFRESH_TOKEN)
 }
 
+export function removeToken() {
+  const { deleteLocalStorge } = handleLocalStorage()
+  deleteLocalStorge(TREC_ACCESS_TOKEN);
+  deleteLocalStorge(TREC_REFRESH_TOKEN);
+
+  window.location.href = '/login'
+}
+
 export function updateToken(accessToken: string, refreshToken: string) {
   const { updateStorage } = handleLocalStorage()
   updateStorage(TREC_ACCESS_TOKEN, accessToken)
@@ -28,11 +36,16 @@ function handleRefreshTokenMiddleWare() {
     if (!refreshTokenCalled) {
       refreshTokenCalled = true
 
-      const responseRefreshToken = await handleRefreshToken(getRefreshToken())
-      updateToken(
-        responseRefreshToken.accessToken,
-        responseRefreshToken.refreshToken
-      )
+      try {
+        const responseRefreshToken = await handleRefreshToken(getRefreshToken())
+        updateToken(
+          responseRefreshToken.accessToken,
+          responseRefreshToken.refreshToken
+        )
+      } catch (error) {
+        removeToken()
+      }
+
       refreshTokenCalled = false
     }
   }

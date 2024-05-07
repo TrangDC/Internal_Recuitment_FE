@@ -2,7 +2,6 @@ import { buildQuery } from 'services/graphql-services'
 
 const useGraphql = () => {
   const queryKey = 'team'
-  const queryKeyUser = 'user'
 
   const getAllTeam = buildQuery({
     operation: 'GetAllTeams',
@@ -82,40 +81,12 @@ const useGraphql = () => {
     },
   })
 
-  const selectionUsers = buildQuery({
-    operation: 'SelectionUsers',
-    options: {
-      type: 'query',
-    },
-    node: `
-      edges {
-        node {
-          id
-          name
-          work_email
-        }
-      }
-      pagination {
-        page
-        perPage
-        total
-      }
-    `,
-    params: {
-      pagination: 'PaginationInput',
-      filter: 'UserFilter',
-      orderBy: 'UserOrder',
-      freeWord: 'UserFreeWord',
-    },
-  })
 
   return {
     getAllTeam,
     queryKey,
-    queryKeyUser,
     createTeam,
     updateTeam,
-    selectionUsers,
     deleteTeam,
   }
 }

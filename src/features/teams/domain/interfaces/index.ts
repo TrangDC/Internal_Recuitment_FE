@@ -8,7 +8,11 @@ export type Team = {
   id: string,
   name: string,
   open_request: number,
-  members: Member[]
+  members: Member[],
+  slug: string,
+  created_at: string,
+  updated_at: string,
+  deleted_at: string,
 }
 
 export type Managers = {
@@ -18,7 +22,12 @@ export type Managers = {
 }
 
 export type NewTeamInput = {
-  id?: string,
+  name: string
+  members: string[]
+}
+
+export type UpdateTypeInput = {
+  id: string,
   name: string
   members: string[]
 }

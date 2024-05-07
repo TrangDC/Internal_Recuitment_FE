@@ -6,17 +6,13 @@ import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import { TEAM } from 'features/jobs/domain/interfaces'
-import { useEffect, useState } from 'react'
-import { mockApiGetListTeam } from '../../providers/hooks/useJobTable'
-import {
-  LOCATION_DATA,
-  SALARY_DATA,
-} from 'shared/constants/constants'
 import { baseInstance } from 'shared/interfaces'
 import useCreateJob from '../../providers/hooks/useCreateJob'
-import { get } from 'lodash'
-import { SALARY_RENDER } from '../../providers/constants'
+import { LOCATION_DATA, SALARY_DATA, SALARY_RENDER } from '../../providers/constants'
+import { Member, Team } from 'features/teams/domain/interfaces'
+import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
+import useSelectMember from 'shared/hooks/graphql/useSelectMember'
+import EditorBoxComponent from 'shared/components/form/editorComponent'
 
 interface ICreateJobModal {
   open: boolean
@@ -24,30 +20,25 @@ interface ICreateJobModal {
 }
 
 function CreateJobModal({ open, setOpen }: ICreateJobModal) {
-  const { onSubmit, useFormReturn } = useCreateJob()
+  const handleCancelModel = () => {
+    setOpen(false)
+  }
+
+  const { onSubmit, useFormReturn } = useCreateJob({callbackSuccess: handleCancelModel})
   const {
     control,
     formState: { errors },
+    setValue,
   } = useFormReturn
 
-  //MockAPI
-  const [teams, setTeams] = useState<TEAM[]>([])
-  useEffect(() => {
-    new Promise((resolve, reject) => {
-      resolve(mockApiGetListTeam())
-    }).then((response: any) => {
-      setTeams(response.sortData)
-    })
-  }, [])
+  const { teams } = useSelectTeam();
+  const { members } = useSelectMember();
 
-  const requester: baseInstance[] = [
-    { id: 1, name: 'David' },
-    { id: 2, name: 'Alejandro' },
-    { id: 3, name: 'Hulk' },
-    { id: 4, name: 'Jenny' },
-  ]
-
-  const salary = useWatch({ control, name: 'salary' })
+  const salary = useWatch({ control, name: 'salary_type' })
+  const resetSalary = () => {
+    setValue('salary_from', 0);
+    setValue('salary_to', 0)
+  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
@@ -57,7 +48,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
           <Grid container spacing={1}>
             <Grid item xs={6}>
               <Controller
-                name="title"
+                name="name"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
@@ -73,10 +64,10 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
             </Grid>
             <Grid item xs={6}>
               <Controller
-                name="teams"
+                name="team_id"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, TEAM>
+                  <AutoCompleteComponent<FormDataSchema, Team>
                     options={teams}
                     label="name"
                     inputLabel="Team"
@@ -94,12 +85,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 control={control}
                 render={({ field }) => (
                   <AutoCompleteComponent<FormDataSchema, baseInstance>
-                    options={Object.keys(LOCATION_DATA).map(
-                      (salary, index) => ({
-                        id: index,
-                        name: get(LOCATION_DATA, salary),
-                      })
-                    )}
+                    options={LOCATION_DATA}
                     label="name"
                     inputLabel="Location"
                     errors={errors}
@@ -112,11 +98,11 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
             </Grid>
             <Grid item xs={6}>
               <Controller
-                name="requester"
+                name="created_by"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, baseInstance>
-                    options={requester}
+                  <AutoCompleteComponent<FormDataSchema, Member>
+                    options={members}
                     label="name"
                     inputLabel="Requester"
                     errors={errors}
@@ -130,19 +116,19 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
 
             <Grid item xs={1}>
               <Controller
-                name="salary"
+                name="salary_type"
                 control={control}
                 render={({ field }) => (
                   <AutoCompleteComponent<FormDataSchema, baseInstance>
-                    options={Object.keys(SALARY_DATA).map((salary, index) => ({
-                      id: index,
-                      name: get(SALARY_DATA, salary),
-                    }))}
+                    options={SALARY_DATA}
                     label="name"
                     inputLabel="Salary"
                     errors={errors}
                     field={field}
-                    keySelect="id"
+                    callbackOnChange={({previousValue, value}) => {
+                      if(!previousValue) return;
+                      resetSalary()
+                    }}
                   />
                 )}
               />
@@ -150,7 +136,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
             {SALARY_RENDER.map((salary_item, index) => {
               return salary_item.typeComponent === 'textField' &&
               //@ts-ignore
-                salary_item.accept.includes(salary?.name) ? (
+                salary_item.accept.includes(salary?.value) ? (
                 <Grid item xs={salary_item.xs} key={index}>
                   <Controller
                     //@ts-ignore
@@ -170,7 +156,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 </Grid>
               ) : salary_item.typeComponent === 'autoComplete' &&
                //@ts-ignore
-                salary_item.accept.includes(salary?.name) ? (
+                salary_item.accept.includes(salary?.value) ? (
                 <Grid key={index} item xs={salary_item.xs}>
                   <Controller
                     //@ts-ignore
@@ -193,7 +179,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
             })}
             <Grid item xs={6}>
               <Controller
-                name="staft_required"
+                name="amount"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
@@ -208,17 +194,14 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
               />
             </Grid>
             <Grid item xs={12}>
-              <Controller
+            <Controller
                 name="description"
                 control={control}
                 render={({ field }) => (
-                  <InputComponent<FormDataSchema>
+                  <EditorBoxComponent<FormDataSchema>
                     errors={errors}
                     label="Description"
                     field={field}
-                    fullWidth
-                    multiline
-                    minRows={4}
                   />
                 )}
               />
@@ -228,7 +211,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained">
+          <CustomeButtonCancel type="button" variant="contained" onClick={handleCancelModel}>
             Cancel
           </CustomeButtonCancel>
           <Button

@@ -9,7 +9,7 @@ export interface IconSortProps {
 } 
 
 export interface baseInstance {
-  id: number,
+  value: string,
   name: string,
 }
 

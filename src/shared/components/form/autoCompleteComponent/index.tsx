@@ -25,6 +25,7 @@ interface AdditionalProps<T extends FieldValues, Option> {
     name: string
   }
   inputProps?: TextFieldProps,
+  callbackOnChange?: ({previousValue, value}: {previousValue: any, value: any}) => void;
 }
 
 type AutoCompleteControllerProps<T extends object, Option> = Omit<
@@ -45,6 +46,7 @@ const AutoCompleteComponent = <T extends object, Option>({
   size = 'small',
   inputProps,
   disabled = false,
+  callbackOnChange,
   ...props
 }: AutoCompleteControllerProps<T, Option>) => {
   const error = get(errors, field.name as string)
@@ -58,51 +60,12 @@ const AutoCompleteComponent = <T extends object, Option>({
         value={field.value}
         onChange={(event, value: Option | Option[], reason) => {
           field.onChange(value)
+          callbackOnChange && callbackOnChange({previousValue: field.value, value})
         }}
         showLabel={label as string}
         inputProps={{ label: inputLabel, required: true, ...inputProps }}
         disabled={disabled}
       />
-      {/* {multiple && (
-        <DivListOption>
-          <FlexBox gap={'10px'} flexWrap={'wrap'}>
-            {(field.value as Option[]).map((option, index) => {
-              return (
-                <CustomStyleManage key={index}>
-                  <Chip
-                    //@ts-ignore
-                    label={option[label]}
-                    variant="outlined"
-                    deleteIcon={
-                      <CloseIcon
-                        sx={{
-                          height: '15x',
-                          width: '15px',
-                          color: greyLight[300],
-                          cursor: 'pointer',
-                        }}
-                      />
-                    }
-                    onDelete={
-                      props.disabled
-                        ? undefined
-                        : () => {
-                            const filterValue = (
-                              field.value as Option[]
-                            ).filter((item: Option) => {
-                              //@ts-ignore
-                              return item[keySelect] !== option[keySelect]
-                            })
-                            field.onChange([...filterValue])
-                          }
-                    }
-                  />
-                </CustomStyleManage>
-              )
-            })}
-          </FlexBox>
-        </DivListOption>
-      )} */}
       {error && (
         <DivError>
           <span>{error.message}</span>{' '}

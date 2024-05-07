@@ -7,8 +7,8 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
 import { Member, Team } from 'features/teams/domain/interfaces'
-import useSelectionUsers from '../../providers/hooks/useSelectionUser'
 import useUpdateTeam from '../../providers/hooks/useUpdateTeam'
+import useSelectMember from 'shared/hooks/graphql/useSelectMember'
 
 interface IEditTeamModal {
   open: boolean
@@ -31,7 +31,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
     formState: { errors },
   } = useFormReturn
 
-  const { members } = useSelectionUsers()
+  const { members } = useSelectMember()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>

@@ -1,41 +1,61 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
-import { NewJobTitleInput } from 'features/teams/domain/interfaces'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
-import { schema,FormDataSchema } from '../../providers/constants/schema'
+import { schema, FormDataSchema } from '../../providers/constants/schema'
+import { NewHiringJobInput } from 'features/jobs/domain/interfaces'
+import _ from 'lodash'
+import { getValueOfObj } from 'shared/utils/utils'
+import toastSuccess from 'shared/components/toast/toastSuccess'
 
-function useCreateJob() {
+interface createJobProps {
+  defaultValues?: Partial<FormDataSchema>
+  callbackSuccess?: (value: any) => void
+}
+
+function useCreateJob(props: createJobProps = { defaultValues: {} }) {
+  const { defaultValues, callbackSuccess } = props
+
   const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm({
+  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
     resolver: yupResolver(schema),
     defaultValues: {
-      // name: '',
-      // code: '',
-      // description: '',
+      ...defaultValues,
     },
   })
 
-  const { createJobTitle, queryKey } = useGraphql()
+  const { createJob, queryKey } = useGraphql()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newTodo: NewJobTitleInput) =>
-      fetchGraphQL<BaseRecord>(createJobTitle.query, {
+    mutationFn: (newTodo: NewHiringJobInput) =>
+      fetchGraphQL<BaseRecord>(createJob.query, {
         input: newTodo,
       }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [queryKey] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [queryKey] })
+      toastSuccess('Create successfully')
+      callbackSuccess && callbackSuccess(data)
+    },
   })
 
   function onSubmit() {
     handleSubmit((value: FormDataSchema) => {
-    console.log("🚀 ~ handleSubmit ~ value:", value)
+      const valueClone = {
+        ..._.cloneDeep(value),
+        currency: getValueOfObj({ key: 'value', obj: value.currency }),
+        location: getValueOfObj({ key: 'value', obj: value.location }),
+        salary_type: getValueOfObj({ key: 'value', obj: value.salary_type }),
+        team_id: getValueOfObj({ key: 'id', obj: value.team_id }),
+        created_by: getValueOfObj({ key: 'id', obj: value.created_by }),
+        status: 'draft',
+      }
 
-      // mutate(value)
+      mutate(valueClone)
     })()
   }
-  
+
   return {
     onSubmit,
     useFormReturn: {

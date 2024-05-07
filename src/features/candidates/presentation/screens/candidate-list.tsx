@@ -149,7 +149,7 @@ const JobsList = () => {
           />
         )}
       </Box>
-      {openCreate && (
+      {/* {openCreate && (
         <CreateCandiateModal open={openCreate} setOpen={setOpenCreate} />
       )} 
       {openEdit && (
@@ -159,7 +159,7 @@ const JobsList = () => {
           id={rowId.current}
           rowData={rowData.current}
         />
-      )}
+      )} */}
     </Box>
   )
 }

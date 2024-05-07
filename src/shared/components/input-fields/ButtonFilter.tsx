@@ -58,6 +58,7 @@ type ButtonFilterProps<T> = {
   keySelect?: string
   size?: 'small' | 'medium'
   limitTags?: number
+  callbackChange?: (value: any) => void;
 }
 
 const ButtonFilter = <T extends object>({
@@ -68,6 +69,7 @@ const ButtonFilter = <T extends object>({
   keySelect = 'id',
   size = 'small',
   limitTags = 2,
+  callbackChange,
   ...props
 }: ButtonFilterProps<T> & ButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -79,11 +81,11 @@ const ButtonFilter = <T extends object>({
   }, [multiple, valueMultiple, valueNonMultiple])
 
   const listSelected = useMemo<(T | undefined)[]>(() => {
-    return multiple ? valueMultiple : valueNonMultiple ? [valueNonMultiple] : []
+    return multiple ? valueMultiple : !isEmpty(valueNonMultiple) ? [valueNonMultiple] : []
   }, [multiple, valueMultiple, valueNonMultiple])
 
   const setSelected = useCallback((value: T | T[]) => {
-    return multiple ? setValueMultiple(value as T[]) : setValueNonMultiple(value as T)
+    return multiple ? setValueMultiple(value as T[]) : setValueNonMultiple(!isEmpty(value) ? value as T : undefined)
   }, [multiple])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -132,6 +134,7 @@ const ButtonFilter = <T extends object>({
               value={selected}
               onChange={(event, value, reason) => {
                 setSelected(value as T[])
+                callbackChange && callbackChange(value)
               }}
               multiple={multiple}
               inputProps={{
