@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { IbuildQueryReturn, fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
+import { removeNonExistInObj } from 'shared/utils/utils'
 interface IuseCustomTable {
   buildQuery: IbuildQueryReturn
   variables: any
@@ -26,6 +27,7 @@ export interface IuseCustomTableReturn {
   handleChangePage: (page: number) => void
   handleSorTable: (id: string) => void
   handleFreeWord: (key: string, value: string) => void
+  handleFilter: (key: string, value: any) => void
   totalPage: number
   refetch: () => void
   variables: {
@@ -54,11 +56,12 @@ const useCustomTable = ({
     direction: 'DESC',
     field: 'created_at',
   })
-  const [freeWord, setFreeWord] = useState<object>({});
+  const [freeWord, setFreeWord] = useState<Record<string, any>>({});
+  const [filter, setFilter] = useState<Record<string, any>>({});
 
   const { isLoading, error, data, refetch } = useQuery({
     // gcTime: 0,
-    queryKey: [queryKey, pagination.page, pagination.perPage, sorting, freeWord],
+    queryKey: [queryKey, pagination.page, pagination.perPage, sorting, freeWord, filter],
     queryFn: async () =>
       fetchGraphQL<BaseRecord>(buildQuery.query, {
         ...variables,
@@ -66,7 +69,10 @@ const useCustomTable = ({
           ...sorting,
         },
         freeWord: {
-          ...freeWord
+          ...freeWord,
+        },
+        filter: {
+          ...filter,
         },
         pagination: {
           page: pagination.page,
@@ -100,6 +106,10 @@ const useCustomTable = ({
     setFreeWord((prev) => ({...prev, [key]: value}))
   }
 
+  function handleFilter(key: string, value: string) {
+    setFilter((prev) => (removeNonExistInObj({...prev, [key]: value})))
+  }
+
   return {
     isLoading,
     error,
@@ -107,6 +117,7 @@ const useCustomTable = ({
     handleChangePage,
     handleSorTable,
     handleFreeWord,
+    handleFilter,
     totalPage,
     refetch,
     variables: {

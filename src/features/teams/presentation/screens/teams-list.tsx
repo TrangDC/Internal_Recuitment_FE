@@ -19,7 +19,6 @@ import { CustomTextField } from 'shared/components/form/styles'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
-import useSelectionUsers from '../providers/hooks/useSelectionUser'
 import DeleteTeamModal from '../page-sections/DeleteTeamModal'
 import { KeyboardEventHandler } from 'react'
 //  styled components
@@ -63,7 +62,7 @@ const TeamList = () => {
     setOpenDelete,
   } = useActionTable()
   const { useTableReturn } = useTeamTable()
-  const { handleFreeWord } = useTableReturn;
+  const { handleFreeWord } = useTableReturn
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -96,11 +95,11 @@ const TeamList = () => {
   })
 
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if(event.keyCode === 13) {
+    if (event.keyCode === 13) {
       //@ts-ignore
       handleFreeWord('name', event.target.value)
     }
-};
+  }
 
   return (
     <Box pt={2} pb={4}>
@@ -138,9 +137,7 @@ const TeamList = () => {
         </Button>
       </HeadingWrapper>
       <Box>
-        {useTableReturn && (
-          <CustomTable columns={colummTable} useTableReturn={useTableReturn} />
-        )}
+        <CustomTable columns={colummTable} useTableReturn={useTableReturn} />
       </Box>
       {openCreate && (
         <CreateTeamModal open={openCreate} setOpen={setOpenCreate} />

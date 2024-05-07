@@ -2,64 +2,50 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { Button, Grid } from '@mui/material'
 import InputComponent from 'shared/components/form/inputComponent'
-import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import useCreateTeam from '../../providers/hooks/useCreateTeam'
-import { Member } from 'features/teams/domain/interfaces'
-import useSelectMember from 'shared/hooks/graphql/useSelectMember'
+import useDeleteJob from '../../providers/hooks/useDeleteJob'
 
-interface ICreateTeamModal {
+interface IDeleteJobModal {
   open: boolean
   setOpen: (value: boolean) => void
+  id: string
 }
 
-function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
-  const { onSubmit, useFormReturn } = useCreateTeam({callbackSuccess: () => {setOpen(false)}})
+function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
+  const { onSubmit, useFormReturn } = useDeleteJob({
+    callbackSuccess: () => setOpen(false),
+    defaultValues: {
+      id: id,
+    },
+  })
   const {
     control,
     formState: { errors },
   } = useFormReturn
 
-  const { members } = useSelectMember();
-
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Add a new team" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header
+        title="Do you want to delete this job?"
+        setOpen={setOpen}
+      ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Controller
-                name="name"
+                name="description"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Name"
-                    size="small"
+                    label="Description"
                     field={field}
                     fullWidth
-                    required
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="members"
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Member>
-                    options={members}
-                    label="work_email"
-                    inputLabel="Team's Manager"
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                    multiple
+                    multiline
+                    minRows={4}
                   />
                 )}
               />
@@ -69,7 +55,11 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained" onClick={() => setOpen(false)}>
+          <CustomeButtonCancel
+            type="button"
+            variant="contained"
+            onClick={() => setOpen(false)}
+          >
             Cancel
           </CustomeButtonCancel>
           <Button
@@ -86,4 +76,4 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
   )
 }
 
-export default CreateTeamModal
+export default DeleteJobModal

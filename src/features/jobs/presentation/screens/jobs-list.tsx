@@ -8,7 +8,7 @@ import Add from 'shared/components/icons/Add'
 import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
-import { mockApiGetJobs } from '../providers/hooks/useJobTable'
+import useJobTable from '../providers/hooks/useJobTable'
 import CreateJobModal from '../page-sections/CreateJobModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../providers/hooks/useActionTable'
@@ -17,10 +17,17 @@ import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import { ButtonHeader, DivFilter, DivHeaderWrapper } from '../providers/styles'
 import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
-import { useEffect, useState } from 'react'
 import EditIcon from 'shared/components/icons/EditIcon'
-import EyeIcon from 'shared/components/icons/EyeIcon'
 import { useNavigate } from 'react-router-dom'
+import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
+import DeleteJobModal from '../page-sections/DeleteJobModal'
+import DeleteIcon from 'shared/components/icons/DeleteIcon'
+import { KeyboardEventHandler } from 'react'
+import { baseInstance } from 'shared/interfaces'
+import { STATUS_DATA } from '../providers/constants'
+import { getValueOfObj, transformListItem } from 'shared/utils/utils'
+import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
+import { Team } from 'features/teams/domain/interfaces'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -53,6 +60,9 @@ const JobsList = () => {
     setOpenCreate,
     handleOpenEdit,
     openEdit,
+    openDelete,
+    setOpenDelete,
+    handleOpenDelete,
     rowId,
     rowData,
     setOpenEdit,
@@ -60,15 +70,8 @@ const JobsList = () => {
 
   const navigate = useNavigate()
 
-  // const { useTableReturn } = useJobTable()
-  const [useTableReturn, setUseTableReturn] = useState()
-  useEffect(() => {
-    new Promise((resolve, reject) => {
-      resolve(mockApiGetJobs())
-    }).then((response: any) => {
-      setUseTableReturn(response)
-    })
-  }, [])
+  const { useTableReturn } = useJobTable()
+  const { handleFreeWord, handleFilter } = useTableReturn
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -86,81 +89,28 @@ const JobsList = () => {
           navigate('/dashboard/job-detail')
         },
         title: 'Detail',
-        Icon: <EyeIcon />,
+        Icon: <SearchIconSmall />,
+      },
+      {
+        id: 'delete',
+        onClick: (id, rowData) => {
+          handleOpenDelete(id)
+        },
+        title: 'Delete',
+        Icon: <DeleteIcon />,
       },
     ],
     columns,
   })
 
-  type BaseType = {
-    id: number
-    name: string
+  const { teams } = useSelectTeam();
+  
+  const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.keyCode === 13) {
+      //@ts-ignore
+      handleFreeWord('name', event.target.value)
+    }
   }
-
-  const team: BaseType[] = [
-    {
-      id: 1,
-      name: 'DES',
-    },
-    {
-      id: 2,
-      name: 'D1',
-    },
-    {
-      id: 3,
-      name: 'D2',
-    },
-    {
-      id: 3,
-      name: 'D3',
-    },
-    {
-      id: 3,
-      name: 'D4',
-    },
-    {
-      id: 3,
-      name: 'Sale',
-    },
-  ]
-
-  const all: BaseType[] = [
-    {
-      id: 1,
-      name: 'Sofware Engineer',
-    },
-    {
-      id: 2,
-      name: 'Automation Tester',
-    },
-    {
-      id: 3,
-      name: 'Quality Assurence',
-    },
-    {
-      id: 3,
-      name: 'AI Engineer',
-    },
-    {
-      id: 3,
-      name: 'Senior Frontend',
-    },
-    {
-      id: 3,
-      name: 'Junior Devops',
-    },
-  ]
-
-  const statusFilter: BaseType[] = [
-    {
-      id: 1,
-      name: 'OPEN',
-    },
-    {
-      id: 1,
-      name: 'CLOSED',
-    },
-  ]
 
   return (
     <Box pt={2} pb={4}>
@@ -174,11 +124,18 @@ const JobsList = () => {
       </Box>
       <HeadingWrapper>
         <DivFilter>
-          <ButtonFilter<BaseType> listData={team} inputLabel="Team" />
-          <ButtonFilter<BaseType>
-            listData={statusFilter}
+          <ButtonFilter<Team> listData={teams} inputLabel="Team" 
+           callbackChange={(obj) => {
+            handleFilter('team_ids', transformListItem(obj))
+          }}
+          />
+          <ButtonFilter<baseInstance>
+            listData={STATUS_DATA}
             inputLabel="Status"
             multiple={false}
+            callbackChange={(obj) => {
+              handleFilter('status', getValueOfObj({ key: 'value', obj }))
+            }}
           />
         </DivFilter>
         <DivHeaderWrapper>
@@ -188,6 +145,7 @@ const JobsList = () => {
             variant="outlined"
             size="small"
             sx={{ width: '400px' }}
+            onKeyUp={handleFreeWorld}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -221,6 +179,14 @@ const JobsList = () => {
           setOpen={setOpenEdit}
           id={rowId.current}
           rowData={rowData.current}
+        />
+      )}
+
+      {openDelete && (
+        <DeleteJobModal
+          open={openDelete}
+          setOpen={setOpenDelete}
+          id={rowId.current}
         />
       )}
     </Box>

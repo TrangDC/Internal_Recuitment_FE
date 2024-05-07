@@ -12,31 +12,30 @@ export const SORT_BY = {
     ASC: 'ASC',
 }
 
+export const SALARY_STATE = {
+    RANGE: 'range',
+    UP_TO: 'up_to',
+    MINIMUM: 'minimum',
+    NEGOTITATION: 'negotiate',
+}
+
+export const CURRENCY_STATE = {
+    VND: 'vnd',
+    USD: 'usd',
+    JPY: 'jpy',
+}
+
 export const LOCATION_STATE = {
-    HA_NOI: 'Ha noi',
-    DA_NANG: 'Da Nang',
-    HO_CHI_MINH: 'Ho Chi Minh',
-    JAPAN: 'Japan'
+    HA_NOI: 'ha_noi',
+    DA_NANG: 'da_nang',
+    HO_CHI_MINH: 'ho_chi_minh',
+    JAPAN: 'japan',
 }
 
-export const SALARY_DATA = {
-    RANGE: 'Range',
-    UP_TO: 'Up to',
-    MINIMUM: 'Minimum',
-    NEGOTITATION: 'Negotitation',
-}
-
-export const CURRENCY_DATA = {
-    VND: 'VND',
-    USD: 'USD',
-    JPY: 'JPY',
-}
-
-export const LOCATION_DATA = {
-    HA_NOI: 'Ha Noi',
-    DA_NANG: 'Da Nang',
-    HO_CHI_MINH: 'Ho Chi Minh',
-    JAPAN: 'Japan',
+export const STATUS_STATE = {
+    DRAFT: 'draft',
+    OPENED: 'opened',
+    CLOSED: 'closed'
 }
 
 export const TREC_REFRESH_TOKEN: string = 'refreshToken';
