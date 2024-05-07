@@ -33,3 +33,7 @@ export const handleLocalStorage = () => {
   }
 }
 
+export const transformListItem = (array: any[], name: string = 'id') => {
+  return array.map((item) => item?.[name])
+}
+

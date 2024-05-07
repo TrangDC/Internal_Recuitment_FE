@@ -6,6 +6,7 @@ import {
 import {
   AutocompleteProps,
   AutocompleteRenderInputParams,
+  TextFieldProps,
 } from '@mui/material'
 import { get } from 'lodash'
 import { ReactNode } from 'react'
@@ -23,6 +24,7 @@ interface AdditionalProps<T extends FieldValues, Option> {
     value: any
     name: string
   }
+  inputProps?: TextFieldProps,
 }
 
 type AutoCompleteControllerProps<T extends object, Option> = Omit<
@@ -41,6 +43,8 @@ const AutoCompleteComponent = <T extends object, Option>({
   keySelect = 'id',
   field,
   size = 'small',
+  inputProps,
+  disabled = false,
   ...props
 }: AutoCompleteControllerProps<T, Option>) => {
   const error = get(errors, field.name as string)
@@ -55,7 +59,9 @@ const AutoCompleteComponent = <T extends object, Option>({
         onChange={(event, value: Option | Option[], reason) => {
           field.onChange(value)
         }}
-        inputProps={{ label: inputLabel, required: true }}
+        showLabel={label as string}
+        inputProps={{ label: inputLabel, required: true, ...inputProps }}
+        disabled={disabled}
       />
       {/* {multiple && (
         <DivListOption>

@@ -1,16 +1,14 @@
-export type Employee = {
+export type Member = {
   id: string
-  fullName: string
-  nickName: number
-  companyAccountId: number
-  code: string
-  gender: number
+  name: string
+  work_email: number
 }
 
 export type Team = {
   id: string,
   name: string,
   open_request: number,
+  members: Member[]
 }
 
 export type Managers = {
@@ -19,15 +17,13 @@ export type Managers = {
   email: string,
 }
 
-export type JobTitle = {
-  id: string
-  code: string
+export type NewTeamInput = {
+  id?: string,
   name: string
-  description: string
+  members: string[]
 }
 
-export type NewJobTitleInput = {
-  code: string
-  name: string
-  description: string
+export type DeleteTeamInput = {
+  id: string,
+  description: string,
 }

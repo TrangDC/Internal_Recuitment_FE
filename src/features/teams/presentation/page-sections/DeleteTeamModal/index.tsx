@@ -1,76 +1,51 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Grid } from '@mui/material'
+import { Button, Grid } from '@mui/material'
 import InputComponent from 'shared/components/form/inputComponent'
-import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import { Member, Team } from 'features/teams/domain/interfaces'
-import useSelectionUsers from '../../providers/hooks/useSelectionUser'
-import useUpdateTeam from '../../providers/hooks/useUpdateTeam'
+import useDeleteTeam from '../../providers/hooks/useDeleteTeam'
 
-interface IDetailTeamModal {
+interface IDeleteTeamModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  rowData?: Team
 }
 
-function DetailTeamModal({ open, setOpen, rowData }: IDetailTeamModal) {
-  const { onSubmit, useFormReturn } = useUpdateTeam({
+function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
+  const { onSubmit, useFormReturn } = useDeleteTeam({
+    callbackSuccess: () => setOpen(false),
     defaultValues: {
-      name: rowData?.name,
-      id: rowData?.id,
-      members: rowData?.members,
+      id: id,
     },
-    callbackSuccess: () => setOpen(false)
   })
   const {
     control,
     formState: { errors },
   } = useFormReturn
 
-  const { members } = useSelectionUsers()
-
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Detail team" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header
+        title="Do you want to delete this team?"
+        setOpen={setOpen}
+      ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Controller
-                name="name"
+                name="description"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Name"
-                    size="small"
+                    label="Description"
                     field={field}
                     fullWidth
-                    required
-                    disabled
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="members"
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Member>
-                    options={members}
-                    label="work_email"
-                    inputLabel="Team's Manager"
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                    multiple
-                    disabled={true}
+                    multiline
+                    minRows={4}
                   />
                 )}
               />
@@ -87,18 +62,18 @@ function DetailTeamModal({ open, setOpen, rowData }: IDetailTeamModal) {
           >
             Cancel
           </CustomeButtonCancel>
-          {/* <Button
+          <Button
             type="button"
             variant="contained"
             color="primary"
             onClick={onSubmit}
           >
             Save
-          </Button> */}
+          </Button>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>
   )
 }
 
-export default DetailTeamModal
+export default DeleteTeamModal

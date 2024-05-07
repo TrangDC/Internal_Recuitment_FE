@@ -1,5 +1,5 @@
 import { Box, Modal, SxProps, Theme, styled } from '@mui/material'
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import CloseIcon from '@mui/icons-material/Close'
 import FlexBox from '../flexbox/FlexBox'
@@ -28,7 +28,9 @@ const Wrapper: FC<IWrapper> = ({
         handleClose ? handleClose() : setOpen(false)
       }}
     >
-      <Content maxWidth={maxWidth}>{children}</Content>
+      <Content maxWidth={maxWidth}>
+        {children}
+        </Content>
     </Modal>
   )
 }
@@ -109,14 +111,14 @@ const ContentStyled = styled(Box)(({ theme }) => ({
     : theme.palette.background.default,
 }))
 
-const Content = ({
+const Content = forwardRef(({
   children,
   maxWidth = 960,
 }: {
   children: ReactNode
   maxWidth?: string | number
   height?: string | number
-}) => {
+}, ref) => {
   return (
     <ContentStyled
       maxWidth={maxWidth}
@@ -126,7 +128,8 @@ const Content = ({
       {children}
     </ContentStyled>
   )
-}
+})
+
 const ContentMain = ({
   children,
   maxHeight = '400px',

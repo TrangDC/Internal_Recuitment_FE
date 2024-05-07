@@ -15,9 +15,9 @@ interface createTeamProps {
   callbackSuccess?: (value: any) => void
 }
 
-function useCreateTeam(props: createTeamProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess } = props;
-  
+function useUpdateTeam(props: createTeamProps = { defaultValues: {} }) {
+  const { defaultValues, callbackSuccess } = props
+
   const queryClient = useQueryClient()
   const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
     resolver: yupResolver(schema),
@@ -26,16 +26,20 @@ function useCreateTeam(props: createTeamProps = { defaultValues: {} }) {
     },
   })
 
-  const { createTeam, queryKey } = useGraphql()
+  const { updateTeam, queryKey } = useGraphql()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newTeam: NewTeamInput) =>
-      fetchGraphQL<BaseRecord>(createTeam.query, {
-        input: newTeam,
-      }),
+    mutationFn: (newTeam: NewTeamInput) => {
+      const { id, ...updateOther } = newTeam
+
+      return fetchGraphQL<BaseRecord>(updateTeam.query, {
+        input: updateOther,
+        id: id,
+      })
+    },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })
-      toastSuccess('Create successfully')
+      toastSuccess('Update successfully')
       callbackSuccess && callbackSuccess(data)
     },
   })
@@ -59,4 +63,4 @@ function useCreateTeam(props: createTeamProps = { defaultValues: {} }) {
   }
 }
 
-export default useCreateTeam
+export default useUpdateTeam

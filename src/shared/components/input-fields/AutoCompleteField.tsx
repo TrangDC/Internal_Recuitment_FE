@@ -4,7 +4,7 @@ import {
   AutocompleteRenderInputParams,
   TextField,
   TextFieldProps,
-  styled
+  styled,
 } from '@mui/material'
 import React from 'react'
 import { findKey, get, isEqual } from 'lodash'
@@ -32,7 +32,7 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
 
   '& .MuiInputBase-root': {
     height: '100%',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
 
   '& .MuiFormLabel-root span': {
@@ -40,8 +40,8 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
     fontWeight: 500,
     color: '#DB6C56',
     lineHeight: '15.85px',
-  }
- }))
+  },
+}))
 
 const AutoCompleteField = <T extends object>({
   options,

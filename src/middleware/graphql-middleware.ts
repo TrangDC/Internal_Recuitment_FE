@@ -1,23 +1,6 @@
 import { RequestMiddleware, ResponseMiddleware } from 'graphql-request'
-import { handleRefreshToken } from 'services/authUtil';
-import { TREC_ACCESS_TOKEN, TREC_REFRESH_TOKEN } from 'shared/constants/constants';
-import { handleLocalStorage } from 'shared/utils/utils';
-
-function getAccessToken() {
-  const { getStatusByKey } = handleLocalStorage();
-  return getStatusByKey(TREC_ACCESS_TOKEN);
-}
-
-function getRefreshToken() {
-  const { getStatusByKey } = handleLocalStorage();
-  return getStatusByKey(TREC_REFRESH_TOKEN);
-}
-
-function updateToken(accessToken: string, refreshToken: string) {
-  const { updateStorage } = handleLocalStorage(); 
-  updateStorage(TREC_ACCESS_TOKEN, accessToken);
-  updateStorage(TREC_REFRESH_TOKEN, refreshToken);
-}
+import toastError from 'shared/components/toast/toastError'
+import { callRefreshToken, getAccessToken } from 'shared/utils/auth'
 
 export const requestMiddleware: RequestMiddleware = async (request) => {
   const token = await getAccessToken()
@@ -31,23 +14,24 @@ export const requestMiddleware: RequestMiddleware = async (request) => {
   }
 }
 
-export const responseMiddleware: ResponseMiddleware = async (responseMiddle) => {
- //@ts-ignore
-  const { response } = responseMiddle;
-  // console.log("🚀 ~ response:", response)
+export const responseMiddleware: ResponseMiddleware = async (
+  responseMiddle
+) => {
+  /**
+   * @response typeof ResponseMiddleware
+   */
+   //@ts-ignore
+  const { response } = responseMiddle
+
   switch(response?.status) {
+    //handle case refreshToken
     case 401:
-      const responseRefreshToken = await handleRefreshToken(getRefreshToken());
-      updateToken(responseRefreshToken.accessToken, responseRefreshToken.refreshToken);
-      
+      callRefreshToken()
     break;
   }
 
-  if (!(response instanceof Error) && response.errors) {
-    console.error(
-      `Request error:
-        status ${String(response.status)}
-        details: ${response.errors.map((_: any) => _.message).join(`, `)}`
-    )
+  //handle common errors
+  if (!(response instanceof Error) && response?.errors) {
+    toastError(response.errors)
   }
 }

@@ -1,8 +1,4 @@
-import {
-  Button,
-  IconButton,
-  InputAdornment,
-} from '@mui/material'
+import { Button, IconButton, InputAdornment } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import FlexBetween from 'shared/components/flexbox/FlexBetween'
 import FlexBox from 'shared/components/flexbox/FlexBox'
@@ -22,8 +18,10 @@ import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
-import EyeIcon from 'shared/components/icons/EyeIcon'
-
+import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
+import useSelectionUsers from '../providers/hooks/useSelectionUser'
+import DeleteTeamModal from '../page-sections/DeleteTeamModal'
+import { KeyboardEventHandler } from 'react'
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   gap: 8,
@@ -44,24 +42,28 @@ const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   },
 
   '& .MuiTextField-root': {
-    marginTop: 0
-  }
+    marginTop: 0,
+  },
 }))
 
 const TeamList = () => {
   const {
     openCreate,
+    openDelete,
     setOpenCreate,
     handleOpenDetail,
     handleOpenEdit,
+    handleOpenDelete,
     openDetail,
     openEdit,
     rowId,
     rowData,
     setOpenDetail,
     setOpenEdit,
+    setOpenDelete,
   } = useActionTable()
   const { useTableReturn } = useTeamTable()
+  const { handleFreeWord } = useTableReturn;
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -79,12 +81,12 @@ const TeamList = () => {
           handleOpenDetail(id, rowData)
         },
         title: 'Detail',
-        Icon: <EyeIcon />,
+        Icon: <SearchIconSmall />,
       },
       {
         id: 'delete',
-        onClick: (id, rowData) => {
-          handleOpenDetail(id, rowData)
+        onClick: (id) => {
+          handleOpenDelete(id)
         },
         title: 'Delete',
         Icon: <DeleteIcon />,
@@ -92,6 +94,13 @@ const TeamList = () => {
     ],
     columns,
   })
+
+  const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if(event.keyCode === 13) {
+      //@ts-ignore
+      handleFreeWord('name', event.target.value)
+    }
+};
 
   return (
     <Box pt={2} pb={4}>
@@ -108,7 +117,8 @@ const TeamList = () => {
           id="outlined-basic"
           label="Enter Team's name"
           variant="outlined"
-          size='small'
+          size="small"
+          onKeyUp={handleFreeWorld}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -149,6 +159,14 @@ const TeamList = () => {
           setOpen={setOpenDetail}
           id={rowId.current}
           rowData={rowData.current}
+        />
+      )}
+
+      {openDelete && (
+        <DeleteTeamModal
+          open={openDelete}
+          setOpen={setOpenDelete}
+          id={rowId.current}
         />
       )}
     </Box>
