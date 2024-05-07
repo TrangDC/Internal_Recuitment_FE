@@ -16,16 +16,22 @@ export const columns = (
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
-    header: () => <span>NAME</span>,
+    header: () => <span>Name</span>,
+    meta: {
+      style: {width: 'auto'}
+    },
   }),
   columnHelper.accessor('open_request', {
-    header: () => <span>OPEN REQUESTS</span>,
+    header: () => <span>Open Requests</span>,
     cell: (info) => info.renderValue(),
+    meta: {
+      style: {width: 'auto'}
+    },
   }),
   columnHelper.accessor('id', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>
-        <Span>ACTION</Span>
+        <Span>Action</Span>
       </FlexBox>
     ),
     size: 100,

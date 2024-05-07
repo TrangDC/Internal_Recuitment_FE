@@ -6,9 +6,9 @@ import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import { TEAM } from 'features/jobs/domain/interfaces'
-import { baseInstance } from 'shared/interfaces'
 import useCreateTeam from '../../providers/hooks/useCreateTeam'
+import useSelectionUsers from '../../providers/hooks/useSelectionUser'
+import { Member } from 'features/teams/domain/interfaces'
 
 interface ICreateTeamModal {
   open: boolean
@@ -16,20 +16,13 @@ interface ICreateTeamModal {
 }
 
 function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
-  const { onSubmit, useFormReturn } = useCreateTeam()
+  const { onSubmit, useFormReturn } = useCreateTeam({callbackSuccess: () => {setOpen(false)}})
   const {
     control,
     formState: { errors },
   } = useFormReturn
 
-  const managers: baseInstance[] = [
-    { id: 1, name: 'durinnguyen@techvify.com.vn' },
-    { id: 2, name: 'arianne@techvify.com.vn' },
-    { id: 3, name: 'helena@techvify.com.vn' },
-    { id: 4, name: 'annapham@techvify.com.vn' },
-    { id: 5, name: 'anniehoang@techvify.com.vn' },
-  ]
-
+  const { members } = useSelectionUsers();
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -55,12 +48,12 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
             </Grid>
             <Grid item xs={12}>
               <Controller
-                name="managers"
+                name="members"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, TEAM>
-                    options={managers}
-                    label="name"
+                  <AutoCompleteComponent<FormDataSchema, Member>
+                    options={members}
+                    label="work_email"
                     inputLabel="Team's Manager"
                     errors={errors}
                     field={field}

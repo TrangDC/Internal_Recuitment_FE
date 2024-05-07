@@ -25,6 +25,7 @@ export interface IuseCustomTableReturn {
   sortData: []
   handleChangePage: (page: number) => void
   handleSorTable: (id: string) => void
+  handleFreeWord: (key: string, value: string) => void
   totalPage: number
   refetch: () => void
   variables: {
@@ -51,18 +52,22 @@ const useCustomTable = ({
   })
   const [sorting, setSorting] = useState<ISorting>({
     direction: 'DESC',
-    field: 'CREATED_AT',
+    field: 'created_at',
   })
+  const [freeWord, setFreeWord] = useState<object>({});
 
   const { isLoading, error, data, refetch } = useQuery({
-    gcTime: 0,
-    queryKey: [queryKey, pagination.page, pagination.perPage, sorting],
+    // gcTime: 0,
+    queryKey: [queryKey, pagination.page, pagination.perPage, sorting, freeWord],
     queryFn: async () =>
       fetchGraphQL<BaseRecord>(buildQuery.query, {
+        ...variables,
         sortBy: {
           ...sorting,
         },
-        ...variables,
+        freeWord: {
+          ...freeWord
+        },
         pagination: {
           page: pagination.page,
           perPage: pagination.perPage,
@@ -87,8 +92,12 @@ const useCustomTable = ({
     setSorting((prev) => ({
       direction:
         id !== prev.field ? 'DESC' : prev.direction === 'DESC' ? 'ASC' : 'DESC',
-      field: id ? id : 'CREATED_AT',
+      field: id ? id : 'created_at',
     }))
+  }
+
+  function handleFreeWord(key: string, value: string) {
+    setFreeWord((prev) => ({...prev, [key]: value}))
   }
 
   return {
@@ -97,6 +106,7 @@ const useCustomTable = ({
     sortData,
     handleChangePage,
     handleSorTable,
+    handleFreeWord,
     totalPage,
     refetch,
     variables: {

@@ -15,6 +15,12 @@ export const StyleLabel = styled(Span)(({ theme }) => ({
  color: theme.palette.grey[800]
 }))
 
+export const StyleItemMenu = styled(MenuItem)(({ theme }) => ({
+  minWidth: '192px',
+  maxWidth: '100%',
+  height: '36px'
+ }))
+
 export type TOptionItem<T> = {
   disabled?: boolean
   onClick?: (id: string, row: T) => void
@@ -67,7 +73,7 @@ export const ActionGroupButtons = <T extends object>({
       >
         {actions &&
           actions.map(({ Icon, title = '', disabled, onClick }, i) => (
-            <MenuItem
+            <StyleItemMenu
               key={i}
               onClick={() => {
                 onClick?.(rowId, rowData)
@@ -78,7 +84,7 @@ export const ActionGroupButtons = <T extends object>({
             >
               <StyleListItemIcon>{Icon}</StyleListItemIcon>
               <StyleLabel>{title}</StyleLabel>
-            </MenuItem>
+            </StyleItemMenu>
           ))}
       </Menu>
     </>

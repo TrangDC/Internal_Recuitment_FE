@@ -7,6 +7,7 @@ const useActionTable = () => {
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDetail, setOpenDetail] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
 
   function handleOpenEdit(id: string, data: Team) {
     rowId.current = id
@@ -20,15 +21,23 @@ const useActionTable = () => {
     setOpenDetail(true)
   }
 
+  function handleOpenDelete(id: string) {
+    rowId.current = id
+    setOpenDelete(true)
+  }
+
   return {
     openCreate,
     openEdit,
     openDetail,
+    openDelete,
     setOpenCreate,
     setOpenDetail,
     setOpenEdit,
+    setOpenDelete,
     handleOpenEdit,
     handleOpenDetail,
+    handleOpenDelete,
     rowId,
     rowData,
   }

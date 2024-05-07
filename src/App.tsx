@@ -7,6 +7,7 @@ import routes from './routes'
 import './i18n/i18n'
 import { createCustomTheme } from 'shared/theme'
 import RTL from 'shared/components/RTL'
+import { Toaster } from 'react-hot-toast'
 
 const App: FC = () => {
   const router = createBrowserRouter(routes())
@@ -22,6 +23,7 @@ const App: FC = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <RTL>
+          <Toaster position="top-right" reverseOrder={false}/>
           <CssBaseline />
           <RouterProvider router={router} />
         </RTL>
