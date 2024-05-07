@@ -1,5 +1,12 @@
 import { Box, Grid, styled } from '@mui/material'
 import { Span, Tiny } from 'shared/components/Typography'
+import useJobDetail from '../../providers/hooks/useJobDetail'
+import { useParams } from 'react-router-dom'
+import { findItem, getInfoData } from 'shared/utils/utils'
+import { LOCATION_DATA } from '../../providers/constants'
+import { SalaryFactory } from 'shared/class/salary'
+import { useMemo } from 'react'
+import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
 
 const DivWrapperField = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -29,55 +36,66 @@ const DivField = styled(Box)(({ theme }) => ({
 }))
 
 const GeneralInformationField = () => {
+  const { id } = useParams()
+
+  const { jobDetail } = useJobDetail(id as String)
+
+  const salary = useMemo(() => {
+    return new SalaryFactory({
+      salary_type: jobDetail.salary_type,
+      salary_attibutes: getInfoData({
+        field: ['salary_from', 'salary_to'],
+        object: jobDetail,
+      }),
+    })
+  }, [jobDetail])
+
   return (
     <DivWrapperField>
-      <Grid container spacing={2} xs={12}>
+      <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <DivField>
             <Span>Job name</Span>
-            <Tiny>Software Enginneer</Tiny>
+            <Tiny>{jobDetail?.name}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12} md={6}>
           <DivField>
             <Span>Team</Span>
-            <Tiny>D2</Tiny>
+            <Tiny>{jobDetail?.team?.name}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12} md={6}>
           <DivField>
             <Span>Location</Span>
-            <Tiny>Ha Noi</Tiny>
+            <Tiny>{findItem(LOCATION_DATA, jobDetail?.location)?.name}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12} md={6}>
           <DivField>
             <Span>Requester</Span>
-            <Tiny>David</Tiny>
+            <Tiny> {jobDetail?.user?.name}</Tiny>
           </DivField>
         </Grid>
 
         <Grid item xs={12} md={6}>
           <DivField>
             <Span>Salary</Span>
-            <Tiny>Range: 20,000,000 - 30,000,000</Tiny>
+            <Tiny>{salary?.getSalaryByType()?.gerenateStringSalary()}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12} md={6}>
           <DivField>
             <Span>Staff required</Span>
-            <Tiny>2</Tiny>
+            <Tiny>{jobDetail?.amount}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12}>
           <DivField>
             <Span>Description</Span>
-            <Tiny>
-              Lorem ipsum dolor sit amet ad suspendisse blandit aliquam ut nulla
-              torquent pulvinar cursus pellentesque lectus posuere est per eget
-              inceptos adipiscing nibh odio felis ultricies urna fermentum
-              ridiculus dolor class potenti
-            </Tiny>
+            <Box>
+              <GenerateInnerHTML innerHTML={jobDetail.description}/>
+            </Box>
           </DivField>
         </Grid>
       </Grid>

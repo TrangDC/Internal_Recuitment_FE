@@ -86,7 +86,7 @@ const JobsList = () => {
       {
         id: 'detail',
         onClick: (id, rowData) => {
-          navigate('/dashboard/job-detail')
+          navigate(`/dashboard/job-detail/${id}`)
         },
         title: 'Detail',
         Icon: <SearchIconSmall />,

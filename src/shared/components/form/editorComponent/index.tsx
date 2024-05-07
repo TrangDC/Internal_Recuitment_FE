@@ -24,8 +24,8 @@ const EditorBoxComponent = <T extends object>({
   return (
     <DivWrapper>
       <EditorBox
-      value={field.value}
-      onEditorChange={(value) => {
+      defaultValue={field.value}
+      callbackChange={(value) => {
         field.onChange(value)
       }}
       {...props} />

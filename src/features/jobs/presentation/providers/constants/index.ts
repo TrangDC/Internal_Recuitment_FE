@@ -64,7 +64,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     accept: [SALARY_STATE.RANGE],
     label: 'From',
     type: 'number',
-    xs: 2,
+    xs: 1,
   },
   {
     name: 'salary_to',
@@ -72,28 +72,28 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     accept: [SALARY_STATE.RANGE],
     label: 'To',
     type: 'number',
-    xs: 2,
+    xs: 1,
   },
   {
     name: 'salary_from',
     typeComponent: 'textField',
     accept: [SALARY_STATE.MINIMUM],
     type: 'number',
-    xs: 4,
+    xs: 2,
   },
   {
     name: 'salary_to',
     typeComponent: 'textField',
     accept: [SALARY_STATE.UP_TO],
     type: 'number',
-    xs: 4,
+    xs: 2,
   },
   {
     name: 'salary_to',
     typeComponent: 'textField',
     accept: [SALARY_STATE.NEGOTITATION],
     type: 'number',
-    xs: 5,
+    xs: 4,
     style: {visibility: 'hidden'}
   },
   {
@@ -101,7 +101,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     typeComponent: 'textField',
     accept: [undefined],
     type: 'number',
-    xs: 5,
+    xs: 4,
     style: {visibility: 'hidden'}
   },
   {
@@ -111,6 +111,6 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     inputLabel: 'Unit',
     options: CURRENCY_DATA,
     label: 'name',
-    xs: 1,
+    xs: 2,
   },
 ]

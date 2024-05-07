@@ -19,6 +19,7 @@ import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
 import useSelectMember from 'shared/hooks/graphql/useSelectMember'
 import { findItem, removeInfoData } from 'shared/utils/utils'
 import useUpdateJob from '../../providers/hooks/useEditJob'
+import EditorBoxComponent from 'shared/components/form/editorComponent'
 
 interface IEditJobModal {
   open: boolean
@@ -219,13 +220,10 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                 name="description"
                 control={control}
                 render={({ field }) => (
-                  <InputComponent<FormDataSchema>
+                  <EditorBoxComponent<FormDataSchema>
                     errors={errors}
                     label="Description"
                     field={field}
-                    fullWidth
-                    multiline
-                    minRows={4}
                   />
                 )}
               />

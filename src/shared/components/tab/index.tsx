@@ -2,7 +2,6 @@ import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { Box, Tab, styled } from '@mui/material'
 import React, { useState } from 'react'
 import FlexBetween from '../flexbox/FlexBetween'
-import { Height } from '@mui/icons-material'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({

@@ -10,7 +10,7 @@ const GeneralInformation = () => {
   return (
     <DivContainerWrapper>
       <GeneralInformationField />
-     <GenaralInformationHiring />
+      <GenaralInformationHiring />
     </DivContainerWrapper>
   )
 }

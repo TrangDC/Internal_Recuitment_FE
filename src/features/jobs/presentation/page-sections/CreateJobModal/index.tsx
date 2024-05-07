@@ -30,7 +30,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
     formState: { errors },
     setValue,
   } = useFormReturn
-
+  
   const { teams } = useSelectTeam();
   const { members } = useSelectMember();
 
@@ -114,7 +114,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
               />
             </Grid>
 
-            <Grid item xs={1}>
+            <Grid item xs={2}>
               <Controller
                 name="salary_type"
                 control={control}
@@ -126,7 +126,6 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                     errors={errors}
                     field={field}
                     callbackOnChange={({previousValue, value}) => {
-                      if(!previousValue) return;
                       resetSalary()
                     }}
                   />

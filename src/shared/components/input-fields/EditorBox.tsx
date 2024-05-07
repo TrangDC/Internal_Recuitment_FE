@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Editor, IAllProps } from '@tinymce/tinymce-react'
 import { Box, styled } from '@mui/material'
 import { getBase64 } from 'shared/utils/utils'
@@ -6,6 +6,8 @@ import { getBase64 } from 'shared/utils/utils'
 interface TinyProps extends IAllProps {
   label?: string
   initProps?: object
+  defaultValue?: string,
+  callbackChange?: (value: string) => void;
 }
 
 const StyleEditorBox = styled(Box)(({ theme }) => ({
@@ -59,22 +61,23 @@ const StyleBoxLabel = styled(Box)(({ theme }) => ({
 export default function EditorBox({
   label = '',
   initProps,
+  defaultValue,
+  callbackChange,
   ...props
 }: TinyProps) {
   const [focused, setFocused] = useState<Boolean>(false)
   const editorRef = useRef(null)
+  const [valueBox, setValueBox] = useState<string>('');
 
-  const existValue = useMemo(() => {
-    //@ts-ignore
-    return !!editorRef.current?.getContent()
-    //@ts-ignore
-  }, [editorRef.current?.getContent()])
+  useEffect(() => {
+    defaultValue && setValueBox(defaultValue)
+  }, [])
 
   return (
     <StyleEditorBox className={`${focused && 'activeEditor'}`}>
       {label && (
         <StyleBoxLabel
-          className={`${focused && 'activeBox'} ${existValue && 'existValue'}`}
+          className={`${focused && 'activeBox'} ${valueBox && 'existValue'}`}
         >
           <label>{label} </label>
         </StyleBoxLabel>
@@ -86,6 +89,11 @@ export default function EditorBox({
         }}
         onBlur={() => {
           setFocused(false)
+        }}
+        value={valueBox}
+        onEditorChange={(value) => {
+          setValueBox(value);
+          callbackChange && callbackChange(value)
         }}
         //@ts-ignore
         onInit={(_evt, editor) => (editorRef.current = editor)}

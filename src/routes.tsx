@@ -77,7 +77,7 @@ const authRoutes = [
 const dashboardRoutes = [
   { path: "teams", element: <TeamList /> },
   { path: "jobs", element: <JobList /> },
-  { path: "job-detail", element: <JobDetail /> },
+  { path: "job-detail/:id", element: <JobDetail /> },
   { path: "candidates", element: <CandiateList /> },
   { path: "candidate-detail", element: <CandiateDetail /> },
   { path: "hiring", element: <HiringList /> },
