@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _, { isEmpty } from 'lodash'
 
 export const searchByName = (listData: any[], searchValue: string) => {
   if (searchValue.length > 0) {
@@ -49,6 +49,7 @@ export const findItem = (
   value: string,
   key: string = 'value'
 ) => {
+  if(isEmpty(array) || !value) return null;
   return array.find((data) => data[key] === value)
 }
 
@@ -80,7 +81,7 @@ export const getValueOfObj = ({
   obj: Record<string, any>
 }) => {
   if (!obj || !key) return null
-
+console.log("obj", obj, key)
   return obj.hasOwnProperty(key) ? obj[key] : null
 }
 

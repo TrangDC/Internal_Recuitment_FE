@@ -1,4 +1,4 @@
-import { Box, Chip, Divider, styled } from '@mui/material'
+import { Box, Divider, styled } from '@mui/material'
 import { Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import DateIcon from 'shared/components/icons/DateIcon'

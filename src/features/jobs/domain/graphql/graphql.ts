@@ -42,7 +42,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'HiringJobFilter',
-      orderBy: 'HiringJobOrder', 
+      orderBy: 'HiringJobOrder',
       freeWord: 'HiringJobFreeWord',
     },
   })
@@ -74,7 +74,41 @@ const useGraphql = () => {
     `,
     params: {
       input: 'UpdateHiringJobInput!',
-      id: 'ID!'
+      id: 'ID!',
+    },
+  })
+
+  const getJobDetail = buildQuery({
+    operation: 'GetHiringJob',
+    options: {
+      type: 'query',
+    },
+    node: `
+      data {
+        id
+        name
+        description
+        amount
+        location
+        salary_type
+        salary_from
+        salary_to
+        currency
+        status
+        created_at
+        team {
+            id
+            name
+        }
+        user {
+          id
+          name
+          work_email
+        }
+      }
+    `,
+    params: {
+      id: 'ID!',
     },
   })
 
@@ -82,7 +116,8 @@ const useGraphql = () => {
     queryKey,
     getAllJob,
     createJob,
-    updateJob
+    updateJob,
+    getJobDetail,
   }
 }
 

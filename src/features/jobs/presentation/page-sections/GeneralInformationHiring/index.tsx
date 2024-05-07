@@ -65,7 +65,7 @@ const GenaralInformationHiring = () => {
         <SpanHiring>Hiring process</SpanHiring>
       </Box>
       <Box>
-        <Grid container spacing={2} xs={12}>
+        <Grid container spacing={2}>
           <Grid item xs={12} md={2}>
             <DivField>
               <BoxTitle>
