@@ -20,6 +20,7 @@ import useSelectMember from 'shared/hooks/graphql/useSelectMember'
 import { findItem, removeInfoData } from 'shared/utils/utils'
 import useUpdateJob from '../../providers/hooks/useEditJob'
 import EditorBoxComponent from 'shared/components/form/editorComponent'
+import useTextTranslation from 'shared/constants/text'
 
 interface IEditJobModal {
   open: boolean
@@ -55,6 +56,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
 
   const { teams } = useSelectTeam()
   const { members } = useSelectMember()
+  const translation = useTextTranslation();
 
   const salary = useWatch({ control, name: 'salary_type' })
   const resetSalary = () => {
@@ -64,7 +66,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
-      <BaseModal.Header title="New job" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header title={translation.MODLUE_JOBS.edit_job} setOpen={setOpen}></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
@@ -75,7 +77,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Job name "
+                    label={translation.MODLUE_JOBS.job_name}
                     size="small"
                     field={field}
                     fullWidth
@@ -92,7 +94,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                   <AutoCompleteComponent<FormDataSchema, Team>
                     options={teams}
                     label="name"
-                    inputLabel="Team"
+                    inputLabel={translation.MODLUE_TEAMS.team}
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -109,7 +111,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                   <AutoCompleteComponent<FormDataSchema, baseInstance>
                     options={LOCATION_DATA}
                     label="name"
-                    inputLabel="Location"
+                    inputLabel={translation.COMMON.location}
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -126,7 +128,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                   <AutoCompleteComponent<FormDataSchema, Member>
                     options={members}
                     label="name"
-                    inputLabel="Requester"
+                    inputLabel={translation.MODLUE_JOBS.requester}
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -144,7 +146,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                   <AutoCompleteComponent<FormDataSchema, baseInstance>
                     options={SALARY_DATA}
                     label="name"
-                    inputLabel="Salary"
+                    inputLabel={translation.COMMON.salary}
                     errors={errors}
                     field={field}
                     callbackOnChange={({ previousValue, value }) => {
@@ -206,7 +208,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Staff required"
+                    label={translation.MODLUE_JOBS.staft_required}
                     field={field}
                     fullWidth
                     required
@@ -222,7 +224,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                 render={({ field }) => (
                   <EditorBoxComponent<FormDataSchema>
                     errors={errors}
-                    label="Description"
+                    label={translation.COMMON.description}
                     field={field}
                   />
                 )}
@@ -238,7 +240,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
             variant="contained"
             onClick={handleCancelModel}
           >
-            Cancel
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -246,7 +248,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
             color="primary"
             onClick={onSubmit}
           >
-            Save
+            {translation.COMMON.save}
           </Button>
         </FlexBox>
       </BaseModal.Footer>

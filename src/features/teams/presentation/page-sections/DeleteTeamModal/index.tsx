@@ -6,6 +6,7 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
 import useDeleteTeam from '../../providers/hooks/useDeleteTeam'
+import useTextTranslation from 'shared/constants/text'
 
 interface IDeleteTeamModal {
   open: boolean
@@ -25,10 +26,12 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
     formState: { errors },
   } = useFormReturn
 
+  const translation = useTextTranslation()
+
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title="Do you want to delete this team?"
+        title={translation.MODLUE_TEAMS.delete_team}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -41,7 +44,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Description"
+                    label={translation.COMMON.description}
                     field={field}
                     fullWidth
                     multiline
@@ -60,7 +63,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
             variant="contained"
             onClick={() => setOpen(false)}
           >
-            Cancel
+             {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -68,7 +71,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
             color="primary"
             onClick={onSubmit}
           >
-            Save
+             {translation.COMMON.save}
           </Button>
         </FlexBox>
       </BaseModal.Footer>

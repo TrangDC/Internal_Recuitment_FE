@@ -1,7 +1,9 @@
 import { Box, IconButton, MenuItem, Popover, styled } from '@mui/material'
 import { H6 } from 'shared/components/Typography'
-import { FC, useRef, useState } from 'react'
+import { FC, useContext, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { SettingsContext } from 'contexts/settingsContext'
+import { themeSettingsTypes } from 'shared/theme'
 
 // dummy language options
 const languageOptions: {
@@ -43,11 +45,14 @@ const LanguagePopover: FC = () => {
   const anchorRef = useRef(null)
   const [open, setOpen] = useState(false)
   const { i18n } = useTranslation()
+  const { settings, saveSettings } = useContext(SettingsContext)
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
   const handleChangeLanguage = (language: string) => {
+    saveSettings({ ...settings, lang: language } as themeSettingsTypes)
+
     i18n.changeLanguage(language)
     setOpen(false)
   }

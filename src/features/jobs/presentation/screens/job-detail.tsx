@@ -6,11 +6,14 @@ import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import GeneralInformation from '../page-sections/GeneralInformation'
 import HistoryLog from '../page-sections/HistoryLog'
 import TabCustomize from 'shared/components/tab'
+import useTextTranslation from 'shared/constants/text'
 
 const JobDetail = () => {
+  const translation = useTextTranslation();
+
   const renderItem = [
-    {label: 'Genaral Information', Component: GeneralInformation},
-    {label: 'History log', Component: HistoryLog},
+    {label: translation.MODLUE_JOBS.general_information, Component: GeneralInformation},
+    {label: translation.MODLUE_JOBS.history_log, Component: HistoryLog},
   ]
 
   return (
@@ -20,7 +23,7 @@ const JobDetail = () => {
           <IconWrapper>
             <ShoppingBasket sx={{ color: 'primary.main' }} />
           </IconWrapper>
-          <H5>Job details</H5>
+          <H5>{translation.MODLUE_JOBS.job_detail}</H5>
         </FlexBox>
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>

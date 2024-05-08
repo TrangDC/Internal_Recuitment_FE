@@ -24,6 +24,7 @@ export type themeSettingsTypes = {
   theme: string;
   direction: "ltr" | "rtl";
   responsiveFontSizes?: boolean;
+  lang: 'vi' | 'en'
 };
 
 export const createCustomTheme = (settings: themeSettingsTypes) => {

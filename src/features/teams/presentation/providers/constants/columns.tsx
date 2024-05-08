@@ -7,22 +7,22 @@ import {
 import { StyleSpanName } from '../styles/style'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Span } from 'shared/components/Typography'
-
+import { t } from 'i18next';
 const columnHelper = createColumnHelper<Team>()
 
 export const columns = (
-  actions: TOptionItem<Team>[]
+  actions: TOptionItem<Team>[],
 ): ColumnDef<Team, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
-    header: () => <span>Name</span>,
+    header: () => <span>{t('name')}</span>,
     meta: {
       style: {width: 'auto'}
     },
   }),
   columnHelper.accessor('open_request', {
-    header: () => <span>Open Requests</span>,
+    header: () => <span>{t('open_requests')}</span>,
     cell: (info) => info.renderValue(),
     meta: {
       style: {width: 'auto'}
@@ -31,7 +31,7 @@ export const columns = (
   columnHelper.accessor('id', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>
-        <Span>Action</Span>
+        <Span>{t('action')}</Span>
       </FlexBox>
     ),
     size: 100,

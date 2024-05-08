@@ -21,6 +21,7 @@ import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DeleteTeamModal from '../page-sections/DeleteTeamModal'
 import { KeyboardEventHandler } from 'react'
+import useTextTranslation from 'shared/constants/text'
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   gap: 8,
@@ -64,6 +65,8 @@ const TeamList = () => {
   const { useTableReturn } = useTeamTable()
   const { handleFreeWord } = useTableReturn
 
+  const translation = useTextTranslation();
+
   const { colummTable } = useBuildColumnTable({
     actions: [
       {
@@ -71,7 +74,7 @@ const TeamList = () => {
         onClick: (id, rowData) => {
           handleOpenEdit(id, rowData)
         },
-        title: 'Edit',
+        title: translation.COMMON.edit,
         Icon: <EditIcon />,
       },
       {
@@ -79,7 +82,7 @@ const TeamList = () => {
         onClick: (id, rowData) => {
           handleOpenDetail(id, rowData)
         },
-        title: 'Detail',
+        title: translation.COMMON.detail,
         Icon: <SearchIconSmall />,
       },
       {
@@ -87,7 +90,7 @@ const TeamList = () => {
         onClick: (id) => {
           handleOpenDelete(id)
         },
-        title: 'Delete',
+        title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
       },
     ],
@@ -108,13 +111,13 @@ const TeamList = () => {
           <IconWrapper>
             <ShoppingBasket sx={{ color: 'primary.main' }} />
           </IconWrapper>
-          <H5>Teams</H5>
+          <H5>{translation.MODLUE_TEAMS.teams}</H5>
         </FlexBox>
       </Box>
       <HeadingWrapper>
         <CustomTextField
           id="outlined-basic"
-          label="Enter Team's name"
+          label={translation.MODLUE_TEAMS.input_team_name}
           variant="outlined"
           size="small"
           onKeyUp={handleFreeWorld}
@@ -133,7 +136,7 @@ const TeamList = () => {
           startIcon={<Add />}
           onClick={() => setOpenCreate(true)}
         >
-          Add a new team
+          {translation.MODLUE_TEAMS.add_a_new_team}
         </Button>
       </HeadingWrapper>
       <Box>

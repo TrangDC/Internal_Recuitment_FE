@@ -2,8 +2,9 @@ import { Box, Grid, styled } from '@mui/material'
 import React from 'react'
 import { Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
+import useTextTranslation from 'shared/constants/text'
 
-const DivWrapperProcess = styled(Box)(({ theme }) => ({
+const DivWrapperProcess = styled(FlexBox)(({ theme }) => ({
   width: '100%',
   padding: '24px 16px',
 }))
@@ -59,10 +60,13 @@ const BoxFieldContainer = styled(Box)(({ theme }) => ({
 }))
 
 const GenaralInformationHiring = () => {
+
+  const translation = useTextTranslation();
+
   return (
-    <DivWrapperProcess>
+    <DivWrapperProcess flexDirection={'column'} gap={'10px'}>
       <Box>
-        <SpanHiring>Hiring process</SpanHiring>
+        <SpanHiring>{translation.MODLUE_JOBS.hiring_process}</SpanHiring>
       </Box>
       <Box>
         <Grid container spacing={2}>

@@ -2,6 +2,7 @@ import { initReactI18next } from 'react-i18next'
 import en from './en/resource.json'
 import vi from './vi/resource.json'
 import i18next from 'i18next'
+import { handleLocalStorage } from 'shared/utils/utils'
 export const LANGUAGES = {
   EN: 'en',
   VI: 'vi',
@@ -15,10 +16,13 @@ const resources = {
   },
 }
 
+const { getStatusByKey } = handleLocalStorage();
+const langDefault = getStatusByKey('settings').lang;
+
 i18next.use(initReactI18next).init({
   resources,
-  lng: LANGUAGES.VI,
-  fallbackLng: LANGUAGES.VI,
+  lng: langDefault ||LANGUAGES.VI,
+  fallbackLng: langDefault || LANGUAGES.VI,
   interpolation: { escapeValue: false },
 })
 

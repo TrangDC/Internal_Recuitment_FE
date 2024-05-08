@@ -9,6 +9,7 @@ import { FormDataSchema } from '../../providers/constants/schema'
 import useCreateTeam from '../../providers/hooks/useCreateTeam'
 import { Member } from 'features/teams/domain/interfaces'
 import useSelectMember from 'shared/hooks/graphql/useSelectMember'
+import useTextTranslation from 'shared/constants/text'
 
 interface ICreateTeamModal {
   open: boolean
@@ -16,17 +17,25 @@ interface ICreateTeamModal {
 }
 
 function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
-  const { onSubmit, useFormReturn } = useCreateTeam({callbackSuccess: () => {setOpen(false)}})
+  const { onSubmit, useFormReturn } = useCreateTeam({
+    callbackSuccess: () => {
+      setOpen(false)
+    },
+  })
   const {
     control,
     formState: { errors },
   } = useFormReturn
 
-  const { members } = useSelectMember();
+  const { members } = useSelectMember()
+  const translation = useTextTranslation()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Add a new team" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header
+        title={translation.MODLUE_TEAMS.add_a_new_team}
+        setOpen={setOpen}
+      ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
@@ -37,7 +46,7 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Name"
+                    label={translation.COMMON.name}
                     size="small"
                     field={field}
                     fullWidth
@@ -54,7 +63,7 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                   <AutoCompleteComponent<FormDataSchema, Member>
                     options={members}
                     label="work_email"
-                    inputLabel="Team's Manager"
+                    inputLabel={translation.MODLUE_TEAMS.team_manager}
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -69,8 +78,12 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained" onClick={() => setOpen(false)}>
-            Cancel
+          <CustomeButtonCancel
+            type="button"
+            variant="contained"
+            onClick={() => setOpen(false)}
+          >
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -78,7 +91,7 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
             color="primary"
             onClick={onSubmit}
           >
-            Save
+            {translation.COMMON.save}
           </Button>
         </FlexBox>
       </BaseModal.Footer>

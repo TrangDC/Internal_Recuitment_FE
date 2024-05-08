@@ -17,6 +17,7 @@ const App: FC = () => {
     theme: settings.theme,
     direction: settings.direction,
     responsiveFontSizes: settings.responsiveFontSizes,
+    lang: settings.lang,
   })
 
   return (
