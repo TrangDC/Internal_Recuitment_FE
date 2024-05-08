@@ -1,0 +1,59 @@
+include: "/.gitlab/.gitlab-ci.template.yml"
+
+.dev:
+  variables:
+    REACT_APP_CLIENT_ID: d83eebcb-62a3-404c-800c-7772b6a28edb
+    REACT_APP_AUTHOR: https://login.microsoftonline.com/techvify.onmicrosoft.com
+    REACT_APP_ENDPOINT_API: https://trec-api.techvify.dev/graphql
+    REACT_APP_WEB: https://trec.techvify.dev/
+    REACT_APP_ENDPOINT_API_AUTH: https://trec-api.techvify.dev
+  rules:
+    - if: $PIPELINE_NAME == "CD" && $ENVIRONMENT == "development"
+    - when: never
+
+.prod:
+  variables:
+    REACT_APP_CLIENT_ID: 595d6a53-0f9a-4207-aa4a-143f73053170
+    REACT_APP_AUTHOR: https://login.microsoftonline.com/techvify.onmicrosoft.com
+    REACT_APP_ENDPOINT_API: https://trec-api.techvify.com/graphql
+    REACT_APP_WEB: https://trec.techvify.com/
+    REACT_APP_ENDPOINT_API_AUTH: https://trec-api.techvify.com
+  rules:
+    - if: $PIPELINE_NAME == "CD" && $ENVIRONMENT == "production"
+    - when: never
+
+##############################################
+## DEV ENVIRONMENT
+##############################################
+
+build_dev:
+  extends:
+    - .dev
+    - .build
+
+deploy_dev:
+  extends:
+    - .dev
+    - .deploy
+  needs:
+    - job: build_dev
+      artifacts: true
+      optional: false
+
+##############################################
+## PROD ENVIRONMENT
+##############################################
+
+build_prod:
+  extends:
+    - .prod
+    - .build
+
+deploy_prod:
+  extends:
+    - .prod
+    - .deploy
+  needs:
+    - job: build_prod
+      artifacts: true
+      optional: false
