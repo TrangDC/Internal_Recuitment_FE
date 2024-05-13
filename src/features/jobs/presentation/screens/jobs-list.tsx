@@ -28,6 +28,7 @@ import { STATUS_DATA } from '../providers/constants'
 import { getValueOfObj, transformListItem } from 'shared/utils/utils'
 import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
 import { Team } from 'features/teams/domain/interfaces'
+import useTextTranslation from 'shared/constants/text'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -72,6 +73,7 @@ const JobsList = () => {
 
   const { useTableReturn } = useJobTable()
   const { handleFreeWord, handleFilter } = useTableReturn
+  const translation = useTextTranslation();
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -80,7 +82,7 @@ const JobsList = () => {
         onClick: (id, rowData) => {
           handleOpenEdit(id, rowData)
         },
-        title: 'Edit',
+        title: translation.COMMON.edit,
         Icon: <EditIcon />,
       },
       {
@@ -88,7 +90,7 @@ const JobsList = () => {
         onClick: (id, rowData) => {
           navigate(`/dashboard/job-detail/${id}`)
         },
-        title: 'Detail',
+        title: translation.COMMON.detail,
         Icon: <SearchIconSmall />,
       },
       {
@@ -96,7 +98,7 @@ const JobsList = () => {
         onClick: (id, rowData) => {
           handleOpenDelete(id)
         },
-        title: 'Delete',
+        title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
       },
     ],
@@ -119,19 +121,19 @@ const JobsList = () => {
           <IconWrapper>
             <ShoppingBasket sx={{ color: 'primary.main' }} />
           </IconWrapper>
-          <H5>Jobs</H5>
+          <H5>{translation.MODLUE_JOBS.jobs}</H5>
         </FlexBox>
       </Box>
       <HeadingWrapper>
         <DivFilter>
-          <ButtonFilter<Team> listData={teams} inputLabel="Team" 
+          <ButtonFilter<Team> listData={teams} inputLabel={translation.MODLUE_TEAMS.teams}
            callbackChange={(obj) => {
             handleFilter('team_ids', transformListItem(obj))
           }}
           />
           <ButtonFilter<baseInstance>
             listData={STATUS_DATA}
-            inputLabel="Status"
+            inputLabel={translation.COMMON.status}
             multiple={false}
             callbackChange={(obj) => {
               handleFilter('status', getValueOfObj({ key: 'value', obj }))
@@ -141,7 +143,7 @@ const JobsList = () => {
         <DivHeaderWrapper>
           <CustomTextField
             id="outlined-basic"
-            label="Enter Jobs Title"
+            label={translation.MODLUE_JOBS.input_job_title}
             variant="outlined"
             size="small"
             sx={{ width: '400px' }}
@@ -161,7 +163,7 @@ const JobsList = () => {
             startIcon={<Add />}
             onClick={() => setOpenCreate(true)}
           >
-            Add a new job
+            {translation.MODLUE_JOBS.add_a_new_job}
           </ButtonHeader>
         </DivHeaderWrapper>
       </HeadingWrapper>

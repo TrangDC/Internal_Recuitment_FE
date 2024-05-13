@@ -8,11 +8,16 @@ import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
 import { baseInstance } from 'shared/interfaces'
 import useCreateJob from '../../providers/hooks/useCreateJob'
-import { LOCATION_DATA, SALARY_DATA, SALARY_RENDER } from '../../providers/constants'
+import {
+  LOCATION_DATA,
+  SALARY_DATA,
+  SALARY_RENDER,
+} from '../../providers/constants'
 import { Member, Team } from 'features/teams/domain/interfaces'
 import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
 import useSelectMember from 'shared/hooks/graphql/useSelectMember'
 import EditorBoxComponent from 'shared/components/form/editorComponent'
+import useTextTranslation from 'shared/constants/text'
 
 interface ICreateJobModal {
   open: boolean
@@ -24,25 +29,31 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
     setOpen(false)
   }
 
-  const { onSubmit, useFormReturn } = useCreateJob({callbackSuccess: handleCancelModel})
+  const { onSubmit, useFormReturn } = useCreateJob({
+    callbackSuccess: handleCancelModel,
+  })
   const {
     control,
     formState: { errors },
     setValue,
   } = useFormReturn
-  
-  const { teams } = useSelectTeam();
-  const { members } = useSelectMember();
+
+  const { teams } = useSelectTeam()
+  const { members } = useSelectMember()
+  const translation = useTextTranslation()
 
   const salary = useWatch({ control, name: 'salary_type' })
   const resetSalary = () => {
-    setValue('salary_from', 0);
+    setValue('salary_from', 0)
     setValue('salary_to', 0)
   }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
-      <BaseModal.Header title="New job" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header
+        title={translation.MODLUE_JOBS.new_job}
+        setOpen={setOpen}
+      ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
@@ -53,7 +64,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Job name "
+                    label={translation.MODLUE_JOBS.job_name}
                     size="small"
                     field={field}
                     fullWidth
@@ -70,7 +81,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                   <AutoCompleteComponent<FormDataSchema, Team>
                     options={teams}
                     label="name"
-                    inputLabel="Team"
+                    inputLabel={translation.MODLUE_TEAMS.team}
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -87,7 +98,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                   <AutoCompleteComponent<FormDataSchema, baseInstance>
                     options={LOCATION_DATA}
                     label="name"
-                    inputLabel="Location"
+                    inputLabel={translation.COMMON.location}
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -104,7 +115,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                   <AutoCompleteComponent<FormDataSchema, Member>
                     options={members}
                     label="name"
-                    inputLabel="Requester"
+                    inputLabel={translation.MODLUE_JOBS.requester}
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -122,10 +133,10 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                   <AutoCompleteComponent<FormDataSchema, baseInstance>
                     options={SALARY_DATA}
                     label="name"
-                    inputLabel="Salary"
+                    inputLabel={translation.COMMON.salary}
                     errors={errors}
                     field={field}
-                    callbackOnChange={({previousValue, value}) => {
+                    callbackOnChange={({ previousValue, value }) => {
                       resetSalary()
                     }}
                   />
@@ -134,7 +145,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
             </Grid>
             {SALARY_RENDER.map((salary_item, index) => {
               return salary_item.typeComponent === 'textField' &&
-              //@ts-ignore
+                //@ts-ignore
                 salary_item.accept.includes(salary?.value) ? (
                 <Grid item xs={salary_item.xs} key={index}>
                   <Controller
@@ -154,7 +165,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                   />
                 </Grid>
               ) : salary_item.typeComponent === 'autoComplete' &&
-               //@ts-ignore
+                //@ts-ignore
                 salary_item.accept.includes(salary?.value) ? (
                 <Grid key={index} item xs={salary_item.xs}>
                   <Controller
@@ -183,7 +194,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Staff required"
+                    label={translation.MODLUE_JOBS.staft_required}
                     field={field}
                     fullWidth
                     required
@@ -193,13 +204,13 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
               />
             </Grid>
             <Grid item xs={12}>
-            <Controller
+              <Controller
                 name="description"
                 control={control}
                 render={({ field }) => (
                   <EditorBoxComponent<FormDataSchema>
                     errors={errors}
-                    label="Description"
+                    label={translation.COMMON.description}
                     field={field}
                   />
                 )}
@@ -210,8 +221,12 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained" onClick={handleCancelModel}>
-            Cancel
+          <CustomeButtonCancel
+            type="button"
+            variant="contained"
+            onClick={handleCancelModel}
+          >
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -219,7 +234,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
             color="primary"
             onClick={onSubmit}
           >
-            Save
+            {translation.COMMON.save}
           </Button>
         </FlexBox>
       </BaseModal.Footer>

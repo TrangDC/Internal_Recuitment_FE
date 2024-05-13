@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react'
 import { CURRENCY_STATE, LOCATION_STATE, SALARY_STATE, STATUS_STATE } from 'shared/constants/constants'
+import { t } from 'i18next';
 
 export const SALARY_DATA = [
   {name: 'Range', value: SALARY_STATE.RANGE},
@@ -62,7 +63,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     name: 'salary_from',
     typeComponent: 'textField',
     accept: [SALARY_STATE.RANGE],
-    label: 'From',
+    label: t('from') as string,
     type: 'number',
     xs: 1,
   },
@@ -70,7 +71,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     name: 'salary_to',
     typeComponent: 'textField',
     accept: [SALARY_STATE.RANGE],
-    label: 'To',
+    label: t('to') as string,
     type: 'number',
     xs: 1,
   },
@@ -108,7 +109,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     name: 'currency',
     typeComponent: 'autoComplete',
     accept: [SALARY_STATE.RANGE, SALARY_STATE.MINIMUM, SALARY_STATE.UP_TO],
-    inputLabel: 'Unit',
+    inputLabel: t('unit') as string,
     options: CURRENCY_DATA,
     label: 'name',
     xs: 2,

@@ -9,6 +9,7 @@ import { FormDataSchema } from '../../providers/constants/schema'
 import { Member, Team } from 'features/teams/domain/interfaces'
 import useUpdateTeam from '../../providers/hooks/useUpdateTeam'
 import useSelectMember from 'shared/hooks/graphql/useSelectMember'
+import useTextTranslation from 'shared/constants/text'
 
 interface IEditTeamModal {
   open: boolean
@@ -32,10 +33,11 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
   } = useFormReturn
 
   const { members } = useSelectMember()
+  const translation = useTextTranslation()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Edit team" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header title={translation.MODLUE_TEAMS.edit_team} setOpen={setOpen}></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
@@ -46,7 +48,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Name"
+                    label={translation.COMMON.name}
                     size="small"
                     field={field}
                     fullWidth
@@ -63,7 +65,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
                   <AutoCompleteComponent<FormDataSchema, Member>
                     options={members}
                     label="work_email"
-                    inputLabel="Team's Manager"
+                    inputLabel={translation.MODLUE_TEAMS.team_manager}
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -83,7 +85,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
             variant="contained"
             onClick={() => setOpen(false)}
           >
-            Cancel
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -91,7 +93,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
             color="primary"
             onClick={onSubmit}
           >
-            Save
+             {translation.COMMON.save}
           </Button>
         </FlexBox>
       </BaseModal.Footer>

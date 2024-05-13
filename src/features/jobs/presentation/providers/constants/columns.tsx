@@ -7,7 +7,8 @@ import { StyleSpanName } from '../styles/index'
 import { Job } from 'features/jobs/domain/interfaces'
 import { format } from 'date-fns'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
-import { STATUS_STYLE } from '.'
+import { STATUS_STYLE } from './index'
+import { t } from 'i18next'
 
 const columnHelper = createColumnHelper<Job>()
 
@@ -15,38 +16,38 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'title',
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
-    header: () => <span>Name</span>,
+    header: () => <span>{t('name')}</span>,
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.team.name, {
     id: 'team',
-    header: () => <span>Team</span>,
+    header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
   }),
   columnHelper.accessor((row) => row.location, {
     id: 'location',
-    header: () => <span>Location</span>,
+    header: () => <span>{t('location')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
   }),
   columnHelper.accessor((row) => row.user.name, {
     id: 'requester',
-    header: () => <span>Requester</span>,
+    header: () => <span>{t('requester')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
   }),
   columnHelper.accessor((row) => row.amount, {
     id: 'amount',
-    header: () => <span>Staft required</span>,
+    header: () => <span>{t('staft_required')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
   }),
   columnHelper.accessor((row) => row.amount, {
     id: 'Hired',
-    header: () => <span>Hired</span>,
+    header: () => <span>{t('hired')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
   }),
   columnHelper.accessor((row) => row.created_at, {
     id: 'created_at',
     size: 200,
-    header: () => <span>Created date</span>,
+    header: () => <span>{t('created_date')}</span>,
     cell: (info) => (
       <StyleSpanName>
         {format(new Date(info.getValue()), 'hh:mm a, MM/dd/yyyy')}
@@ -56,7 +57,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.status, {
     id: 'status',
     size: 200,
-    header: () => <span>Status</span>,
+    header: () => <span>{t('status')}</span>,
     cell: (info) => (
       <ChipFieldStatus
         label={STATUS_STYLE[info.getValue()].text}
@@ -68,7 +69,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     ),
   }),
   columnHelper.accessor('id', {
-    header: () => <span>Action</span>,
+    header: () => <span>{t('action')}</span>,
     size: 100,
     enableSorting: false,
     cell: (info) => {

@@ -9,6 +9,7 @@ import { FormDataSchema } from '../../providers/constants/schema'
 import { Member, Team } from 'features/teams/domain/interfaces'
 import useUpdateTeam from '../../providers/hooks/useUpdateTeam'
 import useSelectMember from 'shared/hooks/graphql/useSelectMember'
+import useTextTranslation from 'shared/constants/text'
 
 interface IDetailTeamModal {
   open: boolean
@@ -32,10 +33,11 @@ function DetailTeamModal({ open, setOpen, rowData }: IDetailTeamModal) {
   } = useFormReturn
 
   const { members } = useSelectMember()
+  const translation = useTextTranslation()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Detail team" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header title={translation.MODLUE_TEAMS.detatil_team} setOpen={setOpen}></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
@@ -46,7 +48,7 @@ function DetailTeamModal({ open, setOpen, rowData }: IDetailTeamModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Name"
+                    label={translation.COMMON.name}
                     size="small"
                     field={field}
                     fullWidth
@@ -64,7 +66,7 @@ function DetailTeamModal({ open, setOpen, rowData }: IDetailTeamModal) {
                   <AutoCompleteComponent<FormDataSchema, Member>
                     options={members}
                     label="work_email"
-                    inputLabel="Team's Manager"
+                    inputLabel={translation.MODLUE_TEAMS.team_manager}
                     errors={errors}
                     field={field}
                     keySelect="id"
@@ -85,16 +87,8 @@ function DetailTeamModal({ open, setOpen, rowData }: IDetailTeamModal) {
             variant="contained"
             onClick={() => setOpen(false)}
           >
-            Cancel
+           {translation.COMMON.cancel}
           </CustomeButtonCancel>
-          {/* <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={onSubmit}
-          >
-            Save
-          </Button> */}
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

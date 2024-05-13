@@ -6,6 +6,7 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
 import useDeleteJob from '../../providers/hooks/useDeleteJob'
+import useTextTranslation from 'shared/constants/text'
 
 interface IDeleteJobModal {
   open: boolean
@@ -24,11 +25,12 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
     control,
     formState: { errors },
   } = useFormReturn
+  const translation = useTextTranslation();
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title="Do you want to delete this job?"
+        title={translation.MODLUE_JOBS.delete_job}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -41,7 +43,7 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Description"
+                    label={translation.COMMON.description}
                     field={field}
                     fullWidth
                     multiline
@@ -60,7 +62,7 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
             variant="contained"
             onClick={() => setOpen(false)}
           >
-            Cancel
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -68,7 +70,7 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
             color="primary"
             onClick={onSubmit}
           >
-            Save
+            {translation.COMMON.save}
           </Button>
         </FlexBox>
       </BaseModal.Footer>

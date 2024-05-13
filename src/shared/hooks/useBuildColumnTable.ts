@@ -1,5 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
+import useTextTranslation from 'shared/constants/text'
 
 export interface IuseBuildColumnTable<T> {
   actions: TOptionItem<T>[]
@@ -10,6 +11,7 @@ const useBuildColumnTable = <T extends object>({
   actions,
   columns,
 }: IuseBuildColumnTable<T>) => {
+
   return {
     colummTable: columns(actions),
   }

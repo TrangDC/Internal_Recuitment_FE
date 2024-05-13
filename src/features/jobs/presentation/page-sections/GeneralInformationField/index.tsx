@@ -7,6 +7,7 @@ import { LOCATION_DATA } from '../../providers/constants'
 import { SalaryFactory } from 'shared/class/salary'
 import { useMemo } from 'react'
 import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
+import useTextTranslation from 'shared/constants/text'
 
 const DivWrapperField = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -50,49 +51,51 @@ const GeneralInformationField = () => {
     })
   }, [jobDetail])
 
+  const translation = useTextTranslation();
+
   return (
     <DivWrapperField>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <DivField>
-            <Span>Job name</Span>
+            <Span>{translation.MODLUE_JOBS.job_name}</Span>
             <Tiny>{jobDetail?.name}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12} md={6}>
           <DivField>
-            <Span>Team</Span>
+            <Span>{translation.MODLUE_TEAMS.team}</Span>
             <Tiny>{jobDetail?.team?.name}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12} md={6}>
           <DivField>
-            <Span>Location</Span>
+            <Span>{translation.COMMON.location}</Span>
             <Tiny>{findItem(LOCATION_DATA, jobDetail?.location)?.name}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12} md={6}>
           <DivField>
-            <Span>Requester</Span>
+            <Span>{translation.MODLUE_JOBS.requester}</Span>
             <Tiny> {jobDetail?.user?.name}</Tiny>
           </DivField>
         </Grid>
 
         <Grid item xs={12} md={6}>
           <DivField>
-            <Span>Salary</Span>
+            <Span>{translation.COMMON.salary}</Span>
             <Tiny>{salary?.getSalaryByType()?.gerenateStringSalary()}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12} md={6}>
           <DivField>
-            <Span>Staff required</Span>
+            <Span>{translation.MODLUE_JOBS.staft_required}</Span>
             <Tiny>{jobDetail?.amount}</Tiny>
           </DivField>
         </Grid>
         <Grid item xs={12}>
           <DivField>
-            <Span>Description</Span>
+            <Span>{translation.COMMON.description}</Span>
             <Box>
               <GenerateInnerHTML innerHTML={jobDetail.description}/>
             </Box>
