@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import useGraphql from 'features/teams/domain/graphql/graphql'
-import { DeleteJobInput } from 'features/jobs/domain/interfaces'
+import useGraphql from 'features/candidates/domain/graphql/graphql'
+import { DeleteCandidateInput } from 'features/candidates/domain/interfaces'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
@@ -12,12 +12,12 @@ import {
 import _ from 'lodash'
 import toastSuccess from 'shared/components/toast/toastSuccess'
 
-interface deleteJobProps {
+interface deleteCandidateProps {
   defaultValues?: Partial<FormDataSchemaDelete>
   callbackSuccess?: (value: any) => void
 }
 
-function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
+function useDeleteCandidate(props: deleteCandidateProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
 
   const queryClient = useQueryClient()
@@ -28,14 +28,13 @@ function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
     },
   })
 
-  const { deleteTeam, queryKey } = useGraphql()
+  const { deleteCandidate, queryKey } = useGraphql()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newJob: DeleteJobInput) => {
-      const { id, description } = newJob
+    mutationFn: (newCandidate: DeleteCandidateInput) => {
+      const { id, note } = newCandidate
 
-      return fetchGraphQL<BaseRecord>(deleteTeam.query, {
-        // input: updateOther,
+      return fetchGraphQL<BaseRecord>(deleteCandidate.query, {
         id: id,
       })
     },
@@ -49,6 +48,7 @@ function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
   function onSubmit() {
     handleSubmit((value: FormDataSchemaDelete) => {
       const valueClone = _.cloneDeep(value)
+
       mutate(valueClone)
     })()
   }
@@ -61,4 +61,4 @@ function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
   }
 }
 
-export default useDeleteJob
+export default useDeleteCandidate

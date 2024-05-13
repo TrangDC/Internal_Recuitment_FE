@@ -1,54 +1,55 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import useGraphql from 'features/teams/domain/graphql/graphql'
-import { DeleteJobInput } from 'features/jobs/domain/interfaces'
+import useGraphql from 'features/candidates/domain/graphql/graphql'
+import { BlackListCandidateInput } from 'features/candidates/domain/interfaces'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
 import {
-  schemaDelete,
-  FormDataSchemaDelete,
+  schemaBlackList,
+  FormDataSchemaBlackList
 } from '../../providers/constants/schema'
 import _ from 'lodash'
 import toastSuccess from 'shared/components/toast/toastSuccess'
 
-interface deleteJobProps {
-  defaultValues?: Partial<FormDataSchemaDelete>
+interface deleteCandidateProps {
+  defaultValues?: Partial<FormDataSchemaBlackList>
   callbackSuccess?: (value: any) => void
 }
 
-function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
+function useBlackListCandidate(props: deleteCandidateProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
 
   const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchemaDelete>({
-    resolver: yupResolver(schemaDelete),
+  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchemaBlackList>({
+    resolver: yupResolver(schemaBlackList),
     defaultValues: {
       ...defaultValues,
     },
   })
 
-  const { deleteTeam, queryKey } = useGraphql()
+  const { blackListCandidate, queryKey } = useGraphql()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newJob: DeleteJobInput) => {
-      const { id, description } = newJob
+    mutationFn: (newCandidate: BlackListCandidateInput) => {
+      const { id,  description, is_black_list} = newCandidate
 
-      return fetchGraphQL<BaseRecord>(deleteTeam.query, {
-        // input: updateOther,
-        id: id,
+      return fetchGraphQL<BaseRecord>(blackListCandidate.query, {
+        id,
+        is_black_list
       })
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })
-      toastSuccess('Delete successfully')
+      toastSuccess('Add to BlackList successfully')
       callbackSuccess && callbackSuccess(data)
     },
   })
 
   function onSubmit() {
-    handleSubmit((value: FormDataSchemaDelete) => {
+    handleSubmit((value: FormDataSchemaBlackList) => {
       const valueClone = _.cloneDeep(value)
+
       mutate(valueClone)
     })()
   }
@@ -61,4 +62,4 @@ function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
   }
 }
 
-export default useDeleteJob
+export default useBlackListCandidate

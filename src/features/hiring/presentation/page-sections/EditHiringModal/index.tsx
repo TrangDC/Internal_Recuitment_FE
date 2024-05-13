@@ -6,12 +6,11 @@ import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import { TEAM } from 'features/jobs/domain/interfaces'
 import { baseInstance } from 'shared/interfaces'
 import useCreateTeam from '../../providers/hooks/useCreateHiring'
 import { Hiring } from 'features/hiring/domain/interfaces'
-import { useEffect, useState } from 'react'
-import { mockApiGetListTeam } from 'features/jobs/presentation/providers/hooks/useJobTable'
+import { useState } from 'react'
+import { Team } from 'features/teams/domain/interfaces'
 
 interface IEditHiringModal {
   open: boolean
@@ -27,21 +26,21 @@ function EditHiringModal({ open, setOpen }: IEditHiringModal) {
     formState: { errors },
   } = useFormReturn
 
-  const [teams, setTeams] = useState<TEAM[]>([])
-  useEffect(() => {
-    new Promise((resolve, reject) => {
-      resolve(mockApiGetListTeam())
-    }).then((response: any) => {
-      setTeams(response.sortData)
-    })
-  }, [])
+  const [teams, setTeams] = useState<Team[]>([])
+  // useEffect(() => {
+  //   new Promise((resolve, reject) => {
+  //     resolve(mockApiGetListTeam())
+  //   }).then((response: any) => {
+  //     setTeams(response.sortData)
+  //   })
+  // }, [])
 
   const position: baseInstance[] = [
-    { id: 1, name: 'UI/UX Designer' },
-    { id: 2, name: 'Software Engineer' },
-    { id: 3, name: 'Sale' },
-    { id: 4, name: 'Front-end Developer' },
-    { id: 5, name: 'Back-end Developer' },
+    { value: "1", name: 'UI/UX Designer' },
+    { value: "2", name: 'Software Engineer' },
+    { value: "3", name: 'Sale' },
+    { value: "4", name: 'Front-end Developer' },
+    { value: "5", name: 'Back-end Developer' },
   ]
 
 
@@ -72,7 +71,7 @@ function EditHiringModal({ open, setOpen }: IEditHiringModal) {
                 name="team"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, TEAM>
+                  <AutoCompleteComponent<FormDataSchema, Team>
                     options={teams}
                     label="name"
                     inputLabel="Team"

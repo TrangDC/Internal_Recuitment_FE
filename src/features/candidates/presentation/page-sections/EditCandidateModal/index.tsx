@@ -2,72 +2,73 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { Button, Grid } from '@mui/material'
 import InputComponent from 'shared/components/form/inputComponent'
-import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import { TEAM } from 'features/jobs/domain/interfaces'
-import { useEffect, useState } from 'react'
-import useCreateCandidate from '../../providers/hooks/useCreateCandidate'
-import { mockApiGetListTeam } from 'features/jobs/presentation/providers/hooks/useJobTable'
 import DatePickerComponent from 'shared/components/form/datePickerComponent'
 import { Candidate } from 'features/candidates/domain/interfaces'
+import useUpdateCandidate from '../../providers/hooks/useUpdateCandidate'
+import { getInfoData } from 'shared/utils/utils'
+import useTextTranslation from 'shared/constants/text'
 
-interface ICreateCandidateModal {
+interface IEditCandidateModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
   rowData?: Candidate
 }
 
-function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
-  const { onSubmit, useFormReturn } = useCreateCandidate()
+function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
+  const { onSubmit, useFormReturn } = useUpdateCandidate({
+    callbackSuccess: () => setOpen(false),
+    defaultValues: getInfoData({
+      field: ['dob', 'email', 'phone', 'name', 'id'],
+      object: {
+        ...rowData,
+        dob: new Date(rowData?.dob as string),
+      },
+    }),
+  })
+
   const {
     control,
     formState: { errors },
   } = useFormReturn
 
-  //MockAPI
-  const [teams, setTeams] = useState<TEAM[]>([])
-  useEffect(() => {
-    new Promise((resolve, reject) => {
-      resolve(mockApiGetListTeam())
-    }).then((response: any) => {
-      setTeams(response.sortData)
-    })
-  }, [])
+  const translation = useTextTranslation()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Edit Candidate" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header
+        title={translation.MODLUE_CANDIDATES.edit_candidate}
+        setOpen={setOpen}
+      ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={6}>
               <Controller
-                name="teams"
+                name="name"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, TEAM>
-                    options={teams}
-                    label="name"
-                    inputLabel="Team"
+                  <InputComponent<FormDataSchema>
                     errors={errors}
+                    label={translation.COMMON.name}
                     field={field}
-                    keySelect="id"
                     fullWidth
+                    required
                   />
                 )}
               />
             </Grid>
             <Grid item xs={6}>
               <Controller
-                name="phone_number"
+                name="phone"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Phone number"
+                    label={translation.COMMON.phone_number}
                     field={field}
                     fullWidth
                     required
@@ -83,7 +84,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Email"
+                    label={translation.COMMON.email}
                     size="small"
                     field={field}
                     fullWidth
@@ -94,30 +95,18 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
             </Grid>
             <Grid item xs={6}>
               <Controller
-                name="dateOfBirth"
+                name="dob"
                 control={control}
                 render={({ field }) => (
                   <DatePickerComponent<FormDataSchema>
-                  textFieldProps={{fullWidth: true, size: 'small', required: true}}
+                    textFieldProps={{
+                      fullWidth: true,
+                      size: 'small',
+                      required: true,
+                    }}
                     errors={errors}
-                    label="DOB"
+                    label={translation.COMMON.dob}
                     field={field}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchema>
-                    errors={errors}
-                    label="Description"
-                    field={field}
-                    fullWidth
-                    multiline
-                    minRows={4}
                   />
                 )}
               />
@@ -128,7 +117,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
           <CustomeButtonCancel type="button" variant="contained">
-            Cancel
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -136,7 +125,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
             color="primary"
             onClick={onSubmit}
           >
-            Save
+            {translation.COMMON.save}
           </Button>
         </FlexBox>
       </BaseModal.Footer>
@@ -144,4 +133,4 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
   )
 }
 
-export default CreateCandidateModal
+export default EditCandidateModal

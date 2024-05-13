@@ -1,5 +1,5 @@
 import useAuth from "shared/hooks/useAuth";
-import Login from "features/authentication/presentation/pages/login";
+// import Login from "features/authentication/presentation/pages/login";
 import  { Fragment, ReactNode, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
@@ -20,7 +20,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
       setRequestedLocation(pathname);
     }
 
-    return <Login />;
+    // return <Login />;
   }
 
   if (requestedLocation && pathname !== requestedLocation) {

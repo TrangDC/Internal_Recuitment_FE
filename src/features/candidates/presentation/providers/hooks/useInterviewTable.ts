@@ -3,9 +3,9 @@ import useCustomTable, { IuseCustomTableReturn } from 'shared/hooks/useCustomTab
 import axiosInstance from 'shared/utils/axios'
 
 const useInterviewTable = () => {
-  const { getAllJobTitles, queryKey } = useGraphql()
+  const { getAllTeam, queryKey } = useGraphql()
   const useTableReturn = useCustomTable({
-    buildQuery: getAllJobTitles,
+    buildQuery: getAllTeam,
     variables: {},
     queryKey,
   })

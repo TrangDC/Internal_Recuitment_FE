@@ -73,7 +73,7 @@ const TabCustomize = ({ renderItem }: TabProps) => {
 
   return (
     <TabContext value={value}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
+      <Box>
         <TabListWrapper onChange={handleChange}>
           {renderItem.map((item, index) => {
             return (
@@ -89,7 +89,7 @@ const TabCustomize = ({ renderItem }: TabProps) => {
       {renderItem.map((item, index) => {
         const { Component } = item
         return (
-          <TabPanel value={index.toString()} key={index}>
+          <TabPanel value={index.toString()} key={index} sx={{borderRadius: '8px', overflow: 'hidden', paddingBottom: '16px'}}>
             <HeadingWrapper>
               <Component />
             </HeadingWrapper>

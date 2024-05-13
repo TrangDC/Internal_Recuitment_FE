@@ -1,9 +1,9 @@
 import { buildQuery } from 'services/graphql-services'
 
 const useGraphql = () => {
-  const queryKey = 'job'
-  const getAllJobTitles = buildQuery({
-    operation: 'GetAllJobTitles',
+  const queryKey = 'candidate'
+  const getAllCandidates = buildQuery({
+    operation: 'GetAllCandidates',
     options: {
       type: 'query',
     },
@@ -11,8 +11,13 @@ const useGraphql = () => {
       edges {
         node {
           id
-          code
           name
+          email
+          phone
+          dob
+          status
+          is_black_list
+          created_at
         }
       }
       pagination {
@@ -23,13 +28,13 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'JobTitleFilter',
-      orderBy: 'JobTitleOrder', 
-      freeWord: 'JobTitleFreeWord',
+      filter: 'CandidateFilter',
+      orderBy: 'CandidateOrder', 
+      freeWord: 'CandidateFreeWord',
     },
   })
-  const createJobTitle = buildQuery({
-    operation: 'CreateJobTitle',
+  const createCandidate = buildQuery({
+    operation: 'CreateCandidate',
     options: {
       type: 'mutation',
     },
@@ -39,14 +44,64 @@ const useGraphql = () => {
       }
     `,
     params: {
-      input: 'NewJobTitleInput!',
+      input: 'NewCandidateInput!',
+    },
+  })
+
+  const updateCandidate = buildQuery({
+    operation: 'UpdateCandidate',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        id
+      }
+    `,
+    params: {
+      input: 'UpdateCandidateInput!',
+      id: 'ID!',
+    },
+  })
+
+  const deleteCandidate = buildQuery({
+    operation: 'DeleteCandidate',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        
+      }
+    `,
+    params: {
+      id: 'ID!',
+    },
+  })
+
+  const blackListCandidate = buildQuery({
+    operation: 'SetBlackListCandidate',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        
+      }
+    `,
+    params: {
+      id: 'ID!',
+      is_black_list: 'Boolean!',
     },
   })
 
   return {
-    getAllJobTitles,
+    getAllCandidates,
     queryKey,
-    createJobTitle,
+    createCandidate,
+    updateCandidate,
+    deleteCandidate,
+    blackListCandidate,
   }
 }
 

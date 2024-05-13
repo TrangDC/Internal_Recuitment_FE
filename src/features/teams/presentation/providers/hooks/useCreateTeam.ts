@@ -7,7 +7,7 @@ import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
 import { schema, FormDataSchema } from '../../providers/constants/schema'
 import { transformListItem } from 'shared/utils/utils'
-import _ from 'lodash'
+import _, { isEmpty } from 'lodash'
 import toastSuccess from 'shared/components/toast/toastSuccess'
 
 interface createTeamProps {
@@ -32,6 +32,7 @@ function useCreateTeam(props: createTeamProps = { defaultValues: {} }) {
     mutationFn: (newTeam: NewTeamInput) =>
       fetchGraphQL<BaseRecord>(createTeam.query, {
         input: newTeam,
+        note: "",
       }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })
@@ -44,7 +45,10 @@ function useCreateTeam(props: createTeamProps = { defaultValues: {} }) {
     handleSubmit((value: FormDataSchema) => {
       const valueClone = {
         ..._.cloneDeep(value),
-        members: transformListItem(value.members),
+      }
+
+      if(value?.members && !isEmpty(value?.members)) {
+        valueClone.members = transformListItem(value?.members);
       }
 
       mutate(valueClone)
