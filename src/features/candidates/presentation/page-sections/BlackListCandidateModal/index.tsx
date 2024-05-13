@@ -5,33 +5,37 @@ import InputComponent from 'shared/components/form/inputComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import useDeleteTeam from '../../providers/hooks/useDeleteTeam'
 import useTextTranslation from 'shared/constants/text'
+import useBlackListCandidate from '../../providers/hooks/useBlackListCandidate'
 
-interface IDeleteTeamModal {
+interface IBlackListCandidateModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
 }
 
-function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
-  const { onSubmit, useFormReturn } = useDeleteTeam({
+function BlackListCandidateModal({
+  open,
+  setOpen,
+  id,
+}: IBlackListCandidateModal) {
+  const { onSubmit, useFormReturn } = useBlackListCandidate({
     callbackSuccess: () => setOpen(false),
     defaultValues: {
       id: id,
+      is_black_list: true,
     },
   })
   const {
     control,
     formState: { errors },
   } = useFormReturn
-
   const translation = useTextTranslation()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title={translation.MODLUE_TEAMS.delete_team}
+        title={translation.MODLUE_CANDIDATES.add_blackList}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -39,7 +43,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Controller
-                name="note"
+                name="description"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
@@ -63,7 +67,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
             variant="contained"
             onClick={() => setOpen(false)}
           >
-             {translation.COMMON.cancel}
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -71,7 +75,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
             color="primary"
             onClick={onSubmit}
           >
-             {translation.COMMON.save}
+            {translation.COMMON.save}
           </Button>
         </FlexBox>
       </BaseModal.Footer>
@@ -79,4 +83,4 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
   )
 }
 
-export default DeleteTeamModal
+export default BlackListCandidateModal

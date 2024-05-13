@@ -18,7 +18,7 @@ const GenaralInformationInterview = () => {
   const {
     openCreate,
     setOpenCreate,
-    handleOpenDetail,
+    // handleOpenDetail,
     handleOpenEdit,
     openEdit,
     rowId,
@@ -49,7 +49,7 @@ const GenaralInformationInterview = () => {
       {
         id: 'detail',
         onClick: (id, rowData) => {
-            handleOpenDetail(id, rowData)
+            // handleOpenDetail(id, rowData)
         },
         title: 'Detail',
         Icon: <EyeIcon />,
@@ -75,7 +75,7 @@ const GenaralInformationInterview = () => {
           <CustomTable columns={colummTable} useTableReturn={useTableReturn} />
         )}
       </Box>
-      {openCreate && (
+      {/* {openCreate && (
         <CreateInterviewModal open={openCreate} setOpen={setOpenCreate} />
       )} 
       {openEdit && (
@@ -85,7 +85,7 @@ const GenaralInformationInterview = () => {
           id={rowId.current}
           rowData={rowData.current}
         />
-      )}
+      )} */}
     </DivWrapperProcess>
   )
 }

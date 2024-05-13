@@ -5,11 +5,12 @@ import InputComponent from 'shared/components/form/inputComponent'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../../providers/constants/schema'
+import { FormDataSchemaUpdate } from '../../providers/constants/schema'
 import { Member, Team } from 'features/teams/domain/interfaces'
 import useUpdateTeam from '../../providers/hooks/useUpdateTeam'
 import useSelectMember from 'shared/hooks/graphql/useSelectMember'
 import useTextTranslation from 'shared/constants/text'
+import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 
 interface IEditTeamModal {
   open: boolean
@@ -25,19 +26,28 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
       id: rowData?.id,
       members: rowData?.members,
     },
-    callbackSuccess: () => setOpen(false)
+    callbackSuccess: () => setOpen(false),
   })
   const {
     control,
     formState: { errors },
+    setValue,
   } = useFormReturn
 
   const { members } = useSelectMember()
   const translation = useTextTranslation()
 
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason);
+    onSubmit();
+  }
+
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title={translation.MODLUE_TEAMS.edit_team} setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header
+        title={translation.MODLUE_TEAMS.edit_team}
+        setOpen={setOpen}
+      ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
@@ -46,7 +56,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
                 name="name"
                 control={control}
                 render={({ field }) => (
-                  <InputComponent<FormDataSchema>
+                  <InputComponent<FormDataSchemaUpdate>
                     errors={errors}
                     label={translation.COMMON.name}
                     size="small"
@@ -62,7 +72,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
                 name="members"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Member>
+                  <AutoCompleteComponent<FormDataSchemaUpdate, Member>
                     options={members}
                     label="work_email"
                     inputLabel={translation.MODLUE_TEAMS.team_manager}
@@ -87,14 +97,15 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
           >
             {translation.COMMON.cancel}
           </CustomeButtonCancel>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={onSubmit}
-          >
-             {translation.COMMON.save}
-          </Button>
+          <UpdateRecord callbackSubmit={callbackSubmit}>
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+            >
+              {translation.COMMON.save}
+            </Button>
+          </UpdateRecord>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

@@ -30,7 +30,21 @@ const useTextTranslation = () => {
       history_log: t('history_log'),
       hiring_process: t('hiring_process'),
     },
+    MODLUE_CANDIDATES: {
+      candidates: t('candidates'),
+      blacklist: t('blacklist'),
+      add_new_candidate: t('add_new_candidate'),
+      edit_candidate: t('edit_candidate'),
+      add_blackList: t('add_blackList'),
+      delete_candidate: t('delete_candidate'),
+    },
     COMMON: {
+      email: t('email'),
+      search: t('search'),
+      import: t('import'),
+      phone_number: t('phone_number'),
+      dob: t('dob'),
+      add_to_blackList: t('add_to_blackList'),
       name: t('name'),
       action: t('action'),
       cancel: t('cancel'),
@@ -51,6 +65,8 @@ const useTextTranslation = () => {
       status_closed: t('status_closed'),
       from_date: t('from_date'),
       to_date: t('to_date'),
+      update_record: t('update_record'),
+      sub_title_update_record: t('sub_title_update_record'),
     }
   }
 }

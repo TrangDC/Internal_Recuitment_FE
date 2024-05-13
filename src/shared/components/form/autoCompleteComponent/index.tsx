@@ -56,8 +56,10 @@ const AutoCompleteComponent = <T extends object, Option>({
       <AutoCompleteField
         multiple={multiple}
         fullWidth
+        //@ts-ignore
         options={options}
         value={field.value}
+         //@ts-ignore
         onChange={(event, value: Option | Option[], reason) => {
           field.onChange(value)
           callbackOnChange && callbackOnChange({previousValue: field.value, value})

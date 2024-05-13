@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
-import { NewJobTitleInput } from 'features/teams/domain/interfaces'
+import { NewTeamInput } from 'features/teams/domain/interfaces'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
@@ -16,11 +16,11 @@ function useCreateHiring(defaultValues: Partial<FormDataSchema> = {}) {
     },
   })
 
-  const { createJobTitle, queryKey } = useGraphql()
+  const { createJob, queryKey } = useGraphql()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newTodo: NewJobTitleInput) =>
-      fetchGraphQL<BaseRecord>(createJobTitle.query, {
+    mutationFn: (newTodo: NewTeamInput) =>
+      fetchGraphQL<BaseRecord>(createJob.query, {
         input: newTodo,
       }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [queryKey] }),

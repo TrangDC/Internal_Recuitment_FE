@@ -47,6 +47,7 @@ const useGraphql = () => {
     `,
     params: {
       input: 'NewTeamInput!',
+      note: 'String!',
     },
   })
 
@@ -63,6 +64,7 @@ const useGraphql = () => {
     params: {
       input: 'UpdateTeamInput!',
       id: 'ID!',
+      note: 'String!'
     },
   })
 
@@ -71,13 +73,10 @@ const useGraphql = () => {
     options: {
       type: 'mutation',
     },
-    node: `
-      data {
-        
-      }
-    `,
+    node: '',
     params: {
       id: 'ID!',
+      note: 'String!'
     },
   })
 

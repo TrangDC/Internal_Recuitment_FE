@@ -6,11 +6,11 @@ import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import { TEAM } from 'features/jobs/domain/interfaces'
 import { useEffect, useState } from 'react'
-import { mockApiGetListTeam } from 'features/jobs/presentation/providers/hooks/useJobTable'
+// import { mockApiGetListTeam } from 'features/jobs/presentation/providers/hooks/useJobTable'
 import DatePickerComponent from 'shared/components/form/datePickerComponent'
 import useCreateInterview from '../../providers/hooks/useCreateInterview'
+import { Team } from 'features/teams/domain/interfaces'
 
 interface ICreateInterviewModal {
   open: boolean
@@ -25,14 +25,14 @@ function CreateInterviewModal({ open, setOpen }: ICreateInterviewModal) {
   } = useFormReturn
 
   //MockAPI
-  const [teams, setTeams] = useState<TEAM[]>([])
-  useEffect(() => {
-    new Promise((resolve, reject) => {
-      resolve(mockApiGetListTeam())
-    }).then((response: any) => {
-      setTeams(response.sortData)
-    })
-  }, [])
+  const [teams, setTeams] = useState<Team[]>([])
+  // useEffect(() => {
+  //   new Promise((resolve, reject) => {
+  //     // resolve(mockApiGetListTeam())
+  //   }).then((response: any) => {
+  //     setTeams(response.sortData)
+  //   })
+  // }, [])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -45,7 +45,7 @@ function CreateInterviewModal({ open, setOpen }: ICreateInterviewModal) {
                 name="team"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, TEAM>
+                  <AutoCompleteComponent<FormDataSchema, Team>
                     options={teams}
                     label="name"
                     inputLabel="Team"
@@ -77,7 +77,7 @@ function CreateInterviewModal({ open, setOpen }: ICreateInterviewModal) {
                 name="interviewers"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, TEAM>
+                  <AutoCompleteComponent<FormDataSchema, Team>
                     options={teams}
                     label="name"
                     inputLabel="Interviewers"

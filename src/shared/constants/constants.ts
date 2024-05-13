@@ -38,6 +38,17 @@ export const STATUS_STATE = {
     CLOSED: 'closed'
 }
 
+export const STATUS_CANDIDATE = {
+    APPLIED: 'applied',
+    INTERVIEWING: 'interviewing',
+    OFFERING: 'offering',
+    HIRED: 'hired',
+    KIV: 'kiv',
+    OFFERED_LOST: 'offer_lost',
+    EX_STAFTT: 'ex_staff',
+    NEW: 'new',
+}
+
 export const TREC_REFRESH_TOKEN: string = 'refreshToken';
 export const TREC_ACCESS_TOKEN: string = 'accessToken';
 

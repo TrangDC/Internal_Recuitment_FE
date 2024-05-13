@@ -29,11 +29,9 @@ function useDeleteTeam(props: deleteTeamProps = { defaultValues: {}}) {
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newTeam: DeleteTeamInput) => {
-      const { id, description } = newTeam
 
       return fetchGraphQL<BaseRecord>(deleteTeam.query, {
-        // input: updateOther,
-        id: id,
+        ...newTeam,
       })
     },
     onSuccess: (data) => {

@@ -1,43 +1,58 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import useGraphql from 'features/jobs/domain/graphql/graphql'
-import { NewJobTitleInput } from 'features/teams/domain/interfaces'
+import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
-import { schema,FormDataSchema } from '../constants/schema'
+import { schema, FormDataSchema } from '../constants/schema'
+import { NewCandidateInput } from 'features/candidates/domain/interfaces'
+import _ from 'lodash'
+import { converDateToISOString } from 'shared/utils/utils'
+import toastSuccess from 'shared/components/toast/toastSuccess'
 
-function useCreateCandidate() {
+interface createCandidateProps {
+  defaultValues?: Partial<FormDataSchema>
+  callbackSuccess?: (value: any) => void
+}
+
+function useCreateCandidate(props: createCandidateProps = { defaultValues: {} }) {
+  const { defaultValues, callbackSuccess} = props
   const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm({
+  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
     resolver: yupResolver(schema),
     defaultValues: {
-      // name: '',
-      // code: '',
-      // description: '',
+      ...defaultValues
     },
   })
 
-  const { createJobTitle, queryKey } = useGraphql()
-  
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { createCandidate, queryKey } = useGraphql()
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newTodo: NewJobTitleInput) =>
-      fetchGraphQL<BaseRecord>(createJobTitle.query, {
+    mutationFn: (newTodo: NewCandidateInput) =>
+      fetchGraphQL<BaseRecord>(createCandidate.query, {
         input: newTodo,
       }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [queryKey] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [queryKey] })
+
+      toastSuccess('Create successfully')
+      callbackSuccess && callbackSuccess(data)
+    },
   })
 
   function onSubmit() {
     handleSubmit((value: FormDataSchema) => {
-    console.log("🚀 ~ handleSubmit ~ value:", value)
+      const valueClone = {
+        ..._.cloneDeep(value),
+        dob: converDateToISOString(value.dob),
+      }
 
-      // mutate(value)
+      mutate(valueClone)
     })()
   }
-  
+
   return {
     onSubmit,
     useFormReturn: {

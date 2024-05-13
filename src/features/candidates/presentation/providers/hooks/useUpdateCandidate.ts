@@ -1,23 +1,26 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import useGraphql from 'features/teams/domain/graphql/graphql'
-import { UpdateTypeInput } from 'features/teams/domain/interfaces'
+import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
-import { FormDataSchemaUpdate, schemaUpdate } from '../../providers/constants/schema'
-import { transformListItem } from 'shared/utils/utils'
-import _, { isEmpty } from 'lodash'
+import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
+import {
+  UpdateCandidateInput,
+} from 'features/candidates/domain/interfaces'
+import _ from 'lodash'
+import { converDateToISOString } from 'shared/utils/utils'
 import toastSuccess from 'shared/components/toast/toastSuccess'
 
-interface createTeamProps {
+interface createCandidateProps {
   defaultValues?: Partial<FormDataSchemaUpdate>
   callbackSuccess?: (value: any) => void
 }
 
-function useUpdateTeam(props: createTeamProps = { defaultValues: {} }) {
+function useUpdateCandidate(
+  props: createCandidateProps = { defaultValues: {} }
+) {
   const { defaultValues, callbackSuccess } = props
-
   const queryClient = useQueryClient()
   const { handleSubmit, ...useFormReturn } = useForm<FormDataSchemaUpdate>({
     resolver: yupResolver(schemaUpdate),
@@ -26,20 +29,21 @@ function useUpdateTeam(props: createTeamProps = { defaultValues: {} }) {
     },
   })
 
-  const { updateTeam, queryKey } = useGraphql()
+  const { updateCandidate, queryKey } = useGraphql()
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newTeam: UpdateTypeInput) => {
-      const { id, note, ...updateOther } = newTeam
-
-      return fetchGraphQL<BaseRecord>(updateTeam.query, {
-        input: updateOther,
+    mutationFn: (newCandidate : UpdateCandidateInput) => {
+        const { id } = newCandidate;
+      return fetchGraphQL<BaseRecord>(updateCandidate.query, {
+        input: newCandidate,
         id: id,
-        note: note || "",
       })
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })
+
       toastSuccess('Update successfully')
       callbackSuccess && callbackSuccess(data)
     },
@@ -49,10 +53,7 @@ function useUpdateTeam(props: createTeamProps = { defaultValues: {} }) {
     handleSubmit((value: FormDataSchemaUpdate) => {
       const valueClone = {
         ..._.cloneDeep(value),
-      }
-
-      if(value?.members && !isEmpty(value?.members)) {
-        valueClone.members = transformListItem(value?.members);
+        dob: converDateToISOString(value.dob),
       }
 
       mutate(valueClone)
@@ -67,4 +68,4 @@ function useUpdateTeam(props: createTeamProps = { defaultValues: {} }) {
   }
 }
 
-export default useUpdateTeam
+export default useUpdateCandidate

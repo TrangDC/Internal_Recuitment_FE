@@ -5,17 +5,17 @@ import InputComponent from 'shared/components/form/inputComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import useDeleteTeam from '../../providers/hooks/useDeleteTeam'
 import useTextTranslation from 'shared/constants/text'
+import useDeleteCandidate from '../../providers/hooks/useDeleteCandidate'
 
-interface IDeleteTeamModal {
+interface IDeleteCandidateModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
 }
 
-function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
-  const { onSubmit, useFormReturn } = useDeleteTeam({
+function DeleteCandidateModal({ open, setOpen, id }: IDeleteCandidateModal) {
+  const { onSubmit, useFormReturn } = useDeleteCandidate({
     callbackSuccess: () => setOpen(false),
     defaultValues: {
       id: id,
@@ -25,13 +25,12 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
     control,
     formState: { errors },
   } = useFormReturn
-
-  const translation = useTextTranslation()
+  const translation = useTextTranslation();
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title={translation.MODLUE_TEAMS.delete_team}
+        title={translation.MODLUE_CANDIDATES.delete_candidate}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -63,7 +62,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
             variant="contained"
             onClick={() => setOpen(false)}
           >
-             {translation.COMMON.cancel}
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -71,7 +70,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
             color="primary"
             onClick={onSubmit}
           >
-             {translation.COMMON.save}
+            {translation.COMMON.save}
           </Button>
         </FlexBox>
       </BaseModal.Footer>
@@ -79,4 +78,4 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
   )
 }
 
-export default DeleteTeamModal
+export default DeleteCandidateModal
