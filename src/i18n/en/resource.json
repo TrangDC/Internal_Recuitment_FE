@@ -31,6 +31,13 @@
   "add_blackList": "Do you want to add users to the blacklist?",
   "delete_candidate": "Do you want to delete candidate?",
 
+  "job_application_history": "Job application history",
+  "apply_to_a_job": "Apply to a job",
+  "applied_date": "Applied date",
+  "change_status": "Change status",
+
+  "drag_and_drop": "Drag & drop your file here of",
+  "browse_file": "Browse file",
   "email": "Email",
   "search": "Search",
   "import": "Import",

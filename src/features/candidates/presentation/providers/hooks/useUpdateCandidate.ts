@@ -31,7 +31,6 @@ function useUpdateCandidate(
 
   const { updateCandidate, queryKey } = useGraphql()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newCandidate : UpdateCandidateInput) => {

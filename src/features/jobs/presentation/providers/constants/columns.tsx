@@ -50,7 +50,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     header: () => <span>{t('created_date')}</span>,
     cell: (info) => (
       <StyleSpanName>
-        {format(new Date(info.getValue()), 'hh:mm a, MM/dd/yyyy')}
+        {format(new Date(info.getValue()), 'hh:mm a, dd/MM/yyyy')}
       </StyleSpanName>
     ),
   }),

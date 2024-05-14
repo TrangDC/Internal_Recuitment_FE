@@ -32,6 +32,7 @@ function useDeleteCandidate(props: deleteCandidateProps = { defaultValues: {} })
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newCandidate: DeleteCandidateInput) => {
+      // eslint-disable-next-line
       const { id, note } = newCandidate
 
       return fetchGraphQL<BaseRecord>(deleteCandidate.query, {

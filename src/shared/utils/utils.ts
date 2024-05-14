@@ -81,7 +81,6 @@ export const getValueOfObj = ({
   obj: Record<string, any>
 }) => {
   if (!obj || !key) return null
-console.log("obj", obj, key)
   return obj.hasOwnProperty(key) ? obj[key] : null
 }
 
@@ -115,3 +114,11 @@ export const getBase64 = (file: Blob): Promise<string> =>
   export const converDateToISOString = (date: string) => {
     return new Date(date).toISOString();
   }
+
+  export const convertSizeToMb = (size: number) => {
+    let roundSize = Math.round(size / 1024);
+
+    if (roundSize < 1024) return `${roundSize} KB`;
+    if (roundSize < 1024 * 1024) return `${Math.round(roundSize / 1024)} MB`;
+    return `${Math.round(roundSize / (1024 * 1024))} GB`;
+  };

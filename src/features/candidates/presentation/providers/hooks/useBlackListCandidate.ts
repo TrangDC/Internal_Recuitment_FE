@@ -32,6 +32,7 @@ function useBlackListCandidate(props: deleteCandidateProps = { defaultValues: {}
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newCandidate: BlackListCandidateInput) => {
+       // eslint-disable-next-line
       const { id,  description, is_black_list} = newCandidate
 
       return fetchGraphQL<BaseRecord>(blackListCandidate.query, {

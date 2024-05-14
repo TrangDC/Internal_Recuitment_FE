@@ -30,6 +30,17 @@ export const schemaBlackList = yup.object({
 })
 export type FormDataSchemaBlackList = yup.InferType<typeof schemaBlackList>
 
+export const schemaApplyJob = yup.object({
+  team_id: yup.object(),
+  candidate_id: yup.string().required(),
+  hiring_job_id: yup.object().required(),
+  status: yup.object().required(),
+  attachments: yup.mixed(),
+})
+
+export type FormDataSchemaApplyJob = yup.InferType<typeof schemaApplyJob>
+
+//interview
 export const schemaInterview = yup.object({
   team: yup.object().required(),
   job_name: yup.string().required(),

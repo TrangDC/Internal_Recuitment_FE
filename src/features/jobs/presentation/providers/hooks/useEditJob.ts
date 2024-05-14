@@ -11,6 +11,7 @@ import {
 import _ from 'lodash'
 import { getValueOfObj } from 'shared/utils/utils'
 import toastSuccess from 'shared/components/toast/toastSuccess'
+import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 
 interface createJobProps {
   defaultValues?: Partial<FormDataSchemaUpdate>
@@ -47,16 +48,17 @@ function useUpdateJob(props: createJobProps = { defaultValues: {} }) {
 
   function onSubmit() {
     handleSubmit((value: FormDataSchemaUpdate) => {
+      const salary_type = getValueOfObj({ key: 'value', obj: value.salary_type });
 
       const valueClone = {
         ..._.cloneDeep(value),
-        currency: getValueOfObj({ key: 'value', obj: value.currency }),
+        currency: salary_type !== SALARY_STATE.NEGOTITATION ? getValueOfObj({ key: 'value', obj: value.currency }) : CURRENCY_STATE.VND,
         location: getValueOfObj({ key: 'value', obj: value.location }),
-        salary_type: getValueOfObj({ key: 'value', obj: value.salary_type }),
+        salary_type: salary_type,
         team_id: getValueOfObj({ key: 'id', obj: value.team_id }),
         created_by: getValueOfObj({ key: 'id', obj: value.created_by }),
       }
-console.log("valueClone", valueClone)
+
       mutate(valueClone)
     })()
   }

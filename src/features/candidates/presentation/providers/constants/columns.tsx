@@ -4,14 +4,14 @@ import {
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
 import { StyleSpanName } from '../styles/index'
-import { Candidate, Interview } from 'features/candidates/domain/interfaces'
+import { Candidate, CandidateJob } from 'features/candidates/domain/interfaces'
 import { CANDIDATE_STATUS } from './index'
 import { format } from 'date-fns'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { t } from 'i18next';
 
 const columnHelper = createColumnHelper<Candidate>()
-const columnHelperInterview = createColumnHelper<Interview>()
+const columnHelperCandidateJob = createColumnHelper<CandidateJob>()
 
 export const columns = (
   actions: TOptionItem<Candidate>[]
@@ -38,7 +38,7 @@ export const columns = (
     size: 200,
     cell: (info) => (
       <StyleSpanName>
-        {format(new Date(info.getValue()), 'hh:mm a, MM/dd/yyyy')}
+        {format(new Date(info.getValue()), 'hh:mm a, dd/MM/yyyy')}
       </StyleSpanName>
     ),
   }),
@@ -80,34 +80,33 @@ export const columns = (
   }),
 ]
 
-export const columnsInterview = (
-  actions: TOptionItem<Interview>[]
-): ColumnDef<Interview, any>[] => [
-  columnHelperInterview.accessor((row) => row.job_name, {
+export const columnsCandidateJob = (
+  actions: TOptionItem<CandidateJob>[]
+): ColumnDef<CandidateJob, any>[] => [
+  columnHelperCandidateJob.accessor((row) => row.candidate_id, {
     id: 'job_name',
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
-    header: () => <span>Job name</span>,
+    header: () => <span>{t('job_name')}</span>,
     enableSorting: false,
   }),
-  columnHelperInterview.accessor((row) => row.team, {
+  columnHelperCandidateJob.accessor((row) => row.candidate_id, {
     id: 'team',
-    header: () => <span>Team</span>,
+    header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
   }),
-  columnHelperInterview.accessor((row) => row.applied_date, {
+  columnHelperCandidateJob.accessor((row) => row.created_at, {
     id: 'applied_date',
     size: 200,
-    header: () => <span>Applied date</span>,
+    header: () => <span>{t('applied_date')}</span>,
     cell: (info) => (
       <StyleSpanName>
-        {' '}
-        {format(new Date(info.getValue()), 'hh:mm a, MM/dd/yyyy')}
+        {/* {format(new Date(info.getValue()), 'hh:mm a, dd/MM/yyyy')} */}
       </StyleSpanName>
     ),
   }),
-  columnHelperInterview.accessor((row) => row.status, {
+  columnHelperCandidateJob.accessor((row) => row.status, {
     id: 'status',
-    header: () => <span>Interview status</span>,
+    header: () => <span>{t('status')}</span>,
     cell: (info) => (
       <ChipFieldStatus
         //@ts-ignore
@@ -120,15 +119,15 @@ export const columnsInterview = (
       />
     ),
   }),
-  columnHelperInterview.accessor('id', {
-    header: () => <span>ACTION</span>,
+  columnHelperCandidateJob.accessor('id', {
+    header: () => <span>{t('action')}</span>,
     size: 100,
     cell: (info) => {
       const id = info.row.original.id
 
       return (
         <>
-          <ActionGroupButtons<Interview>
+          <ActionGroupButtons<CandidateJob>
             rowId={id}
             actions={actions}
             rowData={info.row.original}

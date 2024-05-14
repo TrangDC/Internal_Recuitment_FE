@@ -79,7 +79,7 @@ const dashboardRoutes = [
   { path: "jobs", element: <JobList /> },
   { path: "job-detail/:id", element: <JobDetail /> },
   { path: "candidates", element: <CandiateList /> },
-  { path: "candidate-detail", element: <CandiateDetail /> },
+  { path: "candidate-detail/:id", element: <CandiateDetail /> },
   { path: "hiring", element: <HiringList /> },
 ];
 

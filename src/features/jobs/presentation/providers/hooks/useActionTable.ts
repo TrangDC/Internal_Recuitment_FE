@@ -8,7 +8,7 @@ const useActionTable = () => {
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
 
-  function handleOpenEdit<T>(id: string, data: Job) {
+  function handleOpenEdit(id: string, data: Job) {
     rowId.current = id
     rowData.current = data
     setOpenEdit(true)
