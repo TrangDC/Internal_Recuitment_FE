@@ -106,8 +106,7 @@ const InputFile = ({
     setFiles(filterFile)
   }
 
-  function validateFile(blob: Blob, regexString: string) {
-    // eslint-disable-next-line
+  function validateFile(blob: File, regexString: string) {
     const filename = blob.name || ''
     const regex = new RegExp(regexString)
     return regex.test(filename.toLowerCase())
