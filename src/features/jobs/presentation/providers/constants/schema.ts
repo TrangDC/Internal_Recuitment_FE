@@ -26,8 +26,11 @@ export const schema = yup.object({
         ? schema.min(yup.ref('salary_from'))
         : schema.min(0)
     }),
-
-  currency: yup.object().required('currency is required!'),
+  currency: yup.object().when(['salary_type'], ([salary_type], schema) => {
+    return salary_type?.value === SALARY_STATE.NEGOTITATION
+      ? schema.notRequired()
+      : schema.required('currency is required!')
+  }),
   description: yup.string(),
 })
 
@@ -60,12 +63,15 @@ export const schemaUpdate = yup.object({
         : schema.min(0)
     }),
 
-  currency: yup.object().required('currency is required!'),
+  currency: yup.object().when(['salary_type'], ([salary_type], schema) => {
+    return salary_type?.value === SALARY_STATE.NEGOTITATION
+      ? schema.notRequired()
+      : schema.required('currency is required!')
+  }),
   description: yup.string(),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>
-
 
 export const schemaDelete = yup.object({
   id: yup.string().required(),

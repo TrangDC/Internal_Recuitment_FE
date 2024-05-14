@@ -117,7 +117,6 @@ const SidebarAccordion: FC<SidebarAccordionProps> = (props) => {
     return () => {
       setHasActive(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calcaulateHeight, pathname]);
 
   return (

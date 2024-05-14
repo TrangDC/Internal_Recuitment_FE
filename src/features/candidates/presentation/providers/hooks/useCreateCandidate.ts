@@ -26,8 +26,7 @@ function useCreateCandidate(props: createCandidateProps = { defaultValues: {} })
   })
 
   const { createCandidate, queryKey } = useGraphql()
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newTodo: NewCandidateInput) =>

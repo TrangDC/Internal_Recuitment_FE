@@ -17,7 +17,7 @@ const resources = {
 }
 
 const { getStatusByKey } = handleLocalStorage();
-const langDefault = getStatusByKey('settings').lang;
+const langDefault = getStatusByKey('settings')?.lang;
 
 i18next.use(initReactI18next).init({
   resources,

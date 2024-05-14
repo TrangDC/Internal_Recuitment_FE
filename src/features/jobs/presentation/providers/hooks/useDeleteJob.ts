@@ -32,6 +32,7 @@ function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newJob: DeleteJobInput) => {
+      // eslint-disable-next-line
       const { id, description } = newJob
 
       return fetchGraphQL<BaseRecord>(deleteTeam.query, {

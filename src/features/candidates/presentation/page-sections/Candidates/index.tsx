@@ -2,10 +2,7 @@ import { IconButton, InputAdornment } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import FlexBetween from 'shared/components/flexbox/FlexBetween'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import IconWrapper from 'shared/components/IconWrapper'
-import { H5 } from 'shared/components/Typography'
 import Add from 'shared/components/icons/Add'
-import ShoppingBasket from 'shared/components/icons/ShoppingBasket'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../../providers/constants/columns'
 import useCandidateTable from '../../providers/hooks/useCandidateTable'
@@ -86,7 +83,7 @@ const Candidates = () => {
       {
         id: 'detail',
         onClick: (id, rowData) => {
-          navigate('/dashboard/candidate-detail')
+          navigate(`/dashboard/candidate-detail/${id}`)
         },
         title: translation.COMMON.detail,
         Icon: <SearchIconSmall />,

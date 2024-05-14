@@ -56,8 +56,8 @@ const useCustomTable = ({
     direction: 'DESC',
     field: 'created_at',
   })
-  const [freeWord, setFreeWord] = useState<Record<string, any>>({});
-  const [filter, setFilter] = useState<Record<string, any>>({});
+  const [freeWord, setFreeWord] = useState<Record<string, any>>(variables?.freeWord || {});
+  const [filter, setFilter] = useState<Record<string, any>>(variables?.filter || {});
 
   const { isLoading, error, data, refetch } = useQuery({
     // gcTime: 0,

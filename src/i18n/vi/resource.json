@@ -31,6 +31,13 @@
   "add_blackList": "Bạn có muốn thêm người dùng vào danh sách đen?",
   "delete_candidate": "Bạn có muốn xóa thành viên này?",
 
+  "job_application_history": "Lịch sử xin việc",
+  "apply_to_a_job": "Xin việc",
+  "applied_date": "Ngày xin việc",
+  "change_status": "thay đổi trạng thái",
+
+  "drag_and_drop": "Kéo và thả file của bạn vào trong",
+  "browse_file": "Chọn thư mục",
   "email": "Thư",
   "search": "Tìm kiếm",
   "import": "Nhập file",

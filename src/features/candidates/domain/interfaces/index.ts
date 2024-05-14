@@ -44,12 +44,34 @@ export type BlackListCandidateInput = {
   is_black_list: boolean,
 }
 
+export type NewCandidateJobInput = {
+  candidate_id: string
+  hiring_job_id: string
+  status: string
+  attachments?: string
+}
+
+export type CandidateJob = {
+  id: string
+  candidate_id: string
+  hiring_job_id: string
+  status: string
+  created_at: string
+  updated_at: string
+}
+
+//interview
 export type Interview = {
   id: string
   job_name: string
   team: string
   applied_date: string
   status: string
+  attachments: {
+    id: string,
+    document_name: string,
+    document_id: string,
+  }
 }
 
 export type FeedBack = {

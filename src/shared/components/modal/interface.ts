@@ -23,6 +23,5 @@ export interface ITitle {
   iconColor?: string
   subTitle?: string
   setOpenUpdate?: () => void
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children?: ReactNode
 }

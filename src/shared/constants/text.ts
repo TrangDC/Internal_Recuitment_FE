@@ -38,7 +38,15 @@ const useTextTranslation = () => {
       add_blackList: t('add_blackList'),
       delete_candidate: t('delete_candidate'),
     },
+    MODULE_CANDIDATE_JOB: {
+      job_application_history: t('job_application_history'),
+      apply_to_a_job: t('apply_to_a_job'),
+      applied_date: t('applied_date'),
+      change_status: t('change_status'),
+    },
     COMMON: {
+      drag_and_drop: t('drag_and_drop'),
+      browse_file: t('browse_file'),
       email: t('email'),
       search: t('search'),
       import: t('import'),
