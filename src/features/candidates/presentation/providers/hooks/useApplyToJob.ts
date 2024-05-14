@@ -29,7 +29,6 @@ function useApplyToJob(
   })
 
   const { createCandidateJob, queryKey } = useGraphql()
-
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newCandidateJob: NewCandidateJobInput) => {

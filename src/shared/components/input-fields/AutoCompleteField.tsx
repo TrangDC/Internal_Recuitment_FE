@@ -73,12 +73,12 @@ const AutoCompleteField = <T extends object>({
   }
 
   return (
-    <AutoCompleteStyle
+    <AutoCompleteField
       sx={{ width: props?.fullWidth ? '100%' : '400px' }}
       size={size}
       limitTags={limitTags}
       options={options}
-      renderInput={(params) => (
+      renderInput={(params: AutocompleteRenderInputParams) => (
         <CustomTextField {...inputProps} {...params} fullWidth />
       )}
       value={value}

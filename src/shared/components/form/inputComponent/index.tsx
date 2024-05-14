@@ -3,6 +3,7 @@ import { CustomTextField, DivError, DivWrapper } from '../styles'
 import { TextFieldProps } from '@mui/material'
 import { get } from 'lodash'
 import { regexCharacterNumber, regexNumber } from './constant'
+import { ChangeEvent, FocusEvent } from 'react'
 
 interface AdditionalProps<T extends FieldValues> {
   errors: FieldErrors<T>
@@ -37,7 +38,7 @@ const InputComponent = <T extends object>({
         {...field}
         value={field.value}
         type='text'
-        onChange={(e) => {
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
           const previousValue = field.value;
           if(props.type === 'number' && !regexCharacterNumber.test(value) && value) {
@@ -46,7 +47,7 @@ const InputComponent = <T extends object>({
             field.onChange(value);
           }
         }}
-        onBlur={(e) => {
+        onBlur={(e: FocusEvent<HTMLInputElement>) => {
           if(props.type === 'number' && !regexNumber.test(e.target.value)) {
             field.onChange('');
           }     

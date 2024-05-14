@@ -2,7 +2,7 @@ import { Box, styled } from '@mui/material'
 import FlexBox from '../flexbox/FlexBox'
 import UploadIcon from '../icons/UploadIcon'
 import { Span, Tiny } from '../Typography'
-import { useState } from 'react'
+import { DragEvent, useState } from 'react'
 import FileIcon from '../icons/FileIcon'
 import TrashIcon from '../icons/TrashIcon'
 import { convertSizeToMb } from 'shared/utils/utils'
@@ -107,6 +107,7 @@ const InputFile = ({
   }
 
   function validateFile(blob: Blob, regexString: string) {
+    // eslint-disable-next-line
     const filename = blob.name || ''
     const regex = new RegExp(regexString)
     return regex.test(filename.toLowerCase())
@@ -118,10 +119,10 @@ const InputFile = ({
     <InputFileWrapper>
       <label htmlFor="file">
         <InputFileContainer
-          onDragOver={(event) => {
+          onDragOver={(event: DragEvent<HTMLDivElement>) => {
             event.preventDefault()
           }}
-          onDrop={(event) => {
+          onDrop={(event: DragEvent<HTMLDivElement>) => {
             event.preventDefault()
             const filesValue = event.dataTransfer.files
             const fileUpload = filesValue[0]
