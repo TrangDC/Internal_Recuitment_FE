@@ -84,8 +84,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
               {headerGroup.headers.map((header) => (
                 <HeadTableCell
                   key={header.id}
-                  onClick={(event) => {
-                    console.log('header', header, header.getContext())
+                  onClick={() => {
                     header.column.getCanSort() && handleSorTable(header.id)
                   }}
                   style={{ width: header.getSize() }}

@@ -3,8 +3,7 @@ import { DivError, DivWrapper } from '../styles'
 import { get } from 'lodash'
 import AppDateField from 'shared/components/input-fields/DateField'
 import { DatePickerProps } from '@mui/x-date-pickers'
-import styled from '@emotion/styled'
-import { TextFieldProps } from '@mui/material'
+import { TextFieldProps, styled } from '@mui/material'
 
 interface AdditionalProps<T extends FieldValues> {
   errors: FieldErrors<T>
@@ -24,7 +23,7 @@ type DateControllerProps<T extends object> = Omit<
 > &
   AdditionalProps<T>
 
-const StyleDateField = styled(AppDateField)(({ theme }) => ({
+const StyleDateField = styled(AppDateField)(() => ({
   marginTop: '10px',
 }))
 
@@ -43,7 +42,7 @@ const DatePickerComponent = <T extends object>({
         {...props}
         {...field}
         value={field.value}
-        onChange={(value) => {
+        onChange={(value: Event) => {
           field.onChange(value)
         }}
       />
