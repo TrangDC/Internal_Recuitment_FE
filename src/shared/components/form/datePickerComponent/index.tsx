@@ -42,7 +42,7 @@ const DatePickerComponent = <T extends object>({
         {...props}
         {...field}
         value={field.value}
-        onChange={(value: Event) => {
+        onChange={(value: ChosenDateType) => {
           field.onChange(value)
         }}
       />
