@@ -52,7 +52,7 @@ const useCustomTable = ({
     page: initialPage,
     perPage: initialPerPage,
   })
-  const [sorting, setSorting] = useState<ISorting>({
+  const [sorting, setSorting] = useState<ISorting>(variables?.sorting || {
     direction: 'DESC',
     field: 'created_at',
   })
@@ -65,7 +65,7 @@ const useCustomTable = ({
     queryFn: async () =>
       fetchGraphQL<BaseRecord>(buildQuery.query, {
         ...variables,
-        sortBy: {
+        orderBy: {
           ...sorting,
         },
         freeWord: {

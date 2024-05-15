@@ -33,6 +33,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     mutationFn: (newTodo: NewHiringJobInput) =>
       fetchGraphQL<BaseRecord>(createJob.query, {
         input: newTodo,
+        note: "",
       }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })

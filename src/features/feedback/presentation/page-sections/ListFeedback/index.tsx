@@ -2,7 +2,6 @@ import {
   BoxButton,
   BoxText,
   BoxTitle,
-  ChipItem,
   DivActionHeader,
   ListFeedbackContainer,
 } from '../../providers/styles'

@@ -1,4 +1,5 @@
 import { SALARY_STATE } from 'shared/constants/constants'
+import { FormDataSchemaNote, schemaNote } from 'shared/schema'
 import * as yup from 'yup'
 
 export const schema = yup.object({
@@ -69,13 +70,10 @@ export const schemaUpdate = yup.object({
       : schema.required('currency is required!')
   }),
   description: yup.string(),
+  note: yup.string().required(),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>
 
-export const schemaDelete = yup.object({
-  id: yup.string().required(),
-  description: yup.string().required(),
-})
-
-export type FormDataSchemaDelete = yup.InferType<typeof schemaDelete>
+export const schemaDelete = schemaNote;
+export type FormDataSchemaDelete = FormDataSchemaNote;

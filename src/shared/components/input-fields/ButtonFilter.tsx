@@ -156,6 +156,7 @@ const ButtonFilter = <T extends object>({
                     const filterOption = listSelected.filter((option) => {
                       return !isEqual(option, chip)
                     })
+                    callbackChange && callbackChange(filterOption)
                     setSelected(filterOption as T[])
                   }}
                 />

@@ -33,10 +33,11 @@ function useUpdateJob(props: createJobProps = { defaultValues: {} }) {
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newJob: UpdateHiringJobInput) => {
-      const { id, ...otherValue } = newJob
+      const { id, note, ...otherValue } = newJob
       return fetchGraphQL<BaseRecord>(updateJob.query, {
         input: otherValue,
         id: id,
+        note: note,
       })
     },
     onSuccess: (data) => {

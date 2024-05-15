@@ -42,7 +42,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'HiringJobFilter',
-      orderBy: 'HiringJobOrder',
+      orderBy: 'HiringJobOrderBy!',
       freeWord: 'HiringJobFreeWord',
     },
   })
@@ -59,6 +59,7 @@ const useGraphql = () => {
     `,
     params: {
       input: 'NewHiringJobInput!',
+      note: "String!",
     },
   })
 
@@ -75,6 +76,19 @@ const useGraphql = () => {
     params: {
       input: 'UpdateHiringJobInput!',
       id: 'ID!',
+      note: "String!",
+    },
+  })
+
+  const deleteJob = buildQuery({
+    operation: 'DeleteHiringJob',
+    options: {
+      type: 'mutation',
+    },
+    node: '',
+    params: {
+      id: 'ID!',
+      note: "String!",
     },
   })
 
@@ -118,6 +132,7 @@ const useGraphql = () => {
     createJob,
     updateJob,
     getJobDetail,
+    deleteJob,
   }
 }
 

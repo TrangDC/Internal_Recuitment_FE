@@ -1,4 +1,5 @@
 import { Member, Team } from 'features/teams/domain/interfaces'
+import { SchemaInputNote } from 'shared/schema'
 
 export type Job = {
   id: string
@@ -46,10 +47,8 @@ export type UpdateHiringJobInput = {
   currency: 'vnd' | 'usd' | 'jpy',
   created_by: string,
   description?: string,
+  note: string,
 }
 
-export type DeleteJobInput = {
-  id: string,
-  description: string,
-}
+export type DeleteJobInput = SchemaInputNote;
 

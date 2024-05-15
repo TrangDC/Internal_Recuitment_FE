@@ -12,7 +12,6 @@ import EditIcon from 'shared/components/icons/EditIcon'
 import ApplyJobModal from '../ApplyJobModal'
 import { useNavigate, useParams } from 'react-router-dom'
 import useApplyJobTable from '../../providers/hooks/useApplyJobTable'
-import ChangeStatusModal from '../ChangeStatusModal'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import useTextTranslation from 'shared/constants/text'
@@ -21,10 +20,6 @@ const JobApplicationHistory = () => {
   const {
     openCreate,
     setOpenCreate,
-    rowId,
-    rowData,
-    openChangeStatus,
-    setOpenChangeStatus,
     handleOpenChangeStatus,
   } = useActionTable<CandidateJob>()
 

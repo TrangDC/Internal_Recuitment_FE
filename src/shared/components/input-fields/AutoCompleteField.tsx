@@ -10,6 +10,7 @@ import React from 'react'
 import { findKey, get, isEqual } from 'lodash'
 
 interface AdditionalProps<T> {
+  //@ts-ignore
   options: T[]
   inputProps?: TextFieldProps
   renderInput?: (params: AutocompleteRenderInputParams) => React.ReactNode
@@ -73,7 +74,7 @@ const AutoCompleteField = <T extends object>({
   }
 
   return (
-    <AutoCompleteField
+    <Autocomplete
       sx={{ width: props?.fullWidth ? '100%' : '400px' }}
       size={size}
       limitTags={limitTags}
@@ -93,6 +94,7 @@ const AutoCompleteField = <T extends object>({
       multiple={multiple}
       {...props}
     />
+ 
   )
 }
 

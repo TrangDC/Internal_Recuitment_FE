@@ -5,7 +5,7 @@ import InputComponent from 'shared/components/form/inputComponent'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../../providers/constants/schema'
+import { FormDataSchemaUpdate as FormDataSchema } from '../../providers/constants/schema'
 import { Job } from 'features/jobs/domain/interfaces'
 import { baseInstance } from 'shared/interfaces'
 import {
@@ -21,6 +21,7 @@ import { findItem, removeInfoData } from 'shared/utils/utils'
 import useUpdateJob from '../../providers/hooks/useEditJob'
 import EditorBoxComponent from 'shared/components/form/editorComponent'
 import useTextTranslation from 'shared/constants/text'
+import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 
 interface IEditJobModal {
   open: boolean
@@ -62,6 +63,11 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
   const resetSalary = () => {
     setValue('salary_from', 0)
     setValue('salary_to', 0)
+  }
+
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason);
+    onSubmit();
   }
 
   return (
@@ -242,14 +248,23 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
           >
             {translation.COMMON.cancel}
           </CustomeButtonCancel>
-          <Button
+          {/* <Button
             type="button"
             variant="contained"
             color="primary"
             onClick={onSubmit}
           >
             {translation.COMMON.save}
-          </Button>
+          </Button> */}
+          <UpdateRecord callbackSubmit={callbackSubmit}>
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+            >
+              {translation.COMMON.save}
+            </Button>
+          </UpdateRecord>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

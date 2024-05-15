@@ -65,5 +65,32 @@
   "from_date": "From date",
   "to_date": "To date",
   "update_record": "Update record",
-  "sub_title_update_record": "What information or note have you updated the record?"
+  "sub_title_update_record": "What information or note have you updated the record?",
+
+  "models": {
+    "hiring_jobs": {
+      "model_name": "Job"
+    }
+  },
+
+  "model": {
+    "hiring_jobs": {
+      "model_name": "Job",
+      "id": "Id",
+      "name": "Job name",
+      "slug": "Slug",
+      "description": "Description",
+      "amount": "Amount",
+      "location": "Location",
+      "salary_type": "Salary Type",
+      "salary_from": "Salary From",
+      "salary_to": "Salary To",
+      "currency": "Currency",
+      "status": "Status",
+      "total_candidates_recruited": "Total Candidates Recruited",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "deleted_at": "Deleted At"
+    }
+  }
 }

@@ -34,7 +34,8 @@ type AutoCompleteControllerProps<T extends object, Option> = Omit<
 > &
   AdditionalProps<T, Option>
 
-const AutoCompleteComponent = <T extends object, Option>({
+  //@ts-ignore
+const AutoCompleteComponent = <T extends object, Option extends object>({
   options,
   label,
   errors,
@@ -56,10 +57,10 @@ const AutoCompleteComponent = <T extends object, Option>({
       <AutoCompleteField
         multiple={multiple}
         fullWidth
-        //@ts-ignore
+         //@ts-ignore
         options={options}
         value={field.value}
-         //@ts-ignore
+       //@ts-ignore
         onChange={(event, value: Option | Option[], reason) => {
           field.onChange(value)
           callbackOnChange && callbackOnChange({previousValue: field.value, value})

@@ -65,5 +65,32 @@
   "from_date": "Từ ngày",
   "to_date": "Đến ngày",
   "update_record": "Chỉnh sửa bản ghi",
-  "sub_title_update_record": "Thông tin hoặc ghi chú nào bạn đã cập nhật hồ sơ?"
+  "sub_title_update_record": "Thông tin hoặc ghi chú nào bạn đã cập nhật hồ sơ?",
+
+  "models": {
+    "hiring_jobs": {
+      "model_name": "Công việc"
+    }
+  },
+
+  "model": {
+    "hiring_jobs": {
+      "model_name": "Công việc",
+      "id": "Id",
+      "name": "Tên công việc",
+      "slug": "Slug",
+      "description": "Mô tả",
+      "amount": "Tổng",
+      "location": "Địa điểm",
+      "salary_type": "Loại lương",
+      "salary_from": "Lương tối thiểu",
+      "salary_to": "Lương tối đa",
+      "currency": "Tiền tệ",
+      "status": "Trạng thái",
+      "total_candidates_recruited": "Số lượng ứng viên đã tuyển dụng",
+      "created_at": "Tạo vào ngày",
+      "updated_at": "Cập nhật vào ngày",
+      "deleted_at": "Xóa vào ngày"
+    }
+  }
 }

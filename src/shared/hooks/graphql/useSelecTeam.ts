@@ -25,7 +25,7 @@ const getAllTeam = buildQuery({
   params: {
     pagination: 'PaginationInput',
     filter: 'TeamFilter',
-    orderBy: 'TeamOrder',
+    orderBy: 'TeamOrderBy!',
     freeWord: 'TeamFreeWord',
   },
 })
@@ -33,7 +33,10 @@ const getAllTeam = buildQuery({
 const useSelectTeam = () => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
-    queryFn: async () => fetchGraphQL<BaseRecord>(getAllTeam.query),
+    queryFn: async () =>
+      fetchGraphQL<BaseRecord>(getAllTeam.query, {
+        orderBy: { direction: 'DESC', field: 'created_at' },
+      }),
   })
 
   const teams: Team[] =
