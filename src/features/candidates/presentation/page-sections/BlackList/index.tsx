@@ -62,7 +62,6 @@ const BlackList = () => {
     rowData,
     setOpenEdit,
     openBlackList,
-    handleOpenBlackList,
     setOpenBlackList,
   } = useActionTable<Candidate>()
 

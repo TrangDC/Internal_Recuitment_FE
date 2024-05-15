@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import useGraphql from 'features/teams/domain/graphql/graphql'
+import useGraphql from 'features/jobs/domain/graphql/graphql'
 import { DeleteJobInput } from 'features/jobs/domain/interfaces'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
@@ -28,16 +28,15 @@ function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
     },
   })
 
-  const { deleteTeam, queryKey } = useGraphql()
+  const { deleteJob, queryKey } = useGraphql()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newJob: DeleteJobInput) => {
-      // eslint-disable-next-line
-      const { id, description } = newJob
+      const { id, note } = newJob
 
-      return fetchGraphQL<BaseRecord>(deleteTeam.query, {
-        // input: updateOther,
+      return fetchGraphQL<BaseRecord>(deleteJob.query, {
         id: id,
+        note: note,
       })
     },
     onSuccess: (data) => {

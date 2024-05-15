@@ -30,7 +30,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'TeamFilter',
-      orderBy: 'TeamOrder',
+      orderBy: 'TeamOrderBy!',
       freeWord: 'TeamFreeWord',
     },
   })
@@ -79,7 +79,6 @@ const useGraphql = () => {
       note: 'String!'
     },
   })
-
 
   return {
     getAllTeam,

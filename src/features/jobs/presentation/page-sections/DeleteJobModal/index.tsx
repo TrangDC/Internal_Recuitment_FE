@@ -38,7 +38,7 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Controller
-                name="description"
+                name="note"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>

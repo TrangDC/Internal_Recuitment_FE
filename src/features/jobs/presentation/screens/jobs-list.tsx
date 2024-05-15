@@ -1,6 +1,5 @@
 import { IconButton, InputAdornment } from '@mui/material'
-import { Box, styled } from '@mui/system'
-import FlexBetween from 'shared/components/flexbox/FlexBetween'
+import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import IconWrapper from 'shared/components/IconWrapper'
 import { H5 } from 'shared/components/Typography'
@@ -15,7 +14,7 @@ import useActionTable from '../providers/hooks/useActionTable'
 import EditJobModal from '../page-sections/EditJobModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
-import { ButtonHeader, DivFilter, DivHeaderWrapper } from '../providers/styles'
+import { ButtonHeader, DivFilter, DivHeaderWrapper, HeadingWrapper } from '../providers/styles'
 import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
 import EditIcon from 'shared/components/icons/EditIcon'
 import { useNavigate } from 'react-router-dom'
@@ -25,35 +24,10 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import { KeyboardEventHandler } from 'react'
 import { baseInstance } from 'shared/interfaces'
 import { STATUS_DATA } from '../providers/constants'
-import { getValueOfObj, transformListItem } from 'shared/utils/utils'
+import { convertEmptyToNull, getValueOfObj, transformListItem } from 'shared/utils/utils'
 import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
 import { Team } from 'features/teams/domain/interfaces'
 import useTextTranslation from 'shared/constants/text'
-
-//  styled components
-const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
-  gap: 8,
-  flexWrap: 'wrap',
-  flexDirection: 'column',
-  backgroundColor: theme.palette.background.paper,
-  padding: '12px',
-  borderWidth: '0px 0px 1px 0px',
-  borderStyle: 'solid',
-  borderColor: '#E3E6EB',
-  marginTop: '20px',
-  [theme.breakpoints.down(453)]: {
-    '& .MuiButton-root': { order: 2 },
-    '& .MuiTabs-root': {
-      order: 3,
-      width: '100%',
-      '& .MuiTabs-flexContainer': { justifyContent: 'space-between' },
-    },
-  },
-
-  '& .MuiTextField-root': {
-    marginTop: 0,
-  },
-}))
 
 const JobsList = () => {
   const {
@@ -73,7 +47,7 @@ const JobsList = () => {
 
   const { useTableReturn } = useJobTable()
   const { handleFreeWord, handleFilter } = useTableReturn
-  const translation = useTextTranslation();
+  const translation = useTextTranslation()
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -105,8 +79,8 @@ const JobsList = () => {
     columns,
   })
 
-  const { teams } = useSelectTeam();
-  
+  const { teams } = useSelectTeam()
+
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.keyCode === 13) {
       //@ts-ignore
@@ -126,10 +100,12 @@ const JobsList = () => {
       </Box>
       <HeadingWrapper>
         <DivFilter>
-          <ButtonFilter<Team> listData={teams} inputLabel={translation.MODLUE_TEAMS.teams}
-           callbackChange={(obj) => {
-            handleFilter('team_ids', transformListItem(obj))
-          }}
+          <ButtonFilter<Team>
+            listData={teams}
+            inputLabel={translation.MODLUE_TEAMS.teams}
+            callbackChange={(obj) => {
+              handleFilter('team_ids', convertEmptyToNull(transformListItem(obj)))
+            }}
           />
           <ButtonFilter<baseInstance>
             listData={STATUS_DATA}

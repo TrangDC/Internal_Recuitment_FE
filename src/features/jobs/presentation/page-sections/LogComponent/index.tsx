@@ -2,14 +2,24 @@ import { Box, Divider, styled } from '@mui/material'
 import { Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import DateIcon from 'shared/components/icons/DateIcon'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FlexRowAlign from 'shared/components/flexbox/FlexRowAlign'
-import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus';
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useParams } from 'react-router-dom'
+import useJobHistoryLog from '../../providers/hooks/useActionHistory'
+import { format } from 'date-fns'
+import AuditTrailsList from 'features/auditTrails/presentation/page-sections/AuditTrailsList'
+import { forwardRef, useImperativeHandle } from 'react'
 
 const DateFieldContainer = styled(FlexBox)(({ theme }) => ({
   width: '100%',
   gap: '16px',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  minHeight: '76px',
+  position: 'relative',
+  overflow: 'hidden',
 }))
 
 const DateFieldHeader = styled(FlexBox)(({ theme }) => ({
@@ -43,102 +53,66 @@ const DateFieldTime = styled(Box)(({ theme }) => ({
   },
 }))
 
-const DateFieldBody = styled(FlexBox)(({ theme }) => ({
-  gap: '12px',
-
-  '& hr': {
-    minHeight: '24px',
-    height: 'auto',
-    color: theme.palette.grey[900],
-    margin: '0 15px',
-  }
-}))
-
-const DateFieldInformation = styled(Box)(({ theme }) => ({}))
-
-const StyleChip = styled(ChipFieldStatus)(({ theme }) => ({
-  backgroundColor: theme.palette.primary[500],
-  
-  '& span': {
-    color: 'white',
-  }
-}))
-
-const DateFieldDivison = styled(FlexBox)(({ theme }) => ({
-  alignItems: 'center',
-  gap: '8px',
-
-  '& svg': {
-    fontSize: '13px',
-    color: theme.palette.primary[700]
-  }
-}))
-
 const StyleDivider = styled(Divider)(({ theme }) => ({
-  borderColor: theme.palette.text.secondary
+  backgroundColor: theme.palette.text.secondary,
+  position: 'absolute',
+  width: '1px',
+  height: '100%',
+  top: '45px',
+  left: '16px',
+  maxHeight: '56px',
 }))
 
-const LogsComponent = () => {
+interface Props {
+
+}
+
+const LogsComponent = (props: Props, ref:any) => {
+  const { id } = useParams()
+  const { job_history, handleFilter, handleFreeWord } = useJobHistoryLog(id as string)
+
+  useImperativeHandle(ref, () => {
+    return {
+      handleFilter,
+      handleFreeWord,
+    };
+  }, []);
+
   return (
-        <FlexBox flexDirection={'column'} gap={'16px'}>
-          <DateFieldContainer>
-            <DateFieldHeader>
-              <DateFieldIcon>
-                <DateIcon />
-              </DateFieldIcon>
-              <DateFieldTime>
-                <Span>UPDATE 16-08-2023 04:18:07</Span>
-                <Tiny>Reason: 8</Tiny>
-              </DateFieldTime>
-            </DateFieldHeader>
-            <DateFieldBody>
-              <StyleDivider orientation="vertical"  />
-              <DateFieldInformation>
-                <FlexBox alignItems={'center'} gap={'8px'}>
-                  <Tiny>Job name</Tiny>
-                  <StyleChip label="Update" />
-                </FlexBox>
-                <FlexBox alignItems={'center'} gap={'8px'}>
-                  <Span>Team: </Span>
-                  <DateFieldDivison>
-                    <Tiny>D2</Tiny> <ArrowForwardIcon/> <Tiny>D4</Tiny>
-                  </DateFieldDivison>
-                </FlexBox>
-              </DateFieldInformation>
-            </DateFieldBody>
-          </DateFieldContainer>
+    <FlexBox flexDirection={'column'} gap={'16px'}>
+      {job_history.map((job) => {
+        const record_changes = JSON.parse(job.record_changes)
 
-          <DateFieldContainer>
-            <DateFieldHeader>
-              <DateFieldIcon>
-                <DateIcon />
-              </DateFieldIcon>
-              <DateFieldTime>
-                <Span>UPDATE 16-08-2023 04:18:07</Span>
-                <Tiny>Reason: 8</Tiny>
-              </DateFieldTime>
-            </DateFieldHeader>
-            <DateFieldBody>
-            <StyleDivider orientation="vertical"  />
-            </DateFieldBody>
+        return (
+          <DateFieldContainer key={job.id}>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1-content"
+              >
+                <DateFieldHeader>
+                  <DateFieldIcon>
+                    <DateIcon />
+                  </DateFieldIcon>
+                  <DateFieldTime>
+                    <Span>
+                      UPDATE
+                      {format(new Date(job.updatedAt), 'dd-MM-yyyy HH:mm:ss')}
+                    </Span>
+                    <Tiny>{job.note}</Tiny>
+                  </DateFieldTime>
+                </DateFieldHeader>
+              </AccordionSummary>
+              <AccordionDetails>
+                <AuditTrailsList record_changes={record_changes} />
+              </AccordionDetails>
+            </Accordion>
+            <StyleDivider orientation="horizontal" />
           </DateFieldContainer>
-
-          <DateFieldContainer>
-            <DateFieldHeader>
-              <DateFieldIcon>
-                <DateIcon />
-              </DateFieldIcon>
-              <DateFieldTime>
-                <Span>UPDATE 16-08-2023 04:18:07</Span>
-                <Tiny>Reason: 8</Tiny>
-              </DateFieldTime>
-            </DateFieldHeader>
-            <DateFieldBody>
-            <StyleDivider orientation="vertical"  />
-            </DateFieldBody>
-          </DateFieldContainer>
-        </FlexBox>
+        )
+      })}
+    </FlexBox>
   )
 }
 
-export default LogsComponent
+export default forwardRef(LogsComponent)

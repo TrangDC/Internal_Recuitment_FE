@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash'
 import { useState } from 'react'
 import { buildQuery, fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
+import { convertEmptyToNull } from 'shared/utils/utils'
 
 const queryKey = 'job'
 const getJobByTeamId = buildQuery({
@@ -27,7 +28,7 @@ const getJobByTeamId = buildQuery({
   params: {
     pagination: 'PaginationInput',
     filter: 'HiringJobFilter',
-    orderBy: 'HiringJobOrder',
+    orderBy: 'HiringJobOrderBy!',
     freeWord: 'HiringJobFreeWord',
   },
 })
@@ -40,8 +41,10 @@ const useSelectJobByTeam = () => {
     queryFn: async () =>
       fetchGraphQL<BaseRecord>(getJobByTeamId.query, {
         filter: {
-          ...filter,
+          //@ts-ignore
+          ...convertEmptyToNull(filter),
         },
+        orderBy: { direction: 'DESC', field: 'created_at' },
       }),
   })
 

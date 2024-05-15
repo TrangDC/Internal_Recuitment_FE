@@ -122,3 +122,7 @@ export const getBase64 = (file: Blob): Promise<string> =>
     if (roundSize < 1024 * 1024) return `${Math.round(roundSize / 1024)} MB`;
     return `${Math.round(roundSize / (1024 * 1024))} GB`;
   };
+
+  export const convertEmptyToNull = (array: any[]) => {
+    return !isEmpty(array) ? array : null;
+  }
