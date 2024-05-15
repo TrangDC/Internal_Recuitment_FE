@@ -116,7 +116,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained">
+          <CustomeButtonCancel type="button" variant="contained" onClick={() => setOpen(false)}>
             {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button

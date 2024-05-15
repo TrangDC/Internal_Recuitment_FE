@@ -3,11 +3,10 @@ import FlexBox from '../flexbox/FlexBox'
 import UploadIcon from '../icons/UploadIcon'
 import { Span, Tiny } from '../Typography'
 import { DragEvent, useState } from 'react'
-import FileIcon from '../icons/FileIcon'
 import TrashIcon from '../icons/TrashIcon'
-import { convertSizeToMb } from 'shared/utils/utils'
 import toastError from '../toast/toastError'
 import useTextTranslation from 'shared/constants/text'
+import ShowFile from './ItemFile'
 
 const InputFileContainer = styled(Box)(({ theme }) => ({
   border: '2px dashed #2499EF',
@@ -22,6 +21,7 @@ const InputFileContainer = styled(Box)(({ theme }) => ({
 
 const InputFileWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
+  height: 'fit-content',
 }))
 
 const ListFile = styled(FlexBox)(({ theme }) => ({
@@ -29,34 +29,6 @@ const ListFile = styled(FlexBox)(({ theme }) => ({
   marginTop: '10px',
   flexDirection: 'column',
   gap: '10px',
-}))
-
-const ItemFile = styled(FlexBox)(({ theme }) => ({
-  width: '100%',
-  justifyContent: 'space-between',
-  padding: '6px 6px 6px 10px',
-  border: `1px solid #88CDFF`,
-  minHeight: '45px',
-  alignItems: 'center',
-  gap: '20px',
-  backgroundColor: '#F1F9FF',
-  borderRadius: '4px',
-}))
-
-const NameFIle = styled(FlexBox)(({ theme }) => ({
-  flexDirection: 'column',
-
-  '& p': {
-    fontSize: '13px',
-    fontWeight: 600,
-    color: theme.palette.grey[600],
-  },
-
-  '& span': {
-    fontSize: '12px',
-    fontWeight: 500,
-    color: theme.palette.grey[400],
-  },
 }))
 
 const FlexBoxContainer = styled(FlexBox)(({ theme }) => ({
@@ -70,6 +42,7 @@ const TextWrapper = styled(FlexBox)(({ theme }) => ({
   justifyContent: 'center',
   gap: '4px',
   alignItems: 'center',
+  flexWrap: 'wrap',
 
   '& p': {
     fontSize: '13px',
@@ -151,23 +124,12 @@ const InputFile = ({
       <ListFile>
         {files.map((file, index) => {
           return (
-            <ItemFile key={index}>
-              <FlexBox gap={'10px'} alignItems={'center'}>
-                <FlexBox>
-                  <FileIcon />
-                </FlexBox>
-                <NameFIle>
-                  <Tiny>{file.name}</Tiny>
-                  <Span>{convertSizeToMb(file.size)}</Span>
-                </NameFIle>
-              </FlexBox>
-              <FlexBox
-                sx={{ cursor: 'pointer' }}
-                onClick={() => handleRemoveFile(index)}
-              >
-                <TrashIcon />
-              </FlexBox>
-            </ItemFile>
+            <ShowFile
+              name={file.name}
+              size={file.size}
+              key={index}
+              IconEnd={<TrashIcon onClick={() => handleRemoveFile(index)} />}
+            />
           )
         })}
       </ListFile>

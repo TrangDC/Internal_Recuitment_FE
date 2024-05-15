@@ -4,13 +4,13 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { ButtonHeader, DivWrapperProcess, SpanGenaration } from '../../providers/styles'
 import CustomTable from 'shared/components/table/CustomTable'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
-import { columnsCandidateJob as columns } from '../../providers/constants/columns'
+import { columns } from '../../providers/constants/columns'
 import { CandidateJob } from 'features/candidates/domain/interfaces'
 import useActionTable from '../../providers/hooks/useActionTable'
 import EyeIcon from 'shared/components/icons/EyeIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import ApplyJobModal from '../ApplyJobModal'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import useApplyJobTable from '../../providers/hooks/useApplyJobTable'
 import ChangeStatusModal from '../ChangeStatusModal'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
@@ -30,13 +30,14 @@ const JobApplicationHistory = () => {
 
   const { id } = useParams();
   const { useTableReturn } = useApplyJobTable(id as string)
+  const navigate = useNavigate();
 
   const { colummTable } = useBuildColumnTable({
     actions: [
       {
         id: 'detail',
         onClick: (id, rowData) => {
-            // handleOpenDetail(id, rowData)
+            navigate(`/dashboard/job-application-detail/${id}`)
         },
         title: 'Detail',
         Icon: <SearchIconSmall />,
@@ -99,7 +100,7 @@ const JobApplicationHistory = () => {
       {openCreate && (
         <ApplyJobModal open={openCreate} setOpen={setOpenCreate} candidateId={id as string}/>
       )} 
-      {openChangeStatus && (
+      {/* {openChangeStatus && (
         <ChangeStatusModal
           open={openChangeStatus}
           setOpen={setOpenChangeStatus}
@@ -107,7 +108,7 @@ const JobApplicationHistory = () => {
           id={rowId.current}
           rowData={rowData.current}
         />
-      )}
+      )} */}
     </DivWrapperProcess>
   )
 }

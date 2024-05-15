@@ -42,6 +42,10 @@ const CandiateDetail = Loadable(
   lazy(() => import("./pages/candidates/candidate-detail"))
 );
 
+const CandiateJobDetail = Loadable(
+  lazy(() => import("./pages/candidatejob/candidate-job-detail"))
+);
+
 const HiringList = Loadable(
   lazy(() => import("./pages/hiring/index"))
 );
@@ -80,6 +84,7 @@ const dashboardRoutes = [
   { path: "job-detail/:id", element: <JobDetail /> },
   { path: "candidates", element: <CandiateList /> },
   { path: "candidate-detail/:id", element: <CandiateDetail /> },
+  { path: "job-application-detail/:id", element: <CandiateJobDetail /> },
   { path: "hiring", element: <HiringList /> },
 ];
 
