@@ -1,5 +1,7 @@
-import { Autocomplete, Button, TextField, styled} from "@mui/material";
+import { Autocomplete, Box, BoxProps, Button, TextField, styled} from "@mui/material";
+import { FC } from "react";
 import { primary } from "shared/theme/colors";
+import clsx from "clsx";
 
 export const CustomTextField = styled(TextField)(({ theme }) => ({
   maxWidth: '100%',
@@ -71,4 +73,53 @@ export const CustomeButtonCancel = styled(Button)`
     background-color: ${primary[50]};
   }
 `
+
+const StyledBox = styled(Box)<{ ellipsis?: number }>(({ ellipsis }) => ({
+  ...(ellipsis && {
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  }),
+}));
+
+
+type Props = { ellipsis?: boolean };
+
+export const SpanText: FC<BoxProps & Props> = (props) => {
+  const { ellipsis, children, className, ...others } = props;
+
+  return (
+    <StyledBox
+      fontSize={12}
+      fontWeight={500}
+      lineHeight={'14.63px'}
+      component="span"
+      color="text.secondary"
+      ellipsis={ellipsis ? 1 : 0}
+      className={clsx({ [className || ""]: true })}
+      {...others}
+    >
+      {children}
+    </StyledBox>
+  );
+};
+
+export const TinyText: React.FC<BoxProps & Props> = (props) => {
+  const { ellipsis, children, className, ...others } = props;
+
+  return (
+    <StyledBox
+      component="p"
+      fontSize={13}
+      fontWeight={600}
+      lineHeight={'15.85px'}
+      ellipsis={ellipsis ? 1 : 0}
+      className={clsx({ [className || ""]: true })}
+      {...others}
+    >
+      {children}
+    </StyledBox>
+  );
+};
+
 

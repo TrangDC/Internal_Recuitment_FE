@@ -6,33 +6,28 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
 import { Team } from 'features/teams/domain/interfaces'
+import useApplyToJob from '../../providers/hooks/useApplyToJob'
 import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
 import useSelectJobByTeam from 'shared/hooks/graphql/useSelectJobByTeam'
 import { useEffect } from 'react'
 import { Job } from 'features/jobs/domain/interfaces'
 import { baseInstance } from 'shared/interfaces'
-import {
-  STATUS_CANDIDATE_HIRING,
-} from '../../providers/constants'
-import { CandidateJob } from 'features/candidates/domain/interfaces'
+import { STATUS_CANDIDATE_HIRING } from '../../providers/constants'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
-import useChangeStatus from '../../providers/hooks/useChangeStatus'
 import useTextTranslation from 'shared/constants/text'
 
-interface IChangeStatusModal {
+interface IApplyJobModal {
   open: boolean
   setOpen: (value: boolean) => void
-  candidateId: string,
-  id: string,
-  rowData?: CandidateJob
+  candidateId: string
 }
 
-function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatusModal) {
-  const { onSubmit, useFormReturn } = useChangeStatus({
-    defaultValues: {candidate_id: candidateId,},
+function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
+  const { onSubmit, useFormReturn } = useApplyToJob({
+    defaultValues: { candidate_id: candidateId },
     callbackSuccess: () => {
-        setOpen(false)
-    }
+      setOpen(false)
+    },
   })
   const {
     control,
@@ -53,12 +48,12 @@ function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatu
     changeJobByTeamId(team_id?.id ? [team_id?.id] : [])
   }, [team_id])
 
-  const translation = useTextTranslation();
+  const translation = useTextTranslation()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title={translation.MODULE_CANDIDATE_JOB.change_status}
+        title={translation.MODULE_CANDIDATE_JOB.apply_to_a_job}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -81,7 +76,7 @@ function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatu
                 )}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Controller
                 key={jobs.toString()}
                 name="hiring_job_id"
@@ -99,7 +94,7 @@ function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatu
                 )}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Controller
                 name="status"
                 control={control}
@@ -134,8 +129,8 @@ function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatu
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained">
-          {translation.COMMON.cancel}
+          <CustomeButtonCancel type="button" variant="contained" onClick={() => setOpen(false)}>
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"
@@ -151,4 +146,4 @@ function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatu
   )
 }
 
-export default ChangeStatusModal
+export default ApplyJobModal

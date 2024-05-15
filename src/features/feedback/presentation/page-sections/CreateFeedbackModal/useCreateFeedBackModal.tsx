@@ -5,7 +5,8 @@ import InputComponent from 'shared/components/form/inputComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import useCreateFeedback from '../../providers/hooks/useCreateFeedback'
+import useCreateFeedback from '../../providers/hooks/useCreateFeedBack'
+import InputFileComponent from 'shared/components/form/inputFileComponent'
 
 interface ICreateFeedbackModal {
   open: boolean
@@ -21,25 +22,13 @@ function CreateFeedbackModal({ open, setOpen }: ICreateFeedbackModal) {
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Add New Feedback" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header
+        title="Add New Feedback"
+        setOpen={setOpen}
+      ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Controller
-                name="name"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchema>
-                    errors={errors}
-                    label="Name"
-                    field={field}
-                    fullWidth
-                    required
-                  />
-                )}
-              />
-            </Grid>
             <Grid item xs={12}>
               <Controller
                 name="description"
@@ -52,6 +41,21 @@ function CreateFeedbackModal({ open, setOpen }: ICreateFeedbackModal) {
                     fullWidth
                     multiline
                     minRows={4}
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Controller
+                name="attachments"
+                control={control}
+                render={({ field }) => (
+                  <InputFileComponent
+                    errors={errors}
+                    field={field}
+                    accept=".pdf,.doc,.docx,image/*"
+                    regexString="\\.(pdf|docx?|jpe?g|png|gif|bmp|tiff)$"
                   />
                 )}
               />

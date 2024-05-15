@@ -1,7 +1,5 @@
-import React from 'react'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { ButtonHeader, SpanGenaration } from '../../providers/styles'
-import CreateFeedbackModal from '../CreateFeedbackModal'
 import useActionTable from '../../providers/hooks/useActionTable'
 import { FeedBack } from 'features/candidates/domain/interfaces'
 import { Add } from '@mui/icons-material'
@@ -34,7 +32,6 @@ const BoxFeedback = styled(Box)(({ theme }) => ({
 
 const FeedbackShow = () => {
     const { openCreate, setOpenCreate } = useActionTable<FeedBack>()
-
 
   return (
     <>
@@ -77,9 +74,9 @@ const FeedbackShow = () => {
             </BoxFeedback>
           </FlexBox>
         </FlexBox>
-        {openCreate && (
+        {/* {openCreate && (
         <CreateFeedbackModal open={openCreate} setOpen={setOpenCreate} />
-      )}
+      )} */}
     </>
   )
 }
