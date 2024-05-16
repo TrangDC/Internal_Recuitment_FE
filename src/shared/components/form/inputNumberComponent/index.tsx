@@ -2,7 +2,9 @@ import { FieldErrors, FieldValues } from 'react-hook-form'
 import { CustomTextField, DivError, DivWrapper } from '../styles'
 import { TextFieldProps } from '@mui/material'
 import { get } from 'lodash'
-import { ChangeEvent } from 'react'
+import { regexCharacterNumber, regexNumber } from './constant'
+import { ChangeEvent, FocusEvent } from 'react'
+import { NumericFormat } from 'react-number-format'
 
 interface AdditionalProps<T extends FieldValues> {
   errors: FieldErrors<T>
@@ -20,7 +22,7 @@ type InputControllerProps<T extends object> = Omit<
 > &
   AdditionalProps<T>
 
-const InputComponent = <T extends object>({
+const InputNumberComponent = <T extends object>({
   defaultValue,
   errors,
   field,
@@ -32,7 +34,7 @@ const InputComponent = <T extends object>({
 
   return (
     <DivWrapper>
-      <CustomTextField
+      <NumericFormat
         sx={{ width: props?.fullWidth ? '100%' : '400px' }}
         size={size}
         {...props}
@@ -41,8 +43,25 @@ const InputComponent = <T extends object>({
         type="text"
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value
-          field.onChange(value)
+          const previousValue = field.value
+          if (
+            props.type === 'number' &&
+            !regexCharacterNumber.test(value) &&
+            value
+          ) {
+            field.onChange(previousValue ? previousValue : '')
+          } else {
+            field.onChange(value)
+          }
         }}
+        onBlur={(e: FocusEvent<HTMLInputElement>) => {
+          if (props.type === 'number' && !regexNumber.test(e.target.value)) {
+            field.onChange('')
+          }
+        }}
+        //@ts-ignore
+        customInput={CustomTextField}
+        thousandSeparator={thousandSeparator}
       />
       {error && (
         <DivError>
@@ -53,4 +72,4 @@ const InputComponent = <T extends object>({
   )
 }
 
-export default InputComponent
+export default InputNumberComponent

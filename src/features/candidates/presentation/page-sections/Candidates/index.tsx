@@ -34,6 +34,7 @@ import { getValueOfObj } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
+import AddBlackListCandidateModal from '../AddBlackListCandidateModal'
 
 const Candidates = () => {
   const {
@@ -182,10 +183,11 @@ const Candidates = () => {
         />
       )}
       {openBlackList && (
-        <BlackListCandidateModal
+        <AddBlackListCandidateModal
           open={openBlackList}
           setOpen={setOpenBlackList}
           id={rowId.current}
+          title={translation.MODLUE_CANDIDATES.add_blackList}
         />
       )}
     </DivContainerWrapper>

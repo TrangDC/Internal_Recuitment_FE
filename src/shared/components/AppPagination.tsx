@@ -11,6 +11,11 @@ export const StyledPagination = styled(Pagination)(({ theme }) => ({
     color: theme.palette.grey[300],
     border: 'none',
   },
+  '& .MuiPagination-ul .MuiPaginationItem-previousNext, .MuiPaginationItem-previousNext ': {
+    minWidth: '20px',
+    height: '20px',
+  },
+ 
   '& .MuiPagination-ul .Mui-selected': {
     backgroundColor: theme.palette.primary[100],
     color: theme.palette.primary[500],

@@ -21,13 +21,14 @@ import { useNavigate } from 'react-router-dom'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import DeleteCandidateModal from '../../page-sections/DeleteCandidateModal'
-import BlackListCandidateModal from '../../page-sections/BlackListCandidateModal'
 import { KeyboardEventHandler } from 'react'
 import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
 import { STATUS_CANDIDATE_DATA } from '../../providers/constants'
 import { getValueOfObj } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
+import RemoveBlackListIcon from 'shared/components/icons/RemoveBlackListIcon'
+import UnBlackListCandidateModal from '../UnBlackListCandidateModal'
 
 const BlackList = () => {
   const {
@@ -60,7 +61,7 @@ const BlackList = () => {
     actions: [
       {
         id: 'detail',
-        onClick: (id, rowData) => {
+        onClick: (id) => {
           navigate(`/dashboard/candidate-detail/${id}`)
         },
         title: translation.COMMON.detail,
@@ -75,8 +76,16 @@ const BlackList = () => {
         Icon: <EditIcon />,
       },
       {
+        id: 'edit',
+        onClick: (id) => {
+          handleOpenBlackList(id)
+        },
+        title: 'Remove from blacklist',
+        Icon: <RemoveBlackListIcon />,
+      },
+      {
         id: 'delete',
-        onClick: (id, rowData) => {
+        onClick: (id) => {
           handleOpenDelete(id)
         },
         title: translation.COMMON.delete,
@@ -155,10 +164,11 @@ const BlackList = () => {
         />
       )}
       {openBlackList && (
-        <BlackListCandidateModal
+        <UnBlackListCandidateModal
           open={openBlackList}
           setOpen={setOpenBlackList}
           id={rowId.current}
+          title="DO YOU WANT TO REMOVE USERS FROM THE BLACKLIST?"
         />
       )}
     </DivContainerWrapper>

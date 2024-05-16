@@ -18,6 +18,7 @@ import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
 import useSelectMember from 'shared/hooks/graphql/useSelectMember'
 import EditorBoxComponent from 'shared/components/form/editorComponent'
 import useTextTranslation from 'shared/constants/text'
+import InputNumberComponent from 'shared/components/form/inputNumberComponent'
 
 interface ICreateJobModal {
   open: boolean
@@ -156,7 +157,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                     name={salary_item.name}
                     control={control}
                     render={({ field }) => (
-                      <InputComponent<FormDataSchema>
+                      <InputNumberComponent<FormDataSchema>
                         errors={errors}
                         label={salary_item?.label}
                         field={field}

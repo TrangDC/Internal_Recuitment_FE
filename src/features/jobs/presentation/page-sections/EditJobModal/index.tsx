@@ -22,6 +22,7 @@ import useUpdateJob from '../../providers/hooks/useEditJob'
 import EditorBoxComponent from 'shared/components/form/editorComponent'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
+import InputNumberComponent from 'shared/components/form/inputNumberComponent'
 
 interface IEditJobModal {
   open: boolean
@@ -173,7 +174,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                     name={salary_item.name}
                     control={control}
                     render={({ field }) => (
-                      <InputComponent<FormDataSchema>
+                      <InputNumberComponent<FormDataSchema>
                         errors={errors}
                         label={salary_item?.label}
                         field={field}
