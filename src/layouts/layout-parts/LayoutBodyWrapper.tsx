@@ -16,7 +16,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
 }));
 
 const InnerWrapper = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.up("lg")]: { maxWidth: 1200, margin: "auto" },
+  [theme.breakpoints.up("lg")]: { maxWidth: '100%', margin: "auto" },
 }));
 
 // --------------------------------------------

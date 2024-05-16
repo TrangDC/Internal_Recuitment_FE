@@ -21,13 +21,13 @@ const primaryMain = '#2499EF'
 export const primary = {
   light: '#E5F3FD',
   main: primaryMain,
-  50: alpha(primaryMain, 0.05),
+  50: '#F1F9FF',
   100: alpha(primaryMain, 0.08),
   200: alpha(primaryMain, 0.2),
   300: alpha(primaryMain, 0.3),
   400: alpha(primaryMain, 0.4),
   500: alpha(primaryMain, 0.5),
-  600: alpha(primaryMain, 0.6),
+  600: '#1F84EB',
   700: alpha(primaryMain, 0.7),
   800: '#00508A',
   red: '#FF6B93',
@@ -75,11 +75,11 @@ export const greyLight = {
   200: '#D3E6F3',
   300: '#B1C9DC',
   400: '#8CA3BA',
-  500: '#5F748D',
+  500: '#4D607A',
   600: '#455A79',
   700: '#2F4365',
   800: '#1E2E51',
-  900: '#121F43',
+  900: '#0B0E1E',
 }
 
 // For dark theme
@@ -88,7 +88,7 @@ export const greyDark = {
   800: '#D3E6F3',
   700: '#B1C9DC',
   600: '#8CA3BA',
-  500: '#5F748D',
+  500: '#4D607A',
   400: '#455A79',
   300: '#2F4365',
   200: '#1E2E51',

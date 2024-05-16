@@ -7,6 +7,7 @@ import { FC, Fragment, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import PopoverLayout from './PopoverLayout';
+import { handleLogOut } from 'shared/utils/auth';
 
 // styled components
 const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({
@@ -27,18 +28,13 @@ const StyledSmall = styled(Small)(({ theme }) => ({
 const ProfilePopover: FC = () => {
   const anchorRef = useRef(null);
   const navigate = useNavigate();
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const upSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
 
   const handleMenuItem = (path: string) => {
     navigate(path);
     setOpen(false);
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
   };
 
   return (
@@ -115,8 +111,8 @@ const ProfilePopover: FC = () => {
 
           <StyledSmall
             onClick={() => {
-              handleLogout();
-              toast.error('You Logout Successfully');
+              handleLogOut();
+              toast.success('You Logout Successfully');
             }}
           >
             Sign Out

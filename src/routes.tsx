@@ -20,10 +20,13 @@ const AuthCallback = Loadable(
   lazy(() => import('./features/authentication/presentation/screens/auth'))
 )
 
-
 // admin ecommerce
 const TeamList = Loadable(
-  lazy(() => import("./features/teams/presentation/screens/teams-list"))
+  lazy(() => import("./pages/teams"))
+);
+
+const TeamDetail = Loadable(
+  lazy(() => import("./pages/teams/team-detail"))
 );
 
 const JobList = Loadable(
@@ -80,6 +83,7 @@ const authRoutes = [
 
 const dashboardRoutes = [
   { path: "teams", element: <TeamList /> },
+  { path: "team-detail/:id", element: <TeamDetail /> },
   { path: "jobs", element: <JobList /> },
   { path: "job-detail/:id", element: <JobDetail /> },
   { path: "candidates", element: <CandiateList /> },

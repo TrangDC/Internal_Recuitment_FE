@@ -8,6 +8,7 @@
   "edit_team": "Chỉnh sửa đội",
   "delete_team": "Bạn có muốn xóa đội này không?",
   "open_requests": "Yêu cầu mở",
+  "Manager": "Quản lí",
 
   "jobs": "Việc làm",
   "requester": "Người yêu cầu",
@@ -50,6 +51,7 @@
   "save": "Lưu",
   "description": "Mô tả",
   "edit": "Chỉnh sửa",
+  "update": "Cập nhật",
   "detail": "Chi tiết",
   "delete": "Xóa",
   "created_date": "Ngày tạo",
@@ -66,12 +68,6 @@
   "to_date": "Đến ngày",
   "update_record": "Chỉnh sửa bản ghi",
   "sub_title_update_record": "Thông tin hoặc ghi chú nào bạn đã cập nhật hồ sơ?",
-
-  "models": {
-    "hiring_jobs": {
-      "model_name": "Công việc"
-    }
-  },
 
   "model": {
     "hiring_jobs": {
@@ -91,6 +87,24 @@
       "created_at": "Tạo vào ngày",
       "updated_at": "Cập nhật vào ngày",
       "deleted_at": "Xóa vào ngày"
+    },
+    "candidates": {
+      "name": "Tên",
+      "email": "Email",
+      "phone": "Điện thoại",
+      "dob": "DOB",
+      "is_blacklist": "Is Blacklist",
+      "is_blacklist_enum": {
+        "yes": "Có"
+      },
+      "is_blacklist_enum": {
+        "no": "Khong"
+      }
+    },
+    "teams": {
+      "model_name": "Teams",
+      "name": "Name",
+      "members": "Members"
     }
   }
 }

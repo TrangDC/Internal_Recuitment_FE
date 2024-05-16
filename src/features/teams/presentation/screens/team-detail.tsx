@@ -1,12 +1,12 @@
 import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import IconWrapper from 'shared/components/IconWrapper'
-import { H5 } from 'shared/components/Typography'
 import GeneralInformation from '../page-sections/GeneralInformation'
 import HistoryLog from '../page-sections/HistoryLog'
 import TabCustomize from 'shared/components/tab'
 import useTextTranslation from 'shared/constants/text'
-import Jobs from 'shared/components/icons/Jobs'
+import { TextHeading } from 'shared/components/utils/textScreen'
+import TeamIcon from 'shared/components/icons/Team'
 
 const JobDetail = () => {
   const translation = useTextTranslation()
@@ -24,9 +24,9 @@ const JobDetail = () => {
       <Box>
         <FlexBox gap={0.5} alignItems="center">
           <IconWrapper>
-            <Jobs sx={{ color: 'primary.main' }} />
+            <TeamIcon sx={{ color: 'primary.main' }} />
           </IconWrapper>
-          <H5>{translation.MODLUE_JOBS.job_detail}</H5>
+          <TextHeading>{translation.MODLUE_TEAMS.teams}</TextHeading>
         </FlexBox>
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>

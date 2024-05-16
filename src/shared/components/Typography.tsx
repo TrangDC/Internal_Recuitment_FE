@@ -85,9 +85,9 @@ export const H5: FC<BoxProps & Props> = (props) => {
 
   return (
     <StyledBox
-      fontSize={14}
+      fontSize={18}
       component="h5"
-      lineHeight={1}
+      lineHeight={'21.94px'}
       fontWeight={600}
       ellipsis={ellipsis ? 1 : 0}
       className={clsx({ [className || ""]: true })}

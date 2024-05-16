@@ -1,18 +1,7 @@
-import { Box, Button, Divider, styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import { Span } from 'shared/components/Typography'
 import FlexBetween from 'shared/components/flexbox/FlexBetween'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-
-// styled components
-export const StyleSpanName = styled('span')`
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 15.85px;
-`
-
-export const ButtonHeader = styled(Button)`
-  margin-left: auto;
-`
 
 export const DivHeaderWrapper = styled('div')`
   display: flex;
@@ -27,13 +16,8 @@ export const DivFilter = styled('div')`
   flex-wrap: wrap;
   gap: 16px;
 `
-
-export const StyleDivider = styled(Divider)`
-  margin: 0 40px;
-`
-
 export const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
-  gap: 8,
+  gap: 16,
   flexWrap: 'wrap',
   flexDirection: 'column',
   backgroundColor: theme.palette.background.paper,
@@ -42,6 +26,8 @@ export const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   borderStyle: 'solid',
   borderColor: '#E3E6EB',
   marginTop: '20px',
+  borderTopRightRadius: '8px',
+  borderTopLeftRadius: '8px',
   [theme.breakpoints.down(453)]: {
     '& .MuiButton-root': { order: 2 },
     '& .MuiTabs-root': {

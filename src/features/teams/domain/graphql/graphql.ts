@@ -80,12 +80,35 @@ const useGraphql = () => {
     },
   })
 
+  const getTeamDetail = buildQuery({
+    operation: 'GetTeam',
+    options: {
+      type: 'query',
+    },
+    node: `
+      data {
+        id
+        name
+        created_at
+        members {
+          id
+          name
+          work_email
+        }
+      }
+    `,
+    params: {
+      id: 'ID!',
+    },
+  })
+
   return {
     getAllTeam,
     queryKey,
     createTeam,
     updateTeam,
     deleteTeam,
+    getTeamDetail,
   }
 }
 

@@ -2,31 +2,26 @@ import duotone from 'shared/components/icons';
 
 export const navigations = [
   { type: 'label', label: 'Dashboard' },
-  { name: 'Team', path: '/dashboard/teams', icon: duotone.PersonChalkboard },
-  { name: 'Jobs', path: '/dashboard/jobs', icon: duotone.BadgeDollar },
+  { name: 'Teams', path: '/dashboard/teams', icon: duotone.Team },
+  { name: 'Jobs', path: '/dashboard/jobs', icon: duotone.Jobs },
   {
     name: 'Candidates',
     path: '/dashboard/candidates',
-    icon: duotone.MessagesDollar,
+    icon: duotone.Candidates,
   },
   {
     name: 'Calendars',
     path: '/dashboard/calendars',
-    icon: duotone.MessagesDollar,
-  },
-  {
-    name: 'Interviewer',
-    path: '/dashboard/interviewer',
-    icon: duotone.MessagesDollar,
+    icon: duotone.Calender,
   },
   {
     name: 'Hiring team',
     path: '/dashboard/hiring',
-    icon: duotone.MessagesDollar,
+    icon: duotone.HiringTeam,
   },
   {
     name: 'Settings',
     path: '/dashboard/settings',
-    icon: duotone.MessagesDollar,
+    icon: duotone.Settings,
   },
 ];

@@ -13,6 +13,7 @@ const useTextTranslation = () => {
       edit_team: t('edit_team'),
       delete_team: t('delete_team'),
       open_requests: t('open_requests'),
+      manager: t('manager'),
     },
     MODLUE_JOBS: {
       jobs: t('jobs'),
@@ -45,6 +46,7 @@ const useTextTranslation = () => {
       change_status: t('change_status'),
     },
     COMMON: {
+      update: t('update'),
       drag_and_drop: t('drag_and_drop'),
       browse_file: t('browse_file'),
       email: t('email'),

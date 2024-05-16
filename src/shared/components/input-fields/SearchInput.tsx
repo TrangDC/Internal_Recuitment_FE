@@ -35,7 +35,6 @@ const SearchInput: FC<SearchInputProps & InputBaseProps> = (props) => {
     <SearchIcon
       sx={{
         fontSize: 18,
-        marginRight: 1,
         color: 'text.disabled',
         ...icon_style,
       }}

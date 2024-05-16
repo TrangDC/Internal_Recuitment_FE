@@ -7,7 +7,8 @@
   "detatil_team": "Detail Team",
   "edit_team": "Edit Team",
   "delete_team": "Do you want to delete this team?",
-  "open_requests": "Open Requests",
+  "open_requests": "Opening requests",
+  "manager": "Manager",
 
   "jobs": "Jobs",
   "requester": "Requester",
@@ -52,6 +53,7 @@
   "edit": "Edit",
   "detail": "Detail",
   "delete": "Delete",
+  "update": "Update",
   "created_date": "Created date",
   "status": "Status",
   "location": "Location",
@@ -66,12 +68,6 @@
   "to_date": "To date",
   "update_record": "Update record",
   "sub_title_update_record": "What information or note have you updated the record?",
-
-  "models": {
-    "hiring_jobs": {
-      "model_name": "Job"
-    }
-  },
 
   "model": {
     "hiring_jobs": {
@@ -91,6 +87,24 @@
       "created_at": "Created At",
       "updated_at": "Updated At",
       "deleted_at": "Deleted At"
+    },
+    "candidates": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "dob": "DOB",
+      "is_blacklist": "Is Blacklist",
+      "is_blacklist_enum": {
+        "yes": "Yes"
+      },
+      "is_blacklist_enum": {
+        "no": "No"
+      }
+    },
+    "teams": {
+      "model_name": "Teams",
+      "name": "Name",
+      "members": "Members"
     }
   }
 }
