@@ -12,18 +12,22 @@ interface IBlackListCandidateModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
+  is_black_list?: boolean
+  title: string
 }
 
 function BlackListCandidateModal({
   open,
   setOpen,
   id,
+  is_black_list = true,
+  title,
 }: IBlackListCandidateModal) {
   const { onSubmit, useFormReturn } = useBlackListCandidate({
     callbackSuccess: () => setOpen(false),
     defaultValues: {
       id: id,
-      is_black_list: true,
+      is_black_list: is_black_list,
     },
   })
   const {
@@ -35,7 +39,7 @@ function BlackListCandidateModal({
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title={translation.MODLUE_CANDIDATES.add_blackList}
+        title={title}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -53,6 +57,7 @@ function BlackListCandidateModal({
                     fullWidth
                     multiline
                     minRows={4}
+                    type='text'
                   />
                 )}
               />
