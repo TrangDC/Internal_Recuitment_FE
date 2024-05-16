@@ -4,7 +4,7 @@ import { Button, Grid } from '@mui/material'
 import InputComponent from 'shared/components/form/inputComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../../providers/constants/schema'
+import { FormDataSchemaBlackList } from '../../providers/constants/schema'
 import useTextTranslation from 'shared/constants/text'
 import useBlackListCandidate from '../../providers/hooks/useBlackListCandidate'
 
@@ -43,10 +43,10 @@ function BlackListCandidateModal({
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Controller
-                name="description"
+                name="note"
                 control={control}
                 render={({ field }) => (
-                  <InputComponent<FormDataSchema>
+                  <InputComponent<FormDataSchemaBlackList>
                     errors={errors}
                     label={translation.COMMON.description}
                     field={field}

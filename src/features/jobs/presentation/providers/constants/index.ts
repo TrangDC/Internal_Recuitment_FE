@@ -56,6 +56,7 @@ export type SALARY_RENDER_TYPE = {
     options?: {value: string, name: string}[],
     type?: string,
     style?: CSSProperties,
+    thousandSeparator?: boolean,
 }
 
 export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
@@ -66,6 +67,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     label: t('from') as string,
     type: 'number',
     xs: 1,
+    thousandSeparator: true,
   },
   {
     name: 'salary_to',
@@ -74,6 +76,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     label: t('to') as string,
     type: 'number',
     xs: 1,
+    thousandSeparator: true,
   },
   {
     name: 'salary_from',
@@ -81,6 +84,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     accept: [SALARY_STATE.MINIMUM],
     type: 'number',
     xs: 2,
+    thousandSeparator: true,
   },
   {
     name: 'salary_to',
@@ -88,6 +92,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     accept: [SALARY_STATE.UP_TO],
     type: 'number',
     xs: 2,
+    thousandSeparator: true,
   },
   {
     name: 'salary_to',
@@ -95,7 +100,8 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     accept: [SALARY_STATE.NEGOTITATION],
     type: 'number',
     xs: 4,
-    style: {visibility: 'hidden'}
+    style: {visibility: 'hidden'},
+    thousandSeparator: true,
   },
   {
     name: 'salary_from',
@@ -103,7 +109,8 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     accept: [undefined],
     type: 'number',
     xs: 4,
-    style: {visibility: 'hidden'}
+    style: {visibility: 'hidden'},
+    thousandSeparator: true,
   },
   {
     name: 'currency',

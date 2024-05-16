@@ -31,7 +31,7 @@ export const columns = (
     header: () => <span>{t('applied_date')}</span>,
     cell: (info) => (
       <StyleSpanName>
-        {/* {format(new Date(info.getValue()), 'hh:mm a, dd/MM/yyyy')} */}
+        {/* {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')} */}
       </StyleSpanName>
     ),
   }),

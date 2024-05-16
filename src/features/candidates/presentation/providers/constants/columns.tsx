@@ -17,20 +17,21 @@ export const columns = (
   actions: TOptionItem<Candidate>[]
 ): ColumnDef<Candidate, any>[] => [
   columnHelper.accessor((row) => row.name, {
-    id: 'title',
+    id: 'name',
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
     header: () => <span>{t('name')}</span>,
-    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.email, {
     id: 'email',
     header: () => <span>{t('email')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.phone, {
     id: 'phone',
     header: () => <span>{t('phone_number')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.created_at, {
     id: 'created_at',
@@ -38,13 +39,14 @@ export const columns = (
     size: 200,
     cell: (info) => (
       <StyleSpanName>
-        {format(new Date(info.getValue()), 'hh:mm a, dd/MM/yyyy')}
+        {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}
       </StyleSpanName>
     ),
   }),
   columnHelper.accessor((row) => row.status, {
     id: 'status',
     header: () => <span>{t('status')}</span>,
+    enableSorting: false,
     cell: (info) => {
       //@ts-ignore
       const status = CANDIDATE_STATUS[info.getValue()]
@@ -100,7 +102,7 @@ export const columnsCandidateJob = (
     header: () => <span>{t('applied_date')}</span>,
     cell: (info) => (
       <StyleSpanName>
-        {/* {format(new Date(info.getValue()), 'hh:mm a, dd/MM/yyyy')} */}
+        {/* {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')} */}
       </StyleSpanName>
     ),
   }),

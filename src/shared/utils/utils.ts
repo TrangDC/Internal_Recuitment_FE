@@ -94,7 +94,7 @@ export const removeNonExistInObj = (obj: Record<string, any>) => {
   Object.keys(obj).forEach((item) => {
     if (_.isObject(obj[item] && !Array.isArray(obj[item]))) {
       newObj[item] = removeInfoData(obj[item])
-    } else if (obj[item]) {
+    } else if (obj[item] !== undefined && obj[item] !== null) {
       newObj[item] = obj[item]
     }
   })

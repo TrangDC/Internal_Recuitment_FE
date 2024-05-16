@@ -32,7 +32,7 @@ export const schema = yup.object({
       ? schema.notRequired()
       : schema.required('currency is required!')
   }),
-  description: yup.string(),
+  description: yup.string().required(),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>

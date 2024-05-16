@@ -1,6 +1,6 @@
 import { SvgIcon, SvgIconProps } from '@mui/material'
 
-const Candidates = (props: SvgIconProps) => {
+const CandidateIcon = (props: SvgIconProps) => {
   return (
     <SvgIcon
       width="18"
@@ -15,4 +15,4 @@ const Candidates = (props: SvgIconProps) => {
   )
 }
 
-export default Candidates
+export default CandidateIcon

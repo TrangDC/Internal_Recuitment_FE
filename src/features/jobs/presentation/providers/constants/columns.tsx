@@ -19,25 +19,28 @@ const columnHelper = createColumnHelper<Job>()
 
 export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.name, {
-    id: 'title',
+    id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>{t('name')}</span>,
-    enableSorting: false,
+    // enableSorting: false,
   }),
   columnHelper.accessor((row) => row.team.name, {
     id: 'team',
     header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.location, {
     id: 'location',
     header: () => <span>{t('location')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.user.name, {
     id: 'requester',
     header: () => <span>{t('requester')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.amount, {
     id: 'amount',
@@ -48,6 +51,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     id: 'Hired',
     header: () => <span>{t('hired')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.created_at, {
     id: 'created_at',
@@ -55,7 +59,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     header: () => <span>{t('created_date')}</span>,
     cell: (info) => (
       <StyleTinyText>
-        {format(new Date(info.getValue()), 'hh:mm a, dd/MM/yyyy')}
+        {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}
       </StyleTinyText>
     ),
   }),
@@ -63,6 +67,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     id: 'status',
     size: 200,
     header: () => <span>{t('status')}</span>,
+    enableSorting: false,
     cell: (info) => (
       <ChipFieldStatus
         label={STATUS_STYLE[info.getValue()].text}

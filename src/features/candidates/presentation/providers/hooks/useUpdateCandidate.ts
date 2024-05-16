@@ -34,10 +34,11 @@ function useUpdateCandidate(
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (newCandidate : UpdateCandidateInput) => {
-        const { id } = newCandidate;
+        const { id, note, ...otherInput } = newCandidate;
       return fetchGraphQL<BaseRecord>(updateCandidate.query, {
-        input: newCandidate,
+        input: otherInput,
         id: id,
+        note,
       })
     },
     onSuccess: (data) => {

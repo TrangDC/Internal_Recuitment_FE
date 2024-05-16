@@ -31,6 +31,9 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
 
   const { onSubmit, useFormReturn } = useCreateJob({
     callbackSuccess: handleCancelModel,
+    defaultValues: {
+      description: '',
+    }
   })
   const {
     control,
@@ -160,6 +163,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                         fullWidth
                         type={salary_item?.type}
                         style={salary_item?.style}
+                        thousandSeparator={salary_item?.thousandSeparator}
                       />
                     )}
                   />
@@ -212,6 +216,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                     errors={errors}
                     label={translation.COMMON.description}
                     field={field}
+                    required={true}
                   />
                 )}
               />

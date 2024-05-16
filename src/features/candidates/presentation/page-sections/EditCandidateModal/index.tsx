@@ -4,12 +4,13 @@ import { Button, Grid } from '@mui/material'
 import InputComponent from 'shared/components/form/inputComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../../providers/constants/schema'
+import { FormDataSchemaUpdate } from '../../providers/constants/schema'
 import DatePickerComponent from 'shared/components/form/datePickerComponent'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import useUpdateCandidate from '../../providers/hooks/useUpdateCandidate'
 import { getInfoData } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
+import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 
 interface IEditCandidateModal {
   open: boolean
@@ -33,9 +34,15 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
   const {
     control,
     formState: { errors },
+    setValue,
   } = useFormReturn
 
   const translation = useTextTranslation()
+
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason);
+    onSubmit();
+  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -51,7 +58,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
                 name="name"
                 control={control}
                 render={({ field }) => (
-                  <InputComponent<FormDataSchema>
+                  <InputComponent<FormDataSchemaUpdate>
                     errors={errors}
                     label={translation.COMMON.name}
                     field={field}
@@ -66,7 +73,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
                 name="phone"
                 control={control}
                 render={({ field }) => (
-                  <InputComponent<FormDataSchema>
+                  <InputComponent<FormDataSchemaUpdate>
                     errors={errors}
                     label={translation.COMMON.phone_number}
                     field={field}
@@ -82,7 +89,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
                 name="email"
                 control={control}
                 render={({ field }) => (
-                  <InputComponent<FormDataSchema>
+                  <InputComponent<FormDataSchemaUpdate>
                     errors={errors}
                     label={translation.COMMON.email}
                     size="small"
@@ -98,7 +105,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
                 name="dob"
                 control={control}
                 render={({ field }) => (
-                  <DatePickerComponent<FormDataSchema>
+                  <DatePickerComponent<FormDataSchemaUpdate>
                     textFieldProps={{
                       fullWidth: true,
                       size: 'small',
@@ -119,14 +126,24 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
           <CustomeButtonCancel type="button" variant="contained" onClick={() => setOpen(false)}>
             {translation.COMMON.cancel}
           </CustomeButtonCancel>
-          <Button
+          {/* <Button
             type="button"
             variant="contained"
             color="primary"
             onClick={onSubmit}
           >
             {translation.COMMON.save}
-          </Button>
+          </Button> */}
+
+          <UpdateRecord callbackSubmit={callbackSubmit}>
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+            >
+              {translation.COMMON.save}
+            </Button>
+          </UpdateRecord>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

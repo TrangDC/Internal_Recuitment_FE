@@ -42,6 +42,7 @@ export const columns = (
     meta: {
       style: { width: '300px' },
     },
+    enableSorting: false,
   }),
   columnHelper.accessor('opening_requests', {
     header: () => <span>{t('open_requests')}</span>,
