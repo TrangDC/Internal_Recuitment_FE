@@ -31,8 +31,8 @@ export interface IuseCustomTableReturn {
   totalPage: number
   refetch: () => void
   variables: {
-    pagination: IPagination,
-    sortBy: ISorting,
+    pagination: IPagination
+    sortBy: ISorting
   }
 }
 
@@ -52,17 +52,29 @@ const useCustomTable = ({
     page: initialPage,
     perPage: initialPerPage,
   })
-  const [sorting, setSorting] = useState<ISorting>(variables?.sorting || {
-    direction: 'DESC',
-    field: 'created_at',
-  })
-  const [freeWord, setFreeWord] = useState<Record<string, any>>(variables?.freeWord || {});
-  const [filter, setFilter] = useState<Record<string, any>>(variables?.filter || {});
-  console.log("🚀 ~ filter:", filter)
+  const [sorting, setSorting] = useState<ISorting>(
+    variables?.sorting || {
+      direction: 'DESC',
+      field: 'created_at',
+    }
+  )
+  const [freeWord, setFreeWord] = useState<Record<string, any>>(
+    variables?.freeWord || {}
+  )
+  const [filter, setFilter] = useState<Record<string, any>>(
+    variables?.filter || {}
+  )
 
   const { isLoading, error, data, refetch } = useQuery({
     // gcTime: 0,
-    queryKey: [queryKey, pagination.page, pagination.perPage, sorting, freeWord, filter],
+    queryKey: [
+      queryKey,
+      pagination.page,
+      pagination.perPage,
+      sorting,
+      freeWord,
+      filter,
+    ],
     queryFn: async () =>
       fetchGraphQL<BaseRecord>(buildQuery.query, {
         ...variables,
@@ -96,19 +108,28 @@ const useCustomTable = ({
   }
 
   function handleSorTable(id: string) {
-    setSorting((prev) => ({
-      direction:
-        id !== prev.field ? 'DESC' : prev.direction === 'DESC' ? 'ASC' : 'DESC',
-      field: id ? id : 'created_at',
-    }))
+    setSorting((prev) => {
+      if (id === prev.field) {
+        const fieldSort = prev.direction === 'DESC' ? 'created_at' : id;
+        return {
+          direction: fieldSort === 'created_at' ? "DESC" : prev.direction === 'ASC' ? 'DESC' : 'ASC',
+          field: fieldSort,
+        }
+      }
+
+      return {
+        direction: 'ASC',
+        field: id,
+      }
+    })
   }
 
   function handleFreeWord(key: string, value: string) {
-    setFreeWord((prev) => ({...prev, [key]: value}))
+    setFreeWord((prev) => ({ ...prev, [key]: value }))
   }
 
   function handleFilter(key: string, value: string) {
-    setFilter((prev) => (removeNonExistInObj({...prev, [key]: value})))
+    setFilter((prev) => removeNonExistInObj({ ...prev, [key]: value }))
   }
 
   return {
@@ -124,7 +145,7 @@ const useCustomTable = ({
     variables: {
       pagination: pagination,
       sortBy: sorting,
-    }
+    },
   }
 }
 
