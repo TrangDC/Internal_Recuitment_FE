@@ -19,6 +19,7 @@ const useGraphql = () => {
             name
             work_email
           }
+          opening_requests
         }
       }
       pagination {

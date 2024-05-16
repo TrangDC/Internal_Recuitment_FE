@@ -47,11 +47,10 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     header: () => <span>{t('staft_required')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
-  columnHelper.accessor((row) => row.amount, {
-    id: 'Hired',
+  columnHelper.accessor((row) => row.total_candidates_recruited, {
+    id: 'total_candidates_recruited',
     header: () => <span>{t('hired')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.created_at, {
     id: 'created_at',

@@ -15,6 +15,7 @@ export type Job = {
   slug: string
   team: Team
   user: Member
+  total_candidates_recruited: number,
   created_at: string
   updated_at: string
   deleted_at: string
