@@ -3,55 +3,60 @@ import {
   ActionGroupButtons,
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
-import { StyleSpanName } from '../styles/index'
 import { Job } from 'features/jobs/domain/interfaces'
 import { format } from 'date-fns'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { STATUS_STYLE } from './index'
 import { t } from 'i18next'
+import { styled } from '@mui/material'
+import { TinyText } from 'shared/components/form/styles'
+
+export const StyleTinyText = styled(TinyText)(({ theme }) => ({
+  color: theme.palette.grey[500],
+}))
 
 const columnHelper = createColumnHelper<Job>()
 
 export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'title',
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>{t('name')}</span>,
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.team.name, {
     id: 'team',
     header: () => <span>{t('team')}</span>,
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
   columnHelper.accessor((row) => row.location, {
     id: 'location',
     header: () => <span>{t('location')}</span>,
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
   columnHelper.accessor((row) => row.user.name, {
     id: 'requester',
     header: () => <span>{t('requester')}</span>,
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
   columnHelper.accessor((row) => row.amount, {
     id: 'amount',
     header: () => <span>{t('staft_required')}</span>,
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
   columnHelper.accessor((row) => row.amount, {
     id: 'Hired',
     header: () => <span>{t('hired')}</span>,
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
   columnHelper.accessor((row) => row.created_at, {
     id: 'created_at',
     size: 200,
     header: () => <span>{t('created_date')}</span>,
     cell: (info) => (
-      <StyleSpanName>
+      <StyleTinyText>
         {format(new Date(info.getValue()), 'hh:mm a, dd/MM/yyyy')}
-      </StyleSpanName>
+      </StyleTinyText>
     ),
   }),
   columnHelper.accessor((row) => row.status, {

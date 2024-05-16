@@ -27,9 +27,15 @@ import DiagramProject from "./DiagramProject";
 import LayerGroup from "./LayerGroup";
 import FileCircleQuestion from "./FileCircleQuestion";
 import UserList from "./UserList";
+import Team from "./Team";
+import Jobs from './Jobs';
+import Candidates from './Candidates';
+import HiringTeam from './HiringTeams'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  HiringTeam,
+  Candidates,
   AdminEcommerce,
   ArrowLeftToLine,
   CommentsQuestionCheck,
@@ -59,4 +65,6 @@ export default {
   RectangleCirclePlus,
   PersonChalkboard,
   PersonCircleCheck,
+  Team,
+  Jobs,
 };

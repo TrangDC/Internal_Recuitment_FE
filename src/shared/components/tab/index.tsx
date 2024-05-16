@@ -24,21 +24,20 @@ const TabWrapper = styled(Tab)(({ theme }) => ({
   margin: 0,
   padding: '0 20px',
   height: '40px',
-  backgroundColor: theme.palette.primary.light,
+  backgroundColor: theme.palette.primary[50],
   boxShadow: 'rgba(96, 97, 112, 0.16) 0px 2px 4px 0px',
+  fontSize: 12,
+  lineHeight: '14.63px',
+  fontWeight: 500,
 
   '&.Mui-selected': {
     backgroundColor: 'white',
-  },
-
-  '&.Mui-selected .MuiTouchRipple-root': {
     color: theme.palette.primary[600],
     fontWeight: 600,
+
   },
 
   '& .MuiTouchRipple-root': {
-    fontWeight: 500,
-    fontSize: 12,
     lineHeight: '14.63px',
     color: theme.palette.grey[500],
   },

@@ -35,7 +35,7 @@ const AuditTrailsUpdate = ({ data, type, module }: Props) => {
         <FlexBox flexDirection={'column'} gap={'8px'}>
           {data.map((item, idx) => {
             return (
-              <FlexBox key={idx} gap={'8px'}>
+              <FlexBox key={idx} gap={'8px'} alignItems={'center'}>
                 <TinyText>{t(item.field)}: </TinyText>
                 <DateFieldDivison>
                   <Tiny>

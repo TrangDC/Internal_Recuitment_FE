@@ -80,7 +80,7 @@ export const ActionGroupButtons = <T extends object>({
                 handleMoreClose()
               }}
               disabled={disabled}
-              sx={{ '&:hover': { color: 'primary.main' } }}
+              sx={{ '&:hover': { color: 'primary.main' }, color: '#0B0E1E' }}
             >
               <StyleListItemIcon>{Icon}</StyleListItemIcon>
               <StyleLabel>{title}</StyleLabel>

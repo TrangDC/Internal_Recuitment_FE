@@ -23,10 +23,6 @@ type AutoCompleteFieldProps<T extends object> = Omit<
 > &
   AdditionalProps<T>
 
-const AutoCompleteStyle = styled(Autocomplete)(({ theme }) => ({
-  maxWidth: '100%',
-}))
-
 export const CustomTextField = styled(TextField)(({ theme }) => ({
   maxWidth: '100%',
   marginTop: '10px',
@@ -75,7 +71,7 @@ const AutoCompleteField = <T extends object>({
 
   return (
     <Autocomplete
-      sx={{ width: props?.fullWidth ? '100%' : '400px' }}
+      sx={{ width: props?.fullWidth ? '100%' : '400px', maxWidth: '100%' }}
       size={size}
       limitTags={limitTags}
       options={options}

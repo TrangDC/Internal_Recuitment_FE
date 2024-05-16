@@ -29,6 +29,10 @@ export function updateToken(accessToken: string, refreshToken: string) {
   updateStorage(TREC_REFRESH_TOKEN, refreshToken)
 }
 
+export function handleLogOut() {
+  removeToken()
+}
+
 function handleRefreshTokenMiddleWare() {
   let refreshTokenCalled = false
 

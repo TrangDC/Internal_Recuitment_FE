@@ -1,7 +1,7 @@
 import HistoryLogAuditTrails from 'features/auditTrails/presentation/page-sections/HistoryLog'
 
 const HistoryLog = () => {
-  return <HistoryLogAuditTrails module='hiring_jobs'/>
+  return <HistoryLogAuditTrails module='teams'/>
 }
 
 export default HistoryLog

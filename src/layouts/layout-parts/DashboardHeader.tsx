@@ -2,21 +2,15 @@ import {
   AppBar,
   Box,
   ClickAwayListener,
-  IconButton,
   styled,
   Theme,
   Toolbar,
   useMediaQuery,
 } from '@mui/material'
 import { SettingsContext } from 'contexts/settingsContext'
-import SearchIcon from 'shared/components/icons/SearchIcon'
-import ThemeIcon from 'shared/components/icons/ThemeIcon'
-import { FC, Fragment, useContext, useState } from 'react'
+import { FC, Fragment, useContext } from 'react'
 import LanguagePopover from './popovers/LanguagePopover'
-import NotificationsPopover from './popovers/NotificationsPopover'
 import ProfilePopover from './popovers/ProfilePopover'
-import ServicePopover from './popovers/ServicePopover'
-import SearchBar from './SearchBar'
 import { themeSettingsTypes } from 'shared/theme'
 
 // ------------------------------------------------
@@ -45,9 +39,9 @@ const StyledToolBar = styled(Toolbar)(() => ({
   },
 }))
 
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  '&:hover': { backgroundColor: theme.palette.action.hover },
-}))
+// const StyledIconButton = styled(IconButton)(({ theme }) => ({
+//   '&:hover': { backgroundColor: theme.palette.action.hover },
+// }))
 
 const ToggleIcon = styled(Box)<{ width?: number }>(({ theme, width }) => ({
   height: 3,
@@ -62,17 +56,14 @@ const ToggleIcon = styled(Box)<{ width?: number }>(({ theme, width }) => ({
 const DashboardHeader: FC<DashboardHeaderProps> = (props) => {
   const { setShowMobileSideBar } = props
 
-  const [openSearchBar, setSearchBar] = useState(false)
+  // const [openSearchBar, setSearchBar] = useState(false)
   const { settings, saveSettings } = useContext(SettingsContext)
   const upSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
   const downMd = useMediaQuery((theme: Theme) => theme.breakpoints.down(1200))
 
-  // const handleChangeDirection = (value: "ltr" | "rtl") => {
-  //   saveSettings({ ...settings, direction: value } as themeSettingsTypes);
-  // };
-  const handleChangeTheme = (value: 'light' | 'dark') => {
-    saveSettings({ ...settings, theme: value } as themeSettingsTypes)
-  }
+  // const handleChangeTheme = (value: 'light' | 'dark') => {
+  //   saveSettings({ ...settings, theme: value } as themeSettingsTypes)
+  // }
 
   return (
     <DashboardHeaderRoot position="sticky">
@@ -85,24 +76,27 @@ const DashboardHeader: FC<DashboardHeaderProps> = (props) => {
           </Box>
         )}
 
-        <ClickAwayListener onClickAway={() => setSearchBar(false)}>
+        <ClickAwayListener
+          onClickAway={() => {
+            // setSearchBar(false)
+          }}
+        >
           <Box>
-            {!openSearchBar && (
+            {/* {!openSearchBar && (
               <StyledIconButton onClick={() => setSearchBar(true)}>
                 <SearchIcon sx={{ color: 'text.disabled' }} />
               </StyledIconButton>
-            )}
-
-            <SearchBar
+            )} */}
+            {/* <SearchBar
               open={openSearchBar}
               handleClose={() => setSearchBar(false)}
-            />
+            /> */}
           </Box>
         </ClickAwayListener>
 
         <Box flexGrow={1} ml={1} />
 
-        {settings.theme === 'light' ? (
+        {/* {settings.theme === 'light' ? (
           <StyledIconButton onClick={() => handleChangeTheme('dark')}>
             <ThemeIcon />
           </StyledIconButton>
@@ -110,13 +104,13 @@ const DashboardHeader: FC<DashboardHeaderProps> = (props) => {
           <StyledIconButton onClick={() => handleChangeTheme('light')}>
             <ThemeIcon />
           </StyledIconButton>
-        )}
+        )} */}
 
         {upSm && (
           <Fragment>
             <LanguagePopover />
-            <NotificationsPopover />
-            <ServicePopover />
+            {/* <NotificationsPopover /> */}
+            {/* <ServicePopover /> */}
           </Fragment>
         )}
         <ProfilePopover />

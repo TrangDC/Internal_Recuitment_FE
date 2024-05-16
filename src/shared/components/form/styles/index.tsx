@@ -9,7 +9,8 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
 
   '& .MuiInputBase-root' : {
     height: '100%',
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
+    paddingRight: 0,
   },
 
   '& .MuiFormLabel-root span': {

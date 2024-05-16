@@ -1,7 +1,7 @@
-import { Box, Divider, styled } from "@mui/material"
-import FlexBox from "shared/components/flexbox/FlexBox"
-import FlexRowAlign from "shared/components/flexbox/FlexRowAlign"
-import ChipFieldStatus from "shared/components/input-fields/ChipFieldStatus"
+import { Box, Divider, styled } from '@mui/material'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import FlexRowAlign from 'shared/components/flexbox/FlexRowAlign'
+import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 
 export const DateFieldContainer = styled(FlexBox)(({ theme }) => ({
   width: '100%',
@@ -52,7 +52,6 @@ export const DateFieldBody = styled(FlexBox)(({ theme }) => ({
 export const DateFieldInformation = styled(Box)(({ theme }) => ({}))
 
 export const StyleChip = styled(ChipFieldStatus)(({ theme }) => ({
-
   '& span': {
     color: 'white',
   },
@@ -76,4 +75,18 @@ export const StyleDivider = styled(Divider)(({ theme }) => ({
   top: '45px',
   left: '16px',
   maxHeight: '56px',
+}))
+
+export const HistoryWrapper = styled(Box)(({ theme }) => ({
+  width: '100%',
+  padding: '13px 16px 24px',
+}))
+
+export const FormWrapper = styled(Box)(({ theme }) => ({
+  width: '100%',
+}))
+
+export const LogsWrapper = styled(Box)(({ theme }) => ({
+  width: '100%',
+  marginTop: '10px',
 }))

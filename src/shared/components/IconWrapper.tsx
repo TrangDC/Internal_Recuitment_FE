@@ -5,11 +5,11 @@ const Wrapper = styled(Box)(({ theme }) => ({
   width: 40,
   height: 40,
   display: "flex",
-  borderRadius: "5px",
+  borderRadius: "4px",
   alignItems: "center",
   marginRight: "0.5rem",
   justifyContent: "center",
-  backgroundColor: theme.palette.primary.light,
+  backgroundColor: theme.palette.primary[50],
 }));
 
 const IconWrapper: FC<BoxProps> = ({ children, ...props }) => {

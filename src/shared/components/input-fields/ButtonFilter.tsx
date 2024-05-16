@@ -11,6 +11,7 @@ import DownIcon from '../icons/DownIcon'
 import { findKey, get, isEmpty, isEqual } from 'lodash'
 import ChipField from './ChipField'
 import AutoCompleteField from './AutoCompleteField'
+import { SpanText } from '../form/styles'
 
 const ButtonFilterStyled = styled(Button)(({ theme }) => ({
   display: 'flex',
@@ -25,6 +26,9 @@ const ButtonFilterStyled = styled(Button)(({ theme }) => ({
 
   '& span': {
     color: theme.palette.primary[800],
+    fontWeight: 500,
+    fontSize: 13,
+    lineHeight: '15.85px',
   },
 
   '&:hover': {
@@ -124,7 +128,7 @@ const ButtonFilter = <T extends object>({
           onClick={handleClick}
           endIcon={<DownIcon />}
         >
-          <span>{inputLabel}</span>
+          <SpanText>{inputLabel}</SpanText>
         </ButtonFilterStyled>
         <PopperStyled open={Boolean(anchorEl)} anchorEl={anchorEl}>
           <TypographyStyled sx={{ p: 1, pr: 2, pl: 2 }}>

@@ -9,7 +9,7 @@ export type Member = {
 export type Team = {
   id: string,
   name: string,
-  open_request: number,
+  opening_requests: number,
   members: Member[],
   slug: string,
   created_at: string,
