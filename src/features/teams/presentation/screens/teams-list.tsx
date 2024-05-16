@@ -1,7 +1,5 @@
 import { IconButton, InputAdornment } from '@mui/material'
 import { Box } from '@mui/system'
-import FlexBox from 'shared/components/flexbox/FlexBox'
-import IconWrapper from 'shared/components/IconWrapper'
 import Add from 'shared/components/icons/Add'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
@@ -18,11 +16,11 @@ import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DeleteTeamModal from '../page-sections/DeleteTeamModal'
 import { KeyboardEventHandler } from 'react'
 import useTextTranslation from 'shared/constants/text'
-import { HeadingWrapper } from '../providers/styles/style'
 import { useNavigate } from 'react-router-dom'
 import TeamIcon from 'shared/components/icons/Team'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
-import { TextHeading } from 'shared/components/utils/textScreen'
+import IconScreen from 'shared/components/utils/IconScreen'
+import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 
 const TeamList = () => {
   const {
@@ -83,19 +81,12 @@ const TeamList = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <FlexBox gap={0.5} alignItems="center">
-          <IconWrapper>
-            <TeamIcon sx={{ color: 'primary.main' }} />
-          </IconWrapper>
-          <TextHeading>{translation.MODLUE_TEAMS.teams}</TextHeading>
-        </FlexBox>
+        <IconScreen
+          Icon={TeamIcon}
+          textLable={translation.MODLUE_TEAMS.teams}
+        />
       </Box>
-      <Box
-        sx={{
-          borderRadius: '8px',
-          boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
-        }}
-      >
+      <BoxWrapperOuterContainer>
         <HeadingWrapper>
           <CustomTextField
             id="outlined-basic"
@@ -123,7 +114,7 @@ const TeamList = () => {
         <Box>
           <CustomTable columns={colummTable} useTableReturn={useTableReturn} />
         </Box>
-      </Box>
+      </BoxWrapperOuterContainer>
 
       {openCreate && (
         <CreateTeamModal open={openCreate} setOpen={setOpenCreate} />

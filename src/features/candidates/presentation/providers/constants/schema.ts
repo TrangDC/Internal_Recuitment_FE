@@ -16,6 +16,7 @@ export const schemaUpdate = yup.object({
   phone: yup.string().required(),
   email: yup.string().required(),
   dob: yup.string().required(),
+  note: yup.string().required(),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>
@@ -25,7 +26,7 @@ export type FormDataSchemaDelete = FormDataSchemaNote
 
 export const schemaBlackList = yup.object({
   id: yup.string().required(),
-  description: yup.string().required(),
+  note: yup.string().required(),
   is_black_list: yup.boolean().required(),
 })
 export type FormDataSchemaBlackList = yup.InferType<typeof schemaBlackList>

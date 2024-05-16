@@ -45,6 +45,7 @@ const useGraphql = () => {
     `,
     params: {
       input: 'NewCandidateInput!',
+      note: 'String!'
     },
   })
 
@@ -61,6 +62,7 @@ const useGraphql = () => {
     params: {
       input: 'UpdateCandidateInput!',
       id: 'ID!',
+      note: 'String!'
     },
   })
 
@@ -69,13 +71,10 @@ const useGraphql = () => {
     options: {
       type: 'mutation',
     },
-    node: `
-      data {
-        
-      }
-    `,
+    node: ``,
     params: {
       id: 'ID!',
+      note: 'String!'
     },
   })
 
@@ -84,14 +83,11 @@ const useGraphql = () => {
     options: {
       type: 'mutation',
     },
-    node: `
-      data {
-        
-      }
-    `,
+    node: ``,
     params: {
       id: 'ID!',
       is_black_list: 'Boolean!',
+      note: 'String!'
     },
   })
 

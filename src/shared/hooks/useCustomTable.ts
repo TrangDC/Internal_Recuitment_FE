@@ -58,6 +58,7 @@ const useCustomTable = ({
   })
   const [freeWord, setFreeWord] = useState<Record<string, any>>(variables?.freeWord || {});
   const [filter, setFilter] = useState<Record<string, any>>(variables?.filter || {});
+  console.log("🚀 ~ filter:", filter)
 
   const { isLoading, error, data, refetch } = useQuery({
     // gcTime: 0,

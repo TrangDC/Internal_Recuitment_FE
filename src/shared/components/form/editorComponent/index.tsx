@@ -12,6 +12,7 @@ interface TinyProps<T extends FieldValues> extends IAllProps {
   }
   errors?: FieldErrors<T>
   label?: string,
+  required?: boolean,
 }
 
 const EditorBoxComponent = <T extends object>({

@@ -32,6 +32,7 @@ function useCreateCandidate(props: createCandidateProps = { defaultValues: {} })
     mutationFn: (newTodo: NewCandidateInput) =>
       fetchGraphQL<BaseRecord>(createCandidate.query, {
         input: newTodo,
+        note: '',
       }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })

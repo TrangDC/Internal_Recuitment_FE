@@ -1,8 +1,7 @@
 import { CSSObject } from '@emotion/react'
 import { SvgIcon, SvgIconProps } from '@mui/material'
 
-const SearchIcon = (props: SvgIconProps & CSSObject) => {
-  console.log("🚀 ~ SearchIcon ~ props:", props)
+const SearchIcon = (props: SvgIconProps & CSSObject) => { 
   return (
     <SvgIcon
       viewBox="0 0 24 24"

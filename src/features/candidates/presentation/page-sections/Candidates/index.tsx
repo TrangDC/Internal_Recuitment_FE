@@ -1,6 +1,5 @@
 import { IconButton, InputAdornment } from '@mui/material'
-import { Box, styled } from '@mui/system'
-import FlexBetween from 'shared/components/flexbox/FlexBetween'
+import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Add from 'shared/components/icons/Add'
 import CustomTable from 'shared/components/table/CustomTable'
@@ -13,7 +12,6 @@ import EditCandidateModal from '../../page-sections/EditCandidateModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import {
-  ButtonHeader,
   ButtonImport,
   DivContainerWrapper,
   DivFilter,
@@ -34,26 +32,8 @@ import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
 import { STATUS_CANDIDATE_DATA } from '../../providers/constants'
 import { getValueOfObj } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
-
-//  styled components
-const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
-  gap: 8,
-  flexWrap: 'wrap',
-  flexDirection: 'column',
-  backgroundColor: theme.palette.background.paper,
-  padding: '12px',
-  borderWidth: '0px 0px 1px 0px',
-  borderStyle: 'solid',
-  borderColor: '#E3E6EB',
-  [theme.breakpoints.down(453)]: {
-    '& .MuiButton-root': { order: 2 },
-    '& .MuiTabs-root': {
-      order: 3,
-      width: '100%',
-      '& .MuiTabs-flexContainer': { justifyContent: 'space-between' },
-    },
-  },
-}))
+import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
+import ButtonAdd from 'shared/components/utils/buttonAdd'
 
 const Candidates = () => {
   const {
@@ -74,7 +54,11 @@ const Candidates = () => {
 
   const navigate = useNavigate()
 
-  const { useTableReturn } = useCandidateTable()
+  const { useTableReturn } = useCandidateTable({
+    filter: {
+      is_black_list: false,
+    },
+  })
   const { handleFreeWord, handleFilter } = useTableReturn
   const translation = useTextTranslation()
 
@@ -125,56 +109,60 @@ const Candidates = () => {
 
   return (
     <DivContainerWrapper>
-      <HeadingWrapper>
-        <DivFilter>
-          <ButtonFilter<baseInstance>
-            listData={STATUS_CANDIDATE_DATA}
-            inputLabel={translation.COMMON.status}
-            multiple={false}
-            callbackChange={(obj) => {
-              handleFilter('status', getValueOfObj({ key: 'value', obj }))
-            }}
-          />
-        </DivFilter>
-        <DivHeaderWrapper>
-          <CustomTextField
-            label={translation.COMMON.search}
-            variant="outlined"
-            size="small"
-            sx={{ width: '400px' }}
-            onKeyUp={handleFreeWorld}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton>
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <FlexBox gap={'10px'}>
-            <ButtonImport
-              startIcon={<Import />}
-              onClick={() => setOpenCreate(true)}
-            >
-              {translation.COMMON.import}
-            </ButtonImport>
-            <ButtonHeader
-              variant="contained"
-              startIcon={<Add />}
-              onClick={() => setOpenCreate(true)}
-            >
-              {translation.MODLUE_CANDIDATES.add_new_candidate}
-            </ButtonHeader>
-          </FlexBox>
-        </DivHeaderWrapper>
-      </HeadingWrapper>
-      <Box>
-        {useTableReturn && (
-          <CustomTable columns={colummTable} useTableReturn={useTableReturn} />
-        )}
-      </Box>
+      <BoxWrapperOuterContainer>
+        <HeadingWrapper sx={{ marginTop: 0 }}>
+          <DivFilter>
+            <ButtonFilter<baseInstance>
+              listData={STATUS_CANDIDATE_DATA}
+              inputLabel={translation.COMMON.status}
+              multiple={false}
+              callbackChange={(obj) => {
+                handleFilter('status', getValueOfObj({ key: 'value', obj }))
+              }}
+            />
+          </DivFilter>
+          <DivHeaderWrapper>
+            <CustomTextField
+              label={translation.COMMON.search}
+              variant="outlined"
+              size="small"
+              sx={{ width: '400px', fontSize: '13px' }}
+              onKeyUp={handleFreeWorld}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton>
+                      <SearchIcon sx={{ fontSize: '16px' }} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <FlexBox gap={'10px'}>
+              <ButtonImport
+                startIcon={<Import />}
+                onClick={() => setOpenCreate(true)}
+              >
+                {translation.COMMON.import}
+              </ButtonImport>
+              <ButtonAdd
+                Icon={Add}
+                textLable={translation.MODLUE_CANDIDATES.add_new_candidate}
+                onClick={() => setOpenCreate(true)}
+              />
+            </FlexBox>
+          </DivHeaderWrapper>
+        </HeadingWrapper>
+        <Box>
+          {useTableReturn && (
+            <CustomTable
+              columns={colummTable}
+              useTableReturn={useTableReturn}
+            />
+          )}
+        </Box>
+      </BoxWrapperOuterContainer>
+
       {openCreate && (
         <CreateCandiateModal open={openCreate} setOpen={setOpenCreate} />
       )}

@@ -34,13 +34,14 @@ export type UpdateCandidateInput = {
   email: string,
   phone: string,
   dob: string,
+  note: string,
 }
 
 export type DeleteCandidateInput = SchemaInputNote
 
 export type BlackListCandidateInput = {
   id: string,
-  description: string,
+  note: string,
   is_black_list: boolean,
 }
 

@@ -1,8 +1,5 @@
 import { IconButton, InputAdornment } from '@mui/material'
 import { Box } from '@mui/system'
-import FlexBox from 'shared/components/flexbox/FlexBox'
-import IconWrapper from 'shared/components/IconWrapper'
-import { H5 } from 'shared/components/Typography'
 import Add from 'shared/components/icons/Add'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
@@ -16,7 +13,6 @@ import { CustomTextField } from 'shared/components/form/styles'
 import {
   DivFilter,
   DivHeaderWrapper,
-  HeadingWrapper,
 } from '../providers/styles'
 import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
 import EditIcon from 'shared/components/icons/EditIcon'
@@ -37,6 +33,8 @@ import { Team } from 'features/teams/domain/interfaces'
 import useTextTranslation from 'shared/constants/text'
 import Jobs from 'shared/components/icons/Jobs'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
+import IconScreen from 'shared/components/utils/IconScreen'
+import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 
 const JobsList = () => {
   const {
@@ -100,19 +98,9 @@ const JobsList = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <FlexBox gap={0.5} alignItems="center">
-          <IconWrapper>
-            <Jobs sx={{ color: 'primary.main' }} />
-          </IconWrapper>
-          <H5>{translation.MODLUE_JOBS.jobs}</H5>
-        </FlexBox>
+        <IconScreen Icon={Jobs} textLable={translation.MODLUE_JOBS.jobs} />
       </Box>
-      <Box
-        sx={{
-          borderRadius: '8px',
-          boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
-        }}
-      >
+      <BoxWrapperOuterContainer>
         <HeadingWrapper>
           <DivFilter>
             <ButtonFilter<Team>
@@ -167,7 +155,7 @@ const JobsList = () => {
             />
           )}
         </Box>
-      </Box>
+      </BoxWrapperOuterContainer>
 
       {openCreate && (
         <CreateJobModal open={openCreate} setOpen={setOpenCreate} />

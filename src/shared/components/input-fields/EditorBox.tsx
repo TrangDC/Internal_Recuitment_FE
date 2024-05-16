@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import { Editor, IAllProps } from '@tinymce/tinymce-react'
 import { Box, styled } from '@mui/material'
 import { getBase64 } from 'shared/utils/utils'
+import { Span } from '../Typography'
 
 interface TinyProps extends IAllProps {
   label?: string
   initProps?: object
   defaultValue?: string,
   callbackChange?: (value: string) => void;
+  required?: boolean,
 }
 
 const StyleEditorBox = styled(Box)(({ theme }) => ({
@@ -63,6 +65,7 @@ export default function EditorBox({
   initProps,
   defaultValue,
   callbackChange,
+  required = false,
   ...props
 }: TinyProps) {
   const [focused, setFocused] = useState<Boolean>(false)
@@ -79,7 +82,7 @@ export default function EditorBox({
         <StyleBoxLabel
           className={`${focused && 'activeBox'} ${valueBox && 'existValue'}`}
         >
-          <label>{label} </label>
+          <label>{label} {required && <Span sx={{color: 'red'}}>*</Span>}</label>
         </StyleBoxLabel>
       )}
       <Editor
