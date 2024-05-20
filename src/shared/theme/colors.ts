@@ -72,7 +72,7 @@ export const error = {
 export const greyLight = {
   50: '#f9f9f9',
   100: '#eff3f5',
-  200: '#D3E6F3',
+  200: '#E3E6EB',
   300: '#BABFC5',
   400: '#8CA3BA',
   500: '#4D607A',

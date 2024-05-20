@@ -2,9 +2,9 @@ import { FormDataSchemaNote, schemaNote } from 'shared/schema'
 import * as yup from 'yup'
 
 export const schema = yup.object({
-  name: yup.string().required(),
+  name: yup.string().required().max(64, 'Must be less than 64 characters'),
   phone: yup.string().required(),
-  email: yup.string().required(),
+  email: yup.string().email().required(),
   dob: yup.string().required(),
 })
 
@@ -12,9 +12,9 @@ export type FormDataSchema = yup.InferType<typeof schema>
 
 export const schemaUpdate = yup.object({
   id: yup.string().required(),
-  name: yup.string().required(),
+  name: yup.string().required().max(64, 'Must be less than 64 characters'),
   phone: yup.string().required(),
-  email: yup.string().required(),
+  email: yup.string().email().required(),
   dob: yup.string().required(),
   note: yup.string().required(),
 })

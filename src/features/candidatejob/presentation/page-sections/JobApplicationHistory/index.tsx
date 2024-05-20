@@ -1,7 +1,11 @@
 import { Add } from '@mui/icons-material'
 import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { ButtonHeader, DivWrapperProcess, SpanGenaration } from '../../providers/styles'
+import {
+  ButtonHeader,
+  DivWrapperProcess,
+  SpanGenaration,
+} from '../../providers/styles'
 import CustomTable from 'shared/components/table/CustomTable'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import { columns } from '../../providers/constants/columns'
@@ -15,24 +19,33 @@ import useApplyJobTable from '../../providers/hooks/useApplyJobTable'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import useTextTranslation from 'shared/constants/text'
+import ChangeStatusModal from '../ChangeStatusModal'
+import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
+import { downloadFileAttachment } from '../../providers/helper'
 
 const JobApplicationHistory = () => {
   const {
     openCreate,
     setOpenCreate,
     handleOpenChangeStatus,
+    openChangeStatus,
+    setOpenChangeStatus,
+    rowData,
+    rowId,
   } = useActionTable<CandidateJob>()
 
-  const { id } = useParams();
+  const { id } = useParams()
   const { useTableReturn } = useApplyJobTable(id as string)
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+
+  const { handleGetUrlDownload } = useGetUrlGetAttachment()
 
   const { colummTable } = useBuildColumnTable({
     actions: [
       {
         id: 'detail',
         onClick: (id, rowData) => {
-            navigate(`/dashboard/job-application-detail/${id}`)
+          navigate(`/dashboard/job-application-detail/${id}`)
         },
         title: 'Detail',
         Icon: <SearchIconSmall />,
@@ -40,23 +53,15 @@ const JobApplicationHistory = () => {
       {
         id: 'change-status',
         onClick: (id, rowData) => {
-            handleOpenChangeStatus(id, rowData)
+          handleOpenChangeStatus(id, rowData)
         },
         title: 'Change status',
         Icon: <EditIcon />,
       },
       {
-        id: 'edit',
-        onClick: (id, rowData) => {
-            // handleOpenDetail(id, rowData)
-        },
-        title: 'Edit',
-        Icon: <EditIcon />,
-      },
-      {
         id: 'view',
         onClick: (id, rowData) => {
-            // handleOpenDetail(id, rowData)
+          // handleOpenDetail(id, rowData)
         },
         title: 'View CV',
         Icon: <EyeIcon />,
@@ -64,7 +69,8 @@ const JobApplicationHistory = () => {
       {
         id: 'download',
         onClick: (id, rowData) => {
-            // handleOpenDetail(id, rowData)
+          const { attachments } = rowData
+          downloadFileAttachment(attachments, handleGetUrlDownload);
         },
         title: 'Download CV',
         Icon: <DownloadIcon />,
@@ -73,12 +79,14 @@ const JobApplicationHistory = () => {
     columns,
   })
 
-  const translation = useTextTranslation();
+  const translation = useTextTranslation()
 
   return (
     <DivWrapperProcess>
       <FlexBox alignItems={'center'}>
-        <SpanGenaration>{translation.MODULE_CANDIDATE_JOB.job_application_history}</SpanGenaration>
+        <SpanGenaration>
+          {translation.MODULE_CANDIDATE_JOB.job_application_history}
+        </SpanGenaration>
         <ButtonHeader
           variant="contained"
           startIcon={<Add />}
@@ -93,9 +101,13 @@ const JobApplicationHistory = () => {
         )}
       </Box>
       {openCreate && (
-        <ApplyJobModal open={openCreate} setOpen={setOpenCreate} candidateId={id as string}/>
-      )} 
-      {/* {openChangeStatus && (
+        <ApplyJobModal
+          open={openCreate}
+          setOpen={setOpenCreate}
+          candidateId={id as string}
+        />
+      )}
+      {openChangeStatus && (
         <ChangeStatusModal
           open={openChangeStatus}
           setOpen={setOpenChangeStatus}
@@ -103,7 +115,7 @@ const JobApplicationHistory = () => {
           id={rowId.current}
           rowData={rowData.current}
         />
-      )} */}
+      )}
     </DivWrapperProcess>
   )
 }

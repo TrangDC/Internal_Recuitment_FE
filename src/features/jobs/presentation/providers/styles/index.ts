@@ -1,6 +1,5 @@
 import { Box, styled } from '@mui/material'
 import { Span } from 'shared/components/Typography'
-import FlexBetween from 'shared/components/flexbox/FlexBetween'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 
 export const DivHeaderWrapper = styled('div')`

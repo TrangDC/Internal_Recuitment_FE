@@ -37,7 +37,18 @@ const useGraphql = () => {
           candidate_id
           hiring_job_id
           status
+          attachments {
+            id
+            document_id
+            document_name
+          }
+          candidate {
+            id
+            name
+            status
+          }
           created_at
+          updated_at
         }
       }
       pagination {
@@ -69,11 +80,44 @@ const useGraphql = () => {
     },
   })
 
+  const changeStatusCandidate = buildQuery({
+    operation: 'UpdateCandidateJobStatus',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        id
+      }
+    `,
+    params: {
+      id: 'ID!',
+      status: 'CandidateJobStatus!',
+    },
+  })
+
+  const createCandidateJobFeedback = buildQuery({
+    operation: 'CreateCandidateJobFeedback',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        id
+      }
+    `,
+    params: {
+      input: 'NewCandidateJobFeedbackInput!',
+    },
+  })
+
   return {
     queryKey,
     getCandidate,
     getAllCandidateJob,
-    createCandidateJob
+    createCandidateJob,
+    changeStatusCandidate,
+    createCandidateJobFeedback
   }
 }
 

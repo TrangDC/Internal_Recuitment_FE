@@ -52,6 +52,19 @@ export type NewCandidateJobInput = {
   attachments?: string
 }
 
+export type UpdateCandidateJobStatus = {
+  id: string
+  status: string
+  attachments: Attachments
+  feedback?: string
+}
+
+export type Attachments = {
+  id: string
+  document_name: string
+  document_id: string
+}
+
 export type CandidateJob = {
   id: string
   candidate_id: string
@@ -59,6 +72,8 @@ export type CandidateJob = {
   status: string
   created_at: string
   updated_at: string
+  attachments: Attachments
+  candidate: Candidate
 }
 
 //interview

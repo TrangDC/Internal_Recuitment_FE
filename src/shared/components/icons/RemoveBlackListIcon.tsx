@@ -1,4 +1,4 @@
-import { SvgIcon, SvgIconProps } from '@mui/material'
+import { SvgIconProps } from '@mui/material'
 
 const RemoveBlackListIcon = (props: SvgIconProps) => {
   return (

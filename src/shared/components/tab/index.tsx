@@ -34,13 +34,18 @@ const TabWrapper = styled(Tab)(({ theme }) => ({
     backgroundColor: 'white',
     color: theme.palette.primary[600],
     fontWeight: 600,
-
   },
 
   '& .MuiTouchRipple-root': {
     lineHeight: '14.63px',
     color: theme.palette.grey[500],
   },
+}))
+
+const TabPanelStyle = styled(TabPanel)(({ theme }) => ({
+  borderRadius: '8px',
+  overflow: 'hidden',
+  boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)'
 }))
 
 const TabListWrapper = styled(TabList)(({ theme }) => ({
@@ -50,8 +55,8 @@ const TabListWrapper = styled(TabList)(({ theme }) => ({
   minHeight: '40px',
 
   '& .MuiTabs-flexContainer': {
-    height: '40px'
-  }
+    height: '40px',
+  },
 }))
 
 interface renderItem {
@@ -88,11 +93,19 @@ const TabCustomize = ({ renderItem }: TabProps) => {
       {renderItem.map((item, index) => {
         const { Component } = item
         return (
-          <TabPanel value={index.toString()} key={index} sx={{borderRadius: '8px', overflow: 'hidden', paddingBottom: '16px'}}>
+          <TabPanelStyle
+            value={index.toString()}
+            key={index}
+            // sx={{
+            //   borderRadius: '8px',
+            //   overflow: 'hidden',
+            //   paddingBottom: '16px',
+            // }}
+          >
             <HeadingWrapper>
               <Component />
             </HeadingWrapper>
-          </TabPanel>
+          </TabPanelStyle>
         )
       })}
     </TabContext>

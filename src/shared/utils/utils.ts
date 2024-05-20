@@ -49,7 +49,7 @@ export const findItem = (
   value: string,
   key: string = 'value'
 ) => {
-  if(isEmpty(array) || !value) return null;
+  if (isEmpty(array) || !value) return null;
   return array.find((data) => data[key] === value)
 }
 
@@ -104,25 +104,39 @@ export const removeNonExistInObj = (obj: Record<string, any>) => {
 
 export const getBase64 = (file: Blob): Promise<string> =>
   new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
   });
 
 
-  export const converDateToISOString = (date: string) => {
-    return new Date(date).toISOString();
-  }
+export const converDateToISOString = (date: string) => {
+  return new Date(date).toISOString();
+}
 
-  export const convertSizeToMb = (size: number) => {
-    let roundSize = Math.round(size / 1024);
+export const convertSizeToMb = (size: number) => {
+  let roundSize = Math.round(size / 1024);
 
-    if (roundSize < 1024) return `${roundSize} KB`;
-    if (roundSize < 1024 * 1024) return `${Math.round(roundSize / 1024)} MB`;
-    return `${Math.round(roundSize / (1024 * 1024))} GB`;
-  };
+  if (roundSize < 1024) return `${roundSize} KB`;
+  if (roundSize < 1024 * 1024) return `${Math.round(roundSize / 1024)} MB`;
+  return `${Math.round(roundSize / (1024 * 1024))} GB`;
+};
 
-  export const convertEmptyToNull = (array: any[]) => {
-    return !isEmpty(array) ? array : null;
-  }
+export const convertEmptyToNull = (array: any[]) => {
+  return !isEmpty(array) ? array : null;
+}
+
+export const convertCurrencyToNumber = (currency: string) => {
+  return Number(currency.replace(',', ''))
+}
+
+export const downloadFile = (url: string) => {
+  const link = document.createElement('a')
+  link.href = url
+  //@ts-ignore
+  link.download = url.split('/').pop()
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}

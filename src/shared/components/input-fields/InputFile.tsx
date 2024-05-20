@@ -7,6 +7,13 @@ import TrashIcon from '../icons/TrashIcon'
 import toastError from '../toast/toastError'
 import useTextTranslation from 'shared/constants/text'
 import ShowFile from './ItemFile'
+import useGetUrlGetAttachment, {
+  FileAttachment,
+  ParamCreateURLAttachment,
+} from 'shared/hooks/graphql/useGetUrlAttachment'
+import { v4 as uuidv4 } from 'uuid'
+import { UploadFileAttachment } from 'services/handleAttachments'
+import { checkMaxFile, checkMaxSize, regexFile, wrapperValidate } from './utils'
 
 const InputFileContainer = styled(Box)(({ theme }) => ({
   border: '2px dashed #2499EF',
@@ -57,35 +64,118 @@ const TextWrapper = styled(FlexBox)(({ theme }) => ({
   },
 }))
 
-interface InputFileProps {
+export interface InputFileProps {
   accept?: string
   regexString?: string
   msgError?: string
-  callbackFileChange?: (data: File[]) => void
+  callbackFileChange?: (data: FileAttachment[]) => void
+  maxFile?: number
+  maxSize?: number | null
+}
+
+type UploadAttachment = {
+  CreateAttachmentSASURL: {
+    action: 'UPLOAD' | 'DOWNLOAD'
+    fileName: string
+    id: string
+    url: string
+  }
 }
 
 const InputFile = ({
   accept = '*/*',
   regexString = '\\.(pdf|docx?|jpe?g|png|gif|bmp|tiff)$',
-  msgError = 'File input not valid!',
   callbackFileChange,
+  maxFile = 5,
+  maxSize = null,
 }: InputFileProps) => {
-  const [files, setFiles] = useState<File[]>([])
+  const [files, setFiles] = useState<FileAttachment[]>([])
 
   const handleRemoveFile = (idx: number) => {
     const filterFile = files.filter((file, _) => {
       return _ !== idx
     })
     setFiles(filterFile)
+    callbackFileChange && callbackFileChange(filterFile)
   }
 
-  function validateFile(blob: File, regexString: string) {
-    const filename = blob.name || ''
-    const regex = new RegExp(regexString)
-    return regex.test(filename.toLowerCase())
+  function validateFile(
+    blob: File,
+    fieldValidate: { regex: string; maxFile: number; maxSize: number | null }
+  ) {
+    const regexValidate = wrapperValidate(
+      () => regexFile(blob, fieldValidate.regex),
+      'File is not valid'
+    )
+    if (!regexValidate.status) return regexValidate
+
+    const maxFileValidate = wrapperValidate(
+      () => checkMaxFile(files, fieldValidate.maxFile),
+      `Khong duoc nhap qua ${fieldValidate.maxFile} File`
+    )
+    if (!maxFileValidate.status) return maxFileValidate
+
+    if (maxSize) {
+      const maxSizeValidate = wrapperValidate(
+        () => checkMaxSize(blob, fieldValidate.maxFile),
+        `Khong duoc nhap file qua ${fieldValidate.maxSize} MB`
+      )
+
+      if (!maxSizeValidate.status) return maxSizeValidate
+    }
+
+    return {
+      status: true,
+      msgError: '',
+    }
   }
 
   const translation = useTextTranslation()
+
+  const handleUploadAttachment = async (
+    data: UploadAttachment,
+    params: ParamCreateURLAttachment
+  ) => {
+    const { CreateAttachmentSASURL } = data
+    if (!params?.file) return
+    return await UploadFileAttachment(CreateAttachmentSASURL.url, params?.file)
+  }
+
+  const { handleGetUrl } = useGetUrlGetAttachment({
+    callbackSuccess: handleUploadAttachment,
+  })
+
+  const handleChangeFile = (fileUpload: File) => {
+    const validate = validateFile(fileUpload, {
+      regex: regexString,
+      maxFile: maxFile,
+      maxSize: maxSize,
+    })
+
+    if (!validate.status) {
+      toastError(validate.msgError)
+      return
+    }
+
+    const uuid = uuidv4()
+    const paramUpload: ParamCreateURLAttachment = {
+      id: uuid,
+      folder: 'candidate',
+      fileName: fileUpload.name,
+      action: 'UPLOAD',
+      file: fileUpload,
+    }
+
+    handleGetUrl(paramUpload, (data) => {
+      const filesUpload = [
+        ...files,
+        { id: uuid, name: fileUpload.name, file: fileUpload },
+      ]
+      setFiles(filesUpload)
+      callbackFileChange &&
+        callbackFileChange(filesUpload as FileAttachment[])
+    })
+  }
 
   return (
     <InputFileWrapper>
@@ -98,15 +188,7 @@ const InputFile = ({
             event.preventDefault()
             const filesValue = event.dataTransfer.files
             const fileUpload = filesValue[0]
-            const validate = validateFile(fileUpload, regexString)
-            if (!validate) {
-              toastError(msgError)
-              return
-            }
-
-            const filesUpload = [...files, fileUpload]
-            setFiles(filesUpload)
-            callbackFileChange && callbackFileChange(filesUpload)
+            handleChangeFile(fileUpload)
           }}
         >
           <FlexBoxContainer>
@@ -125,8 +207,8 @@ const InputFile = ({
         {files.map((file, index) => {
           return (
             <ShowFile
-              name={file.name}
-              size={file.size}
+              name={file?.name}
+              size={file?.file?.size}
               key={index}
               IconEnd={<TrashIcon onClick={() => handleRemoveFile(index)} />}
             />
@@ -141,10 +223,10 @@ const InputFile = ({
         multiple
         hidden
         onChange={(event) => {
-          const files = event.target.files
-          if (files) {
-            const fileUpload = files[0]
-            setFiles((prev) => [...prev, fileUpload])
+          const fileEvent = event.target.files
+          if (fileEvent) {
+            const fileUpload = fileEvent[0]
+            handleChangeFile(fileUpload)
           }
           event.target.value = ''
         }}

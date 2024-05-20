@@ -51,7 +51,7 @@ export const columns = (
       style: { width: '300px' },
     },
   }),
-  columnHelper.accessor('created_at', {
+  columnHelper.accessor('newest_applied', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>
         <Span>{t('action')}</Span>

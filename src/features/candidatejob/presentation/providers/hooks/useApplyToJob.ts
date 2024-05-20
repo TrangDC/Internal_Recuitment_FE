@@ -32,10 +32,9 @@ function useApplyToJob(
   
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newCandidateJob: NewCandidateJobInput) => {
-      const { attachments, ...otherValue } = newCandidateJob;
+    mutationFn: (newApplyJob: NewCandidateJobInput) => {
       return fetchGraphQL<BaseRecord>(createCandidateJob.query, {
-        input: otherValue,
+        input: newApplyJob,
       })
     },
     onSuccess: (data) => {

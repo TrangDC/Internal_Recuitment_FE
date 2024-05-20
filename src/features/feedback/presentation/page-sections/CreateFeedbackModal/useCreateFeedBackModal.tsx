@@ -54,8 +54,10 @@ function CreateFeedbackModal({ open, setOpen }: ICreateFeedbackModal) {
                   <InputFileComponent
                     errors={errors}
                     field={field}
-                    accept=".pdf,.doc,.docx,image/*"
-                    regexString="\\.(pdf|docx?|jpe?g|png|gif|bmp|tiff)$"
+                    inputFileProps={{
+                      accept: ".pdf,.doc,.docx,image/*",
+                      regexString: "\\.(pdf|docx?|jpe?g|png|gif|bmp|tiff)$"
+                    }}
                   />
                 )}
               />

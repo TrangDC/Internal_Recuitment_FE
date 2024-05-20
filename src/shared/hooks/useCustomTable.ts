@@ -53,7 +53,7 @@ const useCustomTable = ({
     perPage: initialPerPage,
   })
   const [sorting, setSorting] = useState<ISorting>(
-    variables?.sorting || {
+    variables?.orderBy || {
       direction: 'DESC',
       field: 'created_at',
     }
@@ -110,7 +110,7 @@ const useCustomTable = ({
   function handleSorTable(id: string) {
     setSorting((prev) => {
       if (id === prev.field) {
-        const fieldSort = prev.direction === 'DESC' ? 'created_at' : id;
+        const fieldSort = prev.direction === 'DESC' ? variables?.orderBy?.field || 'created_at' : id;
         return {
           direction: fieldSort === 'created_at' ? "DESC" : prev.direction === 'ASC' ? 'DESC' : 'ASC',
           field: fieldSort,

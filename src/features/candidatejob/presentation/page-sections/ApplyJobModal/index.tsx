@@ -118,8 +118,12 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
                   <InputFileComponent
                     errors={errors}
                     field={field}
-                    accept=".pdf,.doc,.docx,image/*"
-                    regexString="\\.(pdf|docx?|jpe?g|png|gif|bmp|tiff)$"
+                    inputFileProps={{
+                      accept: ".pdf",
+                      regexString: "\\.pdf$",
+                      maxFile: 1,
+                      maxSize: 20,
+                    }}
                   />
                 )}
               />
