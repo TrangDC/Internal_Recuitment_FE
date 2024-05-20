@@ -9,3 +9,12 @@ export const schema = yup.object({
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
+
+export const chemaChangeStatus = yup.object({
+  id: yup.string().required(),
+  status: yup.object().required(),
+  attachments: yup.mixed(),
+  feedback: yup.string(),
+})
+
+export type FormDataSchemaChangeStatus = yup.InferType<typeof chemaChangeStatus>

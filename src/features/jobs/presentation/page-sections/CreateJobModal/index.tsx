@@ -38,7 +38,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
   })
   const {
     control,
-    formState: { errors },
+    formState: { errors,  },
     setValue,
   } = useFormReturn
 
@@ -48,8 +48,8 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
 
   const salary = useWatch({ control, name: 'salary_type' })
   const resetSalary = () => {
-    setValue('salary_from', 0)
-    setValue('salary_to', 0)
+    setValue('salary_from', "0")
+    setValue('salary_to', "0")
   }
 
   return (

@@ -1,59 +1,50 @@
 import BaseModal from 'shared/components/modal'
-import { Controller, useWatch } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { Button, Grid } from '@mui/material'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../../providers/constants/schema'
-import { Team } from 'features/teams/domain/interfaces'
-import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
-import useSelectJobByTeam from 'shared/hooks/graphql/useSelectJobByTeam'
-import { useEffect } from 'react'
-import { Job } from 'features/jobs/domain/interfaces'
+import {
+  CustomTextField,
+  CustomeButtonCancel,
+} from 'shared/components/form/styles'
+import { FormDataSchemaChangeStatus } from '../../providers/constants/schema'
 import { baseInstance } from 'shared/interfaces'
 import {
+  CANDIDATE_STATUS,
   STATUS_CANDIDATE_HIRING,
 } from '../../providers/constants'
 import { CandidateJob } from 'features/candidates/domain/interfaces'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useChangeStatus from '../../providers/hooks/useChangeStatus'
 import useTextTranslation from 'shared/constants/text'
+import InputComponent from 'shared/components/form/inputComponent'
 
 interface IChangeStatusModal {
   open: boolean
   setOpen: (value: boolean) => void
-  candidateId: string,
-  id: string,
+  candidateId: string
+  id: string
   rowData?: CandidateJob
 }
 
-function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatusModal) {
+function ChangeStatusModal({
+  open,
+  setOpen,
+  candidateId,
+  rowData,
+}: IChangeStatusModal) {
   const { onSubmit, useFormReturn } = useChangeStatus({
-    defaultValues: {candidate_id: candidateId,},
+    defaultValues: { id: rowData?.id, feedback: '', attachments: [] },
     callbackSuccess: () => {
-        setOpen(false)
-    }
+      setOpen(false)
+    },
   })
   const {
     control,
     formState: { errors },
-    setValue,
   } = useFormReturn
 
-  const { teams } = useSelectTeam()
-  const { jobs, changeJobByTeamId } = useSelectJobByTeam()
-
-  const team_id: Record<string, any> = useWatch({ control, name: 'team_id' })
-  const resetValueJob = () => {
-    //@ts-ignore
-    setValue('hiring_job_id', null)
-  }
-
-  useEffect(() => {
-    changeJobByTeamId(team_id?.id ? [team_id?.id] : [])
-  }, [team_id])
-
-  const translation = useTextTranslation();
+  const translation = useTextTranslation()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -65,38 +56,26 @@ function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatu
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <Controller
-                name="team_id"
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Team>
-                    options={teams}
-                    label="name"
-                    inputLabel={translation.MODLUE_TEAMS.team}
-                    errors={errors}
-                    field={field}
-                    fullWidth
-                    callbackOnChange={resetValueJob}
-                  />
-                )}
+              <CustomTextField
+                label="Job name"
+                size="small"
+                value={rowData?.hiring_job_id}
+                fullWidth
+                focused
+                required
+                disabled
               />
             </Grid>
             <Grid item xs={6}>
-              <Controller
-                key={jobs.toString()}
-                name="hiring_job_id"
-                shouldUnregister
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Job>
-                    options={jobs}
-                    label="name"
-                    inputLabel={translation.MODLUE_JOBS.job_name}
-                    errors={errors}
-                    field={field}
-                    fullWidth
-                  />
-                )}
+              <CustomTextField
+                label="Current status"
+                size="small"
+                //@ts-ignore
+                value={CANDIDATE_STATUS?.[rowData?.status]?.text}
+                fullWidth
+                required
+                focused
+                disabled
               />
             </Grid>
             <Grid item xs={6}>
@@ -104,13 +83,33 @@ function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatu
                 name="status"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, baseInstance>
+                  <AutoCompleteComponent<
+                    FormDataSchemaChangeStatus,
+                    baseInstance
+                  >
                     options={STATUS_CANDIDATE_HIRING}
                     label="name"
-                    inputLabel={translation.COMMON.status}
+                    inputLabel="New Status"
                     errors={errors}
                     field={field}
                     fullWidth
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="feedback"
+                control={control}
+                render={({ field }) => (
+                  <InputComponent<FormDataSchemaChangeStatus>
+                    errors={errors}
+                    label="Feedback"
+                    field={field}
+                    fullWidth
+                    multiline
+                    minRows={4}
+                    type="text"
                   />
                 )}
               />
@@ -123,8 +122,12 @@ function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatu
                   <InputFileComponent
                     errors={errors}
                     field={field}
-                    accept=".pdf,.doc,.docx,image/*"
-                    regexString="\\.(pdf|docx?|jpe?g|png|gif|bmp|tiff)$"
+                    inputFileProps={{
+                      accept: '.pdf',
+                      regexString: '\\.pdf$',
+                      maxFile: 5,
+                      maxSize: 20,
+                    }}
                   />
                 )}
               />
@@ -134,8 +137,12 @@ function ChangeStatusModal({ open, setOpen, candidateId, rowData }: IChangeStatu
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained" onClick={() => setOpen(false)}>
-          {translation.COMMON.cancel}
+          <CustomeButtonCancel
+            type="button"
+            variant="contained"
+            onClick={() => setOpen(false)}
+          >
+            {translation.COMMON.cancel}
           </CustomeButtonCancel>
           <Button
             type="button"

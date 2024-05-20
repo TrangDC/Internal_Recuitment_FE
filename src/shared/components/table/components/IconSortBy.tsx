@@ -17,12 +17,14 @@ const DivIcon = styled('div')(({ theme }) => ({
 
 interface IconSort extends IconSortProps {
   className?: string | undefined
+  sorting: {field: string, direction: 'ASC' | 'DESC'}
 }
 
-const IconSortBy = ({ type = false}: IconSort) => {
+const IconSortBy = ({ type = false, sorting}: IconSort) => {
+
   return (
     <DivIcon className={`${!!type && 'enabled_icon'} iconSort`}>
-      {type === 'asc' ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+      {sorting.direction === 'ASC' ?  <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
     </DivIcon>
   )
 }

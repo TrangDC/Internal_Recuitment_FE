@@ -4,60 +4,122 @@ import useGraphql from 'features/candidatejob/domain/graphql/graphql'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
-import { schema, FormDataSchema} from '../constants/schema'
-import { NewCandidateJobInput } from 'features/candidates/domain/interfaces'
+import {
+  chemaChangeStatus,
+  FormDataSchemaChangeStatus,
+} from '../constants/schema'
+import {
+  UpdateCandidateJobStatus,
+} from 'features/candidates/domain/interfaces'
 import toastSuccess from 'shared/components/toast/toastSuccess'
-import _ from 'lodash'
+import _, { isEmpty } from 'lodash'
 import { getValueOfObj, removeInfoData } from 'shared/utils/utils'
 
 interface useChangeStatusProps {
-  defaultValues?: Partial<FormDataSchema>
+  defaultValues?: Partial<FormDataSchemaChangeStatus>
   callbackSuccess?: (value: any) => void
 }
 
-function useChangeStatus(
-  props: useChangeStatusProps = { defaultValues: {} }
-) {
-  const { defaultValues, callbackSuccess } = props
+interface propsChangeStatus {
+  mutationFeedback: (data: any) => void
+  callbackSuccess?: (value: any) => void
+}
 
+function ChangeStatus(props: propsChangeStatus) {
+  const { callbackSuccess, mutationFeedback } = props
   const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      ...defaultValues,
-    },
-  })
+  const { changeStatusCandidate, queryKey } = useGraphql()
 
-  const { createCandidateJob, queryKey } = useGraphql()
-  
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newCandidateJob: NewCandidateJobInput) => {
-      const { attachments, ...otherValue } = newCandidateJob;
-      return fetchGraphQL<BaseRecord>(createCandidateJob.query, {
-        input: otherValue,
+    mutationFn: (updateStatusJob: UpdateCandidateJobStatus) => {
+      const { id, status } = updateStatusJob
+      return fetchGraphQL<BaseRecord>(changeStatusCandidate.query, {
+        id,
+        status,
       })
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] })
-
+    onSuccess: (data, params) => {
       toastSuccess('Change Status Job successfully')
+      if (params.feedback || !isEmpty(params.attachments)) {
+        mutationFeedback && mutationFeedback(params as UpdateCandidateJobStatus)
+        return
+      }
+
+      queryClient.invalidateQueries({ queryKey: [queryKey] })
       callbackSuccess && callbackSuccess(data)
     },
   })
 
-  function onSubmit() {
-    handleSubmit((value: FormDataSchema) => {
-      const valueClone = removeInfoData({field: ['team_id'], object: {
-        ..._.cloneDeep(value),
-        hiring_job_id: getValueOfObj({obj: value.hiring_job_id, key: 'id'}),
-        status: getValueOfObj({obj: value.status, key: 'value'}),
-      }})
+  return {
+    mutateChangeStatus: mutate,
+  }
+}
 
-      mutate(valueClone as NewCandidateJobInput)
+function CreateFeedbackprops(
+  props: Pick<useChangeStatusProps, 'callbackSuccess'> = {}
+) {
+  const { callbackSuccess } = props
+
+  const queryClient = useQueryClient()
+  const { createCandidateJobFeedback, queryKey } = useGraphql()
+
+  const { mutate } = useMutation({
+    mutationKey: [queryKey],
+    mutationFn: (createFeedBack: UpdateCandidateJobStatus) => {
+      const { id, feedback, attachments } = createFeedBack
+      return fetchGraphQL<BaseRecord>(createCandidateJobFeedback.query, {
+        input: {
+          candidate_job_id: id,
+          feedback,
+          attachments,
+        },
+      })
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [queryKey] })
+      toastSuccess('Create Feedback Candidate Job successfully')
+      callbackSuccess && callbackSuccess(data)
+    },
+  })
+
+  return {
+    mutateCreateFeedback: mutate,
+  }
+}
+
+function useChangeStatus(props: useChangeStatusProps = { defaultValues: {} }) {
+  const { defaultValues, callbackSuccess } = props
+  const { mutateCreateFeedback } = CreateFeedbackprops({ callbackSuccess })
+  const { mutateChangeStatus } = ChangeStatus({
+    callbackSuccess,
+    mutationFeedback: (data: UpdateCandidateJobStatus) => {
+      mutateCreateFeedback(data)
+    },
+  })
+
+  const { handleSubmit, ...useFormReturn } =
+    useForm<FormDataSchemaChangeStatus>({
+      resolver: yupResolver(chemaChangeStatus),
+      defaultValues: {
+        ...defaultValues,
+      },
+    })
+
+  function onSubmit() {
+    handleSubmit((value: FormDataSchemaChangeStatus) => {
+      const valueClone = removeInfoData({
+        field: ['team_id'],
+        object: {
+          ..._.cloneDeep(value),
+          status: getValueOfObj({ obj: value.status, key: 'value' }),
+        },
+      })
+
+      mutateChangeStatus(valueClone as UpdateCandidateJobStatus)
     })()
   }
-  
+
   return {
     onSubmit,
     useFormReturn: {

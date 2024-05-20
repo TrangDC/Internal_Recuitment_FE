@@ -12,6 +12,7 @@ export type Team = {
   opening_requests: number,
   members: Member[],
   slug: string,
+  newest_applied?: string,
   created_at: string,
   updated_at: string,
   deleted_at: string,

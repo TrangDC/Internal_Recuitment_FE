@@ -9,7 +9,7 @@ import {
   UpdateHiringJobInput,
 } from 'features/jobs/domain/interfaces'
 import _ from 'lodash'
-import { getValueOfObj } from 'shared/utils/utils'
+import { convertCurrencyToNumber, getValueOfObj, removeInfoData } from 'shared/utils/utils'
 import toastSuccess from 'shared/components/toast/toastSuccess'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 
@@ -57,10 +57,12 @@ function useUpdateJob(props: createJobProps = { defaultValues: {} }) {
         location: getValueOfObj({ key: 'value', obj: value.location }),
         salary_type: salary_type,
         team_id: getValueOfObj({ key: 'id', obj: value.team_id }),
+        salary_from: convertCurrencyToNumber(value.salary_from),
+        salary_to: convertCurrencyToNumber(value.salary_to),
         created_by: getValueOfObj({ key: 'id', obj: value.created_by }),
       }
 
-      mutate(valueClone)
+      mutate(removeInfoData({field: ["total_candidates_recruited"], object: valueClone}) as UpdateHiringJobInput)
     })()
   }
 

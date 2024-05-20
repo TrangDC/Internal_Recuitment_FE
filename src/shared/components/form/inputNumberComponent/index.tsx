@@ -2,8 +2,7 @@ import { FieldErrors, FieldValues } from 'react-hook-form'
 import { CustomTextField, DivError, DivWrapper } from '../styles'
 import { TextFieldProps } from '@mui/material'
 import { get } from 'lodash'
-import { regexCharacterNumber, regexNumber } from './constant'
-import { ChangeEvent, FocusEvent } from 'react'
+import { ChangeEvent } from 'react'
 import { NumericFormat } from 'react-number-format'
 
 interface AdditionalProps<T extends FieldValues> {
@@ -43,21 +42,7 @@ const InputNumberComponent = <T extends object>({
         type="text"
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value
-          const previousValue = field.value
-          if (
-            props.type === 'number' &&
-            !regexCharacterNumber.test(value) &&
-            value
-          ) {
-            field.onChange(previousValue ? previousValue : '')
-          } else {
-            field.onChange(value)
-          }
-        }}
-        onBlur={(e: FocusEvent<HTMLInputElement>) => {
-          if (props.type === 'number' && !regexNumber.test(e.target.value)) {
-            field.onChange('')
-          }
+          field.onChange(value)
         }}
         //@ts-ignore
         customInput={CustomTextField}

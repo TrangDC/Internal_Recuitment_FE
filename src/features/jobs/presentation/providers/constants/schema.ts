@@ -1,5 +1,6 @@
 import { SALARY_STATE } from 'shared/constants/constants'
 import { FormDataSchemaNote, schemaNote } from 'shared/schema'
+import { convertCurrencyToNumber } from 'shared/utils/utils'
 import * as yup from 'yup'
 
 export const schema = yup.object({
@@ -10,22 +11,23 @@ export const schema = yup.object({
   amount: yup.number().required(),
   salary_type: yup.object().required('salary is required!'),
   salary_from: yup
-    .number()
-    .required()
-    .positive('Salary from must be a positive number')
-    .when(['salary_type'], ([salary_type], schema) => {
-      return salary_type?.value === SALARY_STATE.RANGE
-        ? schema.max(yup.ref('salary_to')).min(0)
-        : schema.min(0)
-    }),
+    .string()
+    .required(),
   salary_to: yup
-    .number()
+    .string()
     .required()
-    .positive('Salary to must be a positive number')
-    .when(['salary_type'], ([salary_type], schema) => {
-      return salary_type?.value === SALARY_STATE.RANGE
-        ? schema.min(yup.ref('salary_from'))
-        : schema.min(0)
+    .test('validator-salary', function (value) {
+      const salary_to = convertCurrencyToNumber(value);
+      const salary_from = convertCurrencyToNumber(this.parent?.salary_from);
+
+      if (salary_from > salary_to) {
+        return this.createError({
+          path: this.path,
+          message: 'Salary To lớn hơn salary from',
+        });
+      }
+
+      return true;
     }),
   currency: yup.object().when(['salary_type'], ([salary_type], schema) => {
     return salary_type?.value === SALARY_STATE.NEGOTITATION
@@ -46,24 +48,24 @@ export const schemaUpdate = yup.object({
   amount: yup.number().required(),
   salary_type: yup.object().required('salary is required!'),
   salary_from: yup
-    .number()
-    .required()
-    .positive('Salary from must be a positive number')
-    .when(['salary_type'], ([salary_type], schema) => {
-      return salary_type?.value === SALARY_STATE.RANGE
-        ? schema.max(yup.ref('salary_to')).min(0)
-        : schema.min(0)
-    }),
+    .string()
+    .required(),
   salary_to: yup
-    .number()
+    .string()
     .required()
-    .positive('Salary to must be a positive number')
-    .when(['salary_type'], ([salary_type], schema) => {
-      return salary_type?.value === SALARY_STATE.RANGE
-        ? schema.min(yup.ref('salary_from'))
-        : schema.min(0)
-    }),
+    .test('validator-salary', function (value) {
+      const salary_to = convertCurrencyToNumber(value);
+      const salary_from = convertCurrencyToNumber(this.parent?.salary_from);
 
+      if (salary_from > salary_to) {
+        return this.createError({
+          path: this.path,
+          message: 'Salary To lớn hơn salary from',
+        });
+      }
+
+      return true;
+    }),
   currency: yup.object().when(['salary_type'], ([salary_type], schema) => {
     return salary_type?.value === SALARY_STATE.NEGOTITATION
       ? schema.notRequired()

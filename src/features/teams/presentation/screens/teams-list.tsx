@@ -35,7 +35,7 @@ const TeamList = () => {
     setOpenEdit,
     setOpenDelete,
   } = useActionTable()
-  const { useTableReturn } = useTeamTable()
+  const { useTableReturn } = useTeamTable({orderBy: {field: 'newest_applied', direction: 'DESC'}})
   const { handleFreeWord } = useTableReturn
 
   const translation = useTextTranslation()

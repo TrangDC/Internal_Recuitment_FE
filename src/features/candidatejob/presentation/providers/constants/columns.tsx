@@ -8,6 +8,7 @@ import { CandidateJob } from 'features/candidates/domain/interfaces'
 import { CANDIDATE_STATUS } from './index'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { t } from 'i18next';
+import { format } from 'date-fns'
 
 const columnHelper = createColumnHelper<CandidateJob>()
 
@@ -24,20 +25,22 @@ export const columns = (
     id: 'team',
     header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    enableSorting: false,
   }),
-  columnHelper.accessor((row) => row.created_at, {
-    id: 'applied_date',
+  columnHelper.accessor((row) => row.updated_at, {
+    id: 'updated_at',
     size: 200,
     header: () => <span>{t('applied_date')}</span>,
     cell: (info) => (
       <StyleSpanName>
-        {/* {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')} */}
+        {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}
       </StyleSpanName>
     ),
   }),
   columnHelper.accessor((row) => row.status, {
     id: 'status',
     header: () => <span>{t('status')}</span>,
+    enableSorting: false,
     cell: (info) => (
       <ChipFieldStatus
         //@ts-ignore
@@ -50,7 +53,7 @@ export const columns = (
       />
     ),
   }),
-  columnHelper.accessor('id', {
+  columnHelper.accessor('created_at', {
     header: () => <span>{t('action')}</span>,
     size: 100,
     cell: (info) => {

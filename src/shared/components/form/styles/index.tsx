@@ -13,6 +13,10 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
     paddingRight: 0,
   },
 
+  '& .MuiInputBase-root .Mui-disabled' : {
+    backgroundColor: theme.palette.grey[200],
+  },
+
   '& .MuiFormLabel-root span': {
     fontSize: '13px',
     fontWeight: 500,

@@ -98,7 +98,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                           header.getContext()
                         )}
                     {header.column.getCanSort() && (
-                      <IconSortBy type={header.column.getIsSorted()} />
+                      <IconSortBy type={header.column.getIsSorted()} sorting={variables.sortBy} />
                     )}
                   </DivHeader>
                 </HeadTableCell>

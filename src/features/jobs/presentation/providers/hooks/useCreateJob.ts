@@ -7,7 +7,7 @@ import { BaseRecord } from 'shared/interfaces'
 import { schema, FormDataSchema } from '../../providers/constants/schema'
 import { NewHiringJobInput } from 'features/jobs/domain/interfaces'
 import _ from 'lodash'
-import { getValueOfObj } from 'shared/utils/utils'
+import { convertCurrencyToNumber, getValueOfObj } from 'shared/utils/utils'
 import toastSuccess from 'shared/components/toast/toastSuccess'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 
@@ -53,6 +53,8 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
         salary_type: salary_type,
         team_id: getValueOfObj({ key: 'id', obj: value.team_id }),
         created_by: getValueOfObj({ key: 'id', obj: value.created_by }),
+        salary_from: convertCurrencyToNumber(value.salary_from),
+        salary_to: convertCurrencyToNumber(value.salary_to),
         status: 'draft',
       }
 

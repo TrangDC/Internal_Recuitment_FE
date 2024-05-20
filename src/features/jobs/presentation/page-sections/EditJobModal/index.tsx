@@ -62,8 +62,8 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
 
   const salary = useWatch({ control, name: 'salary_type' })
   const resetSalary = () => {
-    setValue('salary_from', 0)
-    setValue('salary_to', 0)
+    setValue('salary_from', "0")
+    setValue('salary_to', "0")
   }
 
   const callbackSubmit = (reason: string) => {

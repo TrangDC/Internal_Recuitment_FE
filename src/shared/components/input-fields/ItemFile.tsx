@@ -48,7 +48,7 @@ const ShowFile = ({ name, size, IconEnd }: ShowFileProps) => {
         </FlexBox>
         <NameFIle>
           <Tiny>{name}</Tiny>
-          <Span>{convertSizeToMb(size)}</Span>
+          <Span>{size && convertSizeToMb(size)}</Span>
         </NameFIle>
       </FlexBox>
       <FlexBox sx={{ cursor: 'pointer' }}>{IconEnd && IconEnd}</FlexBox>
