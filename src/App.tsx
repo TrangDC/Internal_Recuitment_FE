@@ -24,7 +24,7 @@ const App: FC = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <RTL>
-          <Toaster position="top-right" reverseOrder={false}/>
+          <Toaster position="top-right" reverseOrder={false} />
           <CssBaseline />
           <RouterProvider router={router} />
         </RTL>
