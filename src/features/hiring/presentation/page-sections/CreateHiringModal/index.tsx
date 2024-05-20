@@ -6,10 +6,9 @@ import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import { baseInstance } from 'shared/interfaces'
-import useCreateTeam from '../../providers/hooks/useCreateHiring'
-import { useState } from 'react'
+import useCreateHiring from '../../providers/hooks/useCreateHiring'
 import { Team } from 'features/teams/domain/interfaces'
+import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
 
 interface ICreateHiringModal {
   open: boolean
@@ -17,33 +16,22 @@ interface ICreateHiringModal {
 }
 
 function CreateHiringModal({ open, setOpen }: ICreateHiringModal) {
-  const { onSubmit, useFormReturn } = useCreateTeam()
+  const { onSubmit, useFormReturn } = useCreateHiring({
+    callbackSuccess: () => setOpen(false)
+  })
   const {
     control,
     formState: { errors },
   } = useFormReturn
 
-  const [teams, setTeams] = useState<Team[]>([])
-  // useEffect(() => {
-  //   new Promise((resolve, reject) => {
-  //     resolve(mockApiGetListTeam())
-  //   }).then((response: any) => {
-  //     setTeams(response.sortData)
-  //   })
-  // }, [])
-
-  const position: baseInstance[] = [
-    { value: "1", name: 'UI/UX Designer' },
-    { value: "2", name: 'Software Engineer' },
-    { value: "3", name: 'Sale' },
-    { value: "4", name: 'Front-end Developer' },
-    { value: "5", name: 'Back-end Developer' },
-  ]
-
+  const { teams } = useSelectTeam()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header title="Add a new hiring team" setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header
+        title="Add a new hiring team"
+        setOpen={setOpen}
+      ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <form onSubmit={onSubmit}>
           <Grid container spacing={1}>
@@ -80,7 +68,7 @@ function CreateHiringModal({ open, setOpen }: ICreateHiringModal) {
                 )}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Controller
                 name="email"
                 control={control}
@@ -96,29 +84,16 @@ function CreateHiringModal({ open, setOpen }: ICreateHiringModal) {
                 )}
               />
             </Grid>
-            <Grid item xs={6}>
-            <Controller
-                name="position"
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, baseInstance>
-                    options={position}
-                    label="name"
-                    inputLabel="Position"
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid>
           </Grid>
         </form>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained" onClick={() => setOpen(false)}>
+          <CustomeButtonCancel
+            type="button"
+            variant="contained"
+            onClick={() => setOpen(false)}
+          >
             Cancel
           </CustomeButtonCancel>
           <Button

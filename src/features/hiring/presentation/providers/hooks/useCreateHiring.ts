@@ -1,13 +1,23 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
-import { NewTeamInput } from 'features/teams/domain/interfaces'
+import { HiringInput } from 'features/hiring/domain/interfaces'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
-import { schema,FormDataSchema } from '../constants/schema'
+import { schema, FormDataSchema } from '../constants/schema'
+import { cloneDeep } from 'lodash'
+import { getValueOfObj } from 'shared/utils/utils'
+import toastSuccess from 'shared/components/toast/toastSuccess'
 
-function useCreateHiring(defaultValues: Partial<FormDataSchema> = {}) {
+interface createHiringProps {
+  defaultValues?: Partial<FormDataSchema>
+  callbackSuccess?: (value: any) => void
+}
+
+function useCreateHiring(props: createHiringProps = { defaultValues: {} }) {
+  const { defaultValues, callbackSuccess } = props;
+
   const queryClient = useQueryClient()
   const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
     resolver: yupResolver(schema),
@@ -19,21 +29,28 @@ function useCreateHiring(defaultValues: Partial<FormDataSchema> = {}) {
   const { createJob, queryKey } = useGraphql()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newTodo: NewTeamInput) =>
+    mutationFn: (newHiringTeam: Omit<HiringInput, 'id'>) =>
       fetchGraphQL<BaseRecord>(createJob.query, {
-        input: newTodo,
+        input: newHiringTeam,
       }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [queryKey] }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [queryKey] })
+      toastSuccess('create hiring success');
+      callbackSuccess && callbackSuccess(data)
+    },
   })
 
   function onSubmit() {
     handleSubmit((value: FormDataSchema) => {
-    console.log("🚀 ~ handleSubmit ~ value:", value)
+      const valueClone = {
+        ...cloneDeep(value),
+        team: getValueOfObj({ key: 'id', obj: value.team })
+      }
 
       // mutate(value)
     })()
   }
-  
+
   return {
     onSubmit,
     useFormReturn: {

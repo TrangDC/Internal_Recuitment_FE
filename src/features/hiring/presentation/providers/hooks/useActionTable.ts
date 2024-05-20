@@ -6,7 +6,7 @@ const useActionTable = () => {
   const rowData = useRef<Hiring>()
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-  const [openDetail, setOpenDetail] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
 
   function handleOpenEdit(id: string, data: Hiring) {
     rowId.current = id
@@ -14,21 +14,20 @@ const useActionTable = () => {
     setOpenEdit(true)
   }
 
-  function handleOpenDetail(id: string, data: Hiring) {
+  function handleOpenDelete(id: string) {
     rowId.current = id
-    rowData.current = data
-    setOpenDetail(true)
+    setOpenDelete(true)
   }
 
   return {
     openCreate,
     openEdit,
-    openDetail,
     setOpenCreate,
-    setOpenDetail,
     setOpenEdit,
     handleOpenEdit,
-    handleOpenDetail,
+    openDelete,
+    setOpenDelete,
+    handleOpenDelete,
     rowId,
     rowData,
   }

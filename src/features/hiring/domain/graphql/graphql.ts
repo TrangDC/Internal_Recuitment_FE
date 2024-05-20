@@ -1,9 +1,9 @@
 import { buildQuery } from 'services/graphql-services'
 
 const useGraphql = () => {
-  const queryKey = 'team'
-  const getAllJobTitles = buildQuery({
-    operation: 'GetAllJobTitles',
+  const queryKey = 'hiring'
+  const getAllHiringTeam = buildQuery({
+    operation: 'SelectionUsers',
     options: {
       type: 'query',
     },
@@ -11,8 +11,8 @@ const useGraphql = () => {
       edges {
         node {
           id
-          code
           name
+          work_email
         }
       }
       pagination {
@@ -23,30 +23,30 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'JobTitleFilter',
-      orderBy: 'JobTitleOrder', 
-      freeWord: 'JobTitleFreeWord',
+      filter: 'UserFilter',
+      orderBy: 'UserOrder', 
+      freeWord: 'UserFreeWord',
     },
   })
-  const createJobTitle = buildQuery({
-    operation: 'CreateJobTitle',
-    options: {
-      type: 'mutation',
-    },
-    node: `
-      data {
-        id
-      }
-    `,
-    params: {
-      input: 'NewJobTitleInput!',
-    },
-  })
+  // const createJobTitle = buildQuery({
+  //   operation: 'CreateJobTitle',
+  //   options: {
+  //     type: 'mutation',
+  //   },
+  //   node: `
+  //     data {
+  //       id
+  //     }
+  //   `,
+  //   params: {
+  //     input: 'NewJobTitleInput!',
+  //   },
+  // })
 
   return {
-    getAllJobTitles,
+    getAllHiringTeam,
     queryKey,
-    createJobTitle,
+    // createJobTitle,
   }
 }
 
