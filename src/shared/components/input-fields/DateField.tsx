@@ -15,8 +15,8 @@ const StyledInputBase = styled(Box)(({ theme }) => ({
   '& .MuiFormControl-root .MuiFormLabel-root span': {
     fontSize: '13px',
     fontWeigth: 500,
-    color:' #DB6C56',
-    lineHeight: '15.85px'
+    color: ' #DB6C56',
+    lineHeight: '15.85px',
   },
 
   '& .MuiInputBase-root': {
@@ -25,12 +25,15 @@ const StyledInputBase = styled(Box)(({ theme }) => ({
 }))
 
 const AppDateField = ({
-  textFieldProps = { size: 'small', sx: {width: '160px'} },
+  textFieldProps = {
+    size: 'small',
+    sx: { width: '160px', height: '40px !important' },
+  },
   ...props
 }: CustomDatePickerProps) => {
   return (
     <StyledInputBase>
-      <DatePicker slotProps={{ textField: { ...textFieldProps,  } }} {...props} />
+      <DatePicker slotProps={{ textField: { ...textFieldProps } }} {...props} />
     </StyledInputBase>
   )
 }
