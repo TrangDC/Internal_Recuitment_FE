@@ -1,3 +1,4 @@
+import { styled } from '@mui/material'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { Hiring } from 'features/hiring/domain/interfaces'
 import {
@@ -5,7 +6,12 @@ import {
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
 import FlexBox from 'shared/components/flexbox/FlexBox'
+import { TinyText } from 'shared/components/form/styles'
 import { Span } from 'shared/components/Typography'
+
+export const StyleTinyText = styled(TinyText)(({ theme }) => ({
+  color: theme.palette.grey[500],
+}))
 
 const columnHelper = createColumnHelper<Hiring>()
 
@@ -14,22 +20,26 @@ export const columns = (
 ): ColumnDef<Hiring, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => info.getValue(),
-    header: () => <span>NAME</span>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    header: () => <span>Name</span>,
+    meta: {
+      style: { width: '300px' },
+    },
   }),
-  columnHelper.accessor('email', {
+  columnHelper.accessor('work_email', {
     header: () => <span>Email</span>,
-    cell: (info) => info.renderValue(),
+    enableSorting: false,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    meta: {
+      style: { width: '300px' },
+    },
   }),
   columnHelper.accessor('team', {
     header: () => <span>Team</span>,
-    cell: (info) => info.renderValue(),
+    enableSorting: false,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
-  columnHelper.accessor('position', {
-    header: () => <span>Position</span>,
-    cell: (info) => info.renderValue(),
-  }),
-  columnHelper.accessor('id', {
+  columnHelper.accessor('created_at', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>
         <Span>ACTION</Span>
