@@ -1,32 +1,11 @@
 import { buildQuery } from 'services/graphql-services'
 
 const useGraphql = () => {
-  const queryKey = 'candidateJob'
+  const queryKey = 'feedback'
 
-  const getCandidate = buildQuery({
-    operation: 'GetCandidate',
-    options: {
-      type: 'query',
-    },
-    node: `
-      data {
-        id
-        name
-        email
-        phone
-        dob
-        status
-        is_black_list
-        created_at
-      }
-    `,
-    params: {
-      id: 'ID!',
-    },
-  })
 
-  const getAllCandidateJob = buildQuery({
-    operation: 'GetAllCandidateJobs',
+  const getAllCandidateJobFeedbacks = buildQuery({
+    operation: 'GetAllCandidateJobFeedbacks',
     options: {
       type: 'query',
     },
@@ -34,10 +13,11 @@ const useGraphql = () => {
       edges {
         node {
           id
-          candidate_id
-          hiring_job_id
-          status
+          created_by
+          candidate_job_id
+          feedback
           created_at
+          updated_at
         }
       }
       pagination {
@@ -48,14 +28,14 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'CandidateJobFilter!',
-      orderBy: 'CandidateJobOrder', 
-      freeWord: 'CandidateJobFreeWord',
+      filter: 'CandidateJobFeedbackFilter!',
+      orderBy: 'CandidateJobFeedbackOrder', 
+      freeWord: 'CandidateJobFeedbackFreeWord',
     },
   })
 
-  const createCandidateJob = buildQuery({
-    operation: 'CreateCandidateJob',
+  const createCandidateJobFeedback  = buildQuery({
+    operation: 'CreateCandidateJobFeedback',
     options: {
       type: 'mutation',
     },
@@ -65,15 +45,14 @@ const useGraphql = () => {
       }
     `,
     params: {
-      input: 'NewCandidateJobInput!',
+      input: 'NewCandidateJobFeedbackInput!',
     },
   })
 
   return {
     queryKey,
-    getCandidate,
-    getAllCandidateJob,
-    createCandidateJob
+    getAllCandidateJobFeedbacks,
+    createCandidateJobFeedback
   }
 }
 

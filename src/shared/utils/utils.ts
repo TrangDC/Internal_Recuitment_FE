@@ -111,7 +111,7 @@ export const getBase64 = (file: Blob): Promise<string> =>
   });
 
 
-export const converDateToISOString = (date: string) => {
+export const convertDateToISOString = (date: string) => {
   return new Date(date).toISOString();
 }
 

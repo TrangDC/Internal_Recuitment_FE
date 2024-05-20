@@ -11,10 +11,17 @@ import InputFileComponent from 'shared/components/form/inputFileComponent'
 interface ICreateFeedbackModal {
   open: boolean
   setOpen: (value: boolean) => void
+  candidate_job_id: string
 }
 
-function CreateFeedbackModal({ open, setOpen }: ICreateFeedbackModal) {
-  const { onSubmit, useFormReturn } = useCreateFeedback()
+function CreateFeedbackModal({ open, setOpen, candidate_job_id }: ICreateFeedbackModal) {
+  const { onSubmit, useFormReturn } = useCreateFeedback({
+    defaultValues: {
+      feedback: '',
+      candidate_job_id,
+    },
+    callbackSuccess: () => setOpen(false)
+  })
   const {
     control,
     formState: { errors },
@@ -31,7 +38,7 @@ function CreateFeedbackModal({ open, setOpen }: ICreateFeedbackModal) {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Controller
-                name="description"
+                name="feedback"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>

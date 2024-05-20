@@ -3,7 +3,7 @@ import AppDateField from 'shared/components/input-fields/DateField'
 import SearchInput from 'shared/components/input-fields/SearchInput'
 import useTextTranslation from 'shared/constants/text'
 import { KeyboardEventHandler, useRef } from 'react'
-import { converDateToISOString } from 'shared/utils/utils'
+import { convertDateToISOString } from 'shared/utils/utils'
 import AuditLogComponent from 'features/auditTrails/presentation/page-sections/AuditLogComponent'
 import { FormWrapper, HistoryWrapper, LogsWrapper } from '../../providers/styles'
 
@@ -23,7 +23,7 @@ const HistoryLogAuditTrails = ({module}: Props) => {
 
     if (!handleFilter || !value) return
 
-    handleFilter(name, converDateToISOString(value.toString()))
+    handleFilter(name, convertDateToISOString(value.toString()))
   }
 
   const handleSearch = (name: string, value: string) => {

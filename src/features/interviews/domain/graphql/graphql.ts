@@ -1,32 +1,10 @@
 import { buildQuery } from 'services/graphql-services'
 
 const useGraphql = () => {
-  const queryKey = 'candidateJob'
+  const queryKey = 'interviewers'
 
-  const getCandidate = buildQuery({
-    operation: 'GetCandidate',
-    options: {
-      type: 'query',
-    },
-    node: `
-      data {
-        id
-        name
-        email
-        phone
-        dob
-        status
-        is_black_list
-        created_at
-      }
-    `,
-    params: {
-      id: 'ID!',
-    },
-  })
-
-  const getAllCandidateJob = buildQuery({
-    operation: 'GetAllCandidateJobs',
+  const getAllCandidateInterview = buildQuery({
+    operation: 'GetAllCandidateInterviews',
     options: {
       type: 'query',
     },
@@ -34,10 +12,21 @@ const useGraphql = () => {
       edges {
         node {
           id
-          candidate_id
-          hiring_job_id
-          status
+          title
+          description
+          interview_date
+          candidate_job_id
+          start_from
+          interviewer {
+            id
+            name
+          }
+          candidate_job {
+            id
+          }
+          end_at
           created_at
+          updated_at
         }
       }
       pagination {
@@ -48,14 +37,14 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'CandidateJobFilter!',
-      orderBy: 'CandidateJobOrder', 
-      freeWord: 'CandidateJobFreeWord',
+      filter: 'CandidateInterviewFilter!',
+      orderBy: 'CandidateInterviewOrder', 
+      freeWord: 'CandidateInterviewFreeWord',
     },
   })
 
-  const createCandidateJob = buildQuery({
-    operation: 'CreateCandidateJob',
+  const createCandidateInterview = buildQuery({
+    operation: 'CreateCandidateInterview',
     options: {
       type: 'mutation',
     },
@@ -65,15 +54,15 @@ const useGraphql = () => {
       }
     `,
     params: {
-      input: 'NewCandidateJobInput!',
+      input: 'NewCandidateInterviewInput!',
     },
   })
 
   return {
     queryKey,
-    getCandidate,
-    getAllCandidateJob,
-    createCandidateJob
+    // getCandidate,
+    getAllCandidateInterview,
+    createCandidateInterview
   }
 }
 

@@ -4,12 +4,12 @@ import {
   Grid,
   styled,
 } from '@mui/material'
-import FlexBox from 'shared/components/flexbox/FlexBox'
-import IconWrapper from 'shared/components/IconWrapper'
-import { H5 } from 'shared/components/Typography'
-import { ShoppingBasket } from '@mui/icons-material'
 import JobDetailInformation from '../page-sections/JobDetailInformation'
 import JobDetailAction from '../page-sections/JobDetailAction'
+import IconScreen from 'shared/components/utils/IconScreen'
+import CandidateIcon from 'shared/components/icons/Candidates'
+import { useParams } from 'react-router-dom'
+import useCandidateJobDetail from '../providers/hooks/useCandidateJobDetail'
 
 const DivWrapperContainer = styled(DivContainerWrapper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -20,22 +20,19 @@ const DivWrapperContainer = styled(DivContainerWrapper)(({ theme }) => ({
 }))
 
 const CandidateJobDetail = () => {
+  const { id } = useParams();
+  const { jobApplicationDetail } = useCandidateJobDetail(id as string);
 
   return (
     <Box pt={2} pb={4}>
-      <Box>
-        <FlexBox gap={0.5} alignItems="center">
-          <IconWrapper>
-            <ShoppingBasket sx={{ color: 'primary.main' }} />
-          </IconWrapper>
-          <H5>Job Application detail</H5>
-        </FlexBox>
+     <Box>
+        <IconScreen Icon={CandidateIcon} textLable={'Job application detail'} />
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>
         <DivWrapperContainer>
           <Grid container>
             <Grid item xs={3}>
-              <JobDetailInformation />
+              <JobDetailInformation candidate={jobApplicationDetail.candidate} job={jobApplicationDetail.hiring_job_id}/>
             </Grid>
             <Grid item xs={9}>
               <JobDetailAction />
