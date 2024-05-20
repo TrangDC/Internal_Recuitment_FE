@@ -60,7 +60,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'CandidateJobFilter!',
-      orderBy: 'CandidateJobOrder', 
+      orderBy: 'CandidateJobOrder',
       freeWord: 'CandidateJobFreeWord',
     },
   })
@@ -111,13 +111,46 @@ const useGraphql = () => {
     },
   })
 
+  const getCandidateJob = buildQuery({
+    operation: 'GetCandidateJob',
+    options: {
+      type: 'query',
+    },
+    node: `
+      data {
+        id
+        candidate_id
+        hiring_job_id
+        candidate {
+            id
+            name
+            email
+            phone
+            dob
+            status
+            is_black_list
+            last_apply_date
+        }
+        attachments {
+            id
+            document_name
+            document_id
+        }
+      }
+    `,
+    params: {
+      id: 'ID!',
+    },
+  })
+
   return {
     queryKey,
     getCandidate,
     getAllCandidateJob,
     createCandidateJob,
     changeStatusCandidate,
-    createCandidateJobFeedback
+    createCandidateJobFeedback,
+    getCandidateJob
   }
 }
 

@@ -2,7 +2,7 @@ import { Box, styled } from '@mui/material'
 import FlexBox from '../flexbox/FlexBox'
 import UploadIcon from '../icons/UploadIcon'
 import { Span, Tiny } from '../Typography'
-import { DragEvent, useState } from 'react'
+import { DragEvent, useMemo, useState } from 'react'
 import TrashIcon from '../icons/TrashIcon'
 import toastError from '../toast/toastError'
 import useTextTranslation from 'shared/constants/text'
@@ -71,6 +71,7 @@ export interface InputFileProps {
   callbackFileChange?: (data: FileAttachment[]) => void
   maxFile?: number
   maxSize?: number | null
+  showList?: boolean
 }
 
 type UploadAttachment = {
@@ -88,8 +89,12 @@ const InputFile = ({
   callbackFileChange,
   maxFile = 5,
   maxSize = null,
+  showList = true,
 }: InputFileProps) => {
   const [files, setFiles] = useState<FileAttachment[]>([])
+  const idFile = useMemo(() => {
+    return uuidv4();
+  }, [])
 
   const handleRemoveFile = (idx: number) => {
     const filterFile = files.filter((file, _) => {
@@ -172,14 +177,13 @@ const InputFile = ({
         { id: uuid, name: fileUpload.name, file: fileUpload },
       ]
       setFiles(filesUpload)
-      callbackFileChange &&
-        callbackFileChange(filesUpload as FileAttachment[])
+      callbackFileChange && callbackFileChange(filesUpload as FileAttachment[])
     })
   }
 
   return (
     <InputFileWrapper>
-      <label htmlFor="file">
+      <label htmlFor={idFile}>
         <InputFileContainer
           onDragOver={(event: DragEvent<HTMLDivElement>) => {
             event.preventDefault()
@@ -203,21 +207,24 @@ const InputFile = ({
         </InputFileContainer>
       </label>
 
-      <ListFile>
-        {files.map((file, index) => {
-          return (
-            <ShowFile
-              name={file?.name}
-              size={file?.file?.size}
-              key={index}
-              IconEnd={<TrashIcon onClick={() => handleRemoveFile(index)} />}
-            />
-          )
-        })}
-      </ListFile>
+      {showList && (
+        <ListFile>
+          {files.map((file, index) => {
+            return (
+              <ShowFile
+                name={file?.name}
+                size={file?.file?.size}
+                key={index}
+                IconEnd={<TrashIcon onClick={() => handleRemoveFile(index)} />}
+              />
+            )
+          })}
+        </ListFile>
+      )}
+
       <input
         type="file"
-        id="file"
+        id={idFile}
         name="file"
         accept={accept}
         multiple

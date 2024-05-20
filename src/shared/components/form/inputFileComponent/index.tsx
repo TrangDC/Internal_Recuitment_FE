@@ -24,7 +24,7 @@ const InputFileComponent = <T extends object>({
     <DivWrapper>
       <InputFile
         {...props.inputFileProps}
-        callbackFileChange={(data) => {
+        callbackFileChange={(data) => {       
           const ids_file = data.map((data) => ({document_name: data.name, document_id: data.id}))
           field.onChange(ids_file)
         }}

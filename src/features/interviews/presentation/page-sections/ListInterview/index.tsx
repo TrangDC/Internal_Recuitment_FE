@@ -17,12 +17,17 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import useActionTable from '../../providers/hooks/useActionTable'
 import CreateInterviewModal from '../CreateInterviewModal'
+import { useParams } from 'react-router-dom'
+import useListInterview from '../../providers/hooks/useListInterview'
 
 const ListFeedback = () => {
   const {
     openCreate,
     setOpenCreate,
   } = useActionTable()
+
+  const { id } = useParams();
+  const { listInterview } = useListInterview(id as string)
 
   return (
     <ListInterviewContainer>

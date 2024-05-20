@@ -4,12 +4,18 @@ import { Box, Button, Grid } from '@mui/material'
 import InputComponent from 'shared/components/form/inputComponent'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel, SpanText, TinyText } from 'shared/components/form/styles'
+import {
+  CustomeButtonCancel,
+  SpanText,
+  TinyText,
+} from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import { useState } from 'react'
 import DatePickerComponent from 'shared/components/form/datePickerComponent'
 import useCreateInterview from '../../providers/hooks/useCreateInterview'
-import { Team } from 'features/teams/domain/interfaces'
+import { Member } from 'features/teams/domain/interfaces'
+import useSelectMember from 'shared/hooks/graphql/useSelectMember'
+import { useParams } from 'react-router-dom'
+import TimePickerComponent from 'shared/components/form/timePickerComponent'
 
 interface ICreateInterviewModal {
   open: boolean
@@ -17,21 +23,20 @@ interface ICreateInterviewModal {
 }
 
 function CreateInterviewModal({ open, setOpen }: ICreateInterviewModal) {
-  const { onSubmit, useFormReturn } = useCreateInterview()
+  const { id } = useParams()
+
+  const { onSubmit, useFormReturn } = useCreateInterview({
+    defaultValues: {
+      candidate_job_id: id,
+      description: ''
+    },
+    callbackSuccess: () => setOpen(false)
+  })
   const {
     control,
     formState: { errors },
   } = useFormReturn
-
-  //MockAPI
-  const [teams, setTeams] = useState<Team[]>([])
-  // useEffect(() => {
-  //   new Promise((resolve, reject) => {
-  //     // resolve(mockApiGetListTeam())
-  //   }).then((response: any) => {
-  //     setTeams(response.sortData)
-  //   })
-  // }, [])
+  const { members } = useSelectMember()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -48,31 +53,15 @@ function CreateInterviewModal({ open, setOpen }: ICreateInterviewModal) {
                 <TinyText>Software Engineer</TinyText>
               </Box>
             </Grid>
-            {/* <Grid item xs={6}>
-              <Controller
-                name="team"
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Team>
-                    options={teams}
-                    label="name"
-                    inputLabel="Team"
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid> */}
             <Grid item xs={12}>
               <Controller
-                name="job_title"
+                name="title"
                 control={control}
                 render={({ field }) => (
                   <InputComponent<FormDataSchema>
                     errors={errors}
-                    label="Job name"
+                    label="Interview title"
+                    size="small"
                     field={field}
                     fullWidth
                     required
@@ -82,24 +71,25 @@ function CreateInterviewModal({ open, setOpen }: ICreateInterviewModal) {
             </Grid>
             <Grid item xs={12}>
               <Controller
-                name="interviewers"
+                name="interviewer"
                 control={control}
                 render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Team>
-                    options={teams}
+                  <AutoCompleteComponent<FormDataSchema, Member>
+                    options={members}
                     label="name"
                     inputLabel="Interviewers"
                     errors={errors}
                     field={field}
                     keySelect="id"
                     fullWidth
+                    multiple
                   />
                 )}
               />
             </Grid>
             <Grid item xs={6}>
               <Controller
-                name="date"
+                name="interview_date"
                 control={control}
                 render={({ field }) => (
                   <DatePickerComponent<FormDataSchema>
@@ -118,11 +108,10 @@ function CreateInterviewModal({ open, setOpen }: ICreateInterviewModal) {
 
             <Grid item xs={3}>
               <Controller
-                name="from_date"
+                name="start_from"
                 control={control}
                 render={({ field }) => (
-                  <DatePickerComponent<FormDataSchema>
-                    textFieldProps={{ fullWidth: true, size: 'small' }}
+                  <TimePickerComponent
                     errors={errors}
                     label="From"
                     field={field}
@@ -132,11 +121,10 @@ function CreateInterviewModal({ open, setOpen }: ICreateInterviewModal) {
             </Grid>
             <Grid item xs={3}>
               <Controller
-                name="to_date"
+                name="end_at"
                 control={control}
                 render={({ field }) => (
-                  <DatePickerComponent<FormDataSchema>
-                    textFieldProps={{ fullWidth: true, size: 'small' }}
+                  <TimePickerComponent
                     errors={errors}
                     label="To"
                     field={field}

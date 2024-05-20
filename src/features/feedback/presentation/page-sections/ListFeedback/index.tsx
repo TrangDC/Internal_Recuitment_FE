@@ -7,21 +7,21 @@ import {
 } from '../../providers/styles'
 import { Span } from 'shared/components/Typography'
 import { Add } from '@mui/icons-material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
 import { Box, Button } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import ShowFile from 'shared/components/input-fields/ItemFile'
-import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import useActionTable from '../../providers/hooks/useActionTable'
-import CreateFeedbackModal from '../CreateFeedbackModal/useCreateFeedBackModal'
+import CreateFeedbackModal from '../CreateFeedbackModal'
+import { useParams } from 'react-router-dom'
+import useListFeedback from '../../providers/hooks/useListFeedBack'
+import { isEmpty } from 'lodash'
+import { format } from 'date-fns'
 
 const ListFeedBack = () => {
   const { openCreate, setOpenCreate } = useActionTable()
+  const { id } = useParams()
 
+  const { listFeedback } = useListFeedback(id as string)
   return (
     <ListFeedbackContainer>
       <DivActionHeader>
@@ -34,57 +34,57 @@ const ListFeedBack = () => {
           </Button>
         </BoxButton>
       </DivActionHeader>
-      <BoxText>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            sx={{ alignItems: 'flex-start' }}
-          >
-            <FlexBox flexDirection={'column'} gap={'10px'}>
-              <Box>
-                <TinyText>Helen Vo</TinyText>
-              </Box>
-              <FlexBox gap={'60px'}>
+
+      {!isEmpty(listFeedback) &&
+        listFeedback.map((feedback, idx) => {
+          return (
+            <BoxText key={idx}>
+              <FlexBox flexDirection={'column'} gap={'10px'}>
                 <Box>
-                  <SpanText>10:30, 10/03/2024</SpanText>
+                  <TinyText>Helen Vo</TinyText>
                 </Box>
+                <FlexBox gap={'60px'}>
+                  <Box>
+                    <SpanText>
+                      {format(
+                        new Date(feedback.created_at),
+                        'HH:mm, dd/MM/yyyy'
+                      )}
+                    </SpanText>
+                  </Box>
+                </FlexBox>
               </FlexBox>
-            </FlexBox>
-          </AccordionSummary>
-          <AccordionDetails>
-            <FlexBox flexDirection={'column'} gap={'10px'}>
-              <Box>
-                <TinyText>
-                  Lorem ipsum dolor sit amet ad suspendisse blandit aliquam ut
-                  nulla torquent pulvinar cursus pellentesque lectus posuere est
-                  per eget inceptos adipiscing nibh odio felis ultricies urna
-                  fermentum ridiculus dolor class potenti
-                </TinyText>
+              <FlexBox flexDirection={'column'} gap={'10px'}>
+                <Box>
+                  <TinyText>{feedback.feedback}</TinyText>
+                </Box>
+                {/* <FlexBox flexWrap={'wrap'} gap={'10px'}>
+              <Box sx={{ width: '183px' }}>
+                <ShowFile
+                  name="feedback.pdf"
+                  size={234234}
+                  IconEnd={<DownloadIcon />}
+                />
               </Box>
-              <FlexBox flexWrap={'wrap'} gap={'10px'}>
-                <Box sx={{ width: '183px' }}>
-                  <ShowFile
-                    name="feedback.pdf"
-                    size={234234}
-                    IconEnd={<DownloadIcon />}
-                  />
-                </Box>
-                <Box sx={{ width: '183px' }}>
-                  <ShowFile
-                    name="feedback.pdf"
-                    size={234234}
-                    IconEnd={<DownloadIcon />}
-                  />
-                </Box>
+              <Box sx={{ width: '183px' }}>
+                <ShowFile
+                  name="feedback.pdf"
+                  size={234234}
+                  IconEnd={<DownloadIcon />}
+                />
+              </Box>
+            </FlexBox> */}
               </FlexBox>
-            </FlexBox>
-          </AccordionDetails>
-        </Accordion>
-      </BoxText>
+            </BoxText>
+          )
+        })}
 
       {openCreate && (
-        <CreateFeedbackModal open={openCreate} setOpen={setOpenCreate} />
+        <CreateFeedbackModal
+          open={openCreate}
+          setOpen={setOpenCreate}
+          candidate_job_id={id as string}
+        />
       )}
     </ListFeedbackContainer>
   )

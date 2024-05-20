@@ -9,7 +9,7 @@ import {
   UpdateCandidateInput,
 } from 'features/candidates/domain/interfaces'
 import _ from 'lodash'
-import { converDateToISOString } from 'shared/utils/utils'
+import { convertDateToISOString } from 'shared/utils/utils'
 import toastSuccess from 'shared/components/toast/toastSuccess'
 
 interface createCandidateProps {
@@ -53,7 +53,7 @@ function useUpdateCandidate(
     handleSubmit((value: FormDataSchemaUpdate) => {
       const valueClone = {
         ..._.cloneDeep(value),
-        dob: converDateToISOString(value.dob),
+        dob: convertDateToISOString(value.dob),
       }
 
       mutate(valueClone)

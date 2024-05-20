@@ -1,40 +1,56 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import useGraphql from 'features/jobs/domain/graphql/graphql'
-import { NewTeamInput } from 'features/teams/domain/interfaces'
+import useGraphql from 'features/interviews/domain/graphql/graphql'
+import { NewCandidateInterviewInput } from 'features/interviews/domain/interfaces'
 import { useForm } from 'react-hook-form'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
 import { schema, FormDataSchema } from '../constants/schema'
+import { cloneDeep } from 'lodash'
+import { convertDateToISOString, transformListItem } from 'shared/utils/utils'
+import toastSuccess from 'shared/components/toast/toastSuccess'
 
-function useCreateInterview() {
+interface createInterviewProps {
+  defaultValues?: Partial<FormDataSchema>
+  callbackSuccess?: (value: any) => void
+}
+
+function useCreateInterview(props: createInterviewProps = { defaultValues: {} }) {
+  const { defaultValues, callbackSuccess } = props;
   const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm({
+  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
     resolver: yupResolver(schema),
     defaultValues: {
-      // name: '',
-      // code: '',
-      // description: '',
+      ...defaultValues,
     },
   })
 
-  const { createJob, queryKey } = useGraphql()
-  
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { createCandidateInterview, queryKey } = useGraphql()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (newTodo: NewTeamInput) =>
-      fetchGraphQL<BaseRecord>(createJob.query, {
-        input: newTodo,
-      }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [queryKey] }),
+    mutationFn: (newInterview: NewCandidateInterviewInput) => {
+      return fetchGraphQL<BaseRecord>(createCandidateInterview.query, {
+        input: newInterview,
+      })
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [queryKey] })
+      toastSuccess('Create interview success')
+      callbackSuccess && callbackSuccess(data)
+    },
   })
 
   function onSubmit() {
     handleSubmit((value: FormDataSchema) => {
-    console.log("🚀 ~ handleSubmit ~ value:", value)
+      const valueClone = {
+        ...cloneDeep(value),
+        interview_date: convertDateToISOString(value.interview_date.toString()),
+        start_from: convertDateToISOString(value.start_from.toString()),
+        end_at: convertDateToISOString(value.end_at.toString()),
+        interviewer: transformListItem(value.interviewer, 'id')
+      };
 
-      // mutate(value)
+      mutate(valueClone as NewCandidateInterviewInput)
     })()
   }
   

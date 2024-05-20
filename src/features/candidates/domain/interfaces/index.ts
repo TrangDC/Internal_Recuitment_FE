@@ -7,6 +7,7 @@ export type Candidate = {
   phone: string
   dob: string
   is_black_list: boolean
+  last_apply_date: string
   status:
     | 'applied'
     | 'interviewing'
@@ -77,19 +78,6 @@ export type CandidateJob = {
 }
 
 //interview
-export type Interview = {
-  id: string
-  job_name: string
-  team: string
-  applied_date: string
-  status: string
-  attachments: {
-    id: string,
-    document_name: string,
-    document_id: string,
-  }
-}
-
 export type FeedBack = {
   name: string
   description: string
