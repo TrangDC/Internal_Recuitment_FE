@@ -1,16 +1,18 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Button, Grid } from '@mui/material'
-import InputComponent from 'shared/components/form/inputComponent'
-import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
+import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchemaUpdate } from '../../providers/constants/schema'
 import { Member, Team } from 'features/teams/domain/interfaces'
 import useUpdateTeam from '../../providers/hooks/useUpdateTeam'
-import useSelectMember from 'shared/hooks/graphql/useSelectMember'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
+import AppTextField from 'shared/components/input-fields/AppTextField'
+import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complete'
+import { Fragment } from 'react/jsx-runtime'
+import AppButton from 'shared/components/buttons/AppButton'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import { transformListItem } from 'shared/utils/utils'
 
 interface IEditTeamModal {
   open: boolean
@@ -20,26 +22,22 @@ interface IEditTeamModal {
 }
 
 function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
-  const { onSubmit, useFormReturn } = useUpdateTeam({
+  const { onSubmit, control, isPending, isValid, setValue } = useUpdateTeam({
     defaultValues: {
       name: rowData?.name,
       id: rowData?.id,
-      members: rowData?.members,
+      members: transformListItem(rowData?.members as Member[]),
     },
-    callbackSuccess: () => setOpen(false),
+    callbackSuccess: () => {
+      setOpen(false)
+    },
   })
-  const {
-    control,
-    formState: { errors },
-    setValue,
-  } = useFormReturn
 
-  const { members } = useSelectMember()
   const translation = useTextTranslation()
 
   const callbackSubmit = (reason: string) => {
-    setValue('note', reason);
-    onSubmit();
+    setValue('note', reason)
+    onSubmit()
   }
 
   return (
@@ -49,62 +47,79 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
+        <FlexBox flexDirection={'column'} gap={2}>
+          <FlexBox
+            justifyContent={'center'}
+            alignItems={'center'}
+            marginTop={1}
+          >
+            <FormControl fullWidth>
               <Controller
+                control={control}
                 name="name"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchemaUpdate>
-                    errors={errors}
-                    label={translation.COMMON.name}
-                    size="small"
-                    field={field}
-                    fullWidth
-                    required
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox alignItems={'center'} flexDirection={'column'}>
+                    <AppTextField
+                      label={'Name'}
+                      required
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </FormControl>
+          </FlexBox>
+
+          <FlexBox gap={2}>
+            <FormControl fullWidth>
               <Controller
-                name="members"
                 control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchemaUpdate, Member>
-                    options={members}
-                    label="work_email"
-                    inputLabel={translation.MODLUE_TEAMS.team_manager}
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                    multiple
-                  />
+                name="members"
+                render={({ field, fieldState }) => (
+                  <Fragment>
+                    <MemberAutoComplete
+                      value={field.value || []}
+                      onChange={field.onChange}
+                      multiple={true}
+                      textFieldProps={{
+                        label: `Team's Manager`,
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </Fragment>
                 )}
               />
-            </Grid>
-          </Grid>
-        </form>
+            </FormControl>
+          </FlexBox>
+        </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel
-            type="button"
-            variant="contained"
+          <AppButton
+            variant="outlined"
+            size="small"
             onClick={() => setOpen(false)}
           >
             {translation.COMMON.cancel}
-          </CustomeButtonCancel>
+          </AppButton>
           <UpdateRecord callbackSubmit={callbackSubmit}>
-            <Button
-              type="button"
+            <ButtonLoading
               variant="contained"
-              color="primary"
+              size="small"
+              disabled={isValid}
+              handlesubmit={() => {}}
+              loading={isPending}
             >
-              {translation.COMMON.save}
-            </Button>
+              Submit
+            </ButtonLoading>
           </UpdateRecord>
         </FlexBox>
       </BaseModal.Footer>

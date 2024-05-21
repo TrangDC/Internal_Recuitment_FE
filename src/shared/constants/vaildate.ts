@@ -19,6 +19,6 @@ export const RULE_MESSAGES = {
     `${capitalizeFirstLetter(
       field1.toLowerCase()
     )} must be after ${field2.toLowerCase()}`,
-  MC6: () =>
-    `Keyword must contain only lowercase letters and underscore (_) only`,
+  MC6: (field: string) =>
+    `${field} has already existed`,
 }

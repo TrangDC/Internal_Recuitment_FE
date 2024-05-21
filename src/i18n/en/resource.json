@@ -48,7 +48,7 @@
   "name": "Name",
   "action": "Action",
   "cancel": "Cancel",
-  "save": "Save",
+  "save": "Submit",
   "description": "Description",
   "edit": "Edit",
   "detail": "Detail",
@@ -107,7 +107,9 @@
       "members": "Members",
 
       "validation": {
-        "user_in_another_team": "This user is already a manager for another team"
+        "user_in_another_team": "This user is already a manager for another team",
+        "name_exist": "name has already existed",
+        "cannot_delete_team": "There are already jobs or interviewers for this team, can not delete this team."
       }
     }
   }

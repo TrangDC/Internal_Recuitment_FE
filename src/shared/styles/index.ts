@@ -4,6 +4,7 @@ import FlexBetween from 'shared/components/flexbox/FlexBetween'
 export const BoxWrapperOuterContainer = styled(Box)(({ theme }) => ({
   borderRadius: '8px',
   boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
+  overflow: 'hidden',
 }))
 
 export const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({

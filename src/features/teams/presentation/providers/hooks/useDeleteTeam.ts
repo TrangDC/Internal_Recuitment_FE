@@ -1,58 +1,52 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/teams/domain/graphql/graphql'
 import { DeleteTeamInput } from 'features/teams/domain/interfaces'
-import { useForm } from 'react-hook-form'
-import { fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
-import { schemaDelete, FormDataSchemaDelete } from '../../providers/constants/schema'
-import _ from 'lodash'
-import toastSuccess from 'shared/components/toast/toastSuccess'
+import {
+  schemaDelete,
+  FormDataSchemaDelete,
+} from '../../providers/constants/schema'
+import useDeleteResource from 'shared/hooks/useDeleteResource'
 
 interface deleteTeamProps {
-defaultValues?: Partial<FormDataSchemaDelete>
-  callbackSuccess?: (value: any) => void
+  defaultValues?: Partial<FormDataSchemaDelete>
+  callbackSuccess?: (data: any) => void
+  callbackError?: (data: any) => void
 }
 
-function useDeleteTeam(props: deleteTeamProps = { defaultValues: {}}) {
-  const { defaultValues, callbackSuccess } = props
-
-  const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchemaDelete>({
-    resolver: yupResolver(schemaDelete),
-    defaultValues: {
-        ...defaultValues
-    }
-  })
+function useDeleteTeam(props: deleteTeamProps = { defaultValues: {} }) {
+  const { defaultValues, callbackSuccess, callbackError } = props
 
   const { deleteTeam, queryKey } = useGraphql()
-  const { mutate } = useMutation({
+  const { useCreateReturn, useFormReturn } = useDeleteResource<
+    DeleteTeamInput,
+    FormDataSchemaDelete
+  >({
     mutationKey: [queryKey],
-    mutationFn: (newTeam: DeleteTeamInput) => {
-
-      return fetchGraphQL<BaseRecord>(deleteTeam.query, {
-        ...newTeam,
-      })
+    queryString: deleteTeam,
+    defaultValues: {
+      ...defaultValues,
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] })
-      toastSuccess('Delete successfully')
-      callbackSuccess && callbackSuccess(data)
-    },
+    resolver: yupResolver(schemaDelete),
+    onSuccess: callbackSuccess,
+    onError: callbackError,
+    showErrorMsg: false,
   })
 
+  const { handleSubmit, control, formState } = useFormReturn
+  const isValid = !formState.isValid
+  const { isPending, mutate } = useCreateReturn
+
   function onSubmit() {
-    handleSubmit((value: FormDataSchemaDelete) => {
-      const valueClone = _.cloneDeep(value)
-      mutate(valueClone)
+    handleSubmit((value) => {
+      mutate(value)
     })()
   }
 
   return {
     onSubmit,
-    useFormReturn: {
-      ...useFormReturn,
-    },
+    control,
+    isValid,
+    isPending,
   }
 }
 

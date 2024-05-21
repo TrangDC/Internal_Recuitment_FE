@@ -1,15 +1,15 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Button, Grid } from '@mui/material'
-import InputComponent from 'shared/components/form/inputComponent'
-import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
+import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../../providers/constants/schema'
 import useCreateTeam from '../../providers/hooks/useCreateTeam'
-import { Member } from 'features/teams/domain/interfaces'
-import useSelectMember from 'shared/hooks/graphql/useSelectMember'
 import useTextTranslation from 'shared/constants/text'
+import { Fragment } from 'react/jsx-runtime'
+import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import AppTextField from 'shared/components/input-fields/AppTextField'
+import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complete'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import AppButton from 'shared/components/buttons/AppButton'
 
 interface ICreateTeamModal {
   open: boolean
@@ -17,17 +17,12 @@ interface ICreateTeamModal {
 }
 
 function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
-  const { onSubmit, useFormReturn } = useCreateTeam({
+  const { onSubmit, control, isPending, isValid } = useCreateTeam({
     callbackSuccess: () => {
       setOpen(false)
     },
   })
-  const {
-    control,
-    formState: { errors },
-  } = useFormReturn
 
-  const { members } = useSelectMember()
   const translation = useTextTranslation()
 
   return (
@@ -37,62 +32,78 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
+        <FlexBox flexDirection={'column'} gap={2}>
+          <FlexBox
+            justifyContent={'center'}
+            alignItems={'center'}
+            marginTop={1}
+          >
+            <FormControl fullWidth>
               <Controller
+                control={control}
                 name="name"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchema>
-                    errors={errors}
-                    label={translation.COMMON.name}
-                    size="small"
-                    field={field}
-                    fullWidth
-                    required
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AppTextField
+                      label={'Name'}
+                      required
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </FormControl>
+          </FlexBox>
+
+          <FlexBox gap={2}>
+            <FormControl fullWidth>
               <Controller
-                name="members"
                 control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Member>
-                    options={members}
-                    label="work_email"
-                    inputLabel={translation.MODLUE_TEAMS.team_manager}
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                    multiple
-                  />
+                name="members"
+                render={({ field, fieldState }) => (
+                  <Fragment>
+                    <MemberAutoComplete
+                      value={field.value || []}
+                      onChange={field.onChange}
+                      multiple={true}
+                      textFieldProps={{
+                        label: `Team's Manager`,
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </Fragment>
                 )}
               />
-            </Grid>
-          </Grid>
-        </form>
+            </FormControl>
+          </FlexBox>
+        </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel
-            type="button"
-            variant="contained"
+          <AppButton
+            variant="outlined"
+            size="small"
             onClick={() => setOpen(false)}
           >
             {translation.COMMON.cancel}
-          </CustomeButtonCancel>
-          <Button
-            type="button"
+          </AppButton>
+          <ButtonLoading
             variant="contained"
-            color="primary"
-            onClick={onSubmit}
+            size="small"
+            disabled={isValid}
+            handlesubmit={onSubmit}
+            loading={isPending}
           >
-            {translation.COMMON.save}
-          </Button>
+            Submit
+          </ButtonLoading>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

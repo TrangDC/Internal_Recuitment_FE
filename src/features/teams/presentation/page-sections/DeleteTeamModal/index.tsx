@@ -1,12 +1,16 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Button, Grid } from '@mui/material'
-import InputComponent from 'shared/components/form/inputComponent'
+import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../../providers/constants/schema'
 import useDeleteTeam from '../../providers/hooks/useDeleteTeam'
 import useTextTranslation from 'shared/constants/text'
+import AppTextField from 'shared/components/input-fields/AppTextField'
+import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import AppButton from 'shared/components/buttons/AppButton'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import { Fragment, useState } from 'react'
+import FailedModal from 'shared/components/modal/modalFailed'
+import { t } from 'i18next'
 
 interface IDeleteTeamModal {
   open: boolean
@@ -15,67 +19,90 @@ interface IDeleteTeamModal {
 }
 
 function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
-  const { onSubmit, useFormReturn } = useDeleteTeam({
+  const [openFailed, setOpenFailed] = useState<boolean>(false);
+  const [msg, setMsg] = useState<string>('');
+
+  const { onSubmit, control, isPending, isValid } = useDeleteTeam({
     callbackSuccess: () => setOpen(false),
     defaultValues: {
       id: id,
+      note: '',
     },
+    callbackError: (data) => {
+      setMsg(t(data?.message) as string)
+      setOpenFailed(true)
+    }
   })
-  const {
-    control,
-    formState: { errors },
-  } = useFormReturn
 
   const translation = useTextTranslation()
 
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header
-        title={translation.MODLUE_TEAMS.delete_team}
-        setOpen={setOpen}
-      ></BaseModal.Header>
-      <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Controller
-                name="note"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchema>
-                    errors={errors}
-                    label={translation.COMMON.description}
-                    field={field}
-                    fullWidth
-                    multiline
-                    minRows={4}
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
-        </form>
-      </BaseModal.ContentMain>
-      <BaseModal.Footer>
-        <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel
-            type="button"
-            variant="contained"
-            onClick={() => setOpen(false)}
-          >
-             {translation.COMMON.cancel}
-          </CustomeButtonCancel>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={onSubmit}
-          >
-             {translation.COMMON.save}
-          </Button>
-        </FlexBox>
-      </BaseModal.Footer>
-    </BaseModal.Wrapper>
+    <Fragment>
+      <BaseModal.Wrapper open={open} setOpen={setOpen}>
+        <BaseModal.Header
+          title={translation.MODLUE_TEAMS.delete_team}
+          setOpen={setOpen}
+        ></BaseModal.Header>
+        <BaseModal.ContentMain maxHeight="500px">
+          <FlexBox flexDirection={'column'} gap={2}>
+            <FlexBox
+              justifyContent={'center'}
+              alignItems={'center'}
+              marginTop={1}
+            >
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="note"
+                  render={({ field, fieldState }) => (
+                    <FlexBox alignItems={'center'} flexDirection={'column'}>
+                      <AppTextField
+                        label={'Description'}
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        multiline
+                        minRows={4}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+          </FlexBox>
+        </BaseModal.ContentMain>
+        <BaseModal.Footer>
+          <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
+            <AppButton
+              variant="outlined"
+              size="small"
+              onClick={() => setOpen(false)}
+            >
+              {translation.COMMON.cancel}
+            </AppButton>
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
+          </FlexBox>
+        </BaseModal.Footer>
+      </BaseModal.Wrapper>
+      <FailedModal
+        open={openFailed}
+        setOpen={setOpenFailed}
+        title="Failed to delete"
+        content={msg}
+      />
+    </Fragment>
   )
 }
 

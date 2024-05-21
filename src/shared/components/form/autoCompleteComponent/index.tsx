@@ -26,6 +26,7 @@ interface AdditionalProps<T extends FieldValues, Option> {
   }
   inputProps?: TextFieldProps,
   callbackOnChange?: ({previousValue, value}: {previousValue: any, value: any}) => void;
+  required?: boolean,
 }
 
 type AutoCompleteControllerProps<T extends object, Option> = Omit<
@@ -48,6 +49,7 @@ const AutoCompleteComponent = <T extends object, Option extends object>({
   inputProps,
   disabled = false,
   callbackOnChange,
+  required = false,
   ...props
 }: AutoCompleteControllerProps<T, Option>) => {
   const error = get(errors, field.name as string)
@@ -66,7 +68,7 @@ const AutoCompleteComponent = <T extends object, Option extends object>({
           callbackOnChange && callbackOnChange({previousValue: field.value, value})
         }}
         showLabel={label as string}
-        inputProps={{ label: inputLabel, required: true, ...inputProps }}
+        inputProps={{ label: inputLabel, required: required, ...inputProps }}
         disabled={disabled}
       />
       {error && (

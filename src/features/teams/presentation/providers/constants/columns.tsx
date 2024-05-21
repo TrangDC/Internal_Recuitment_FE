@@ -16,6 +16,7 @@ const columnHelper = createColumnHelper<Team>()
 
 export const StyleTinyText = styled(TinyText)(({ theme }) => ({
   color: theme.palette.grey[500],
+  fontWeight: 500,
 }))
 
 export const columns = (

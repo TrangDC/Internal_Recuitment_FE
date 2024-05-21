@@ -4,7 +4,6 @@ import useCreateInterview from '../../providers/hooks/useCreateInterview'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Controller } from 'react-hook-form'
 import AppTextField from 'shared/components/input-fields/AppTextField'
-import { Fragment } from 'react/jsx-runtime'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
@@ -12,6 +11,7 @@ import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-
 import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto-complete'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import AppButton from 'shared/components/buttons/AppButton'
+import { Fragment } from 'react'
 
 interface IAddInterviewModal {
   open: boolean

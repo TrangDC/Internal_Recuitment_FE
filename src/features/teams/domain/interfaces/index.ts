@@ -27,6 +27,7 @@ export type Managers = {
 export type NewTeamInput = {
   name: string
   members?: string[]
+  note?: string,
 }
 
 export type UpdateTypeInput = {
@@ -36,4 +37,7 @@ export type UpdateTypeInput = {
   note?: string,
 }
 
-export type DeleteTeamInput = SchemaInputNote;
+export type DeleteTeamInput = {
+  id: string,
+  note?: string,
+};

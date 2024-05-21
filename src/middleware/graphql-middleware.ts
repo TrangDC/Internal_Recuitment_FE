@@ -32,6 +32,6 @@ export const responseMiddleware: ResponseMiddleware = async (
 
   //handle common errors
   if (!(response instanceof Error) && response?.errors) {
-    toastErrorApi(response.errors)
+    // toastErrorApi(response.errors)
   }
 }

@@ -69,7 +69,6 @@ const Header = ({
             fontSize={'18px'}
             fontWeight={'600'}
             lineHeight={'21.94px'}
-            textTransform={'uppercase'}
           >
             {t(title)}
           </H4>

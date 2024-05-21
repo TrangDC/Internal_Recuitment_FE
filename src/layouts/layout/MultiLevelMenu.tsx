@@ -50,7 +50,7 @@ const StyledText = styled(Span)<ActiveCompact>(
     paddingLeft: '0.8rem',
     transition: 'all 0.15s ease',
     fontSize: '13px',
-    fontWeight: 600,
+    fontWeight: active ? 600 : 500,
     lineHeight: '15.85px',
     color: active ? theme.palette.primary.main : theme.palette.text.secondary,
     ...(compact && { opacity: 0, width: 0 }),

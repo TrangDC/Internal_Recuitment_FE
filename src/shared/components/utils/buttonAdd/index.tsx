@@ -24,7 +24,7 @@ const ButtonAdd = (props: Props) => {
   const adornment = (
     <Icon
       sx={{
-        fontSize: 15,
+        fontSize: '15px !important',
         ...icon_style,
       }}
     />

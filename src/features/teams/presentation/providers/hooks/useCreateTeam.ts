@@ -1,65 +1,47 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/teams/domain/graphql/graphql'
 import { NewTeamInput } from 'features/teams/domain/interfaces'
-import { useForm } from 'react-hook-form'
-import { fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
 import { schema, FormDataSchema } from '../../providers/constants/schema'
-import { transformListItem } from 'shared/utils/utils'
-import _, { isEmpty } from 'lodash'
-import toastSuccess from 'shared/components/toast/toastSuccess'
+import useCreateResource from 'shared/hooks/useCreateResource'
 
 interface createTeamProps {
-  defaultValues?: Partial<FormDataSchema>
   callbackSuccess?: (value: any) => void
 }
 
-function useCreateTeam(props: createTeamProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess } = props;
-  
-  const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      ...defaultValues,
-    },
-  })
+function useCreateTeam(props: createTeamProps = {}) {
+  const { callbackSuccess } = props
 
   const { createTeam, queryKey } = useGraphql()
-  const { mutate } = useMutation({
+  const { useCreateReturn, useFormReturn } = useCreateResource<
+    NewTeamInput,
+    FormDataSchema
+  >({
     mutationKey: [queryKey],
-    mutationFn: (newTeam: NewTeamInput) =>
-      fetchGraphQL<BaseRecord>(createTeam.query, {
-        input: newTeam,
-        note: "",
-      }),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] })
-      toastSuccess('Create successfully')
-      callbackSuccess && callbackSuccess(data)
+    queryString: createTeam,
+    defaultValues: {
+      name: '',
+      members: [],
+      note: ''
     },
+    resolver: yupResolver(schema),
+    onSuccess: callbackSuccess
   })
 
+  const { handleSubmit, control, formState } = useFormReturn
+  const isValid = !formState.isValid
+  const { isPending, mutate } = useCreateReturn
+
   function onSubmit() {
-    handleSubmit((value: FormDataSchema) => {
-      const valueClone = {
-        ..._.cloneDeep(value),
-      }
-
-      if(value?.members && !isEmpty(value?.members)) {
-        valueClone.members = transformListItem(value?.members);
-      }
-
-      mutate(valueClone)
+    handleSubmit((value) => {
+      mutate(value)
     })()
   }
 
   return {
     onSubmit,
-    useFormReturn: {
-      ...useFormReturn,
-    },
+    control,
+    isValid,
+    isPending,
   }
 }
 
