@@ -12,7 +12,7 @@ import EditCandidateModal from '../../page-sections/EditCandidateModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import {
-  ButtonImport,
+  BtnImport,
   DivContainerWrapper,
   DivFilter,
   DivHeaderWrapper,
@@ -20,20 +20,23 @@ import {
 import Import from 'shared/components/icons/ImportIcon'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import EditIcon from 'shared/components/icons/EditIcon'
-import { baseInstance } from 'shared/interfaces'
+import { BaseRecord, baseInstance } from 'shared/interfaces'
 import { useNavigate } from 'react-router-dom'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import BlackListIcon from 'shared/components/icons/BlackListIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import DeleteCandidateModal from '../../page-sections/DeleteCandidateModal'
-import { KeyboardEventHandler } from 'react'
-import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
-import { STATUS_CANDIDATE_DATA } from '../../providers/constants'
-import { getValueOfObj } from 'shared/utils/utils'
+import { Fragment, KeyboardEventHandler, useMemo, useState } from 'react'
 import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import AddBlackListCandidateModal from '../AddBlackListCandidateModal'
+import { handleImportFile } from '../../providers/utils'
+import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
+import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
+import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
+import { getValueOfObj } from 'shared/utils/utils'
+import { STATUS_CANDIDATE } from 'shared/constants/constants'
 
 const Candidates = () => {
   const {
@@ -61,6 +64,16 @@ const Candidates = () => {
   })
   const { handleFreeWord, handleFilter } = useTableReturn
   const translation = useTextTranslation()
+  const [failedReason, setFailedReason] = useState<BaseRecord[]>([])
+  const [status, setStatus] = useState<BaseRecord[]>([])
+
+  const showFailedReason = useMemo(() => {
+    return (
+      getValueOfObj({ key: 'value', obj: status }) === STATUS_CANDIDATE.KIV ||
+      getValueOfObj({ key: 'value', obj: status }) ===
+        STATUS_CANDIDATE.OFFERED_LOST
+    )
+  }, [status])
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -111,16 +124,57 @@ const Candidates = () => {
     <DivContainerWrapper>
       <BoxWrapperOuterContainer>
         <HeadingWrapper sx={{ marginTop: 0 }}>
-          <DivFilter>
-            <ButtonFilter<baseInstance>
-              listData={STATUS_CANDIDATE_DATA}
-              inputLabel={translation.COMMON.status}
-              multiple={false}
-              callbackChange={(obj) => {
-                handleFilter('status', getValueOfObj({ key: 'value', obj }))
-              }}
-            />
-          </DivFilter>
+          <FlexBox width={'100%'}>
+            <DivFilter>
+              <ButtonFieldFilter<baseInstance>
+                inputLabel={'Status'}
+                listSelected={status}
+                setListSelected={setStatus}
+                node={
+                  <CandidateStatusAutoComplete
+                    multiple={false}
+                    value={getValueOfObj({ key: 'value', obj: status })}
+                    onChange={(data: any) => {
+                      setStatus(data)
+                      handleFilter(
+                        'status',
+                        getValueOfObj({ key: 'value', obj: data })
+                      )
+                    }}
+                    open={true}
+                    textFieldProps={{
+                      label: 'Status',
+                      autoFocus: true,
+                    }}
+                  />
+                }
+              />
+            </DivFilter>
+            <DivFilter>
+              {showFailedReason && (
+                <ButtonFieldFilter<baseInstance>
+                  inputLabel={'Failed Reason'}
+                  listSelected={failedReason}
+                  setListSelected={setFailedReason}
+                  node={
+                    <FailedReasonAutoComplete
+                      multiple
+                      value={failedReason.map((item) => item.value)}
+                      onChange={(data: any) => {
+                        setFailedReason(data)
+                      }}
+                      open={true}
+                      textFieldProps={{
+                        label: 'Failed Reason',
+                        autoFocus: true,
+                      }}
+                    />
+                  }
+                />
+              )}
+            </DivFilter>
+          </FlexBox>
+
           <DivHeaderWrapper>
             <CustomTextField
               label={translation.COMMON.search}
@@ -139,12 +193,28 @@ const Candidates = () => {
               }}
             />
             <FlexBox gap={'10px'}>
-              <ButtonImport
-                startIcon={<Import />}
-                onClick={() => setOpenCreate(true)}
-              >
-                {translation.COMMON.import}
-              </ButtonImport>
+              <Fragment>
+                <label htmlFor={'fileImport'}>
+                  <BtnImport>
+                    <Import sx={{ fontSize: 15 }} />
+                    {translation.COMMON.import}
+                  </BtnImport>
+                </label>
+                <input
+                  type="file"
+                  id="fileImport"
+                  name="file"
+                  // accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.bmp,.tiff"
+                  accept=".xls,.xlsx,.csv"
+                  hidden
+                  onChange={(event) => {
+                    const fileEvent = event.target.files
+                    fileEvent && handleImportFile(fileEvent[0])
+                    event.target.value = ''
+                  }}
+                />
+              </Fragment>
+
               <ButtonAdd
                 Icon={Add}
                 textLable={translation.MODLUE_CANDIDATES.add_new_candidate}

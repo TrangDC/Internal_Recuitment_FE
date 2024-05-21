@@ -1,5 +1,6 @@
 import { Box, Button, Divider, styled } from '@mui/material'
 import { Span } from 'shared/components/Typography'
+import FlexBox from 'shared/components/flexbox/FlexBox'
 
 // styled components
 export const StyleSpanName = styled('span')`
@@ -12,19 +13,26 @@ export const ButtonHeader = styled(Button)`
   margin-left: auto;
 `
 
-export const ButtonImport = styled(Button)(({ theme }) => ({
+export const BtnImport = styled(FlexBox)(({ theme }) => ({
   marginLeft: 'auto',
   border: `1px solid ${theme.palette.primary[300]}`,
   backgroundColor: theme.palette.primary[50],
   fontSize: '13px',
   fontWeight: 600,
   color: theme.palette.primary[600],
+  height: '40px',
+  borderRadius: '4px',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '12px 20px 15px',
+  gap: '10px',
 
   '& span': {
     margin: 0,
     marginTop: '5px',
   }
 }))
+
 
 export const DivHeaderWrapper = styled('div')`
   display: flex;
@@ -35,7 +43,7 @@ export const DivHeaderWrapper = styled('div')`
 
 export const DivFilter = styled('div')`
   display: flex;
-  width: 100%;
+  width: auto;
   flex-wrap: wrap;
   gap: 16px;
 `

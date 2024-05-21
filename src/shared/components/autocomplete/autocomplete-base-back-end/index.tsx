@@ -31,6 +31,7 @@ export const AutocompleteBaseBackEnd = <
     onCustomChange,
     queryKey,
     queryString,
+    name,
   } = props
 
   const { options } = useAutoCompleteBackEnd<T>({
@@ -80,7 +81,7 @@ export const AutocompleteBaseBackEnd = <
       onChange={handleOnChange}
       limitTags={2}
       popupIcon={<ArrowRadius sx={{ color: 'text.400', fontSize: '16px' }} />}
-      renderInput={(params) => <AppTextField {...textFieldProps} {...params} />}
+      renderInput={(params) => <AppTextField {...textFieldProps} {...params} name={name}/>}
       getOptionLabel={(option) =>
         option ? ((option as T)[keyName] as string) : ''
       }

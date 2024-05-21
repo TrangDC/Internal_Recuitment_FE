@@ -14,6 +14,7 @@ function MemberAutoComplete<Multiple extends boolean>({
   multiple,
   onCustomChange,
   textFieldProps,
+  name,
 }: AutocompleteValueBackEndCommonProps<Member, Multiple>) {
   const { getAllUser, queryKey } = useGraphql()
   return (
@@ -27,6 +28,7 @@ function MemberAutoComplete<Multiple extends boolean>({
       onCustomChange={onCustomChange}
       seletedKey={'id'}
       textFieldProps={textFieldProps}
+      name={name}
     />
   )
 }

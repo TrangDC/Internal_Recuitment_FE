@@ -1,5 +1,4 @@
 import { RequestMiddleware, ResponseMiddleware } from 'graphql-request'
-import { toastErrorApi } from 'shared/components/toast/toastError'
 import { callRefreshToken, getAccessToken } from 'shared/utils/auth'
 
 export const requestMiddleware: RequestMiddleware = async (request) => {

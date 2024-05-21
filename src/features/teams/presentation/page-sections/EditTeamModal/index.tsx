@@ -87,6 +87,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
                       value={field.value || []}
                       onChange={field.onChange}
                       multiple={true}
+                      name={field.name}
                       textFieldProps={{
                         label: `Team's Manager`,
                       }}

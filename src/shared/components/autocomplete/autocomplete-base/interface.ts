@@ -26,4 +26,5 @@ export interface IAutocompleteCommonProps<Multiple extends boolean> {
   multiple: Multiple
   textFieldProps?: TextFieldProps
   onChange: (value: CustomAutocompleteValue<Multiple>) => void
+  open?: boolean,
 }

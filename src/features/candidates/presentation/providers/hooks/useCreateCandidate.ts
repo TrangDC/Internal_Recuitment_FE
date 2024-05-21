@@ -1,63 +1,53 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/candidates/domain/graphql/graphql'
-import { useForm } from 'react-hook-form'
-import { fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
 import { schema, FormDataSchema } from '../constants/schema'
 import { NewCandidateInput } from 'features/candidates/domain/interfaces'
-import _ from 'lodash'
+import useCreateResource from 'shared/hooks/useCreateResource'
 import { convertDateToISOString } from 'shared/utils/utils'
-import toastSuccess from 'shared/components/toast/toastSuccess'
 
 interface createCandidateProps {
   defaultValues?: Partial<FormDataSchema>
   callbackSuccess?: (value: any) => void
 }
 
-function useCreateCandidate(props: createCandidateProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess} = props
-  const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      ...defaultValues
-    },
-  })
+function useCreateCandidate(props: createCandidateProps) {
+  const { callbackSuccess } = props
 
   const { createCandidate, queryKey } = useGraphql()
-  
-  const { mutate } = useMutation({
+  const { useCreateReturn, useFormReturn } = useCreateResource<
+    NewCandidateInput,
+    FormDataSchema
+  >({
     mutationKey: [queryKey],
-    mutationFn: (newTodo: NewCandidateInput) =>
-      fetchGraphQL<BaseRecord>(createCandidate.query, {
-        input: newTodo,
-        note: '',
-      }),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] })
-
-      toastSuccess('Create successfully')
-      callbackSuccess && callbackSuccess(data)
+    queryString: createCandidate,
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      note: '',
     },
+    resolver: yupResolver(schema),
+    onSuccess: callbackSuccess
   })
 
-  function onSubmit() {
-    handleSubmit((value: FormDataSchema) => {
-      const valueClone = {
-        ..._.cloneDeep(value),
-        dob: convertDateToISOString(value.dob),
-      }
+  const { handleSubmit, control, formState } = useFormReturn
+  const isValid = !formState.isValid
+  const { isPending, mutate } = useCreateReturn
 
-      mutate(valueClone)
+  function onSubmit() {
+    handleSubmit((value) => {
+      mutate({
+        ...value,
+        dob: convertDateToISOString(value.dob)
+      })
     })()
   }
 
   return {
     onSubmit,
-    useFormReturn: {
-      ...useFormReturn,
-    },
+    control,
+    isValid,
+    isPending,
   }
 }
 

@@ -37,7 +37,4 @@ export type UpdateTypeInput = {
   note?: string,
 }
 
-export type DeleteTeamInput = {
-  id: string,
-  note?: string,
-};
+export type DeleteTeamInput = SchemaInputNote

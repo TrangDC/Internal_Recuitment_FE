@@ -26,7 +26,8 @@ export type NewCandidateInput = {
   name: string,
   email: string,
   phone: string,
-  dob: string,
+  dob: Date,
+  note: string,
 }
 
 export type UpdateCandidateInput = {
