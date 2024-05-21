@@ -108,7 +108,7 @@ const DashboardHeader: FC<DashboardHeaderProps> = (props) => {
 
         {upSm && (
           <Fragment>
-            <LanguagePopover />
+            {/* <LanguagePopover /> */}
             {/* <NotificationsPopover /> */}
             {/* <ServicePopover /> */}
           </Fragment>

@@ -7,7 +7,7 @@ import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { t } from 'i18next'
 
-interface IuseCreateResource<P> {
+interface IuseUpdateResource<P> {
   mutationKey: string[]
   queryString: IbuildQueryReturn
   onError?: (error: ErrorException | Error) => void
@@ -16,14 +16,14 @@ interface IuseCreateResource<P> {
   resolver: Resolver<P & FieldValues, any> | undefined
 }
 
-function useCreateResource<T, P extends FieldValues>({
+function useUpdateResource<T, P extends FieldValues>({
   mutationKey,
   queryString,
   defaultValues,
   resolver,
   onError,
   onSuccess,
-}: IuseCreateResource<P>) {
+}: IuseUpdateResource<P>) {
   const queryClient = useQueryClient()
   const useFormReturn = useForm<P>({
     defaultValues,
@@ -33,10 +33,11 @@ function useCreateResource<T, P extends FieldValues>({
   const useCreateReturn = useMutation({
     mutationKey,
     mutationFn: (payload: BaseRecord) => {
-      const { note, ...otherInput } = payload;
+      const { id, note, ...otherInput} = payload;
 
       return GraphQLClientService.fetchGraphQL(queryString.query, {
         input: otherInput,
+        id,
         note,
       })
     },
@@ -47,7 +48,7 @@ function useCreateResource<T, P extends FieldValues>({
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
       onSuccess?.(unwrapEither(data))
-      return NotificationService.showSuccess('CREATE')
+      return NotificationService.showSuccess('EDIT')
     },
     onError(error) {
       onError?.(error)
@@ -60,4 +61,4 @@ function useCreateResource<T, P extends FieldValues>({
   }
 }
 
-export default useCreateResource
+export default useUpdateResource

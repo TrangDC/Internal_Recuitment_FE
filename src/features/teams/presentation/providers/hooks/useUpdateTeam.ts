@@ -1,14 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/teams/domain/graphql/graphql'
 import { UpdateTypeInput } from 'features/teams/domain/interfaces'
-import { useForm } from 'react-hook-form'
-import { fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
-import { FormDataSchemaUpdate, schemaUpdate } from '../../providers/constants/schema'
-import { transformListItem } from 'shared/utils/utils'
-import _, { isEmpty } from 'lodash'
-import toastSuccess from 'shared/components/toast/toastSuccess'
+import {
+  FormDataSchemaUpdate,
+  schemaUpdate,
+} from '../../providers/constants/schema'
+import useUpdateResource from 'shared/hooks/useUpdateResource'
 
 interface createTeamProps {
   defaultValues?: Partial<FormDataSchemaUpdate>
@@ -18,52 +15,36 @@ interface createTeamProps {
 function useUpdateTeam(props: createTeamProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
 
-  const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchemaUpdate>({
-    resolver: yupResolver(schemaUpdate),
+  const { updateTeam, queryKey } = useGraphql()
+  const { useCreateReturn, useFormReturn } = useUpdateResource<
+    UpdateTypeInput,
+    FormDataSchemaUpdate
+  >({
+    mutationKey: [queryKey],
+    queryString: updateTeam,
     defaultValues: {
       ...defaultValues,
     },
+    resolver: yupResolver(schemaUpdate),
+    onSuccess: callbackSuccess,
   })
 
-  const { updateTeam, queryKey } = useGraphql()
-  const { mutate } = useMutation({
-    mutationKey: [queryKey],
-    mutationFn: (newTeam: UpdateTypeInput) => {
-      const { id, note, ...updateOther } = newTeam
-
-      return fetchGraphQL<BaseRecord>(updateTeam.query, {
-        input: updateOther,
-        id: id,
-        note: note || "",
-      })
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] })
-      toastSuccess('Update successfully')
-      callbackSuccess && callbackSuccess(data)
-    },
-  })
+  const { handleSubmit, control, formState, setValue } = useFormReturn
+  const isValid = !formState.isValid
+  const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
-    handleSubmit((value: FormDataSchemaUpdate) => {
-      const valueClone = {
-        ..._.cloneDeep(value),
-      }
-
-      if(value?.members && !isEmpty(value?.members)) {
-        valueClone.members = transformListItem(value?.members);
-      }
-
-      mutate(valueClone)
+    handleSubmit((value) => {
+      mutate(value)
     })()
   }
 
   return {
     onSubmit,
-    useFormReturn: {
-      ...useFormReturn,
-    },
+    control,
+    isValid,
+    isPending,
+    setValue,
   }
 }
 

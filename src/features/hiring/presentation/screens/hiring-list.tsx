@@ -1,6 +1,5 @@
 import { IconButton, InputAdornment } from '@mui/material'
 import { Box } from '@mui/system'
-import Add from 'shared/components/icons/Add'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
 import useTeamTable from '../providers/hooks/useHiringTable'
@@ -20,7 +19,6 @@ import {
   DivHeaderWrapper,
 } from 'features/candidates/presentation/providers/styles'
 import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
-import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { Team } from 'features/teams/domain/interfaces'
 import useTextTranslation from 'shared/constants/text'
 import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
@@ -110,11 +108,6 @@ const HiringList = () => {
                 ),
               }}
             />
-            {/* <ButtonAdd
-              Icon={Add}
-              textLable={'Add new hiring member'}
-              onClick={() => setOpenCreate(true)}
-            /> */}
           </DivHeaderWrapper>
         </HeadingWrapper>
         <Box>

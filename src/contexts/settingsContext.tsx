@@ -8,7 +8,7 @@ const initialSettings: themeSettingsTypes = {
   direction: 'ltr',
   theme: THEMES.LIGHT,
   responsiveFontSizes: true,
-  lang: 'vi',
+  lang: 'en',
 }
 
 export const SettingsContext = createContext({

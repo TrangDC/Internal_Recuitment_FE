@@ -8,6 +8,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { findKey, get, isEqual } from 'lodash'
+import DownSmallIcon from '../icons/DownSmallIcon'
 
 interface AdditionalProps<T> {
   //@ts-ignore
@@ -32,11 +33,18 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
     backgroundColor: 'white',
   },
 
+  '& .MuiInputBase-root .MuiChip-labelSmall': {
+    color: '#121625',
+    backgroundColor: '#F1F9FF',
+  },
+
   '& .MuiFormLabel-root span': {
-    fontSize: '13px',
+    fontSize: 13,
     fontWeight: 500,
     color: '#DB6C56',
     lineHeight: '15.85px',
+    display: 'inline-block',
+    marginLeft: 2,
   },
 }))
 
@@ -87,6 +95,7 @@ const AutoCompleteField = <T extends object>({
       isOptionEqualToValue={(option, value) => {
         return isEqual(option as T, value as T)
       }}
+      popupIcon={<DownSmallIcon sx={{fontSize: 16 }}/>}
       multiple={multiple}
       {...props}
     />

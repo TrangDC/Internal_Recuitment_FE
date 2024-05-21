@@ -25,6 +25,7 @@ const StyledTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
     },
   },
   '& .MuiInputLabel-root.Mui-focused': { fontWeight: 600 },
+  '& .MuiInputLabel-root .MuiFormLabel-asterisk': { marginLeft: 2 },
   '& .MuiSvgIcon-root': { color: theme.palette.text.disabled },
 }))
 

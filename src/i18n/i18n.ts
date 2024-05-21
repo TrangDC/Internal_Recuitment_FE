@@ -21,8 +21,8 @@ const langDefault = getStatusByKey('settings')?.lang;
 
 i18next.use(initReactI18next).init({
   resources,
-  lng: langDefault ||LANGUAGES.VI,
-  fallbackLng: langDefault || LANGUAGES.VI,
+  lng: langDefault ||LANGUAGES.EN,
+  fallbackLng: langDefault || LANGUAGES.EN,
   interpolation: { escapeValue: false },
 })
 

@@ -123,7 +123,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
             : getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <BodyTableCell component="th" scope="row" key={cell.id}>
+                    <BodyTableCell component="td" scope="row" key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

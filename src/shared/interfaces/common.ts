@@ -19,4 +19,5 @@ export enum MODLUE_QUERY_KEY {
   CANDIDATE = 'candidate',
   TEAM = 'team',
   INTERVIEWER = 'interviewer',
+  USER = 'user'
 }

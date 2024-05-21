@@ -18,10 +18,12 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
   },
 
   '& .MuiFormLabel-root span': {
-    fontSize: '13px',
+    fontSize: 13,
     fontWeight: 500,
     color: '#DB6C56',
     lineHeight: '15.85px',
+    display: 'inline-block',
+    marginLeft: 2,
   }
  }))
 
@@ -70,9 +72,9 @@ export const CustomStyleManage = styled('div')`
   }
 `
 export const CustomeButtonCancel = styled(Button)`
-  background-color: ${primary[100]};
-  border: 1px solid ${primary[200]};
-  color: ${primary[700]};
+  background-color: #F1F9FF;
+  border: 1px solid #88CDFF;
+  color: #1F84EB;
   
   &:hover {
     background-color: ${primary[50]};

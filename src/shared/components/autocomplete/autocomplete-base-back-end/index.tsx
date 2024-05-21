@@ -100,6 +100,12 @@ export const AutocompleteBaseBackEnd = <
           {option ? ((option as T)[keyName] as string) : ''}
         </li>
       )}
+      sx={{
+        '& .MuiInputBase-root .MuiChip-labelSmall': {
+          color: '#121625',
+          backgroundColor: '#F1F9FF',
+        },
+      }}
     />
   )
 }

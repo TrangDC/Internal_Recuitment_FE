@@ -7,23 +7,25 @@ import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { t } from 'i18next'
 
-interface IuseCreateResource<P> {
+interface IuseDeleteResource<P> {
   mutationKey: string[]
   queryString: IbuildQueryReturn
   onError?: (error: ErrorException | Error) => void
   onSuccess?: (data: BaseRecord) => void
   defaultValues?: DefaultValues<P>
   resolver: Resolver<P & FieldValues, any> | undefined
+  showErrorMsg?: boolean,
 }
 
-function useCreateResource<T, P extends FieldValues>({
+function useDeleteResource<T, P extends FieldValues>({
   mutationKey,
   queryString,
   defaultValues,
   resolver,
   onError,
   onSuccess,
-}: IuseCreateResource<P>) {
+  showErrorMsg = true,
+}: IuseDeleteResource<P>) {
   const queryClient = useQueryClient()
   const useFormReturn = useForm<P>({
     defaultValues,
@@ -33,25 +35,26 @@ function useCreateResource<T, P extends FieldValues>({
   const useCreateReturn = useMutation({
     mutationKey,
     mutationFn: (payload: BaseRecord) => {
-      const { note, ...otherInput } = payload;
+      const { id, note } = payload;
 
       return GraphQLClientService.fetchGraphQL(queryString.query, {
-        input: otherInput,
+        id,
         note,
       })
     },
     onSuccess: (data) => {
       if (isLeft(data)) {
         onError?.(unwrapEither(data))
-        return NotificationService.showError(t(unwrapEither(data).message))
+        return showErrorMsg && NotificationService.showError(t(unwrapEither(data).message))
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
       onSuccess?.(unwrapEither(data))
-      return NotificationService.showSuccess('CREATE')
+      return NotificationService.showSuccess('EDIT')
     },
     onError(error) {
+      console.log("check")
       onError?.(error)
-      NotificationService.showError(error.message)
+      showErrorMsg && NotificationService.showError(error.message)
     },
   })
   return {
@@ -60,4 +63,4 @@ function useCreateResource<T, P extends FieldValues>({
   }
 }
 
-export default useCreateResource
+export default useDeleteResource
