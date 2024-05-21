@@ -110,7 +110,7 @@ export const getBase64 = (file: Blob): Promise<string> =>
     reader.onerror = (error) => reject(error)
   })
 
-export const convertDateToISOString = (date: string) => {
+export const convertDateToISOString = (date: string | Date) => {
   return new Date(date).toISOString()
 }
 
