@@ -27,7 +27,7 @@ function useCreateCandidate(props: createCandidateProps) {
       note: '',
     },
     resolver: yupResolver(schema),
-    onSuccess: callbackSuccess
+    onSuccess: callbackSuccess,
   })
 
   const { handleSubmit, control, formState } = useFormReturn
@@ -38,7 +38,7 @@ function useCreateCandidate(props: createCandidateProps) {
     handleSubmit((value) => {
       mutate({
         ...value,
-        dob: convertDateToISOString(value.dob)
+        dob: convertDateToISOString(value.dob),
       })
     })()
   }
