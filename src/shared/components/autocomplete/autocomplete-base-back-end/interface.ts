@@ -11,6 +11,7 @@ export interface AutocompleteValueBackEndCommonProps<
   Multiple extends boolean | undefined = false,
 > {
   value: string[] | string
+  name: string
   onChange: (value: string[] | string) => void
   onCustomChange?: (value: CustomAutocompleteValueBackEnd<T, Multiple>) => void
   multiple?: boolean
@@ -25,6 +26,7 @@ export interface IAutocompleteBackEndProps<
 > {
   keyName: P
   seletedKey: M
+  name: string,
   value: string[] | string
   textFieldProps: TextFieldProps
   onChange: (value: string[] | string) => void

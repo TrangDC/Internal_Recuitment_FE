@@ -64,6 +64,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 render={({ field, fieldState }) => (
                   <Fragment>
                     <TeamsAutoComplete
+                    name={field.name}
                       value={field.value}
                       onChange={field.onChange}
                       multiple={false}
@@ -86,6 +87,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 render={({ field, fieldState }) => (
                   <Fragment>
                     <JobsAutoComplete
+                    name={field.name}
                       value={field.value}
                       multiple={false}
                       onChange={field.onChange}
@@ -113,6 +115,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                       value={field.value}
                       onChange={field.onChange}
                       multiple={true}
+                      name={field.name}
                       textFieldProps={{
                         required: true,
                         label: 'Interviewer',
@@ -137,6 +140,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                       value={field.value}
                       onChange={field.onChange}
                       multiple={false}
+                      name={field.name}
                       textFieldProps={{
                         required: true,
                         label: 'Select candidate',

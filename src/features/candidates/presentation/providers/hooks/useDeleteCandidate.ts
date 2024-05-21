@@ -1,16 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { DeleteCandidateInput } from 'features/candidates/domain/interfaces'
-import { useForm } from 'react-hook-form'
-import { fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
 import {
   schemaDelete,
   FormDataSchemaDelete,
 } from '../../providers/constants/schema'
-import _ from 'lodash'
-import toastSuccess from 'shared/components/toast/toastSuccess'
+import useDeleteResource from 'shared/hooks/useDeleteResource'
 
 interface deleteCandidateProps {
   defaultValues?: Partial<FormDataSchemaDelete>
@@ -20,45 +15,36 @@ interface deleteCandidateProps {
 function useDeleteCandidate(props: deleteCandidateProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
 
-  const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchemaDelete>({
-    resolver: yupResolver(schemaDelete),
+  const { deleteCandidate, queryKey } = useGraphql()
+  const { useCreateReturn, useFormReturn } = useDeleteResource<
+    DeleteCandidateInput,
+    FormDataSchemaDelete
+  >({
+    mutationKey: [queryKey],
+    queryString: deleteCandidate,
     defaultValues: {
       ...defaultValues,
     },
+    resolver: yupResolver(schemaDelete),
+    onSuccess: callbackSuccess
   })
 
-  const { deleteCandidate, queryKey } = useGraphql()
-  const { mutate } = useMutation({
-    mutationKey: [queryKey],
-    mutationFn: (newCandidate: DeleteCandidateInput) => {
-      const { id, note } = newCandidate
-
-      return fetchGraphQL<BaseRecord>(deleteCandidate.query, {
-        id: id,
-        note,
-      })
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] })
-      toastSuccess('Delete successfully')
-      callbackSuccess && callbackSuccess(data)
-    },
-  })
+  const { handleSubmit, control, formState } = useFormReturn
+  const isValid = !formState.isValid
+  const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
-    handleSubmit((value: FormDataSchemaDelete) => {
-      const valueClone = _.cloneDeep(value)
-
-      mutate(valueClone)
+    handleSubmit((value) => {
+      mutate(value)
     })()
   }
 
+
   return {
     onSubmit,
-    useFormReturn: {
-      ...useFormReturn,
-    },
+    control,
+    isValid,
+    isPending,
   }
 }
 

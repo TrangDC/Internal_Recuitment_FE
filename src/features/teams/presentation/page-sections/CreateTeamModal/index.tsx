@@ -72,6 +72,7 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                       value={field.value || []}
                       onChange={field.onChange}
                       multiple={true}
+                      name={field.name}
                       textFieldProps={{
                         label: `Team's Manager`,
                       }}

@@ -1,16 +1,17 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Button, Grid } from '@mui/material'
-import InputComponent from 'shared/components/form/inputComponent'
+import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchemaUpdate } from '../../providers/constants/schema'
-import DatePickerComponent from 'shared/components/form/datePickerComponent'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import useUpdateCandidate from '../../providers/hooks/useUpdateCandidate'
 import { getInfoData } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
+import AppTextField from 'shared/components/input-fields/AppTextField'
+import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import AppDateField from 'shared/components/input-fields/DateField'
+import AppButton from 'shared/components/buttons/AppButton'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 
 interface IEditCandidateModal {
   open: boolean
@@ -20,28 +21,26 @@ interface IEditCandidateModal {
 }
 
 function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
-  const { onSubmit, useFormReturn } = useUpdateCandidate({
-    callbackSuccess: () => setOpen(false),
-    defaultValues: getInfoData({
-      field: ['dob', 'email', 'phone', 'name', 'id'],
-      object: {
-        ...rowData,
-        dob: new Date(rowData?.dob as string),
+  const { onSubmit, control, isPending, isValid, setValue } =
+    useUpdateCandidate({
+      defaultValues: getInfoData({
+        field: ['dob', 'email', 'phone', 'name', 'id'],
+        object: {
+          ...rowData,
+          note: '',
+          dob: new Date(rowData?.dob as string),
+        },
+      }),
+      callbackSuccess: () => {
+        setOpen(false)
       },
-    }),
-  })
-
-  const {
-    control,
-    formState: { errors },
-    setValue,
-  } = useFormReturn
+    })
 
   const translation = useTextTranslation()
 
   const callbackSubmit = (reason: string) => {
-    setValue('note', reason);
-    onSubmit();
+    setValue('note', reason)
+    onSubmit()
   }
 
   return (
@@ -51,98 +50,118 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
+        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+          <FlexBox gap={2}>
+            <FormControl fullWidth>
               <Controller
+                control={control}
                 name="name"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchemaUpdate>
-                    errors={errors}
-                    label={translation.COMMON.name}
-                    field={field}
-                    fullWidth
-                    required
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AppTextField
+                      label={'Name'}
+                      required
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={6}>
+            </FormControl>
+            <FormControl fullWidth>
               <Controller
+                control={control}
                 name="phone"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchemaUpdate>
-                    errors={errors}
-                    label={translation.COMMON.phone_number}
-                    field={field}
-                    fullWidth
-                    required
-                    type="number"
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AppTextField
+                      label={'Phone'}
+                      required
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={6}>
+            </FormControl>
+          </FlexBox>
+          <FlexBox gap={2}>
+            <FormControl fullWidth>
               <Controller
+                control={control}
                 name="email"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchemaUpdate>
-                    errors={errors}
-                    label={translation.COMMON.email}
-                    size="small"
-                    field={field}
-                    fullWidth
-                    required
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AppTextField
+                      label={'Email'}
+                      required
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={6}>
+            </FormControl>
+            <FormControl fullWidth>
               <Controller
-                name="dob"
                 control={control}
-                render={({ field }) => (
-                  <DatePickerComponent<FormDataSchemaUpdate>
-                    textFieldProps={{
-                      fullWidth: true,
-                      size: 'small',
-                      required: true,
-                    }}
-                    errors={errors}
-                    label={translation.COMMON.dob}
-                    field={field}
-                  />
+                name="dob"
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AppDateField
+                      label={'DOB'}
+                      value={field.value}
+                      onChange={field.onChange}
+                      textFieldProps={{
+                        fullWidth: true,
+                        size: 'small',
+                        required: true,
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-          </Grid>
-        </form>
+            </FormControl>
+          </FlexBox>
+        </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained" onClick={() => setOpen(false)}>
-            {translation.COMMON.cancel}
-          </CustomeButtonCancel>
-          {/* <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={onSubmit}
+          <AppButton
+            variant="outlined"
+            size="small"
+            onClick={() => setOpen(false)}
           >
-            {translation.COMMON.save}
-          </Button> */}
-
+            {translation.COMMON.cancel}
+          </AppButton>
           <UpdateRecord callbackSubmit={callbackSubmit}>
-            <Button
-              type="button"
+            <ButtonLoading
               variant="contained"
-              color="primary"
+              size="small"
+              disabled={isValid}
+              handlesubmit={() => {}}
+              loading={isPending}
             >
-              {translation.COMMON.save}
-            </Button>
+              Submit
+            </ButtonLoading>
           </UpdateRecord>
         </FlexBox>
       </BaseModal.Footer>

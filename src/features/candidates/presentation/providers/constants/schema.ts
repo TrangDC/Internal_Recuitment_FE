@@ -1,22 +1,24 @@
+import { RULE_MESSAGES } from 'shared/constants/vaildate'
 import { FormDataSchemaNote, schemaNote } from 'shared/schema'
 import * as yup from 'yup'
 
 export const schema = yup.object({
-  name: yup.string().required().max(64, 'Must be less than 64 characters'),
-  phone: yup.string().required(),
-  email: yup.string().email().required(),
-  dob: yup.string().required(),
+  name: yup.string().required(RULE_MESSAGES.MC1('name')).max(64, RULE_MESSAGES.MC4('name', 64)),
+  phone: yup.string().matches(/^(0|84)\d{9}$/, RULE_MESSAGES.MC5('phone')).required(RULE_MESSAGES.MC1('phone')),
+  email: yup.string().email(RULE_MESSAGES.MC5('email')).required(RULE_MESSAGES.MC1('email')).max(64, RULE_MESSAGES.MC4('email', 64)),
+  dob: yup.date().required(RULE_MESSAGES.MC1('date')),
+  note: yup.string(),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
 
 export const schemaUpdate = yup.object({
-  id: yup.string().required(),
-  name: yup.string().required().max(64, 'Must be less than 64 characters'),
-  phone: yup.string().required(),
-  email: yup.string().email().required(),
-  dob: yup.string().required(),
-  note: yup.string().required(),
+  id: yup.string().required(RULE_MESSAGES.MC1('id')),
+  name: yup.string().required(RULE_MESSAGES.MC1('name')).max(64, RULE_MESSAGES.MC4('name', 64)),
+  phone: yup.string().matches(/^(0|84)\d{9}$/, RULE_MESSAGES.MC5('phone')).required(RULE_MESSAGES.MC1('phone')),
+  email: yup.string().email(RULE_MESSAGES.MC5('email')).required(RULE_MESSAGES.MC1('email')).max(64, RULE_MESSAGES.MC4('email', 64)),
+  dob: yup.date().required(RULE_MESSAGES.MC1('date')),
+  note: yup.string(),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>

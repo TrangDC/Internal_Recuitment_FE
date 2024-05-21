@@ -15,10 +15,12 @@ function CandidateAutoComplete<Multiple extends boolean>({
   multiple,
   onCustomChange,
   textFieldProps,
+  name,
 }: AutocompleteValueBackEndCommonProps<Candidate, Multiple>) {
   const { getAllCandidates, queryKey } = useGraphql()
   return (
     <AutocompleteBaseBackEnd<Candidate, 'id', 'name', Multiple>
+      name={name}
       onChange={onChange}
       queryKey={[queryKey]}
       queryString={getAllCandidates}

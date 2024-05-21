@@ -7,12 +7,12 @@ import {
 } from '../../providers/constants/schema'
 import useUpdateResource from 'shared/hooks/useUpdateResource'
 
-interface createTeamProps {
+interface updateTeamProps {
   defaultValues?: Partial<FormDataSchemaUpdate>
   callbackSuccess?: (value: any) => void
 }
 
-function useUpdateTeam(props: createTeamProps = { defaultValues: {} }) {
+function useUpdateTeam(props: updateTeamProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
 
   const { updateTeam, queryKey } = useGraphql()
