@@ -1,7 +1,8 @@
 import { buildQuery } from 'services/graphql-services'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
-  const queryKey = 'teams'
+  const queryKey = MODLUE_QUERY_KEY.TEAM
 
   const getAllTeams = buildQuery({
     operation: 'GetAllTeams',

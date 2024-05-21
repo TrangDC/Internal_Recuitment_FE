@@ -1,7 +1,10 @@
 import { QueryClient } from '@tanstack/react-query'
 import appConfig from 'configs/appConfig'
 import { GraphQLClient } from 'graphql-request'
-import { requestMiddleware, responseMiddleware } from 'middleware/graphql-middleware'
+import {
+  requestMiddleware,
+  responseMiddleware,
+} from 'middleware/graphql-middleware'
 import { BaseRecord } from 'shared/interfaces/common'
 import ErrorException, {
   CustomGraphQLResponse,

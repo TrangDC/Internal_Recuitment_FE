@@ -2,9 +2,10 @@ import { buildQuery } from 'services/graphql-services'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
-  const queryKey = MODLUE_QUERY_KEY.INTERVIEWER
-  const getAllUsers = buildQuery({
-    operation: 'GetAllUsers',
+  const queryKey = MODLUE_QUERY_KEY.JOB
+
+  const getAllCandidateJobs = buildQuery({
+    operation: 'GetAllCandidateJobs',
     options: {
       type: 'query',
     },
@@ -12,7 +13,12 @@ const useGraphql = () => {
       edges {
         node {
           id
-          name
+          candidate {
+            id
+            name
+            email
+            phone
+          }
         }
       }
       pagination {
@@ -23,15 +29,15 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'UserFilter',
-      freeWord: 'UserFreeWord',
-      orderBy: 'UserOrder',
+      filter: 'CandidateJobFilter!',
+      freeWord: 'CandidateJobFreeWord',
+      orderBy: 'CandidateJobOrder',
     },
   })
 
   return {
     queryKey,
-    getAllUsers,
+    getAllCandidateJobs,
   }
 }
 

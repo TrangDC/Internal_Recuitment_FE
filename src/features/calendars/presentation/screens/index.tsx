@@ -1,27 +1,14 @@
 import Calendars from '../page-sections/google-calendar'
 import { SyntheticEvent, useCallback, useState } from 'react'
-import { Event as EventCalendar, SlotInfo } from 'react-big-calendar'
+import { SlotInfo } from 'react-big-calendar'
 import CreateInterviewModal from '../page-sections/createInterviewModal'
 import { EventInteractionArgs } from 'react-big-calendar/lib/addons/dragAndDrop'
-import { EventColor } from '../page-sections/google-calendar/interface'
+import { CalendarEvent } from '../page-sections/google-calendar/interface'
 import DetailIntefviewModal from '../page-sections/detailInterviewModal'
 import CalendarProvider from '../providers/contexts/calendarProvider/CalendarProvider'
+import useGetAllInterview from '../providers/hooks/useGetAllInterview'
 
-interface CustomResource {
-  id: string
-  interviewer?: string
-  styles?: EventColor
-}
-
-export interface CustomEvent extends EventCalendar {
-  allDay?: boolean
-  resource?: CustomResource
-  title?: React.ReactNode | undefined
-  start?: Date | undefined
-  end?: Date | undefined
-}
-
-const event: CustomEvent[] = [
+const event: CalendarEvent[] = [
   {
     title: 'Long Event',
     start: new Date(2024, 3, 7),
@@ -29,9 +16,7 @@ const event: CustomEvent[] = [
     resource: {
       id: '1',
       styles: {
-        id: 1,
-        backgroundColor: '#ABF9E0',
-        color: '#167E8D',
+        colorId: 1,
       },
     },
   },
@@ -43,9 +28,7 @@ const event: CustomEvent[] = [
     resource: {
       id: '2',
       styles: {
-        id: 1,
-        backgroundColor: '#ABF9E0',
-        color: '#167E8D',
+        colorId: 1,
       },
     },
   },
@@ -57,9 +40,7 @@ const event: CustomEvent[] = [
     resource: {
       id: '3',
       styles: {
-        id: 1,
-        backgroundColor: '#ABF9E0',
-        color: '#167E8D',
+        colorId: 1,
       },
     },
   },
@@ -72,9 +53,7 @@ const event: CustomEvent[] = [
     resource: {
       id: '4',
       styles: {
-        id: 1,
-        backgroundColor: '#ABF9E0',
-        color: '#167E8D',
+        colorId: 1,
       },
     },
   },
@@ -86,9 +65,7 @@ const event: CustomEvent[] = [
     resource: {
       id: '5',
       styles: {
-        id: 1,
-        backgroundColor: '#ABF9E0',
-        color: '#167E8D',
+        colorId: 1,
       },
     },
   },
@@ -99,9 +76,7 @@ const event: CustomEvent[] = [
     resource: {
       id: '6',
       styles: {
-        id: 1,
-        backgroundColor: '#ABF9E0',
-        color: '#167E8D',
+        colorId: 1,
       },
     },
   },
@@ -112,9 +87,51 @@ const event: CustomEvent[] = [
     resource: {
       id: '7',
       styles: {
-        id: 1,
-        backgroundColor: '#ABF9E0',
-        color: '#167E8D',
+        colorId: 1,
+      },
+    },
+  },
+  {
+    title: 'Meeting 1',
+    start: new Date(2024, 3, 12, 11, 30, 0, 0),
+    end: new Date(2024, 3, 12, 13, 50, 0, 0),
+    resource: {
+      id: '7',
+      styles: {
+        colorId: 1,
+      },
+    },
+  },
+  {
+    title: 'Meeting',
+    start: new Date(2024, 3, 12, 11, 30, 0, 0),
+    end: new Date(2024, 3, 12, 13, 50, 0, 0),
+    resource: {
+      id: '7',
+      styles: {
+        colorId: 1,
+      },
+    },
+  },
+  {
+    title: 'Meeting',
+    start: new Date(2024, 3, 12, 11, 30, 0, 0),
+    end: new Date(2024, 3, 12, 13, 50, 0, 0),
+    resource: {
+      id: '7',
+      styles: {
+        colorId: 1,
+      },
+    },
+  },
+  {
+    title: 'Meeting',
+    start: new Date(2024, 3, 12, 11, 30, 0, 0),
+    end: new Date(2024, 3, 12, 13, 50, 0, 0),
+    resource: {
+      id: '7',
+      styles: {
+        colorId: 1,
       },
     },
   },
@@ -123,7 +140,12 @@ const event: CustomEvent[] = [
 function CalendarsScreen() {
   const [openCreateInterView, setOpenCreateInterView] = useState(false)
   const [openDetailInterView, setOpenDetailInterView] = useState(false)
-  const [myEvents, setEvents] = useState<CustomEvent[]>(event)
+  const [myEvents, setEvents] = useState<CalendarEvent[]>(event)
+  const {
+    myEvents: myEvents1,
+    isLoading,
+    handlePagination,
+  } = useGetAllInterview()
   const handleSelectSlot = useCallback(
     ({ start, end }: SlotInfo) => {
       setOpenCreateInterView(true)
@@ -144,7 +166,7 @@ function CalendarsScreen() {
       start,
       end,
       isAllDay: droppedOnAllDaySlot = false,
-    }: EventInteractionArgs<CustomEvent>) => {
+    }: EventInteractionArgs<CalendarEvent>) => {
       const { allDay } = event
 
       if (!allDay && droppedOnAllDaySlot) {
@@ -161,7 +183,7 @@ function CalendarsScreen() {
           (ev) => ev.resource?.id !== event.resource?.id
         )
 
-        const newEvent: CustomEvent = {
+        const newEvent: CalendarEvent = {
           ...existing,
           start: new Date(start),
           end: new Date(end),
@@ -177,7 +199,7 @@ function CalendarsScreen() {
   )
 
   function onSelectEvent(
-    event: CustomEvent,
+    event: CalendarEvent,
     e: SyntheticEvent<HTMLElement, Event>
   ) {
     e.stopPropagation()
@@ -198,6 +220,7 @@ function CalendarsScreen() {
         myEvents={myEvents}
         onDropEvent={moveEvent}
         onSelectEvent={onSelectEvent}
+        onRangeChange={handlePagination}
       />
       {openCreateInterView && (
         <CreateInterviewModal

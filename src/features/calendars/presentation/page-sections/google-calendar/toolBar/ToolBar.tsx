@@ -11,7 +11,7 @@ import { useContextCalendar } from '../../../providers/contexts/calendarProvider
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 
 function ToolBar(props: ToolbarProps) {
-  const { view, onView, onNavigate, date } = props
+  const { view, onView, onNavigate, date, localizer } = props
   const { setOpenCreateInterView } = useContextCalendar()
   function handleChangeDate(value: ChosenDateType) {
     if (value) onNavigate('DATE', value.toDate())
@@ -20,6 +20,7 @@ function ToolBar(props: ToolbarProps) {
   function handleOpenCreateInterview() {
     setOpenCreateInterView(true)
   }
+  console.log('date', localizer)
   return (
     <FlexBox
       padding={'10px'}
