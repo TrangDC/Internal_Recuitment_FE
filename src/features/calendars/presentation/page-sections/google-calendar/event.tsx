@@ -2,12 +2,12 @@ import { ContentCut } from '@mui/icons-material'
 import { Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material'
 import { ComponentType, useCallback, useState } from 'react'
 import { EventProps } from 'react-big-calendar'
-import { CustomEvent } from '../../screens/index'
 import { useContextCalendar } from '../../providers/contexts/calendarProvider/CalendarProvider'
+import { CalendarEvent } from './interface'
 
 type ActionMenu = 'DELETE'
 
-const EventComponent: ComponentType<EventProps<CustomEvent>> = (event) => {
+const EventComponent: ComponentType<EventProps<CalendarEvent>> = (event) => {
   const { handleDeleteEvent } = useContextCalendar()
   const [anchorEl, setAnchorEl] = useState<null | Element>(null)
   const open = Boolean(anchorEl)

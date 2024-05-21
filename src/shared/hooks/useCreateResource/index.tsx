@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { DefaultValues, FieldValues, Resolver, useForm } from 'react-hook-form'
 import NotificationService from 'services/notification-service'
-import GraphQLClientService, { IbuildQueryReturn } from 'services/refactor/graphql-service'
+import GraphQLClientService, {
+  IbuildQueryReturn,
+} from 'services/refactor/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
 import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'

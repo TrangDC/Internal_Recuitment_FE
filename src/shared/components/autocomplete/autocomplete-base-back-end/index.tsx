@@ -6,20 +6,17 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import { SyntheticEvent } from 'react'
 import {
   CustomAutocompleteValueBackEnd,
+  CustomAutocompleteValueBackEnd2,
   IAutocompleteBackEndProps,
 } from './interface'
 import useAutoCompleteBackEnd from './useAutoCompleteBackEnd'
+import { getValueByKey } from 'shared/utils/utils'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-export const AutocompleteBaseBackEnd = <
-  T,
-  M extends keyof T,
-  P extends keyof T,
-  Multiple extends boolean = false,
->(
-  props: IAutocompleteBackEndProps<T, M, P, Multiple> & { multiple?: boolean }
+export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
+  props: IAutocompleteBackEndProps<T, Multiple> & { multiple?: boolean }
 ) => {
   const {
     multiple,
@@ -32,16 +29,19 @@ export const AutocompleteBaseBackEnd = <
     queryKey,
     queryString,
     name,
+    filter,
+    getOptionLabel,
   } = props
 
   const { options } = useAutoCompleteBackEnd<T>({
-    queryKey: queryKey,
+    queryKey: queryKey.concat([JSON.stringify(filter)]),
     queryString: queryString,
     variables: {
       orderBy: {
         direction: 'ASC',
-        field: 'name',
+        field: 'created_at',
       },
+      filter,
     },
   })
 
@@ -59,15 +59,18 @@ export const AutocompleteBaseBackEnd = <
     event: SyntheticEvent<Element, Event>,
     value: CustomAutocompleteValueBackEnd<T, Multiple>
   ) {
-    let getValueBySeletedKey
+    let getValueBySeletedKey: CustomAutocompleteValueBackEnd2<Multiple>
     if (multiple) {
       getValueBySeletedKey = (value as T[]).map(
         (o) => o?.[seletedKey] as string
-      )
+      ) as CustomAutocompleteValueBackEnd2<Multiple>
     } else {
-      getValueBySeletedKey = (value as T)?.[seletedKey] as string
+      getValueBySeletedKey = (value as T)?.[
+        seletedKey
+      ] as CustomAutocompleteValueBackEnd2<Multiple>
     }
     console.log('getValueBySeletedKey', getValueBySeletedKey)
+
     onChange?.(getValueBySeletedKey)
     onCustomChange?.(value)
   }
@@ -81,26 +84,33 @@ export const AutocompleteBaseBackEnd = <
       onChange={handleOnChange}
       limitTags={2}
       popupIcon={<ArrowRadius sx={{ color: 'text.400', fontSize: '16px' }} />}
-      renderInput={(params) => <AppTextField {...textFieldProps} {...params} name={name}/>}
-      getOptionLabel={(option) =>
-        option ? ((option as T)[keyName] as string) : ''
-      }
+      renderInput={(params) => (
+        <AppTextField {...textFieldProps} {...params} name={name} />
+      )}
+      getOptionLabel={(option) => {
+        const label = getValueByKey(option, keyName) ?? ''
+        return option ? label : ''
+      }}
       isOptionEqualToValue={(option, value) =>
         option[seletedKey] === value[seletedKey]
       }
-      renderOption={(propsRenderOption, option, { selected }) => (
-        <li {...propsRenderOption}>
-          {multiple && (
-            <Checkbox
-              icon={icon}
-              checkedIcon={checkedIcon}
-              style={{ marginRight: 8 }}
-              checked={selected}
-            />
-          )}
-          {option ? ((option as T)[keyName] as string) : ''}
-        </li>
-      )}
+      renderOption={(propsRenderOption, option, { selected }) => {
+        const label = getValueByKey(option, keyName) ?? ''
+        const labelNode = getOptionLabel ? getOptionLabel(option) : null
+        return (
+          <li {...propsRenderOption}>
+            {multiple && (
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8 }}
+                checked={selected}
+              />
+            )}
+            {getOptionLabel ? labelNode : label}
+          </li>
+        )
+      }}
       sx={{
         '& .MuiInputBase-root .MuiChip-labelSmall': {
           color: '#121625',

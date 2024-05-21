@@ -1,8 +1,8 @@
-import GraphQLClientService from "services/refactor/graphql-service"
+import GraphQLClientService from 'services/refactor/graphql-service'
 const useGraphql = () => {
-  const queryKey = 'news'
-  const getAllNews = GraphQLClientService.buildQuery({
-    operation: 'GetAllNews',
+  const queryKey = 'calendar'
+  const getAllCandidateInterview4Calendar = GraphQLClientService.buildQuery({
+    operation: 'GetAllCandidateInterview4Calendar',
     options: {
       type: 'query',
     },
@@ -11,12 +11,9 @@ const useGraphql = () => {
         node {
           id
           title
-          status
-          content
-          is_highlight
-          description
-          thumbnail
-          published_date
+          interview_date
+          start_from
+          end_at
         }
       }
       pagination {
@@ -27,131 +24,26 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'NewsFilter',
-      orderBy: 'NewsOrder',
-      freeWord: 'NewsFreeWord',
-    },
-  })
-  const createNews = GraphQLClientService.buildQuery({
-    operation: 'CreateNews',
-    options: {
-      type: 'mutation',
-    },
-    node: `
-      data {
-        id
-      }
-    `,
-    params: {
-      input: 'NewNewsInput!',
+      filter: 'CandidateInterviewCalendarFilter',
+      orderBy: 'CandidateInterviewOrder',
+      freeWord: 'CandidateInterviewFreeWord',
     },
   })
 
-  const getNews = GraphQLClientService.buildQuery({
-    operation: 'GetNews',
-    options: {
-      type: 'query',
-    },
-    node: `
-      data {
-        id
-        title
-        status
-        description
-        content
-        thumbnail
-        is_show_published_date
-        is_highlight
-      }
-    `,
-    params: {
-      id: 'ID!',
-    },
-  })
-
-  const updateNews = GraphQLClientService.buildQuery({
-    operation: 'UpdateNews',
-    options: {
-      type: 'mutation',
-    },
-    node: `
-      data {
-        id
-      }
-    `,
-    params: {
-      id: 'ID!',
-      input: 'UpdateNewsInput!',
-    },
-  })
-
-  const deleteNews = GraphQLClientService.buildQuery({
-    operation: 'DeleteNews',
+  const createCandidateInterview = GraphQLClientService.buildQuery({
+    operation: 'CreateCandidateInterview4Calendar',
     options: {
       type: 'mutation',
     },
     params: {
-      id: 'ID!',
-    },
-  })
-
-  const highlightNews = GraphQLClientService.buildQuery({
-    operation: 'HighlightNews',
-    options: {
-      type: 'mutation',
-    },
-    params: {
-      id: 'ID!',
-    },
-  })
-
-  const disableHighlightNews = GraphQLClientService.buildQuery({
-    operation: 'DisableHighlightNews',
-    options: {
-      type: 'mutation',
-    },
-    params: {
-      id: 'ID!',
-    },
-  })
-
-  const reorderNews = GraphQLClientService.buildQuery({
-    operation: 'ReorderNews',
-    options: {
-      type: 'mutation',
-    },
-    params: {
-      input: '[NewsReorder!]!',
-    },
-  })
-
-  const updateNewsStatus = GraphQLClientService.buildQuery({
-    operation: 'UpdateNewsStatus',
-    options: {
-      type: 'mutation',
-    },
-    node: `
-      data {
-        id
-      }
-    `,
-    params: {
-      id: 'ID!',
-      input: 'UpdateNewsStatusInput!',
+      input: 'NewCandidateInterview4CalendarInput!',
     },
   })
 
   return {
-    getAllNews,
+    getAllCandidateInterview4Calendar,
     queryKey,
-    createNews,
-    updateNews,
-    deleteNews,
-    getNews,
-    highlightNews,
-    reorderNews,
-    updateNewsStatus,
-    disableHighlightNews,
+    createCandidateInterview,
   }
 }
 

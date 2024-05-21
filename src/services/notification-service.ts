@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 type Action = 'CREATE' | 'EDIT' | 'UPLOAD' | 'DELETE'
 
 class NotificationService {

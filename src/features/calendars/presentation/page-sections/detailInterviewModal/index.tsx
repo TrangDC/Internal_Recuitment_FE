@@ -1,4 +1,3 @@
-import { Button } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import BaseModal from 'shared/components/modal'
 

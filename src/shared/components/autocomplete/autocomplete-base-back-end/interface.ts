@@ -1,10 +1,16 @@
 import { TextFieldProps } from '@mui/material'
+import { ReactNode } from 'react'
 import { IbuildQueryReturn } from 'services/graphql-services'
+import { BaseRecord } from 'shared/interfaces'
 
 export type CustomAutocompleteValueBackEnd<
   T,
   Multiple extends boolean | undefined = false,
 > = Multiple extends true ? T[] : T | null
+
+export type CustomAutocompleteValueBackEnd2<
+  Multiple extends boolean | undefined = false,
+> = Multiple extends true ? string[] : string | null
 
 export interface AutocompleteValueBackEndCommonProps<
   T,
@@ -12,26 +18,33 @@ export interface AutocompleteValueBackEndCommonProps<
 > {
   value: string[] | string
   name: string
-  onChange: (value: string[] | string) => void
+  onChange: (value: CustomAutocompleteValueBackEnd2<Multiple>) => void
   onCustomChange?: (value: CustomAutocompleteValueBackEnd<T, Multiple>) => void
-  multiple?: boolean
+  multiple?: Multiple
   textFieldProps: TextFieldProps
+  filter?: BaseRecord
+  getOptionLabel?: (option: T) => ReactNode
 }
 
 export interface IAutocompleteBackEndProps<
   T,
-  M,
-  P,
   Multiple extends boolean = false,
 > {
-  keyName: P
-  seletedKey: M
-  name: string,
+  name: string
+  keyName: Leaves<T>
+  seletedKey: keyof T
   value: string[] | string
   textFieldProps: TextFieldProps
-  onChange: (value: string[] | string) => void
-  multiple?: boolean
+  onChange: (value: CustomAutocompleteValueBackEnd2<Multiple>) => void
+  multiple?: Multiple
   queryKey: string[]
   queryString: IbuildQueryReturn
   onCustomChange?: (value: CustomAutocompleteValueBackEnd<T, Multiple>) => void
+  filter?: BaseRecord
+  getOptionLabel?: (option: T) => ReactNode
 }
+export type Leaves<T> = T extends object
+  ? {
+      [K in keyof T]: `${Exclude<K, symbol>}${Leaves<T[K]> extends never ? '' : `.${Leaves<T[K]>}`}`
+    }[keyof T]
+  : never

@@ -6,34 +6,37 @@ import ToolBar from './toolBar/ToolBar'
 import withDragAndDrop, {
   EventInteractionArgs,
 } from 'react-big-calendar/lib/addons/dragAndDrop'
-import { CustomEvent } from '../../screens/index'
 import { SyntheticEvent } from 'react'
 import EventComponent from './event'
+import { CalendarEvent, RangeDate } from './interface'
+import { getColorEvent } from './functions'
 const djLocalizer = dayjsLocalizer(dayjs)
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
 
 interface ICalendars {
   onSelectSlot: (slotInfo: SlotInfo) => void
-  myEvents: CustomEvent[]
-  onDropEvent: (args: EventInteractionArgs<CustomEvent>) => void
+  myEvents: CalendarEvent[]
+  onDropEvent: (args: EventInteractionArgs<CalendarEvent>) => void
+  onRangeChange: (date: Date[] | RangeDate) => void
   onSelectEvent: (
-    event: CustomEvent,
+    event: CalendarEvent,
     e: SyntheticEvent<HTMLElement, Event>
   ) => void
 }
 
 function eventStyleGetter(
-  event: CustomEvent,
+  event: CalendarEvent,
   _: Date,
   __: Date,
   isSelected: boolean
 ) {
   const style: React.CSSProperties = {
-    backgroundColor: event.resource?.styles?.backgroundColor,
+    backgroundColor: getColorEvent(event.resource?.styles?.colorId ?? 1)
+      ?.backgroundColor,
     borderRadius: '4px',
     opacity: 0.8,
-    color: event.resource?.styles?.color,
+    color: getColorEvent(event.resource?.styles?.colorId ?? 1)?.color,
     border: '0px',
     display: 'block',
     fontSize: '12px',
@@ -46,7 +49,8 @@ function eventStyleGetter(
 }
 
 function Calendars(props: ICalendars) {
-  const { onSelectSlot, myEvents, onDropEvent, onSelectEvent } = props
+  const { onSelectSlot, myEvents, onDropEvent, onSelectEvent, onRangeChange } =
+    props
   const today = new Date()
   return (
     <Card
@@ -74,6 +78,7 @@ function Calendars(props: ICalendars) {
         onEventDrop={onDropEvent}
         popup
         onSelectEvent={onSelectEvent}
+        onRangeChange={onRangeChange}
       />
     </Card>
   )

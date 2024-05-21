@@ -8,55 +8,54 @@ export const secondarySideBarWidth = 215
 export const secondarySideBarGap = 80
 
 export const SORT_BY = {
-    DESC: 'DESC',
-    ASC: 'ASC',
+  DESC: 'DESC',
+  ASC: 'ASC',
 }
 
 export const SALARY_STATE = {
-    RANGE: 'range',
-    UP_TO: 'up_to',
-    MINIMUM: 'minimum',
-    NEGOTITATION: 'negotiate',
+  RANGE: 'range',
+  UP_TO: 'up_to',
+  MINIMUM: 'minimum',
+  NEGOTITATION: 'negotiate',
 }
 
 export const CURRENCY_STATE = {
-    VND: 'vnd',
-    USD: 'usd',
-    JPY: 'jpy',
+  VND: 'vnd',
+  USD: 'usd',
+  JPY: 'jpy',
 }
 
 export const LOCATION_STATE = {
-    HA_NOI: 'ha_noi',
-    DA_NANG: 'da_nang',
-    HO_CHI_MINH: 'ho_chi_minh',
-    JAPAN: 'japan',
+  HA_NOI: 'ha_noi',
+  DA_NANG: 'da_nang',
+  HO_CHI_MINH: 'ho_chi_minh',
+  JAPAN: 'japan',
 }
 
 export const STATUS_STATE = {
-    DRAFT: 'draft',
-    OPENED: 'opened',
-    CLOSED: 'closed'
+  DRAFT: 'draft',
+  OPENED: 'opened',
+  CLOSED: 'closed',
 }
 
 export const STATUS_CANDIDATE = {
-    APPLIED: 'applied',
-    INTERVIEWING: 'interviewing',
-    OFFERING: 'offering',
-    HIRED: 'hired',
-    KIV: 'kiv',
-    OFFERED_LOST: 'offer_lost',
-    EX_STAFTT: 'ex_staff',
-    NEW: 'new',
+  APPLIED: 'applied',
+  INTERVIEWING: 'interviewing',
+  OFFERING: 'offering',
+  HIRED: 'hired',
+  KIV: 'kiv',
+  OFFERED_LOST: 'offer_lost',
+  EX_STAFTT: 'ex_staff',
+  NEW: 'new',
 }
 
-export const TREC_REFRESH_TOKEN: string = 'refreshToken';
-export const TREC_ACCESS_TOKEN: string = 'accessToken';
+export const TREC_REFRESH_TOKEN: string = 'refreshToken'
+export const TREC_ACCESS_TOKEN: string = 'accessToken'
 
 export const HEADER = {
-  API_KEY: "x-api-key",
-  CLIENT_ID: "x-client-id",
-  AUTHORIZATION: "Authorization",
-  REFRESHTOKEN: "x-rtoken-id",
-  CONTENT_TYPE: "Content-Type"
-};
-
+  API_KEY: 'x-api-key',
+  CLIENT_ID: 'x-client-id',
+  AUTHORIZATION: 'Authorization',
+  REFRESHTOKEN: 'x-rtoken-id',
+  CONTENT_TYPE: 'Content-Type',
+}

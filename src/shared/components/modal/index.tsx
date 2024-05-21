@@ -28,9 +28,7 @@ const Wrapper: FC<IWrapper> = ({
         handleClose ? handleClose() : setOpen(false)
       }}
     >
-      <Content maxWidth={maxWidth}>
-        {children}
-        </Content>
+      <Content maxWidth={maxWidth}>{children}</Content>
     </Modal>
   )
 }
@@ -110,24 +108,29 @@ const ContentStyled = styled(Box)(({ theme }) => ({
     : theme.palette.background.default,
 }))
 
-const Content = forwardRef(({
-  children,
-  maxWidth = 960,
-}: {
-  children: ReactNode
-  maxWidth?: string | number
-  height?: string | number
-}, ref) => {
-  return (
-    <ContentStyled
-      maxWidth={maxWidth}
-      display={'flex'}
-      flexDirection={'column'}
-    >
-      {children}
-    </ContentStyled>
-  )
-})
+const Content = forwardRef(
+  (
+    {
+      children,
+      maxWidth = 960,
+    }: {
+      children: ReactNode
+      maxWidth?: string | number
+      height?: string | number
+    },
+    ref
+  ) => {
+    return (
+      <ContentStyled
+        maxWidth={maxWidth}
+        display={'flex'}
+        flexDirection={'column'}
+      >
+        {children}
+      </ContentStyled>
+    )
+  }
+)
 
 const ContentMain = ({
   children,
@@ -138,7 +141,7 @@ const ContentMain = ({
 }) => {
   return (
     <Box padding={'20px 32px'}>
-      <Scrollbar sx={{ maxHeight: maxHeight}}>{children}</Scrollbar>
+      <Scrollbar sx={{ maxHeight: maxHeight }}>{children}</Scrollbar>
     </Box>
   )
 }

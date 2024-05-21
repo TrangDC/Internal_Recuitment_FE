@@ -2,28 +2,35 @@ import { AutocompleteBaseBackEnd } from '../autocomplete-base-back-end'
 import { AutocompleteValueBackEndCommonProps } from '../autocomplete-base-back-end/interface'
 import useGraphql from './useGraphql'
 
-interface InterViewer {
-  name: string
+interface CandidateJobs {
   id: string
+  candidate: Candidate
 }
 
-function InterViewerAutoComplete<Multiple extends boolean>({
+interface Candidate {
+  name: string
+  id: string
+  email: string
+  phone: string
+}
+
+function CandidateJobsAutoComplete<Multiple extends boolean>({
   onChange,
   value,
   multiple,
   onCustomChange,
   textFieldProps,
-  name,
-}: AutocompleteValueBackEndCommonProps<InterViewer, Multiple>) {
-  const { getAllUsers, queryKey } = useGraphql()
+  filter,
+}: AutocompleteValueBackEndCommonProps<CandidateJobs, Multiple>) {
+  const { getAllCandidateJobs, queryKey } = useGraphql()
   return (
-    <AutocompleteBaseBackEnd<InterViewer, Multiple>
+    <AutocompleteBaseBackEnd<CandidateJobs, Multiple>
       onChange={onChange}
       queryKey={[queryKey]}
-      queryString={getAllUsers}
-      keyName="name"
-      name={name}
+      queryString={getAllCandidateJobs}
+      keyName="candidate.id"
       value={value}
+      filter={filter}
       multiple={multiple}
       onCustomChange={onCustomChange}
       seletedKey={'id'}
@@ -32,4 +39,4 @@ function InterViewerAutoComplete<Multiple extends boolean>({
   )
 }
 
-export default InterViewerAutoComplete
+export default CandidateJobsAutoComplete

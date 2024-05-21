@@ -12,6 +12,9 @@ import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import AppButton from 'shared/components/buttons/AppButton'
 import { Fragment } from 'react'
+import AppDateField from 'shared/components/input-fields/AppDateField'
+import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
+import dayjs from 'dayjs'
 
 interface IAddInterviewModal {
   open: boolean
@@ -20,7 +23,11 @@ interface IAddInterviewModal {
 
 function CreateInterviewModal(props: IAddInterviewModal) {
   const { open, setOpen } = props
-  const { onSubmit, control, isValid, isPending } = useCreateInterview()
+  const { actions, control, isValid, isPending, watch } = useCreateInterview()
+  const { onSeletedJob, onSeletedTeam, onSubmit, handleGenerateToDate } =
+    actions
+  const teamId = watch('teamId')
+  const jobId = watch('jobId')
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
@@ -64,9 +71,9 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 render={({ field, fieldState }) => (
                   <Fragment>
                     <TeamsAutoComplete
-                    name={field.name}
+                      name={field.name}
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={onSeletedTeam}
                       multiple={false}
                       textFieldProps={{
                         required: true,
@@ -87,10 +94,13 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 render={({ field, fieldState }) => (
                   <Fragment>
                     <JobsAutoComplete
-                    name={field.name}
+                      name={field.name}
                       value={field.value}
+                      filter={{
+                        team_ids: teamId ? [teamId] : undefined,
+                      }}
                       multiple={false}
-                      onChange={field.onChange}
+                      onChange={onSeletedJob}
                       textFieldProps={{
                         required: true,
                         label: 'Job',
@@ -108,11 +118,12 @@ function CreateInterviewModal(props: IAddInterviewModal) {
             <FormControl fullWidth>
               <Controller
                 control={control}
+                defaultValue={[]}
                 name="interviewer"
                 render={({ field, fieldState }) => (
                   <Fragment>
                     <InterViewerAutoComplete
-                      value={field.value}
+                      value={field.value ?? []}
                       onChange={field.onChange}
                       multiple={true}
                       name={field.name}
@@ -141,6 +152,9 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                       onChange={field.onChange}
                       multiple={false}
                       name={field.name}
+                      filter={{
+                        job_id: jobId ? jobId : undefined,
+                      }}
                       textFieldProps={{
                         required: true,
                         label: 'Select candidate',
@@ -153,64 +167,53 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 )}
               />
             </FormControl>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="candidateMail"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <AppTextField
-                      label={'Candidate’s mail'}
-                      required
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
           </FlexBox>
           <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="date"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <AppTextField
-                      label={'Select date'}
-                      required
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
-            <FlexBox gap={2}>
+            <FlexBox width={'50%'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="date"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <AppDateField
+                        label={'Select date'}
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={field.onChange}
+                        textFieldProps={{
+                          required: true,
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            <FlexBox gap={2} width={'50%'}>
               <FormControl fullWidth>
                 <Controller
                   control={control}
                   name="from"
                   render={({ field, fieldState }) => (
                     <Fragment>
-                      <AppTextField
+                      <AppTimePickers
                         label={'From'}
-                        required
-                        size="small"
-                        fullWidth
-                        value={field.value}
-                        onChange={field.onChange}
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={(value) => {
+                          handleGenerateToDate(value)
+                          field.onChange(value)
+                        }}
+                        views={['hours', 'minutes']}
+                        ampm={false}
+                        textFieldProps={{
+                          required: true,
+                        }}
+                        timeSteps={{
+                          minutes: 30,
+                        }}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
@@ -225,13 +228,18 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                   name="to"
                   render={({ field, fieldState }) => (
                     <Fragment>
-                      <AppTextField
+                      <AppTimePickers
                         label={'To'}
-                        required
-                        size="small"
-                        fullWidth
-                        value={field.value}
+                        value={field.value ? dayjs(field.value) : null}
                         onChange={field.onChange}
+                        views={['hours', 'minutes']}
+                        ampm={false}
+                        textFieldProps={{
+                          required: true,
+                        }}
+                        timeSteps={{
+                          minutes: 30,
+                        }}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
@@ -248,7 +256,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 control={control}
                 name="description"
                 render={({ field, fieldState }) => (
-                  <FlexBox alignItems={'center'} flexDirection={'column'}>
+                  <FlexBox flexDirection={'column'}>
                     <AppTextField
                       label={'Description'}
                       size="small"
