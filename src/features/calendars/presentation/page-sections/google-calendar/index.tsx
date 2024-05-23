@@ -1,7 +1,7 @@
 import { Calendar, dayjsLocalizer, SlotInfo } from 'react-big-calendar'
 import dayjs from 'dayjs'
 import './style.css'
-import { Backdrop, Card, CircularProgress } from '@mui/material'
+import { Card } from '@mui/material'
 import ToolBar from './toolBar/ToolBar'
 import withDragAndDrop, {
   EventInteractionArgs,
@@ -89,6 +89,7 @@ function Calendars(props: ICalendars) {
         onSelectEvent={onSelectEvent}
         onRangeChange={onRangeChange}
         resizable={false}
+        timeslots={1}
       />
       <BackdropLoading isLoading={isLoading} />
     </Card>
