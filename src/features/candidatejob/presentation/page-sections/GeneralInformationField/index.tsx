@@ -12,7 +12,6 @@ import { Candidate } from 'features/candidates/domain/interfaces'
 import useActionTable from 'features/candidates/presentation/providers/hooks/useActionTable'
 import EditCandidateModal from 'features/candidates/presentation/page-sections/EditCandidateModal'
 import CopyIcon from 'shared/components/icons/CopyIcon'
-import { toast } from 'react-toastify'
 import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
 
 const DivWrapperField = styled(Box)(({ theme }) => ({
@@ -56,10 +55,6 @@ const GeneralInformationField = () => {
         </Grid>
         <Grid item xs={12}>
           <FlexBox gap={'60px'}>
-            <DivField>
-              <Span>{translation.COMMON.name}</Span>
-              <Tiny>{candidateDetail.name}</Tiny>
-            </DivField>
             <DivField>
               <FlexBox alignItems={'flex-end'} gap={'10px'}>
                 <Box>

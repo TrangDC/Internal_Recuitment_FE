@@ -28,6 +28,7 @@ function BlackListCandidateModal({
     defaultValues: {
       id: id,
       is_black_list: is_black_list,
+      note: '',
     },
   })
   const {

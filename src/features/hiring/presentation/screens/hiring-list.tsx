@@ -9,7 +9,6 @@ import useActionTable from '../providers/hooks/useActionTable'
 import EditHiringModal from '../page-sections/EditHiringModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
-import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import IconScreen from 'shared/components/utils/IconScreen'
 import HiringTeam from 'shared/components/icons/HiringTeams'
@@ -18,13 +17,13 @@ import {
   DivFilter,
   DivHeaderWrapper,
 } from 'features/candidates/presentation/providers/styles'
-import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
-import { Team } from 'features/teams/domain/interfaces'
+import { BaseRecord, baseInstance } from 'shared/interfaces'
 import useTextTranslation from 'shared/constants/text'
-import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
-import DeleteHiringModal from '../page-sections/DeleteHiringModal'
-import { convertEmptyToNull, transformListItem } from 'shared/utils/utils'
-import { KeyboardEventHandler } from 'react'
+import ChangeStatusModal from '../page-sections/ChangeStatusModal'
+import { transformListItem } from 'shared/utils/utils'
+import { KeyboardEventHandler, useState } from 'react'
+import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
+import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 
 const HiringList = () => {
   const {
@@ -56,13 +55,14 @@ const HiringList = () => {
         onClick: (id) => {
           handleOpenDelete(id)
         },
-        title: 'Delete',
-        Icon: <DeleteIcon />,
+        title: 'Change status',
+        Icon: <EditIcon />,
       },
     ],
     columns,
   })
-  const { teams } = useSelectTeam()
+  const [teams, setTeams] = useState<BaseRecord[]>([])
+  // const { teams } = useSelectTeam()
 
   const translation = useTextTranslation()
 
@@ -79,15 +79,25 @@ const HiringList = () => {
       <BoxWrapperOuterContainer>
         <HeadingWrapper>
           <DivFilter>
-            <ButtonFilter<Team>
-              listData={teams}
-              inputLabel={translation.MODLUE_TEAMS.teams}
-              callbackChange={(obj) => {
-                handleFilter(
-                  'team_ids',
-                  convertEmptyToNull(transformListItem(obj))
-                )
-              }}
+            <ButtonFieldFilter<baseInstance>
+              inputLabel={'Teams'}
+              listSelected={teams}
+              setListSelected={setTeams}
+              showLabel={'name'}
+              node={
+                <TeamsAutoComplete
+                  name="team"
+                  multiple={true}
+                  value={transformListItem(teams, 'id')}
+                  onCustomChange={setTeams}
+                  onChange={() => {}}
+                  open={true}
+                  textFieldProps={{
+                    label: 'Status',
+                    autoFocus: true,
+                  }}
+                />
+              }
             />
           </DivFilter>
           <DivHeaderWrapper>
@@ -131,7 +141,7 @@ const HiringList = () => {
         />
       )}
       {openDelete && (
-        <DeleteHiringModal
+        <ChangeStatusModal
           open={openDelete}
           setOpen={setOpenDelete}
           id={rowId.current}

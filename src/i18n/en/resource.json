@@ -99,6 +99,9 @@
       },
       "is_blacklist_enum": {
         "no": "No"
+      },
+      "validation": {
+        "email_exist": "Email has already existed"
       }
     },
     "teams": {

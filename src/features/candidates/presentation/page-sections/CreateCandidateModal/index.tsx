@@ -111,7 +111,6 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                       textFieldProps={{
                         fullWidth: true,
                         size: 'small',
-                        required: true,
                       }}
                     />
                     <HelperTextForm

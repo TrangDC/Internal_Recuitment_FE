@@ -16,6 +16,7 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
 
 interface IApplyJobModal {
   open: boolean
@@ -118,13 +119,23 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
                 control={control}
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                    <AutoCompleteComponent<FormDataSchema, baseInstance>
+                    {/* <AutoCompleteComponent<FormDataSchema, baseInstance>
                       options={STATUS_CANDIDATE_HIRING}
                       label="name"
                       inputLabel={translation.COMMON.status}
                       field={field}
                       fullWidth
                       required
+                    /> */}
+                     <CandidateStatusAutoComplete
+                      multiple={false}
+                      value={field.value}
+                      onChange={(data: any) => {
+                        field.onChange(data.value)
+                      }}
+                      textFieldProps={{
+                        label: 'Status',
+                      }}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}

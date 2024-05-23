@@ -40,10 +40,8 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
         object: {
           ..._.cloneDeep(value),
           hiring_job_id: getValueOfObj({ obj: value.hiring_job_id, key: 'id' }),
-          status: getValueOfObj({ obj: value.status, key: 'value' }),
         },
       })
-console.log("valueClone", valueClone)
       mutate(valueClone as NewCandidateJobInput)
     })()
   }

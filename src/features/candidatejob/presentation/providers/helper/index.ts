@@ -1,10 +1,14 @@
 import { Attachments } from "features/candidates/domain/interfaces";
-import { isEmpty } from "lodash";
+import { isEmpty, reject } from "lodash";
+import { toast } from "react-toastify";
 import { ParamCreateURLAttachment } from "shared/hooks/graphql/useGetUrlAttachment";
 import { downloadFile } from "shared/utils/utils";
 
 export const downloadFileAttachment = (attachments: Attachments, callback: any) => {
-    if (isEmpty(attachments) || !Array.isArray(attachments)) return;
+    if (isEmpty(attachments) || !Array.isArray(attachments)) {
+      toast.error('Attachment not exist!')
+      return;
+    }
 
     const results = attachments.map((attachment) => {
       return new Promise((resolve, reject) => {
@@ -17,6 +21,9 @@ export const downloadFileAttachment = (attachments: Attachments, callback: any) 
         resolve(callback(paramUpload))
       }).then((response: any) => {
         return response.CreateAttachmentSASURL.url
+      }).catch((error) => {
+        toast.error((error as Error).message)
+        reject(error)
       })
     })
 

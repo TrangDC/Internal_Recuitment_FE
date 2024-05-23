@@ -25,6 +25,7 @@ function useCreateCandidate(props: createCandidateProps) {
       email: '',
       phone: '',
       note: '',
+      dob: null,
     },
     resolver: yupResolver(schema),
     onSuccess: callbackSuccess,
@@ -38,7 +39,7 @@ function useCreateCandidate(props: createCandidateProps) {
     handleSubmit((value) => {
       mutate({
         ...value,
-        dob: convertDateToISOString(value.dob),
+        dob: value.dob ? convertDateToISOString(value.dob) : value.dob,
       })
     })()
   }

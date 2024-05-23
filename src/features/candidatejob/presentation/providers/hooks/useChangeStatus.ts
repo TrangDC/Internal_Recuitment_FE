@@ -8,7 +8,7 @@ import {
 } from '../constants/schema'
 import { UpdateCandidateJobStatus } from 'features/candidates/domain/interfaces'
 import { cloneDeep } from 'lodash'
-import { getValueOfObj, removeInfoData } from 'shared/utils/utils'
+import { removeInfoData } from 'shared/utils/utils'
 import useCreateResource from 'shared/hooks/useCreateResource'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import {
@@ -44,7 +44,7 @@ function ChangeStatus(props: propsChangeStatus) {
     onSuccess: callbackSuccess,
   })
 
-  const { formState } = useFormReturn
+  const { formState, watch } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useUpdateReturn
 
@@ -99,7 +99,7 @@ function useChangeStatus(props: useChangeStatusProps = { defaultValues: {} }) {
     },
   })
 
-  const { handleSubmit, formState, control } =
+  const { handleSubmit, formState, control, watch } =
     useForm<FormDataSchemaChangeStatus>({
       resolver: yupResolver(schemaChangeStatus),
       defaultValues: {
@@ -115,7 +115,6 @@ function useChangeStatus(props: useChangeStatusProps = { defaultValues: {} }) {
         field: ['team_id'],
         object: {
           ...cloneDeep(value),
-          status: getValueOfObj({ obj: value.status, key: 'value' }),
         },
       })
 
@@ -128,6 +127,7 @@ function useChangeStatus(props: useChangeStatusProps = { defaultValues: {} }) {
     control,
     isValid,
     isPending: isPendingStatus,
+    watch,
   }
 }
 

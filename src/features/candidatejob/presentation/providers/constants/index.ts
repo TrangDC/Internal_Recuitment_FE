@@ -18,6 +18,7 @@ export const STATUS_CANDIDATE_HIRING = [
   {name: 'HIRED', value: STATUS_CANDIDATE.HIRED},
   {name: 'KIV', value: STATUS_CANDIDATE.KIV},
   {name: 'EX-STAFTT', value: STATUS_CANDIDATE.EX_STAFTT},
+  {name: 'OFFERED LOST', value: STATUS_CANDIDATE.OFFERED_LOST},
 ]
 
 

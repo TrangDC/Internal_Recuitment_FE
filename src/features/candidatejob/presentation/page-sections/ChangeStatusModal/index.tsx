@@ -18,6 +18,11 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
+import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
+import { useMemo } from 'react'
+import { STATUS_CANDIDATE } from 'shared/constants/constants'
+import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
 
 interface IChangeStatusModal {
   open: boolean
@@ -28,14 +33,28 @@ interface IChangeStatusModal {
 }
 
 function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
-  const { onSubmit, control, isPending, isValid } = useChangeStatus({
+  const { onSubmit, control, isPending, isValid, watch } = useChangeStatus({
     callbackSuccess: () => {
       setOpen(false)
     },
-    defaultValues: { id: rowData?.id, feedback: '', attachments: [] },
+    defaultValues: {
+      id: rowData?.id,
+      feedback: '',
+      attachments: [],
+      failed_reason: [],
+    },
   })
 
   const translation = useTextTranslation()
+
+  const showFailedReason = useMemo(() => {
+    const watchFields = watch('status')
+
+    return (
+      watchFields === STATUS_CANDIDATE.KIV ||
+      watchFields === STATUS_CANDIDATE.OFFERED_LOST
+    )
+  }, [watch('status')])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -71,23 +90,22 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
                 disabled
               />
             </FormControl>
-            <FormControl fullWidth>
+            <FormControl fullWidth sx={{ marginTop: '10px' }}>
               <Controller
                 name="status"
                 shouldUnregister
                 control={control}
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                    <AutoCompleteComponent<
-                      FormDataSchemaChangeStatus,
-                      baseInstance
-                    >
-                      options={STATUS_CANDIDATE_HIRING}
-                      label="name"
-                      inputLabel={translation.COMMON.status}
-                      field={field}
-                      fullWidth
-                      required
+                    <CandidateStatusAutoComplete
+                      multiple={false}
+                      value={field.value}
+                      onChange={(data: any) => {
+                        field.onChange(data.value)
+                      }}
+                      textFieldProps={{
+                        label: 'Status',
+                      }}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -97,6 +115,35 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
               />
             </FormControl>
           </FlexBox>
+
+          {showFailedReason && (
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  name="failed_reason"
+                  shouldUnregister
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <FailedReasonAutoComplete
+                        multiple
+                        value={((field.value as IOption[]) || []).map(
+                          (item) => item.value
+                        )}
+                        onChange={field.onChange}
+                        textFieldProps={{
+                          label: 'Failed Reason',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+          )}
 
           <FlexBox gap={2}>
             <FormControl fullWidth>
@@ -122,7 +169,6 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
               />
             </FormControl>
           </FlexBox>
-
           <FlexBox justifyContent={'center'} alignItems={'center'}>
             <FormControl fullWidth>
               <Controller
@@ -134,9 +180,9 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
                     <InputFileComponent
                       field={field}
                       inputFileProps={{
-                        accept: '.pdf',
-                        regexString: '\\.pdf$',
-                        maxFile: 1,
+                        accept: '.pdf, .png, .jpg, .jpeg, .doc, .docx',
+                        regexString: '.(pdf|png|jpg|jpeg|doc|docx)$',
+                        maxFile: 10,
                         maxSize: 20,
                       }}
                     />

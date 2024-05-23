@@ -1,15 +1,14 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Button, Grid } from '@mui/material'
-import InputComponent from 'shared/components/form/inputComponent'
-import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
+import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchema } from '../../providers/constants/schema'
 import useEditHiring from '../../providers/hooks/useEditHiring'
 import { Hiring } from 'features/hiring/domain/interfaces'
-import { Team } from 'features/teams/domain/interfaces'
-import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
+import AppTextField from 'shared/components/input-fields/AppTextField'
+import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import AppButton from 'shared/components/buttons/AppButton'
+import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 
 interface IEditHiringModal {
   open: boolean
@@ -19,98 +18,99 @@ interface IEditHiringModal {
 }
 
 function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
-  const { onSubmit, useFormReturn } = useEditHiring({
+  const { onSubmit, control, isPending, isValid, setValue } = useEditHiring({
     defaultValues: {
-      id: rowData?.id,
       name: rowData?.name,
-      email: rowData?.work_email,
-    }
+      id: rowData?.id,
+      work_email: rowData?.work_email,
+      note: '',
+    },
+    callbackSuccess: () => {
+      setOpen(false)
+    },
   })
-  const {
-    control,
-    formState: { errors },
-  } = useFormReturn
 
-  const { teams } = useSelectTeam()
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason)
+    onSubmit()
+  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title="Edit hiring team"
+        title="Edit user"
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
+        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+          <FlexBox justifyContent={'center'} gap={2} alignItems={'center'}>
+            <FormControl fullWidth>
               <Controller
+                control={control}
                 name="name"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchema>
-                    errors={errors}
-                    label="Name"
-                    size="small"
-                    field={field}
-                    fullWidth
-                    required
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox alignItems={'center'} flexDirection={'column'}>
+                    <AppTextField
+                      label={'Name'}
+                      required
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={6}>
+            </FormControl>
+          </FlexBox>
+          <FlexBox justifyContent={'center'} alignItems={'center'}>
+            <FormControl fullWidth>
               <Controller
-                name="team"
                 control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Team>
-                    options={teams}
-                    label="name"
-                    inputLabel="Team"
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                  />
+                name="work_email"
+                render={({ field, fieldState }) => (
+                  <FlexBox alignItems={'center'} flexDirection={'column'}>
+                    <AppTextField
+                      label={'Email'}
+                      required
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchema>
-                    errors={errors}
-                    label="Email"
-                    size="small"
-                    field={field}
-                    fullWidth
-                    required
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
-        </form>
+            </FormControl>
+          </FlexBox>
+        </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel
-            type="button"
-            variant="contained"
+          <AppButton
+            variant="outlined"
+            size="small"
             onClick={() => setOpen(false)}
           >
             Cancel
-          </CustomeButtonCancel>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={onSubmit}
-          >
-            Save
-          </Button>
+          </AppButton>
+          <UpdateRecord callbackSubmit={callbackSubmit}>
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid}
+              handlesubmit={() => {}}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
+          </UpdateRecord>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>
