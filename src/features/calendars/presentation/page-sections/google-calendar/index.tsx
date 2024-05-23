@@ -1,15 +1,16 @@
 import { Calendar, dayjsLocalizer, SlotInfo } from 'react-big-calendar'
 import dayjs from 'dayjs'
 import './style.css'
-import { Card } from '@mui/material'
+import { Backdrop, Card, CircularProgress } from '@mui/material'
 import ToolBar from './toolBar/ToolBar'
 import withDragAndDrop, {
   EventInteractionArgs,
 } from 'react-big-calendar/lib/addons/dragAndDrop'
 import { SyntheticEvent } from 'react'
-import EventComponent from './event'
 import { CalendarEvent, RangeDate } from './interface'
 import { getColorEvent } from './functions'
+import BackdropLoading from './BackdropLoading'
+
 const djLocalizer = dayjsLocalizer(dayjs)
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
@@ -17,6 +18,7 @@ const DragAndDropCalendar = withDragAndDrop(Calendar)
 interface ICalendars {
   onSelectSlot: (slotInfo: SlotInfo) => void
   myEvents: CalendarEvent[]
+  isLoading: boolean
   onDropEvent: (args: EventInteractionArgs<CalendarEvent>) => void
   onRangeChange: (date: Date[] | RangeDate) => void
   onSelectEvent: (
@@ -49,13 +51,20 @@ function eventStyleGetter(
 }
 
 function Calendars(props: ICalendars) {
-  const { onSelectSlot, myEvents, onDropEvent, onSelectEvent, onRangeChange } =
-    props
+  const {
+    onSelectSlot,
+    myEvents,
+    onDropEvent,
+    onSelectEvent,
+    onRangeChange,
+    isLoading,
+  } = props
   const today = new Date()
   return (
     <Card
       sx={{
         boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;',
+        position: 'relative',
       }}
     >
       <DragAndDropCalendar
@@ -64,7 +73,7 @@ function Calendars(props: ICalendars) {
         events={myEvents}
         components={{
           toolbar: ToolBar,
-          event: EventComponent,
+          // event: EventComponent,
         }}
         views={['month', 'day', 'week']}
         style={{
@@ -79,7 +88,9 @@ function Calendars(props: ICalendars) {
         popup
         onSelectEvent={onSelectEvent}
         onRangeChange={onRangeChange}
+        resizable={false}
       />
+      <BackdropLoading isLoading={isLoading} />
     </Card>
   )
 }

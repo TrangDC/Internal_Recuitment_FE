@@ -32,7 +32,7 @@ const EventComponent: ComponentType<EventProps<CalendarEvent>> = (event) => {
   return (
     <div>
       <div onContextMenu={handleRightClick}>{event.title}</div>
-      <Menu
+      {/* <Menu
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
@@ -51,7 +51,7 @@ const EventComponent: ComponentType<EventProps<CalendarEvent>> = (event) => {
           </ListItemIcon>
           <ListItemText>Delete</ListItemText>
         </MenuItem>
-      </Menu>
+      </Menu> */}
     </div>
   )
 }

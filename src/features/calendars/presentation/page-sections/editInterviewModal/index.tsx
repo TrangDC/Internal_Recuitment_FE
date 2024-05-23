@@ -1,6 +1,5 @@
 import { FormControl } from '@mui/material'
 import BaseModal from 'shared/components/modal'
-import useCreateInterview from '../../providers/hooks/useCreateInterview'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Controller } from 'react-hook-form'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -15,16 +14,19 @@ import { Fragment } from 'react'
 import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
+import useEditInterview from '../../providers/hooks/useEditInterview'
 
-interface IAddInterviewModal {
+interface IEditInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
+  id: string
 }
 
-function CreateInterviewModal(props: IAddInterviewModal) {
-  const { open, setOpen } = props
+function EditInterviewModal(props: IEditInterviewModal) {
+  const { open, setOpen, id } = props
   const { actions, control, isValid, isPending, watch, resetField } =
-    useCreateInterview({
+    useEditInterview({
+      id: id,
       onSuccess: () => {
         setOpen(false)
       },
@@ -32,11 +34,10 @@ function CreateInterviewModal(props: IAddInterviewModal) {
   const { onSubmit, handleGenerateToDate } = actions
   const teamId = watch('teamId')
   const jobId = watch('jobId')
-
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title="Add new Interview"
+        title="Edit Interview"
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain>
@@ -59,6 +60,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
+                      disabled
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -82,6 +84,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         field.onChange(value)
                         resetField('jobId')
                       }}
+                      disabled
                       multiple={false}
                       textFieldProps={{
                         required: true,
@@ -107,6 +110,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                       filter={{
                         team_ids: teamId ? [teamId] : undefined,
                       }}
+                      disabled
                       multiple={false}
                       onChange={(value) => {
                         field.onChange(value)
@@ -160,12 +164,12 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                   <Fragment>
                     <CandidateAutoComplete
                       value={field.value}
+                      disabled
                       onChange={field.onChange}
                       multiple={false}
                       name={field.name}
                       filter={{
                         job_id: jobId ? jobId : undefined,
-                        is_able_to_interview: true,
                       }}
                       textFieldProps={{
                         required: true,
@@ -272,6 +276,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                     <AppTextField
                       label={'Description'}
                       size="small"
+                      disabled
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
@@ -289,7 +294,11 @@ function CreateInterviewModal(props: IAddInterviewModal) {
         </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
-        <AppButton variant="outlined" size="small">
+        <AppButton
+          variant="outlined"
+          size="small"
+          onClick={() => setOpen(false)}
+        >
           Cancel
         </AppButton>
         <ButtonLoading
@@ -306,4 +315,4 @@ function CreateInterviewModal(props: IAddInterviewModal) {
   )
 }
 
-export default CreateInterviewModal
+export default EditInterviewModal

@@ -47,8 +47,6 @@ function ChangeStatus(props: propsChangeStatus) {
   const { formState, watch } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useUpdateReturn
-
-
   return {
     mutateChangeStatus: mutate,
     isPendingStatus: isPending,
@@ -74,7 +72,6 @@ function CreateFeedbackprops(
     resolver: yupResolver(schema),
     onSuccess: callbackSuccess,
   })
-
 
   const { formState } = useFormReturn
   const isValid = !formState.isValid

@@ -23,6 +23,7 @@ export interface AutocompleteValueBackEndCommonProps<
   multiple?: Multiple
   textFieldProps: TextFieldProps
   filter?: BaseRecord
+  disabled?:boolean
   getOptionLabel?: (option: T) => ReactNode
   open?: boolean,
 }
@@ -42,6 +43,7 @@ export interface IAutocompleteBackEndProps<
   queryString: IbuildQueryReturn
   onCustomChange?: (value: CustomAutocompleteValueBackEnd<T, Multiple>) => void
   filter?: BaseRecord
+  disabled?:boolean
   getOptionLabel?: (option: T) => ReactNode
   open?: boolean,
 }

@@ -6,7 +6,10 @@ export const schema = yup.object({
   candidate_id: yup.string().required(RULE_MESSAGES.MC1('candidate_id')),
   hiring_job_id: yup.object().required(RULE_MESSAGES.MC1('hiring_job_id')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
-  attachments: yup.array().required(RULE_MESSAGES.MC1('attachments')).min(1, RULE_MESSAGES.MC3('attachments', 1)),
+  attachments: yup
+    .array()
+    .required(RULE_MESSAGES.MC1('attachments'))
+    .min(1, RULE_MESSAGES.MC3('attachments', 1)),
   note: yup.string(),
 })
 

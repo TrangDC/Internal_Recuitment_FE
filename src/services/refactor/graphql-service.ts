@@ -24,14 +24,6 @@ export interface IbuildQueryReturn {
   query: string
 }
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-})
-
 class GraphQLClientService {
   static buildQuery = (props: IbuildQuery): IbuildQueryReturn => {
     const { operation, node, params, options } = props

@@ -25,3 +25,8 @@ export interface ITitle {
   setOpenUpdate?: () => void
   children?: ReactNode
 }
+
+export interface IReasonModal extends IModal {
+  subTitle?: string
+  handlesubmit: (reason: string) => void
+}

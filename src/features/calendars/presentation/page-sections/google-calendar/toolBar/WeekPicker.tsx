@@ -1,10 +1,13 @@
 import * as React from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import isBetweenPlugin from 'dayjs/plugin/isBetween'
-import { styled } from '@mui/material/styles'
+import { SxProps, Theme, styled } from '@mui/material/styles'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
+import {
+  DateCalendar,
+  DateCalendarProps,
+} from '@mui/x-date-pickers/DateCalendar'
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import { Popover } from '@mui/material'
 import DatePickerCalendar, { ChosenDateType } from './DatePickerCalendar'
@@ -78,10 +81,11 @@ function Day(
 interface IWeekPicker {
   onChange: (value: ChosenDateType) => void
   value: ChosenDateType
+  sx?: SxProps<Theme>
 }
 
 export default function WeekPicker(props: IWeekPicker) {
-  const { onChange, value } = props
+  const { onChange, value, sx } = props
   const [hoveredDay, setHoveredDay] = React.useState<Dayjs | null>(value)
   const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null)
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -106,6 +110,7 @@ export default function WeekPicker(props: IWeekPicker) {
             views={['month', 'year']}
             format={formatDate}
             value={value}
+            sx={sx}
           />
         </div>
         <Popover

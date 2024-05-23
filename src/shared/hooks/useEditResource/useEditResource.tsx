@@ -1,7 +1,6 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import GraphQLClientService, {
   IbuildQueryReturn,
-  queryClient,
 } from 'services/refactor/graphql-service'
 import NotificationService from 'services/notification-service'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
@@ -30,6 +29,7 @@ function useEditResource<Response, FormData extends FieldValues, Input>({
   resolver,
   formatDefaultValues,
 }: IuseEditResource<Response, FormData>) {
+  const queryClient = useQueryClient()
   const { useFormReturn, isGetting } = useGetResource<Response, FormData>({
     id: id,
     oneBuildQuery,
@@ -39,7 +39,7 @@ function useEditResource<Response, FormData extends FieldValues, Input>({
   })
 
   const useEditReturn = useMutation({
-    mutationKey: queryKey,
+    mutationKey: queryKey.concat(JSON.stringify(undefined)),
     mutationFn: (payload: Input) =>
       GraphQLClientService.fetchGraphQL(editBuildQuery.query, {
         id: id,
@@ -50,7 +50,9 @@ function useEditResource<Response, FormData extends FieldValues, Input>({
         onError?.(unwrapEither(data))
         return NotificationService.showError(unwrapEither(data).message)
       }
-      queryClient.invalidateQueries({ queryKey: queryKey })
+      queryClient.invalidateQueries({
+        queryKey: queryKey,
+      })
       onSuccess?.(unwrapEither(data))
       return NotificationService.showSuccess('EDIT')
     },

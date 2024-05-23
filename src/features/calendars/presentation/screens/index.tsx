@@ -1,5 +1,5 @@
 import Calendars from '../page-sections/google-calendar'
-import { SyntheticEvent, useCallback, useState } from 'react'
+import { SyntheticEvent, useCallback, useRef, useState } from 'react'
 import { SlotInfo } from 'react-big-calendar'
 import CreateInterviewModal from '../page-sections/createInterviewModal'
 import { EventInteractionArgs } from 'react-big-calendar/lib/addons/dragAndDrop'
@@ -7,6 +7,7 @@ import { CalendarEvent } from '../page-sections/google-calendar/interface'
 import DetailIntefviewModal from '../page-sections/detailInterviewModal'
 import CalendarProvider from '../providers/contexts/calendarProvider/CalendarProvider'
 import useGetAllInterview from '../providers/hooks/useGetAllInterview'
+import EditInterviewModal from '../page-sections/editInterviewModal'
 
 const event: CalendarEvent[] = [
   {
@@ -140,6 +141,8 @@ const event: CalendarEvent[] = [
 function CalendarsScreen() {
   const [openCreateInterView, setOpenCreateInterView] = useState(false)
   const [openDetailInterView, setOpenDetailInterView] = useState(false)
+  const [openEditInterView, setOpenEditInterView] = useState(false)
+  const eventId = useRef<string>('')
   const [myEvents, setEvents] = useState<CalendarEvent[]>(event)
   const {
     myEvents: myEvents1,
@@ -203,24 +206,34 @@ function CalendarsScreen() {
     e: SyntheticEvent<HTMLElement, Event>
   ) {
     e.stopPropagation()
-    setOpenDetailInterView(true)
+    if (event.resource?.id) {
+      eventId.current = event.resource?.id
+      setOpenDetailInterView(true)
+    }
   }
 
   function handleDeleteEvent(id: string) {
     const removeEvent = myEvents.filter((o) => o.resource?.id !== id)
     setEvents(removeEvent)
   }
+
+  function handleEditEvent(id: string) {
+    eventId.current = id
+    setOpenEditInterView(true)
+  }
   return (
     <CalendarProvider
       setOpenCreateInterView={setOpenCreateInterView}
       handleDeleteEvent={handleDeleteEvent}
+      handleEditEvent={handleEditEvent}
     >
       <Calendars
         onSelectSlot={handleSelectSlot}
-        myEvents={myEvents}
+        myEvents={myEvents1}
         onDropEvent={moveEvent}
         onSelectEvent={onSelectEvent}
         onRangeChange={handlePagination}
+        isLoading={isLoading}
       />
       {openCreateInterView && (
         <CreateInterviewModal
@@ -232,6 +245,14 @@ function CalendarsScreen() {
         <DetailIntefviewModal
           open={openDetailInterView}
           setOpen={setOpenDetailInterView}
+          id={eventId.current}
+        />
+      )}
+      {openEditInterView && (
+        <EditInterviewModal
+          open={openEditInterView}
+          id={eventId.current}
+          setOpen={setOpenEditInterView}
         />
       )}
     </CalendarProvider>

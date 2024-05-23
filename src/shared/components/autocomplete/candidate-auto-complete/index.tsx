@@ -21,6 +21,7 @@ function CandidateAutoComplete<Multiple extends boolean>({
   textFieldProps,
   name,
   filter,
+  disabled,
 }: AutocompleteValueBackEndCommonProps<Candidate, Multiple>) {
   const { getAllCandidates, queryKey } = useGraphql()
   return (
@@ -37,6 +38,7 @@ function CandidateAutoComplete<Multiple extends boolean>({
       onCustomChange={onCustomChange}
       seletedKey={'id'}
       textFieldProps={textFieldProps}
+      disabled={disabled}
     />
   )
 }

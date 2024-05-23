@@ -4,14 +4,22 @@ import {
   CreateInterviewFrom,
   CreateInterviewSchema,
 } from '../constants/validate'
-import { NewIntefviewInput } from 'features/calendars/domain/graphql/interfaces'
+import { NewInterviewInput } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ChosenDateType } from 'shared/components/input-fields/AppTimePicker'
+import { BaseRecord } from 'shared/interfaces/common'
+import { convertToRootDate } from '../../page-sections/google-calendar/functions'
+import { convertToUTC } from 'shared/utils/date'
 
-function useCreateInterview() {
+interface IUseCreateInterview {
+  onSuccess: (data: BaseRecord) => void
+}
+
+function useCreateInterview(props: IUseCreateInterview) {
+  const { onSuccess } = props
   const { createCandidateInterview, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewIntefviewInput,
+    NewInterviewInput,
     CreateInterviewFrom
   >({
     mutationKey: [queryKey],
@@ -25,6 +33,7 @@ function useCreateInterview() {
       teamId: '',
     },
     resolver: yupResolver(CreateInterviewSchema),
+    onSuccess,
   })
 
   const { handleSubmit, control, formState, setValue, watch, resetField } =
@@ -34,27 +43,26 @@ function useCreateInterview() {
 
   function onSubmit() {
     handleSubmit((value) => {
-      const formData: NewIntefviewInput = {
+      const { newEnd, newStart } = convertToRootDate(
+        value.from,
+        value.to,
+        value.date
+      )
+      const interview_date = convertToUTC(value.date).toDate().toISOString()
+      const formatStart = convertToUTC(newStart).toISOString()
+      const formatEnd = convertToUTC(newEnd).toISOString()
+      const formData: NewInterviewInput = {
         candidate_id: [value.candidateId],
         description: value.description ?? '',
         interviewer: value.interviewer ?? [],
-        interview_date: value.date.toISOString(),
-        start_from: value.from.toISOString(),
-        end_at: value.to.toISOString(),
+        interview_date: interview_date,
+        start_from: formatStart,
+        end_at: formatEnd,
         title: value.title,
         job_id: value.jobId,
       }
       mutate(formData)
     })()
-  }
-
-  function onSeletedTeam(id: string | null) {
-    setValue('teamId', id ?? '')
-  }
-
-  function onSeletedJob(id: string | null) {
-    setValue('jobId', id ?? '')
-    resetField('candidateId')
   }
 
   function handleGenerateToDate(value: ChosenDateType) {
@@ -68,8 +76,9 @@ function useCreateInterview() {
     control,
     isValid,
     isPending,
-    actions: { onSeletedTeam, onSeletedJob, onSubmit, handleGenerateToDate },
+    actions: { onSubmit, handleGenerateToDate },
     watch,
+    resetField,
   }
 }
 export default useCreateInterview

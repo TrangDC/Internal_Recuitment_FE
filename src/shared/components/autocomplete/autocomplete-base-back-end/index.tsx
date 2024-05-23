@@ -30,6 +30,7 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
     queryString,
     name,
     filter,
+    disabled,
     getOptionLabel,
   } = props
 
@@ -69,8 +70,6 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
         seletedKey
       ] as CustomAutocompleteValueBackEnd2<Multiple>
     }
-    console.log('getValueBySeletedKey', getValueBySeletedKey)
-
     onChange?.(getValueBySeletedKey)
     onCustomChange?.(value)
   }
@@ -83,10 +82,16 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
       multiple={multiple as Multiple | undefined}
       noOptionsText={'No options'}
       onChange={handleOnChange}
+      disabled={disabled}
       limitTags={2}
       popupIcon={<ArrowRadius sx={{ color: 'text.400', fontSize: '16px' }} />}
       renderInput={(params) => (
-        <AppTextField {...textFieldProps} {...params} name={name} />
+        <AppTextField
+          {...textFieldProps}
+          {...params}
+          name={name}
+          disabled={disabled}
+        />
       )}
       getOptionLabel={(option) => {
         const label = getValueByKey(option, keyName) ?? ''

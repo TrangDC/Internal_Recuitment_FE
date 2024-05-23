@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { DefaultValues, FieldValues, Resolver, useForm } from 'react-hook-form'
 import NotificationService from 'services/notification-service'
-import GraphQLClientService, { IbuildQueryReturn } from 'services/refactor/graphql-service'
+import GraphQLClientService, {
+  IbuildQueryReturn,
+} from 'services/refactor/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
 import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
@@ -14,7 +16,7 @@ interface IuseDeleteResource<P> {
   onSuccess?: (data: BaseRecord) => void
   defaultValues?: DefaultValues<P>
   resolver: Resolver<P & FieldValues, any> | undefined
-  showErrorMsg?: boolean,
+  showErrorMsg?: boolean
 }
 
 function useDeleteResource<T, P extends FieldValues>({
@@ -35,7 +37,7 @@ function useDeleteResource<T, P extends FieldValues>({
   const useCreateReturn = useMutation({
     mutationKey,
     mutationFn: (payload: BaseRecord) => {
-      const { id, note } = payload;
+      const { id, note } = payload
 
       return GraphQLClientService.fetchGraphQL(queryString.query, {
         id,
@@ -45,14 +47,17 @@ function useDeleteResource<T, P extends FieldValues>({
     onSuccess: (data) => {
       if (isLeft(data)) {
         onError?.(unwrapEither(data))
-        return showErrorMsg && NotificationService.showError(t(unwrapEither(data).message))
+        return (
+          showErrorMsg &&
+          NotificationService.showError(t(unwrapEither(data).message))
+        )
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
       onSuccess?.(unwrapEither(data))
       return NotificationService.showSuccess('DELETE')
     },
     onError(error) {
-      console.log("check")
+      console.log('check')
       onError?.(error)
       showErrorMsg && NotificationService.showError(error.message)
     },

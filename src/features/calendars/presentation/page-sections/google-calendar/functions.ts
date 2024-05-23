@@ -1,4 +1,7 @@
+import { makeLeft, makeRight } from 'shared/utils/handleEither'
 import { EventColor } from './interface'
+import { Either } from 'shared/interfaces/common'
+import dayjs from 'dayjs'
 
 const colorEvent: EventColor[] = [
   {
@@ -57,3 +60,46 @@ export function getColorEvent(id: number): EventColor | null {
 }
 
 export default randomColor
+
+export function adjustDateTime(
+  originalDateTime: string,
+  newDate: string
+): Either<string, Date> {
+  try {
+    const originalDate = new Date(originalDateTime)
+    const newBaseDate = new Date(newDate)
+    originalDate.setUTCFullYear(newBaseDate.getUTCFullYear())
+    originalDate.setUTCMonth(newBaseDate.getUTCMonth())
+    originalDate.setUTCDate(newBaseDate.getUTCDate())
+    return makeRight(originalDate)
+  } catch {
+    return makeLeft('not a valid date')
+  }
+}
+
+export function convertToRootDate(start: Date, end: Date, root: Date) {
+  const rootDate = dayjs(root)
+
+  // Lấy thông tin giờ phút từ start và end
+  const startHour = dayjs(start).hour()
+  const startMinute = dayjs(start).minute()
+  const endHour = dayjs(end).hour()
+  const endMinute = dayjs(end).minute()
+
+  // Tạo mới start và end theo ngày của root nhưng giữ nguyên giờ phút ban đầu
+  const newStart = rootDate
+    .hour(startHour)
+    .minute(startMinute)
+    .second(0)
+    .millisecond(0)
+  const newEnd = rootDate
+    .hour(endHour)
+    .minute(endMinute)
+    .second(0)
+    .millisecond(0)
+
+  return {
+    newStart: newStart.toDate(),
+    newEnd: newEnd.toDate(),
+  }
+}
