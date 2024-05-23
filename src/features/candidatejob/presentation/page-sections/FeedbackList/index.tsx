@@ -1,10 +1,10 @@
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { ButtonHeader, SpanGenaration } from '../../providers/styles'
 import useActionTable from '../../providers/hooks/useActionTable'
-import { FeedBack } from 'features/candidates/domain/interfaces'
 import { Add } from '@mui/icons-material'
 import { Span, Tiny } from 'shared/components/Typography'
 import { Box, styled } from '@mui/material'
+import { FeedBack } from 'features/feedback/domain/interfaces'
 
 const BoxFeedback = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.grey[200]}`,
