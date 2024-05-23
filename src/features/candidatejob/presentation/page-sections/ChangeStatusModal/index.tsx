@@ -1,12 +1,9 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Button, Grid } from '@mui/material'
+import { FormControl } from '@mui/material'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import {
-  CustomTextField,
-  CustomeButtonCancel,
-} from 'shared/components/form/styles'
+import { CustomTextField } from 'shared/components/form/styles'
 import { FormDataSchemaChangeStatus } from '../../providers/constants/schema'
 import { baseInstance } from 'shared/interfaces'
 import {
@@ -17,7 +14,10 @@ import { CandidateJob } from 'features/candidates/domain/interfaces'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useChangeStatus from '../../providers/hooks/useChangeStatus'
 import useTextTranslation from 'shared/constants/text'
-import InputComponent from 'shared/components/form/inputComponent'
+import AppTextField from 'shared/components/input-fields/AppTextField'
+import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import AppButton from 'shared/components/buttons/AppButton'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 
 interface IChangeStatusModal {
   open: boolean
@@ -27,22 +27,13 @@ interface IChangeStatusModal {
   rowData?: CandidateJob
 }
 
-function ChangeStatusModal({
-  open,
-  setOpen,
-  candidateId,
-  rowData,
-}: IChangeStatusModal) {
-  const { onSubmit, useFormReturn } = useChangeStatus({
-    defaultValues: { id: rowData?.id, feedback: '', attachments: [] },
+function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
+  const { onSubmit, control, isPending, isValid } = useChangeStatus({
     callbackSuccess: () => {
       setOpen(false)
     },
+    defaultValues: { id: rowData?.id, feedback: '', attachments: [] },
   })
-  const {
-    control,
-    formState: { errors },
-  } = useFormReturn
 
   const translation = useTextTranslation()
 
@@ -53,9 +44,9 @@ function ChangeStatusModal({
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
+        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+          <FlexBox gap={2}>
+            <FormControl fullWidth>
               <CustomTextField
                 label="Job name"
                 size="small"
@@ -65,8 +56,10 @@ function ChangeStatusModal({
                 required
                 disabled
               />
-            </Grid>
-            <Grid item xs={6}>
+            </FormControl>
+          </FlexBox>
+          <FlexBox gap={2}>
+            <FormControl fullWidth>
               <CustomTextField
                 label="Current status"
                 size="small"
@@ -77,81 +70,104 @@ function ChangeStatusModal({
                 focused
                 disabled
               />
-            </Grid>
-            <Grid item xs={6}>
+            </FormControl>
+            <FormControl fullWidth>
               <Controller
                 name="status"
+                shouldUnregister
                 control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<
-                    FormDataSchemaChangeStatus,
-                    baseInstance
-                  >
-                    options={STATUS_CANDIDATE_HIRING}
-                    label="name"
-                    inputLabel="New Status"
-                    errors={errors}
-                    field={field}
-                    fullWidth
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AutoCompleteComponent<
+                      FormDataSchemaChangeStatus,
+                      baseInstance
+                    >
+                      options={STATUS_CANDIDATE_HIRING}
+                      label="name"
+                      inputLabel={translation.COMMON.status}
+                      field={field}
+                      fullWidth
+                      required
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </FormControl>
+          </FlexBox>
+
+          <FlexBox gap={2}>
+            <FormControl fullWidth>
               <Controller
-                name="feedback"
                 control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchemaChangeStatus>
-                    errors={errors}
-                    label="Feedback"
-                    field={field}
-                    fullWidth
-                    multiline
-                    minRows={4}
-                    type="text"
-                  />
+                name="feedback"
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AppTextField
+                      label={'Feedback'}
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                      minRows={4}
+                      multiline
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </FormControl>
+          </FlexBox>
+
+          <FlexBox justifyContent={'center'} alignItems={'center'}>
+            <FormControl fullWidth>
               <Controller
                 name="attachments"
+                shouldUnregister
                 control={control}
-                render={({ field }) => (
-                  <InputFileComponent
-                    errors={errors}
-                    field={field}
-                    inputFileProps={{
-                      accept: '.pdf',
-                      regexString: '\\.pdf$',
-                      maxFile: 5,
-                      maxSize: 20,
-                    }}
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <InputFileComponent
+                      field={field}
+                      inputFileProps={{
+                        accept: '.pdf',
+                        regexString: '\\.pdf$',
+                        maxFile: 1,
+                        maxSize: 20,
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-          </Grid>
-        </form>
+            </FormControl>
+          </FlexBox>
+        </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel
-            type="button"
-            variant="contained"
+          <AppButton
+            variant="outlined"
+            size="small"
             onClick={() => setOpen(false)}
           >
             {translation.COMMON.cancel}
-          </CustomeButtonCancel>
-          <Button
-            type="button"
+          </AppButton>
+          <ButtonLoading
             variant="contained"
-            color="primary"
-            onClick={onSubmit}
+            size="small"
+            disabled={isValid}
+            handlesubmit={onSubmit}
+            loading={isPending}
           >
-            {translation.COMMON.save}
-          </Button>
+            Submit
+          </ButtonLoading>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

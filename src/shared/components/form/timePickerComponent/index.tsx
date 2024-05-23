@@ -1,12 +1,12 @@
-import { TimePickerProps } from '@mui/lab'
+
 import { get } from 'lodash'
 import { FieldErrors, FieldValues } from 'react-hook-form'
 import { DivError, DivWrapper } from '../styles'
-import { TimePicker } from '@mui/x-date-pickers/TimePicker'
+import { TimePicker, TimePickerProps } from '@mui/x-date-pickers/TimePicker'
 import styled from '@emotion/styled'
+import { Span } from 'shared/components/Typography'
 
 export const TimePickerField = styled(TimePicker)(({ theme }) => ({
-  marginTop: '10px',
 
   '& .MuiInputBase-root': {
     height: '40px',
@@ -18,20 +18,22 @@ export const TimePickerField = styled(TimePicker)(({ theme }) => ({
 }))
 
 interface TimePickerComponentProps<T extends FieldValues> {
-  errors: FieldErrors<T>
+  errors?: FieldErrors<T>
   field: {
     onChange: (value: any) => void
     value: any
     name: string
   }
   label?: string
-  timePickerProps?: TimePickerProps<Date>
+  timePickerProps?: TimePickerProps<unknown>
+  required?: boolean,
 }
 
 const TimePickerComponent = <T extends object>({
   errors,
   field,
   label,
+  required = false,
   timePickerProps,
 }: TimePickerComponentProps<T>) => {
   const error = get(errors, field.name as string)
@@ -39,7 +41,7 @@ const TimePickerComponent = <T extends object>({
   return (
     <DivWrapper>
       <TimePickerField
-        label={label}
+        label={<p>{label} {required && <Span sx={{color: 'red'}}>*</Span>}</p>}
         ampm={false}
         {...timePickerProps}
         value={field.value}

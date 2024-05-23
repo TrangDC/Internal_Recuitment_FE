@@ -1,4 +1,5 @@
 import { Attachments, Candidate } from "features/candidates/domain/interfaces"
+import { Job } from "features/jobs/domain/interfaces"
 
 export type CandidateJob = {
   id: string
@@ -7,6 +8,7 @@ export type CandidateJob = {
   status: string
   attachments: Attachments
   candidate: Candidate
+  hiring_job: Job
   created_at: string
   updated_at: string
 }

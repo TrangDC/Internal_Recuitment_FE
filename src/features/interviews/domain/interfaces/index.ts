@@ -1,5 +1,6 @@
 import { CandidateJob } from "features/candidates/domain/interfaces"
 import { Member } from "features/teams/domain/interfaces"
+import { SchemaInputNote } from "shared/schema"
 
 export type NewCandidateInterviewInput = {
   title: string
@@ -18,9 +19,22 @@ export type Interview = {
   interview_date: string
   start_from: string
   end_at: string
-  created_at: string
-  updated_at: string
+  created_at: Date
+  updated_at: Date
   candidate_job: CandidateJob
-  interviewer: Member
+  interviewer: Member[]
   candidate_job_id: string
 } 
+
+export type UpdateCandidateInterviewInput = {
+  id: string,
+  title: string
+  description?: string
+  candidate_job_id: string
+  interview_date: Date
+  start_from: Date
+  end_at: Date
+  interviewer: string[]
+}
+
+export type DeleteInterviewInput = SchemaInputNote

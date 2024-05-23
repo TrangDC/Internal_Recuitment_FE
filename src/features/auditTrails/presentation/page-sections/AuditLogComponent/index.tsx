@@ -19,7 +19,7 @@ interface Props {
 
 const LogsComponent = ({module}: Props, ref:any) => {
   const { id } = useParams()
-  const { auditrails_history, handleFilter, handleFreeWord } = useAuditTrails(id as string, module)
+  const { auditrails_history, handleFilter, handleFreeWord } = useAuditTrails(id as string, module) 
 
   const translation = useTextTranslation();
 

@@ -16,12 +16,29 @@ import { useParams } from 'react-router-dom'
 import useListFeedback from '../../providers/hooks/useListFeedBack'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
+import BoxTextSquare from 'shared/components/utils/boxText'
+import EditIcon from 'shared/components/icons/EditIcon'
+import DeleteIcon from 'shared/components/icons/DeleteIcon'
+import UpdateFeedbackModal from '../UpdateFeedbackModal'
+import { FeedBack } from 'features/feedback/domain/interfaces'
+import DeleteFeedbackModal from '../DeleteFeedbackModal'
 
 const ListFeedBack = () => {
-  const { openCreate, setOpenCreate } = useActionTable()
+  const {
+    openCreate,
+    setOpenCreate,
+    openEdit,
+    setOpenEdit,
+    handleOpenEdit,
+    openDelete,
+    setOpenDelete,
+    handleOpenDelete,
+    rowData,
+    rowId,
+  } = useActionTable()
   const { id } = useParams()
-
   const { listFeedback } = useListFeedback(id as string)
+
   return (
     <ListFeedbackContainer>
       <DivActionHeader>
@@ -39,10 +56,26 @@ const ListFeedBack = () => {
         listFeedback.map((feedback, idx) => {
           return (
             <BoxText key={idx}>
-              <FlexBox flexDirection={'column'} gap={'10px'}>
-                <Box>
-                  <TinyText>Helen Vo</TinyText>
-                </Box>
+              <FlexBox flexDirection={'column'} gap={'10px'} width={'100%'}>
+                <FlexBox width={'100%'} justifyContent={'space-between'}>
+                  <FlexBox gap={'8px'}>
+                    <TinyText>{feedback.owner.name}</TinyText>
+                    {feedback.updated_at && <BoxTextSquare content="Edited" />}
+                  </FlexBox>
+                  <FlexBox gap={'15px'} onClick={(e) => e.stopPropagation()}>
+                    <EditIcon
+                      onClick={(e) => {
+                        handleOpenEdit(feedback.id, feedback)
+                      }}
+                    />
+                    <DeleteIcon
+                      onClick={(e) => {
+                        handleOpenDelete(feedback.id)
+                      }}
+                    />
+                  </FlexBox>
+                </FlexBox>
+
                 <FlexBox gap={'60px'}>
                   <Box>
                     <SpanText>
@@ -84,6 +117,23 @@ const ListFeedBack = () => {
           open={openCreate}
           setOpen={setOpenCreate}
           candidate_job_id={id as string}
+        />
+      )}
+
+      {openEdit && (
+        <UpdateFeedbackModal
+          open={openEdit}
+          setOpen={setOpenEdit}
+          id={rowId.current}
+          rowData={rowData.current as FeedBack}
+        />
+      )}
+
+      {openDelete && (
+        <DeleteFeedbackModal
+          open={openDelete}
+          setOpen={setOpenDelete}
+          id={rowId.current}
         />
       )}
     </ListFeedbackContainer>

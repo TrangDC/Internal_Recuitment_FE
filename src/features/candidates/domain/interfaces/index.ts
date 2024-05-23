@@ -1,3 +1,4 @@
+import { Job } from "features/jobs/domain/interfaces"
 import { SchemaInputNote } from "shared/schema"
 
 export type Candidate = {
@@ -76,10 +77,11 @@ export type CandidateJob = {
   updated_at: string
   attachments: Attachments
   candidate: Candidate
+  hiring_job: Job
 }
 
 //interview
-export type FeedBack = {
-  name: string
-  description: string
+export type FeedBackInput = {
+  attachments: Attachments
+  feedback?: string
 }

@@ -19,14 +19,33 @@ import useActionTable from '../../providers/hooks/useActionTable'
 import CreateInterviewModal from '../CreateInterviewModal'
 import { useParams } from 'react-router-dom'
 import useListInterview from '../../providers/hooks/useListInterview'
+import { isEmpty } from 'lodash'
+import { format } from 'date-fns'
+import { CandidateJob } from 'features/candidates/domain/interfaces'
+import EditIcon from 'shared/components/icons/EditIcon'
+import DeleteIcon from 'shared/components/icons/DeleteIcon'
+import EditInterviewModal from '../EditInterviewModal'
+import { Interview } from 'features/interviews/domain/interfaces'
+import DeleteInterviewModal from '../DeleteInterviewModal'
 
-const ListFeedback = () => {
+const ListFeedback = ({
+  jobApplicationDetail,
+}: {
+  jobApplicationDetail: CandidateJob
+}) => {
   const {
     openCreate,
     setOpenCreate,
+    openEdit,
+    setOpenEdit,
+    handleOpenEdit,
+    openDelete,
+    handleOpenDelete,
+    setOpenDelete,
+    rowId,
+    rowData,
   } = useActionTable()
-
-  const { id } = useParams();
+  const { id } = useParams()
   const { listInterview } = useListInterview(id as string)
 
   return (
@@ -36,113 +55,122 @@ const ListFeedback = () => {
           <Span>Interviews</Span>
         </BoxTitle>
         <BoxButton>
-          <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>Add new interview</Button>
+          <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
+            Add new interview
+          </Button>
         </BoxButton>
       </DivActionHeader>
-      <BoxText>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            sx={{ alignItems: 'flex-start' }}
-          >
-            <FlexBox flexDirection={'column'} gap={'10px'}>
-              <Box>
-                <TinyText>Interview 1</TinyText>
-              </Box>
-              <FlexBox gap={'60px'}>
-                <Box>
-                  <SpanText>Date and time</SpanText>
-                  <TinyText>20/03/2024, 14:30 - 16:30</TinyText>
-                </Box>
-                <Box>
-                  <SpanText>Created by</SpanText>
-                  <TinyText>Arianne Bui</TinyText>
-                </Box>
-                <Box>
-                  <SpanText>Created at</SpanText>
-                  <TinyText>20/03/2024, 10:30</TinyText>
-                </Box>
-              </FlexBox>
-            </FlexBox>
-          </AccordionSummary>
-          <AccordionDetails>
-            <FlexBox flexDirection={'column'} gap={'10px'}>
-              <Box>
-                <SpanText>Interviewrs</SpanText>
-                <FlexBox>
-                  <ChipItem label="Durin Nguyen" />
-                  <ChipItem label="Arianne Bui" />
-                  <ChipItem label="Helen Vo" />
-                </FlexBox>
-              </Box>
-              <Box>
-                <SpanText>Description</SpanText>
-                <TinyText>
-                  Lorem ipsum dolor sit amet ad suspendisse blandit aliquam ut
-                  nulla torquent pulvinar cursus pellentesque lectus posuere est
-                  per eget inceptos adipiscing nibh odio felis ultricies urna
-                  fermentum ridiculus dolor class potenti
-                </TinyText>
-              </Box>
-            </FlexBox>
-          </AccordionDetails>
-        </Accordion>
-      </BoxText>
+      {!isEmpty(listInterview) &&
+        listInterview.map((interview, idx) => {
+          return (
+            <BoxText key={idx}>
+              <Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1-content"
+                  sx={{
+                    alignItems: 'flex-start',
+                    flexDirection: 'row-reverse',
+                    gap: '6px',
+                  }}
+                >
+                  <FlexBox flexDirection={'column'} gap={'10px'} width={'100%'}>
+                    <FlexBox width={'100%'} justifyContent={'space-between'}>
+                      <Box>
+                        <TinyText>{interview.title}</TinyText>
+                      </Box>
+                      <FlexBox
+                        gap={'15px'}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <EditIcon
+                          onClick={(e) => {
+                            handleOpenEdit(interview.id, interview)
+                          }}
+                        />
+                        <DeleteIcon
+                          onClick={(e) => {
+                            handleOpenDelete(interview.id)
+                          }}
+                        />
+                      </FlexBox>
+                    </FlexBox>
 
-      <BoxText>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            sx={{ alignItems: 'flex-start' }}
-          >
-            <FlexBox flexDirection={'column'} gap={'10px'}>
-              <Box>
-                <TinyText>Interview 2</TinyText>
-              </Box>
-              <FlexBox gap={'60px'}>
-                <Box>
-                  <SpanText>Date and time</SpanText>
-                  <TinyText>20/03/2024, 14:30 - 16:30</TinyText>
-                </Box>
-                <Box>
-                  <SpanText>Created by</SpanText>
-                  <TinyText>Arianne Bui</TinyText>
-                </Box>
-                <Box>
-                  <SpanText>Created at</SpanText>
-                  <TinyText>20/03/2024, 10:30</TinyText>
-                </Box>
-              </FlexBox>
-            </FlexBox>
-          </AccordionSummary>
-          <AccordionDetails>
-            <FlexBox flexDirection={'column'} gap={'10px'}>
-              <Box>
-                <SpanText>Interviewrs</SpanText>
-                <FlexBox>
-                  <ChipItem label="Durin Nguyen" />
-                  <ChipItem label="Arianne Bui" />
-                  <ChipItem label="Helen Vo" />
-                </FlexBox>
-              </Box>
-              <Box>
-                <SpanText>Description</SpanText>
-                <TinyText>
-                  Lorem ipsum dolor sit amet ad suspendisse blandit aliquam ut
-                  nulla torquent pulvinar cursus pellentesque lectus posuere est
-                  per eget inceptos adipiscing nibh odio felis ultricies urna
-                  fermentum ridiculus dolor class potenti
-                </TinyText>
-              </Box>
-            </FlexBox>
-          </AccordionDetails>
-        </Accordion>
-      </BoxText>
+                    <FlexBox gap={'60px'}>
+                      <Box>
+                        <SpanText>Date and time</SpanText>
+                        <TinyText>
+                          {format(
+                            new Date(interview.interview_date),
+                            'HH:mm, dd/MM/yyyy'
+                          )}
+                        </TinyText>
+                      </Box>
+                      <Box>
+                        <SpanText>Created by</SpanText>
+                        <TinyText>Arianne Bui</TinyText>
+                      </Box>
+                      <Box>
+                        <SpanText>Created at</SpanText>
+                        <TinyText>
+                          {format(
+                            new Date(interview.created_at),
+                            'HH:mm, dd/MM/yyyy'
+                          )}
+                        </TinyText>
+                      </Box>
+                    </FlexBox>
+                  </FlexBox>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <FlexBox
+                    flexDirection={'column'}
+                    gap={'10px'}
+                    padding={'0 30px'}
+                  >
+                    <Box>
+                      <SpanText>Interviewrs</SpanText>
+                      <FlexBox>
+                        {interview.interviewer.map((item, index) => (
+                          <ChipItem key={index} label={item.name} />
+                        ))}
+                      </FlexBox>
+                    </Box>
+                    <Box>
+                      <SpanText>Description</SpanText>
+                      <TinyText>{interview.description}</TinyText>
+                    </Box>
+                  </FlexBox>
+                </AccordionDetails>
+              </Accordion>
+            </BoxText>
+          )
+        })}
 
       {openCreate && (
-        <CreateInterviewModal open={openCreate} setOpen={setOpenCreate} />
+        <CreateInterviewModal
+          hiring_job={jobApplicationDetail.hiring_job}
+          open={openCreate}
+          setOpen={setOpenCreate}
+        />
+      )}
+
+      {openEdit && (
+        <EditInterviewModal
+          rowData={rowData.current as Interview}
+          id_interview={rowId.current}
+          hiring_job={jobApplicationDetail.hiring_job}
+          open={openEdit}
+          setOpen={setOpenEdit}
+        />
+      )}
+
+      {openDelete && (
+        <DeleteInterviewModal
+          id={rowId.current}
+          open={openDelete}
+          setOpen={setOpenDelete}
+        />
       )}
     </ListInterviewContainer>
   )

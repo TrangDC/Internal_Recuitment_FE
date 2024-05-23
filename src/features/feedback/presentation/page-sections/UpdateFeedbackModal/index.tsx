@@ -2,37 +2,41 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useCreateFeedback from '../../providers/hooks/useCreateFeedBack'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import { FeedBack } from 'features/feedback/domain/interfaces'
+import useUpdateFeedback from '../../providers/hooks/useUpdateFeedback'
 
-interface ICreateFeedbackModal {
+interface IUpdateFeedbackModal {
   open: boolean
   setOpen: (value: boolean) => void
-  candidate_job_id: string
+  id: string
+  rowData: FeedBack
 }
 
-function CreateFeedbackModal({
+function UpdateFeedbackModal({
   open,
   setOpen,
-  candidate_job_id,
-}: ICreateFeedbackModal) {
-  const { onSubmit, control, isPending, isValid } = useCreateFeedback({
+  id,
+  rowData,
+}: IUpdateFeedbackModal) {
+  const { onSubmit, control, isPending, isValid } = useUpdateFeedback({
     callbackSuccess: () => {
       setOpen(false)
     },
     defaultValues: {
-      candidate_job_id: candidate_job_id,
+      id: id,
+      feedback: rowData.feedback,
     },
   })
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title="Add New Feedback"
+        title="Edit Feedback"
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -95,7 +99,7 @@ function CreateFeedbackModal({
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-        <AppButton
+          <AppButton
             variant="outlined"
             size="small"
             onClick={() => setOpen(false)}
@@ -117,4 +121,4 @@ function CreateFeedbackModal({
   )
 }
 
-export default CreateFeedbackModal
+export default UpdateFeedbackModal

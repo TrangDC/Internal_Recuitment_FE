@@ -62,9 +62,8 @@ const useGetUrlGetAttachment = (props: createAttachmentProps = {}) => {
     },
     onSuccess: async (data, params) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })
-      callbackSuccess && callbackSuccess(data, params)
-
       try {
+        callbackSuccess && callbackSuccess(data, params)
         params.callback && params.callback({ data, params })
       } catch (error) {
         throw error

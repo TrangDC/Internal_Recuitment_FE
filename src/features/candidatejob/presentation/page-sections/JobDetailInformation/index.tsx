@@ -1,6 +1,6 @@
 import { Box, Button, styled } from '@mui/material'
 import { format } from 'date-fns'
-import { Candidate } from 'features/candidates/domain/interfaces'
+import { CandidateJob } from 'features/candidates/domain/interfaces'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import EditIcon from 'shared/components/icons/EditIcon'
@@ -23,11 +23,10 @@ const ButtonStatus = styled(Button)(({ theme }) => ({
 }))
 
 interface JobDetailInformationProps {
-  candidate: Candidate
-  job: string
+  jobApplicationDetail: CandidateJob
 }
 
-const JobDetailInformation = ({candidate, job}: JobDetailInformationProps) => {
+const JobDetailInformation = ({ jobApplicationDetail }: JobDetailInformationProps) => {
   
   return (
     <DivInformation>
@@ -37,15 +36,15 @@ const JobDetailInformation = ({candidate, job}: JobDetailInformationProps) => {
       <FlexBox flexWrap={'wrap'} gap={'20px'}>
         <DivItemInformation>
           <SpanText>Full name</SpanText>
-          <TinyText>{candidate?.name}</TinyText>
+          <TinyText>{jobApplicationDetail?.candidate?.name}</TinyText>
         </DivItemInformation>
         <DivItemInformation>
           <SpanText>Applied on</SpanText>
-          <TinyText>{candidate?.last_apply_date && format(new Date(candidate.last_apply_date), 'HH:mm, dd/MM/yyyy')}</TinyText>
+          <TinyText>{jobApplicationDetail?.candidate?.last_apply_date && format(new Date(jobApplicationDetail?.candidate.last_apply_date), 'HH:mm, dd/MM/yyyy')}</TinyText>
         </DivItemInformation>
         <DivItemInformation>
           <SpanText>Job applied</SpanText>
-          <TinyText>{job}</TinyText>
+          <TinyText>{jobApplicationDetail?.hiring_job?.name}</TinyText>
         </DivItemInformation>
         <DivItemInformation>
           <ButtonStatus

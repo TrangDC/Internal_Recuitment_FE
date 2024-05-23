@@ -1,13 +1,10 @@
 import BaseModal from 'shared/components/modal'
 import { Controller, useWatch } from 'react-hook-form'
-import { Button, Grid } from '@mui/material'
+import { FormControl } from '@mui/material'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchema } from '../../providers/constants/schema'
-import { Team } from 'features/teams/domain/interfaces'
 import useApplyToJob from '../../providers/hooks/useApplyToJob'
-import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
 import useSelectJobByTeam from 'shared/hooks/graphql/useSelectJobByTeam'
 import { useEffect } from 'react'
 import { Job } from 'features/jobs/domain/interfaces'
@@ -15,6 +12,10 @@ import { baseInstance } from 'shared/interfaces'
 import { STATUS_CANDIDATE_HIRING } from '../../providers/constants'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useTextTranslation from 'shared/constants/text'
+import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
+import AppButton from 'shared/components/buttons/AppButton'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 
 interface IApplyJobModal {
   open: boolean
@@ -23,29 +24,25 @@ interface IApplyJobModal {
 }
 
 function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
-  const { onSubmit, useFormReturn } = useApplyToJob({
-    defaultValues: { candidate_id: candidateId },
+  const { onSubmit, control, isPending, isValid } = useApplyToJob({
     callbackSuccess: () => {
       setOpen(false)
     },
+    defaultValues: {
+      candidate_id: candidateId,
+    },
   })
-  const {
-    control,
-    formState: { errors },
-    setValue,
-  } = useFormReturn
 
-  const { teams } = useSelectTeam()
   const { jobs, changeJobByTeamId } = useSelectJobByTeam()
 
-  const team_id: Record<string, any> = useWatch({ control, name: 'team_id' })
+  const team_id: string | undefined = useWatch({ control, name: 'team_id' })
   const resetValueJob = () => {
     //@ts-ignore
     setValue('hiring_job_id', null)
   }
 
   useEffect(() => {
-    changeJobByTeamId(team_id?.id ? [team_id?.id] : [])
+    changeJobByTeamId(team_id ? [team_id] : [])
   }, [team_id])
 
   const translation = useTextTranslation()
@@ -57,93 +54,132 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
+        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+          <FlexBox justifyContent={'center'} alignItems={'center'}>
+            <FormControl fullWidth>
               <Controller
-                name="team_id"
                 control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Team>
-                    options={teams}
-                    label="name"
-                    inputLabel={translation.MODLUE_TEAMS.team}
-                    errors={errors}
-                    field={field}
-                    fullWidth
-                    callbackOnChange={resetValueJob}
-                  />
+                name="team_id"
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <TeamsAutoComplete
+                      name={field.name}
+                      value={field.value || ''}
+                      onChange={(value) => {
+                        field.onChange(value)
+                      }}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Team',
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </FormControl>
+          </FlexBox>
+
+          <FlexBox justifyContent={'center'} alignItems={'center'}>
+            <FormControl fullWidth>
               <Controller
                 key={jobs.toString()}
                 name="hiring_job_id"
                 shouldUnregister
                 control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Job>
-                    options={jobs}
-                    label="name"
-                    inputLabel={translation.MODLUE_JOBS.job_name}
-                    errors={errors}
-                    field={field}
-                    fullWidth
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AutoCompleteComponent<FormDataSchema, Job>
+                      options={jobs}
+                      label="name"
+                      required
+                      inputLabel={translation.MODLUE_JOBS.job_name}
+                      field={field}
+                      fullWidth
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </FormControl>
+          </FlexBox>
+
+          <FlexBox justifyContent={'center'} alignItems={'center'}>
+            <FormControl fullWidth>
               <Controller
+                key={jobs.toString()}
                 name="status"
+                shouldUnregister
                 control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, baseInstance>
-                    options={STATUS_CANDIDATE_HIRING}
-                    label="name"
-                    inputLabel={translation.COMMON.status}
-                    errors={errors}
-                    field={field}
-                    fullWidth
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AutoCompleteComponent<FormDataSchema, baseInstance>
+                      options={STATUS_CANDIDATE_HIRING}
+                      label="name"
+                      inputLabel={translation.COMMON.status}
+                      field={field}
+                      fullWidth
+                      required
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </FormControl>
+          </FlexBox>
+
+          <FlexBox justifyContent={'center'} alignItems={'center'}>
+            <FormControl fullWidth>
               <Controller
                 name="attachments"
+                shouldUnregister
                 control={control}
-                render={({ field }) => (
-                  <InputFileComponent
-                    errors={errors}
-                    field={field}
-                    inputFileProps={{
-                      accept: ".pdf",
-                      regexString: "\\.pdf$",
-                      maxFile: 1,
-                      maxSize: 20,
-                    }}
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <InputFileComponent
+                      field={field}
+                      inputFileProps={{
+                        accept: '.pdf',
+                        regexString: '\\.pdf$',
+                        maxFile: 1,
+                        maxSize: 20,
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-          </Grid>
-        </form>
+            </FormControl>
+          </FlexBox>
+        </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel type="button" variant="contained" onClick={() => setOpen(false)}>
-            {translation.COMMON.cancel}
-          </CustomeButtonCancel>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={onSubmit}
+          <AppButton
+            variant="outlined"
+            size="small"
+            onClick={() => setOpen(false)}
           >
-            {translation.COMMON.save}
-          </Button>
+            {translation.COMMON.cancel}
+          </AppButton>
+          <ButtonLoading
+            variant="contained"
+            size="small"
+            disabled={isValid}
+            handlesubmit={onSubmit}
+            loading={isPending}
+          >
+            Submit
+          </ButtonLoading>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

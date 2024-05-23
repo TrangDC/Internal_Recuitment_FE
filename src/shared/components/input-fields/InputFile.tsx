@@ -4,7 +4,6 @@ import UploadIcon from '../icons/UploadIcon'
 import { Span, Tiny } from '../Typography'
 import { DragEvent, useMemo, useState } from 'react'
 import TrashIcon from '../icons/TrashIcon'
-import toastError from '../toast/toastError'
 import useTextTranslation from 'shared/constants/text'
 import ShowFile from './ItemFile'
 import useGetUrlGetAttachment, {
@@ -14,6 +13,8 @@ import useGetUrlGetAttachment, {
 import { v4 as uuidv4 } from 'uuid'
 import { UploadFileAttachment } from 'services/handleAttachments'
 import { checkMaxFile, checkMaxSize, regexFile, wrapperValidate } from './utils'
+import { toast } from 'react-toastify'
+import { RULE_MESSAGES } from 'shared/constants/vaildate'
 
 const InputFileContainer = styled(Box)(({ theme }) => ({
   border: '2px dashed #2499EF',
@@ -67,7 +68,11 @@ const TextWrapper = styled(FlexBox)(({ theme }) => ({
 export interface InputFileProps {
   accept?: string
   regexString?: string
-  msgError?: string
+  msgError?: {
+    maxFile?: string
+    maxSize?: string
+    is_valid?: string
+  }
   callbackFileChange?: (data: FileAttachment[]) => void
   maxFile?: number
   maxSize?: number | null
@@ -90,10 +95,11 @@ const InputFile = ({
   maxFile = 5,
   maxSize = null,
   showList = true,
+  msgError,
 }: InputFileProps) => {
   const [files, setFiles] = useState<FileAttachment[]>([])
   const idFile = useMemo(() => {
-    return uuidv4();
+    return uuidv4()
   }, [])
 
   const handleRemoveFile = (idx: number) => {
@@ -108,22 +114,23 @@ const InputFile = ({
     blob: File,
     fieldValidate: { regex: string; maxFile: number; maxSize: number | null }
   ) {
+
     const regexValidate = wrapperValidate(
       () => regexFile(blob, fieldValidate.regex),
-      'File is not valid'
+      msgError?.is_valid ? msgError?.is_valid : RULE_MESSAGES.MC5('file')
     )
     if (!regexValidate.status) return regexValidate
 
     const maxFileValidate = wrapperValidate(
       () => checkMaxFile(files, fieldValidate.maxFile),
-      `Khong duoc nhap qua ${fieldValidate.maxFile} File`
+      msgError?.maxFile ? msgError?.maxFile : RULE_MESSAGES.MC4('file', maxFile)
     )
     if (!maxFileValidate.status) return maxFileValidate
 
     if (maxSize) {
       const maxSizeValidate = wrapperValidate(
         () => checkMaxSize(blob, fieldValidate.maxFile),
-        `Khong duoc nhap file qua ${fieldValidate.maxSize} MB`
+        msgError?.maxSize ? msgError?.maxSize : RULE_MESSAGES.MC8('file', maxSize.toString())
       )
 
       if (!maxSizeValidate.status) return maxSizeValidate
@@ -146,7 +153,7 @@ const InputFile = ({
     return await UploadFileAttachment(CreateAttachmentSASURL.url, params?.file)
   }
 
-  const { handleGetUrl } = useGetUrlGetAttachment({
+  const { handleGetUrl, handleGetUrlDownload } = useGetUrlGetAttachment({
     callbackSuccess: handleUploadAttachment,
   })
 
@@ -158,7 +165,7 @@ const InputFile = ({
     })
 
     if (!validate.status) {
-      toastError(validate.msgError)
+      toast.error(validate.msgError)
       return
     }
 
@@ -171,13 +178,22 @@ const InputFile = ({
       file: fileUpload,
     }
 
-    handleGetUrl(paramUpload, (data) => {
+    handleGetUrl(paramUpload, async (data) => {
       const filesUpload = [
         ...files,
         { id: uuid, name: fileUpload.name, file: fileUpload },
       ]
-      setFiles(filesUpload)
-      callbackFileChange && callbackFileChange(filesUpload as FileAttachment[])
+
+      const { CreateAttachmentSASURL } = await handleGetUrlDownload(paramUpload)
+
+      try {
+        await UploadFileAttachment(CreateAttachmentSASURL.url, fileUpload)
+        setFiles(filesUpload)
+        callbackFileChange &&
+          callbackFileChange(filesUpload as FileAttachment[])
+      } catch (error) {
+        toast.error((error as Error)?.message)
+      }
     })
   }
 

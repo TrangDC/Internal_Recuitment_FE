@@ -42,10 +42,13 @@ const useGraphql = () => {
             document_id
             document_name
           }
-          candidate {
+          hiring_job {
             id
             name
-            status
+            team {
+              id
+              name
+            }
           }
           created_at
           updated_at
@@ -121,6 +124,7 @@ const useGraphql = () => {
         id
         candidate_id
         hiring_job_id
+        status
         candidate {
             id
             name
@@ -135,6 +139,10 @@ const useGraphql = () => {
             id
             document_name
             document_id
+        }
+        hiring_job {
+          id
+          name
         }
       }
     `,

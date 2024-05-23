@@ -111,6 +111,16 @@
         "name_exist": "name has already existed",
         "cannot_delete_team": "There are already jobs or interviewers for this team, can not delete this team."
       }
+    },
+    "candidate_job": {
+      "validation": {
+        "candidate_job_status_exist": "candidate job status job has already existed"
+      }
+    },
+    "candidate_interviews": {
+      "validation": {
+        "schedule_exist": "schedule has already existed"
+      }
     }
   }
 }
