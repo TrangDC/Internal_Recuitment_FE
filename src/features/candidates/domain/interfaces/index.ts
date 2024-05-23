@@ -44,7 +44,7 @@ export type DeleteCandidateInput = SchemaInputNote
 
 export type BlackListCandidateInput = {
   id: string,
-  note: string,
+  note?: string,
   is_black_list: boolean,
 }
 
@@ -60,6 +60,7 @@ export type UpdateCandidateJobStatus = {
   status: string
   attachments: Attachments
   feedback?: string
+  failed_reason?: string[]
 }
 
 export type Attachments = {

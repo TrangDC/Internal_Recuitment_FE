@@ -76,6 +76,7 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
   }
   return (
     <Autocomplete<T, Multiple>
+      {...props}
       size="small"
       value={(getValue as any) ?? null}
       options={options}

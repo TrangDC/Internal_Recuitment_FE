@@ -3,8 +3,12 @@ import { format } from 'date-fns'
 import { CandidateJob } from 'features/candidates/domain/interfaces'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
+import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
-import InputFile from 'shared/components/input-fields/InputFile'
+import useActionTable from '../../providers/hooks/useActionTable'
+import ChangeStatusModal from '../ChangeStatusModal'
+import { downloadFileAttachment } from '../../providers/helper'
+import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 
 const DivInformation = styled(FlexBox)(({ theme }) => ({
   padding: '24px',
@@ -26,35 +30,98 @@ interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }
 
-const JobDetailInformation = ({ jobApplicationDetail }: JobDetailInformationProps) => {
-  
+const JobDetailInformation = ({
+  jobApplicationDetail,
+}: JobDetailInformationProps) => {
+  const {
+    handleOpenChangeStatus,
+    openChangeStatus,
+    setOpenChangeStatus,
+    rowData,
+    rowId,
+  } = useActionTable<CandidateJob>()
+
+  const { handleGetUrlDownload } = useGetUrlGetAttachment()
+
   return (
-    <DivInformation>
-      <FlexBox flexWrap={'wrap'} gap={'20px'}>
+    <DivInformation height={'100%'}>
+      {/* <FlexBox flexWrap={'wrap'} gap={'20px'}>
         <InputFile />
-      </FlexBox>
-      <FlexBox flexWrap={'wrap'} gap={'20px'}>
+      </FlexBox> */}
+
+      <FlexBox flexWrap={'wrap'} gap={'20px'} flexDirection={'column'} width={'100%'}>
         <DivItemInformation>
           <SpanText>Full name</SpanText>
           <TinyText>{jobApplicationDetail?.candidate?.name}</TinyText>
         </DivItemInformation>
         <DivItemInformation>
           <SpanText>Applied on</SpanText>
-          <TinyText>{jobApplicationDetail?.candidate?.last_apply_date && format(new Date(jobApplicationDetail?.candidate.last_apply_date), 'HH:mm, dd/MM/yyyy')}</TinyText>
+          <TinyText>
+            {jobApplicationDetail?.candidate?.last_apply_date &&
+              format(
+                new Date(jobApplicationDetail?.candidate.last_apply_date),
+                'HH:mm, dd/MM/yyyy'
+              )}
+          </TinyText>
         </DivItemInformation>
         <DivItemInformation>
           <SpanText>Job applied</SpanText>
           <TinyText>{jobApplicationDetail?.hiring_job?.name}</TinyText>
         </DivItemInformation>
+      </FlexBox>
+      <FlexBox flexWrap={'wrap'} gap={'20px'} justifyContent={'flex-end'} flexDirection={'column'} width={'100%'}>
         <DivItemInformation>
           <ButtonStatus
             variant="contained"
-            startIcon={<EditIcon sx={{ backgroundColor: 'white' }} />}
+            onClick={() => {
+              const { attachments } = jobApplicationDetail
+              downloadFileAttachment(attachments, handleGetUrlDownload)
+            }}
+            startIcon={
+              <DownloadIcon
+                sx={{
+                  ' path': {
+                    fill: 'white',
+                  },
+                }}
+              />
+            }
+          >
+            Download
+          </ButtonStatus>
+        </DivItemInformation>
+        <DivItemInformation>
+          <ButtonStatus
+            onClick={() => {
+              handleOpenChangeStatus(
+                jobApplicationDetail.id,
+                jobApplicationDetail
+              )
+            }}
+            variant="contained"
+            startIcon={
+              <EditIcon
+                sx={{
+                  ' path': {
+                    fill: 'white',
+                  },
+                }}
+              />
+            }
           >
             Change status
           </ButtonStatus>
         </DivItemInformation>
       </FlexBox>
+      {openChangeStatus && (
+        <ChangeStatusModal
+          open={openChangeStatus}
+          setOpen={setOpenChangeStatus}
+          candidateId={rowData.current?.id as string}
+          id={rowId.current}
+          rowData={rowData.current}
+        />
+      )}
     </DivInformation>
   )
 }

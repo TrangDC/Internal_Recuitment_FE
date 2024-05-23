@@ -34,8 +34,15 @@ export const columns = (
       style: { width: '300px' },
     },
   }),
-  columnHelper.accessor('team', {
+  columnHelper.accessor((row) => row.team.name, {
+    id: 'team',
     header: () => <span>Team</span>,
+    enableSorting: false,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+  }),
+  columnHelper.accessor((row) => row.status, {
+    id: 'status',
+    header: () => <span>Status</span>,
     enableSorting: false,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),

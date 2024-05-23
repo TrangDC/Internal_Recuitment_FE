@@ -28,7 +28,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
         object: {
           ...rowData,
           note: '',
-          dob: new Date(rowData?.dob as string),
+          dob: rowData?.dob ? new Date(rowData?.dob as string) : rowData?.dob,
         },
       }),
       callbackSuccess: () => {

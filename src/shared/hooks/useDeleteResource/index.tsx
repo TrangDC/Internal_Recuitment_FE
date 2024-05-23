@@ -49,7 +49,7 @@ function useDeleteResource<T, P extends FieldValues>({
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
       onSuccess?.(unwrapEither(data))
-      return NotificationService.showSuccess('EDIT')
+      return NotificationService.showSuccess('DELETE')
     },
     onError(error) {
       console.log("check")

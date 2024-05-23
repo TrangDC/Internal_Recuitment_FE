@@ -1,29 +1,29 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/hiring/domain/graphql/graphql'
-import { HiringInput } from 'features/hiring/domain/interfaces'
-import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
+import { ChangeStatusUser } from 'features/hiring/domain/interfaces'
+import { schemaChangeStatus, FormDataSchemaUpdateStatus } from '../constants/schema'
+import _ from 'lodash'
 import useUpdateResource from 'shared/hooks/useUpdateResource'
 
-interface EditHiringProps {
-  defaultValues?: Partial<FormDataSchemaUpdate>
+interface deleteHiringProps {
+defaultValues?: Partial<FormDataSchemaUpdateStatus>
   callbackSuccess?: (value: any) => void
 }
 
-function useEditHiring(props: EditHiringProps = { defaultValues: {} }) {
+function useDeleteHiring(props: deleteHiringProps = { defaultValues: {}}) {
   const { defaultValues, callbackSuccess } = props
-
-  const { updateUser, queryKey } = useGraphql()
+  const { changeStatusUser, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useUpdateResource<
-  HiringInput,
-    FormDataSchemaUpdate
+  ChangeStatusUser,
+    FormDataSchemaUpdateStatus
   >({
     mutationKey: [queryKey],
-    queryString: updateUser,
+    queryString: changeStatusUser,
     defaultValues: {
-      status: 'active',
+      status: 'inactive',
       ...defaultValues,
     },
-    resolver: yupResolver(schemaUpdate),
+    resolver: yupResolver(schemaChangeStatus),
     onSuccess: callbackSuccess,
   })
 
@@ -37,6 +37,7 @@ function useEditHiring(props: EditHiringProps = { defaultValues: {} }) {
     })()
   }
 
+
   return {
     onSubmit,
     control,
@@ -46,4 +47,4 @@ function useEditHiring(props: EditHiringProps = { defaultValues: {} }) {
   }
 }
 
-export default useEditHiring
+export default useDeleteHiring

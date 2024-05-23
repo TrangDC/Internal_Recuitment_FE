@@ -24,6 +24,7 @@ export interface AutocompleteValueBackEndCommonProps<
   textFieldProps: TextFieldProps
   filter?: BaseRecord
   getOptionLabel?: (option: T) => ReactNode
+  open?: boolean,
 }
 
 export interface IAutocompleteBackEndProps<
@@ -42,6 +43,7 @@ export interface IAutocompleteBackEndProps<
   onCustomChange?: (value: CustomAutocompleteValueBackEnd<T, Multiple>) => void
   filter?: BaseRecord
   getOptionLabel?: (option: T) => ReactNode
+  open?: boolean,
 }
 export type Leaves<T> = T extends object
   ? {

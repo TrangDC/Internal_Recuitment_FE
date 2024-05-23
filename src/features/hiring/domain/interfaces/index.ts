@@ -1,10 +1,11 @@
-import { SchemaInputNote } from "shared/schema";
+import { Team } from "features/teams/domain/interfaces";
 
 export type Hiring = {
   id: string,
   name: string,
   work_email: string,
-  team: string,
+  team: Team,
+  status: 'active' | 'inactive'
   created_at: string,
   updated_at: string,
 }
@@ -12,8 +13,12 @@ export type Hiring = {
 export type HiringInput = {
   id: string,
   name: string,
-  email: string,
-  team: string,
+  work_email: string,
+  // team: string,
 }
 
-export type DeleteHiringInput = SchemaInputNote;
+export type ChangeStatusUser = {
+  id: string,
+  note: string,
+  status: 'active' | 'inactive'
+}

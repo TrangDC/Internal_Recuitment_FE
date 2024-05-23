@@ -25,7 +25,6 @@ export const columns = (
     id: 'email',
     header: () => <span>{t('email')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
-    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.phone, {
     id: 'phone',
