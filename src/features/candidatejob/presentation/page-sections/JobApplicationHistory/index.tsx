@@ -58,14 +58,14 @@ const JobApplicationHistory = () => {
         title: 'Change status',
         Icon: <EditIcon />,
       },
-      {
-        id: 'view',
-        onClick: (id, rowData) => {
-          // handleOpenDetail(id, rowData)
-        },
-        title: 'View CV',
-        Icon: <EyeIcon />,
-      },
+      // {
+      //   id: 'view',
+      //   onClick: (id, rowData) => {
+      //     // handleOpenDetail(id, rowData)
+      //   },
+      //   title: 'View CV',
+      //   Icon: <EyeIcon />,
+      // },
       {
         id: 'download',
         onClick: (id, rowData) => {

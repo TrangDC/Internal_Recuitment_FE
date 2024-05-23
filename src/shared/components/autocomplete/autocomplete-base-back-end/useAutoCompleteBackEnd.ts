@@ -18,10 +18,12 @@ function useAutoCompleteBackEnd<T>({
 }: IUseAutoComplete) {
   const { data } = useQuery({
     queryKey: queryKey,
+    gcTime:0,
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(queryString.query, variables),
   })
   let options: T[] = []
+
   if (data && isRight(data)) {
     const response = unwrapEither(data)
     options =
@@ -29,6 +31,7 @@ function useAutoCompleteBackEnd<T>({
         (item: any) => item?.node
       ) ?? []
   }
+
   return {
     options,
   }

@@ -71,7 +71,7 @@ class GraphQLClientService {
     try {
       const response: BaseRecord = await graphQLClient.request(query, variables)
       return makeRight(response)
-    } catch ({ response }: any) {
+    } catch ({ response }: any) {    
       const error = ErrorException.fromJson(response)
       return makeLeft(error)
     }

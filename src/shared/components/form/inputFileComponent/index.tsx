@@ -4,7 +4,7 @@ import { get } from 'lodash'
 import InputFile, { InputFileProps } from 'shared/components/input-fields/InputFile'
 
 type InputFileComponentProps<T extends object> = {
-  errors: FieldErrors<T>
+  errors?: FieldErrors<T>
   field: {
     onChange: (value: any) => void
     value: any

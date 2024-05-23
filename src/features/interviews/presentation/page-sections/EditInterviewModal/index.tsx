@@ -3,7 +3,6 @@ import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import useCreateInterview from '../../providers/hooks/useCreateInterview'
 import { useParams } from 'react-router-dom'
 import TimePickerComponent from 'shared/components/form/timePickerComponent'
 import { Job } from 'features/jobs/domain/interfaces'
@@ -14,32 +13,46 @@ import { Fragment } from 'react/jsx-runtime'
 import AppDateField from 'shared/components/input-fields/DateField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import { Interview } from 'features/interviews/domain/interfaces'
+import useEditInterview from '../../providers/hooks/useEditInterview'
+import { transformListItem } from 'shared/utils/utils'
 
-interface ICreateInterviewModal {
+interface IEditInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
   hiring_job: Job
+  rowData: Interview
+  id_interview: string,
 }
 
-function CreateInterviewModal({
+function EditInterviewModal({
   open,
   setOpen,
   hiring_job,
-}: ICreateInterviewModal) {
+  rowData,
+  id_interview,
+}: IEditInterviewModal) {
   const { id } = useParams()
-  const { onSubmit, control, isPending, isValid } = useCreateInterview({
+  const { onSubmit, control, isPending, isValid } = useEditInterview({
     callbackSuccess: () => {
       setOpen(false)
     },
     defaultValues: {
+      id: id_interview,
       candidate_job_id: id,
+      title: rowData.title,
+      interview_date: new Date(rowData.interview_date),
+      description: rowData.description,
+      interviewer: transformListItem(rowData.interviewer, 'id'),
+      start_from: new Date(rowData.start_from),
+      end_at: new Date(rowData.end_at),
     },
   })
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title="Add New Interview"
+        title="Edit Interview"
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -210,7 +223,7 @@ function CreateInterviewModal({
           <ButtonLoading
             variant="contained"
             size="small"
-            // disabled={isValid}
+            disabled={isValid}
             handlesubmit={onSubmit}
             loading={isPending}
           >
@@ -222,4 +235,4 @@ function CreateInterviewModal({
   )
 }
 
-export default CreateInterviewModal
+export default EditInterviewModal

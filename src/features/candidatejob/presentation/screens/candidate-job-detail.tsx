@@ -32,10 +32,10 @@ const CandidateJobDetail = () => {
         <DivWrapperContainer>
           <Grid container>
             <Grid item xs={3}>
-              <JobDetailInformation candidate={jobApplicationDetail.candidate} job={jobApplicationDetail.hiring_job_id}/>
+              <JobDetailInformation jobApplicationDetail={jobApplicationDetail}/>
             </Grid>
             <Grid item xs={9}>
-              <JobDetailAction />
+              <JobDetailAction jobApplicationDetail={jobApplicationDetail}/>
             </Grid>
           </Grid>
         </DivWrapperContainer>

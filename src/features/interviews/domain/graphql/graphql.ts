@@ -20,9 +20,8 @@ const useGraphql = () => {
           interviewer {
             id
             name
-          }
-          candidate_job {
-            id
+            work_email
+            status
           }
           end_at
           created_at
@@ -58,11 +57,40 @@ const useGraphql = () => {
     },
   })
 
+  const updateCandidateInterview = buildQuery({
+    operation: 'UpdateCandidateInterview',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        id
+      }
+    `,
+    params: {
+      input: 'UpdateCandidateInterviewInput!',
+      id: 'ID!'
+    },
+  })
+
+  const deleteCandidateInterview = buildQuery({
+    operation: 'DeleteCandidateInterview',
+    options: {
+      type: 'mutation',
+    },
+    node: ``,
+    params: {
+      id: 'ID!'
+    },
+  })
+
+
   return {
     queryKey,
-    // getCandidate,
+    updateCandidateInterview,
     getAllCandidateInterview,
-    createCandidateInterview
+    createCandidateInterview,
+    deleteCandidateInterview
   }
 }
 

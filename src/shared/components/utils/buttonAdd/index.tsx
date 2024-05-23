@@ -1,5 +1,6 @@
-import { CSSProperties } from '@emotion/serialize'
-import { Button, SvgIconProps } from '@mui/material'
+
+import { Button, SvgIconProps, SxProps } from '@mui/material'
+import { CSSProperties } from '@mui/material/styles/createMixins'
 import React from 'react'
 import { Span } from 'shared/components/Typography'
 
@@ -8,7 +9,7 @@ interface Props {
   textLable: string
   onClick?: () => void
   variant?: 'text' | 'outlined' | 'contained'
-  icon_style?: CSSProperties
+  icon_style?: SxProps
   position_icon?: 'start' | 'end'
 }
 
@@ -21,6 +22,7 @@ const ButtonAdd = (props: Props) => {
     variant = 'contained',
     position_icon = 'start',
   } = props
+
   const adornment = (
     <Icon
       sx={{

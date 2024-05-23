@@ -15,13 +15,13 @@ const columnHelper = createColumnHelper<CandidateJob>()
 export const columns = (
   actions: TOptionItem<CandidateJob>[]
 ): ColumnDef<CandidateJob, any>[] => [
-  columnHelper.accessor((row) => row.candidate_id, {
+  columnHelper.accessor((row) => row.hiring_job.name, {
     id: 'job_name',
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
     header: () => <span>{t('job_name')}</span>,
     enableSorting: false,
   }),
-  columnHelper.accessor((row) => row.candidate_id, {
+  columnHelper.accessor((row) => row.hiring_job.team.name, {
     id: 'team',
     header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
@@ -30,7 +30,7 @@ export const columns = (
   columnHelper.accessor((row) => row.updated_at, {
     id: 'updated_at',
     size: 200,
-    header: () => <span>{t('applied_date')}</span>,
+    header: () => <span>Last update</span>,
     cell: (info) => (
       <StyleSpanName>
         {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}

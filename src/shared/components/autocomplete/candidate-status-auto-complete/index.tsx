@@ -11,7 +11,7 @@ function CandidateStatusAutoComplete<Multiple extends boolean>(
   return <AutocompleteBase<Multiple> {...props} options={options} />
 }
 
-const options: IOption[] = [
+export const options: IOption[] = [
   {label: 'APPLIED', value: STATUS_CANDIDATE.APPLIED},
   {label: 'INTERVIEWING', value: STATUS_CANDIDATE.INTERVIEWING},
   {label: 'OFFERING', value: STATUS_CANDIDATE.OFFERING},

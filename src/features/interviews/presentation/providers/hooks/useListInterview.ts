@@ -16,7 +16,7 @@ const useListInterview = (id: String) => {
         }),
     })
 
-    const listInterview: Interview =
+    const listInterview: Interview[] =
         data?.[getAllCandidateInterview.operation]?.edges?.map((item: any) => item?.node) ?? []
 
     return {

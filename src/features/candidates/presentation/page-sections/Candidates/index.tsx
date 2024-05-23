@@ -177,7 +177,7 @@ const Candidates = () => {
 
           <DivHeaderWrapper>
             <CustomTextField
-              label={translation.COMMON.search}
+              label="Search by name/ email/ phone"
               variant="outlined"
               size="small"
               sx={{ width: '400px', fontSize: '13px' }}

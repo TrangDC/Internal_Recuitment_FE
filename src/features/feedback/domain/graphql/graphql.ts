@@ -18,6 +18,11 @@ const useGraphql = () => {
           feedback
           created_at
           updated_at
+          owner {
+            id
+            name
+            work_email
+          }
         }
       }
       pagination {
@@ -49,10 +54,40 @@ const useGraphql = () => {
     },
   })
 
+  const updateCandidateJobFeedback  = buildQuery({
+    operation: 'UpdateCandidateJobFeedback',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        id
+      }
+    `,
+    params: {
+      input: 'UpdateCandidateJobFeedbackInput!',
+      id: 'ID!'
+    },
+  })
+
+  const deleteCandidateJobFeedback  = buildQuery({
+    operation: 'DeleteCandidateJobFeedback',
+    options: {
+      type: 'mutation',
+    },
+    node: ``,
+    params: {
+      id: 'ID!',
+      // note: "String!"
+    },
+  })
+
   return {
     queryKey,
     getAllCandidateJobFeedbacks,
-    createCandidateJobFeedback
+    createCandidateJobFeedback,
+    updateCandidateJobFeedback,
+    deleteCandidateJobFeedback
   }
 }
 

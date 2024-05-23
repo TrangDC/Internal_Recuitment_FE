@@ -20,7 +20,7 @@ export const AutocompleteBase = <Multiple extends boolean = false>(
     value,
     onChange,
     options,
-    open = false,
+    // open = false,
   } = props
   let getValue: IOption[] | IOption | undefined
   if (multiple) {
@@ -39,7 +39,7 @@ export const AutocompleteBase = <Multiple extends boolean = false>(
 
   return (
     <Autocomplete
-      open={open}
+      {...props}
       size="small"
       options={options}
       value={(getValue as any) ?? null}
@@ -63,6 +63,7 @@ export const AutocompleteBase = <Multiple extends boolean = false>(
           {option ? option.label : ''}
         </li>
       )}
+     
     />
   )
 }
