@@ -12,7 +12,9 @@ interface deleteCandidateProps {
   callbackSuccess?: (value: any) => void
 }
 
-function useDeleteCandidate(props: deleteCandidateProps = { defaultValues: {} }) {
+function useDeleteCandidate(
+  props: deleteCandidateProps = { defaultValues: {} }
+) {
   const { defaultValues, callbackSuccess } = props
 
   const { deleteCandidate, queryKey } = useGraphql()
@@ -26,7 +28,7 @@ function useDeleteCandidate(props: deleteCandidateProps = { defaultValues: {} })
       ...defaultValues,
     },
     resolver: yupResolver(schemaDelete),
-    onSuccess: callbackSuccess
+    onSuccess: callbackSuccess,
   })
 
   const { handleSubmit, control, formState } = useFormReturn
@@ -38,7 +40,6 @@ function useDeleteCandidate(props: deleteCandidateProps = { defaultValues: {} })
       mutate(value)
     })()
   }
-
 
   return {
     onSubmit,

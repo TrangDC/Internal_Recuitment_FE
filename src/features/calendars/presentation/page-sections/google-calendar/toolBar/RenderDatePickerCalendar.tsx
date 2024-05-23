@@ -18,12 +18,22 @@ function RenderDatePickerCalendar(props: IRenderDatePickerCalendar) {
     if (value) onChange(value)
   }
 
-  const sx: SxProps = { width: '250px !important' }
+  const sx: SxProps = {
+    width: '250px !important',
+    '& .MuiInputBase-root': {
+      position: 'relative !important',
+      WebkitBoxSizing: 'unset !important',
+      '& input': {
+        padding: '8.5px 0px 8.5px 14px',
+      },
+    },
+  }
   if (view === 'month')
     return (
       <DatePickerCalendar
         views={['month', 'year']}
         sx={sx}
+        slotProps={{}}
         format={formatDate}
         onChange={onSeletedDate}
         value={date}
@@ -40,7 +50,13 @@ function RenderDatePickerCalendar(props: IRenderDatePickerCalendar) {
       />
     )
 
-  return <WeekPicker onChange={(value) => onSeletedDate(value)} value={date} />
+  return (
+    <WeekPicker
+      onChange={(value) => onSeletedDate(value)}
+      value={date}
+      sx={sx}
+    />
+  )
 }
 
 export default RenderDatePickerCalendar

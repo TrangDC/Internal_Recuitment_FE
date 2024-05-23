@@ -1,15 +1,9 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
-import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomTextField } from 'shared/components/form/styles'
-import { FormDataSchemaChangeStatus } from '../../providers/constants/schema'
-import { baseInstance } from 'shared/interfaces'
-import {
-  CANDIDATE_STATUS,
-  STATUS_CANDIDATE_HIRING,
-} from '../../providers/constants'
+import { CANDIDATE_STATUS } from '../../providers/constants'
 import { CandidateJob } from 'features/candidates/domain/interfaces'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useChangeStatus from '../../providers/hooks/useChangeStatus'

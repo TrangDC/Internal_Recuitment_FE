@@ -49,7 +49,12 @@ const JobDetailInformation = ({
         <InputFile />
       </FlexBox> */}
 
-      <FlexBox flexWrap={'wrap'} gap={'20px'} flexDirection={'column'} width={'100%'}>
+      <FlexBox
+        flexWrap={'wrap'}
+        gap={'20px'}
+        flexDirection={'column'}
+        width={'100%'}
+      >
         <DivItemInformation>
           <SpanText>Full name</SpanText>
           <TinyText>{jobApplicationDetail?.candidate?.name}</TinyText>
@@ -69,7 +74,13 @@ const JobDetailInformation = ({
           <TinyText>{jobApplicationDetail?.hiring_job?.name}</TinyText>
         </DivItemInformation>
       </FlexBox>
-      <FlexBox flexWrap={'wrap'} gap={'20px'} justifyContent={'flex-end'} flexDirection={'column'} width={'100%'}>
+      <FlexBox
+        flexWrap={'wrap'}
+        gap={'20px'}
+        justifyContent={'flex-end'}
+        flexDirection={'column'}
+        width={'100%'}
+      >
         <DivItemInformation>
           <ButtonStatus
             variant="contained"

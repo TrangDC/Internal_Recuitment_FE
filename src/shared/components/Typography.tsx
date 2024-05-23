@@ -218,3 +218,55 @@ export const Tiny12md: React.FC<BoxProps & Props> = (props) => {
     </StyledBox>
   )
 }
+
+export const Text13md: React.FC<BoxProps & Props> = (props) => {
+  const { ellipsis, children, className, ...others } = props
+  return (
+    <StyledBox
+      component="p"
+      fontSize={13}
+      fontWeight={500}
+      lineHeight={'15.85px'}
+      ellipsis={ellipsis ? 1 : 0}
+      className={clsx({ [className || '']: true })}
+      {...others}
+    >
+      {children}
+    </StyledBox>
+  )
+}
+
+export const Text15sb: React.FC<BoxProps & Props> = (props) => {
+  const { ellipsis, children, className, ...others } = props
+  return (
+    <StyledBox
+      component="p"
+      fontSize={15}
+      fontWeight={600}
+      lineHeight={'18.29px'}
+      ellipsis={ellipsis ? 1 : 0}
+      className={clsx({ [className || '']: true })}
+      {...others}
+    >
+      {children}
+    </StyledBox>
+  )
+}
+
+export const LinkText: React.FC<BoxProps & Props> = (props) => {
+  const { ellipsis, children, className, ...others } = props
+  return (
+    <StyledBox
+      component="p"
+      fontSize={15}
+      fontWeight={600}
+      lineHeight={'18.29px'}
+      ellipsis={ellipsis ? 1 : 0}
+      className={clsx({ [className || '']: true })}
+      color={'primary.600'}
+      {...others}
+    >
+      {children}
+    </StyledBox>
+  )
+}

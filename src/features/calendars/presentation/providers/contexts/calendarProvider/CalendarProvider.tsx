@@ -3,11 +3,13 @@ import { ReactNode, createContext, useContext, useMemo } from 'react'
 interface InitialState {
   setOpenCreateInterView: (open: boolean) => void
   handleDeleteEvent: (id: string) => void
+  handleEditEvent: (id: string) => void
 }
 
 interface CalendarProviderProps {
   setOpenCreateInterView: (open: boolean) => void
   handleDeleteEvent: (id: string) => void
+  handleEditEvent: (id: string) => void
   children: ReactNode
 }
 
@@ -18,14 +20,23 @@ const CalendarContext = createContext<InitialState>({
   handleDeleteEvent(id) {
     console.log(id)
   },
+  handleEditEvent(id) {
+    console.log(id)
+  },
 })
 
 function CalendarProvider(props: CalendarProviderProps) {
-  const { setOpenCreateInterView, children, handleDeleteEvent } = props
+  const {
+    setOpenCreateInterView,
+    children,
+    handleDeleteEvent,
+    handleEditEvent,
+  } = props
   const value = useMemo(
     () => ({
       setOpenCreateInterView,
       handleDeleteEvent,
+      handleEditEvent,
     }),
     [setOpenCreateInterView, handleDeleteEvent]
   )

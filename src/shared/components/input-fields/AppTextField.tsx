@@ -11,8 +11,11 @@ const StyledTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
     borderColor: `${theme.palette.grey[300]}`,
   },
   '& .MuiOutlinedInput-root': {
-    '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
+    '&.Mui-disabled': {
+      backgroundColor: '#F0F1F8 !important',
       borderColor: theme.palette.action.hover,
+      color: '#4D607A',
+      WebkitTextFillColor: '#4D607A',
     },
   },
   '& .MuiInputLabel-root': {

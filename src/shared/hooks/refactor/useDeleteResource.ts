@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { DefaultValues, FieldValues, Resolver, useForm } from 'react-hook-form'
 import NotificationService from 'services/notification-service'
 import GraphQLClientService, {
   IbuildQueryReturn,
@@ -9,56 +8,57 @@ import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { t } from 'i18next'
 
-interface IuseCreateResource<P> {
+interface IuseDeleteResource {
   mutationKey: string[]
   queryString: IbuildQueryReturn
   onError?: (error: ErrorException | Error) => void
   onSuccess?: (data: BaseRecord) => void
-  defaultValues?: DefaultValues<P>
-  resolver: Resolver<P & FieldValues, any> | undefined
+  showErrorMsg?: boolean
+  id: string
 }
 
-function useCreateResource<T, P extends FieldValues>({
+function useDeleteResource({
   mutationKey,
   queryString,
-  defaultValues,
-  resolver,
   onError,
   onSuccess,
-}: IuseCreateResource<P>) {
+  id,
+  showErrorMsg = true,
+}: IuseDeleteResource) {
   const queryClient = useQueryClient()
-  const useFormReturn = useForm<P>({
-    defaultValues,
-    mode: 'onChange',
-    resolver: resolver,
-  })
-  const useCreateReturn = useMutation({
+  const useDeleteReturn = useMutation({
     mutationKey,
-    mutationFn: (payload: BaseRecord) => {
-      const { note, ...otherInput } = payload
+    mutationFn: (payload?: BaseRecord) => {
+      if (payload) {
+        return GraphQLClientService.fetchGraphQL(queryString.query, {
+          id: id,
+          ...payload,
+        })
+      }
       return GraphQLClientService.fetchGraphQL(queryString.query, {
-        input: otherInput,
-        note,
+        id: id,
       })
     },
     onSuccess: (data) => {
       if (isLeft(data)) {
         onError?.(unwrapEither(data))
-        return NotificationService.showError(t(unwrapEither(data).message))
+        return (
+          showErrorMsg &&
+          NotificationService.showError(t(unwrapEither(data).message))
+        )
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
       onSuccess?.(unwrapEither(data))
-      return NotificationService.showSuccess('CREATE')
+      return NotificationService.showSuccess('DELETE')
     },
     onError(error) {
       onError?.(error)
-      NotificationService.showError(error.message)
+      showErrorMsg && NotificationService.showError(error.message)
     },
   })
   return {
-    useCreateReturn,
-    useFormReturn,
+    useDeleteReturn,
   }
 }
 
-export default useCreateResource
+export default useDeleteResource

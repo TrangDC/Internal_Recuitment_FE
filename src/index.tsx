@@ -8,7 +8,15 @@ import App from './App'
 import 'nprogress/nprogress.css'
 import 'simplebar-react/dist/simplebar.min.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
+const ReactQueryDevtoolsProduction = React.lazy(() =>
+  import('@tanstack/react-query-devtools/build/modern/production.js').then(
+    (d) => ({
+      default: d.ReactQueryDevtools,
+    })
+  )
+)
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient()
 root.render(
@@ -18,8 +26,8 @@ root.render(
         <JWTAuthProvider>
           <QueryClientProvider client={queryClient}>
             <App />
-            <ReactQueryDevtools
-              initialIsOpen={true}
+            <ReactQueryDevtoolsProduction
+              initialIsOpen={false}
               buttonPosition="bottom-right"
             />
           </QueryClientProvider>

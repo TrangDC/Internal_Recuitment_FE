@@ -21,7 +21,7 @@ function useGetResource<Response, FormData extends FieldValues>({
   resolver,
 }: IuseGetResource<Response, FormData>) {
   const { data, isLoading } = useQuery({
-    queryKey: queryKey,
+    queryKey: queryKey.concat([id]),
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(oneBuildQuery.query, {
         id: id,
