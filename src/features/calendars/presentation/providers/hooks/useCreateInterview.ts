@@ -79,6 +79,7 @@ function useCreateInterview(props: IUseCreateInterview) {
     actions: { onSubmit, handleGenerateToDate },
     watch,
     resetField,
+    formState,
   }
 }
 export default useCreateInterview

@@ -57,7 +57,6 @@ function useDeleteResource<T, P extends FieldValues>({
       return NotificationService.showSuccess('DELETE')
     },
     onError(error) {
-      console.log('check')
       onError?.(error)
       showErrorMsg && NotificationService.showError(error.message)
     },

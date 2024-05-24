@@ -1,5 +1,5 @@
 import { Box, Modal, SxProps, Theme, styled } from '@mui/material'
-import { FC, ReactNode, forwardRef } from 'react'
+import { FC, ReactNode, forwardRef, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import CloseIcon from '@mui/icons-material/Close'
 import FlexBox from '../flexbox/FlexBox'
@@ -9,6 +9,7 @@ import { ITitle, IWrapper } from './interface'
 import { greyLight, primary } from 'shared/theme/colors'
 import { lightTheme } from 'shared/constants/constants'
 import { H4, H6 } from '../Typography'
+import { ConfirmableModalContext } from 'contexts/ConfirmableModalContext'
 
 const Wrapper: FC<IWrapper> = ({
   maxWidth = 960,
@@ -19,12 +20,17 @@ const Wrapper: FC<IWrapper> = ({
   zIndex,
   ...other
 }) => {
+  const { onOpenConfirm } = useContext(ConfirmableModalContext)
+
   return (
     <Modal
       {...other}
       open={open}
       sx={{ zIndex: zIndex }}
       onClose={() => {
+        if (onOpenConfirm) {
+          return onOpenConfirm()
+        }
         handleClose ? handleClose() : setOpen(false)
       }}
     >

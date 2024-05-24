@@ -12,16 +12,16 @@ export type NewInterviewInput = {
 export type UpdateCandidateInterviewInput = {
   title: string
   description: string
-  candidate_job_id:string
-  interview_date:string
+  candidate_job_id: string
+  interview_date: string
   start_from: string
-  end_at:string
+  end_at: string
   interviewer: string[]
 }
 
 export type FilterCalendar = {
-  from_date?: string
-  to_date?: string
+  interview_date_from: string
+  interview_date_to: string
 }
 
 export type EditIntefviewInput = {
@@ -89,4 +89,16 @@ type HiringJob = {
 type Team = {
   id: string
   name: string
+}
+
+export type UpdateCandidateInterviewScheduleInput = {
+  interview_date: string
+  start_from: string
+  end_at: string
+  interviewer?: string[]
+}
+
+export type PayloadDragDropInput = {
+  id: string
+  input: UpdateCandidateInterviewScheduleInput
 }

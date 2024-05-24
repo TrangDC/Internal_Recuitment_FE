@@ -16,18 +16,19 @@ import randomColor, {
   convertToRootDate,
 } from '../../page-sections/google-calendar/functions'
 import dayjs from 'dayjs'
-import { convertFromUTC } from 'shared/utils/date'
+import { convertFromUTC, convertToUTC } from 'shared/utils/date'
+import { View } from 'react-big-calendar'
 
 function useGetAllInterview() {
   const { getAllCandidateInterview4Calendar, queryKey } = useGraphql()
   const startOfMonth = dayjs().startOf('month').startOf('week').toISOString()
   const endOfMonth = dayjs().endOf('month').endOf('week').toISOString()
   const [dateRange, setDateRange] = useState<FilterCalendar>({
-    from_date: startOfMonth,
-    to_date: endOfMonth,
+    interview_date_from: startOfMonth,
+    interview_date_to: endOfMonth,
   })
   const { isLoading, data } = useQuery({
-    queryKey: [queryKey, JSON.stringify(dateRange)] ,
+    queryKey: [queryKey, JSON.stringify(dateRange)],
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(
         getAllCandidateInterview4Calendar.query,
@@ -66,15 +67,27 @@ function useGetAllInterview() {
   }, [data])
 
   function handlePagination(range: Date[] | RangeDate) {
+    console.log('range', range)
     if (isArray(range)) {
-      setDateRange({
-        from_date: range[0].toISOString(),
-        to_date: range[range.length - 1].toISOString(),
-      })
+      if (range.length === 1) {
+        let endOfDay = dayjs(range[range.length - 1]).endOf('day')
+        setDateRange({
+          interview_date_from: range[0].toISOString(),
+          interview_date_to: endOfDay.toISOString(),
+        })
+      } else {
+        let endOfDay = dayjs(range[range.length - 1]).endOf('day')
+        setDateRange({
+          interview_date_from: convertToUTC(range[0]).toISOString(),
+          interview_date_to: endOfDay.toISOString(),
+        })
+      }
     } else {
+      console.log('range', range.end.toISOString())
+
       setDateRange({
-        from_date: range.start.toISOString(),
-        to_date: range.end.toISOString(),
+        interview_date_from: range.start.toISOString(),
+        interview_date_to: range.end.toISOString(),
       })
     }
   }

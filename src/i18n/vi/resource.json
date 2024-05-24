@@ -9,7 +9,6 @@
   "delete_team": "Bạn có muốn xóa đội này không?",
   "open_requests": "Yêu cầu mở",
   "Manager": "Quản lí",
-
   "jobs": "Việc làm",
   "requester": "Người yêu cầu",
   "staft_required": "Số nhân viên yêu cầu",
@@ -24,19 +23,16 @@
   "general_information": "Thông tin chung",
   "history_log": "Nhật kí lịch sử",
   "hiring_process": "Quá trình tuyển dụng",
-
   "candidates": "Các ứng viên",
   "blacklist": "Danh sách đen",
   "add_new_candidate": "Thêm ứng viên",
   "edit_candidate": "Chỉnh sửa ứng viên",
   "add_blackList": "Bạn có muốn thêm người dùng vào danh sách đen?",
   "delete_candidate": "Bạn có muốn xóa thành viên này?",
-
   "job_application_history": "Lịch sử xin việc",
   "apply_to_a_job": "Xin việc",
   "applied_date": "Ngày xin việc",
   "change_status": "thay đổi trạng thái",
-
   "drag_and_drop": "Kéo và thả file của bạn vào trong",
   "browse_file": "Chọn thư mục",
   "email": "Thư",
@@ -68,7 +64,6 @@
   "to_date": "Đến ngày",
   "update_record": "Chỉnh sửa bản ghi",
   "sub_title_update_record": "Thông tin hoặc ghi chú nào bạn đã cập nhật hồ sơ?",
-
   "model": {
     "hiring_jobs": {
       "model_name": "Công việc",
@@ -95,9 +90,7 @@
       "dob": "DOB",
       "is_blacklist": "Is Blacklist",
       "is_blacklist_enum": {
-        "yes": "Có"
-      },
-      "is_blacklist_enum": {
+        "yes": "Có",
         "no": "Khong"
       }
     },
@@ -105,10 +98,12 @@
       "model_name": "Teams",
       "name": "Name",
       "members": "Members",
-
       "validation": {
         "user_in_another_team": "This candidate is already on the same status with this job."
       }
+    },
+    "candidate_interviews": {
+      "validation": {}
     }
   }
 }

@@ -57,7 +57,6 @@ export const AutocompleteBase = <Multiple extends boolean = false>(
           {option ? option.label : ''}
         </li>
       )}
-     
     />
   )
 }

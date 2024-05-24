@@ -11,10 +11,29 @@ export const CreateInterviewSchema = yup.object().shape({
   jobId: yup.string().required(RULE_MESSAGES.MC1('job')).default(''),
   interviewer: yup.array().min(1, RULE_MESSAGES.MC1('interviewer')),
   candidateId: yup.string().required(RULE_MESSAGES.MC1('candidate')),
-  date: yup.date().required(RULE_MESSAGES.MC1('date')),
-  from: yup.date().required(RULE_MESSAGES.MC1('from')),
+  date: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('Date'))
+    .min(
+      dayjs().startOf('day').toDate(),
+      RULE_MESSAGES.MC1('date cannot be in the past')
+    )
+    .required(RULE_MESSAGES.MC1('date')),
+  from: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('Date'))
+    .min(
+      dayjs().startOf('day').toDate(),
+      RULE_MESSAGES.MC1('date cannot be in the past')
+    )
+    .required(RULE_MESSAGES.MC1('from')),
   to: yup
     .date()
+    .typeError(RULE_MESSAGES.MC5('Date'))
+    .min(
+      dayjs().startOf('day').toDate(),
+      RULE_MESSAGES.MC1('date cannot be in the past')
+    )
     .required(RULE_MESSAGES.MC1('to'))
     .test('is-before-to', RULE_MESSAGES.EW('to', 'from'), function (value) {
       const { from } = this.parent
@@ -34,12 +53,31 @@ export const EditInterviewSchema = yup.object().shape({
   jobId: yup.string().required(RULE_MESSAGES.MC1('job')).default(''),
   interviewer: yup.array().min(1, RULE_MESSAGES.MC1('interviewer')),
   candidateId: yup.string().required(RULE_MESSAGES.MC1('candidate')),
-  date: yup.date().required(RULE_MESSAGES.MC1('date')),
-  from: yup.date().required(RULE_MESSAGES.MC1('from')),
+  date: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('Date'))
+    .min(
+      dayjs().startOf('day').toDate(),
+      RULE_MESSAGES.MC1('date cannot be in the past')
+    )
+    .required(RULE_MESSAGES.MC1('date')),
+  from: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('Date'))
+    .min(
+      dayjs().startOf('day').toDate(),
+      RULE_MESSAGES.MC1('date cannot be in the past')
+    )
+    .required(RULE_MESSAGES.MC1('from')),
   candidate_job_id: yup.string().default(''),
   to: yup
     .date()
+    .typeError(RULE_MESSAGES.MC5('Date'))
     .required(RULE_MESSAGES.MC1('to'))
+    .min(
+      dayjs().startOf('day').toDate(),
+      RULE_MESSAGES.MC1('date cannot be in the past')
+    )
     .test('is-before-to', RULE_MESSAGES.EW('to', 'from'), function (value) {
       const { from } = this.parent
       return dayjs(from).isBefore(dayjs(value))
@@ -67,6 +105,8 @@ export const getOneInterviewSchema = yup.object().shape({
   phone: yup.string().default(''),
   team: yup.string().default(''),
   job: yup.string().default(''),
+  hiring_job_id: yup.string().default(''),
+  candidate_id: yup.string().default(''),
 })
 
 export type CreateInterviewFrom = yup.InferType<typeof CreateInterviewSchema>

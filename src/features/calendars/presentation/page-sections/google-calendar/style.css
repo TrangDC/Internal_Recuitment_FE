@@ -44,18 +44,22 @@ body {
 }
 
 
-/* .rbc-month-view ,
-.rbc-time-view .rbc-time-header
-{
-  background-color: #FCFCFC !important;
-}
- */
+ .rbc-month-view .rbc-month-row .rbc-row-content .rbc-row .rbc-date-cell .rbc-button-link {
+  float: inline-start;
+  font-size: 15px;
+  font-weight: 500;
+  color:#4D607A;
+  line-height: 18.29px;
+  margin-left: 10px;
+ }
 
- .rbc-month-view , .rbc-time-view {
+
+  .rbc-month-view , .rbc-time-view {
   border: transparent;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
  }
+
 .rbc-month-view .rbc-row.rbc-month-header .rbc-header ,
 .rbc-time-view .rbc-time-header .rbc-time-header-content .rbc-row .rbc-header {
   color:#4D607A;
@@ -67,3 +71,18 @@ body {
   justify-content: center;
 }
 
+.rbc-current-time-indicator {
+  background-color: #FC105C;
+}
+
+.rbc-current-time-indicator::after {
+  background-color: #FC105C;
+  content: '';
+  width: 10px;
+  height: 10px;
+  top: -5px;
+  left: 0px;
+  display: block;
+  position: relative;
+  border-radius: 50%;
+}

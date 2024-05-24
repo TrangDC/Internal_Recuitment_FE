@@ -1,5 +1,3 @@
-import { ContentCut } from '@mui/icons-material'
-import { Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material'
 import { ComponentType, useCallback, useState } from 'react'
 import { EventProps } from 'react-big-calendar'
 import { useContextCalendar } from '../../providers/contexts/calendarProvider/CalendarProvider'

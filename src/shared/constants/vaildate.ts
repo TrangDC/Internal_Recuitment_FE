@@ -19,8 +19,7 @@ export const RULE_MESSAGES = {
     `${capitalizeFirstLetter(
       field1.toLowerCase()
     )} must be after ${field2.toLowerCase()}`,
-  MC6: (field: string) =>
-    `${field} has already existed`,
+  MC6: (field: string) => `${field} has already existed`,
   MC8: (fieldSmall: string, fieldBig: string) =>
     `The ${fieldSmall} must be after  ${fieldBig}`,
 }

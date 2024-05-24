@@ -41,3 +41,47 @@ export function convertToUTC(clientDateTime: Date) {
 export function convertFromUTC(utcDateTime: Date) {
   return dayjs.utc(utcDateTime).tz(dayjs.tz.guess())
 }
+
+export function isAfterNow(dateStr: Date) {
+  // Chuyển chuỗi ngày nhập vào thành đối tượng dayjs
+  const inputDate = dayjs(dateStr)
+
+  // Lấy ngày giờ hiện tại
+  const currentDate = dayjs()
+
+  // So sánh ngày nhập vào với ngày hiện tại
+  return inputDate.isAfter(currentDate) || inputDate.isSame(currentDate)
+}
+
+export function isDateAfterToday(date: Date) {
+  // Chuyển chuỗi ngày nhập vào thành đối tượng dayjs
+  const inputDate = dayjs(date)
+
+  // Lấy ngày giờ hiện tại
+  const currentDate = dayjs().subtract(24, 'hour')
+
+  // So sánh ngày nhập vào với ngày hiện tại
+  return inputDate.isAfter(currentDate)
+}
+
+export function isDurationWithinOneDay(start_date: Date, end_date: Date) {
+  // Chuyển đổi các ngày nhập vào thành đối tượng dayjs
+  const startDay = dayjs(start_date)
+  const endDay = dayjs(end_date)
+
+  // Kiểm tra nếu khoảng thời gian vượt quá 1 ngày
+  return !endDay.isBefore(startDay.endOf('day').subtract(1, 'second'))
+}
+
+
+export function isPast(date: Date) {
+  // Chuyển chuỗi ngày nhập vào thành đối tượng dayjs
+  const inputDate = dayjs(date)
+
+  // Lấy ngày giờ hiện tại
+  const currentDate = dayjs().subtract(24, 'hour')
+
+  // So sánh ngày nhập vào với ngày hiện tại
+  return inputDate.isAfter(currentDate)
+}
+

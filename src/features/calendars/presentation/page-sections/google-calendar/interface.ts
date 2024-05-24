@@ -10,6 +10,7 @@ export type EventColor = {
   id: number
   backgroundColor: string
   color: string
+  borderColor: string
 }
 
 export type EventStyles = {
