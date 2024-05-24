@@ -20,7 +20,7 @@ const StyledTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
   },
   '& .MuiInputLabel-root': {
     fontWeight: 500,
-    fontSize: 14,
+    fontSize: 13,
     lineHeight: '21px',
     color: theme.palette.grey[500],
     '& .MuiFormLabel-asterisk': {

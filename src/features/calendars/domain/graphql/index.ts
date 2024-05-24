@@ -140,6 +140,22 @@ const useGraphql = () => {
     },
   })
 
+  const updateCandidateInterviewSchedule = GraphQLClientService.buildQuery({
+    operation: 'UpdateCandidateInterviewSchedule',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        id
+      }
+    `,
+    params: {
+      input: 'UpdateCandidateInterviewScheduleInput!',
+      id: 'ID!',
+    },
+  })
+
   return {
     getAllCandidateInterview4Calendar,
     queryKey,
@@ -148,6 +164,7 @@ const useGraphql = () => {
     updateCandidateInterview,
     getCandidateInterviewForEdit,
     deleteCandidateInterview,
+    updateCandidateInterviewSchedule,
   }
 }
 

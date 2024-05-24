@@ -1,4 +1,6 @@
 import _, { isEmpty } from 'lodash'
+import { FormState } from 'react-hook-form'
+import { BaseRecord } from 'shared/interfaces'
 
 export const searchByName = (listData: any[], searchValue: string) => {
   if (searchValue.length > 0) {
@@ -142,4 +144,8 @@ export const downloadFile = (url: string) => {
 
 export const getValueByKey = (obj: any, key: string): string | null => {
   return _.get(obj, key)
+}
+
+export const hasDirtyField = (formState: FormState<BaseRecord>): boolean => {
+  return Object.keys(formState.dirtyFields).length > 0
 }

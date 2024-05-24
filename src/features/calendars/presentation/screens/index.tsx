@@ -2,166 +2,40 @@ import Calendars from '../page-sections/google-calendar'
 import { SyntheticEvent, useCallback, useRef, useState } from 'react'
 import { SlotInfo } from 'react-big-calendar'
 import CreateInterviewModal from '../page-sections/createInterviewModal'
-import { EventInteractionArgs } from 'react-big-calendar/lib/addons/dragAndDrop'
+import {
+  DragFromOutsideItemArgs,
+  EventInteractionArgs,
+} from 'react-big-calendar/lib/addons/dragAndDrop'
 import { CalendarEvent } from '../page-sections/google-calendar/interface'
 import DetailIntefviewModal from '../page-sections/detailInterviewModal'
 import CalendarProvider from '../providers/contexts/calendarProvider/CalendarProvider'
 import useGetAllInterview from '../providers/hooks/useGetAllInterview'
 import EditInterviewModal from '../page-sections/editInterviewModal'
-
-const event: CalendarEvent[] = [
-  {
-    title: 'Long Event',
-    start: new Date(2024, 3, 7),
-    end: new Date(2024, 3, 10),
-    resource: {
-      id: '1',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-
-  {
-    title: 'DTS STARTS',
-    start: new Date(2024, 2, 13, 0, 0, 0),
-    end: new Date(2024, 2, 20, 0, 0, 0),
-    resource: {
-      id: '2',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-
-  {
-    title: 'DTS ENDS',
-    start: new Date(2024, 10, 6, 0, 0, 0),
-    end: new Date(2024, 10, 13, 0, 0, 0),
-    resource: {
-      id: '3',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-
-  {
-    title: 'Some Event',
-    start: new Date(2024, 3, 9, 0, 0, 0),
-    end: new Date(2024, 3, 9, 0, 0, 0),
-    allDay: true,
-    resource: {
-      id: '4',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-
-  {
-    title: 'Some Other Event',
-    start: new Date(2024, 3, 9, 8, 0, 0),
-    end: new Date(2024, 3, 10, 11, 30, 0),
-    resource: {
-      id: '5',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-  {
-    title: 'Conference',
-    start: new Date(2024, 3, 11),
-    end: new Date(2024, 3, 13),
-    resource: {
-      id: '6',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-  {
-    title: 'Meeting',
-    start: new Date(2024, 3, 12, 10, 30, 0, 0),
-    end: new Date(2024, 3, 12, 12, 30, 0, 0),
-    resource: {
-      id: '7',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-  {
-    title: 'Meeting 1',
-    start: new Date(2024, 3, 12, 11, 30, 0, 0),
-    end: new Date(2024, 3, 12, 13, 50, 0, 0),
-    resource: {
-      id: '7',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-  {
-    title: 'Meeting',
-    start: new Date(2024, 3, 12, 11, 30, 0, 0),
-    end: new Date(2024, 3, 12, 13, 50, 0, 0),
-    resource: {
-      id: '7',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-  {
-    title: 'Meeting',
-    start: new Date(2024, 3, 12, 11, 30, 0, 0),
-    end: new Date(2024, 3, 12, 13, 50, 0, 0),
-    resource: {
-      id: '7',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-  {
-    title: 'Meeting',
-    start: new Date(2024, 3, 12, 11, 30, 0, 0),
-    end: new Date(2024, 3, 12, 13, 50, 0, 0),
-    resource: {
-      id: '7',
-      styles: {
-        colorId: 1,
-      },
-    },
-  },
-]
+import useDragDropInterview from '../providers/hooks/useDragDropInterview'
+import {
+  convertToUTC,
+  isAfterNow,
+  isDateAfterToday,
+  isDurationWithinOneDay,
+} from 'shared/utils/date'
+import { isDate } from 'lodash'
+import {
+  convertToRootDate,
+  ruleDragDropCalendar,
+} from '../page-sections/google-calendar/functions'
 
 function CalendarsScreen() {
   const [openCreateInterView, setOpenCreateInterView] = useState(false)
   const [openDetailInterView, setOpenDetailInterView] = useState(false)
   const [openEditInterView, setOpenEditInterView] = useState(false)
   const eventId = useRef<string>('')
-  const [myEvents, setEvents] = useState<CalendarEvent[]>(event)
-  const {
-    myEvents: myEvents1,
-    isLoading,
-    handlePagination,
-  } = useGetAllInterview()
-  const handleSelectSlot = useCallback(
-    ({ start, end }: SlotInfo) => {
-      setOpenCreateInterView(true)
-      // const eventColor = randomColor()
-      // if (title) {
-      //   setEvents((prev) => [
-      //     ...prev,
-      //     { start, end, title, resource: { id: uuidv4(), styles: eventColor } },
-      //   ])
-      // }
-    },
-    [setEvents]
-  )
+  const dragItemOutside = useRef<CalendarEvent>()
+  const { myEvents, isLoading, handlePagination } = useGetAllInterview()
+  const { onDragDropInterview } = useDragDropInterview({})
+
+  const handleSelectSlot = useCallback(({ start, end }: SlotInfo) => {
+    // setOpenCreateInterView(true)
+  }, [])
 
   const moveEvent = useCallback(
     ({
@@ -171,34 +45,29 @@ function CalendarsScreen() {
       isAllDay: droppedOnAllDaySlot = false,
     }: EventInteractionArgs<CalendarEvent>) => {
       const { allDay } = event
-
-      if (!allDay && droppedOnAllDaySlot) {
-        event.allDay = true
+      if (isDate(start) && isDate(end) && event.start) {
+        ruleDragDropCalendar(event.start, start, end, () => {
+          if (!allDay && droppedOnAllDaySlot) {
+            event.allDay = true
+          }
+          if (allDay && !droppedOnAllDaySlot) {
+            event.allDay = false
+          }
+          const endUTC = convertToUTC(end)
+          const startUTC = convertToUTC(start)
+          onDragDropInterview({
+            id: event.resource?.id ?? '',
+            input: {
+              end_at: endUTC.toISOString(),
+              start_from: startUTC.toISOString(),
+              interview_date: startUTC.toISOString(),
+            },
+          })
+        })
       }
-      if (allDay && !droppedOnAllDaySlot) {
-        event.allDay = false
-      }
-
-      setEvents((prev) => {
-        const existing =
-          prev.find((ev) => ev.resource?.id === event.resource?.id) ?? null
-        const filtered = prev.filter(
-          (ev) => ev.resource?.id !== event.resource?.id
-        )
-
-        const newEvent: CalendarEvent = {
-          ...existing,
-          start: new Date(start),
-          end: new Date(end),
-          allDay: event.allDay,
-          resource: existing ? existing.resource : event.resource,
-          title: existing ? existing.title : event.title,
-        }
-
-        return [...filtered, newEvent]
-      })
     },
-    [setEvents]
+
+    [onDragDropInterview]
   )
 
   function onSelectEvent(
@@ -212,14 +81,40 @@ function CalendarsScreen() {
     }
   }
 
-  function handleDeleteEvent(id: string) {
-    const removeEvent = myEvents.filter((o) => o.resource?.id !== id)
-    setEvents(removeEvent)
-  }
+  function handleDeleteEvent(id: string) {}
 
   function handleEditEvent(id: string) {
     eventId.current = id
     setOpenEditInterView(true)
+  }
+
+  function handleDragStart(event: CalendarEvent) {
+    console.log('event', event)
+    dragItemOutside.current = event
+  }
+
+  function onDropFromOutside(args: DragFromOutsideItemArgs) {
+    if (
+      dragItemOutside.current?.end &&
+      dragItemOutside.current?.start &&
+      isDate(args.start)
+    ) {
+      const id = dragItemOutside.current.resource?.id ?? ''
+      const start = dragItemOutside.current?.start
+      const end = dragItemOutside.current?.end
+      const dropToDate = args.start
+      const { newEnd, newStart } = convertToRootDate(start, end, dropToDate)
+      ruleDragDropCalendar(start, newStart, newEnd, () => {
+        onDragDropInterview({
+          id: id,
+          input: {
+            end_at: newEnd.toISOString(),
+            start_from: newStart.toISOString(),
+            interview_date: dropToDate.toISOString(),
+          },
+        })
+      })
+    }
   }
   return (
     <CalendarProvider
@@ -229,11 +124,13 @@ function CalendarsScreen() {
     >
       <Calendars
         onSelectSlot={handleSelectSlot}
-        myEvents={myEvents1}
+        myEvents={myEvents}
         onDropEvent={moveEvent}
         onSelectEvent={onSelectEvent}
         onRangeChange={handlePagination}
         isLoading={isLoading}
+        handleDragStart={handleDragStart}
+        onDropFromOutside={onDropFromOutside}
       />
       {openCreateInterView && (
         <CreateInterviewModal

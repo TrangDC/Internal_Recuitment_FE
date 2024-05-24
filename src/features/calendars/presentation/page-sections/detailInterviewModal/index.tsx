@@ -35,9 +35,10 @@ const labelStyle = {
 function DetailIntefviewModal(props: IDetailIntefviewModal) {
   const { open, setOpen, id } = props
   const { handleEditEvent } = useContextCalendar()
-  const { useFormReturn } = useGetInterview({
-    id: id,
-  })
+  const { useFormReturn, navigateToCandidate, navigateToCandidateJob } =
+    useGetInterview({
+      id: id,
+    })
 
   const { onDelete } = useDeleteInterview({
     id: id,
@@ -119,11 +120,15 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
               </FlexBox>
               <FlexBox flexDirection={'column'} height={'35px'} gap={1}>
                 <Tiny12md color={'grey.500'}>Job</Tiny12md>
-                <LinkText>{getValues('job')}</LinkText>
+                <LinkText onClick={navigateToCandidateJob}>
+                  {getValues('job')}
+                </LinkText>
               </FlexBox>
               <FlexBox flexDirection={'column'} height={'35px'} gap={1}>
                 <Tiny12md color={'grey.500'}>Candidate name</Tiny12md>
-                <LinkText>{getValues('candidateName')}</LinkText>
+                <LinkText onClick={navigateToCandidate}>
+                  {getValues('candidateName')}
+                </LinkText>
               </FlexBox>
               <FlexBox flexDirection={'column'} height={'35px'} gap={1}>
                 <Tiny12md color={'grey.500'}>Candidate phone</Tiny12md>

@@ -16,6 +16,22 @@ export interface IModal {
 
 export type IWrapper = Omit<IModal, 'title'>
 
+export interface IConfirmModal extends Omit<IModal, 'isLoading'> {
+  listButton?: IButtonModal[]
+  buttonMain?: IButtonModal[]
+  middleContent?: ReactNode
+  subContent?: string
+  content?: string
+}
+
+export interface IButtonModal {
+  title: string
+  handleClick: () => void
+  isLoading?: boolean
+  startIcon?: ReactNode
+  endIcon?: ReactNode
+}
+
 export interface ITitle {
   title: string
   setOpen: (value: boolean) => void

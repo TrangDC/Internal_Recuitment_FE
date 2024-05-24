@@ -103,6 +103,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     actions: { onSeletedTeam, onSeletedJob, onSubmit, handleGenerateToDate },
     watch,
     resetField,
+    formState,
   }
 }
 export default useEditInterview

@@ -15,6 +15,7 @@ import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
 import useEditInterview from '../../providers/hooks/useEditInterview'
+import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 
 interface IEditInterviewModal {
   open: boolean
@@ -24,7 +25,7 @@ interface IEditInterviewModal {
 
 function EditInterviewModal(props: IEditInterviewModal) {
   const { open, setOpen, id } = props
-  const { actions, control, isValid, isPending, watch, resetField } =
+  const { actions, control, isValid, isPending, watch, resetField, formState } =
     useEditInterview({
       id: id,
       onSuccess: () => {
@@ -35,226 +36,91 @@ function EditInterviewModal(props: IEditInterviewModal) {
   const teamId = watch('teamId')
   const jobId = watch('jobId')
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header
-        title="Edit Interview"
-        setOpen={setOpen}
-      ></BaseModal.Header>
-      <BaseModal.ContentMain>
-        <FlexBox flexDirection={'column'} gap={2}>
-          <FlexBox
-            justifyContent={'center'}
-            alignItems={'center'}
-            marginTop={1}
-          >
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="title"
-                render={({ field, fieldState }) => (
-                  <FlexBox alignItems={'center'} flexDirection={'column'}>
-                    <AppTextField
-                      label={'Interview title'}
-                      required
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                      disabled
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="teamId"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <TeamsAutoComplete
-                      name={field.name}
-                      value={field.value}
-                      onChange={(value) => {
-                        field.onChange(value)
-                        resetField('jobId')
-                      }}
-                      disabled
-                      multiple={false}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Team',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="jobId"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <JobsAutoComplete
-                      name={field.name}
-                      value={field.value}
-                      filter={{
-                        team_ids: teamId ? [teamId] : undefined,
-                      }}
-                      disabled
-                      multiple={false}
-                      onChange={(value) => {
-                        field.onChange(value)
-                        resetField('candidateId')
-                      }}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Job',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                defaultValue={[]}
-                name="interviewer"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <InterViewerAutoComplete
-                      value={field.value ?? []}
-                      onChange={field.onChange}
-                      multiple={true}
-                      name={field.name}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Interviewer',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="candidateId"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <CandidateAutoComplete
-                      value={field.value}
-                      disabled
-                      onChange={field.onChange}
-                      multiple={false}
-                      name={field.name}
-                      filter={{
-                        job_id: jobId ? jobId : undefined,
-                      }}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Select candidate',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-          <FlexBox gap={2}>
-            <FlexBox width={'50%'}>
+    <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
+      <BaseModal.Wrapper open={open} setOpen={setOpen}>
+        <BaseModal.Header
+          title="Edit Interview"
+          setOpen={setOpen}
+        ></BaseModal.Header>
+        <BaseModal.ContentMain>
+          <FlexBox flexDirection={'column'} gap={2}>
+            <FlexBox
+              justifyContent={'center'}
+              alignItems={'center'}
+              marginTop={1}
+            >
               <FormControl fullWidth>
                 <Controller
                   control={control}
-                  name="date"
+                  name="title"
                   render={({ field, fieldState }) => (
-                    <Fragment>
-                      <AppDateField
-                        label={'Select date'}
-                        value={field.value ? dayjs(field.value) : null}
-                        onChange={(value) => field.onChange(value?.toDate())}
-                        textFieldProps={{
-                          required: true,
-                        }}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </Fragment>
-                  )}
-                />
-              </FormControl>
-            </FlexBox>
-            <FlexBox gap={2} width={'50%'}>
-              <FormControl fullWidth>
-                <Controller
-                  control={control}
-                  name="from"
-                  render={({ field, fieldState }) => (
-                    <Fragment>
-                      <AppTimePickers
-                        label={'From'}
-                        value={field.value ? dayjs(field.value) : null}
-                        onChange={(value) => {
-                          handleGenerateToDate(value)
-                          field.onChange(value)
-                        }}
-                        views={['hours', 'minutes']}
-                        ampm={false}
-                        textFieldProps={{
-                          required: true,
-                        }}
-                        timeSteps={{
-                          minutes: 30,
-                        }}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </Fragment>
-                  )}
-                />
-              </FormControl>
-              <FormControl fullWidth>
-                <Controller
-                  control={control}
-                  name="to"
-                  render={({ field, fieldState }) => (
-                    <Fragment>
-                      <AppTimePickers
-                        label={'To'}
-                        value={field.value ? dayjs(field.value) : null}
+                    <FlexBox alignItems={'center'} flexDirection={'column'}>
+                      <AppTextField
+                        label={'Interview title'}
+                        required
+                        size="small"
+                        fullWidth
+                        value={field.value}
                         onChange={field.onChange}
-                        views={['hours', 'minutes']}
-                        ampm={false}
+                        disabled
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="teamId"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <TeamsAutoComplete
+                        name={field.name}
+                        value={field.value}
+                        onChange={(value) => {
+                          field.onChange(value)
+                          resetField('jobId')
+                        }}
+                        disabled
+                        multiple={false}
                         textFieldProps={{
                           required: true,
+                          label: 'Team',
                         }}
-                        timeSteps={{
-                          minutes: 30,
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="jobId"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <JobsAutoComplete
+                        name={field.name}
+                        value={field.value}
+                        filter={{
+                          team_ids: teamId ? [teamId] : undefined,
+                        }}
+                        disabled
+                        multiple={false}
+                        onChange={(value) => {
+                          field.onChange(value)
+                          resetField('candidateId')
+                        }}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Job',
                         }}
                       />
                       <HelperTextForm
@@ -265,53 +131,195 @@ function EditInterviewModal(props: IEditInterviewModal) {
                 />
               </FormControl>
             </FlexBox>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  defaultValue={[]}
+                  name="interviewer"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <InterViewerAutoComplete
+                        value={field.value ?? []}
+                        onChange={field.onChange}
+                        multiple={true}
+                        name={field.name}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Interviewer',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="candidateId"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <CandidateAutoComplete
+                        value={field.value}
+                        disabled
+                        onChange={field.onChange}
+                        multiple={false}
+                        name={field.name}
+                        filter={{
+                          job_id: jobId ? jobId : undefined,
+                          is_black_list: false,
+                          is_able_to_interview: true,
+                        }}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Select candidate',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            <FlexBox gap={2}>
+              <FlexBox width={'50%'}>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="date"
+                    render={({ field, fieldState }) => (
+                      <Fragment>
+                        <AppDateField
+                          label={'Select date'}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={(value) => field.onChange(value?.toDate())}
+                          minDate={dayjs()}
+                          textFieldProps={{
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </Fragment>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+              <FlexBox gap={2} width={'50%'}>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="from"
+                    render={({ field, fieldState }) => (
+                      <Fragment>
+                        <AppTimePickers
+                          label={'From'}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={(value) => {
+                            handleGenerateToDate(value)
+                            field.onChange(value)
+                          }}
+                          minTime={dayjs()}
+                          views={['hours', 'minutes']}
+                          ampm={false}
+                          textFieldProps={{
+                            required: true,
+                          }}
+                          timeSteps={{
+                            minutes: 30,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </Fragment>
+                    )}
+                  />
+                </FormControl>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="to"
+                    render={({ field, fieldState }) => (
+                      <Fragment>
+                        <AppTimePickers
+                          label={'To'}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={field.onChange}
+                          views={['hours', 'minutes']}
+                          ampm={false}
+                          minTime={dayjs()}
+                          textFieldProps={{
+                            required: true,
+                          }}
+                          timeSteps={{
+                            minutes: 30,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </Fragment>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+            </FlexBox>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="description"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Description'}
+                        size="small"
+                        disabled
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        multiline
+                        rows={3}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
           </FlexBox>
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="description"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <AppTextField
-                      label={'Description'}
-                      size="small"
-                      disabled
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                      multiline
-                      rows={3}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-        </FlexBox>
-      </BaseModal.ContentMain>
-      <BaseModal.Footer>
-        <AppButton
-          variant="outlined"
-          size="small"
-          onClick={() => setOpen(false)}
-        >
-          Cancel
-        </AppButton>
-        <ButtonLoading
-          variant="contained"
-          size="small"
-          disabled={isValid}
-          handlesubmit={onSubmit}
-          loading={isPending}
-        >
-          Submit
-        </ButtonLoading>
-      </BaseModal.Footer>
-    </BaseModal.Wrapper>
+        </BaseModal.ContentMain>
+        <BaseModal.Footer>
+          <AppButton
+            variant="outlined"
+            size="small"
+            onClick={() => setOpen(false)}
+          >
+            Cancel
+          </AppButton>
+          <ButtonLoading
+            variant="contained"
+            size="small"
+            disabled={isValid}
+            handlesubmit={onSubmit}
+            loading={isPending}
+          >
+            Submit
+          </ButtonLoading>
+        </BaseModal.Footer>
+      </BaseModal.Wrapper>
+    </ConfirmableModalProvider>
   )
 }
 

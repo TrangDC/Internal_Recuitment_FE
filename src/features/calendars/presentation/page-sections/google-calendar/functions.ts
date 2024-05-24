@@ -2,37 +2,44 @@ import { makeLeft, makeRight } from 'shared/utils/handleEither'
 import { EventColor } from './interface'
 import { Either } from 'shared/interfaces/common'
 import dayjs from 'dayjs'
+import { isAfterNow, isDurationWithinOneDay } from 'shared/utils/date'
 
 const colorEvent: EventColor[] = [
   {
     id: 1,
     backgroundColor: '#ABF9E0',
-    color: '#167E8D',
+    color: '#2A2E37',
+    borderColor: '#D4FCEC',
   },
   {
     id: 2,
     backgroundColor: '#FFC5C3',
-    color: '#FC105C',
+    color: '#2A2E37',
+    borderColor: '#FFE4E1',
   },
   {
     id: 3,
     backgroundColor: '#FFEB95',
-    color: '#936D19',
+    color: '#2A2E37',
+    borderColor: '#FFEB95',
   },
   {
     id: 4,
     backgroundColor: '#DDD5FF',
-    color: '#584CB7',
+    color: '#2A2E37',
+    borderColor: '#EEEAFF',
   },
   {
     id: 5,
     backgroundColor: '#B6DEFC',
-    color: '#1F84EB',
+    color: '#2A2E37',
+    borderColor: '#E0F1FD',
   },
   {
     id: 6,
     backgroundColor: '#FFEAE4',
-    color: '#DB6C56',
+    color: '#2A2E37',
+    borderColor: '#FFEAE4',
   },
 ]
 
@@ -54,9 +61,24 @@ function randomColor(): number {
   }
 }
 
-export function getColorEvent(id: number): EventColor | null {
-  const color = colorEvent.find((o) => o.id === id) ?? null
-  return color
+// export function getColorEvent(id: number): EventColor | null {
+//   const color = colorEvent.find((o) => o.id === id) ?? null
+//   return color
+// }
+
+function isPast(date: Date) {
+  if (isAfterNow(date)) return false
+  return true
+}
+
+export function getColorEvent(date: Date) {
+  if (isPast(date))
+    return {
+      backgroundColor: '#dcdcdc',
+    }
+  return {
+    backgroundColor: 'white',
+  }
 }
 
 export default randomColor
@@ -102,4 +124,12 @@ export function convertToRootDate(start: Date, end: Date, root: Date) {
     newStart: newStart.toDate(),
     newEnd: newEnd.toDate(),
   }
+}
+
+
+export function ruleDragDropCalendar(currentDate:Date, start:Date, end:Date, onCallbackWhenValid:() => void):void{
+  if(!isAfterNow(currentDate)) return
+  if(!isAfterNow(start)) return 
+  if (isDurationWithinOneDay(start, end)) return 
+  onCallbackWhenValid()
 }
