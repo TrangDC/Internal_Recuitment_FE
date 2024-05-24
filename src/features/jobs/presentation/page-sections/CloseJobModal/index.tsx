@@ -2,34 +2,26 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useDeleteJob from '../../providers/hooks/useDeleteJob'
 import useTextTranslation from 'shared/constants/text'
-import { Fragment, useState } from 'react'
-import { t } from 'i18next'
+import { Fragment } from 'react'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import FailedModal from 'shared/components/modal/modalFailed'
-interface IDeleteJobModal {
+import useCloseJob from '../../providers/hooks/useCloseJob'
+
+interface ICloseJobModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
 }
 
-function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
-  const [openFailed, setOpenFailed] = useState<boolean>(false)
-  const [msg, setMsg] = useState<string>('')
-
-  const { onSubmit, control, isPending, isValid } = useDeleteJob({
+function CloseJobModal({ open, setOpen, id }: ICloseJobModal) {
+  const { onSubmit, control, isPending, isValid } = useCloseJob({
     callbackSuccess: () => setOpen(false),
     defaultValues: {
       id: id,
       note: '',
-    },
-    callbackError: (data) => {
-      setMsg(t(data?.message) as string)
-      setOpenFailed(true)
     },
   })
   const translation = useTextTranslation()
@@ -38,7 +30,7 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
     <Fragment>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <BaseModal.Header
-          title={translation.MODLUE_JOBS.delete_job}
+          title="Do you want to close this job?"
           setOpen={setOpen}
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
@@ -94,16 +86,8 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>
-      {openFailed && (
-        <FailedModal
-          open={openFailed}
-          setOpen={setOpenFailed}
-          title="Failed to delete"
-          content={msg}
-        />
-      )}
     </Fragment>
   )
 }
 
-export default DeleteJobModal
+export default CloseJobModal

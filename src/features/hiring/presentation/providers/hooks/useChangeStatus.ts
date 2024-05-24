@@ -2,7 +2,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/hiring/domain/graphql/graphql'
 import { ChangeStatusUser } from 'features/hiring/domain/interfaces'
 import { schemaChangeStatus, FormDataSchemaUpdateStatus } from '../constants/schema'
-import _ from 'lodash'
 import useUpdateResource from 'shared/hooks/useUpdateResource'
 
 interface deleteHiringProps {

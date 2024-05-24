@@ -14,7 +14,7 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DeleteTeamModal from '../page-sections/DeleteTeamModal'
-import { KeyboardEventHandler } from 'react'
+import { KeyboardEventHandler, useState } from 'react'
 import useTextTranslation from 'shared/constants/text'
 import { useNavigate } from 'react-router-dom'
 import TeamIcon from 'shared/components/icons/Team'
@@ -35,8 +35,11 @@ const TeamList = () => {
     setOpenEdit,
     setOpenDelete,
   } = useActionTable()
-  const { useTableReturn } = useTeamTable({orderBy: {field: 'newest_applied', direction: 'DESC'}})
+  const { useTableReturn } = useTeamTable({
+    orderBy: { field: 'newest_applied', direction: 'DESC' },
+  })
   const { handleFreeWord } = useTableReturn
+  const [searchField, setSearchField] = useState('')
 
   const translation = useTextTranslation()
   const navigate = useNavigate()
@@ -94,12 +97,19 @@ const TeamList = () => {
             variant="outlined"
             size="small"
             sx={{ width: '400px', fontSize: '13px' }}
+            value={searchField}
+            onChange={(e) => setSearchField(e.target.value)}
             onKeyUp={handleFreeWorld}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton>
-                    <SearchIcon sx={{ fontSize: '16px' }} />
+                    <SearchIcon
+                      sx={{ fontSize: '16px' }}
+                      onClick={() => {
+                        handleFreeWord('name', searchField)
+                      }}
+                    />
                   </IconButton>
                 </InputAdornment>
               ),

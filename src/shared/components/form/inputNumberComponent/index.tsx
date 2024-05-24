@@ -1,18 +1,19 @@
 import { FieldErrors, FieldValues } from 'react-hook-form'
 import { CustomTextField, DivError, DivWrapper } from '../styles'
-import { TextFieldProps } from '@mui/material'
+import { SxProps, TextFieldProps } from '@mui/material'
 import { get } from 'lodash'
 import { ChangeEvent } from 'react'
 import { NumericFormat } from 'react-number-format'
 
 interface AdditionalProps<T extends FieldValues> {
-  errors: FieldErrors<T>
+  errors?: FieldErrors<T>
   field: {
     onChange: (value: any) => void
     value: any
     name: string
   }
   thousandSeparator?: boolean,
+  sx?: SxProps,
 }
 
 type InputControllerProps<T extends object> = Omit<
@@ -27,6 +28,7 @@ const InputNumberComponent = <T extends object>({
   field,
   size = 'small',
   thousandSeparator = false,
+  sx,
   ...props
 }: InputControllerProps<T>) => {
   const error = get(errors, field.name as string)
@@ -34,7 +36,7 @@ const InputNumberComponent = <T extends object>({
   return (
     <DivWrapper>
       <NumericFormat
-        sx={{ width: props?.fullWidth ? '100%' : '400px' }}
+        sx={{ width: props?.fullWidth ? '100%' : '400px', ...sx }}
         size={size}
         {...props}
         {...field}

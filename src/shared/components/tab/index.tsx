@@ -1,7 +1,8 @@
-import { TabContext, TabList, TabPanel } from '@mui/lab'
+import { TabContext, TabList, TabListProps, TabPanel } from '@mui/lab'
 import { Box, Tab, styled } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import FlexBetween from '../flexbox/FlexBetween'
+import FlexBox from '../flexbox/FlexBox'
 
 //  styled components
 const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -45,7 +46,7 @@ const TabWrapper = styled(Tab)(({ theme }) => ({
 const TabPanelStyle = styled(TabPanel)(({ theme }) => ({
   borderRadius: '8px',
   overflow: 'hidden',
-  boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)'
+  boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
 }))
 
 const TabListWrapper = styled(TabList)(({ theme }) => ({
@@ -53,6 +54,22 @@ const TabListWrapper = styled(TabList)(({ theme }) => ({
   alignItems: 'center',
   borderRadius: '4px',
   minHeight: '40px',
+
+  '&.vertical .MuiTabs-flexContainer': {
+    height: 'auto',
+
+    '& .MuiTab-root': {
+      backgroundColor: "white",
+    },
+
+    '& .Mui-selected ': {
+      backgroundColor: '#F1F9FF'
+    }
+  },
+
+  '&.vertical .MuiTabs-indicator': {
+    left: 0,
+  },
 
   '& .MuiTabs-flexContainer': {
     height: '40px',
@@ -66,48 +83,52 @@ interface renderItem {
 
 interface TabProps {
   renderItem: renderItem[]
+  TabListProps?: TabListProps
 }
 
-const TabCustomize = ({ renderItem }: TabProps) => {
+const TabCustomize = ({ renderItem, TabListProps }: TabProps) => {
   const [value, setValue] = useState<string>('0')
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
 
+  const orientationVertical = useMemo(() => {
+    return TabListProps?.orientation === 'vertical'
+  }, [])
+
   return (
     <TabContext value={value}>
-      <Box>
-        <TabListWrapper onChange={handleChange}>
+      <FlexBox flexDirection={orientationVertical ? 'row' : 'column'}>
+        <Box sx={{ width: 'fit-content' }}>
+          <TabListWrapper
+            onChange={handleChange}
+            className={`${orientationVertical && 'vertical'}`}
+            {...TabListProps}
+          >
+            {renderItem.map((item, index) => {
+              return (
+                <TabWrapper
+                  key={index}
+                  label={item.label}
+                  value={index.toString()}
+                />
+              )
+            })}
+          </TabListWrapper>
+        </Box>
+        <Box sx={{ width: '100%' }}>
           {renderItem.map((item, index) => {
+            const { Component } = item
             return (
-              <TabWrapper
-                key={index}
-                label={item.label}
-                value={index.toString()}
-              />
+              <TabPanelStyle value={index.toString()} key={index}>
+                <HeadingWrapper>
+                  <Component />
+                </HeadingWrapper>
+              </TabPanelStyle>
             )
           })}
-        </TabListWrapper>
-      </Box>
-      {renderItem.map((item, index) => {
-        const { Component } = item
-        return (
-          <TabPanelStyle
-            value={index.toString()}
-            key={index}
-            // sx={{
-            //   borderRadius: '8px',
-            //   overflow: 'hidden',
-            //   paddingBottom: '16px',
-            // }}
-          >
-            <HeadingWrapper>
-              <Component />
-            </HeadingWrapper>
-          </TabPanelStyle>
-        )
-      })}
+        </Box>
+      </FlexBox>
     </TabContext>
   )
 }

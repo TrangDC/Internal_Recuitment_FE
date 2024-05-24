@@ -40,6 +40,7 @@ const Header = ({
   subTitle,
   children,
   iconColor,
+  EndHeader,
 }: ITitle) => {
   const { t } = useTranslation()
   return (
@@ -75,17 +76,23 @@ const Header = ({
       </FlexBox>
       <FlexBox gap={'10px'} alignItems={'center'}>
         {children}
-        <CloseIcon
-          sx={{
-            height: '24px',
-            width: '24px',
-            color: greyLight[300],
-            cursor: 'pointer',
-          }}
-          onClick={() => {
-            setOpen(false)
-          }}
-        />
+        <Box>
+          {EndHeader ? (
+           EndHeader
+          ) : (
+            <CloseIcon
+              sx={{
+                height: '24px',
+                width: '24px',
+                color: greyLight[300],
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                setOpen(false)
+              }}
+            />
+          )}
+        </Box>
       </FlexBox>
     </FlexBox>
   )
@@ -135,12 +142,14 @@ const Content = forwardRef(
 const ContentMain = ({
   children,
   maxHeight = '400px',
+  sxContentMain,
 }: {
   children: ReactNode
   maxHeight?: string
+  sxContentMain?: SxProps
 }) => {
   return (
-    <Box padding={'20px 32px'}>
+    <Box padding={'20px 32px'} sx={{ ...sxContentMain }}>
       <Scrollbar sx={{ maxHeight: maxHeight }}>{children}</Scrollbar>
     </Box>
   )

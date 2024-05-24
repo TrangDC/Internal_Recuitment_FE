@@ -1,6 +1,5 @@
 
 import { Button, SvgIconProps, SxProps } from '@mui/material'
-import { CSSProperties } from '@mui/material/styles/createMixins'
 import React from 'react'
 import { Span } from 'shared/components/Typography'
 

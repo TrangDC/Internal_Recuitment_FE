@@ -1,23 +1,35 @@
 import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import IconWrapper from 'shared/components/IconWrapper'
-import { H5 } from 'shared/components/Typography'
-import GeneralInformation from '../page-sections/GeneralInformation'
-import HistoryLog from '../page-sections/HistoryLog'
-import TabCustomize from 'shared/components/tab'
+import { H5, Span } from 'shared/components/Typography'
 import useTextTranslation from 'shared/constants/text'
 import Jobs from 'shared/components/icons/Jobs'
+import {
+  BoxCircle,
+  BoxWrapperOuterContainer,
+  BtnPrimary,
+  HeadingWrapper,
+} from 'shared/styles'
+import { useParams } from 'react-router-dom'
+import useJobDetail from '../providers/hooks/useJobDetail'
+import { SpanText, TinyText } from 'shared/components/form/styles'
+import { useState } from 'react'
+import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
+import { STATUS_STYLE } from '../providers/constants'
+import GenaralInformationHiring from '../page-sections/GeneralInformationHiring'
+import useActionTable from '../providers/hooks/useActionTable'
+import CloseJobModal from '../page-sections/CloseJobModal'
+import TabJobDetail from '../page-sections/TabDetail'
 
 const JobDetail = () => {
+  const [openTab, setOpenTab] = useState(false)
+
+  const { id } = useParams()
+  const { jobDetail } = useJobDetail(id as String)
   const translation = useTextTranslation()
 
-  const renderItem = [
-    {
-      label: translation.MODLUE_JOBS.general_information,
-      Component: GeneralInformation,
-    },
-    { label: translation.MODLUE_JOBS.history_log, Component: HistoryLog },
-  ]
+  const { openStatus, setOpenStatus, handleOpenStatus, rowId } =
+    useActionTable()
 
   return (
     <Box pt={2} pb={4}>
@@ -26,12 +38,88 @@ const JobDetail = () => {
           <IconWrapper>
             <Jobs sx={{ color: 'primary.main' }} />
           </IconWrapper>
-          <H5>{translation.MODLUE_JOBS.job_detail}</H5>
+          <H5>{jobDetail?.name}</H5>
         </FlexBox>
       </Box>
-      <Box sx={{ width: '100%', marginTop: '20px' }}>
-        <TabCustomize renderItem={renderItem} />
-      </Box>
+      <FlexBox flexDirection={'column'} gap={2.5} marginTop={4}>
+        <BoxWrapperOuterContainer>
+          <HeadingWrapper sx={{ marginTop: 0 }}>
+            <FlexBox
+              width={'100%'}
+              justifyContent={'space-between'}
+              flexWrap={'wrap'}
+              gap={2}
+            >
+              <FlexBox gap={7.5}>
+                <FlexBox gap={0.75} alignItems={'center'}>
+                  <SpanText>{translation.MODLUE_TEAMS.team}</SpanText>
+                  <TinyText>{jobDetail?.team?.name}</TinyText>
+                </FlexBox>
+
+                <FlexBox gap={0.75} alignItems={'center'}>
+                  <SpanText>{translation.COMMON.location}</SpanText>
+                  <TinyText>{jobDetail?.location}</TinyText>
+                </FlexBox>
+
+                <FlexBox gap={0.75} alignItems={'center'}>
+                  <SpanText>{translation.MODLUE_JOBS.staft_required}</SpanText>
+                  <BoxCircle>
+                    <TinyText>{jobDetail?.amount}</TinyText>
+                  </BoxCircle>
+                </FlexBox>
+
+                <FlexBox gap={0.75} alignItems={'center'}>
+                  <SpanText>{translation.COMMON.status}</SpanText>
+                  <TinyText>
+                    <ChipFieldStatus
+                      label={STATUS_STYLE[jobDetail?.status]?.text}
+                      style={{
+                        backgroundColor:
+                          STATUS_STYLE[jobDetail?.status]?.backgroundColor,
+                        color: STATUS_STYLE[jobDetail?.status]?.color,
+                      }}
+                    />
+                  </TinyText>
+                </FlexBox>
+              </FlexBox>
+              <FlexBox gap={1}>
+                <BtnPrimary
+                  onClick={() => {
+                    handleOpenStatus(jobDetail?.id)
+                  }}
+                >
+                 <Span> Close Job</Span>
+                </BtnPrimary>
+                <BtnPrimary
+                  onClick={() => setOpenTab(true)}
+                ><Span>View Details</Span></BtnPrimary>
+              </FlexBox>
+            </FlexBox>
+          </HeadingWrapper>
+        </BoxWrapperOuterContainer>
+
+        <BoxWrapperOuterContainer>
+          <HeadingWrapper sx={{ marginTop: 0 }}>
+            <GenaralInformationHiring />
+          </HeadingWrapper>
+        </BoxWrapperOuterContainer>
+      </FlexBox>
+
+      {openStatus && (
+        <CloseJobModal
+          open={openStatus}
+          setOpen={setOpenStatus}
+          id={rowId.current}
+        />
+      )}
+
+      {openTab && (
+        <TabJobDetail
+          open={openTab}
+          setOpen={setOpenTab}
+          job_detail={jobDetail}
+        />
+      )}
     </Box>
   )
 }

@@ -1,5 +1,4 @@
 import { RULE_MESSAGES } from 'shared/constants/vaildate'
-import { FormDataSchemaNote, schemaNote } from 'shared/schema'
 import * as yup from 'yup'
 
 export const schema = yup.object({

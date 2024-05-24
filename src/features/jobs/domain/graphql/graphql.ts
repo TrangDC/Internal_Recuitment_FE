@@ -60,7 +60,7 @@ const useGraphql = () => {
     `,
     params: {
       input: 'NewHiringJobInput!',
-      note: "String!",
+      note: 'String!',
     },
   })
 
@@ -77,7 +77,7 @@ const useGraphql = () => {
     params: {
       input: 'UpdateHiringJobInput!',
       id: 'ID!',
-      note: "String!",
+      note: 'String!',
     },
   })
 
@@ -89,7 +89,7 @@ const useGraphql = () => {
     node: '',
     params: {
       id: 'ID!',
-      note: "String!",
+      note: 'String!',
     },
   })
 
@@ -127,6 +127,22 @@ const useGraphql = () => {
     },
   })
 
+  const changeStatusJob = buildQuery({
+    operation: 'UpdateHiringJobStatus',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+    data {
+      id
+    }`,
+    params: {
+      id: 'ID!',
+      note: 'String!',
+      status: 'HiringJobStatus!',
+    },
+  })
+
   return {
     queryKey,
     getAllJob,
@@ -134,6 +150,7 @@ const useGraphql = () => {
     updateJob,
     getJobDetail,
     deleteJob,
+    changeStatusJob,
   }
 }
 

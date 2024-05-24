@@ -1,48 +1,47 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
-import { DeleteJobInput } from 'features/jobs/domain/interfaces'
+import { UpdateJobStatus } from 'features/jobs/domain/interfaces'
 import {
-  schemaDelete,
-  FormDataSchemaDelete,
+  schemaChangeStatus,
+  FormDataSchemaChangeStatus,
 } from '../../providers/constants/schema'
-import useDeleteResource from 'shared/hooks/useDeleteResource'
+import useUpdateResourceOther from 'shared/hooks/useUpdateResourceOther'
 
-interface deleteJobProps {
-  defaultValues?: Partial<FormDataSchemaDelete>
+interface closeJobProps {
+  defaultValues?: Partial<FormDataSchemaChangeStatus>
   callbackSuccess?: (value: any) => void
   callbackError?: (data: any) => void
 }
 
-function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
+function useCloseJob(props: closeJobProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess, callbackError } = props
 
-  const { deleteJob, queryKey } = useGraphql()
-  const { useCreateReturn, useFormReturn } = useDeleteResource<
-  DeleteJobInput,
-    FormDataSchemaDelete
+  const { changeStatusJob, queryKey } = useGraphql()
+  const { useUpdateReturn, useFormReturn } = useUpdateResourceOther<
+    UpdateJobStatus,
+    FormDataSchemaChangeStatus
   >({
     mutationKey: [queryKey],
-    queryString: deleteJob,
+    queryString: changeStatusJob,
     defaultValues: {
       note: '',
+      status: 'closed',
       ...defaultValues,
     },
-    resolver: yupResolver(schemaDelete),
+    resolver: yupResolver(schemaChangeStatus),
     onSuccess: callbackSuccess,
     onError: callbackError,
-    showErrorMsg: false,
   })
 
   const { handleSubmit, control, formState } = useFormReturn
   const isValid = !formState.isValid
-  const { isPending, mutate } = useCreateReturn
+  const { isPending, mutate } = useUpdateReturn
 
   function onSubmit() {
     handleSubmit((value) => {
       mutate(value)
     })()
   }
-
 
   return {
     onSubmit,
@@ -52,4 +51,4 @@ function useDeleteJob(props: deleteJobProps = { defaultValues: {} }) {
   }
 }
 
-export default useDeleteJob
+export default useCloseJob

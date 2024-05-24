@@ -22,7 +22,7 @@ export type Job = {
 }
 
 export type NewHiringJobInput = {
-  status?: string,
+  status: 'draft' | 'opened' | 'closed',
   name: string,
   amount: number,
   location: 'ha_noi' | 'ho_chi_minh' | 'da_nang' | 'japan',
@@ -33,6 +33,7 @@ export type NewHiringJobInput = {
   currency: 'vnd' | 'usd' | 'jpy',
   created_by: string,
   description?: string,
+  note?: string,
 }
 
 export type UpdateHiringJobInput = {
@@ -52,4 +53,10 @@ export type UpdateHiringJobInput = {
 }
 
 export type DeleteJobInput = SchemaInputNote;
+
+export type UpdateJobStatus = {
+  id: string,
+  status: 'draft' | 'opened' | 'closed',
+  note?: string,
+}
 

@@ -1,13 +1,16 @@
-import { Box, Grid, styled } from '@mui/material'
-import { Span, Tiny } from 'shared/components/Typography'
+import { Box, Divider, Grid, styled } from '@mui/material'
 import useJobDetail from '../../providers/hooks/useJobDetail'
 import { useParams } from 'react-router-dom'
-import { findItem, getInfoData } from 'shared/utils/utils'
-import { LOCATION_DATA } from '../../providers/constants'
+import { getInfoData } from 'shared/utils/utils'
+import { STATUS_STYLE } from '../../providers/constants'
 import { SalaryFactory } from 'shared/class/salary'
 import { useMemo } from 'react'
 import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
 import useTextTranslation from 'shared/constants/text'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import {  SpanText, TinyText } from 'shared/components/form/styles'
+import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
+import { BoxCircle } from 'shared/styles'
 
 const DivWrapperField = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -19,7 +22,7 @@ const DivWrapperField = styled(Box)(({ theme }) => ({
 const DivField = styled(Box)(({ theme }) => ({
   width: '100%',
 
-  '& span': {
+  '& SpanText': {
     width: '12px',
     fontWeight: 500,
     //@ts-ignore
@@ -51,58 +54,71 @@ const GeneralInformationField = () => {
     })
   }, [jobDetail])
 
-  const translation = useTextTranslation();
+  const translation = useTextTranslation()
 
   return (
-    <DivWrapperField>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <DivField>
-            <Span>{translation.MODLUE_JOBS.job_name}</Span>
-            <Tiny>{jobDetail?.name}</Tiny>
-          </DivField>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <DivField>
-            <Span>{translation.MODLUE_TEAMS.team}</Span>
-            <Tiny>{jobDetail?.team?.name}</Tiny>
-          </DivField>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <DivField>
-            <Span>{translation.COMMON.location}</Span>
-            <Tiny>{findItem(LOCATION_DATA, jobDetail?.location)?.name}</Tiny>
-          </DivField>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <DivField>
-            <Span>{translation.MODLUE_JOBS.requester}</Span>
-            <Tiny> {jobDetail?.user?.name}</Tiny>
-          </DivField>
-        </Grid>
+    <FlexBox flexDirection={'column'} width={'100%'}>
+      <DivWrapperField>
+        <FlexBox flexDirection={'column'} gap={2.5}>
+          <FlexBox gap={7.5}>
+            <DivField>
+              <SpanText>{translation.MODLUE_JOBS.job_name}</SpanText>
+              <TinyText>{jobDetail?.name}</TinyText>
+            </DivField>
+            <DivField>
+              <SpanText>{translation.COMMON.status}</SpanText>
+              <TinyText>
+              <ChipFieldStatus
+                      label={STATUS_STYLE[jobDetail?.status]?.text}
+                      style={{
+                        backgroundColor:
+                          STATUS_STYLE[jobDetail?.status]?.backgroundColor,
+                        color: STATUS_STYLE[jobDetail?.status]?.color,
+                      }}
+                    />
+                </TinyText>
+            </DivField>
+            <DivField>
+              <SpanText>{translation.MODLUE_TEAMS.team}</SpanText>
+              <TinyText>{jobDetail?.team?.name}</TinyText>
+            </DivField>
+          </FlexBox>
 
-        <Grid item xs={12} md={6}>
+          <FlexBox gap={7.5}>
+            <DivField>
+              <SpanText>{translation.COMMON.location}</SpanText>
+              <TinyText>{jobDetail?.location}</TinyText>
+            </DivField>
+            <DivField>
+              <SpanText>{translation.MODLUE_JOBS.staft_required}</SpanText>
+              <BoxCircle><TinyText sx={{color: 'white !important'}}>{jobDetail?.amount}</TinyText></BoxCircle>  
+            </DivField>
+            <DivField>
+              <SpanText>{translation.MODLUE_JOBS.requester}</SpanText>
+              <TinyText>{jobDetail?.user?.name}</TinyText>
+            </DivField>
+          </FlexBox>
+
+          <FlexBox gap={7.5}>
+            <DivField>
+              <SpanText>{translation.COMMON.salary}</SpanText>
+              <TinyText>{salary?.getSalaryByType()?.gerenateStringSalary()}</TinyText>
+            </DivField>
+          </FlexBox>
+        </FlexBox>
+      </DivWrapperField>
+
+      <DivWrapperField>
+        <FlexBox flexDirection={'column'}>
           <DivField>
-            <Span>{translation.COMMON.salary}</Span>
-            <Tiny>{salary?.getSalaryByType()?.gerenateStringSalary()}</Tiny>
+            <SpanText>Job Description</SpanText>
           </DivField>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <DivField>
-            <Span>{translation.MODLUE_JOBS.staft_required}</Span>
-            <Tiny>{jobDetail?.amount}</Tiny>
-          </DivField>
-        </Grid>
-        <Grid item xs={12}>
-          <DivField>
-            <Span>{translation.COMMON.description}</Span>
-            <Box>
-              <GenerateInnerHTML innerHTML={jobDetail.description}/>
-            </Box>
-          </DivField>
-        </Grid>
-      </Grid>
-    </DivWrapperField>
+          <Box>
+            <GenerateInnerHTML innerHTML={jobDetail.description} />
+          </Box>
+        </FlexBox>
+      </DivWrapperField>
+    </FlexBox>
   )
 }
 

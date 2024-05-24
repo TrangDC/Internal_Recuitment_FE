@@ -16,11 +16,12 @@ import {
   styled,
 } from '@mui/material'
 import AppPagination from '../AppPagination'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { IuseCustomTableReturn } from 'shared/hooks/useCustomTable'
 import { BodyTableCell, HeadTableCell } from './styles'
 import { v4 as uuidv4 } from 'uuid'
 import IconSortBy from './components/IconSortBy'
+import { isEmpty } from 'lodash'
 interface ICustomTable<T> {
   columns: ColumnDef<T, any>[]
   useTableReturn: IuseCustomTableReturn
@@ -74,6 +75,12 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
   function onChange(page: number) {
     handleChangePage(page)
   }
+
+  useEffect(() => {
+    if(isEmpty(sortData) && pagination.page > 1 && !isLoading) {
+      handleChangePage(pagination.page - 1)
+    }
+  }, [sortData])
 
   return (
     <TableContainer component={Paper}>

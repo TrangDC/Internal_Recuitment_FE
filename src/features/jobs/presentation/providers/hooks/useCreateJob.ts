@@ -1,15 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
-import { useForm } from 'react-hook-form'
-import { fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
 import { schema, FormDataSchema } from '../../providers/constants/schema'
 import { NewHiringJobInput } from 'features/jobs/domain/interfaces'
 import _ from 'lodash'
-import { convertCurrencyToNumber, getValueOfObj } from 'shared/utils/utils'
-import toastSuccess from 'shared/components/toast/toastSuccess'
+import { convertCurrencyToNumber } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
+import useCreateResource from 'shared/hooks/useCreateResource'
 
 interface createJobProps {
   defaultValues?: Partial<FormDataSchema>
@@ -18,44 +14,39 @@ interface createJobProps {
 
 function useCreateJob(props: createJobProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
-
-  const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchema>({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      ...defaultValues,
-    },
-  })
-
   const { createJob, queryKey } = useGraphql()
-  const { mutate } = useMutation({
-    mutationKey: [queryKey],
-    mutationFn: (newTodo: NewHiringJobInput) =>
-      fetchGraphQL<BaseRecord>(createJob.query, {
-        input: newTodo,
-        note: "",
-      }),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] })
-      toastSuccess('Create successfully')
-      callbackSuccess && callbackSuccess(data)
-    },
-  })
+  const { useCreateReturn, useFormReturn } = useCreateResource<
+  NewHiringJobInput,
+  FormDataSchema
+>({
+  mutationKey: [queryKey],
+  queryString: createJob,
+  defaultValues: {
+    name: '',
+    salary_from: "0",
+    salary_to: "0",
+    note: '',
+    ...defaultValues,
+  },
+  resolver: yupResolver(schema),
+  onSuccess: callbackSuccess
+})
+
+
+  const { handleSubmit, control, formState, setValue } = useFormReturn
+  const isValid = !formState.isValid
+  const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
-    handleSubmit((value: FormDataSchema) => {
-      const salary_type = getValueOfObj({ key: 'value', obj: value.salary_type });
-      
+    handleSubmit((value) => {
+      const salary_type = value.salary_type;
       const valueClone = {
         ..._.cloneDeep(value),
-        currency: salary_type !== SALARY_STATE.NEGOTITATION ? getValueOfObj({ key: 'value', obj: value.currency }) : CURRENCY_STATE.VND,
-        location: getValueOfObj({ key: 'value', obj: value.location }),
+        currency: salary_type !== SALARY_STATE.NEGOTITATION ? value.currency : CURRENCY_STATE.VND,
         salary_type: salary_type,
-        team_id: getValueOfObj({ key: 'id', obj: value.team_id }),
-        created_by: getValueOfObj({ key: 'id', obj: value.created_by }),
         salary_from: convertCurrencyToNumber(value.salary_from),
         salary_to: convertCurrencyToNumber(value.salary_to),
-        status: 'draft',
+        status: 'opened',
       }
 
       mutate(valueClone)
@@ -64,9 +55,10 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
 
   return {
     onSubmit,
-    useFormReturn: {
-      ...useFormReturn,
-    },
+    control,
+    isValid,
+    isPending,
+    setValue,
   }
 }
 

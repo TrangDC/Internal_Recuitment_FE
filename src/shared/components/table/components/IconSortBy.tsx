@@ -24,7 +24,7 @@ const IconSortBy = ({ type = false, sorting}: IconSort) => {
 
   return (
     <DivIcon className={`${!!type && 'enabled_icon'} iconSort`}>
-      {sorting.direction === 'ASC' ?  <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+       {!type ? <ArrowUpwardIcon /> : sorting.direction === 'ASC' ?  <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
     </DivIcon>
   )
 }

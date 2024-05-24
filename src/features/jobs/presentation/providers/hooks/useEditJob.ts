@@ -1,17 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
-import { useForm } from 'react-hook-form'
-import { fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
 import { FormDataSchemaUpdate, schemaUpdate } from '../../providers/constants/schema'
 import {
   UpdateHiringJobInput,
 } from 'features/jobs/domain/interfaces'
 import _ from 'lodash'
-import { convertCurrencyToNumber, getValueOfObj, removeInfoData } from 'shared/utils/utils'
-import toastSuccess from 'shared/components/toast/toastSuccess'
+import { convertCurrencyToNumber } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
+import useUpdateResource from 'shared/hooks/useUpdateResource'
 
 interface createJobProps {
   defaultValues?: Partial<FormDataSchemaUpdate>
@@ -20,57 +16,49 @@ interface createJobProps {
 
 function useUpdateJob(props: createJobProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
-
-  const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchemaUpdate>({
-    resolver: yupResolver(schemaUpdate),
-    defaultValues: {
-      ...defaultValues,
-    },
-  })
-
   const { updateJob, queryKey } = useGraphql()
-  const { mutate } = useMutation({
-    mutationKey: [queryKey],
-    mutationFn: (newJob: UpdateHiringJobInput) => {
-      const { id, note, ...otherValue } = newJob
-      return fetchGraphQL<BaseRecord>(updateJob.query, {
-        input: otherValue,
-        id: id,
-        note: note,
-      })
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] })
-      toastSuccess('Update successfully')
-      callbackSuccess && callbackSuccess(data)
-    },
-  })
+  const { useCreateReturn, useFormReturn } = useUpdateResource<
+  UpdateHiringJobInput,
+  FormDataSchemaUpdate
+>({
+  mutationKey: [queryKey],
+  queryString: updateJob,
+  defaultValues: {
+    name: '',
+    salary_from: "0",
+    salary_to: "0",
+    note: '',
+    ...defaultValues,
+  },
+  resolver: yupResolver(schemaUpdate),
+  onSuccess: callbackSuccess
+})
+
+  const { handleSubmit, control, formState, setValue } = useFormReturn
+  const isValid = !formState.isValid
+  const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
-    handleSubmit((value: FormDataSchemaUpdate) => {
-      const salary_type = getValueOfObj({ key: 'value', obj: value.salary_type });
-
+    handleSubmit((value) => {
+      const salary_type = value.salary_type;
       const valueClone = {
         ..._.cloneDeep(value),
-        currency: salary_type !== SALARY_STATE.NEGOTITATION ? getValueOfObj({ key: 'value', obj: value.currency }) : CURRENCY_STATE.VND,
-        location: getValueOfObj({ key: 'value', obj: value.location }),
+        currency: salary_type !== SALARY_STATE.NEGOTITATION ? value.currency : CURRENCY_STATE.VND,
         salary_type: salary_type,
-        team_id: getValueOfObj({ key: 'id', obj: value.team_id }),
         salary_from: convertCurrencyToNumber(value.salary_from),
         salary_to: convertCurrencyToNumber(value.salary_to),
-        created_by: getValueOfObj({ key: 'id', obj: value.created_by }),
       }
 
-      mutate(removeInfoData({field: ["total_candidates_recruited"], object: valueClone}) as UpdateHiringJobInput)
+      mutate(valueClone)
     })()
   }
 
   return {
     onSubmit,
-    useFormReturn: {
-      ...useFormReturn,
-    },
+    control,
+    isValid,
+    isPending,
+    setValue,
   }
 }
 
