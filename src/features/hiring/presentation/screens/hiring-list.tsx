@@ -18,7 +18,6 @@ import {
   DivHeaderWrapper,
 } from 'features/candidates/presentation/providers/styles'
 import { BaseRecord, baseInstance } from 'shared/interfaces'
-import useTextTranslation from 'shared/constants/text'
 import ChangeStatusModal from '../page-sections/ChangeStatusModal'
 import { transformListItem } from 'shared/utils/utils'
 import { KeyboardEventHandler, useState } from 'react'
@@ -62,9 +61,6 @@ const HiringList = () => {
     columns,
   })
   const [teams, setTeams] = useState<BaseRecord[]>([])
-  // const { teams } = useSelectTeam()
-
-  const translation = useTextTranslation()
 
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.keyCode === 13) {

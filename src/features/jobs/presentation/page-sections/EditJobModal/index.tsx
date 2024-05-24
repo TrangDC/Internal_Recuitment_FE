@@ -1,28 +1,25 @@
 import BaseModal from 'shared/components/modal'
 import { Controller, useWatch } from 'react-hook-form'
-import { Button, Grid } from '@mui/material'
-import InputComponent from 'shared/components/form/inputComponent'
-import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
+import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
 import { FormDataSchemaUpdate as FormDataSchema } from '../../providers/constants/schema'
 import { Job } from 'features/jobs/domain/interfaces'
-import { baseInstance } from 'shared/interfaces'
-import {
-  CURRENCY_DATA,
-  LOCATION_DATA,
-  SALARY_DATA,
-  SALARY_RENDER,
-} from '../../providers/constants'
-import { Member, Team } from 'features/teams/domain/interfaces'
-import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
-import useSelectMember from 'shared/hooks/graphql/useSelectMember'
-import { findItem, removeInfoData } from 'shared/utils/utils'
+import { SALARY_RENDER } from '../../providers/constants'
 import useUpdateJob from '../../providers/hooks/useEditJob'
 import EditorBoxComponent from 'shared/components/form/editorComponent'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import InputNumberComponent from 'shared/components/form/inputNumberComponent'
+import AppTextField from 'shared/components/input-fields/AppTextField'
+import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import { Fragment } from 'react/jsx-runtime'
+import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
+import LocationAutoComplete from 'shared/components/autocomplete/location-auto-complete'
+import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complete'
+import SalaryTypeAutoComponent from 'shared/components/autocomplete/salary-type-autocomplete'
+import CurrencyAutoComplete from 'shared/components/autocomplete/currency-autocomplete'
+import AppButton from 'shared/components/buttons/AppButton'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 
 interface IEditJobModal {
   open: boolean
@@ -32,239 +29,303 @@ interface IEditJobModal {
 }
 
 function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
-  const handleCancelModel = () => {
-    setOpen(false)
-  }
-
-  const { onSubmit, useFormReturn } = useUpdateJob({
-    callbackSuccess: handleCancelModel,
-    defaultValues: removeInfoData({
-      object: {
-        ...rowData,
-        team_id: rowData?.team,
-        location: findItem(LOCATION_DATA, rowData?.location as string),
-        created_by: rowData?.user,
-        salary_type: findItem(SALARY_DATA, rowData?.salary_type as string),
-        currency: findItem(CURRENCY_DATA, rowData?.currency as string),
-      },
-      field: ['team', 'user', 'created_at', 'status'],
-    }),
+  const { onSubmit, control, isPending, isValid, setValue } = useUpdateJob({
+    callbackSuccess: () => {
+      setOpen(false)
+    },
+    defaultValues: {
+      amount: rowData?.amount,
+      created_by: rowData?.user?.id,
+      currency: rowData?.currency,
+      description: rowData?.description,
+      id: rowData?.id,
+      location: rowData?.location,
+      name: rowData?.name,
+      salary_from: rowData?.salary_from.toString(),
+      salary_to: rowData?.salary_to.toString(),
+      salary_type: rowData?.salary_type,
+      team_id: rowData?.team?.id,
+    },
   })
-  const {
-    control,
-    formState: { errors },
-    setValue,
-  } = useFormReturn
 
-  const { teams } = useSelectTeam()
-  const { members } = useSelectMember()
-  const translation = useTextTranslation();
+  const translation = useTextTranslation()
 
   const salary = useWatch({ control, name: 'salary_type' })
   const resetSalary = () => {
-    setValue('salary_from', "0")
-    setValue('salary_to', "0")
+    setValue('salary_from', '0')
+    setValue('salary_to', '0')
   }
 
   const callbackSubmit = (reason: string) => {
-    setValue('note', reason);
-    onSubmit();
+    setValue('note', reason)
+    onSubmit()
   }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
-      <BaseModal.Header title={translation.MODLUE_JOBS.edit_job} setOpen={setOpen}></BaseModal.Header>
+      <BaseModal.Header
+        title={translation.MODLUE_JOBS.edit_job}
+        setOpen={setOpen}
+      ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={6}>
+        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+            <FormControl fullWidth>
               <Controller
+                control={control}
                 name="name"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchema>
-                    errors={errors}
-                    label={translation.MODLUE_JOBS.job_name}
-                    size="small"
-                    field={field}
-                    fullWidth
-                    required
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <AppTextField
+                      label={'Job name'}
+                      required
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-            <Grid item xs={6}>
-              <Controller
-                name="team_id"
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Team>
-                    options={teams}
-                    label="name"
-                    inputLabel={translation.MODLUE_TEAMS.team}
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <Controller
-                name="location"
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, baseInstance>
-                    options={LOCATION_DATA}
-                    label="name"
-                    inputLabel={translation.COMMON.location}
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <Controller
-                name="created_by"
-                control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, Member>
-                    options={members}
-                    label="name"
-                    inputLabel={translation.MODLUE_JOBS.requester}
-                    errors={errors}
-                    field={field}
-                    keySelect="id"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid>
+            </FormControl>
 
-            <Grid item xs={1}>
+            <FormControl fullWidth>
               <Controller
-                name="salary_type"
                 control={control}
-                render={({ field }) => (
-                  <AutoCompleteComponent<FormDataSchema, baseInstance>
-                    options={SALARY_DATA}
-                    label="name"
-                    inputLabel={translation.COMMON.salary}
-                    errors={errors}
-                    field={field}
-                    callbackOnChange={({ previousValue, value }) => {
-                      if (!previousValue) return
-                      resetSalary()
-                    }}
-                  />
+                name="team_id"
+                render={({ field, fieldState }) => (
+                  <Fragment>
+                    <TeamsAutoComplete
+                      name={field.name}
+                      value={field.value}
+                      onChange={field.onChange}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Team',
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </Fragment>
                 )}
               />
-            </Grid>
-            {SALARY_RENDER.map((salary_item, index) => {
-              return salary_item.typeComponent === 'textField' &&
-                //@ts-ignore
-                salary_item.accept.includes(salary?.value) ? (
-                <Grid item xs={salary_item.xs} key={index}>
-                  <Controller
-                    //@ts-ignore
-                    name={salary_item.name}
-                    control={control}
-                    render={({ field }) => (
-                      <InputNumberComponent<FormDataSchema>
-                        errors={errors}
-                        label={salary_item?.label}
-                        field={field}
+            </FormControl>
+          </FlexBox>
+          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="location"
+                render={({ field, fieldState }) => (
+                  <Fragment>
+                    <LocationAutoComplete
+                      value={field.value}
+                      onChange={(data) => field.onChange(data?.value)}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Location',
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </Fragment>
+                )}
+              />
+            </FormControl>
+
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="created_by"
+                render={({ field, fieldState }) => (
+                  <Fragment>
+                    <MemberAutoComplete
+                      name={field.name}
+                      value={field.value}
+                      onChange={field.onChange}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Requester',
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </Fragment>
+                )}
+              />
+            </FormControl>
+          </FlexBox>
+          <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
+            <FlexBox
+              justifyContent={'center'}
+              alignItems={'flex-start'}
+              width={'100%'}
+              gap={2}
+            >
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="salary_type"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <SalaryTypeAutoComponent
+                        value={field.value}
+                        onChange={(data) => {
+                          field.onChange(data?.value)
+                          resetSalary()
+                        }}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Salary',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
+
+              {SALARY_RENDER.map((salary_item, index) => {
+                return salary_item.typeComponent === 'textField' &&
+                  salary_item.accept.includes(salary) ? (
+                  <FormControl fullWidth key={index}>
+                    <Controller
+                      //@ts-ignore
+                      name={salary_item.name}
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <Fragment>
+                          <InputNumberComponent<FormDataSchema>
+                            label={salary_item?.label}
+                            field={field}
+                            fullWidth
+                            type={salary_item?.type}
+                            style={salary_item?.style}
+                            sx={{
+                              '&.MuiFormControl-root': {
+                                marginTop: '0px !important',
+                              },
+                            }}
+                            thousandSeparator={salary_item?.thousandSeparator}
+                          />
+                          <HelperTextForm
+                            message={fieldState.error?.message}
+                          ></HelperTextForm>
+                        </Fragment>
+                      )}
+                    />
+                  </FormControl>
+                ) : salary_item.typeComponent === 'autoComplete' &&
+                  salary_item.accept.includes(salary) ? (
+                  <FormControl fullWidth key={index}>
+                    <Controller
+                      //@ts-ignore
+                      name={salary_item.name}
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <Fragment>
+                          <CurrencyAutoComplete
+                            value={field.value as string}
+                            onChange={(data) => field.onChange(data?.value)}
+                            multiple={false}
+                            textFieldProps={{
+                              required: true,
+                              label: 'Salary',
+                            }}
+                          />
+                          <HelperTextForm
+                            message={fieldState.error?.message}
+                          ></HelperTextForm>
+                        </Fragment>
+                      )}
+                    />
+                  </FormControl>
+                ) : null
+              })}
+            </FlexBox>
+            <FlexBox
+              justifyContent={'center'}
+              alignItems={'center'}
+              width={'100%'}
+              gap={2}
+            >
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="amount"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Staff required'}
+                        required
+                        size="small"
                         fullWidth
-                        type={salary_item?.type}
-                        style={salary_item?.style}
+                        value={field.value}
+                        onChange={field.onChange}
                       />
-                    )}
-                  />
-                </Grid>
-              ) : salary_item.typeComponent === 'autoComplete' &&
-                //@ts-ignore
-                salary_item.accept.includes(salary?.value) ? (
-                <Grid key={index} item xs={salary_item.xs}>
-                  <Controller
-                    //@ts-ignore
-                    name={salary_item.name}
-                    control={control}
-                    render={({ field }) => (
-                      <AutoCompleteComponent<FormDataSchema, baseInstance>
-                        //@ts-ignore
-                        options={salary_item.options}
-                        //@ts-ignore
-                        label={salary_item.label}
-                        inputLabel={salary_item.inputLabel}
-                        errors={errors}
-                        field={field}
-                      />
-                    )}
-                  />
-                </Grid>
-              ) : null
-            })}
-            <Grid item xs={6}>
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+          </FlexBox>
+
+          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+            <FormControl fullWidth>
               <Controller
-                name="amount"
                 control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchema>
-                    errors={errors}
-                    label={translation.MODLUE_JOBS.staft_required}
-                    field={field}
-                    fullWidth
-                    required
-                    type="number"
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
                 name="description"
-                control={control}
-                render={({ field }) => (
-                  <EditorBoxComponent<FormDataSchema>
-                    errors={errors}
-                    label={translation.COMMON.description}
-                    field={field}
-                  />
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <EditorBoxComponent<FormDataSchema>
+                      label={translation.COMMON.description}
+                      field={field}
+                      required={true}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
                 )}
               />
-            </Grid>
-          </Grid>
-        </form>
+            </FormControl>
+          </FlexBox>
+        </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel
-            type="button"
-            variant="contained"
-            onClick={handleCancelModel}
+          <AppButton
+            variant="outlined"
+            size="small"
+            onClick={() => setOpen(false)}
           >
             {translation.COMMON.cancel}
-          </CustomeButtonCancel>
-          {/* <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={onSubmit}
-          >
-            {translation.COMMON.save}
-          </Button> */}
+          </AppButton>
           <UpdateRecord callbackSubmit={callbackSubmit}>
-            <Button
-              type="button"
+            <ButtonLoading
               variant="contained"
-              color="primary"
+              size="small"
+              disabled={isValid}
+              handlesubmit={() => {}}
+              loading={isPending}
             >
-              {translation.COMMON.save}
-            </Button>
+              Submit
+            </ButtonLoading>
           </UpdateRecord>
         </FlexBox>
       </BaseModal.Footer>

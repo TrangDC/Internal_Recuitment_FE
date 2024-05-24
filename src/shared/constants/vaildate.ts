@@ -1,6 +1,4 @@
-import dayjs from 'dayjs'
 import { capitalizeFirstLetter } from 'shared/utils/convert-string'
-import * as yup from 'yup'
 
 export const RULE_MESSAGES = {
   MC1: (field: string) => `Please enter ${field.toLowerCase()}`,

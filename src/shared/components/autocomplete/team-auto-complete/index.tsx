@@ -20,6 +20,7 @@ function TeamsAutoComplete<Multiple extends boolean>({
   const { getAllTeams, queryKey } = useGraphql()
   return (
     <AutocompleteBaseBackEnd<Teams, Multiple>
+      {...other}
       onChange={onChange}
       queryKey={[queryKey]}
       queryString={getAllTeams}

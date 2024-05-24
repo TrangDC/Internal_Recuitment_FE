@@ -66,6 +66,7 @@ type ButtonFilterProps<T> = {
   setListSelected: (value: BaseRecord[]) => void
   showLabel?: string
   node: React.ReactNode
+  onChange?: (data: BaseRecord[]) => void;
 }
 
 const ButtonFieldFilter = <T extends object>({
@@ -74,6 +75,7 @@ const ButtonFieldFilter = <T extends object>({
   listSelected,
   setListSelected,
   node,
+  onChange,
   ...props
 }: ButtonFilterProps<T> & ButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -83,9 +85,8 @@ const ButtonFieldFilter = <T extends object>({
   }
 
   const selected = useMemo(() => {
-    return Array.isArray(listSelected) ? listSelected : [listSelected]
+    return Array.isArray(listSelected) ? listSelected : listSelected ? [listSelected] : []
   }, [listSelected])
-
   return (
     <ClickAwayListener
       onClickAway={() => {
@@ -119,6 +120,7 @@ const ButtonFieldFilter = <T extends object>({
                         return !isEqual(option, chip)
                       }
                     )
+                    onChange?.(filterOption)
                     setListSelected(filterOption as T[])
                   }}
                 />

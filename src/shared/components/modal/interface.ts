@@ -24,6 +24,7 @@ export interface ITitle {
   subTitle?: string
   setOpenUpdate?: () => void
   children?: ReactNode
+  EndHeader?: ReactNode
 }
 
 export interface IReasonModal extends IModal {

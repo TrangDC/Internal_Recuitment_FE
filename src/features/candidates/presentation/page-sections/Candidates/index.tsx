@@ -12,7 +12,6 @@ import EditCandidateModal from '../../page-sections/EditCandidateModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import {
-  BtnImport,
   DivContainerWrapper,
   DivFilter,
   DivHeaderWrapper,
@@ -28,7 +27,7 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import DeleteCandidateModal from '../../page-sections/DeleteCandidateModal'
 import { Fragment, KeyboardEventHandler, useMemo, useState } from 'react'
 import useTextTranslation from 'shared/constants/text'
-import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
+import { BoxWrapperOuterContainer, BtnPrimary, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import AddBlackListCandidateModal from '../AddBlackListCandidateModal'
 import { handleImportFile } from '../../providers/utils'
@@ -195,10 +194,10 @@ const Candidates = () => {
             <FlexBox gap={'10px'}>
               <Fragment>
                 <label htmlFor={'fileImport'}>
-                  <BtnImport>
+                  <BtnPrimary>
                     <Import sx={{ fontSize: 15 }} />
                     {translation.COMMON.import}
-                  </BtnImport>
+                  </BtnPrimary>
                 </label>
                 <input
                   type="file"

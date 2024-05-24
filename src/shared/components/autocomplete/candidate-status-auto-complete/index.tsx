@@ -12,13 +12,13 @@ function CandidateStatusAutoComplete<Multiple extends boolean>(
 }
 
 export const options: IOption[] = [
-  {label: 'APPLIED', value: STATUS_CANDIDATE.APPLIED},
-  {label: 'INTERVIEWING', value: STATUS_CANDIDATE.INTERVIEWING},
-  {label: 'OFFERING', value: STATUS_CANDIDATE.OFFERING},
-  {label: 'HIRED', value: STATUS_CANDIDATE.HIRED},
-  {label: 'KIV', value: STATUS_CANDIDATE.KIV},
-  {label: 'OFFERED LOST', value: STATUS_CANDIDATE.OFFERED_LOST},
-  {label: 'EX-STAFTT', value: STATUS_CANDIDATE.EX_STAFTT},
+  {label: 'Applied', value: STATUS_CANDIDATE.APPLIED},
+  {label: 'Interviewing', value: STATUS_CANDIDATE.INTERVIEWING},
+  {label: 'Offering', value: STATUS_CANDIDATE.OFFERING},
+  {label: 'Hired', value: STATUS_CANDIDATE.HIRED},
+  {label: 'Kiv', value: STATUS_CANDIDATE.KIV},
+  {label: 'Offered lost', value: STATUS_CANDIDATE.OFFERED_LOST},
+  {label: 'Ex-staff', value: STATUS_CANDIDATE.EX_STAFTT},
 ]
 
 export default CandidateStatusAutoComplete

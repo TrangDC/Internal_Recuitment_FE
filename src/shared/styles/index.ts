@@ -1,33 +1,68 @@
 import { Box, styled } from '@mui/material'
 import FlexBetween from 'shared/components/flexbox/FlexBetween'
+import FlexBox from 'shared/components/flexbox/FlexBox'
 
 export const BoxWrapperOuterContainer = styled(Box)(({ theme }) => ({
   borderRadius: '8px',
   boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
   overflow: 'hidden',
+  marginTop: '20px',
 }))
 
 export const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
-    gap: 8,
-    flexWrap: 'wrap',
-    backgroundColor: theme.palette.background.paper,
-    padding: '12px',
-    borderWidth: '0px 0px 1px 0px',
-    borderStyle: 'solid',
-    borderColor: '#E3E6EB',
-    marginTop: '20px',
-    borderTopRightRadius: '8px',
-    borderTopLeftRadius: '8px',
-    [theme.breakpoints.down(453)]: {
-      '& .MuiButton-root': { order: 2 },
-      '& .MuiTabs-root': {
-        order: 3,
-        width: '100%',
-        '& .MuiTabs-flexContainer': { justifyContent: 'space-between' },
-      },
+  gap: 8,
+  flexWrap: 'wrap',
+  backgroundColor: theme.palette.background.paper,
+  padding: '12px',
+  borderWidth: '0px 0px 1px 0px',
+  borderStyle: 'solid',
+  borderColor: '#E3E6EB',
+  borderTopRightRadius: '8px',
+  borderTopLeftRadius: '8px',
+  [theme.breakpoints.down(453)]: {
+    '& .MuiButton-root': { order: 2 },
+    '& .MuiTabs-root': {
+      order: 3,
+      width: '100%',
+      '& .MuiTabs-flexContainer': { justifyContent: 'space-between' },
     },
-  
-    '& .MuiTextField-root': {
-      marginTop: 0,
-    },
-  }))
+  },
+
+  '& .MuiTextField-root': {
+    marginTop: 0,
+  },
+}))
+
+export const BtnPrimary = styled(FlexBox)(({ theme }) => ({
+  marginLeft: 'auto',
+  border: `1px solid ${theme.palette.primary[300]}`,
+  backgroundColor: theme.palette.primary[50],
+  fontSize: '13px',
+  fontWeight: 600,
+  color: theme.palette.primary[600],
+  height: '40px',
+  borderRadius: '4px',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '12px 20px 15px',
+  gap: '10px',
+  cursor: 'pointer',
+
+  '& span': {
+    margin: 0,
+    marginTop: '5px',
+  }
+}))
+
+
+export const BoxCircle = styled(Box)(({ theme }) => ({
+  width: '24px',
+  height: '20px',
+  background: '#1F84EB',
+  borderRadius: '20px',
+  padding: '0 8px',
+  display: 'flex',
+  alignItems: 'center',
+  color: 'white',
+  justifyContent: 'center',
+}))

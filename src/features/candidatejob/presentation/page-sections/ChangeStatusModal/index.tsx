@@ -142,6 +142,60 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
           <FlexBox gap={2}>
             <FormControl fullWidth>
               <Controller
+                name="failed_reason"
+                shouldUnregister
+                control={control}
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <FailedReasonAutoComplete
+                      multiple
+                      value={(field.value as IOption[]).map((item) => item.value) }
+                      onChange={field.onChange}
+                      textFieldProps={{
+                        label: 'Status',
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
+                )}
+              />
+            </FormControl>
+          </FlexBox>
+
+          {showFailedReason && (
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  name="failed_reason"
+                  shouldUnregister
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <FailedReasonAutoComplete
+                        multiple
+                        value={((field.value as IOption[]) || []).map(
+                          (item) => item.value
+                        )}
+                        onChange={field.onChange}
+                        textFieldProps={{
+                          label: 'Failed Reason',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+          )}
+
+          <FlexBox gap={2}>
+            <FormControl fullWidth>
+              <Controller
                 control={control}
                 name="feedback"
                 render={({ field, fieldState }) => (

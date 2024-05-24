@@ -3,7 +3,6 @@ import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useDeleteHiring from '../../providers/hooks/useChangeStatus'
-import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
@@ -24,8 +23,6 @@ function DeleteHiringModal({ open, setOpen, id }: IDeleteHiringModal) {
       note: '',
     }
   })
-
-  const translation = useTextTranslation()
 
   const callbackSubmit = (reason: string) => {
     setValue('note', reason)

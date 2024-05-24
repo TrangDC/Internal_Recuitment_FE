@@ -10,31 +10,27 @@ import useActionTable from '../providers/hooks/useActionTable'
 import EditJobModal from '../page-sections/EditJobModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
-import {
-  DivFilter,
-  DivHeaderWrapper,
-} from '../providers/styles'
-import ButtonFilter from 'shared/components/input-fields/ButtonFilter'
+import { DivFilter, DivHeaderWrapper } from '../providers/styles'
 import EditIcon from 'shared/components/icons/EditIcon'
 import { useNavigate } from 'react-router-dom'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DeleteJobModal from '../page-sections/DeleteJobModal'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import { KeyboardEventHandler } from 'react'
-import { baseInstance } from 'shared/interfaces'
-import { STATUS_DATA } from '../providers/constants'
-import {
-  convertEmptyToNull,
-  getValueOfObj,
-  transformListItem,
-} from 'shared/utils/utils'
-import useSelectTeam from 'shared/hooks/graphql/useSelecTeam'
-import { Team } from 'features/teams/domain/interfaces'
+import { KeyboardEventHandler, useState } from 'react'
+import { BaseRecord, baseInstance } from 'shared/interfaces'
+import { getValueOfObj, transformListItem } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
 import Jobs from 'shared/components/icons/Jobs'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import IconScreen from 'shared/components/utils/IconScreen'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
+import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
+import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
+import StatusJobAutoComplete from 'shared/components/autocomplete/status-job-autocomplete'
+import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
+import { isEmpty } from 'lodash'
+import CloseIcon from 'shared/components/icons/CloseIcon'
+import CloseJobModal from '../page-sections/CloseJobModal'
 
 const JobsList = () => {
   const {
@@ -45,6 +41,9 @@ const JobsList = () => {
     openDelete,
     setOpenDelete,
     handleOpenDelete,
+    openStatus,
+    setOpenStatus,
+    handleOpenStatus,
     rowId,
     rowData,
     setOpenEdit,
@@ -56,6 +55,10 @@ const JobsList = () => {
   const { handleFreeWord, handleFilter } = useTableReturn
   const translation = useTextTranslation()
 
+  const [teams, setTeams] = useState<BaseRecord[]>([])
+  const [status, setStatus] = useState<BaseRecord>()
+  const [searchField, setSearchField] = useState('')
+
   const { colummTable } = useBuildColumnTable({
     actions: [
       {
@@ -65,6 +68,14 @@ const JobsList = () => {
         },
         title: translation.COMMON.detail,
         Icon: <SearchIconSmall />,
+      },
+      {
+        id: 'close_job',
+        onClick: (id, rowData) => {
+          handleOpenStatus(id)
+        },
+        title: 'Close job',
+        Icon: <CloseIcon />,
       },
       {
         id: 'edit',
@@ -86,8 +97,6 @@ const JobsList = () => {
     columns,
   })
 
-  const { teams } = useSelectTeam()
-
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.keyCode === 13) {
       //@ts-ignore
@@ -103,26 +112,66 @@ const JobsList = () => {
       <BoxWrapperOuterContainer>
         <HeadingWrapper>
           <DivFilter>
-            <ButtonFilter<Team>
-              listData={teams}
-              inputLabel={translation.MODLUE_TEAMS.teams}
-              callbackChange={(obj) => {
-                handleFilter(
-                  'team_ids',
-                  convertEmptyToNull(transformListItem(obj))
-                )
+            <ButtonFieldFilter<baseInstance>
+              inputLabel={'Teams'}
+              listSelected={teams}
+              setListSelected={setTeams}
+              showLabel={'name'}
+              onChange={(data) => {
+                //@ts-ignore
+                const ids = transformListItem(data, 'id')
+                handleFilter('team_ids', !isEmpty(ids) ? ids : null)
               }}
+              node={
+                <TeamsAutoComplete
+                  name="team"
+                  multiple={true}
+                  value={transformListItem(teams, 'id')}
+                  onCustomChange={(data) => {
+                    setTeams(data)
+                  }}
+                  onChange={(value) => {
+                    handleFilter('team_ids', value)
+                  }}
+                  open={true}
+                  textFieldProps={{
+                    label: 'Status',
+                    autoFocus: true,
+                  }}
+                />
+              }
             />
-            <ButtonFilter<baseInstance>
-              listData={STATUS_DATA}
-              inputLabel={translation.COMMON.status}
-              multiple={false}
-              callbackChange={(obj) => {
-                handleFilter('status', getValueOfObj({ key: 'value', obj }))
+            <ButtonFieldFilter<baseInstance>
+              inputLabel={'Status'}
+              listSelected={status as BaseRecord}
+              setListSelected={setStatus}
+              onChange={(data) => {
+                //@ts-ignore
+                const status = transformListItem(data, 'id')
+                handleFilter('status', !isEmpty(status) ? status : null)
               }}
+              node={
+                <StatusJobAutoComplete
+                  multiple={false}
+                  value={status && getValueOfObj({ key: 'value', obj: status })}
+                  onChange={(data) => {
+                    handleFilter(
+                      'status',
+                      getValueOfObj({ key: 'value', obj: data as IOption })
+                    )
+                    setStatus(data as IOption)
+                  }}
+                  open={true}
+                  textFieldProps={{
+                    label: 'Status',
+                    autoFocus: true,
+                  }}
+                />
+              }
             />
           </DivFilter>
-          <DivHeaderWrapper>
+
+          <DivHeaderWrapper sx={{ marginTop: '16px' }}>
             <CustomTextField
               id="outlined-basic"
               label={translation.MODLUE_JOBS.input_job_title}
@@ -130,11 +179,17 @@ const JobsList = () => {
               size="small"
               sx={{ width: '400px', fontSize: '13px' }}
               onKeyUp={handleFreeWorld}
+              onChange={(e) => setSearchField(e.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton>
-                      <SearchIcon sx={{ fontSize: '16px' }} />
+                      <SearchIcon
+                        sx={{ fontSize: '16px' }}
+                        onClick={() => {
+                          handleFreeWord('name', searchField)
+                        }}
+                      />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -173,6 +228,14 @@ const JobsList = () => {
         <DeleteJobModal
           open={openDelete}
           setOpen={setOpenDelete}
+          id={rowId.current}
+        />
+      )}
+
+      {openStatus && (
+        <CloseJobModal
+          open={openStatus}
+          setOpen={setOpenStatus}
           id={rowId.current}
         />
       )}

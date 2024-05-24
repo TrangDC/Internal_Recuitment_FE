@@ -96,12 +96,12 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>
-      <FailedModal
+      {openFailed && <FailedModal
         open={openFailed}
         setOpen={setOpenFailed}
         title="Failed to delete"
         content={msg}
-      />
+      />}
     </Fragment>
   )
 }
