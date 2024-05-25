@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import GraphQLClientService, {
-  IbuildQueryReturn,
+  IBuildQueryReturn,
 } from 'services/refactor/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 interface IUseAutoComplete {
   queryKey: string[]
-  queryString: IbuildQueryReturn
+  queryString: IBuildQueryReturn
   variables: BaseRecord
 }
 

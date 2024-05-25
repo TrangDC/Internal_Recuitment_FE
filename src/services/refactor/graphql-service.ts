@@ -1,4 +1,3 @@
-import { QueryClient } from '@tanstack/react-query'
 import appConfig from 'configs/appConfig'
 import { GraphQLClient } from 'graphql-request'
 import {
@@ -10,7 +9,7 @@ import ErrorException, {
   CustomGraphQLResponse,
 } from 'shared/interfaces/response'
 import { makeLeft, makeRight } from 'shared/utils/handleEither'
-interface IbuildQuery {
+interface IBuildQuery {
   operation: string
   node?: string
   params?: Record<string, string>
@@ -19,13 +18,13 @@ interface IbuildQuery {
   }
 }
 
-export interface IbuildQueryReturn {
+export interface IBuildQueryReturn {
   operation: string
   query: string
 }
 
 class GraphQLClientService {
-  static buildQuery = (props: IbuildQuery): IbuildQueryReturn => {
+  static buildQuery = (props: IBuildQuery): IBuildQueryReturn => {
     const { operation, node, params, options } = props
     let paramsQuery = ''
     let operationQuery = ''

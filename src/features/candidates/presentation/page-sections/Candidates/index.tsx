@@ -27,7 +27,11 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import DeleteCandidateModal from '../../page-sections/DeleteCandidateModal'
 import { Fragment, KeyboardEventHandler, useMemo, useState } from 'react'
 import useTextTranslation from 'shared/constants/text'
-import { BoxWrapperOuterContainer, BtnPrimary, HeadingWrapper } from 'shared/styles'
+import {
+  BoxWrapperOuterContainer,
+  BtnPrimary,
+  HeadingWrapper,
+} from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import AddBlackListCandidateModal from '../AddBlackListCandidateModal'
 import { handleImportFile } from '../../providers/utils'
@@ -140,7 +144,7 @@ const Candidates = () => {
                         getValueOfObj({ key: 'value', obj: data })
                       )
                     }}
-                    open={true}
+                    disableCloseOnSelect={true}
                     textFieldProps={{
                       label: 'Status',
                       autoFocus: true,
@@ -162,7 +166,7 @@ const Candidates = () => {
                       onChange={(data: any) => {
                         setFailedReason(data)
                       }}
-                      open={true}
+                      disableCloseOnSelect={true}
                       textFieldProps={{
                         label: 'Failed Reason',
                         autoFocus: true,

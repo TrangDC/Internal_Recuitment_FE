@@ -9,7 +9,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { ChosenDateType } from 'shared/components/input-fields/AppTimePicker'
 import { BaseRecord } from 'shared/interfaces/common'
 import { convertToRootDate } from '../../page-sections/google-calendar/functions'
-import { convertToUTC } from 'shared/utils/date'
+import { convertToUTC, isDurationWithinOneDay } from 'shared/utils/date'
+import dayjs from 'dayjs'
 
 interface IUseCreateInterview {
   onSuccess: (data: BaseRecord) => void
@@ -67,9 +68,12 @@ function useCreateInterview(props: IUseCreateInterview) {
 
   function handleGenerateToDate(value: ChosenDateType) {
     if (value) {
-      const timeSteps = 30
-      const toDate = value.add(timeSteps, 'minute')
-      setValue('to', toDate.toDate())
+      let  to = value.add(30, 'minute')
+      const endOfDay = dayjs().endOf('day')
+      if (to.isAfter(endOfDay)) {
+        to = endOfDay
+      }
+      setValue('to', to.toDate());
     }
   }
   return {

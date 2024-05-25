@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { IbuildQueryReturn, fetchGraphQL } from 'services/graphql-services'
+import { IBuildQueryReturn, fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
 import { removeNonExistInObj } from 'shared/utils/utils'
 interface IuseCustomTable {
-  buildQuery: IbuildQueryReturn
+  buildQuery: IBuildQueryReturn
   variables: any
   queryKey: string
 }

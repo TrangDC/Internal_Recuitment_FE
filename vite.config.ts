@@ -6,6 +6,8 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import nodePolyfills from 'vite-plugin-node-stdlib-browser'
 import eslint from 'vite-plugin-eslint'
 // https://vitejs.dev/config https://vitest.dev/config
+delete process.env['CommonProgramFiles(x86)'];
+delete process.env['ProgramFiles(x86)'];
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {

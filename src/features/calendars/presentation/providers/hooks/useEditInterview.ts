@@ -9,7 +9,8 @@ import { ChosenDateType } from 'shared/components/input-fields/AppTimePicker'
 import useEditResource from 'shared/hooks/useEditResource/useEditResource'
 import { BaseRecord } from 'shared/interfaces/common'
 import { convertFromUTC, convertToUTC } from 'shared/utils/date'
-import { convertToRootDate } from '../../page-sections/google-calendar/functions'
+import { convertToRootDate, formatStringToDate } from '../../page-sections/google-calendar/functions'
+import dayjs from 'dayjs'
 
 type UseEditInterviewProps = {
   id: string
@@ -32,20 +33,16 @@ function useEditInterview(props: UseEditInterviewProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
-      const start_from = convertFromUTC(new Date(data.start_from)).toDate()
-      const end_at = convertFromUTC(new Date(data.end_at)).toDate()
-      const interview_date = convertFromUTC(
-        new Date(data.interview_date)
-      ).toDate()
+      const {currentDate ,newEnd ,newStart} = formatStringToDate(data.start_from , data.end_at , data.interview_date)
       return {
         description: data.description,
         candidateId: data.candidate_job.candidate_id,
-        date: interview_date,
-        from: start_from,
+        date: currentDate,
+        from: newStart,
         jobId: data.candidate_job.hiring_job_id,
         teamId: data.candidate_job.hiring_job.team.id,
         title: data.title,
-        to: end_at,
+        to: newEnd,
         interviewer: data.interviewer.map((o) => o.id),
         candidate_job_id: data.candidate_job_id,
       }
@@ -79,28 +76,21 @@ function useEditInterview(props: UseEditInterviewProps) {
       mutate(formData)
     })()
   }
-
-  function onSeletedTeam(id: string | null) {
-    setValue('teamId', id ?? '')
-  }
-
-  function onSeletedJob(id: string | null) {
-    setValue('jobId', id ?? '')
-    resetField('candidateId')
-  }
-
   function handleGenerateToDate(value: ChosenDateType) {
     if (value) {
-      const timeSteps = 30
-      const toDate = value.add(timeSteps, 'minute')
-      setValue('to', toDate.toDate())
+      let  to = value.add(30, 'minute')
+      const endOfDay = dayjs().endOf('day')
+      if (to.isAfter(endOfDay)) {
+        to = endOfDay
+      }
+      setValue('to', to.toDate());
     }
   }
   return {
     control,
     isValid,
     isPending,
-    actions: { onSeletedTeam, onSeletedJob, onSubmit, handleGenerateToDate },
+    actions: { onSubmit, handleGenerateToDate },
     watch,
     resetField,
     formState,

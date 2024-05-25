@@ -140,6 +140,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         onChange={field.onChange}
                         multiple={true}
                         name={field.name}
+                        disableCloseOnSelect
                         textFieldProps={{
                           required: true,
                           label: 'Interviewer',
@@ -295,7 +296,11 @@ function CreateInterviewModal(props: IAddInterviewModal) {
           </FlexBox>
         </BaseModal.ContentMain>
         <BaseModal.Footer>
-          <AppButton variant="outlined" size="small">
+          <AppButton
+            variant="outlined"
+            size="small"
+            onClick={() => setOpen(false)}
+          >
             Cancel
           </AppButton>
           <ButtonLoading

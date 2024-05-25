@@ -23,7 +23,7 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
     keyName,
     textFieldProps,
     value,
-    seletedKey,
+    selectedKey,
     onChange,
     onCustomChange,
     queryKey,
@@ -32,6 +32,7 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
     filter,
     disabled,
     getOptionLabel,
+    disableCloseOnSelect,
   } = props
 
   const { options } = useAutoCompleteBackEnd<T>({
@@ -49,34 +50,34 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
   let getValue
   if (multiple) {
     getValue = options.filter((o) =>
-      value?.includes((o[seletedKey] as string).toString())
+      value?.includes((o[selectedKey] as string).toString())
     ) as CustomAutocompleteValueBackEnd<T, Multiple>
   } else {
     getValue = options.find(
-      (o) => (o[seletedKey] as string).toString() === value
+      (o) => (o[selectedKey] as string).toString() === value
     ) as CustomAutocompleteValueBackEnd<T, Multiple>
   }
   function handleOnChange(
     event: SyntheticEvent<Element, Event>,
     value: CustomAutocompleteValueBackEnd<T, Multiple>
   ) {
-    let getValueBySeletedKey: CustomAutocompleteValueBackEnd2<Multiple>
+    let getValueBySelectedKey: CustomAutocompleteValueBackEnd2<Multiple>
     if (multiple) {
-      getValueBySeletedKey = (value as T[]).map(
-        (o) => o?.[seletedKey] as string
+      getValueBySelectedKey = (value as T[]).map(
+        (o) => o?.[selectedKey] as string
       ) as CustomAutocompleteValueBackEnd2<Multiple>
     } else {
-      getValueBySeletedKey = (value as T)?.[
-        seletedKey
+      getValueBySelectedKey = (value as T)?.[
+        selectedKey
       ] as CustomAutocompleteValueBackEnd2<Multiple>
     }
-    onChange?.(getValueBySeletedKey)
+    onChange?.(getValueBySelectedKey)
     onCustomChange?.(value)
   }
   return (
     <Autocomplete<T, Multiple>
       {...props}
-      disableCloseOnSelect
+      disableCloseOnSelect={disableCloseOnSelect}
       size="small"
       value={(getValue as any) ?? null}
       options={options}
@@ -99,7 +100,7 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
         return option ? label : ''
       }}
       isOptionEqualToValue={(option, value) =>
-        option[seletedKey] === value[seletedKey]
+        option[selectedKey] === value[selectedKey]
       }
       renderOption={(propsRenderOption, option, { selected }) => {
         const label = getValueByKey(option, keyName) ?? ''
