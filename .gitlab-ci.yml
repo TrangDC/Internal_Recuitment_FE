@@ -15,11 +15,9 @@ include: "/.gitlab/.gitlab-ci.template.yml"
 
 .prod:
   variables:
-    REACT_APP_CLIENT_ID: 595d6a53-0f9a-4207-aa4a-143f73053170
-    REACT_APP_AUTHOR: https://login.microsoftonline.com/techvify.onmicrosoft.com
     REACT_APP_ENDPOINT_API: https://trec-api.techvify.com/graphql
-    REACT_APP_WEB: https://trec.techvify.com/
-    REACT_APP_ENDPOINT_API_AUTH: https://trec-api.techvify.com
+    REACT_APP_ENDPOINT_BE: https://trec-api.techvify.dev
+    TINY_API_KEY: m5ns5e2shd3u2ay824oascwk9b686h38b910l23p6uj2incu
   rules:
     - if: $PIPELINE_NAME == "CD" && $ENVIRONMENT == "production"
     - when: never
