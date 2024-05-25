@@ -5,6 +5,7 @@ import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
 import { cloneDeep } from 'lodash'
 import { convertDateToISOString } from 'shared/utils/utils'
 import useUpdateResource from 'shared/hooks/useUpdateResource'
+import { convertToUTC } from 'shared/utils/date'
 
 interface updateInterview {
   defaultValues?: Partial<FormDataSchemaUpdate>
@@ -38,9 +39,9 @@ function useEditInterview(
     handleSubmit((value) => {
       const valueClone = {
         ...cloneDeep(value),
-        interview_date: convertDateToISOString(value.interview_date.toString()),
-        start_from: convertDateToISOString(value.start_from.toString()),
-        end_at: convertDateToISOString(value.end_at.toString()),
+        interview_date: convertToUTC(value.interview_date).toISOString(),
+        start_from: convertToUTC(value.start_from).toISOString(),
+        end_at: convertToUTC(value.end_at).toISOString(),
       }
 
       mutate(valueClone)
