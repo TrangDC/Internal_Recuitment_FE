@@ -16,6 +16,7 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Interview } from 'features/interviews/domain/interfaces'
 import useEditInterview from '../../providers/hooks/useEditInterview'
 import { transformListItem } from 'shared/utils/utils'
+import { replaceYearWithCurrent } from 'shared/utils/date'
 
 interface IEditInterviewModal {
   open: boolean
@@ -44,8 +45,8 @@ function EditInterviewModal({
       interview_date: new Date(rowData.interview_date),
       description: rowData.description,
       interviewer: transformListItem(rowData.interviewer, 'id'),
-      start_from: new Date(rowData.start_from),
-      end_at: new Date(rowData.end_at),
+      start_from: new Date(replaceYearWithCurrent(rowData.start_from)),
+      end_at: new Date(replaceYearWithCurrent(rowData.end_at)),
     },
   })
 
@@ -123,6 +124,7 @@ function EditInterviewModal({
                       label={'Select date'}
                       value={field.value}
                       onChange={field.onChange}
+                      format='dd/MM/yyyy'
                       textFieldProps={{
                         fullWidth: true,
                         size: 'small',

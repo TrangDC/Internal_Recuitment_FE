@@ -108,6 +108,7 @@ function CreateInterviewModal({
                   <FlexBox flexDirection={'column'}>
                     <AppDateField
                       label={'Select date'}
+                      format='dd/MM/yyyy'
                       value={field.value}
                       onChange={field.onChange}
                       textFieldProps={{

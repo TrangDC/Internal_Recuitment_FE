@@ -1,3 +1,4 @@
+import { formatISO } from 'date-fns'
 import _, { isEmpty } from 'lodash'
 import { FormState } from 'react-hook-form'
 import { BaseRecord } from 'shared/interfaces'
@@ -113,7 +114,7 @@ export const getBase64 = (file: Blob): Promise<string> =>
   })
 
 export const convertDateToISOString = (date: string | Date) => {
-  return new Date(date).toISOString()
+  return formatISO(new Date(date)) 
 }
 
 export const convertSizeToMb = (size: number) => {
