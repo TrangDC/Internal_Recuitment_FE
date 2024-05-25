@@ -13,6 +13,7 @@ export function formatDateToString(value: Date | undefined, format: string) {
 }
 
 export function getTime(value: Date | undefined) {
+  console.log('value', value)
   if (value) {
     const date = dayjs(value)
     const formattedDate = date.format('HH:mm')
@@ -83,5 +84,11 @@ export function isPast(date: Date) {
 
   // So sánh ngày nhập vào với ngày hiện tại
   return inputDate.isAfter(currentDate)
+}
+
+
+export function replaceYearWithCurrent(dateString:string) {
+  const currentYear = new Date().getFullYear(); // Lấy năm hiện tại
+  return dateString.replace(/^0001/, currentYear.toString()); // Thay thế năm "0001" bằng năm hiện tại
 }
 

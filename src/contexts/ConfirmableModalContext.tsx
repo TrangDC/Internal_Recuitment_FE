@@ -47,6 +47,15 @@ const ConfirmableModalProvider: FC<ConfirmableModalProviderProps> = (props) => {
     },
   ]
 
+  const buttonSecondary = [
+    {
+      title: 'Cancel',
+      handleClick: () => {
+        setOpenConfirm(false)
+      },
+    },
+  ]
+
   useEffect(() => {
     setConfirmOnClose(formState.isDirty)
   }, [formState])
@@ -64,6 +73,7 @@ const ConfirmableModalProvider: FC<ConfirmableModalProviderProps> = (props) => {
           setOpen={setOpenConfirm}
           title="Discard unsaved changes?"
           buttonMain={buttonMains}
+          listButton={buttonSecondary}
         />
       )}
     </ConfirmableModalContext.Provider>

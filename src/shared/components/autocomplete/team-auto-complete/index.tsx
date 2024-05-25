@@ -20,7 +20,6 @@ function TeamsAutoComplete<Multiple extends boolean>({
   const { getAllTeams, queryKey } = useGraphql()
   return (
     <AutocompleteBaseBackEnd<Teams, Multiple>
-      {...other}
       onChange={onChange}
       queryKey={[queryKey]}
       queryString={getAllTeams}
@@ -30,7 +29,7 @@ function TeamsAutoComplete<Multiple extends boolean>({
       filter={filter}
       multiple={multiple}
       onCustomChange={onCustomChange}
-      seletedKey={'id'}
+      selectedKey={'id'}
       textFieldProps={textFieldProps}
       {...other}
     />

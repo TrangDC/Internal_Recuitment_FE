@@ -69,7 +69,7 @@ const JobApplicationHistory = () => {
         id: 'download',
         onClick: (id, rowData) => {
           const { attachments } = rowData
-          downloadFileAttachment(attachments, handleGetUrlDownload);
+          downloadFileAttachment(attachments, handleGetUrlDownload)
         },
         title: 'Download CV',
         Icon: <DownloadIcon />,

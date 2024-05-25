@@ -17,7 +17,6 @@ import randomColor, {
 } from '../../page-sections/google-calendar/functions'
 import dayjs from 'dayjs'
 import { convertFromUTC, convertToUTC } from 'shared/utils/date'
-import { View } from 'react-big-calendar'
 
 function useGetAllInterview() {
   const { getAllCandidateInterview4Calendar, queryKey } = useGraphql()
@@ -67,7 +66,6 @@ function useGetAllInterview() {
   }, [data])
 
   function handlePagination(range: Date[] | RangeDate) {
-    console.log('range', range)
     if (isArray(range)) {
       if (range.length === 1) {
         let endOfDay = dayjs(range[range.length - 1]).endOf('day')
@@ -83,8 +81,6 @@ function useGetAllInterview() {
         })
       }
     } else {
-      console.log('range', range.end.toISOString())
-
       setDateRange({
         interview_date_from: range.start.toISOString(),
         interview_date_to: range.end.toISOString(),

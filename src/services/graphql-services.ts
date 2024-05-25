@@ -13,12 +13,12 @@ interface IbuildQuery {
   }
 }
 
-export interface IbuildQueryReturn {
+export interface IBuildQueryReturn {
   operation: string
   query: string
 }
 
-export const buildQuery = (props: IbuildQuery): IbuildQueryReturn => {
+export const buildQuery = (props: IbuildQuery): IBuildQueryReturn => {
   const { operation, node, params, options } = props
   let paramsQuery = ''
   let operationQuery = ''

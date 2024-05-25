@@ -2,14 +2,14 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect, useMemo } from 'react'
 import { FieldValues, Resolver, useForm } from 'react-hook-form'
 import GraphQLClientService, {
-  IbuildQueryReturn,
+  IBuildQueryReturn,
 } from 'services/refactor/graphql-service'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 export interface IuseGetResource<Response, FormData> {
   id: string
   queryKey: string[]
-  oneBuildQuery: IbuildQueryReturn
+  oneBuildQuery: IBuildQueryReturn
   formatDefaultValues?: (data: Response) => FormData
   resolver?: Resolver<FormData & FieldValues, any> | undefined
 }

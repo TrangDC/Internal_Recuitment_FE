@@ -2,7 +2,7 @@ import { makeLeft, makeRight } from 'shared/utils/handleEither'
 import { EventColor } from './interface'
 import { Either } from 'shared/interfaces/common'
 import dayjs from 'dayjs'
-import { isAfterNow, isDurationWithinOneDay } from 'shared/utils/date'
+import { isAfterNow, isDurationWithinOneDay, replaceYearWithCurrent } from 'shared/utils/date'
 
 const colorEvent: EventColor[] = [
   {
@@ -132,4 +132,15 @@ export function ruleDragDropCalendar(currentDate:Date, start:Date, end:Date, onC
   if(!isAfterNow(start)) return 
   if (isDurationWithinOneDay(start, end)) return 
   onCallbackWhenValid()
+}
+export function formatStringToDate(start:string, end:string , currentDate:string){
+  const startDate = replaceYearWithCurrent(start)
+  const endDate =  replaceYearWithCurrent(end)
+  const interview_date = dayjs(currentDate).toDate()
+  const  {newEnd ,newStart} = convertToRootDate(new Date(startDate), new Date(endDate) , interview_date)
+  return {
+    newEnd,
+    newStart,
+    currentDate:interview_date,
+  }
 }

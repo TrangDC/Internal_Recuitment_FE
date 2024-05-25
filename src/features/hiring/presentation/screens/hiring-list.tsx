@@ -38,7 +38,7 @@ const HiringList = () => {
     setOpenEdit,
   } = useActionTable()
   const { useTableReturn } = useTeamTable()
-  const { handleFreeWord, handleFilter } = useTableReturn
+  const { handleFreeWord } = useTableReturn
   const { colummTable } = useBuildColumnTable({
     actions: [
       {
@@ -87,7 +87,7 @@ const HiringList = () => {
                   value={transformListItem(teams, 'id')}
                   onCustomChange={setTeams}
                   onChange={() => {}}
-                  open={true}
+                  disableCloseOnSelect={true}
                   textFieldProps={{
                     label: 'Status',
                     autoFocus: true,

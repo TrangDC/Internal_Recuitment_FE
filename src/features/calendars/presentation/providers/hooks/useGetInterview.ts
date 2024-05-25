@@ -3,13 +3,15 @@ import { CandidateInterview } from 'features/calendars/domain/interfaces'
 import useGetResource from 'shared/hooks/useEditResource/useGetResource'
 import { GetInterviewFrom, getOneInterviewSchema } from '../constants/validate'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { convertFromUTC } from 'shared/utils/date'
+import { convertFromUTC, replaceYearWithCurrent } from 'shared/utils/date'
 import { useNavigate } from 'react-router-dom'
+import { convertToRootDate, formatStringToDate } from '../../page-sections/google-calendar/functions'
+import dayjs from 'dayjs'
 
-export interface IuseGetInterview {
+export interface IUseGetInterview {
   id: string
 }
-function useGetInterview({ id }: IuseGetInterview) {
+function useGetInterview({ id }: IUseGetInterview) {
   const navigate = useNavigate()
   const { getCandidateInterview, queryKey } = useGraphql()
   const { useFormReturn, isGetting } = useGetResource<
@@ -21,11 +23,7 @@ function useGetInterview({ id }: IuseGetInterview) {
     queryKey: [queryKey],
     resolver: yupResolver(getOneInterviewSchema),
     formatDefaultValues: (data: CandidateInterview) => {
-      const interview_date = convertFromUTC(
-        new Date(data.interview_date)
-      ).toDate()
-      const start_from = convertFromUTC(new Date(data.start_from)).toDate()
-      const end_at = convertFromUTC(new Date(data.end_at)).toDate()
+      const {currentDate ,newEnd ,newStart} = formatStringToDate(data.start_from , data.end_at , data.interview_date)
       return {
         id: data.id,
         candidateEmail: data.candidate_job.candidate.email,
@@ -34,9 +32,9 @@ function useGetInterview({ id }: IuseGetInterview) {
         phone: data.candidate_job.candidate.phone,
         candidateName: data.candidate_job.candidate.name,
         title: data.title,
-        interview_date: interview_date,
-        end_at: end_at,
-        start_from: start_from,
+        interview_date: currentDate,
+        end_at: newEnd,
+        start_from: newStart,
         team: data.candidate_job.hiring_job.team.name,
         job: data.candidate_job.hiring_job.name,
         hiring_job_id: data.candidate_job.hiring_job_id,

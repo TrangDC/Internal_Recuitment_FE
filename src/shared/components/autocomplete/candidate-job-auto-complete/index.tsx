@@ -36,7 +36,7 @@ function CandidateJobsAutoComplete<Multiple extends boolean>({
       filter={filter}
       multiple={multiple}
       onCustomChange={onCustomChange}
-      seletedKey={'id'}
+      selectedKey={'id'}
       textFieldProps={textFieldProps}
       {...other}
     />

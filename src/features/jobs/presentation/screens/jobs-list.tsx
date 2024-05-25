@@ -133,7 +133,7 @@ const JobsList = () => {
                   onChange={(value) => {
                     handleFilter('team_ids', value)
                   }}
-                  open={true}
+                  disableCloseOnSelect={true}
                   textFieldProps={{
                     label: 'Status',
                     autoFocus: true,
@@ -161,7 +161,7 @@ const JobsList = () => {
                     )
                     setStatus(data as IOption)
                   }}
-                  open={true}
+                  disableCloseOnSelect={true}
                   textFieldProps={{
                     label: 'Status',
                     autoFocus: true,

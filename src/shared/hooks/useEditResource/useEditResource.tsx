@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import GraphQLClientService, {
-  IbuildQueryReturn,
+  IBuildQueryReturn,
 } from 'services/refactor/graphql-service'
 import NotificationService from 'services/notification-service'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
@@ -11,7 +11,7 @@ import { FieldValues, Resolver } from 'react-hook-form'
 
 interface IuseEditResource<Response, FormData>
   extends IuseGetResource<Response, FormData> {
-  editBuildQuery: IbuildQueryReturn
+  editBuildQuery: IBuildQueryReturn
   id: string
   queryKey: string[]
   onSuccess?: (data: BaseRecord) => void

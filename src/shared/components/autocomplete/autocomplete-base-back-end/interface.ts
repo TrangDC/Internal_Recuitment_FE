@@ -1,6 +1,6 @@
 import { TextFieldProps } from '@mui/material'
 import { ReactNode } from 'react'
-import { IbuildQueryReturn } from 'services/graphql-services'
+import { IBuildQueryReturn } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
 
 export type CustomAutocompleteValueBackEnd<
@@ -25,7 +25,8 @@ export interface AutocompleteValueBackEndCommonProps<
   filter?: BaseRecord
   disabled?:boolean
   getOptionLabel?: (option: T) => ReactNode
-  open?: boolean,
+  disableCloseOnSelect?:boolean
+
 }
 
 export interface IAutocompleteBackEndProps<
@@ -34,18 +35,18 @@ export interface IAutocompleteBackEndProps<
 > {
   name: string
   keyName: Leaves<T>
-  seletedKey: keyof T
+  selectedKey: keyof T
   value: string[] | string
   textFieldProps: TextFieldProps
   onChange: (value: CustomAutocompleteValueBackEnd2<Multiple>) => void
   multiple?: Multiple
   queryKey: string[]
-  queryString: IbuildQueryReturn
+  queryString: IBuildQueryReturn
   onCustomChange?: (value: CustomAutocompleteValueBackEnd<T, Multiple>) => void
   filter?: BaseRecord
   disabled?:boolean
   getOptionLabel?: (option: T) => ReactNode
-  open?: boolean,
+  disableCloseOnSelect?:boolean
 }
 export type Leaves<T> = T extends object
   ? {

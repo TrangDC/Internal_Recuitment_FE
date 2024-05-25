@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { DefaultValues, FieldValues, Resolver, useForm } from 'react-hook-form'
 import NotificationService from 'services/notification-service'
-import GraphQLClientService, { IbuildQueryReturn } from 'services/refactor/graphql-service'
+import GraphQLClientService, {
+  IBuildQueryReturn,
+} from 'services/refactor/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
 import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
@@ -9,7 +11,7 @@ import { t } from 'i18next'
 
 interface IuseUpdateResource<P> {
   mutationKey: string[]
-  queryString: IbuildQueryReturn
+  queryString: IBuildQueryReturn
   onError?: (error: ErrorException | Error) => void
   onSuccess?: (data: BaseRecord) => void
   defaultValues?: DefaultValues<P>
@@ -33,7 +35,7 @@ function useUpdateResource<T, P extends FieldValues>({
   const useCreateReturn = useMutation({
     mutationKey,
     mutationFn: (payload: BaseRecord) => {
-      const { id, note, ...otherInput} = payload;
+      const { id, note, ...otherInput } = payload
 
       return GraphQLClientService.fetchGraphQL(queryString.query, {
         input: otherInput,

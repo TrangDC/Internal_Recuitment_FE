@@ -14,6 +14,7 @@ function InterViewerAutoComplete<Multiple extends boolean>({
   onCustomChange,
   textFieldProps,
   name,
+  ...other
 }: AutocompleteValueBackEndCommonProps<InterViewer, Multiple>) {
   const { getAllUsers, queryKey } = useGraphql()
   return (
@@ -26,8 +27,9 @@ function InterViewerAutoComplete<Multiple extends boolean>({
       value={value}
       multiple={multiple}
       onCustomChange={onCustomChange}
-      seletedKey={'id'}
+      selectedKey={'id'}
       textFieldProps={textFieldProps}
+      {...other}
     />
   )
 }
