@@ -11,6 +11,7 @@ export type Team = {
   name: string,
   opening_requests: number,
   members: Member[],
+  is_able_to_delete: boolean,
   slug: string,
   newest_applied?: string,
   created_at: string,

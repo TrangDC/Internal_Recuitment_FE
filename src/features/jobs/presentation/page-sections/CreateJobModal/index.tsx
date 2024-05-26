@@ -42,7 +42,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
       <BaseModal.Header
-        title={translation.MODLUE_JOBS.new_job}
+        title={"Add a new job"}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -185,7 +185,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                       control={control}
                       render={({ field, fieldState }) => (
                         <Fragment>
-                          <InputNumberComponent<FormDataSchema>
+                          <InputNumberComponent<FormDataSchema>                    
                             label={salary_item?.label}
                             field={field}
                             fullWidth
@@ -196,6 +196,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                                 marginTop: '0px !important',
                               },
                             }}
+                            required={true}
                             thousandSeparator={salary_item?.thousandSeparator}
                           />
                           <HelperTextForm
@@ -220,7 +221,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                             multiple={false}
                             textFieldProps={{
                               required: true,
-                              label: 'Salary',
+                              label: 'Unit',
                             }}
                           />
                           <HelperTextForm
@@ -271,7 +272,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
                     <EditorBoxComponent<FormDataSchema>
-                      label={translation.COMMON.description}
+                      label={"Job description"}
                       field={field}
                       required={true}
                     />

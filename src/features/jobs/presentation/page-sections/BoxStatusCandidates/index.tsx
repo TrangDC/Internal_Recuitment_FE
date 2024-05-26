@@ -13,19 +13,24 @@ interface Props {
   title: string
   number_candidates: number
   list_candidates: CandidateStatusItem[]
+  Note?: React.ReactNode,
 }
 
 const BoxStatusCandidates = ({
   title,
   number_candidates = 0,
   list_candidates = [],
+  Note,
 }: Props) => {
   return (
-    <DivField>
+    <DivField sx={{ width: '170px' }}>
       <BoxTitle>
-        <Span>
-          {title} {number_candidates}
-        </Span>
+        <FlexBox justifyContent={'space-between'}>
+          <Span>
+            {title} {number_candidates}
+          </Span>
+          {Note}
+        </FlexBox>
       </BoxTitle>
       <BoxField>
         {list_candidates?.map((item) => {

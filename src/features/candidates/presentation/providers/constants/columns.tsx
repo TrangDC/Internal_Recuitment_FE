@@ -36,6 +36,7 @@ export const columns = (
     id: 'created_at',
     header: () => <span>{t('created_date')}</span>,
     size: 200,
+    enableSorting: true,
     cell: (info) => (
       <StyleSpanName>
         {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}

@@ -22,6 +22,7 @@ const useGraphql = () => {
           currency
           status
           created_at
+          is_able_to_delete
           total_candidates_recruited
           team {
               id

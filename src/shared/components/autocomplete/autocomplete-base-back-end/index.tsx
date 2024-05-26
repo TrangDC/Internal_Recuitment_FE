@@ -77,7 +77,7 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
   return (
     <Autocomplete<T, Multiple>
       {...props}
-      disableCloseOnSelect={disableCloseOnSelect}
+      disableCloseOnSelect={disableCloseOnSelect ? disableCloseOnSelect : multiple}
       size="small"
       value={(getValue as any) ?? null}
       options={options}

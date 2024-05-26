@@ -1,9 +1,16 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { FormControl } from '@mui/material'
+import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomTextField } from 'shared/components/form/styles'
-import { CANDIDATE_STATUS } from '../../providers/constants'
+import {
+  CustomTextField,
+  SpanText,
+  TinyText,
+} from 'shared/components/form/styles'
+import {
+  CANDIDATE_STATUS,
+  list_status_disabled,
+} from '../../providers/constants'
 import { CandidateJob } from 'features/candidates/domain/interfaces'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useChangeStatus from '../../providers/hooks/useChangeStatus'
@@ -13,10 +20,11 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
-import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
 import { useMemo } from 'react'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
+import { transformListItem } from 'shared/utils/utils'
+import { Span, Tiny } from 'shared/components/Typography'
 
 interface IChangeStatusModal {
   open: boolean
@@ -24,9 +32,23 @@ interface IChangeStatusModal {
   candidateId: string
   id: string
   rowData?: CandidateJob
+  statusCurrent:
+    | 'applied'
+    | 'interviewing'
+    | 'offering'
+    | 'hired'
+    | 'kiv'
+    | 'offer_lost'
+    | 'ex_staff'
+    | 'new'
 }
 
-function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
+function ChangeStatusModal({
+  open,
+  setOpen,
+  rowData,
+  statusCurrent,
+}: IChangeStatusModal) {
   const { onSubmit, control, isPending, isValid, watch } = useChangeStatus({
     callbackSuccess: () => {
       setOpen(false)
@@ -38,6 +60,10 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
       failed_reason: [],
     },
   })
+
+  const statusDisabledList = useMemo(() => {
+    return list_status_disabled[statusCurrent]
+  }, [statusCurrent])
 
   const translation = useTextTranslation()
 
@@ -94,11 +120,13 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
                     <CandidateStatusAutoComplete
                       multiple={false}
                       value={field.value}
+                      list_disabled={statusDisabledList}
                       onChange={(data: any) => {
                         field.onChange(data.value)
                       }}
                       textFieldProps={{
-                        label: 'Status',
+                        label: 'New status',
+                        required: true,
                       }}
                     />
                     <HelperTextForm
@@ -109,7 +137,6 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
               />
             </FormControl>
           </FlexBox>
-
           {showFailedReason && (
             <FlexBox gap={2}>
               <FormControl fullWidth>
@@ -120,67 +147,14 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <FailedReasonAutoComplete
-                        multiple
-                        value={((field.value as IOption[]) || []).map(
-                          (item) => item.value
-                        )}
-                        onChange={field.onChange}
-                        textFieldProps={{
-                          label: 'Failed Reason',
+                        multiple={true}
+                        value={field.value || []}
+                        onChange={(data) => {
+                          field.onChange(transformListItem(data, 'value'))
                         }}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </FlexBox>
-                  )}
-                />
-              </FormControl>
-            </FlexBox>
-          )}
-
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                name="failed_reason"
-                shouldUnregister
-                control={control}
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <FailedReasonAutoComplete
-                      multiple
-                      value={(field.value as IOption[]).map((item) => item.value) }
-                      onChange={field.onChange}
-                      textFieldProps={{
-                        label: 'Status',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-
-          {showFailedReason && (
-            <FlexBox gap={2}>
-              <FormControl fullWidth>
-                <Controller
-                  name="failed_reason"
-                  shouldUnregister
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <FlexBox flexDirection={'column'}>
-                      <FailedReasonAutoComplete
-                        multiple
-                        value={((field.value as IOption[]) || []).map(
-                          (item) => item.value
-                        )}
-                        onChange={field.onChange}
                         textFieldProps={{
                           label: 'Failed Reason',
+                          required: true,
                         }}
                       />
                       <HelperTextForm
@@ -232,6 +206,19 @@ function ChangeStatusModal({ open, setOpen, rowData }: IChangeStatusModal) {
                         regexString: '.(pdf|png|jpg|jpeg|doc|docx)$',
                         maxFile: 10,
                         maxSize: 20,
+                        msgError: {
+                          maxSize: 'Up to 10 files and 20MB/file',
+                        },
+                        descriptionFile: () => {
+                          return (
+                            <Box>
+                              <Span sx={{ color: '#2A2E37 !important' }}> Attach file </Span>
+                              <Tiny sx={{color: '#2A2E37 !important'}}>
+                                Up to 10 files and 20MB/file
+                              </Tiny>
+                            </Box>
+                          )
+                        },
                       }}
                     />
                     <HelperTextForm

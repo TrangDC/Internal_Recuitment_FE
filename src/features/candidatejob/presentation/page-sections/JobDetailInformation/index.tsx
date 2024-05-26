@@ -9,6 +9,8 @@ import useActionTable from '../../providers/hooks/useActionTable'
 import ChangeStatusModal from '../ChangeStatusModal'
 import { downloadFileAttachment } from '../../providers/helper'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
+import { STATUS_CANDIDATE } from 'shared/constants/constants'
+import { useMemo } from 'react'
 
 const DivInformation = styled(FlexBox)(({ theme }) => ({
   padding: '24px',
@@ -33,6 +35,17 @@ interface JobDetailInformationProps {
 const JobDetailInformation = ({
   jobApplicationDetail,
 }: JobDetailInformationProps) => {
+  console.log("jobApplicationDetail", jobApplicationDetail.status)
+  const disabledChangeStatus = useMemo(() => {
+    const disabledStatuses = [
+      STATUS_CANDIDATE.KIV,
+      STATUS_CANDIDATE.OFFERED_LOST,
+      STATUS_CANDIDATE.EX_STAFTT
+    ];
+
+    return disabledStatuses.includes(jobApplicationDetail?.status);
+  }, [jobApplicationDetail?.status])
+
   const {
     handleOpenChangeStatus,
     openChangeStatus,
@@ -45,10 +58,6 @@ const JobDetailInformation = ({
 
   return (
     <DivInformation height={'100%'}>
-      {/* <FlexBox flexWrap={'wrap'} gap={'20px'}>
-        <InputFile />
-      </FlexBox> */}
-
       <FlexBox
         flexWrap={'wrap'}
         gap={'20px'}
@@ -103,6 +112,7 @@ const JobDetailInformation = ({
         </DivItemInformation>
         <DivItemInformation>
           <ButtonStatus
+          disabled={disabledChangeStatus}
             onClick={() => {
               handleOpenChangeStatus(
                 jobApplicationDetail.id,
@@ -131,6 +141,7 @@ const JobDetailInformation = ({
           candidateId={rowData.current?.id as string}
           id={rowId.current}
           rowData={rowData.current}
+          statusCurrent={jobApplicationDetail?.status}
         />
       )}
     </DivInformation>

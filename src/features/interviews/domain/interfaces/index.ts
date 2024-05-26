@@ -1,4 +1,5 @@
 import { CandidateJob } from "features/candidates/domain/interfaces"
+import { FeedBack } from "features/feedback/domain/interfaces"
 import { Member } from "features/teams/domain/interfaces"
 import { SchemaInputNote } from "shared/schema"
 
@@ -38,3 +39,19 @@ export type UpdateCandidateInterviewInput = {
 }
 
 export type DeleteInterviewInput = SchemaInputNote
+
+
+export type GroupStatusInterview = {
+  applied: {
+    interview: Interview
+    feedback: FeedBack,
+  },
+  interviewing: {
+    interview: Interview
+    feedback: FeedBack,
+  },
+  offering: {
+    interview: Interview
+    feedback: FeedBack,
+  },
+}

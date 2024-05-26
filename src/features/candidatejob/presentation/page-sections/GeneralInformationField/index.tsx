@@ -20,9 +20,8 @@ const DivWrapperField = styled(Box)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.grey[200]}`,
 }))
 
-const GeneralInformationField = () => {
+const GeneralInformationField = ({candidateDetail}: {candidateDetail: Candidate}) => {
   const { id } = useParams()
-  const { candidateDetail } = useCandidateDetail(id as string)
 
   const translation = useTextTranslation()
   const { handleOpenEdit, openEdit, rowId, rowData, setOpenEdit } =

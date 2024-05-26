@@ -14,7 +14,8 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
   },
 
   '& .MuiInputBase-root .Mui-disabled' : {
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: "#F0F1F8",
+    color: "#82868c"
   },
 
   '& .MuiFormLabel-root span': {

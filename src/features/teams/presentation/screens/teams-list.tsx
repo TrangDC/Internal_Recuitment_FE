@@ -69,6 +69,9 @@ const TeamList = () => {
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
+        disabled: (rowData) => {
+          return !rowData.is_able_to_delete;
+        }
       },
     ],
     columns,
@@ -93,7 +96,7 @@ const TeamList = () => {
         <HeadingWrapper>
           <CustomTextField
             id="outlined-basic"
-            label={translation.MODLUE_TEAMS.input_team_name}
+            label={"Search by Team's name"}
             variant="outlined"
             size="small"
             sx={{ width: '400px', fontSize: '13px' }}

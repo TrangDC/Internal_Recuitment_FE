@@ -31,6 +31,10 @@ import { IOption } from 'shared/components/autocomplete/autocomplete-base/interf
 import { isEmpty } from 'lodash'
 import CloseIcon from 'shared/components/icons/CloseIcon'
 import CloseJobModal from '../page-sections/CloseJobModal'
+import { STATUS_STATE } from 'shared/constants/constants'
+import { Job } from 'features/jobs/domain/interfaces'
+import { jwtDecode } from "jwt-decode";
+import { getAccessToken } from 'shared/utils/auth'
 
 const JobsList = () => {
   const {
@@ -70,11 +74,13 @@ const JobsList = () => {
         Icon: <SearchIconSmall />,
       },
       {
-        id: 'close_job',
+        id: 'change_status',
         onClick: (id, rowData) => {
-          handleOpenStatus(id)
+          handleOpenStatus(id, rowData)
         },
-        title: 'Close job',
+        title: (rowData) => {
+          return  rowData.status === STATUS_STATE.OPENED ? 'Close job' : 'Reopen Job'
+        },
         Icon: <CloseIcon />,
       },
       {
@@ -84,6 +90,9 @@ const JobsList = () => {
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
+        disabled: (rowData) => {
+          return rowData.status === STATUS_STATE.CLOSED
+        }
       },
       {
         id: 'delete',
@@ -92,6 +101,9 @@ const JobsList = () => {
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
+        disabled: (rowData) => {
+          return !rowData.is_able_to_delete;
+        }
       },
     ],
     columns,
@@ -113,7 +125,7 @@ const JobsList = () => {
         <HeadingWrapper>
           <DivFilter>
             <ButtonFieldFilter<baseInstance>
-              inputLabel={'Teams'}
+              inputLabel={'Team'}
               listSelected={teams}
               setListSelected={setTeams}
               showLabel={'name'}
@@ -171,10 +183,10 @@ const JobsList = () => {
             />
           </DivFilter>
 
-          <DivHeaderWrapper sx={{ marginTop: '16px' }}>
+          <DivHeaderWrapper>
             <CustomTextField
               id="outlined-basic"
-              label={translation.MODLUE_JOBS.input_job_title}
+              label={"Search by Job title"}
               variant="outlined"
               size="small"
               sx={{ width: '400px', fontSize: '13px' }}
@@ -237,6 +249,7 @@ const JobsList = () => {
           open={openStatus}
           setOpen={setOpenStatus}
           id={rowId.current}
+          rowData={rowData.current}
         />
       )}
     </Box>

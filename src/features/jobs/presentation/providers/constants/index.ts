@@ -37,7 +37,7 @@ export const STATUS_STYLE = {
   [STATUS_STATE.OPENED]: {
     backgroundColor: '#20A4A9',
     color: 'white',
-    text: 'Opened'
+    text: 'Opening'
   },
   [STATUS_STATE.CLOSED]: {
     backgroundColor: '#82868C',

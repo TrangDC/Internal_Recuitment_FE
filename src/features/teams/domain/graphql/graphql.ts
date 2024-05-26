@@ -15,6 +15,7 @@ const useGraphql = () => {
           id
           name
           created_at
+          is_able_to_delete
           members {
             id
             name

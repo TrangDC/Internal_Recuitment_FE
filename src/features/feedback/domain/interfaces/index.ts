@@ -29,7 +29,7 @@ export type FeedBack = {
   created_at: string
   updated_at: string
   owner: Member
-  attachments: Attachments
+  attachments: Attachments[]
 }
 
 export type DeleteFeedbackInput = SchemaInputNote

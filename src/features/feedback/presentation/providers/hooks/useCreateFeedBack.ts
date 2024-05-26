@@ -3,21 +3,23 @@ import useGraphql from 'features/feedback/domain/graphql/graphql'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import { schema, FormDataSchema } from '../constants/schema'
 import useCreateResource from 'shared/hooks/useCreateResource'
+import { isEmpty } from 'lodash'
 
 interface createFeedbackProps {
   defaultValues?: Partial<FormDataSchema>
   callbackSuccess?: (value: any) => void
+  listQueryKey?: string[]
 }
 
 function useCreateFeedback(props: createFeedbackProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess } = props
+  const { defaultValues, callbackSuccess, listQueryKey = [] } = props
 
   const { createCandidateJobFeedback, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
     NewCandidateJobFeedbackInput,
     FormDataSchema
   >({
-    mutationKey: [queryKey],
+    mutationKey: !isEmpty(listQueryKey) ? listQueryKey: [queryKey],
     queryString: createCandidateJobFeedback,
     defaultValues: {
       feedback: '',

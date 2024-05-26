@@ -16,6 +16,7 @@ export class IOption {
 export interface IAutocompleteProps<Multiple extends boolean>
   extends IAutocompleteCommonProps<Multiple> {
   options: IOption[]
+  list_disabled?: string[]
 }
 
 export type CustomAutocompleteValue<Multiple extends boolean> =
@@ -28,4 +29,5 @@ export interface IAutocompleteCommonProps<Multiple extends boolean> {
   onChange: (value: CustomAutocompleteValue<Multiple>) => void
   disableCloseOnSelect?: boolean,
   disabled?:boolean
+  list_disabled?: string[]
 }

@@ -3,14 +3,14 @@ import { RULE_MESSAGES } from 'shared/constants/vaildate'
 import * as yup from 'yup'
 
 export const schema = yup.object({
-  title: yup.string().required(RULE_MESSAGES.MC1('title')).max(64, RULE_MESSAGES.MC4('name', 64)),
+  title: yup.string().required(RULE_MESSAGES.MC1('interview title')).max(64, RULE_MESSAGES.MC4('Interview name', 64)),
   candidate_job_id: yup.string().required(RULE_MESSAGES.MC1('candidate_job_id')),
-  interviewer: yup.array().required(RULE_MESSAGES.MC1('interviewer')).min(1),
-  interview_date: yup.date().required(RULE_MESSAGES.MC1('interview_date')),
-  start_from: yup.date().required(RULE_MESSAGES.MC1('start_from')),
+  interviewer: yup.array().required(RULE_MESSAGES.MC1('interview interviewer')).min(1),
+  interview_date: yup.date().typeError(RULE_MESSAGES.MC5("interview date")).required(RULE_MESSAGES.MC1('interview date')),
+  start_from: yup.date().required(RULE_MESSAGES.MC1('start from')),
   end_at: yup
     .date()
-    .required(RULE_MESSAGES.MC1('end_at'))
+    .required(RULE_MESSAGES.MC1('end at'))
     .test('validator-time', function (value) {
       const start_form = this.parent?.start_from
       const isValidate = isValid(new Date(start_form))
@@ -33,14 +33,14 @@ export type FormDataSchema = yup.InferType<typeof schema>
 
 export const schemaUpdate = yup.object({
   id: yup.string().required(RULE_MESSAGES.MC1('id')),
-  title: yup.string().required(RULE_MESSAGES.MC1('title')).max(64, RULE_MESSAGES.MC4('name', 64)),
+  title: yup.string().required(RULE_MESSAGES.MC1('interview title')).max(64, RULE_MESSAGES.MC4('Interview name', 64)),
   candidate_job_id: yup.string().required(RULE_MESSAGES.MC1('candidate_job_id')),
-  interviewer: yup.array().required(RULE_MESSAGES.MC1('interviewer')).min(1),
-  interview_date: yup.date().required(RULE_MESSAGES.MC1('interview_date')),
-  start_from: yup.date().required(RULE_MESSAGES.MC1('start_from')),
+  interviewer: yup.array().required(RULE_MESSAGES.MC1('interview interviewer')).min(1),
+  interview_date: yup.date().typeError(RULE_MESSAGES.MC5("interview date")).required(RULE_MESSAGES.MC1('interview date')),
+  start_from: yup.date().required(RULE_MESSAGES.MC1('start from')),
   end_at: yup
     .date()
-    .required(RULE_MESSAGES.MC1('end_at'))
+    .required(RULE_MESSAGES.MC1('end at'))
     .test('validator-time', function (value) {
       const start_form = this.parent?.start_from
       const isValidate = isValid(new Date(start_form))

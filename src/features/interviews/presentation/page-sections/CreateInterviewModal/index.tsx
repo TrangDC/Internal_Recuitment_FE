@@ -19,12 +19,14 @@ interface ICreateInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
   hiring_job: Job
+  listQueryKey?: string[]
 }
 
 function CreateInterviewModal({
   open,
   setOpen,
   hiring_job,
+  listQueryKey = []
 }: ICreateInterviewModal) {
   const { id } = useParams()
   const { onSubmit, control, isPending, isValid } = useCreateInterview({
@@ -34,6 +36,7 @@ function CreateInterviewModal({
     defaultValues: {
       candidate_job_id: id,
     },
+    listQueryKey
   })
 
   return (
@@ -46,7 +49,7 @@ function CreateInterviewModal({
         <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
           <FlexBox>
             <Box>
-              <SpanText>Job name</SpanText>
+              <SpanText sx={{color: '#3A3C40'}}>Job name</SpanText>
               <TinyText>{hiring_job.name}</TinyText>
             </Box>
           </FlexBox>
@@ -211,7 +214,7 @@ function CreateInterviewModal({
           <ButtonLoading
             variant="contained"
             size="small"
-            // disabled={isValid}
+            disabled={isValid}
             handlesubmit={onSubmit}
             loading={isPending}
           >

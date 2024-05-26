@@ -1,9 +1,9 @@
 import { StepConnector, StepConnectorProps, styled } from '@mui/material'
-import { useState } from 'react'
 import { TinyText } from '../form/styles'
 import { get } from 'lodash'
 import FlexBox from '../flexbox/FlexBox'
 import CheckIcon from '../icons/CheckIcon'
+import { IOption } from '../autocomplete/autocomplete-base/interface'
 
 const StepperContainer = styled(FlexBox)(({ theme }) => ({
   width: '100%',
@@ -58,48 +58,47 @@ const BoxStep = styled(FlexBox)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: '50%',
+  cursor: 'pointer',
 }))
 
 interface StepProps {
-  steps: string[]
+  steps: {label: string, value: string}[]
   keySelect?: string
-  label?: string
-  defaultValue?: number
+  value?: number
   inputStepConnector?: StepConnectorProps
+  onChange?: ({data, value}: {data: IOption, value: number}) => void;
 }
 
 const StepperComponent = ({
   steps = [],
-  label = 'name',
-  defaultValue = 0,
+  value = 0,
   inputStepConnector = {},
+  onChange,
 }: StepProps) => {
-  const [stepper, setStepper] = useState<{ id: number; name: string }[]>(() => {
-    return steps.map((step, idx) => ({ id: idx + 1, name: step }))
-  })
-  const [value, setValue] = useState<number>(defaultValue)
 
   return (
     <StepperContainer>
-      {stepper.map((step, idx) => {
+      {steps.map((step, idx) => {
         return (
           <FlexBox
             alignItems={'center'}
             gap={'16px'}
-            key={step.id}
+            key={idx}
             className={
-              step.id - value < 0
+              idx - value < 0
                 ? 'active'
-                : step.id - value === 0
+                : idx - value === 0
                   ? 'completed'
                   : ''
             }
           >
-            <BoxStep className="box-step">
+            <BoxStep className="box-step" onClick={() => {
+                onChange?.({data: step, value: idx})
+              }}>
               <CheckIcon />
             </BoxStep>
-            <TinyText>{get(step, label)}</TinyText>
-            {stepper.length - idx > 1 ? (
+            <TinyText>{get(step, 'label')}</TinyText>
+            {steps.length - idx > 1 ? (
               <StepConnecterStyle
                 sx={{
                   width: '60px',

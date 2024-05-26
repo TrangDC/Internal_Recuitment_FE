@@ -38,8 +38,11 @@ import { handleImportFile } from '../../providers/utils'
 import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
-import { getValueOfObj } from 'shared/utils/utils'
+import { getValueOfObj, transformListItem } from 'shared/utils/utils'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
+import { useImportFile } from 'shared/hooks/graphql/useUpload'
+import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
+import { isEmpty } from 'lodash'
 
 const Candidates = () => {
   const {
@@ -69,6 +72,8 @@ const Candidates = () => {
   const translation = useTextTranslation()
   const [failedReason, setFailedReason] = useState<BaseRecord[]>([])
   const [status, setStatus] = useState<BaseRecord[]>([])
+
+  const [searchField, setSearchField] = useState('')
 
   const showFailedReason = useMemo(() => {
     return (
@@ -111,6 +116,9 @@ const Candidates = () => {
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
+        disabled: (rowData) => {
+          return !rowData.is_able_to_delete;
+        }
       },
     ],
     columns,
@@ -123,16 +131,23 @@ const Candidates = () => {
     }
   }
 
+  const { submit } = useImportFile()
+
   return (
     <DivContainerWrapper>
-      <BoxWrapperOuterContainer>
-        <HeadingWrapper sx={{ marginTop: 0 }}>
+      <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
+        <HeadingWrapper>
           <FlexBox width={'100%'}>
             <DivFilter>
               <ButtonFieldFilter<baseInstance>
                 inputLabel={'Status'}
                 listSelected={status}
                 setListSelected={setStatus}
+                onChange={(data) => {
+                  //@ts-ignore
+                  const status = transformListItem(data, 'id')
+                  handleFilter('status', !isEmpty(status) ? status : null)
+                }}
                 node={
                   <CandidateStatusAutoComplete
                     multiple={false}
@@ -159,11 +174,22 @@ const Candidates = () => {
                   inputLabel={'Failed Reason'}
                   listSelected={failedReason}
                   setListSelected={setFailedReason}
+                  onChange={(data) => {
+                    //@ts-ignore
+                    const failedRS = transformListItem(data, 'value')
+                    handleFilter(
+                      'failed_reason',
+                      !isEmpty(failedRS) ? failedRS : null
+                    )
+                  }}
                   node={
                     <FailedReasonAutoComplete
                       multiple
                       value={failedReason.map((item) => item.value)}
-                      onChange={(data: any) => {
+                      onChange={(data: IOption[]) => {
+                        const filter_reason = transformListItem(data, 'value')
+
+                        handleFilter('failed_reason', filter_reason)
                         setFailedReason(data)
                       }}
                       disableCloseOnSelect={true}
@@ -180,16 +206,22 @@ const Candidates = () => {
 
           <DivHeaderWrapper>
             <CustomTextField
-              label="Search by name/ email/ phone"
+              label="Search by name, email, phone"
               variant="outlined"
               size="small"
               sx={{ width: '400px', fontSize: '13px' }}
               onKeyUp={handleFreeWorld}
+              onChange={(e) => setSearchField(e.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton>
-                      <SearchIcon sx={{ fontSize: '16px' }} />
+                      <SearchIcon
+                        sx={{ fontSize: '16px' }}
+                        onClick={() => {
+                          handleFreeWord('name', searchField)
+                        }}
+                      />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -207,12 +239,19 @@ const Candidates = () => {
                   type="file"
                   id="fileImport"
                   name="file"
-                  // accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.bmp,.tiff"
                   accept=".xls,.xlsx,.csv"
                   hidden
                   onChange={(event) => {
                     const fileEvent = event.target.files
-                    fileEvent && handleImportFile(fileEvent[0])
+                    fileEvent &&
+                      handleImportFile(
+                        fileEvent[0],
+                        {
+                          regexString: '^.*\\.(xls|xlsx|csv)$',
+                          maxSize: 20,
+                        },
+                        submit
+                      )
                     event.target.value = ''
                   }}
                 />

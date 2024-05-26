@@ -1,6 +1,6 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { FormControl } from '@mui/material'
+import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -9,12 +9,14 @@ import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { FeedBack } from 'features/feedback/domain/interfaces'
 import useUpdateFeedback from '../../providers/hooks/useUpdateFeedback'
+import { Span, Tiny } from 'shared/components/Typography'
 
 interface IUpdateFeedbackModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
   rowData: FeedBack
+  listQueryKey?: string[]
 }
 
 function UpdateFeedbackModal({
@@ -22,8 +24,9 @@ function UpdateFeedbackModal({
   setOpen,
   id,
   rowData,
+  listQueryKey = []
 }: IUpdateFeedbackModal) {
-  const { onSubmit, control, isPending, isValid } = useUpdateFeedback({
+  const { onSubmit, control, isPending, isValid} = useUpdateFeedback({
     callbackSuccess: () => {
       setOpen(false)
     },
@@ -31,6 +34,7 @@ function UpdateFeedbackModal({
       id: id,
       feedback: rowData.feedback,
     },
+    listQueryKey,
   })
 
   return (
@@ -49,7 +53,7 @@ function UpdateFeedbackModal({
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
                     <AppTextField
-                      label={'Feedback'}
+                      label={'Description'}
                       size="small"
                       fullWidth
                       value={field.value}
@@ -84,7 +88,17 @@ function UpdateFeedbackModal({
                         msgError: {
                           maxFile: 'Up to 10 files and 20MB/file',
                           maxSize: 'Up to 10 files and 20MB/file'
-                        }
+                        },
+                        descriptionFile: () => {
+                          return (
+                            <Box>
+                              <Span sx={{ color: '#2A2E37 !important' }}> Attach file </Span>
+                              <Tiny sx={{color: '#2A2E37 !important'}}>
+                                Up to 10 files and 20MB/file
+                              </Tiny>
+                            </Box>
+                          )
+                        },
                       }}
                     />
                     <HelperTextForm

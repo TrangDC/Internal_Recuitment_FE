@@ -15,6 +15,7 @@ const useGraphql = () => {
           name
           email
           phone
+          is_able_to_delete
           dob
           status
           is_black_list

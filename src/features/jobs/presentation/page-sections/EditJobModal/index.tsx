@@ -218,6 +218,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                                 marginTop: '0px !important',
                               },
                             }}
+                            required={true}
                             thousandSeparator={salary_item?.thousandSeparator}
                           />
                           <HelperTextForm
@@ -242,7 +243,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                             multiple={false}
                             textFieldProps={{
                               required: true,
-                              label: 'Salary',
+                              label: 'Unit',
                             }}
                           />
                           <HelperTextForm
@@ -293,7 +294,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
                     <EditorBoxComponent<FormDataSchema>
-                      label={translation.COMMON.description}
+                      label={"Job description"}
                       field={field}
                       required={true}
                     />

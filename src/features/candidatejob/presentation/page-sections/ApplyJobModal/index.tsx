@@ -23,7 +23,7 @@ interface IApplyJobModal {
 }
 
 function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
-  const { onSubmit, control, isPending, isValid } = useApplyToJob({
+  const { onSubmit, control, isPending, isValid, resetField } = useApplyToJob({
     callbackSuccess: () => {
       setOpen(false)
     },
@@ -33,15 +33,11 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
   })
 
   const { jobs, changeJobByTeamId } = useSelectJobByTeam()
-
   const team_id: string | undefined = useWatch({ control, name: 'team_id' })
-  const resetValueJob = () => {
-    //@ts-ignore
-    setValue('hiring_job_id', null)
-  }
 
   useEffect(() => {
     changeJobByTeamId(team_id ? [team_id] : [])
+    resetField('hiring_job_id')
   }, [team_id])
 
   const translation = useTextTranslation()
@@ -97,6 +93,7 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
                       required
                       inputLabel={translation.MODLUE_JOBS.job_name}
                       field={field}
+                      disabled={!team_id}
                       fullWidth
                     />
                     <HelperTextForm
@@ -117,14 +114,6 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
                 control={control}
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                    {/* <AutoCompleteComponent<FormDataSchema, baseInstance>
-                      options={STATUS_CANDIDATE_HIRING}
-                      label="name"
-                      inputLabel={translation.COMMON.status}
-                      field={field}
-                      fullWidth
-                      required
-                    /> */}
                      <CandidateStatusAutoComplete
                       multiple={false}
                       value={field.value}
@@ -159,6 +148,10 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
                         regexString: '\\.pdf$',
                         maxFile: 1,
                         maxSize: 20,
+                        msgError: {
+                          is_valid: "One PDF file only, file size up to 20MB",
+                          maxSize: "One PDF file only, file size up to 20MB",
+                        }
                       }}
                     />
                     <HelperTextForm

@@ -23,8 +23,9 @@ export const DivWrapperProcess = styled(FlexBox)(({ theme }) => ({
 
 export const SpanHiring = styled(Span)(({ theme }) => ({
   fontSize: '15px',
-  color: theme.palette.primary[800],
+  color: '#00508A',
   lineHeight: '18.29px',
+  fontWeight: 500,
 }))
 
 export const DivField = styled(Box)(({ theme }) => ({

@@ -47,6 +47,7 @@ const TabPanelStyle = styled(TabPanel)(({ theme }) => ({
   borderRadius: '8px',
   overflow: 'hidden',
   boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
+  height: '100%'
 }))
 
 const TabListWrapper = styled(TabList)(({ theme }) => ({
@@ -121,7 +122,7 @@ const TabCustomize = ({ renderItem, TabListProps }: TabProps) => {
             const { Component } = item
             return (
               <TabPanelStyle value={index.toString()} key={index}>
-                <HeadingWrapper>
+                <HeadingWrapper height={'100%'}>
                   <Component />
                 </HeadingWrapper>
               </TabPanelStyle>

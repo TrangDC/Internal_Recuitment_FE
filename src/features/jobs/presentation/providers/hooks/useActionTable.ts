@@ -20,8 +20,9 @@ const useActionTable = () => {
     setOpenDelete(true)
   }
 
-  function handleOpenStatus(id: string) {
+  function handleOpenStatus(id: string, data: Job) {
     rowId.current = id
+    rowData.current = data
     setOpenStatus(true)
   }
 

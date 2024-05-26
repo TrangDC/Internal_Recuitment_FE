@@ -24,6 +24,7 @@ interface IEditInterviewModal {
   hiring_job: Job
   rowData: Interview
   id_interview: string,
+  listQueryKey?: string[]
 }
 
 function EditInterviewModal({
@@ -32,6 +33,7 @@ function EditInterviewModal({
   hiring_job,
   rowData,
   id_interview,
+  listQueryKey = []
 }: IEditInterviewModal) {
   const { id } = useParams()
   const { onSubmit, control, isPending, isValid } = useEditInterview({
@@ -48,6 +50,7 @@ function EditInterviewModal({
       start_from: new Date(replaceYearWithCurrent(rowData.start_from)),
       end_at: new Date(replaceYearWithCurrent(rowData.end_at)),
     },
+    listQueryKey,
   })
 
   return (
@@ -60,7 +63,7 @@ function EditInterviewModal({
         <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
           <FlexBox>
             <Box>
-              <SpanText>Job name</SpanText>
+              <SpanText sx={{color: '#3A3C40'}}>Job name</SpanText>
               <TinyText>{hiring_job.name}</TinyText>
             </Box>
           </FlexBox>
@@ -78,6 +81,7 @@ function EditInterviewModal({
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
+                      disabled
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -202,6 +206,7 @@ function EditInterviewModal({
                       onChange={field.onChange}
                       multiline
                       minRows={4}
+                      disabled
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}

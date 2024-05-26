@@ -1,9 +1,9 @@
 import { buildQuery } from 'services/graphql-services'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
-  const queryKey = 'feedback'
-
-
+  const queryKey = MODLUE_QUERY_KEY.FEEDBACK
+  
   const getAllCandidateJobFeedbacks = buildQuery({
     operation: 'GetAllCandidateJobFeedbacks',
     options: {
@@ -22,6 +22,11 @@ const useGraphql = () => {
             id
             name
             work_email
+          }
+          attachments {
+            id 
+            document_name
+            document_id
           }
         }
       }
