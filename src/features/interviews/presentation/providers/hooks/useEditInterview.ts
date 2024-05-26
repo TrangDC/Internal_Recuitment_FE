@@ -3,7 +3,6 @@ import useGraphql from 'features/interviews/domain/graphql/graphql'
 import { UpdateCandidateInterviewInput } from 'features/interviews/domain/interfaces'
 import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
 import { cloneDeep, isEmpty } from 'lodash'
-import { convertDateToISOString } from 'shared/utils/utils'
 import useUpdateResource from 'shared/hooks/useUpdateResource'
 import { convertToUTC } from 'shared/utils/date'
 

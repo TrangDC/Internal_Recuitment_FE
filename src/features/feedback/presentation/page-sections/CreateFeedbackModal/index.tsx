@@ -8,7 +8,6 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { Span, Tiny } from 'shared/components/Typography'
 
 interface ICreateFeedbackModal {

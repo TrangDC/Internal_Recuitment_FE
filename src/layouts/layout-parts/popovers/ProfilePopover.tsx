@@ -11,12 +11,11 @@ import AppAvatar from 'shared/components/avatars/AppAvatar'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { H6, Small, Tiny } from 'shared/components/Typography'
 import useAuth from 'shared/hooks/useAuth'
-import { FC, Fragment, useMemo, useRef, useState } from 'react'
+import { FC, Fragment, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import PopoverLayout from './PopoverLayout'
-import { getAccessToken, handleLogOut } from 'shared/utils/auth'
-import { jwtDecode } from 'jwt-decode'
+import { handleLogOut } from 'shared/utils/auth'
 
 // styled components
 const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({

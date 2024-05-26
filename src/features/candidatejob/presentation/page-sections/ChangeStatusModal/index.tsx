@@ -4,8 +4,6 @@ import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import {
   CustomTextField,
-  SpanText,
-  TinyText,
 } from 'shared/components/form/styles'
 import {
   CANDIDATE_STATUS,

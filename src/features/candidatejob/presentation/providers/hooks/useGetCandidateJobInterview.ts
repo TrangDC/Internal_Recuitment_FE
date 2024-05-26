@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { GroupStatusInterview } from 'features/interviews/domain/interfaces'
 import { fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'

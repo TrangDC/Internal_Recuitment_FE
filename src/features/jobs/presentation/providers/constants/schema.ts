@@ -76,6 +76,7 @@ export const schemaUpdate = yup.object({
       : schema.required(RULE_MESSAGES.MC1("unit"))
   }),
   description: yup.string().required(RULE_MESSAGES.MC1("job description")),
+  note: yup.string()
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>

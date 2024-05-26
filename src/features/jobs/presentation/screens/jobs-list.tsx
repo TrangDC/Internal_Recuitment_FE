@@ -32,9 +32,6 @@ import { isEmpty } from 'lodash'
 import CloseIcon from 'shared/components/icons/CloseIcon'
 import CloseJobModal from '../page-sections/CloseJobModal'
 import { STATUS_STATE } from 'shared/constants/constants'
-import { Job } from 'features/jobs/domain/interfaces'
-import { jwtDecode } from "jwt-decode";
-import { getAccessToken } from 'shared/utils/auth'
 
 const JobsList = () => {
   const {

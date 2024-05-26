@@ -1,4 +1,4 @@
-import { Box, BoxProps, SxProps, styled } from '@mui/material'
+import { BoxProps, styled } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { TinyText } from 'shared/components/form/styles'
 

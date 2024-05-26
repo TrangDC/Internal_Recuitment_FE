@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import useJobDetail from '../../providers/hooks/useJobDetail'
 import { useParams } from 'react-router-dom'
 import { getInfoData } from 'shared/utils/utils'
