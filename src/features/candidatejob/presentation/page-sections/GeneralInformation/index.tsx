@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom'
 const GeneralInformation = () => {
   const { id } = useParams()
   const { candidateDetail } = useCandidateDetail(id as string)
-  console.log("🚀 ~ candidateDetail:", candidateDetail?.status)
 
   return (
     <DivContainerWrapper>

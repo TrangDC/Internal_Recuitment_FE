@@ -7,6 +7,8 @@ import { useState } from 'react'
 import axiosInstance from 'shared/utils/axios'
 import axios from 'axios'
 import { getAccessToken } from 'shared/utils/auth'
+import { useQueryClient } from '@tanstack/react-query'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 interface IErrorData {
   field: string
@@ -16,6 +18,7 @@ export const useImportFile = () => {
   const { t } = useTranslation()
   const [errorsData, setErrorsData] = useState<IErrorData[]>([])
   const [isloading, setIsloading] = useState(false)
+  const queryClient = useQueryClient();
 
   const submit = async (file: Blob) => {
     const token = await getAccessToken()
@@ -50,7 +53,7 @@ export const useImportFile = () => {
         config
       )
       if (data) {
-        if (data?.['errors'] != 'null') {
+        if (data?.['errors'] != 'null' && data?.['errors']) {
           const jsonData = data?.['errors']
 
           Array.isArray(jsonData) &&
@@ -60,6 +63,7 @@ export const useImportFile = () => {
 
           setErrorsData(jsonData)
         } else {
+          queryClient.invalidateQueries({ queryKey: [MODLUE_QUERY_KEY.CANDIDATE] })
           toast.success(t('Create successfully'))
         }
       } else {

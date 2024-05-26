@@ -130,7 +130,7 @@ export const convertEmptyToNull = (array: any[]) => {
 }
 
 export const convertCurrencyToNumber = (currency: string) => {
-  return Number(currency.replace(',', ''))
+  return Number(currency.replaceAll(',', ''))
 }
 
 export const downloadFile = (url: string) => {
