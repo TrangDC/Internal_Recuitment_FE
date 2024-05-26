@@ -16,7 +16,7 @@ import { BaseRecord } from 'shared/interfaces'
 
 const ButtonFilterStyled = styled(Button)(({ theme }) => ({
   display: 'flex',
-  alignItems: 'end',
+  alignItems: 'flex-start',
   boxShadow: 'none',
   fontSize: '12px',
   height: '20px',

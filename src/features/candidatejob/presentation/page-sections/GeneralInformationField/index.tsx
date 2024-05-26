@@ -2,7 +2,6 @@ import { Box, Grid, styled } from '@mui/material'
 import { H3, Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { DivField } from '../../providers/styles'
-import useCandidateDetail from '../../providers/hooks/useCandidateDetail'
 import { useParams } from 'react-router-dom'
 import { format } from 'date-fns'
 import useTextTranslation from 'shared/constants/text'
@@ -20,9 +19,8 @@ const DivWrapperField = styled(Box)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.grey[200]}`,
 }))
 
-const GeneralInformationField = () => {
+const GeneralInformationField = ({candidateDetail}: {candidateDetail: Candidate}) => {
   const { id } = useParams()
-  const { candidateDetail } = useCandidateDetail(id as string)
 
   const translation = useTextTranslation()
   const { handleOpenEdit, openEdit, rowId, rowData, setOpenEdit } =

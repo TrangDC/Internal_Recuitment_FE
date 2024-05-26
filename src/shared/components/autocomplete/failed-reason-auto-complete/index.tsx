@@ -19,6 +19,7 @@ const options: IOption[] = [
   { label: 'Weak technical skills', value: 'weak_technical_skills' },
   { label: 'Poor interpersonal skills', value: 'poor_interpersonal_skills' },
   { label: 'Poor problem-solving skills', value: 'poor_problem_solving_skills' },
+  { label: 'Poor management skills', value: 'poor_management_skills' },
   { label: 'Candidate withdrawal', value: 'candidate_withdrawal' },
   { label: 'Others', value: 'others' },
 ]

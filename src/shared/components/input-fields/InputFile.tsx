@@ -2,7 +2,7 @@ import { Box, styled } from '@mui/material'
 import FlexBox from '../flexbox/FlexBox'
 import UploadIcon from '../icons/UploadIcon'
 import { Span, Tiny } from '../Typography'
-import { DragEvent, useMemo, useState } from 'react'
+import { DragEvent, Fragment, useMemo, useState } from 'react'
 import TrashIcon from '../icons/TrashIcon'
 import useTextTranslation from 'shared/constants/text'
 import ShowFile from './ItemFile'
@@ -77,6 +77,7 @@ export interface InputFileProps {
   maxFile?: number
   maxSize?: number | null
   showList?: boolean
+  descriptionFile?: (() => React.ReactNode);
 }
 
 type UploadAttachment = {
@@ -96,6 +97,7 @@ const InputFile = ({
   maxSize = null,
   showList = true,
   msgError,
+  descriptionFile,
 }: InputFileProps) => {
   const [files, setFiles] = useState<FileAttachment[]>([])
   const idFile = useMemo(() => {
@@ -114,7 +116,6 @@ const InputFile = ({
     blob: File,
     fieldValidate: { regex: string; maxFile: number; maxSize: number | null }
   ) {
-
     const regexValidate = wrapperValidate(
       () => regexFile(blob, fieldValidate.regex),
       msgError?.is_valid ? msgError?.is_valid : RULE_MESSAGES.MC5('file')
@@ -130,7 +131,9 @@ const InputFile = ({
     if (maxSize) {
       const maxSizeValidate = wrapperValidate(
         () => checkMaxSize(blob, fieldValidate.maxFile),
-        msgError?.maxSize ? msgError?.maxSize : RULE_MESSAGES.MC8('file', maxSize.toString())
+        msgError?.maxSize
+          ? msgError?.maxSize
+          : RULE_MESSAGES.MC8('file', maxSize.toString())
       )
 
       if (!maxSizeValidate.status) return maxSizeValidate
@@ -216,8 +219,14 @@ const InputFile = ({
               <UploadIcon />
             </Box>
             <TextWrapper>
-              <Tiny>{translation.COMMON.drag_and_drop}</Tiny>{' '}
-              <Span>{translation.COMMON.browse_file}</Span>
+              {descriptionFile ? (
+                descriptionFile()
+              ) : (
+                <Fragment>
+                  <Tiny>{translation.COMMON.drag_and_drop}</Tiny>{' '}
+                  <Span>{translation.COMMON.browse_file}</Span>
+                </Fragment>
+              )}
             </TextWrapper>
           </FlexBoxContainer>
         </InputFileContainer>

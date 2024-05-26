@@ -11,7 +11,6 @@ import { TinyText } from 'shared/components/form/styles'
 import ChipField from 'shared/components/input-fields/ChipField'
 import { styled } from '@mui/material'
 
-
 const columnHelper = createColumnHelper<Team>()
 
 export const StyleTinyText = styled(TinyText)(({ theme }) => ({
@@ -35,7 +34,13 @@ export const columns = (
     cell: (info) => {
       return (
         <FlexBox gap={'10px'} flexWrap={'wrap'}>
-          {info.getValue().map((member: Member, idx: number) => <ChipField key={idx} label={member.name}/>)}
+          {info.getValue().map((member: Member, idx: number) => (
+            <ChipField key={idx} label={member.name} sx={{
+              background:' #F1F9FF',
+              color: '#121625'
+
+            }}/>
+          ))}
         </FlexBox>
       )
     },

@@ -10,9 +10,11 @@ import { STATUS_STYLE } from './index'
 import { t } from 'i18next'
 import { styled } from '@mui/material'
 import { TinyText } from 'shared/components/form/styles'
+import { LOCATION_LABEL } from 'shared/constants/constants'
 
 export const StyleTinyText = styled(TinyText)(({ theme }) => ({
   color: theme.palette.grey[500],
+  fontWeight: 500,
 }))
 
 const columnHelper = createColumnHelper<Job>()
@@ -33,7 +35,10 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.location, {
     id: 'location',
     header: () => <span>{t('location')}</span>,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => <StyleTinyText>
+      {/* @ts-ignore */}
+      {LOCATION_LABEL[info.getValue()]}
+    </StyleTinyText>,
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.user.name, {
@@ -52,16 +57,6 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     header: () => <span>{t('hired')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
-  columnHelper.accessor((row) => row.created_at, {
-    id: 'created_at',
-    size: 200,
-    header: () => <span>{t('created_date')}</span>,
-    cell: (info) => (
-      <StyleTinyText>
-        {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}
-      </StyleTinyText>
-    ),
-  }),
   columnHelper.accessor((row) => row.status, {
     id: 'status',
     size: 200,
@@ -75,6 +70,16 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
           color: STATUS_STYLE[info.getValue()].color,
         }}
       />
+    ),
+  }),
+  columnHelper.accessor((row) => row.created_at, {
+    id: 'created_at',
+    size: 200,
+    header: () => <span>{t('created_date')}</span>,
+    cell: (info) => (
+      <StyleTinyText>
+        {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}
+      </StyleTinyText>
     ),
   }),
   columnHelper.accessor('id', {

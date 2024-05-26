@@ -13,7 +13,6 @@ import { SpanText, TinyText } from 'shared/components/form/styles'
 import useActionTable from '../../providers/hooks/useActionTable'
 import CreateFeedbackModal from '../CreateFeedbackModal'
 import { useParams } from 'react-router-dom'
-import useListFeedback from '../../providers/hooks/useListFeedBack'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
 import BoxTextSquare from 'shared/components/utils/boxText'
@@ -22,8 +21,22 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import UpdateFeedbackModal from '../UpdateFeedbackModal'
 import { FeedBack } from 'features/feedback/domain/interfaces'
 import DeleteFeedbackModal from '../DeleteFeedbackModal'
+import ShowFile from 'shared/components/input-fields/ItemFile'
+import DownloadIcon from 'shared/components/icons/DownloadIcon'
+import {
+  downloadOneFile,
+} from 'features/candidatejob/presentation/providers/helper'
+import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
+import {
+  innerHTMLTextArea,
+} from 'shared/components/genarateInnerHTML'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
-const ListFeedBack = () => {
+interface Props {
+  listFeedback: FeedBack[]
+}
+
+const ListFeedBack = ({listFeedback}: Props) => {
   const {
     openCreate,
     setOpenCreate,
@@ -37,7 +50,7 @@ const ListFeedBack = () => {
     rowId,
   } = useActionTable()
   const { id } = useParams()
-  const { listFeedback } = useListFeedback(id as string)
+  const { handleGetUrlDownload } = useGetUrlGetAttachment()
 
   return (
     <ListFeedbackContainer>
@@ -89,24 +102,26 @@ const ListFeedBack = () => {
               </FlexBox>
               <FlexBox flexDirection={'column'} gap={'10px'}>
                 <Box>
-                  <TinyText>{feedback.feedback}</TinyText>
+                  <TinyText>{innerHTMLTextArea(feedback.feedback)}</TinyText>
                 </Box>
-                {/* <FlexBox flexWrap={'wrap'} gap={'10px'}>
-              <Box sx={{ width: '183px' }}>
-                <ShowFile
-                  name="feedback.pdf"
-                  size={234234}
-                  IconEnd={<DownloadIcon />}
-                />
-              </Box>
-              <Box sx={{ width: '183px' }}>
-                <ShowFile
-                  name="feedback.pdf"
-                  size={234234}
-                  IconEnd={<DownloadIcon />}
-                />
-              </Box>
-            </FlexBox> */}
+                <FlexBox flexWrap={'wrap'} gap={'10px'}>
+                  {feedback.attachments.map((item, idx) => {
+                    return (
+                      <Box sx={{ minWidth: '183px' }} key={idx}>
+                        <ShowFile
+                          name={item.document_name}
+                          IconEnd={
+                            <DownloadIcon
+                              onClick={() => {
+                                downloadOneFile(item, handleGetUrlDownload)
+                              }}
+                            />
+                          }
+                        />
+                      </Box>
+                    )
+                  })}
+                </FlexBox>
               </FlexBox>
             </BoxText>
           )
@@ -117,6 +132,7 @@ const ListFeedBack = () => {
           open={openCreate}
           setOpen={setOpenCreate}
           candidate_job_id={id as string}
+          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
         />
       )}
 
@@ -126,6 +142,7 @@ const ListFeedBack = () => {
           setOpen={setOpenEdit}
           id={rowId.current}
           rowData={rowData.current as FeedBack}
+          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
         />
       )}
 
@@ -134,6 +151,7 @@ const ListFeedBack = () => {
           open={openDelete}
           setOpen={setOpenDelete}
           id={rowId.current}
+          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
         />
       )}
     </ListFeedbackContainer>

@@ -1,13 +1,21 @@
-import { Badge, Box, ButtonBase, Divider, styled, useMediaQuery, Theme } from '@mui/material';
-import AppAvatar from 'shared/components/avatars/AppAvatar';
-import FlexBox from 'shared/components/flexbox/FlexBox';
-import { H6, Small, Tiny } from 'shared/components/Typography';
-import useAuth from 'shared/hooks/useAuth';
-import { FC, Fragment, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import PopoverLayout from './PopoverLayout';
-import { handleLogOut } from 'shared/utils/auth';
+import {
+  Badge,
+  Box,
+  ButtonBase,
+  Divider,
+  styled,
+  useMediaQuery,
+  Theme,
+} from '@mui/material'
+import AppAvatar from 'shared/components/avatars/AppAvatar'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import { H6, Small, Tiny } from 'shared/components/Typography'
+import useAuth from 'shared/hooks/useAuth'
+import { FC, Fragment, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
+import PopoverLayout from './PopoverLayout'
+import { handleLogOut } from 'shared/utils/auth'
 
 // styled components
 const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({
@@ -16,30 +24,34 @@ const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({
   borderRadius: 30,
   border: `1px solid ${theme.palette.divider}`,
   '&:hover': { backgroundColor: theme.palette.action.hover },
-}));
+}))
 
 const StyledSmall = styled(Small)(({ theme }) => ({
   display: 'block',
   cursor: 'pointer',
   padding: '5px 1rem',
   '&:hover': { backgroundColor: theme.palette.action.hover },
-}));
+}))
 
 const ProfilePopover: FC = () => {
-  const anchorRef = useRef(null);
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const [open, setOpen] = useState(false);
-  const upSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
+  const anchorRef = useRef(null)
+  const navigate = useNavigate()
+  const { user } = useAuth() 
+  const [open, setOpen] = useState(false)
+  const upSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
 
   const handleMenuItem = (path: string) => {
-    navigate(path);
-    setOpen(false);
-  };
+    navigate(path)
+    setOpen(false)
+  }
 
   return (
     <Fragment>
-      <StyledButtonBase disableRipple ref={anchorRef} onClick={() => setOpen(true)}>
+      <StyledButtonBase
+        disableRipple
+        ref={anchorRef}
+        onClick={() => setOpen(true)}
+      >
         <Badge
           overlap="circular"
           variant="dot"
@@ -60,7 +72,8 @@ const ProfilePopover: FC = () => {
             <Small mx={1} color="text.secondary">
               Hi,{' '}
               <Small fontWeight="600" display="inline">
-                Aaron Cooper
+                {user?.name}
+                {/* Aaron Cooper */}
               </Small>
             </Small>
           )}
@@ -85,23 +98,35 @@ const ProfilePopover: FC = () => {
               sx={{ width: 35, height: 35 }}
             />
 
-            <Box>
-              <H6>{user?.name || 'Aaron Cooper'}</H6>
-              <Tiny display="block" fontWeight={500} color="text.disabled">
-                {user?.email || 'aaron@example.com'}
+            <Box width={'calc(100% - 40px)'}>
+              <H6 width={'100%'}>{user?.name || 'Aaron Cooper'}</H6>
+              <Tiny
+                sx={{
+                  wordBreak: 'break-all',
+                  width: '100%',
+                }}
+                display="block"
+                fontWeight={500}
+                color="text.disabled"
+              >
+                {user?.preferred_username}
               </Tiny>
             </Box>
           </FlexBox>
         }
       >
         <Box pt={1}>
-          <StyledSmall onClick={() => handleMenuItem('/dashboard/profile')}>Set Status</StyledSmall>
+          <StyledSmall onClick={() => handleMenuItem('/dashboard/profile')}>
+            Set Status
+          </StyledSmall>
 
           <StyledSmall onClick={() => handleMenuItem('/dashboard/profile')}>
             Profile & Account
           </StyledSmall>
 
-          <StyledSmall onClick={() => handleMenuItem('/dashboard/account')}>Settings</StyledSmall>
+          <StyledSmall onClick={() => handleMenuItem('/dashboard/account')}>
+            Settings
+          </StyledSmall>
 
           <StyledSmall onClick={() => handleMenuItem('/dashboard/team-member')}>
             Manage Team
@@ -111,8 +136,8 @@ const ProfilePopover: FC = () => {
 
           <StyledSmall
             onClick={() => {
-              handleLogOut();
-              toast.success('You Logout Successfully');
+              handleLogOut()
+              toast.success('You Logout Successfully')
             }}
           >
             Sign Out
@@ -120,7 +145,7 @@ const ProfilePopover: FC = () => {
         </Box>
       </PopoverLayout>
     </Fragment>
-  );
-};
+  )
+}
 
-export default ProfilePopover;
+export default ProfilePopover

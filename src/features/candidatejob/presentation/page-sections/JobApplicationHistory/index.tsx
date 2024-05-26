@@ -9,7 +9,7 @@ import {
 import CustomTable from 'shared/components/table/CustomTable'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import { columns } from '../../providers/constants/columns'
-import { CandidateJob } from 'features/candidates/domain/interfaces'
+import { Candidate, CandidateJob } from 'features/candidates/domain/interfaces'
 import useActionTable from '../../providers/hooks/useActionTable'
 import EditIcon from 'shared/components/icons/EditIcon'
 import ApplyJobModal from '../ApplyJobModal'
@@ -21,8 +21,10 @@ import useTextTranslation from 'shared/constants/text'
 import ChangeStatusModal from '../ChangeStatusModal'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { downloadFileAttachment } from '../../providers/helper'
+import { useMemo } from 'react'
+import { STATUS_CANDIDATE } from 'shared/constants/constants'
 
-const JobApplicationHistory = () => {
+const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) => {
   const {
     openCreate,
     setOpenCreate,
@@ -38,6 +40,16 @@ const JobApplicationHistory = () => {
   const navigate = useNavigate()
 
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
+
+  const disabledChangeStatus = useMemo(() => {
+    const disabledStatuses = [
+      STATUS_CANDIDATE.KIV,
+      STATUS_CANDIDATE.OFFERED_LOST,
+      STATUS_CANDIDATE.EX_STAFTT
+    ];
+
+    return disabledStatuses.includes(candidateDetail?.status);
+  }, [candidateDetail?.status])
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -56,15 +68,8 @@ const JobApplicationHistory = () => {
         },
         title: 'Change status',
         Icon: <EditIcon />,
+        disabled: disabledChangeStatus,
       },
-      // {
-      //   id: 'view',
-      //   onClick: (id, rowData) => {
-      //     // handleOpenDetail(id, rowData)
-      //   },
-      //   title: 'View CV',
-      //   Icon: <EyeIcon />,
-      // },
       {
         id: 'download',
         onClick: (id, rowData) => {
@@ -113,6 +118,7 @@ const JobApplicationHistory = () => {
           candidateId={id as string}
           id={rowId.current}
           rowData={rowData.current}
+          statusCurrent={candidateDetail?.status}
         />
       )}
     </DivWrapperProcess>

@@ -1,7 +1,8 @@
 import { buildQuery } from 'services/graphql-services'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
-  const queryKey = 'candidateJob'
+  const queryKey = MODLUE_QUERY_KEY.CANDIDATE_JOB
 
   const getCandidate = buildQuery({
     operation: 'GetCandidate',
@@ -37,6 +38,7 @@ const useGraphql = () => {
           candidate_id
           hiring_job_id
           status
+          is_able_to_delete
           attachments {
             id
             document_id
@@ -95,7 +97,7 @@ const useGraphql = () => {
     `,
     params: {
       id: 'ID!',
-      status: 'CandidateJobStatus!',
+      input: 'UpdateCandidateJobStatus!',
     },
   })
 
@@ -151,6 +153,143 @@ const useGraphql = () => {
     },
   })
 
+  const getCandidateJobInterview = buildQuery({
+    operation: 'GetCandidateJobGroupByInterview',
+    options: {
+      type: 'query',
+    },
+    node: `
+      data {
+        applied {
+          interview {
+            id
+            title
+            description
+            candidate_job_id
+            interview_date
+            start_from
+            end_at
+            interviewer {
+              id
+              name
+              work_email
+            }
+            owner {
+              id
+              name
+              work_email
+            }
+            edit_able
+            created_at
+            updated_at
+          }
+          feedback {
+            id
+            created_by
+            owner {
+              id
+              name
+              work_email
+            }
+            feedback
+            attachments {
+              id
+              document_name
+              document_id
+            }
+            created_at
+            updated_at
+          }
+        }
+        interviewing {
+          interview {
+            id
+            title
+            description
+            candidate_job_id
+            interview_date
+            start_from
+            end_at
+            interviewer {
+              id
+              name
+              work_email
+            }
+            owner {
+              id
+              name
+              work_email
+            }
+            edit_able
+            created_at
+            updated_at
+          }
+          feedback {
+            id
+            created_by
+            owner {
+              id
+              name
+              work_email
+            }
+            feedback
+            attachments {
+              id
+              document_name
+              document_id
+            }
+            created_at
+            updated_at
+          }
+        }
+        offering {
+          interview {
+            id
+            title
+            description
+            candidate_job_id
+            interview_date
+            start_from
+            end_at
+            interviewer {
+              id
+              name
+              work_email
+            }
+            owner {
+              id
+              name
+              work_email
+            }
+            edit_able
+            created_at
+            updated_at
+          }
+          feedback {
+            id
+            created_by
+            owner {
+              id
+              name
+              work_email
+            }
+            feedback
+            attachments {
+              id
+              document_name
+              document_id
+            }
+            created_at
+            updated_at
+          }
+        }
+      }
+    `,
+    params: {
+      id: 'ID!',
+    },
+  })
+
   return {
     queryKey,
     getCandidate,
@@ -158,7 +297,8 @@ const useGraphql = () => {
     createCandidateJob,
     changeStatusCandidate,
     createCandidateJobFeedback,
-    getCandidateJob
+    getCandidateJob,
+    getCandidateJobInterview
   }
 }
 

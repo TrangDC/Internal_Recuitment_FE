@@ -7,3 +7,7 @@ const GenerateInnerHTML = ({innerHTML}: {innerHTML: string}) => {
 }
 
 export default GenerateInnerHTML
+
+export const innerHTMLTextArea = (str: string) => {
+  return  <Box dangerouslySetInnerHTML={{ __html: str.replace(/\n/g, '<br>') }}></Box>
+};

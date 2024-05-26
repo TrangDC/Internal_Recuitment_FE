@@ -17,8 +17,6 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import useActionTable from '../../providers/hooks/useActionTable'
 import CreateInterviewModal from '../CreateInterviewModal'
-import { useParams } from 'react-router-dom'
-import useListInterview from '../../providers/hooks/useListInterview'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
 import { CandidateJob } from 'features/candidates/domain/interfaces'
@@ -27,12 +25,17 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditInterviewModal from '../EditInterviewModal'
 import { Interview } from 'features/interviews/domain/interfaces'
 import DeleteInterviewModal from '../DeleteInterviewModal'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+
+interface Props {
+  jobApplicationDetail: CandidateJob
+  listInterview: Interview[]
+}
 
 const ListFeedback = ({
   jobApplicationDetail,
-}: {
-  jobApplicationDetail: CandidateJob
-}) => {
+  listInterview,
+}: Props) => {
   const {
     openCreate,
     setOpenCreate,
@@ -45,8 +48,6 @@ const ListFeedback = ({
     rowId,
     rowData,
   } = useActionTable()
-  const { id } = useParams()
-  const { listInterview } = useListInterview(id as string)
 
   return (
     <ListInterviewContainer>
@@ -152,6 +153,7 @@ const ListFeedback = ({
           hiring_job={jobApplicationDetail.hiring_job}
           open={openCreate}
           setOpen={setOpenCreate}
+          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
         />
       )}
 
@@ -162,6 +164,7 @@ const ListFeedback = ({
           hiring_job={jobApplicationDetail.hiring_job}
           open={openEdit}
           setOpen={setOpenEdit}
+          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
         />
       )}
 
@@ -170,6 +173,7 @@ const ListFeedback = ({
           id={rowId.current}
           open={openDelete}
           setOpen={setOpenDelete}
+          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
         />
       )}
     </ListInterviewContainer>

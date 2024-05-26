@@ -14,7 +14,7 @@ export const AutocompleteBase = <Multiple extends boolean = false>(
     multiple?: Multiple
   }
 ) => {
-  const { multiple, textFieldProps, value, onChange, options, disabled } = props
+  const { multiple, textFieldProps, value, onChange, options, disabled, list_disabled = [] } = props
   let getValue: IOption[] | IOption | undefined
   if (multiple) {
     getValue = options.filter((o) => value.includes(o.value.toString()))
@@ -34,10 +34,12 @@ export const AutocompleteBase = <Multiple extends boolean = false>(
     <Autocomplete
       {...props}
       size="small"
+      disableCloseOnSelect={multiple}
       options={options}
       value={(getValue as any) ?? null}
       multiple={multiple}
       disabled={disabled}
+      getOptionDisabled={(option) => list_disabled.includes(option.value)}
       noOptionsText={'No options'}
       onChange={(event, value) => handleOnChange(event, value)}
       popupIcon={<ArrowRadius sx={{ color: 'text.400', fontSize: '16px' }} />}

@@ -1,6 +1,8 @@
 import { createContext, ReactNode, useEffect, useReducer } from 'react'
 import LoadingScreen from 'shared/components/LoadingScreen'
 import axios from '../shared/utils/axios'
+import { getAccessToken } from 'shared/utils/auth'
+import { jwtDecode } from 'jwt-decode'
 
 // --------------------------------------------------------
 type AuthUser = null | Record<string, any>
@@ -59,7 +61,6 @@ export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (email: string, password: string) => {
     const { data } = await axios.post('/api/auth/login', { email, password })
-    // setSession(data.accessToken);
     dispatch({ type: 'LOGIN', payload: { user: data.user } })
   }
 
@@ -78,51 +79,18 @@ export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   const logout = () => {
-    // setSession(null);
-    dispatch({ type: "LOGOUT" });
-  };
+    dispatch({ type: 'LOGOUT' })
+  }
 
   useEffect(() => {
-    // (async () => {
-    //   try {
-    //     // const accessToken = localStorage.getItem("accessToken");
-
-    //     // if (accessToken && isValidToken(accessToken)) {
-    //     //   setSession(accessToken);
-    //     //   const { data } = await axios.get("/api/auth/profile");
-    //     //   dispatch({
-    //     //     type: "INIT",
-    //     //     payload: { user: data.user, isAuthenticated: true },
-    //     //   });
-    //     // } else {
-    //     //   dispatch({
-    //     //     type: "INIT",
-    //     //     payload: { user: null, isAuthenticated: false },
-    //     //   });
-    //     // }
-
-    //     const { data } = await axios.get("/api/auth/profile");
-
-    //     if (data?.user) {
-    //       dispatch({
-    //         type: "INIT",
-    //         payload: { user: data.user, isAuthenticated: true },
-    //       });
-    //     } else {
-    //       dispatch({
-    //         type: "INIT",
-    //         payload: { user: null, isAuthenticated: false },
-    //       });
-    //     }
-    //   } catch (err) {
-    //     console.error(err);
-    //     dispatch({
-    //       type: "INIT",
-    //       payload: { user: null, isAuthenticated: false },
-    //     });
-    //   }
-    // })();
-  }, []);
+    const accessToken = getAccessToken()
+    if (accessToken) {
+      dispatch({
+        type: 'INIT',
+        payload: { user: jwtDecode(accessToken), isAuthenticated: true },
+      })
+    }
+  }, [])
 
   if (!state.isInitialized) <LoadingScreen />
 

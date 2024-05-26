@@ -70,59 +70,63 @@
   "sub_title_update_record": "What information or note have you updated the record?",
 
   "model": {
-    "hiring_jobs": {
-      "model_name": "Job",
-      "id": "Id",
-      "name": "Job name",
-      "slug": "Slug",
-      "description": "Description",
-      "amount": "Amount",
-      "location": "Location",
-      "salary_type": "Salary Type",
-      "salary_from": "Salary From",
-      "salary_to": "Salary To",
-      "currency": "Currency",
-      "status": "Status",
-      "total_candidates_recruited": "Total Candidates Recruited",
-      "created_at": "Created At",
-      "updated_at": "Updated At",
-      "deleted_at": "Deleted At"
-    },
-    "candidates": {
-      "name": "Name",
-      "email": "Email",
-      "phone": "Phone",
-      "dob": "DOB",
-      "is_blacklist": "Is Blacklist",
-      "is_blacklist_enum": {
-        "yes": "Yes"
-      },
-      "is_blacklist_enum": {
-        "no": "No"
-      },
+    "candidate_interviews": {
       "validation": {
-        "email_exist": "Email has already existed"
+        "candidate_job_status_changed": "message_value",
+        "candidate_not_found": "message_value",
+        "candidate_is_blacklist": "This candidate is in blacklist",
+        "job_close": "This job is closed",
+        "candidate_job_status_ended": "This job is closed",
+        "start_from_end_at_invalid": "The end time must be after the start time",
+        "schedule_exist": "{Candidate_name} is not available",
+        "title_exist": "Title is already existed"
       }
     },
-    "teams": {
-      "model_name": "Teams",
-      "name": "Name",
-      "members": "Members",
-
+    "hiring_job": {
       "validation": {
-        "user_in_another_team": "This candidate is already on the same status with this job.",
-        "name_exist": "name has already existed",
-        "cannot_delete_team": "There are already jobs or interviewers for this team, can not delete this team."
+        "amount_neq_zero": "Number of staff required must be greater than 0",
+        "name_exist": "This team is already existed"
       }
     },
     "candidate_job": {
       "validation": {
-        "candidate_job_status_exist": "candidate job status job has already existed"
+        "failed_reason_required": "Please include failed reasons",
+        "candidate_job_status_exist": "New status cannot be Current status",
+        "candidate_is_blacklist": "This candidate is in blacklist"
       }
     },
-    "candidate_interviews": {
+    "candidates": {
       "validation": {
-        "schedule_exist": "schedule has already existed"
+        "email_exist": "This email belongs to an existing candidate."
+      }
+    },
+    "teams": {
+      "validation": {
+        "name_exist": "This team is already existed.",
+        "user_in_another_team": "This manager already in another team"
+      }
+    },
+    "users": {
+      "validation": {
+        "work_email_exist": "This email is already existed"
+      }
+    },
+    "candidate_job_feedbacks": {
+      "validation": {
+        "job_close": "This job is closed",
+        "candidate_is_blacklist": "Cannot edit candidates in blacklist"
+      }
+    }
+  },
+  "excel": {
+    "import": {
+      "candidates": {
+        "invalid_format": "Your content is not in the right format",
+        "duplicate_email": "Cells at (column;row) and (colum;row) are duplicated",
+        "missing_name": "Cell (column;row) is blank",
+        "missing_email": "Cell (column;row) is blank",
+        "missing_phone_number": "Cell (column;row) is blank",
+        "wrong_phone_number": "Wrong phone number at (column;row)"
       }
     }
   }

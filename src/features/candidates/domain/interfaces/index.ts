@@ -9,15 +9,16 @@ export type Candidate = {
   dob: string
   is_black_list: boolean
   last_apply_date: string
+  is_able_to_delete: boolean,
   status:
-    | 'applied'
-    | 'interviewing'
-    | 'offering'
-    | 'hired'
-    | 'kiv'
-    | 'offer_lost'
-    | 'ex_staff'
-    | 'new'
+  | 'applied'
+  | 'interviewing'
+  | 'offering'
+  | 'hired'
+  | 'kiv'
+  | 'offer_lost'
+  | 'ex_staff'
+  | 'new'
   created_at: string
   updated_at: string
   deleted_at: string
@@ -73,7 +74,15 @@ export type CandidateJob = {
   id: string
   candidate_id: string
   hiring_job_id: string
-  status: string
+  status:
+  | 'applied'
+  | 'interviewing'
+  | 'offering'
+  | 'hired'
+  | 'kiv'
+  | 'offer_lost'
+  | 'ex_staff'
+  | 'new'
   created_at: string
   updated_at: string
   attachments: Attachments

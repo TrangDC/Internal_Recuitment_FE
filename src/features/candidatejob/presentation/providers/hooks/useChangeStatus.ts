@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
 import { useForm } from 'react-hook-form'
 import {
@@ -8,14 +7,15 @@ import {
 } from '../constants/schema'
 import { UpdateCandidateJobStatus } from 'features/candidates/domain/interfaces'
 import { cloneDeep } from 'lodash'
-import { removeInfoData } from 'shared/utils/utils'
+import { getInfoData, removeInfoData } from 'shared/utils/utils'
 import useCreateResource from 'shared/hooks/useCreateResource'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import {
   FormDataSchema,
   schema,
 } from 'features/feedback/presentation/providers/constants/schema'
-import useUpdateResourceOther from 'shared/hooks/useUpdateResourceOther'
+import useUpdateResource from 'shared/hooks/useUpdateResource'
+import { useState } from 'react'
 
 interface useChangeStatusProps {
   defaultValues?: Partial<FormDataSchemaChangeStatus>
@@ -23,30 +23,30 @@ interface useChangeStatusProps {
 }
 
 interface propsChangeStatus {
-  mutationFeedback: (data: any) => void
+  mutationFeedback: () => void
   callbackSuccess?: (value: any) => void
 }
 
 function ChangeStatus(props: propsChangeStatus) {
-  const { callbackSuccess, mutationFeedback } = props
-  const queryClient = useQueryClient()
+  const { mutationFeedback } = props
   const { changeStatusCandidate, queryKey } = useGraphql()
-  const { useUpdateReturn, useFormReturn } = useUpdateResourceOther<
+  const { useCreateReturn, useFormReturn } = useUpdateResource<
     UpdateCandidateJobStatus,
     FormDataSchema
   >({
     mutationKey: [queryKey],
     queryString: changeStatusCandidate,
     defaultValues: {
-      feedback: ''
+      feedback: '',
     },
     resolver: yupResolver(schema),
-    onSuccess: callbackSuccess,
+    onSuccess: mutationFeedback,
   })
 
-  const { formState, watch } = useFormReturn
+  const { formState } = useFormReturn
   const isValid = !formState.isValid
-  const { isPending, mutate } = useUpdateReturn
+  const { isPending, mutate } = useCreateReturn
+
   return {
     mutateChangeStatus: mutate,
     isPendingStatus: isPending,
@@ -84,15 +84,22 @@ function CreateFeedbackprops(
 }
 
 function useChangeStatus(props: useChangeStatusProps = { defaultValues: {} }) {
+  const [data, setData] = useState<UpdateCandidateJobStatus>()
+
   const { defaultValues, callbackSuccess } = props
   const { mutateCreateFeedback } = CreateFeedbackprops({ callbackSuccess })
+
   const { mutateChangeStatus, isPendingStatus } = ChangeStatus({
     callbackSuccess,
-    mutationFeedback: (data: UpdateCandidateJobStatus) => {
-      const valueClone = { ...cloneDeep(data), candidate_job_id: data.id }
-      mutateCreateFeedback(
-        removeInfoData({ field: ['status', 'id'], object: valueClone })
-      )
+    mutationFeedback: () => {
+      if (data?.feedback) {
+        mutateCreateFeedback({
+          ...getInfoData({ field: ['feedback', 'attachments'], object: data }),
+          candidate_job_id: data.id,
+        })
+      } else {
+        callbackSuccess?.(data)
+      }
     },
   })
 
@@ -114,8 +121,13 @@ function useChangeStatus(props: useChangeStatusProps = { defaultValues: {} }) {
           ...cloneDeep(value),
         },
       })
-
-      mutateChangeStatus(valueClone as UpdateCandidateJobStatus)
+      setData(valueClone as UpdateCandidateJobStatus)
+      mutateChangeStatus(
+        removeInfoData({
+          field: ['feedback', 'attachments'],
+          object: valueClone,
+        })
+      )
     })()
   }
 

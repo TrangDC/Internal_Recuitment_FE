@@ -20,15 +20,17 @@ import GenaralInformationHiring from '../page-sections/GeneralInformationHiring'
 import useActionTable from '../providers/hooks/useActionTable'
 import CloseJobModal from '../page-sections/CloseJobModal'
 import TabJobDetail from '../page-sections/TabDetail'
+import { STATUS_STATE } from 'shared/constants/constants'
 
 const JobDetail = () => {
   const [openTab, setOpenTab] = useState(false)
 
   const { id } = useParams()
   const { jobDetail } = useJobDetail(id as String)
+  console.log("🚀 ~ jobDetail:", jobDetail)
   const translation = useTextTranslation()
 
-  const { openStatus, setOpenStatus, handleOpenStatus, rowId } =
+  const { openStatus, setOpenStatus, handleOpenStatus, rowId, rowData } =
     useActionTable()
 
   return (
@@ -85,10 +87,10 @@ const JobDetail = () => {
               <FlexBox gap={1}>
                 <BtnPrimary
                   onClick={() => {
-                    handleOpenStatus(jobDetail?.id)
+                    handleOpenStatus(jobDetail?.id, jobDetail)
                   }}
                 >
-                 <Span> Close Job</Span>
+                 <Span>{jobDetail.status === STATUS_STATE.OPENED ? "Close Job": "Reopen Job"}</Span>
                 </BtnPrimary>
                 <BtnPrimary
                   onClick={() => setOpenTab(true)}
@@ -99,7 +101,7 @@ const JobDetail = () => {
         </BoxWrapperOuterContainer>
 
         <BoxWrapperOuterContainer>
-          <HeadingWrapper sx={{ marginTop: 0 }}>
+          <HeadingWrapper sx={{ marginTop: 0, padding: 2 }}>
             <GenaralInformationHiring />
           </HeadingWrapper>
         </BoxWrapperOuterContainer>
@@ -110,6 +112,7 @@ const JobDetail = () => {
           open={openStatus}
           setOpen={setOpenStatus}
           id={rowId.current}
+          rowData={rowData.current}
         />
       )}
 

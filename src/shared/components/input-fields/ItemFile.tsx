@@ -35,7 +35,7 @@ const NameFIle = styled(FlexBox)(({ theme }) => ({
 
 interface ShowFileProps {
   name: string
-  size: number
+  size?: number
   IconEnd?: React.ReactNode
 }
 

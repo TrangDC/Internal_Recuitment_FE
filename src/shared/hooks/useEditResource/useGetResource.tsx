@@ -32,8 +32,7 @@ function useGetResource<Response, FormData extends FieldValues>({
     if (data && isRight(data) && !isLoading) {
       return unwrapEither(data)?.[oneBuildQuery.operation]?.data
     }
-    return undefined
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return undefined;
   }, [data, isLoading])
 
   const useFormReturn = useForm<FormData>({
@@ -48,7 +47,6 @@ function useGetResource<Response, FormData extends FieldValues>({
     if (formatData) {
       reset(formatDefaultValues ? formatDefaultValues(formatData) : formatData)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formatData])
 
   return {

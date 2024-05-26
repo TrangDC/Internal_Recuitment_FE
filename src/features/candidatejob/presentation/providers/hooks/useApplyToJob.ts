@@ -29,7 +29,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     onSuccess: callbackSuccess,
   })
 
-  const { handleSubmit, control, formState } = useFormReturn
+  const { handleSubmit, control, formState, resetField } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
@@ -51,6 +51,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     control,
     isValid,
     isPending,
+    resetField,
   }
 }
 

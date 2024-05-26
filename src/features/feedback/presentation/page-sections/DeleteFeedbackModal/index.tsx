@@ -16,9 +16,10 @@ interface IDeleteFeedbackModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
+  listQueryKey?: string[]
 }
 
-function DeleteFeedbackModal({ open, setOpen, id }: IDeleteFeedbackModal) {
+function DeleteFeedbackModal({ open, setOpen, id, listQueryKey = [] }: IDeleteFeedbackModal) {
   const [openFailed, setOpenFailed] = useState<boolean>(false);
   const [msg, setMsg] = useState<string>('');
 
@@ -31,7 +32,8 @@ function DeleteFeedbackModal({ open, setOpen, id }: IDeleteFeedbackModal) {
     callbackError: (data) => {
       setMsg(t(data?.message) as string)
       setOpenFailed(true)
-    }
+    },
+    listQueryKey,
   })
 
   const translation = useTextTranslation()

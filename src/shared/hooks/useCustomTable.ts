@@ -110,9 +110,21 @@ const useCustomTable = ({
   function handleSorTable(id: string) {
     setSorting((prev) => {
       if (id === prev.field) {
-        const fieldSort = prev.direction === 'DESC' ? variables?.orderBy?.field || 'created_at' : id;
+        const isDescending = prev.direction === 'DESC'
+        const fieldSort = isDescending
+          ? variables?.orderBy?.field || 'created_at'
+          : id
+        const directionSort =
+          fieldSort === 'created_at'
+            ? prev.direction === 'ASC'
+              ? 'DESC'
+              : 'ASC'
+            : isDescending
+              ? 'ASC'
+              : 'DESC'
+
         return {
-          direction: fieldSort === 'created_at' ? "DESC" : prev.direction === 'ASC' ? 'DESC' : 'ASC',
+          direction: directionSort,
           field: fieldSort,
         }
       }

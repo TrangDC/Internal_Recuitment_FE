@@ -56,8 +56,8 @@ export const BtnPrimary = styled(FlexBox)(({ theme }) => ({
 
 
 export const BoxCircle = styled(Box)(({ theme }) => ({
-  width: '24px',
-  height: '20px',
+  width: 'fit-content',
+  minHeight: '20px',
   background: '#1F84EB',
   borderRadius: '20px',
   padding: '0 8px',

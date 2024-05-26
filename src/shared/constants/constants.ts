@@ -32,6 +32,14 @@ export const LOCATION_STATE = {
   JAPAN: 'japan',
 }
 
+export const LOCATION_LABEL = {
+  ha_noi: 'Hà Nội',
+  da_nang: 'Đà Nẵng',
+  ho_chi_minh: 'Hồ Chí Minh',
+  japan: 'Japan',
+}
+
+
 export const STATUS_STATE = {
   DRAFT: 'draft',
   OPENED: 'opened',

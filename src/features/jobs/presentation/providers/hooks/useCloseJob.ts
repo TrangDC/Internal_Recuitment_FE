@@ -25,7 +25,6 @@ function useCloseJob(props: closeJobProps = { defaultValues: {} }) {
     queryString: changeStatusJob,
     defaultValues: {
       note: '',
-      status: 'closed',
       ...defaultValues,
     },
     resolver: yupResolver(schemaChangeStatus),

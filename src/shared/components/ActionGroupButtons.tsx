@@ -22,9 +22,9 @@ export const StyleItemMenu = styled(MenuItem)(({ theme }) => ({
  }))
 
 export type TOptionItem<T> = {
-  disabled?: boolean
+  disabled?: boolean | ((rowData: T) => boolean)
   onClick?: (id: string, row: T) => void
-  title?: string
+  title?: string | ((rowData: T) => string)
   Icon: ReactNode
   id: string
 }
@@ -79,11 +79,11 @@ export const ActionGroupButtons = <T extends object>({
                 onClick?.(rowId, rowData)
                 handleMoreClose()
               }}
-              disabled={disabled}
+              disabled={typeof disabled === 'boolean' ? disabled : disabled?.(rowData)}
               sx={{ '&:hover': { color: 'primary.main' } }}
             >
               <StyleListItemIcon>{Icon}</StyleListItemIcon>
-              <StyleLabel sx={{color: '#0B0E1E'}}>{title}</StyleLabel>
+              <StyleLabel sx={{color: '#0B0E1E'}}>{typeof title === 'string'  ? title : title(rowData)}</StyleLabel>
             </StyleItemMenu>
           ))}
       </Menu>
