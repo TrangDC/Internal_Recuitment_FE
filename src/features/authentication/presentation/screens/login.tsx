@@ -1,7 +1,9 @@
-import { ButtonBase, styled } from '@mui/material'
+import { Box, ButtonBase, styled } from '@mui/material'
+import appConfig from 'configs/appConfig'
 import AuthenticationLayout from 'features/authentication/presentation/page-sections/AuthenticationLayout'
 import { FC } from 'react'
 import { handleSignIn } from 'services/authUtil'
+import FlexBox from 'shared/components/flexbox/FlexBox'
 import IsLogin from 'shared/hoc/IsLogin'
 
 const StyledButton = styled(ButtonBase)(({ theme }) => ({
@@ -15,9 +17,12 @@ const StyledButton = styled(ButtonBase)(({ theme }) => ({
 }))
 
 const Login: FC = () => {
-
   return (
     <AuthenticationLayout title="Sign in to TREX">
+      <FlexBox flexDirection={'column'}>
+        <Box>API {appConfig.endpoint_api}</Box>
+        <Box>AUTH {appConfig.endpoint_auth}</Box>
+      </FlexBox>
       <StyledButton onClick={handleSignIn}>Signin with Azure</StyledButton>
     </AuthenticationLayout>
   )
