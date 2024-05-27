@@ -23,7 +23,7 @@ function RenderDatePickerCalendar(props: IRenderDatePickerCalendar) {
     '& .MuiInputBase-root': {
       position: 'relative !important',
       WebkitBoxSizing: 'unset !important',
-      '& input': {
+      '& .MuiOutlinedInput-input': {
         padding: '8.5px 0px 8.5px 14px',
       },
     },
