@@ -98,9 +98,6 @@ const JobsList = () => {
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
-        disabled: (rowData) => {
-          return !rowData.is_able_to_delete;
-        }
       },
     ],
     columns,
@@ -142,6 +139,7 @@ const JobsList = () => {
                   onChange={(value) => {
                     handleFilter('team_ids', value)
                   }}
+                  open={true}
                   disableCloseOnSelect={true}
                   textFieldProps={{
                     label: 'Status',
@@ -170,6 +168,7 @@ const JobsList = () => {
                     )
                     setStatus(data as IOption)
                   }}
+                  open={true}
                   disableCloseOnSelect={true}
                   textFieldProps={{
                     label: 'Status',

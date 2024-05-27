@@ -1,7 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import useGraphql from 'features/interviews/domain/graphql/graphql'
-import { DeleteInterviewInput } from 'features/interviews/domain/interfaces'
-import { schemaDelete, FormDataSchemaDelete } from '../constants/schema'
+import useGraphql from 'features/candidatejob/domain/graphql/graphql'
+import { DeleteTeamInput } from 'features/teams/domain/interfaces'
+import {
+  schemaDelete,
+  FormDataSchemaDelete,
+} from '../../providers/constants/schema'
 import useDeleteResource from 'shared/hooks/useDeleteResource'
 
 interface deleteTeamProps {
@@ -10,16 +13,16 @@ interface deleteTeamProps {
   callbackError?: (data: any) => void
 }
 
-function useDeleteInterview(props: deleteTeamProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess, callbackError  } = props
+function useDeleteCandidateJob(props: deleteTeamProps = { defaultValues: {} }) {
+  const { defaultValues, callbackSuccess, callbackError } = props
 
-  const { deleteCandidateInterview, queryKey } = useGraphql()
+  const { deleteCandidateJob, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useDeleteResource<
-    DeleteInterviewInput,
+    DeleteTeamInput,
     FormDataSchemaDelete
   >({
     mutationKey: [queryKey],
-    queryString: deleteCandidateInterview,
+    queryString: deleteCandidateJob,
     defaultValues: {
       ...defaultValues,
     },
@@ -47,4 +50,4 @@ function useDeleteInterview(props: deleteTeamProps = { defaultValues: {} }) {
   }
 }
 
-export default useDeleteInterview
+export default useDeleteCandidateJob

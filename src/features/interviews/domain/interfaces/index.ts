@@ -23,6 +23,7 @@ export type Interview = {
   created_at: Date
   updated_at: Date
   candidate_job: CandidateJob
+  owner: Member
   interviewer: Member[]
   candidate_job_id: string
 } 

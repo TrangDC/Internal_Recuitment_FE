@@ -34,7 +34,7 @@ export const columns = (
       style: { width: '300px' },
     },
   }),
-  columnHelper.accessor((row) => row.team.name, {
+  columnHelper.accessor((row) => row.team?.name, {
     id: 'team',
     header: () => <span>Team</span>,
     enableSorting: false,

@@ -2,9 +2,7 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import {
-  CustomTextField,
-} from 'shared/components/form/styles'
+import { CustomTextField } from 'shared/components/form/styles'
 import {
   CANDIDATE_STATUS,
   list_status_disabled,
@@ -23,6 +21,7 @@ import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
+import ModalConfirm from 'shared/components/modal/modalConfirm'
 
 interface IChangeStatusModal {
   open: boolean
@@ -38,7 +37,9 @@ interface IChangeStatusModal {
     | 'kiv'
     | 'offer_lost'
     | 'ex_staff'
-    | 'new'
+    | 'new',
+    defaultStatus?: string,
+    onSuccess?: () => void;
 }
 
 function ChangeStatusModal({
@@ -46,16 +47,20 @@ function ChangeStatusModal({
   setOpen,
   rowData,
   statusCurrent,
+  defaultStatus = '',
+  onSuccess
 }: IChangeStatusModal) {
   const { onSubmit, control, isPending, isValid, watch } = useChangeStatus({
     callbackSuccess: () => {
       setOpen(false)
+      onSuccess?.()
     },
     defaultValues: {
       id: rowData?.id,
       feedback: '',
       attachments: [],
       failed_reason: [],
+      status: defaultStatus
     },
   })
 
@@ -87,7 +92,7 @@ function ChangeStatusModal({
               <CustomTextField
                 label="Job name"
                 size="small"
-                value={rowData?.hiring_job_id}
+                value={rowData?.hiring_job?.name}
                 fullWidth
                 focused
                 required
@@ -151,7 +156,7 @@ function ChangeStatusModal({
                           field.onChange(transformListItem(data, 'value'))
                         }}
                         textFieldProps={{
-                          label: 'Failed Reason',
+                          label: 'Failed reason',
                           required: true,
                         }}
                       />
@@ -210,8 +215,11 @@ function ChangeStatusModal({
                         descriptionFile: () => {
                           return (
                             <Box>
-                              <Span sx={{ color: '#2A2E37 !important' }}> Attach file </Span>
-                              <Tiny sx={{color: '#2A2E37 !important'}}>
+                              <Span sx={{ color: '#2A2E37 !important' }}>
+                                {' '}
+                                Attach file{' '}
+                              </Span>
+                              <Tiny sx={{ color: '#2A2E37 !important' }}>
                                 Up to 10 files and 20MB/file
                               </Tiny>
                             </Box>
@@ -238,15 +246,30 @@ function ChangeStatusModal({
           >
             {translation.COMMON.cancel}
           </AppButton>
-          <ButtonLoading
-            variant="contained"
-            size="small"
-            disabled={isValid}
-            handlesubmit={onSubmit}
-            loading={isPending}
-          >
-            Submit
-          </ButtonLoading>
+
+          {!!rowData?.interview_feature ? (
+            <ModalConfirm title={`This candidate still has ${rowData?.interview_feature} left, are you sure want to change the hiring status?`} callbackSubmit={onSubmit}>
+              <ButtonLoading
+                variant="contained"
+                size="small"
+                disabled={isValid}
+                handlesubmit={() => {}}
+                loading={isPending}
+              >
+                Submit
+              </ButtonLoading>
+            </ModalConfirm>
+          ) : (
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
+          )}
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

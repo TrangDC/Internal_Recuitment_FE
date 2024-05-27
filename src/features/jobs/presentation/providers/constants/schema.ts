@@ -9,7 +9,7 @@ export const schema = yup.object({
   name: yup.string().max(64, RULE_MESSAGES.MC4("name", 64)).required(RULE_MESSAGES.MC1("name")),
   location: yup.string().required(RULE_MESSAGES.MC1("location")),
   created_by: yup.string().required(RULE_MESSAGES.MC1("requester")),
-  amount: yup.number().typeError(RULE_MESSAGES.MC5("amount")).required(RULE_MESSAGES.MC1("amount")),
+  amount: yup.number().min(1, "amount must be greater than 0").typeError(RULE_MESSAGES.MC5("amount")).required(RULE_MESSAGES.MC1("amount")),
   salary_type: yup.string().required(RULE_MESSAGES.MC1("salary")),
   salary_from: yup.string().required(RULE_MESSAGES.MC1("salary from")),
   salary_to: yup
@@ -48,7 +48,7 @@ export const schemaUpdate = yup.object({
   name: yup.string().max(64, RULE_MESSAGES.MC4("name", 64)).required(RULE_MESSAGES.MC1("name")),
   location: yup.string().required(RULE_MESSAGES.MC1("location")),
   created_by: yup.string().required(RULE_MESSAGES.MC1("requester")),
-  amount: yup.number().typeError(RULE_MESSAGES.MC5("amount")).required(RULE_MESSAGES.MC1("amount")),
+  amount: yup.number().min(1, "amount must be greater than 0").typeError(RULE_MESSAGES.MC5("amount")).required(RULE_MESSAGES.MC1("amount")),
   salary_type: yup.string().required(RULE_MESSAGES.MC1("salary")),
   salary_from: yup.string().required(RULE_MESSAGES.MC1("salary from")),
   salary_to: yup

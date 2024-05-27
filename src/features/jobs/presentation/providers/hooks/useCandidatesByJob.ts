@@ -2,8 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import { buildQuery, fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
-const queryKey = 'candidatesByJob'
+const queryKey = MODLUE_QUERY_KEY.CANDIDATE_JOB
 const getCandidatesByJob = buildQuery({
   operation: 'GetCandidateJobGroupByStatus',
   options: {
@@ -19,7 +20,12 @@ const getCandidatesByJob = buildQuery({
             candidate {
                 id
                 name,
-                phone
+                phone,
+                status,
+            }
+            hiring_job {
+              id
+              name
             }
             created_at
         }
@@ -28,10 +34,15 @@ const getCandidatesByJob = buildQuery({
             candidate_id
             hiring_job_id
             status
-            candidate {
+             candidate {
                 id
                 name,
-                phone
+                phone,
+                status,
+            }
+            hiring_job {
+              id
+              name
             }
             created_at
         }
@@ -40,10 +51,15 @@ const getCandidatesByJob = buildQuery({
             candidate_id
             hiring_job_id
             status
-            candidate {
+             candidate {
                 id
                 name,
-                phone
+                phone,
+                status,
+            }
+            hiring_job {
+              id
+              name
             }
             created_at
         }
@@ -52,10 +68,15 @@ const getCandidatesByJob = buildQuery({
             candidate_id
             hiring_job_id
             status
-            candidate {
+             candidate {
                 id
                 name,
-                phone
+                phone,
+                status,
+            }
+            hiring_job {
+              id
+              name
             }
             created_at
         }
@@ -64,10 +85,15 @@ const getCandidatesByJob = buildQuery({
             candidate_id
             hiring_job_id
             status
-            candidate {
+             candidate {
                 id
                 name,
-                phone
+                phone,
+                status,
+            }
+            hiring_job {
+              id
+              name
             }
             created_at
         }
@@ -76,10 +102,15 @@ const getCandidatesByJob = buildQuery({
             candidate_id
             hiring_job_id
             status
-            candidate {
+             candidate {
                 id
                 name,
-                phone
+                phone,
+                status,
+            }
+            hiring_job {
+              id
+              name
             }
             created_at
         }
@@ -88,10 +119,15 @@ const getCandidatesByJob = buildQuery({
             candidate_id
             hiring_job_id
             status
-            candidate {
+             candidate {
                 id
                 name,
-                phone
+                phone,
+                status,
+            }
+            hiring_job {
+              id
+              name
             }
             created_at
         }

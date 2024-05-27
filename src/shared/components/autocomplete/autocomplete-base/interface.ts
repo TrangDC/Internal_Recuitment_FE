@@ -30,4 +30,5 @@ export interface IAutocompleteCommonProps<Multiple extends boolean> {
   disableCloseOnSelect?: boolean,
   disabled?:boolean
   list_disabled?: string[]
+  open?: boolean
 }

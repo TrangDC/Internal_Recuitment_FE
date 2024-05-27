@@ -2,7 +2,7 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useDeleteFeedback from '../../providers/hooks/useDeleteFeedback'
+import useDeleteCandidateJob from '../../providers/hooks/useDeleteCandidateJob'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -11,24 +11,19 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
 import FailedModal from 'shared/components/modal/modalFailed'
 import { t } from 'i18next'
-import { onChange } from 'react-toastify/dist/core/store'
 
-interface IDeleteFeedbackModal {
+interface IDeleteCandidateJobModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  onSuccess?: () => void,
 }
 
-function DeleteFeedbackModal({ open, setOpen, id, onSuccess }: IDeleteFeedbackModal) {
+function DeleteCandidateJobModal({ open, setOpen, id }: IDeleteCandidateJobModal) {
   const [openFailed, setOpenFailed] = useState<boolean>(false);
   const [msg, setMsg] = useState<string>('');
 
-  const { onSubmit, control, isPending, isValid } = useDeleteFeedback({
-    callbackSuccess: () => {
-      setOpen(false)
-      onSuccess?.()
-    },
+  const { onSubmit, control, isPending, isValid } = useDeleteCandidateJob({
+    callbackSuccess: () => setOpen(false),
     defaultValues: {
       id: id,
       note: '',
@@ -36,7 +31,7 @@ function DeleteFeedbackModal({ open, setOpen, id, onSuccess }: IDeleteFeedbackMo
     callbackError: (data) => {
       setMsg(t(data?.message) as string)
       setOpenFailed(true)
-    },
+    }
   })
 
   const translation = useTextTranslation()
@@ -45,7 +40,7 @@ function DeleteFeedbackModal({ open, setOpen, id, onSuccess }: IDeleteFeedbackMo
     <Fragment>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <BaseModal.Header
-          title="Do you want to delete this feedback?"
+          title={"Do you want to delete candidate job?"}
           setOpen={setOpen}
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
@@ -101,14 +96,14 @@ function DeleteFeedbackModal({ open, setOpen, id, onSuccess }: IDeleteFeedbackMo
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>
-      <FailedModal
+      {openFailed && <FailedModal
         open={openFailed}
         setOpen={setOpenFailed}
         title="Failed to delete"
         content={msg}
-      />
+      />}
     </Fragment>
   )
 }
 
-export default DeleteFeedbackModal
+export default DeleteCandidateJobModal

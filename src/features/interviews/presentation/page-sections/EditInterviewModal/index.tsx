@@ -24,7 +24,7 @@ interface IEditInterviewModal {
   hiring_job: Job
   rowData: Interview
   id_interview: string,
-  listQueryKey?: string[]
+  onSuccess?: () => void
 }
 
 function EditInterviewModal({
@@ -33,12 +33,13 @@ function EditInterviewModal({
   hiring_job,
   rowData,
   id_interview,
-  listQueryKey = []
+  onSuccess
 }: IEditInterviewModal) {
   const { id } = useParams()
   const { onSubmit, control, isPending, isValid } = useEditInterview({
     callbackSuccess: () => {
       setOpen(false)
+      onSuccess?.()
     },
     defaultValues: {
       id: id_interview,
@@ -50,7 +51,6 @@ function EditInterviewModal({
       start_from: new Date(replaceYearWithCurrent(rowData.start_from)),
       end_at: new Date(replaceYearWithCurrent(rowData.end_at)),
     },
-    listQueryKey,
   })
 
   return (

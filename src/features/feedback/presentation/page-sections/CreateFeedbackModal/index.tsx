@@ -14,23 +14,23 @@ interface ICreateFeedbackModal {
   open: boolean
   setOpen: (value: boolean) => void
   candidate_job_id: string
-  listQueryKey?: string[]
+  onSuccess?: () => void;
 }
 
 function CreateFeedbackModal({
   open,
   setOpen,
   candidate_job_id,
-  listQueryKey = [],
+  onSuccess,
 }: ICreateFeedbackModal) {
   const { onSubmit, control, isPending, isValid } = useCreateFeedback({
     callbackSuccess: () => {
       setOpen(false)
+      onSuccess?.();
     },
     defaultValues: {
       candidate_job_id: candidate_job_id,
     },
-    listQueryKey,
   })
 
   return (

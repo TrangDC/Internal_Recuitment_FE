@@ -26,16 +26,16 @@ import EditInterviewModal from '../EditInterviewModal'
 import { Interview } from 'features/interviews/domain/interfaces'
 import DeleteInterviewModal from '../DeleteInterviewModal'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import { STATUS_CANDIDATE } from 'shared/constants/constants'
+import { useMemo } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
   jobApplicationDetail: CandidateJob
   listInterview: Interview[]
 }
 
-const ListFeedback = ({
-  jobApplicationDetail,
-  listInterview,
-}: Props) => {
+const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
   const {
     openCreate,
     setOpenCreate,
@@ -49,17 +49,31 @@ const ListFeedback = ({
     rowData,
   } = useActionTable()
 
+  const showInterview = useMemo(() => {
+    return (
+      jobApplicationDetail.status === STATUS_CANDIDATE.APPLIED ||
+      jobApplicationDetail.status === STATUS_CANDIDATE.INTERVIEWING
+    )
+  }, [jobApplicationDetail?.status])
+
+  const queryClient = useQueryClient()
+  const handleRefreshList = () => {
+    queryClient.invalidateQueries({ queryKey: [ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK] })
+  }
+
   return (
     <ListInterviewContainer>
       <DivActionHeader>
         <BoxTitle>
           <Span>Interviews</Span>
         </BoxTitle>
-        <BoxButton>
-          <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
-            Add new interview
-          </Button>
-        </BoxButton>
+        {showInterview && (
+          <BoxButton>
+            <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
+              Add new interview
+            </Button>
+          </BoxButton>
+        )}
       </DivActionHeader>
       {!isEmpty(listInterview) &&
         listInterview.map((interview, idx) => {
@@ -109,7 +123,7 @@ const ListFeedback = ({
                       </Box>
                       <Box>
                         <SpanText>Created by</SpanText>
-                        <TinyText>Arianne Bui</TinyText>
+                        <TinyText>{interview?.owner?.name}</TinyText>
                       </Box>
                       <Box>
                         <SpanText>Created at</SpanText>
@@ -153,7 +167,7 @@ const ListFeedback = ({
           hiring_job={jobApplicationDetail.hiring_job}
           open={openCreate}
           setOpen={setOpenCreate}
-          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
+         onSuccess={handleRefreshList}
         />
       )}
 
@@ -164,7 +178,7 @@ const ListFeedback = ({
           hiring_job={jobApplicationDetail.hiring_job}
           open={openEdit}
           setOpen={setOpenEdit}
-          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
+          onSuccess={handleRefreshList}
         />
       )}
 
@@ -173,7 +187,7 @@ const ListFeedback = ({
           id={rowId.current}
           open={openDelete}
           setOpen={setOpenDelete}
-          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
+          onSuccess={handleRefreshList}
         />
       )}
     </ListInterviewContainer>

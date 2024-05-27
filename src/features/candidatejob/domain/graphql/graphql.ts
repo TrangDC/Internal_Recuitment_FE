@@ -39,6 +39,7 @@ const useGraphql = () => {
           hiring_job_id
           status
           is_able_to_delete
+          interview_feature
           attachments {
             id
             document_id
@@ -127,6 +128,13 @@ const useGraphql = () => {
         candidate_id
         hiring_job_id
         status
+        steps {
+          id
+          candidate_job_id
+          candidate_job_status
+          created_at
+          updated_at
+        }
         candidate {
             id
             name
@@ -290,6 +298,17 @@ const useGraphql = () => {
     },
   })
 
+  const deleteCandidateJob = buildQuery({
+    operation: 'DeleteCandidateJob',
+    options: {
+      type: 'mutation',
+    },
+    node: ``,
+    params: {
+      id: 'ID!',
+    },
+  })
+
   return {
     queryKey,
     getCandidate,
@@ -298,7 +317,8 @@ const useGraphql = () => {
     changeStatusCandidate,
     createCandidateJobFeedback,
     getCandidateJob,
-    getCandidateJobInterview
+    getCandidateJobInterview,
+    deleteCandidateJob
   }
 }
 

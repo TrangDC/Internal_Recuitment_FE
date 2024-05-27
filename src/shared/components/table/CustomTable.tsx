@@ -83,7 +83,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
   }, [sortData])
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{borderRadius: '8px', border: '1px solid #E3E6EB'}}>
       <Table size="small" aria-label="a dense table">
         <TableHead>
           {getHeaderGroups().map((headerGroup) => (

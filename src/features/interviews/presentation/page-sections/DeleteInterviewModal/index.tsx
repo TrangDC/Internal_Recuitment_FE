@@ -16,15 +16,18 @@ interface IDeleteInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  listQueryKey?: string[]
+  onSuccess?: () => void,
 }
 
-function DeleteInterviewModal({ open, setOpen, id, listQueryKey = [] }: IDeleteInterviewModal) {
+function DeleteInterviewModal({ open, setOpen, id, onSuccess}: IDeleteInterviewModal) {
   const [openFailed, setOpenFailed] = useState<boolean>(false);
   const [msg, setMsg] = useState<string>('');
 
   const { onSubmit, control, isPending, isValid } = useDeleteInterview({
-    callbackSuccess: () => setOpen(false),
+    callbackSuccess: () => {
+      setOpen(false)
+      onSuccess?.()
+    },
     defaultValues: {
       id: id,
       note: '',
@@ -33,7 +36,6 @@ function DeleteInterviewModal({ open, setOpen, id, listQueryKey = [] }: IDeleteI
       setMsg(t(data?.message) as string)
       setOpenFailed(true)
     },
-    listQueryKey
   })
 
   const translation = useTextTranslation()

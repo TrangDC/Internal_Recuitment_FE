@@ -85,7 +85,9 @@
     "hiring_job": {
       "validation": {
         "amount_neq_zero": "Number of staff required must be greater than 0",
-        "name_exist": "This team is already existed"
+        "name_exist": "This team is already existed",
+        "candidate_job_exist": "This job cannot be deleted as applications have already been received from candidates",
+        "candidate_job_open_exist": "Candidate job is already existed"
       }
     },
     "candidate_job": {
@@ -103,7 +105,8 @@
     "teams": {
       "validation": {
         "name_exist": "This team is already existed.",
-        "user_in_another_team": "This manager already in another team"
+        "user_in_another_team": "This manager already in another team",
+        "cannot_delete_team": "There are already jobs or interviewers for this team, can not delete this team."
       }
     },
     "users": {

@@ -2,27 +2,26 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/interviews/domain/graphql/graphql'
 import { NewCandidateInterviewInput } from 'features/interviews/domain/interfaces'
 import { schema, FormDataSchema } from '../constants/schema'
-import { cloneDeep, isEmpty } from 'lodash'
+import { cloneDeep } from 'lodash'
 import useCreateResource from 'shared/hooks/useCreateResource'
 import { convertToUTC } from 'shared/utils/date'
 
 interface createInterviewProps {
   defaultValues?: Partial<FormDataSchema>
   callbackSuccess?: (value: any) => void
-  listQueryKey?: string[]
 }
 
 function useCreateInterview(
   props: createInterviewProps = { defaultValues: {} }
 ) {
-  const { defaultValues, callbackSuccess, listQueryKey = [] } = props
+  const { defaultValues, callbackSuccess} = props
 
   const { createCandidateInterview, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
     NewCandidateInterviewInput,
     FormDataSchema
   >({
-    mutationKey: !isEmpty(listQueryKey) ? listQueryKey: [queryKey],
+    mutationKey: [queryKey],
     queryString: createCandidateInterview,
     defaultValues: {
       title: '',
