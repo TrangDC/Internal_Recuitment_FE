@@ -16,6 +16,7 @@ import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
 
 interface IAddInterviewModal {
   open: boolean
@@ -30,9 +31,10 @@ function CreateInterviewModal(props: IAddInterviewModal) {
         setOpen(false)
       },
     })
-  const { onSubmit, handleGenerateToDate } = actions
+  const { onSubmit, onInterviewDateChange, onFromChange, onToChange } = actions
   const teamId = watch('teamId')
   const jobId = watch('jobId')
+  const interviewDate = watch('date')
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -195,7 +197,10 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         <AppDateField
                           label={'Select date'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={(value) => field.onChange(value?.toDate())}
+                          onChange={(value) => {
+                            field.onChange(value?.toDate())
+                            onInterviewDateChange(value)
+                          }}
                           textFieldProps={{
                             required: true,
                           }}
@@ -213,19 +218,20 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 <FormControl fullWidth>
                   <Controller
                     control={control}
+                    defaultValue={interviewDate}
                     name="from"
                     render={({ field, fieldState }) => (
                       <Fragment>
                         <AppTimePickers
                           label={'From'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={(value) => {
-                            handleGenerateToDate(value)
-                            field.onChange(value)
-                          }}
+                          onChange={(value) =>
+                            onFromChange(value, field.onChange)
+                          }
                           views={['hours', 'minutes']}
                           ampm={false}
-                          minTime={dayjs()}
+                          disabled={!interviewDate}
+                          shouldDisableTime={shouldDisableTime}
                           textFieldProps={{
                             required: true,
                           }}
@@ -249,10 +255,13 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         <AppTimePickers
                           label={'To'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={field.onChange}
+                          onChange={(value) =>
+                            onToChange(value, field.onChange)
+                          }
                           views={['hours', 'minutes']}
                           ampm={false}
-                          minTime={dayjs()}
+                          disabled={!interviewDate}
+                          shouldDisableTime={shouldDisableTime}
                           textFieldProps={{
                             required: true,
                           }}

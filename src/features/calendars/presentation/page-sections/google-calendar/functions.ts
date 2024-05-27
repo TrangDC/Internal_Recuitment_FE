@@ -2,7 +2,11 @@ import { makeLeft, makeRight } from 'shared/utils/handleEither'
 import { EventColor } from './interface'
 import { Either } from 'shared/interfaces/common'
 import dayjs from 'dayjs'
-import { isAfterNow, isDurationWithinOneDay, replaceYearWithCurrent } from 'shared/utils/date'
+import {
+  isAfterNow,
+  isDurationWithinOneDay,
+  replaceYearWithCurrent,
+} from 'shared/utils/date'
 
 const colorEvent: EventColor[] = [
   {
@@ -74,10 +78,12 @@ function isPast(date: Date) {
 export function getColorEvent(date: Date) {
   if (isPast(date))
     return {
-      backgroundColor: '#dcdcdc',
+      backgroundColor: '#F0F1F8',
+      color: '#82868C',
     }
   return {
     backgroundColor: 'white',
+    color: '#000000',
   }
 }
 
@@ -126,21 +132,51 @@ export function convertToRootDate(start: Date, end: Date, root: Date) {
   }
 }
 
+export function convertToRootByTimeNow(now: Date, root: Date) {
+  const rootDate = dayjs(root)
 
-export function ruleDragDropCalendar(currentDate:Date, start:Date, end:Date, onCallbackWhenValid:() => void):void{
-  if(!isAfterNow(currentDate)) return
-  if(!isAfterNow(start)) return 
-  if (isDurationWithinOneDay(start, end)) return 
+  console.log('rootDate', rootDate)
+  // Lấy thông tin giờ phút từ start và end
+  const startHour = dayjs(now).hour()
+  const startMinute = dayjs(now).minute()
+
+  // Tạo mới start và end theo ngày của root nhưng giữ nguyên giờ phút ban đầu
+  const newStart = rootDate
+    .hour(startHour)
+    .minute(startMinute)
+    .second(0)
+    .millisecond(0)
+
+  return newStart
+}
+
+export function ruleDragDropCalendar(
+  currentDate: Date,
+  start: Date,
+  end: Date,
+  onCallbackWhenValid: () => void
+): void {
+  if (!isAfterNow(currentDate)) return
+  if (!isAfterNow(start)) return
+  if (isDurationWithinOneDay(start, end)) return
   onCallbackWhenValid()
 }
-export function formatStringToDate(start:string, end:string , currentDate:string){
+export function formatStringToDate(
+  start: string,
+  end: string,
+  currentDate: string
+) {
   const startDate = replaceYearWithCurrent(start)
-  const endDate =  replaceYearWithCurrent(end)
+  const endDate = replaceYearWithCurrent(end)
   const interview_date = dayjs(currentDate).toDate()
-  const  {newEnd ,newStart} = convertToRootDate(new Date(startDate), new Date(endDate) , interview_date)
+  const { newEnd, newStart } = convertToRootDate(
+    new Date(startDate),
+    new Date(endDate),
+    interview_date
+  )
   return {
     newEnd,
     newStart,
-    currentDate:interview_date,
+    currentDate: interview_date,
   }
 }

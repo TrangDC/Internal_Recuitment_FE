@@ -3,10 +3,8 @@ import { CandidateInterview } from 'features/calendars/domain/interfaces'
 import useGetResource from 'shared/hooks/useEditResource/useGetResource'
 import { GetInterviewFrom, getOneInterviewSchema } from '../constants/validate'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { convertFromUTC, replaceYearWithCurrent } from 'shared/utils/date'
 import { useNavigate } from 'react-router-dom'
-import { convertToRootDate, formatStringToDate } from '../../page-sections/google-calendar/functions'
-import dayjs from 'dayjs'
+import { formatStringToDate } from '../../page-sections/google-calendar/functions'
 
 export interface IUseGetInterview {
   id: string
@@ -23,7 +21,11 @@ function useGetInterview({ id }: IUseGetInterview) {
     queryKey: [queryKey],
     resolver: yupResolver(getOneInterviewSchema),
     formatDefaultValues: (data: CandidateInterview) => {
-      const {currentDate ,newEnd ,newStart} = formatStringToDate(data.start_from , data.end_at , data.interview_date)
+      const { currentDate, newEnd, newStart } = formatStringToDate(
+        data.start_from,
+        data.end_at,
+        data.interview_date
+      )
       return {
         id: data.id,
         candidateEmail: data.candidate_job.candidate.email,

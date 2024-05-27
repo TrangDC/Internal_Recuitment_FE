@@ -50,9 +50,19 @@ body {
   font-weight: 500;
   color:#4D607A;
   line-height: 18.29px;
-  margin-left: 10px;
+  margin-left: 16px;
+  margin-top: 12px;
+  margin-bottom:12px;
+
  }
 
+ .rbc-month-view .rbc-month-row .rbc-row-content .rbc-date-cell.rbc-now .rbc-button-link{
+  background-color: #1F84EB;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color:white;
+ }
 
   .rbc-month-view , .rbc-time-view {
   border: transparent;
@@ -68,7 +78,7 @@ body {
   height: 36px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
 }
 
 .rbc-current-time-indicator {
@@ -85,4 +95,45 @@ body {
   display: block;
   position: relative;
   border-radius: 50%;
+}
+
+.rbc-time-view .rbc-allday-cell {
+  display: none ;
+}
+.rbc-time-view .rbc-time-header .rbc-time-header-content .rbc-row .rbc-header {
+  padding:12px 16px 12px 16px;
+  height: 60px;
+}
+
+.rbc-month-view .rbc-row.rbc-month-header .rbc-header  {
+  padding:12px 16px 12px 16px;
+}
+
+.rbc-time-content {
+  border-top: none;
+}
+
+.rbc-header.rbc-today {
+  border-top: 3px solid #1F84EB;
+  background-color: #F1F9FF
+}
+
+.rbc-today {
+  background-color: white
+
+}
+.rbc-time-header-cell-single-day {
+  display: block;
+}
+
+.rbc-time-header-cell-single-day .rbc-header.rbc-today{
+  border-top: none;
+  background-color: white
+
+}
+.rbc-off-range-bg {
+  background-color: #e6e6e6 !important;
+}
+.rbc-show-more {
+  background-color: unset;
 }

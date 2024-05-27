@@ -1,9 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/calendars/domain/graphql'
-import {
-  PayloadDragDropInput,
-  UpdateCandidateInterviewScheduleInput,
-} from 'features/calendars/domain/interfaces'
+import { PayloadDragDropInput } from 'features/calendars/domain/interfaces'
 import NotificationService from 'services/notification-service'
 import GraphQLClientService from 'services/refactor/graphql-service'
 import { BaseRecord } from 'shared/interfaces/common'
