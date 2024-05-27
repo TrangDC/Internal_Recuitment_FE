@@ -69,9 +69,9 @@ const TeamList = () => {
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
-        disabled: (rowData) => {
-          return !rowData.is_able_to_delete;
-        }
+        // disabled: (rowData) => {
+        //   return !rowData.is_able_to_delete;
+        // }
       },
     ],
     columns,

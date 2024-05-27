@@ -16,7 +16,6 @@ import {
   DivFilter,
   DivHeaderWrapper,
 } from '../../providers/styles'
-import Import from 'shared/components/icons/ImportIcon'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import EditIcon from 'shared/components/icons/EditIcon'
 import { BaseRecord, baseInstance } from 'shared/interfaces'
@@ -25,11 +24,16 @@ import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import BlackListIcon from 'shared/components/icons/BlackListIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import DeleteCandidateModal from '../../page-sections/DeleteCandidateModal'
-import { Fragment, KeyboardEventHandler, useMemo, useState } from 'react'
+import {
+  Fragment,
+  KeyboardEventHandler,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import useTextTranslation from 'shared/constants/text'
 import {
   BoxWrapperOuterContainer,
-  BtnPrimary,
   HeadingWrapper,
 } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
@@ -38,11 +42,19 @@ import { handleImportFile } from '../../providers/utils'
 import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
-import { getValueOfObj, transformListItem } from 'shared/utils/utils'
+import {
+  downloadBase64File,
+  getValueOfObj,
+  transformListItem,
+} from 'shared/utils/utils'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useImportFile } from 'shared/hooks/graphql/useUpload'
 import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
 import { isEmpty } from 'lodash'
+import { ArrowDownward } from '@mui/icons-material'
+import { MenuItemComponent } from 'shared/components/menuItemComponent'
+import DownloadIcon from 'shared/components/icons/DownloadIcon'
+import useExportSample from '../../providers/hooks/useExportSample'
 
 const Candidates = () => {
   const {
@@ -68,12 +80,13 @@ const Candidates = () => {
       is_black_list: false,
     },
   })
-  const { handleFreeWord, handleFilter } = useTableReturn
+  const { handleFilter, handleFreeWordMultiple} = useTableReturn
   const translation = useTextTranslation()
   const [failedReason, setFailedReason] = useState<BaseRecord[]>([])
   const [status, setStatus] = useState<BaseRecord[]>([])
 
   const [searchField, setSearchField] = useState('')
+  const refInput = useRef<HTMLInputElement>(null)
 
   const showFailedReason = useMemo(() => {
     return (
@@ -116,21 +129,17 @@ const Candidates = () => {
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
-        disabled: (rowData) => {
-          return !rowData.is_able_to_delete;
-        }
       },
     ],
     columns,
   })
 
-  const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
+  const handleFreeWorld: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.keyCode === 13) {
-      //@ts-ignore
-      handleFreeWord('name', event.target.value)
+      handleFreeWordMultiple({name: searchField, phone: searchField, email: searchField})
     }
   }
-
+  const { base64Example } = useExportSample()
   const { submit } = useImportFile()
 
   return (
@@ -159,6 +168,7 @@ const Candidates = () => {
                         getValueOfObj({ key: 'value', obj: data })
                       )
                     }}
+                    open={true}
                     disableCloseOnSelect={true}
                     textFieldProps={{
                       label: 'Status',
@@ -171,7 +181,7 @@ const Candidates = () => {
             <DivFilter>
               {showFailedReason && (
                 <ButtonFieldFilter<baseInstance>
-                  inputLabel={'Failed Reason'}
+                  inputLabel={'Failed reason'}
                   listSelected={failedReason}
                   setListSelected={setFailedReason}
                   onChange={(data) => {
@@ -194,7 +204,7 @@ const Candidates = () => {
                       }}
                       disableCloseOnSelect={true}
                       textFieldProps={{
-                        label: 'Failed Reason',
+                        label: 'Failed reason',
                         autoFocus: true,
                       }}
                     />
@@ -219,7 +229,7 @@ const Candidates = () => {
                       <SearchIcon
                         sx={{ fontSize: '16px' }}
                         onClick={() => {
-                          handleFreeWord('name', searchField)
+                          handleFreeWordMultiple({name: searchField, phone: searchField, email: searchField})
                         }}
                       />
                     </IconButton>
@@ -229,13 +239,43 @@ const Candidates = () => {
             />
             <FlexBox gap={'10px'}>
               <Fragment>
-                <label htmlFor={'fileImport'}>
-                  <BtnPrimary>
-                    <Import sx={{ fontSize: 15 }} />
-                    {translation.COMMON.import}
-                  </BtnPrimary>
-                </label>
+                <MenuItemComponent
+                  actions={[
+                    {
+                      Icon: <DownloadIcon />,
+                      title: 'Download Template',
+                      id: 'download',
+                      onClick: () => {
+                        downloadBase64File(
+                          base64Example,
+                          'candidate_example.xlsx',
+                          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        )
+                      },
+                    },
+                    {
+                      Icon: (
+                        <DownloadIcon
+                          sx={{ transform: 'rotate(-90deg)', fontSize: '16px' }}
+                        />
+                      ),
+                      title: 'Import',
+                      id: 'import',
+                      onClick: () => {
+                        console.log('import file', refInput.current?.click())
+                      },
+                    },
+                  ]}
+                  Button={
+                    <ButtonAdd
+                      Icon={ArrowDownward}
+                      textLable={'Import'}
+                      position_icon="end"
+                    />
+                  }
+                />
                 <input
+                  ref={refInput}
                   type="file"
                   id="fileImport"
                   name="file"

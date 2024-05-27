@@ -26,7 +26,7 @@ export interface AutocompleteValueBackEndCommonProps<
   disabled?:boolean
   getOptionLabel?: (option: T) => ReactNode
   disableCloseOnSelect?:boolean
-
+  open?: boolean,
 }
 
 export interface IAutocompleteBackEndProps<
@@ -47,6 +47,7 @@ export interface IAutocompleteBackEndProps<
   disabled?:boolean
   getOptionLabel?: (option: T) => ReactNode
   disableCloseOnSelect?:boolean
+  open?: boolean,
 }
 export type Leaves<T> = T extends object
   ? {

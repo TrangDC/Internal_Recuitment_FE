@@ -31,6 +31,7 @@ import {
   innerHTMLTextArea,
 } from 'shared/components/genarateInnerHTML'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
   listFeedback: FeedBack[]
@@ -51,6 +52,12 @@ const ListFeedBack = ({listFeedback}: Props) => {
   } = useActionTable()
   const { id } = useParams()
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
+
+  const queryClient = useQueryClient()
+  const handleRefreshList = () => {
+    queryClient.invalidateQueries({ queryKey: [ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK] })
+  }
+
 
   return (
     <ListFeedbackContainer>
@@ -132,7 +139,7 @@ const ListFeedBack = ({listFeedback}: Props) => {
           open={openCreate}
           setOpen={setOpenCreate}
           candidate_job_id={id as string}
-          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
+          onSuccess={handleRefreshList}
         />
       )}
 
@@ -142,7 +149,7 @@ const ListFeedBack = ({listFeedback}: Props) => {
           setOpen={setOpenEdit}
           id={rowId.current}
           rowData={rowData.current as FeedBack}
-          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
+          onSuccess={handleRefreshList}
         />
       )}
 
@@ -151,7 +158,7 @@ const ListFeedBack = ({listFeedback}: Props) => {
           open={openDelete}
           setOpen={setOpenDelete}
           id={rowId.current}
-          listQueryKey={[ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK]}
+          onSuccess={handleRefreshList}
         />
       )}
     </ListFeedbackContainer>

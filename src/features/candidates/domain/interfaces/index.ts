@@ -74,6 +74,8 @@ export type CandidateJob = {
   id: string
   candidate_id: string
   hiring_job_id: string
+  is_able_to_delete: boolean
+  interview_feature: number
   status:
   | 'applied'
   | 'interviewing'
@@ -84,6 +86,7 @@ export type CandidateJob = {
   | 'ex_staff'
   | 'new'
   created_at: string
+  steps:  StepType[],
   updated_at: string
   attachments: Attachments
   candidate: Candidate
@@ -94,4 +97,12 @@ export type CandidateJob = {
 export type FeedBackInput = {
   attachments: Attachments
   feedback?: string
+}
+
+export type StepType = {
+  id: string,
+  candidate_job_id: string,
+  candidate_job_status: string,
+  created_at: string,
+  updated_at: string,
 }

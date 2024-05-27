@@ -16,7 +16,7 @@ interface IUpdateFeedbackModal {
   setOpen: (value: boolean) => void
   id: string
   rowData: FeedBack
-  listQueryKey?: string[]
+  onSuccess?: () => void;
 }
 
 function UpdateFeedbackModal({
@@ -24,17 +24,17 @@ function UpdateFeedbackModal({
   setOpen,
   id,
   rowData,
-  listQueryKey = []
+  onSuccess,
 }: IUpdateFeedbackModal) {
   const { onSubmit, control, isPending, isValid} = useUpdateFeedback({
     callbackSuccess: () => {
       setOpen(false)
+      onSuccess?.()
     },
     defaultValues: {
       id: id,
       feedback: rowData.feedback,
     },
-    listQueryKey,
   })
 
   return (

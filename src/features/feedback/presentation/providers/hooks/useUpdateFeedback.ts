@@ -8,18 +8,17 @@ import { isEmpty } from 'lodash'
 interface updateFeedbackProps {
   defaultValues?: Partial<FormDataSchemaUpdate>
   callbackSuccess?: (value: any) => void
-  listQueryKey?: string[],
 }
 
 function useUpdateFeedback(props: updateFeedbackProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess, listQueryKey = [] } = props
+  const { defaultValues, callbackSuccess } = props
 
   const { updateCandidateJobFeedback, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useUpdateResource<
     UpdateCandidateJobFeedbackInput,
     FormDataSchemaUpdate
   >({
-    mutationKey: !isEmpty(listQueryKey) ? listQueryKey: [queryKey],
+    mutationKey: [queryKey],
     queryString: updateCandidateJobFeedback,
     defaultValues: {
       feedback: '',

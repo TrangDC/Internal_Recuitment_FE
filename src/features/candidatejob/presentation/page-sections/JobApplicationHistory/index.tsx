@@ -1,8 +1,6 @@
-import { Add } from '@mui/icons-material'
 import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import {
-  ButtonHeader,
   DivWrapperProcess,
   SpanGenaration,
 } from '../../providers/styles'
@@ -21,14 +19,22 @@ import useTextTranslation from 'shared/constants/text'
 import ChangeStatusModal from '../ChangeStatusModal'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { downloadFileAttachment } from '../../providers/helper'
-import { useMemo } from 'react'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
+import DeleteIcon from 'shared/components/icons/DeleteIcon'
+import DeleteCandidateJobModal from '../DeleteCandidateJobModal'
+import Add from 'shared/components/icons/Add'
+import ButtonAdd from 'shared/components/utils/buttonAdd'
+import { useQueryClient } from '@tanstack/react-query'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) => {
   const {
     openCreate,
+    openDelete,
+    setOpenDelete,
     setOpenCreate,
     handleOpenChangeStatus,
+    handleOpenDelete,
     openChangeStatus,
     setOpenChangeStatus,
     rowData,
@@ -40,16 +46,6 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
   const navigate = useNavigate()
 
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
-
-  const disabledChangeStatus = useMemo(() => {
-    const disabledStatuses = [
-      STATUS_CANDIDATE.KIV,
-      STATUS_CANDIDATE.OFFERED_LOST,
-      STATUS_CANDIDATE.EX_STAFTT
-    ];
-
-    return disabledStatuses.includes(candidateDetail?.status);
-  }, [candidateDetail?.status])
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -68,7 +64,15 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
         },
         title: 'Change status',
         Icon: <EditIcon />,
-        disabled: disabledChangeStatus,
+        disabled: (rowData) => {
+          const disabledStatuses = [
+            STATUS_CANDIDATE.KIV,
+            STATUS_CANDIDATE.OFFERED_LOST,
+            STATUS_CANDIDATE.EX_STAFTT
+          ];
+      
+          return disabledStatuses.includes(rowData?.status);
+        },
       },
       {
         id: 'download',
@@ -79,25 +83,37 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
         title: 'Download CV',
         Icon: <DownloadIcon />,
       },
+      {
+        id: 'delete',
+        onClick: (id) => {
+          handleOpenDelete(id)
+        },
+        title: "Delete",
+        Icon: <DeleteIcon />,
+      },
     ],
     columns,
   })
+
+  const queryClient = useQueryClient()
+  const handleRefreshList = () => {
+    console.log("check query client")
+    queryClient.invalidateQueries({ queryKey: [MODLUE_QUERY_KEY.CANDIDATE, MODLUE_QUERY_KEY.CANDIDATE_JOB] })
+  }
 
   const translation = useTextTranslation()
 
   return (
     <DivWrapperProcess>
-      <FlexBox alignItems={'center'}>
-        <SpanGenaration>
+      <FlexBox alignItems={'center'} justifyContent={'space-between'}>
+        <SpanGenaration sx={{fontWeight: 500}}>
           {translation.MODULE_CANDIDATE_JOB.job_application_history}
         </SpanGenaration>
-        <ButtonHeader
-          variant="contained"
-          startIcon={<Add />}
-          onClick={() => setOpenCreate(true)}
-        >
-          {translation.MODULE_CANDIDATE_JOB.apply_to_a_job}
-        </ButtonHeader>
+        <ButtonAdd
+            Icon={Add}
+            textLable={translation.MODULE_CANDIDATE_JOB.apply_to_a_job}
+            onClick={() => setOpenCreate(true)}
+          />
       </FlexBox>
       <Box>
         {useTableReturn && (
@@ -119,8 +135,16 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
           id={rowId.current}
           rowData={rowData.current}
           statusCurrent={candidateDetail?.status}
+          onSuccess={handleRefreshList}
         />
       )}
+        {openDelete && (
+          <DeleteCandidateJobModal
+            open={openDelete}
+            setOpen={setOpenDelete}
+            id={rowId.current}
+          />
+        )}
     </DivWrapperProcess>
   )
 }

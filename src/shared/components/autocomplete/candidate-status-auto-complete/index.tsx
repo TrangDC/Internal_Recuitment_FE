@@ -16,7 +16,7 @@ export const options: IOption[] = [
   { label: 'Interviewing', value: STATUS_CANDIDATE.INTERVIEWING },
   { label: 'Offering', value: STATUS_CANDIDATE.OFFERING },
   { label: 'Hired', value: STATUS_CANDIDATE.HIRED },
-  { label: 'Kiv', value: STATUS_CANDIDATE.KIV },
+  { label: 'KIV', value: STATUS_CANDIDATE.KIV },
   { label: 'Offered lost', value: STATUS_CANDIDATE.OFFERED_LOST },
   { label: 'Ex-staff', value: STATUS_CANDIDATE.EX_STAFTT },
 ]

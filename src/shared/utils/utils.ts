@@ -150,3 +150,37 @@ export const getValueByKey = (obj: any, key: string): string | null => {
 export const hasDirtyField = (formState: FormState<BaseRecord>): boolean => {
   return Object.keys(formState.dirtyFields).length > 0
 }
+
+//@ts-ignore
+export const base64ToBlob = (base64, mimeType) => {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mimeType });
+};
+
+
+//@ts-ignore
+export const downloadBase64File = (base64, fileName, mimeType) => {
+  const blob = base64ToBlob(base64, mimeType);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+
+
+
+
+
+
+
+

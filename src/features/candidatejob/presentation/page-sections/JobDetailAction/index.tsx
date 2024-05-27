@@ -5,7 +5,6 @@ import ListInterview from 'features/interviews/presentation/page-sections/ListIn
 import ListFeedBack from 'features/feedback/presentation/page-sections/ListFeedback'
 import { CandidateJob } from 'features/candidates/domain/interfaces'
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import useGetCandidateJobInterview from '../../providers/hooks/useGetCandidateJobInterview'
 import { useParams } from 'react-router-dom'
 import { FeedBack } from 'features/feedback/domain/interfaces'
@@ -17,12 +16,6 @@ const JobDetailAction = ({
   jobApplicationDetail: CandidateJob
 }) => {
   const { id } = useParams()
-  const showInterview = useMemo(() => {
-    return (
-      jobApplicationDetail.status === STATUS_CANDIDATE.APPLIED ||
-      jobApplicationDetail.status === STATUS_CANDIDATE.INTERVIEWING
-    )
-  }, [jobApplicationDetail?.status])
   const [statusSelected, setStatusSelected] = useState<string>();
   const { candidateJobInterview } = useGetCandidateJobInterview(id as string)
 
@@ -38,17 +31,15 @@ const JobDetailAction = ({
   return (
     <DivActionWrapper>
       <DivAction>
-        <StepInterview onChange={setStatusSelected} defaultValue={jobApplicationDetail.status}/>
+        <StepInterview steps={jobApplicationDetail.steps} onChange={setStatusSelected} defaultValue={jobApplicationDetail.status}/>
       </DivAction>
       <Divider />
-      {showInterview && (
         <Fragment>
           <DivAction>
             <ListInterview jobApplicationDetail={jobApplicationDetail} listInterview={listEnabled?.interview}/>
           </DivAction>
           <Divider />
         </Fragment>
-      )}
 
       <DivAction>
         <ListFeedBack listFeedback={listEnabled?.feedback} />

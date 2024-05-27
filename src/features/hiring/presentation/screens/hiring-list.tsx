@@ -87,6 +87,7 @@ const HiringList = () => {
                   value={transformListItem(teams, 'id')}
                   onCustomChange={setTeams}
                   onChange={() => {}}
+                  open={true}
                   disableCloseOnSelect={true}
                   textFieldProps={{
                     label: 'Status',

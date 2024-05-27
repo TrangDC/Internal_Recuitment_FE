@@ -26,8 +26,7 @@ const JobDetail = () => {
   const [openTab, setOpenTab] = useState(false)
 
   const { id } = useParams()
-  const { jobDetail } = useJobDetail(id as String)
-  console.log("🚀 ~ jobDetail:", jobDetail)
+  const { jobDetail } = useJobDetail(id as String) 
   const translation = useTextTranslation()
 
   const { openStatus, setOpenStatus, handleOpenStatus, rowId, rowData } =

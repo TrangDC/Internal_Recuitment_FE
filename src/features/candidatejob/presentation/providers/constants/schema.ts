@@ -44,3 +44,9 @@ export const schemaChangeStatus = yup.object({
 export type FormDataSchemaChangeStatus = yup.InferType<
   typeof schemaChangeStatus
 >
+
+export const schemaDelete = yup.object({
+  id: yup.string().required(RULE_MESSAGES.MC1('id')),
+  note: yup.string(),
+});
+export type FormDataSchemaDelete = yup.InferType<typeof schemaDelete>

@@ -57,6 +57,29 @@ export const STATUS_CANDIDATE = {
   NEW: 'new',
 }
 
+export const STATUS_CANDIDATE_TEXT = {
+  applied: 'Applied',
+  interviewing: 'Interviewing',
+  offering: 'Offering',
+  hired: 'Hired',
+  kiv: 'KIV',
+  offer_lost: 'Offer lost',
+  ex_staff: 'EX Staff',
+  new: 'New',
+}
+
+export enum ENUM_STATUS_CANDIDATE {
+  APPLIED = 'applied',
+  INTERVIEWING = 'interviewing',
+  OFFERING = 'offering',
+  HIRED = 'hired',
+  KIV = 'kiv',
+  OFFERED_LOST = 'offer_lost',
+  EX_STAFTT = 'ex_staff',
+  NEW = 'new',
+}
+
+
 export const TREC_REFRESH_TOKEN: string = 'refreshToken'
 export const TREC_ACCESS_TOKEN: string = 'accessToken'
 

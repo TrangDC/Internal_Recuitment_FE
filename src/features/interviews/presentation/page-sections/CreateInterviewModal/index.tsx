@@ -19,24 +19,24 @@ interface ICreateInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
   hiring_job: Job
-  listQueryKey?: string[]
+  onSuccess?:() => void;
 }
 
 function CreateInterviewModal({
   open,
   setOpen,
   hiring_job,
-  listQueryKey = []
+  onSuccess
 }: ICreateInterviewModal) {
   const { id } = useParams()
   const { onSubmit, control, isPending, isValid } = useCreateInterview({
     callbackSuccess: () => {
       setOpen(false)
+      onSuccess?.()
     },
     defaultValues: {
       candidate_job_id: id,
     },
-    listQueryKey
   })
 
   return (
