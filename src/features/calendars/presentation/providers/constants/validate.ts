@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import { RULE_MESSAGES } from 'shared/constants/vaildate'
+import { isPast } from 'shared/utils/date'
 import * as yup from 'yup'
 
 export const CreateInterviewSchema = yup.object().shape({
@@ -22,26 +23,25 @@ export const CreateInterviewSchema = yup.object().shape({
   from: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .min(
-      dayjs().startOf('day').toDate(),
-      RULE_MESSAGES.MC1('date cannot be in the past')
-    )
-    .required(RULE_MESSAGES.MC1('from')),
+    .required(RULE_MESSAGES.MC1('from'))
+    .test('isPast', 'date cannot be in the past', function () {
+      if (isPast(this.parent.from)) return true
+      return false
+    }),
   to: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .min(
-      dayjs().startOf('day').toDate(),
-      RULE_MESSAGES.MC1('date cannot be in the past')
-    )
     .required(RULE_MESSAGES.MC1('to'))
     .test('is-before-to', RULE_MESSAGES.EW('to', 'from'), function (value) {
       const { from } = this.parent
+      console.log('value', value)
       return dayjs(from).isBefore(dayjs(value))
+    })
+    .test('isPast', 'date cannot be in the past', function () {
+      if (isPast(this.parent.to)) return true
+      return false
     }),
-  description: yup
-    .string()
-    .max(256, RULE_MESSAGES.MC4('Meta description', 256)),
+  description: yup.string(),
 })
 
 export const EditInterviewSchema = yup.object().shape({
@@ -68,7 +68,8 @@ export const EditInterviewSchema = yup.object().shape({
       dayjs().startOf('day').toDate(),
       RULE_MESSAGES.MC1('date cannot be in the past')
     )
-    .required(RULE_MESSAGES.MC1('from')),
+    .required(RULE_MESSAGES.MC1('from'))
+    .nullable(),
   candidate_job_id: yup.string().default(''),
   to: yup
     .date()
@@ -81,10 +82,9 @@ export const EditInterviewSchema = yup.object().shape({
     .test('is-before-to', RULE_MESSAGES.EW('to', 'from'), function (value) {
       const { from } = this.parent
       return dayjs(from).isBefore(dayjs(value))
-    }),
-  description: yup
-    .string()
-    .max(256, RULE_MESSAGES.MC4('Meta description', 256)),
+    })
+    .nullable(),
+  description: yup.string(),
 })
 
 export const InterviewerSchema = yup.object().shape({

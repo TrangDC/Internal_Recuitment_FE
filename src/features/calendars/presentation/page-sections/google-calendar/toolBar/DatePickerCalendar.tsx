@@ -13,7 +13,14 @@ interface CustomDatePickerProps extends DatePickerProps<ChosenDateType> {
 const DatePickerCalendar = (props: CustomDatePickerProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker {...props} />
+      <DatePicker
+        {...props}
+        sx={{
+          '& .MuiOutlinedInput-input': {
+            fontWeight: '500',
+          },
+        }}
+      />
     </LocalizationProvider>
   )
 }

@@ -7,10 +7,11 @@ import withDragAndDrop, {
   DragFromOutsideItemArgs,
   EventInteractionArgs,
 } from 'react-big-calendar/lib/addons/dragAndDrop'
-import React, { SyntheticEvent, useRef, useState } from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import { CalendarEvent, RangeDate } from './interface'
 import BackdropLoading from './BackdropLoading'
 import { getColorEvent } from './functions'
+import CustomHeaders from './Header'
 
 const djLocalizer = dayjsLocalizer(dayjs)
 
@@ -54,12 +55,11 @@ function Calendars(props: ICalendars) {
     isSeleted: boolean
   ) {
     const makeStyle = getColorEvent(start)
-    const id = event.resource?.id ?? ''
     const style: React.CSSProperties = {
       backgroundColor: makeStyle.backgroundColor,
       borderRadius: '4px',
       opacity: 0.8,
-      color: '#000000',
+      color: makeStyle.color,
       display: 'block',
       fontSize: '12px',
       fontWeight: '600',
@@ -89,12 +89,16 @@ function Calendars(props: ICalendars) {
         view={currentView}
         components={{
           toolbar: ToolBar,
-          // event: EventComponent,
-          // eventWrapper: CustomEventWrapper,
+          week: {
+            header: CustomHeaders,
+          },
+          day: {
+            header: CustomHeaders,
+          },
         }}
         views={['month', 'day', 'week']}
         style={{
-          height: 650,
+          height: 800,
           backgroundColor: '#FCFCFC',
         }}
         selectable

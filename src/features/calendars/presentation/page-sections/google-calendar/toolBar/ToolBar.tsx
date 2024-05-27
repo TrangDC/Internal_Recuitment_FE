@@ -28,18 +28,20 @@ function ToolBar(props: ToolbarProps) {
     >
       <FlexBox alignItems={'center'} justifyContent={'center'} gap={2}>
         <FlexBox>
-          <IconButton aria-label="prev" onClick={() => onNavigate('PREV')}>
-            <ArrowBackIosNewIcon />
-          </IconButton>
           <Button
             size="small"
             variant="text"
             onClick={() => onNavigate('TODAY')}
+            sx={{ border: '1px solid #E3E6EB' }}
           >
             Today
           </Button>
+          <IconButton aria-label="prev" onClick={() => onNavigate('PREV')}>
+            <ArrowBackIosNewIcon sx={{ fontSize: '18px' }} />
+          </IconButton>
+
           <IconButton aria-label="next" onClick={() => onNavigate('NEXT')}>
-            <ArrowForwardIosIcon />
+            <ArrowForwardIosIcon sx={{ fontSize: '18px' }} />
           </IconButton>
         </FlexBox>
         <RenderDatePickerCalendar

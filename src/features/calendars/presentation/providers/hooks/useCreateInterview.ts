@@ -8,8 +8,11 @@ import { NewInterviewInput } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ChosenDateType } from 'shared/components/input-fields/AppTimePicker'
 import { BaseRecord } from 'shared/interfaces/common'
-import { convertToRootDate } from '../../page-sections/google-calendar/functions'
-import { convertToUTC, isDurationWithinOneDay } from 'shared/utils/date'
+import {
+  convertToRootByTimeNow,
+  convertToRootDate,
+} from '../../page-sections/google-calendar/functions'
+import { convertToUTC } from 'shared/utils/date'
 import dayjs from 'dayjs'
 
 interface IUseCreateInterview {
@@ -37,50 +40,103 @@ function useCreateInterview(props: IUseCreateInterview) {
     onSuccess,
   })
 
-  const { handleSubmit, control, formState, setValue, watch, resetField } =
-    useFormReturn
+  const {
+    handleSubmit,
+    control,
+    formState,
+    setValue,
+    watch,
+    resetField,
+    getValues,
+  } = useFormReturn
   const isValid = !formState.isDirty || !formState.isValid
   const { mutate, isPending } = useCreateReturn
 
   function onSubmit() {
     handleSubmit((value) => {
-      const { newEnd, newStart } = convertToRootDate(
-        value.from,
-        value.to,
-        value.date
-      )
-      const interview_date = convertToUTC(value.date).toDate().toISOString()
-      const formatStart = convertToUTC(newStart).toISOString()
-      const formatEnd = convertToUTC(newEnd).toISOString()
-      const formData: NewInterviewInput = {
-        candidate_id: [value.candidateId],
-        description: value.description ?? '',
-        interviewer: value.interviewer ?? [],
-        interview_date: interview_date,
-        start_from: formatStart,
-        end_at: formatEnd,
-        title: value.title,
-        job_id: value.jobId,
+      if (value.from && value.to) {
+        const { newEnd, newStart } = convertToRootDate(
+          value.from,
+          value.to,
+          value.date
+        )
+        const interview_date = convertToUTC(value.date).toDate().toISOString()
+        const formatStart = convertToUTC(newStart).toISOString()
+        const formatEnd = convertToUTC(newEnd).toISOString()
+        const formData: NewInterviewInput = {
+          candidate_id: [value.candidateId],
+          description: value.description ?? '',
+          interviewer: value.interviewer ?? [],
+          interview_date: interview_date,
+          start_from: formatStart,
+          end_at: formatEnd,
+          title: value.title,
+          job_id: value.jobId,
+        }
+        mutate(formData)
       }
-      mutate(formData)
     })()
   }
 
-  function handleGenerateToDate(value: ChosenDateType) {
-    if (value) {
-      let  to = value.add(30, 'minute')
-      const endOfDay = dayjs().endOf('day')
+  function handleGenerateToDate(from: ChosenDateType) {
+    if (from) {
+      const endOfDay = from.endOf('day')
+      let to = from.add(30, 'minute')
       if (to.isAfter(endOfDay)) {
-        to = endOfDay
+        return endOfDay.toDate()
       }
-      setValue('to', to.toDate());
+      return to.toDate()
     }
   }
+
+  function onFromChange(
+    from: ChosenDateType,
+    onChange: (...event: any[]) => void
+  ) {
+    if (from) {
+      onChange(from.toDate())
+      const to = handleGenerateToDate(from)
+      if (to) setValue('to', to)
+    } else {
+      onChange(undefined)
+    }
+  }
+
+  function onInterviewDateChange(interviewDate: ChosenDateType) {
+    if (interviewDate) {
+      const from = convertToRootByTimeNow(
+        dayjs().toDate(),
+        interviewDate.toDate()
+      )
+      setValue('from', from.toDate())
+      const to = handleGenerateToDate(from)
+      if (to) setValue('to', to)
+    } else {
+      resetField('from')
+      resetField('to')
+    }
+  }
+
+  function onToChange(
+    value: ChosenDateType,
+    onChange: (...event: any[]) => void
+  ) {
+    if (value) {
+      const to = convertToRootByTimeNow(
+        value.toDate(),
+        dayjs(getValues('date')).toDate()
+      )
+      onChange(to.toDate())
+    } else {
+      onChange(undefined)
+    }
+  }
+
   return {
     control,
     isValid,
     isPending,
-    actions: { onSubmit, handleGenerateToDate },
+    actions: { onSubmit, onInterviewDateChange, onToChange, onFromChange },
     watch,
     resetField,
     formState,
