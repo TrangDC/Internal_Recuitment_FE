@@ -13,7 +13,7 @@ import ChipField from 'shared/components/input-fields/ChipField'
 import BaseModal from 'shared/components/modal'
 import { useContextCalendar } from '../../providers/contexts/calendarProvider/CalendarProvider'
 import useGetInterview from '../../providers/hooks/useGetInterview'
-import { formatDateToString, getTime } from 'shared/utils/date'
+import { formatDateToString, getTime, isPast } from 'shared/utils/date'
 import useDeleteInterview from '../../providers/hooks/useDeleteInterview'
 import DeleteOutline from 'shared/components/icons/DeleteOutline'
 import EditOutline from 'shared/components/icons/EditOutline'
@@ -47,7 +47,8 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
     },
   })
 
-  const { getValues } = useFormReturn
+  const { getValues, watch } = useFormReturn
+  const start_from = watch('start_from')
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <Box>
@@ -65,17 +66,20 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
                 {getTime(getValues('end_at'))}
               </Text13md>
               <FlexBox gap={1}>
-                <EditOutline
-                  style={{
-                    height: '24px',
-                    width: '24px',
-                    color: 'red',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => {
-                    handleEditEvent(id)
-                  }}
-                />
+                {start_from && isPast(start_from) && (
+                  <EditOutline
+                    style={{
+                      height: '24px',
+                      width: '24px',
+                      color: 'red',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      handleEditEvent(id)
+                    }}
+                  />
+                )}
+
                 <DeleteOutline
                   style={{
                     height: '24px',

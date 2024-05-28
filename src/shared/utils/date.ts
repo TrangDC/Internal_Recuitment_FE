@@ -47,8 +47,9 @@ export function isAfterNow(dateStr: Date) {
   // Chuyển chuỗi ngày nhập vào thành đối tượng dayjs
   const inputDate = dayjs(dateStr)
 
-  // Lấy ngày giờ hiện tại
   const currentDate = dayjs()
+
+  // Lấy ngày giờ hiện tại
 
   // So sánh ngày nhập vào với ngày hiện tại
   return inputDate.isAfter(currentDate) || inputDate.isSame(currentDate)
@@ -74,21 +75,18 @@ export function isDurationWithinOneDay(start_date: Date, end_date: Date) {
   return !endDay.isBefore(startDay.endOf('day').subtract(1, 'second'))
 }
 
-
 export function isPast(date: Date) {
-  // Chuyển chuỗi ngày nhập vào thành đối tượng dayjs
-  const inputDate = dayjs(date)
-
-  // Lấy ngày giờ hiện tại
-  const currentDate = dayjs().subtract(24, 'hour')
-
-  // So sánh ngày nhập vào với ngày hiện tại
-  return inputDate.isAfter(currentDate)
+  if (!isAfterNow(date)) return false
+  return true
 }
 
-
-export function replaceYearWithCurrent(dateString:string) {
-  const currentYear = new Date().getFullYear(); // Lấy năm hiện tại
-  return dateString.replace(/^0001/, currentYear.toString()); // Thay thế năm "0001" bằng năm hiện tại
+export function replaceYearWithCurrent(dateString: string) {
+  const currentYear = new Date().getFullYear() // Lấy năm hiện tại
+  return dateString.replace(/^0001/, currentYear.toString()) // Thay thế năm "0001" bằng năm hiện tại
 }
 
+export function isAfterDate(a: Date, b: Date) {
+  const input = dayjs(a)
+  const date = dayjs(b)
+  return input.isAfter(date)
+}
