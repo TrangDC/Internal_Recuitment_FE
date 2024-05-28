@@ -2,7 +2,7 @@ import { View } from 'react-big-calendar'
 import DatePickerCalendar, { ChosenDateType } from './DatePickerCalendar'
 import { SxProps } from '@mui/material'
 import WeekPicker from './WeekPicker'
-import { formatDate } from '../config'
+import { formatDate, formatDay } from '../config'
 import dayjs from 'dayjs'
 
 type IRenderDatePickerCalendar = {
@@ -21,12 +21,11 @@ function RenderDatePickerCalendar(props: IRenderDatePickerCalendar) {
   const sx: SxProps = {
     width: '250px !important',
     fontSize: '15px',
-    '& .MuiInputBase-root': {
+    '& .MuiOutlinedInput-input': {
+      padding: '8.5px 0px 8.5px 14px',
       position: 'relative !important',
       WebkitBoxSizing: 'unset !important',
-      '& .MuiOutlinedInput-input': {
-        padding: '8.5px 0px 8.5px 14px',
-      },
+      fontWeight: '600',
     },
   }
 
@@ -35,7 +34,6 @@ function RenderDatePickerCalendar(props: IRenderDatePickerCalendar) {
       <DatePickerCalendar
         views={['month', 'year']}
         sx={sx}
-        slotProps={{}}
         format={formatDate}
         onChange={onSeletedDate}
         value={date}
@@ -46,7 +44,7 @@ function RenderDatePickerCalendar(props: IRenderDatePickerCalendar) {
       <DatePickerCalendar
         views={['month', 'year', 'day']}
         sx={sx}
-        format={formatDate}
+        format={formatDay}
         onChange={onSeletedDate}
         value={date}
       />
