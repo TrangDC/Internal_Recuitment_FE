@@ -32,7 +32,7 @@ function ToolBar(props: ToolbarProps) {
             size="small"
             variant="text"
             onClick={() => onNavigate('TODAY')}
-            sx={{ border: '1px solid #E3E6EB' }}
+            sx={{ border: '1px solid #E3E6EB', fontSize: '15px' }}
           >
             Today
           </Button>

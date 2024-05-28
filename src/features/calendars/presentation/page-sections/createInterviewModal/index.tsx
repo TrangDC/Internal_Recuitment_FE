@@ -31,7 +31,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
         setOpen(false)
       },
     })
-  const { onSubmit, onInterviewDateChange, onFromChange, onToChange } = actions
+  const { onSubmit } = actions
   const teamId = watch('teamId')
   const jobId = watch('jobId')
   const interviewDate = watch('date')
@@ -55,7 +55,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                   control={control}
                   name="title"
                   render={({ field, fieldState }) => (
-                    <FlexBox alignItems={'center'} flexDirection={'column'}>
+                    <FlexBox flexDirection={'column'}>
                       <AppTextField
                         label={'Interview title'}
                         required
@@ -108,6 +108,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                       <JobsAutoComplete
                         name={field.name}
                         value={field.value}
+                        disabled={!teamId}
                         filter={{
                           team_ids: teamId ? [teamId] : undefined,
                         }}
@@ -168,6 +169,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         onChange={field.onChange}
                         multiple={false}
                         name={field.name}
+                        disabled={!jobId}
                         filter={{
                           job_id: jobId ? jobId : undefined,
                           is_able_to_interview: true,
@@ -199,7 +201,6 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                           value={field.value ? dayjs(field.value) : null}
                           onChange={(value) => {
                             field.onChange(value?.toDate())
-                            onInterviewDateChange(value)
                           }}
                           textFieldProps={{
                             required: true,
@@ -218,20 +219,19 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 <FormControl fullWidth>
                   <Controller
                     control={control}
-                    defaultValue={interviewDate}
                     name="from"
                     render={({ field, fieldState }) => (
                       <Fragment>
                         <AppTimePickers
                           label={'From'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={(value) =>
-                            onFromChange(value, field.onChange)
-                          }
+                          onChange={field.onChange}
                           views={['hours', 'minutes']}
                           ampm={false}
                           disabled={!interviewDate}
-                          shouldDisableTime={shouldDisableTime}
+                          shouldDisableTime={(value, view) =>
+                            shouldDisableTime(interviewDate, value, view)
+                          }
                           textFieldProps={{
                             required: true,
                           }}
@@ -255,13 +255,13 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         <AppTimePickers
                           label={'To'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={(value) =>
-                            onToChange(value, field.onChange)
-                          }
+                          onChange={field.onChange}
                           views={['hours', 'minutes']}
                           ampm={false}
                           disabled={!interviewDate}
-                          shouldDisableTime={shouldDisableTime}
+                          shouldDisableTime={(value, view) =>
+                            shouldDisableTime(interviewDate, value, view)
+                          }
                           textFieldProps={{
                             required: true,
                           }}

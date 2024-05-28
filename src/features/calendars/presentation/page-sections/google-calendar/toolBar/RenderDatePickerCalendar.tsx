@@ -20,6 +20,7 @@ function RenderDatePickerCalendar(props: IRenderDatePickerCalendar) {
 
   const sx: SxProps = {
     width: '250px !important',
+    fontSize: '15px',
     '& .MuiInputBase-root': {
       position: 'relative !important',
       WebkitBoxSizing: 'unset !important',
@@ -28,6 +29,7 @@ function RenderDatePickerCalendar(props: IRenderDatePickerCalendar) {
       },
     },
   }
+
   if (view === 'month')
     return (
       <DatePickerCalendar

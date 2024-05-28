@@ -79,6 +79,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: start;
+  text-transform: uppercase;
 }
 
 .rbc-current-time-indicator {
@@ -136,4 +137,10 @@ body {
 }
 .rbc-show-more {
   background-color: unset;
+}
+.rbc-day-slot .rbc-events-container  {
+  margin-right: 0px;
+}
+.rbc-time-gutter.rbc-time-column .rbc-timeslot-group{
+  border-bottom:none
 }
