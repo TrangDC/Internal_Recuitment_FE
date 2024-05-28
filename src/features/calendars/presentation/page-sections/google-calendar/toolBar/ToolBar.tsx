@@ -26,24 +26,27 @@ function ToolBar(props: ToolbarProps) {
       alignItems={'center'}
       justifyContent={'space-between'}
     >
-      <FlexBox alignItems={'center'} justifyContent={'center'} gap={2}>
-        <FlexBox>
-          <Button
-            size="small"
-            variant="text"
-            onClick={() => onNavigate('TODAY')}
-            sx={{ border: '1px solid #E3E6EB', fontSize: '15px' }}
-          >
-            Today
-          </Button>
-          <IconButton aria-label="prev" onClick={() => onNavigate('PREV')}>
-            <ArrowBackIosNewIcon sx={{ fontSize: '18px' }} />
-          </IconButton>
+      <FlexBox alignItems={'center'} justifyContent={'center'} gap={1}>
+        <Button
+          size="small"
+          variant="text"
+          onClick={() => onNavigate('TODAY')}
+          sx={{
+            border: '1px solid #E3E6EB',
+            fontSize: '15px',
+            padding: '6px',
+            height: '40px',
+          }}
+        >
+          Today
+        </Button>
+        <IconButton aria-label="prev" onClick={() => onNavigate('PREV')}>
+          <ArrowBackIosNewIcon sx={{ fontSize: '18px' }} />
+        </IconButton>
 
-          <IconButton aria-label="next" onClick={() => onNavigate('NEXT')}>
-            <ArrowForwardIosIcon sx={{ fontSize: '18px' }} />
-          </IconButton>
-        </FlexBox>
+        <IconButton aria-label="next" onClick={() => onNavigate('NEXT')}>
+          <ArrowForwardIosIcon sx={{ fontSize: '18px' }} />
+        </IconButton>
         <RenderDatePickerCalendar
           view={view}
           onChange={handleChangeDate}

@@ -16,9 +16,7 @@ const DatePickerCalendar = (props: CustomDatePickerProps) => {
       <DatePicker
         {...props}
         sx={{
-          '& .MuiOutlinedInput-input': {
-            fontWeight: '500',
-          },
+          ...props.sx,
         }}
       />
     </LocalizationProvider>
