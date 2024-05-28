@@ -34,10 +34,7 @@ function EditInterviewModal(props: IEditInterviewModal) {
       },
     })
   const { onSubmit } = actions
-  const teamId = watch('teamId')
-  const jobId = watch('jobId')
   const interviewDate = watch('date')
-
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -112,9 +109,6 @@ function EditInterviewModal(props: IEditInterviewModal) {
                       <JobsAutoComplete
                         name={field.name}
                         value={field.value}
-                        filter={{
-                          team_ids: teamId ? [teamId] : undefined,
-                        }}
                         disabled
                         multiple={false}
                         onChange={(value) => {
@@ -173,11 +167,6 @@ function EditInterviewModal(props: IEditInterviewModal) {
                         onChange={field.onChange}
                         multiple={false}
                         name={field.name}
-                        filter={{
-                          job_id: jobId ? jobId : undefined,
-                          is_black_list: false,
-                          is_able_to_interview: true,
-                        }}
                         textFieldProps={{
                           required: true,
                           label: 'Select candidate',
