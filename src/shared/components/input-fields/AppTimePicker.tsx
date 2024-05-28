@@ -35,6 +35,9 @@ export default function AppTimePickers(props: AppTimePickersProps) {
           '& .MuiOutlinedInput-root': {
             '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
               borderColor: theme.palette.action.hover,
+              backgroundColor: '#F0F1F8 !important',
+              color: '#4D607A',
+              WebkitTextFillColor: '#4D607A',
             },
           },
           '& .MuiInputLabel-root': {

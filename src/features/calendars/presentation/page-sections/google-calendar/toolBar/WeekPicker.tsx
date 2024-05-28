@@ -33,12 +33,13 @@ const CustomPickersDay = styled(PickersDay, {
       backgroundColor: theme.palette.primary.main,
     },
   }),
-  ...(isHovered && {
-    backgroundColor: theme.palette.primary[theme.palette.mode],
-    '&:hover, &:focus': {
+  ...(isHovered &&
+    !isSelected && {
       backgroundColor: theme.palette.primary[theme.palette.mode],
-    },
-  }),
+      '&:hover, &:focus': {
+        backgroundColor: theme.palette.primary[theme.palette.mode],
+      },
+    }),
   ...(day.day() === 0 && {
     borderTopLeftRadius: '50%',
     borderBottomLeftRadius: '50%',

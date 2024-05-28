@@ -10,7 +10,6 @@ import 'simplebar-react/dist/simplebar.min.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 let ReactQueryDevtoolsProduction = null
-console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 if (process.env.NODE_ENV !== 'production') {
   ReactQueryDevtoolsProduction = React.lazy(() =>
     import('@tanstack/react-query-devtools/build/modern/production.js').then(

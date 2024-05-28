@@ -16,7 +16,7 @@ function CustomHeaders(props: HeaderProps) {
         lineHeight={'13.41px'}
         fontFamily={'Montserrat'}
       >
-        {week}
+        {week.toUpperCase()}
       </Text13md>
       <H5 fontFamily={'Montserrat'}>{day}</H5>
     </FlexBox>

@@ -43,7 +43,7 @@ function Calendars(props: ICalendars) {
     isLoading,
   } = props
   const today = new Date()
-  const [currentView, setCurrentView] = useState<View>('month')
+  const [currentView, setCurrentView] = useState<View>('week')
   const handleViewChange = (view: View) => {
     setCurrentView(view)
   }
@@ -75,6 +75,20 @@ function Calendars(props: ICalendars) {
     }
   }
 
+  const slotPropGetter = (date: Date) => {
+    const style: React.CSSProperties = {
+      color: '#2A2E37',
+      fontSize: '15px',
+      fontWeight: '500',
+      lineHeight: '18.29px',
+    }
+    // Default: No additional styles
+    return {
+      style,
+      className: 'custom-event',
+    }
+  }
+
   return (
     <Card
       sx={{
@@ -98,7 +112,7 @@ function Calendars(props: ICalendars) {
         }}
         views={['month', 'day', 'week']}
         style={{
-          height: 800,
+          height: 750,
           backgroundColor: '#FCFCFC',
         }}
         selectable
@@ -114,6 +128,9 @@ function Calendars(props: ICalendars) {
         onRangeChange={onRangeChange}
         handleDragStart={handleDragStart}
         eventPropGetter={eventStyleGetter}
+        slotPropGetter={slotPropGetter}
+        formats={{ timeGutterFormat: 'HH:mm' }}
+        scrollToTime={today}
         showMultiDayTimes
       />
       <BackdropLoading isLoading={isLoading} />

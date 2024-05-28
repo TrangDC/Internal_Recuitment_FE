@@ -12,17 +12,17 @@ import CalendarProvider from '../providers/contexts/calendarProvider/CalendarPro
 import useGetAllInterview from '../providers/hooks/useGetAllInterview'
 import EditInterviewModal from '../page-sections/editInterviewModal'
 import useDragDropInterview from '../providers/hooks/useDragDropInterview'
-import {
-  convertToUTC,
-  isAfterNow,
-  isDateAfterToday,
-  isDurationWithinOneDay,
-} from 'shared/utils/date'
+import { convertToUTC } from 'shared/utils/date'
 import { isDate } from 'lodash'
 import {
   convertToRootDate,
   ruleDragDropCalendar,
 } from '../page-sections/google-calendar/functions'
+import { Box } from '@mui/material'
+import IconScreen from 'shared/components/utils/IconScreen'
+import useTextTranslation from 'shared/constants/text'
+import { BoxWrapperOuterContainer } from 'shared/styles'
+import CandidateIcon from 'shared/components/icons/Candidates'
 
 function CalendarsScreen() {
   const [openCreateInterView, setOpenCreateInterView] = useState(false)
@@ -32,6 +32,7 @@ function CalendarsScreen() {
   const dragItemOutside = useRef<CalendarEvent>()
   const { myEvents, isLoading, handlePagination } = useGetAllInterview()
   const { onDragDropInterview } = useDragDropInterview({})
+  const translation = useTextTranslation()
 
   const handleSelectSlot = useCallback(({ start, end }: SlotInfo) => {
     // setOpenCreateInterView(true)
@@ -117,42 +118,52 @@ function CalendarsScreen() {
     }
   }
   return (
-    <CalendarProvider
-      setOpenCreateInterView={setOpenCreateInterView}
-      handleDeleteEvent={handleDeleteEvent}
-      handleEditEvent={handleEditEvent}
-    >
-      <Calendars
-        onSelectSlot={handleSelectSlot}
-        myEvents={myEvents}
-        onDropEvent={moveEvent}
-        onSelectEvent={onSelectEvent}
-        onRangeChange={handlePagination}
-        isLoading={isLoading}
-        handleDragStart={handleDragStart}
-        onDropFromOutside={onDropFromOutside}
-      />
-      {openCreateInterView && (
-        <CreateInterviewModal
-          open={openCreateInterView}
-          setOpen={setOpenCreateInterView}
+    <Box pt={2} pb={4}>
+      <Box>
+        <IconScreen
+          Icon={CandidateIcon}
+          textLable={translation.MODLUE_CALENDAR.canlendar}
         />
-      )}
-      {openDetailInterView && (
-        <DetailIntefviewModal
-          open={openDetailInterView}
-          setOpen={setOpenDetailInterView}
-          id={eventId.current}
-        />
-      )}
-      {openEditInterView && (
-        <EditInterviewModal
-          open={openEditInterView}
-          id={eventId.current}
-          setOpen={setOpenEditInterView}
-        />
-      )}
-    </CalendarProvider>
+      </Box>
+      <BoxWrapperOuterContainer>
+        <CalendarProvider
+          setOpenCreateInterView={setOpenCreateInterView}
+          handleDeleteEvent={handleDeleteEvent}
+          handleEditEvent={handleEditEvent}
+        >
+          <Calendars
+            onSelectSlot={handleSelectSlot}
+            myEvents={myEvents}
+            onDropEvent={moveEvent}
+            onSelectEvent={onSelectEvent}
+            onRangeChange={handlePagination}
+            isLoading={isLoading}
+            handleDragStart={handleDragStart}
+            onDropFromOutside={onDropFromOutside}
+          />
+          {openCreateInterView && (
+            <CreateInterviewModal
+              open={openCreateInterView}
+              setOpen={setOpenCreateInterView}
+            />
+          )}
+          {openDetailInterView && (
+            <DetailIntefviewModal
+              open={openDetailInterView}
+              setOpen={setOpenDetailInterView}
+              id={eventId.current}
+            />
+          )}
+          {openEditInterView && (
+            <EditInterviewModal
+              open={openEditInterView}
+              id={eventId.current}
+              setOpen={setOpenEditInterView}
+            />
+          )}
+        </CalendarProvider>
+      </BoxWrapperOuterContainer>
+    </Box>
   )
 }
 

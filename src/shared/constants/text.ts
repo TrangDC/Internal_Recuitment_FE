@@ -39,6 +39,9 @@ const useTextTranslation = () => {
       add_blackList: t('add_blackList'),
       delete_candidate: t('delete_candidate'),
     },
+    MODLUE_CALENDAR: {
+      canlendar: t('Calendar'),
+    },
     MODULE_CANDIDATE_JOB: {
       job_application_history: t('job_application_history'),
       apply_to_a_job: t('apply_to_a_job'),
@@ -77,7 +80,7 @@ const useTextTranslation = () => {
       to_date: t('to_date'),
       update_record: t('update_record'),
       sub_title_update_record: t('sub_title_update_record'),
-    }
+    },
   }
 }
 

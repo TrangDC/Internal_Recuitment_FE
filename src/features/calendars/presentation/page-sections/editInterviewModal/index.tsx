@@ -33,7 +33,7 @@ function EditInterviewModal(props: IEditInterviewModal) {
         setOpen(false)
       },
     })
-  const { onSubmit, onFromChange, onInterviewDateChange, onToChange } = actions
+  const { onSubmit } = actions
   const teamId = watch('teamId')
   const jobId = watch('jobId')
   const interviewDate = watch('date')
@@ -204,7 +204,6 @@ function EditInterviewModal(props: IEditInterviewModal) {
                           value={field.value ? dayjs(field.value) : null}
                           onChange={(value) => {
                             field.onChange(value?.toDate())
-                            onInterviewDateChange(value)
                           }}
                           minDate={dayjs()}
                           textFieldProps={{
@@ -229,13 +228,13 @@ function EditInterviewModal(props: IEditInterviewModal) {
                         <AppTimePickers
                           label={'From'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={(value) =>
-                            onFromChange(value, field.onChange)
-                          }
+                          onChange={field.onChange}
                           views={['hours', 'minutes']}
                           ampm={false}
                           disabled={!interviewDate}
-                          shouldDisableTime={shouldDisableTime}
+                          shouldDisableTime={(value, view) =>
+                            shouldDisableTime(interviewDate, value, view)
+                          }
                           textFieldProps={{
                             required: true,
                           }}
@@ -259,13 +258,13 @@ function EditInterviewModal(props: IEditInterviewModal) {
                         <AppTimePickers
                           label={'To'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={(value) =>
-                            onToChange(value, field.onChange)
-                          }
+                          onChange={field.onChange}
                           views={['hours', 'minutes']}
                           ampm={false}
                           disabled={!interviewDate}
-                          shouldDisableTime={shouldDisableTime}
+                          shouldDisableTime={(value, view) =>
+                            shouldDisableTime(interviewDate, value, view)
+                          }
                           textFieldProps={{
                             required: true,
                           }}

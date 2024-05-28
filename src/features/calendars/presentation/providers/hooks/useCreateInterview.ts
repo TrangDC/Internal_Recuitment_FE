@@ -21,6 +21,7 @@ interface IUseCreateInterview {
 
 function useCreateInterview(props: IUseCreateInterview) {
   const { onSuccess } = props
+  const today = new Date()
   const { createCandidateInterview, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
     NewInterviewInput,
@@ -35,6 +36,7 @@ function useCreateInterview(props: IUseCreateInterview) {
       interviewer: [],
       jobId: '',
       teamId: '',
+      date: today,
     },
     resolver: yupResolver(CreateInterviewSchema),
     onSuccess,
@@ -49,7 +51,7 @@ function useCreateInterview(props: IUseCreateInterview) {
     resetField,
     getValues,
   } = useFormReturn
-  const isValid = !formState.isDirty || !formState.isValid
+  const isValid = !formState.isValid
   const { mutate, isPending } = useCreateReturn
 
   function onSubmit() {
@@ -78,65 +80,12 @@ function useCreateInterview(props: IUseCreateInterview) {
     })()
   }
 
-  function handleGenerateToDate(from: ChosenDateType) {
-    if (from) {
-      const endOfDay = from.endOf('day')
-      let to = from.add(30, 'minute')
-      if (to.isAfter(endOfDay)) {
-        return endOfDay.toDate()
-      }
-      return to.toDate()
-    }
-  }
-
-  function onFromChange(
-    from: ChosenDateType,
-    onChange: (...event: any[]) => void
-  ) {
-    if (from) {
-      onChange(from.toDate())
-      const to = handleGenerateToDate(from)
-      if (to) setValue('to', to)
-    } else {
-      onChange(undefined)
-    }
-  }
-
-  function onInterviewDateChange(interviewDate: ChosenDateType) {
-    if (interviewDate) {
-      const from = convertToRootByTimeNow(
-        dayjs().toDate(),
-        interviewDate.toDate()
-      )
-      setValue('from', from.toDate())
-      const to = handleGenerateToDate(from)
-      if (to) setValue('to', to)
-    } else {
-      resetField('from')
-      resetField('to')
-    }
-  }
-
-  function onToChange(
-    value: ChosenDateType,
-    onChange: (...event: any[]) => void
-  ) {
-    if (value) {
-      const to = convertToRootByTimeNow(
-        value.toDate(),
-        dayjs(getValues('date')).toDate()
-      )
-      onChange(to.toDate())
-    } else {
-      onChange(undefined)
-    }
-  }
-
+  console.log('formState', formState)
   return {
     control,
     isValid,
     isPending,
-    actions: { onSubmit, onInterviewDateChange, onToChange, onFromChange },
+    actions: { onSubmit },
     watch,
     resetField,
     formState,

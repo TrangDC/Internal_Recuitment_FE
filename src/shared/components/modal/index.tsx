@@ -60,7 +60,7 @@ const Header = ({
         {Icon && (
           <IconWrapper
             sx={{
-              backgroundColor: iconColor ?? 'primary.pumpkin.100',
+              backgroundColor: iconColor ?? 'primary.yellow',
               maxWidth: 40,
               minWidth: 40,
             }}
@@ -84,13 +84,13 @@ const Header = ({
         {children}
         <Box>
           {EndHeader ? (
-           EndHeader
+            EndHeader
           ) : (
             <CloseIcon
               sx={{
                 height: '24px',
                 width: '24px',
-                color: greyLight[300],
+                color: '#82868C',
                 cursor: 'pointer',
               }}
               onClick={() => {

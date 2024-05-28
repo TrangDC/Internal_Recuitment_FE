@@ -89,7 +89,7 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
                   sx={{
                     height: '24px',
                     width: '24px',
-                    color: 'grey.300',
+                    color: '#82868C',
                     cursor: 'pointer',
                   }}
                   onClick={() => {

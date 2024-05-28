@@ -2,7 +2,7 @@ import { alpha } from '@mui/material/styles'
 
 declare module '@mui/material/styles' {
   interface PaletteColor {
-    50: string,
+    50: string
     100: string
     200: string
     300: string
@@ -32,7 +32,7 @@ export const primary = {
   800: '#00508A',
   red: '#FF6B93',
   purple: '#A798FF',
-  yellow: '#FF9777',
+  yellow: '#FFF3B8',
 }
 
 const secondaryMain = '#23C657'
