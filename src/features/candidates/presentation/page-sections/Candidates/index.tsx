@@ -41,7 +41,7 @@ import AddBlackListCandidateModal from '../AddBlackListCandidateModal'
 import { handleImportFile } from '../../providers/utils'
 import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
-import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete, { options_status_new } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import {
   downloadBase64File,
   getValueOfObj,
@@ -160,6 +160,7 @@ const Candidates = () => {
                 node={
                   <CandidateStatusAutoComplete
                     multiple={false}
+                    options={options_status_new}
                     value={getValueOfObj({ key: 'value', obj: status })}
                     onChange={(data: any) => {
                       setStatus(data)
@@ -202,6 +203,7 @@ const Candidates = () => {
                         handleFilter('failed_reason', filter_reason)
                         setFailedReason(data)
                       }}
+                      open={true}
                       disableCloseOnSelect={true}
                       textFieldProps={{
                         label: 'Failed reason',

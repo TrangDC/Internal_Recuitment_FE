@@ -1,35 +1,26 @@
 import BaseModal from 'shared/components/modal'
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
-import useTextTranslation from 'shared/constants/text'
 import React, { useState } from 'react'
+import WarningIcon from 'shared/components/icons/WarningIcon'
+import AppButton from 'shared/components/buttons/AppButton'
 
 interface IEditRecord {
-  children: string | React.ReactNode,
-  callbackSubmit?: (reason: string) => void;
-  title: string,
+  children: string | React.ReactNode
+  callbackSubmit?: () => void
+  title: string
+  disabled?: boolean,
 }
 
-function ModalConfirm({
-  children,
-  callbackSubmit,
-  title,
-}: IEditRecord) {
-  const translation = useTextTranslation()
-  const [open, setOpen] = useState<boolean>(false);
-  const [reason, setReason] = useState<string>('');
+function ModalConfirm({ children, callbackSubmit, title, disabled = false}: IEditRecord) {
+  const [open, setOpen] = useState<boolean>(false)
 
   const handleOpenModal = () => {
-    setOpen(true)
-  }
-
-  const handleChangeReason = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setReason(e.target.value)
+    !disabled && setOpen(true)
   }
 
   const handleSubmit = () => {
-    callbackSubmit && callbackSubmit(reason)
+    callbackSubmit && callbackSubmit()
     setOpen(false)
   }
 
@@ -40,41 +31,21 @@ function ModalConfirm({
         <BaseModal.Header
           title={title}
           setOpen={setOpen}
+          Icon={<WarningIcon />}
         ></BaseModal.Header>
-        {/* <Box maxHeight="500px" sx={{padding: '20px 30px'}}>
-          <Box>
-            <Grid container spacing={1}>
-              <Grid item xs={12}>
-                <AppTextField
-                  label={translation.COMMON.description}
-                  fullWidth
-                  multiline
-                  minRows={2}
-                  onChange={handleChangeReason}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-        </Box> */}
         <BaseModal.Footer>
           <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-            <CustomeButtonCancel
-              type="button"
-              variant="contained"
-              onClick={() => setOpen(false)}
-              sx={{width: '50%'}}
-            >
-              {translation.COMMON.cancel}
-            </CustomeButtonCancel>
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              sx={{width: '50%'}}
+            <AppButton
+              variant="outlined"
+              size="small"
               onClick={handleSubmit}
+              sx={{
+                backgroundColor: '#2499EF !important',
+                color: 'white !important',
+              }}
             >
-              {translation.COMMON.save}
-            </Button>
+              OK
+            </AppButton>
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>

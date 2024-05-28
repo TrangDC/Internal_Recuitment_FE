@@ -71,12 +71,15 @@ const JobsList = () => {
         Icon: <SearchIconSmall />,
       },
       {
-        id: 'change_status',
+        id: 'Close job',
         onClick: (id, rowData) => {
           handleOpenStatus(id, rowData)
         },
         title: (rowData) => {
           return  rowData.status === STATUS_STATE.OPENED ? 'Close job' : 'Reopen Job'
+        },
+        disabled: (rowData) => {
+          return !(rowData?.is_able_to_close && rowData.status === STATUS_STATE.OPENED);
         },
         Icon: <CloseIcon />,
       },
@@ -137,7 +140,7 @@ const JobsList = () => {
                     setTeams(data)
                   }}
                   onChange={(value) => {
-                    handleFilter('team_ids', value)
+                    handleFilter('team_ids', !isEmpty(value) ? value : null)
                   }}
                   open={true}
                   disableCloseOnSelect={true}

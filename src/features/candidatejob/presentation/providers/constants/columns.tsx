@@ -5,10 +5,10 @@ import {
 } from 'shared/components/ActionGroupButtons'
 import { StyleSpanName } from '../styles/index'
 import { CandidateJob } from 'features/candidates/domain/interfaces'
-import { CANDIDATE_STATUS } from './index'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
-import { t } from 'i18next';
+import { t } from 'i18next'
 import { format } from 'date-fns'
+import { CANDIDATE_STATUS } from 'features/candidates/presentation/providers/constants'
 
 const columnHelper = createColumnHelper<CandidateJob>()
 

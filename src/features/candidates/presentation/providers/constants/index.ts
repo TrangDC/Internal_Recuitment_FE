@@ -7,8 +7,8 @@ export const CANDIDATE_STATUS = {
   hired: {text: 'Hired', backgroundColor: '#7874FE'},
   kiv: {text: 'KIV', backgroundColor: '#FF9777'},
   offer_lost: {text: 'Offered lost', backgroundColor: '#82868C'},
-  ex_staff: {text: 'Ex-staff', backgroundColor: '#000'},
-  new: {text: 'New', backgroundColor: '#FC105C'},
+  ex_staff: {text: 'Ex-staff', backgroundColor: '#FC105C'},
+  new: {text: 'New', backgroundColor: '#11D300'},
 }
 
 export const STATUS_CANDIDATE_DATA = [

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import BaseModal from 'shared/components/modal'
 import { Job } from 'features/jobs/domain/interfaces'
 import HistoryLog from '../HistoryLog'
@@ -11,6 +11,7 @@ import { greyLight } from 'shared/theme/colors'
 import EditIcon from 'shared/components/icons/EditIcon'
 import useActionTable from '../../providers/hooks/useActionTable'
 import EditJobModal from '../EditJobModal'
+import { STATUS_STATE } from 'shared/constants/constants'
 
 interface ITabJobDetail {
   open: boolean
@@ -18,7 +19,11 @@ interface ITabJobDetail {
   job_detail: Job
 }
 
-export default function TabJobDetail({ open, setOpen, job_detail }: ITabJobDetail) {
+export default function TabJobDetail({
+  open,
+  setOpen,
+  job_detail,
+}: ITabJobDetail) {
   const renderItem = [
     {
       label: 'Information',
@@ -28,7 +33,11 @@ export default function TabJobDetail({ open, setOpen, job_detail }: ITabJobDetai
   ]
 
   const { openEdit, setOpenEdit, handleOpenEdit, rowId, rowData } =
-  useActionTable()
+    useActionTable()
+
+  const showEdit = useMemo(() => {
+    return job_detail.status === STATUS_STATE.OPENED
+  }, [job_detail?.status])
 
   return (
     <Fragment>
@@ -38,17 +47,20 @@ export default function TabJobDetail({ open, setOpen, job_detail }: ITabJobDetai
           setOpen={setOpen}
           EndHeader={
             <FlexBox>
-              <EditIcon
-                sx={{
-                  height: '24px',
-                  width: '24px',
-                  color: greyLight[300],
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  handleOpenEdit(job_detail.id, job_detail)
-                }}
-              />
+              {showEdit && (
+                <EditIcon
+                  sx={{
+                    height: '24px',
+                    width: '24px',
+                    color: greyLight[300],
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    handleOpenEdit(job_detail.id, job_detail)
+                  }}
+                />
+              )}
+
               <CloseIcon
                 sx={{
                   height: '24px',

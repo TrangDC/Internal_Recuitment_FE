@@ -130,7 +130,6 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
                       textFieldProps={{
                         fullWidth: true,
                         size: 'small',
-                        required: true,
                       }}
                     />
                     <HelperTextForm
@@ -152,7 +151,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
           >
             {translation.COMMON.cancel}
           </AppButton>
-          <UpdateRecord callbackSubmit={callbackSubmit}>
+          <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
             <ButtonLoading
               variant="contained"
               size="small"

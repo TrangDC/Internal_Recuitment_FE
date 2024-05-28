@@ -4,7 +4,6 @@ import {
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
 import { Job } from 'features/jobs/domain/interfaces'
-import { format } from 'date-fns'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { STATUS_STYLE } from './index'
 import { t } from 'i18next'
@@ -72,17 +71,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
       />
     ),
   }),
-  columnHelper.accessor((row) => row.created_at, {
-    id: 'created_at',
-    size: 200,
-    header: () => <span>{t('created_date')}</span>,
-    cell: (info) => (
-      <StyleTinyText>
-        {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}
-      </StyleTinyText>
-    ),
-  }),
-  columnHelper.accessor('id', {
+  columnHelper.accessor('created_at', {
     header: () => <span>{t('action')}</span>,
     size: 100,
     enableSorting: false,

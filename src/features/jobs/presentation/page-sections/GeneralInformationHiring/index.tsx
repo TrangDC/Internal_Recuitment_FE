@@ -12,7 +12,6 @@ const GenaralInformationHiring = () => {
   const translation = useTextTranslation()
   const { id } = useParams()
   const { candidatesStatus } = useCandidatesByJob(id as string)
-  console.log("🚀 ~ candidatesStatus:", candidatesStatus)
 
   return (
     <DivWrapperProcess flexDirection={'column'} gap={'10px'} sx={{padding: 0}}>
@@ -70,7 +69,7 @@ const GenaralInformationHiring = () => {
             />}
           />
           <BoxStatusCandidates
-            title="Offerlost"
+            title="Offer-lost"
             number_candidates={candidatesStatus?.offer_lost?.length}
             list_candidates={candidatesStatus?.offer_lost}
             status={ENUM_STATUS_CANDIDATE.OFFERED_LOST}

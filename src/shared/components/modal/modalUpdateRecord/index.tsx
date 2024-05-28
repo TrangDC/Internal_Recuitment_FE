@@ -7,23 +7,27 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import React, { useState } from 'react'
 
 interface IEditRecord {
-  children: string | React.ReactNode,
-  callbackSubmit?: (reason: string) => void;
+  children: string | React.ReactNode
+  callbackSubmit?: (reason: string) => void
+  disabled?: boolean
 }
 
 function UpdateRecord({
   children,
   callbackSubmit,
+  disabled = false,
 }: IEditRecord) {
   const translation = useTextTranslation()
-  const [open, setOpen] = useState<boolean>(false);
-  const [reason, setReason] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false)
+  const [reason, setReason] = useState<string>('')
 
   const handleOpenModal = () => {
     setOpen(true)
   }
 
-  const handleChangeReason = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleChangeReason = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     setReason(e.target.value)
   }
 
@@ -34,14 +38,20 @@ function UpdateRecord({
 
   return (
     <>
-      <Box onClick={handleOpenModal}>{children}</Box>
+      <Box
+        onClick={() => {
+          !disabled && handleOpenModal()
+        }}
+      >
+        {children}
+      </Box>
       <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={600}>
         <BaseModal.Header
           title={translation.COMMON.update_record}
           setOpen={setOpen}
           subTitle={translation.COMMON.sub_title_update_record}
         ></BaseModal.Header>
-        <Box maxHeight="500px" sx={{padding: '20px 30px'}}>
+        <Box maxHeight="500px" sx={{ padding: '20px 30px' }}>
           <Box>
             <Grid container spacing={1}>
               <Grid item xs={12}>
@@ -62,7 +72,7 @@ function UpdateRecord({
               type="button"
               variant="contained"
               onClick={() => setOpen(false)}
-              sx={{width: '50%'}}
+              sx={{ width: '50%' }}
             >
               {translation.COMMON.cancel}
             </CustomeButtonCancel>
@@ -70,7 +80,7 @@ function UpdateRecord({
               type="button"
               variant="contained"
               color="primary"
-              sx={{width: '50%'}}
+              sx={{ width: '50%' }}
               onClick={handleSubmit}
             >
               {translation.COMMON.save}

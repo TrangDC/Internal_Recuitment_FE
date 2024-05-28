@@ -10,12 +10,13 @@ import useDeleteResource from 'shared/hooks/useDeleteResource'
 interface deleteCandidateProps {
   defaultValues?: Partial<FormDataSchemaDelete>
   callbackSuccess?: (value: any) => void
+  callbackError?: (data: any) => void
 }
 
 function useDeleteCandidate(
   props: deleteCandidateProps = { defaultValues: {} }
 ) {
-  const { defaultValues, callbackSuccess } = props
+  const { defaultValues, callbackSuccess, callbackError } = props
 
   const { deleteCandidate, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useDeleteResource<
@@ -29,6 +30,8 @@ function useDeleteCandidate(
     },
     resolver: yupResolver(schemaDelete),
     onSuccess: callbackSuccess,
+    onError: callbackError,
+    showErrorMsg: false,
   })
 
   const { handleSubmit, control, formState } = useFormReturn

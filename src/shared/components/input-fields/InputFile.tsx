@@ -17,7 +17,7 @@ import { toast } from 'react-toastify'
 import { RULE_MESSAGES } from 'shared/constants/vaildate'
 
 const InputFileContainer = styled(Box)(({ theme }) => ({
-  border: '2px dashed #2499EF',
+  border: '2px dashed #88CDFF',
   cursor: 'pointer',
   height: '100%',
   padding: '5px',
@@ -77,7 +77,8 @@ export interface InputFileProps {
   maxFile?: number
   maxSize?: number | null
   showList?: boolean
-  descriptionFile?: (() => React.ReactNode);
+  descriptionFile?: () => React.ReactNode
+  multiple?: boolean,
 }
 
 type UploadAttachment = {
@@ -98,11 +99,14 @@ const InputFile = ({
   showList = true,
   msgError,
   descriptionFile,
+  multiple = true,
 }: InputFileProps) => {
   const [files, setFiles] = useState<FileAttachment[]>([])
   const idFile = useMemo(() => {
     return uuidv4()
   }, [])
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleRemoveFile = (idx: number) => {
     const filterFile = files.filter((file, _) => {
@@ -112,37 +116,53 @@ const InputFile = ({
     callbackFileChange && callbackFileChange(filterFile)
   }
 
-  function validateFile(
-    blob: File,
+  //validate version2
+  function validateFiles({
+    files,
+    lengthFileCurrent,
+    fieldValidate,
+  }: {
+    files: File[]
+    lengthFileCurrent: number
     fieldValidate: { regex: string; maxFile: number; maxSize: number | null }
-  ) {
-    const regexValidate = wrapperValidate(
-      () => regexFile(blob, fieldValidate.regex),
-      msgError?.is_valid ? msgError?.is_valid : RULE_MESSAGES.MC5('file')
-    )
-    if (!regexValidate.status) return regexValidate
+  }) {
+    let validation = {
+      status: true,
+      msgError: '',
+    }
 
     const maxFileValidate = wrapperValidate(
-      () => checkMaxFile(files, fieldValidate.maxFile),
+      () => checkMaxFile(lengthFileCurrent, fieldValidate.maxFile),
       msgError?.maxFile ? msgError?.maxFile : RULE_MESSAGES.MC4('file', maxFile)
     )
     if (!maxFileValidate.status) return maxFileValidate
 
-    if (maxSize) {
-      const maxSizeValidate = wrapperValidate(
-        () => checkMaxSize(blob, fieldValidate.maxFile),
-        msgError?.maxSize
-          ? msgError?.maxSize
-          : RULE_MESSAGES.MC8('file', maxSize.toString())
+    files.forEach((file) => {
+      const regexValidate = wrapperValidate(
+        () => regexFile(file, fieldValidate.regex),
+        msgError?.is_valid ? msgError?.is_valid : RULE_MESSAGES.MC5('file')
       )
+      if (!regexValidate.status) {
+        validation = regexValidate
+        return
+      }
 
-      if (!maxSizeValidate.status) return maxSizeValidate
-    }
+      if (maxSize) {
+        const maxSizeValidate = wrapperValidate(
+          () => checkMaxSize(file, fieldValidate?.maxSize as number),
+          msgError?.maxSize
+            ? msgError?.maxSize
+            : RULE_MESSAGES.MC8('file', maxSize.toString())
+        )
 
-    return {
-      status: true,
-      msgError: '',
-    }
+        if (!maxSizeValidate.status) {
+          validation = maxSizeValidate
+          return
+        }
+      }
+    })
+
+    return validation
   }
 
   const translation = useTextTranslation()
@@ -156,48 +176,102 @@ const InputFile = ({
     return await UploadFileAttachment(CreateAttachmentSASURL.url, params?.file)
   }
 
-  const { handleGetUrl, handleGetUrlDownload } = useGetUrlGetAttachment({
+  const { handleGetUrlDownload } = useGetUrlGetAttachment({
     callbackSuccess: handleUploadAttachment,
   })
 
-  const handleChangeFile = (fileUpload: File) => {
-    const validate = validateFile(fileUpload, {
-      regex: regexString,
-      maxFile: maxFile,
-      maxSize: maxSize,
+  //version 2 upload
+  const handleChangeFiles = async (fileUploads: File[]) => {
+    const listFileUpload: ParamCreateURLAttachment[] = []
+    //validation each file
+    const validate = validateFiles({
+      files: fileUploads,
+      lengthFileCurrent: files.length + fileUploads.length,
+      fieldValidate: {
+        regex: regexString,
+        maxFile: maxFile,
+        maxSize: maxSize,
+      },
     })
 
     if (!validate.status) {
       toast.error(validate.msgError)
+      setLoading(false);
       return
     }
 
-    const uuid = uuidv4()
-    const paramUpload: ParamCreateURLAttachment = {
-      id: uuid,
-      folder: 'candidate',
-      fileName: fileUpload.name,
-      action: 'UPLOAD',
-      file: fileUpload,
-    }
+    //create property for each file
+    fileUploads.forEach((file) => {
+      const uuid = uuidv4()
+      const paramUpload: ParamCreateURLAttachment = {
+        id: uuid,
+        folder: 'candidate',
+        fileName: file.name,
+        action: 'UPLOAD',
+        file: file,
+      }
 
-    handleGetUrl(paramUpload, async (data) => {
-      const filesUpload = [
-        ...files,
-        { id: uuid, name: fileUpload.name, file: fileUpload },
-      ]
+      listFileUpload.push(paramUpload)
+    })
 
-      const { CreateAttachmentSASURL } = await handleGetUrlDownload(paramUpload)
+    //list promise get urls from azure
+    const getUrlAzures = listFileUpload.map((fileUpload) => {
+      return new Promise((resolve, reject) => {
+        resolve(handleGetUrlDownload(fileUpload))
+      })
+        .then((response: any) => {
+          return {
+            url: response.CreateAttachmentSASURL.url,
+            file: fileUpload,
+          }
+        })
+        .catch((error) => {
+          toast.error((error as Error).message)
+          setLoading(false);
+          return Promise.reject(error)
+        })
+    })
+    const listUrlAzure = await Promise.all(getUrlAzures).then((values) => {
+      return values
+    })
 
-      try {
-        await UploadFileAttachment(CreateAttachmentSASURL.url, fileUpload)
-        setFiles(filesUpload)
-        callbackFileChange &&
-          callbackFileChange(filesUpload as FileAttachment[])
-      } catch (error) {
-        toast.error((error as Error)?.message)
+    //list promise upload azure storage
+    const promisesUploadAzure = listUrlAzure.map((azureFile) => {
+      return new Promise((resolve, reject) => {
+        const { file } = azureFile
+        resolve(UploadFileAttachment(azureFile.url, file?.file as File))
+      })
+        .then((response: any) => {
+          return azureFile
+        })
+        .catch((error) => {
+          toast.error((error as Error).message)
+          setLoading(false);
+          return Promise.reject(error)
+        })
+    })
+    const listUrlAzureUpload = await Promise.all(promisesUploadAzure)
+      .then((values) => {
+        return values
+      })
+      .catch((error) => {
+        throw error
+      })
+
+    const fileEnabled = listUrlAzureUpload.map((item) => {
+      return {
+        id: item?.file?.id,
+        name: item?.file?.fileName,
+        file: item?.file?.file,
       }
     })
+    const filesUpload = [...files, ...fileEnabled]
+    //@ts-ignore
+    setFiles(filesUpload)
+    callbackFileChange?.(filesUpload as FileAttachment[])
+
+    //loading
+    setLoading(false);
   }
 
   return (
@@ -209,9 +283,15 @@ const InputFile = ({
           }}
           onDrop={(event: DragEvent<HTMLDivElement>) => {
             event.preventDefault()
-            const filesValue = event.dataTransfer.files
-            const fileUpload = filesValue[0]
-            handleChangeFile(fileUpload)
+            const fileEvent = event.dataTransfer.files
+            const listFileSelected = []
+  
+            if (fileEvent) {
+              for (let i = 0; i < fileEvent?.length; i++) {
+                listFileSelected.push(fileEvent[i])
+              }
+              handleChangeFiles(listFileSelected)
+            }
           }}
         >
           <FlexBoxContainer>
@@ -252,13 +332,20 @@ const InputFile = ({
         id={idFile}
         name="file"
         accept={accept}
-        multiple
+        multiple={multiple}
         hidden
         onChange={(event) => {
+          //setLoading
+          setLoading(true);
+
           const fileEvent = event.target.files
+          const listFileSelected = []
+
           if (fileEvent) {
-            const fileUpload = fileEvent[0]
-            handleChangeFile(fileUpload)
+            for (let i = 0; i < fileEvent?.length; i++) {
+              listFileSelected.push(fileEvent[i])
+            }
+            handleChangeFiles(listFileSelected)
           }
           event.target.value = ''
         }}

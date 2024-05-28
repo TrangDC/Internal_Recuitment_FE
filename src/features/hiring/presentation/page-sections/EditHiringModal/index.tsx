@@ -100,7 +100,7 @@ function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
           >
             Cancel
           </AppButton>
-          <UpdateRecord callbackSubmit={callbackSubmit}>
+          <UpdateRecord  disabled={isValid} callbackSubmit={callbackSubmit}>
             <ButtonLoading
               variant="contained"
               size="small"

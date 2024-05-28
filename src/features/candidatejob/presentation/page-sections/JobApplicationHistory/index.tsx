@@ -97,7 +97,6 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
 
   const queryClient = useQueryClient()
   const handleRefreshList = () => {
-    console.log("check query client")
     queryClient.invalidateQueries({ queryKey: [MODLUE_QUERY_KEY.CANDIDATE, MODLUE_QUERY_KEY.CANDIDATE_JOB] })
   }
 

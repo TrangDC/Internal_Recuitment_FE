@@ -20,13 +20,14 @@ import GenaralInformationHiring from '../page-sections/GeneralInformationHiring'
 import useActionTable from '../providers/hooks/useActionTable'
 import CloseJobModal from '../page-sections/CloseJobModal'
 import TabJobDetail from '../page-sections/TabDetail'
-import { STATUS_STATE } from 'shared/constants/constants'
+import { LOCATION_LABEL, STATUS_STATE } from 'shared/constants/constants'
+import { format } from 'date-fns'
 
 const JobDetail = () => {
   const [openTab, setOpenTab] = useState(false)
 
   const { id } = useParams()
-  const { jobDetail } = useJobDetail(id as String) 
+  const { jobDetail } = useJobDetail(id as String)
   const translation = useTextTranslation()
 
   const { openStatus, setOpenStatus, handleOpenStatus, rowId, rowData } =
@@ -51,7 +52,7 @@ const JobDetail = () => {
               flexWrap={'wrap'}
               gap={2}
             >
-              <FlexBox gap={7.5}>
+              <FlexBox gap={7.5} flexWrap={'wrap'} rowGap={2}>
                 <FlexBox gap={0.75} alignItems={'center'}>
                   <SpanText>{translation.MODLUE_TEAMS.team}</SpanText>
                   <TinyText>{jobDetail?.team?.name}</TinyText>
@@ -59,7 +60,7 @@ const JobDetail = () => {
 
                 <FlexBox gap={0.75} alignItems={'center'}>
                   <SpanText>{translation.COMMON.location}</SpanText>
-                  <TinyText>{jobDetail?.location}</TinyText>
+                  <TinyText>{LOCATION_LABEL[jobDetail?.location]}</TinyText>
                 </FlexBox>
 
                 <FlexBox gap={0.75} alignItems={'center'}>
@@ -82,18 +83,41 @@ const JobDetail = () => {
                     />
                   </TinyText>
                 </FlexBox>
+
+                <FlexBox gap={0.75} alignItems={'center'}>
+                  <SpanText>{translation.COMMON.created_date}</SpanText>
+
+                  <TinyText>
+                    {jobDetail?.created_at &&
+                      format(
+                        new Date(jobDetail?.created_at),
+                        'HH:mm, dd/MM/yyyy'
+                      )}
+                  </TinyText>
+                </FlexBox>
               </FlexBox>
               <FlexBox gap={1}>
-                <BtnPrimary
-                  onClick={() => {
-                    handleOpenStatus(jobDetail?.id, jobDetail)
-                  }}
-                >
-                 <Span>{jobDetail.status === STATUS_STATE.OPENED ? "Close Job": "Reopen Job"}</Span>
+                {jobDetail.status !== STATUS_STATE.OPENED ? (
+                  <BtnPrimary
+                    onClick={() => {
+                      handleOpenStatus(jobDetail?.id, jobDetail)
+                    }}
+                  >
+                    <Span>Reopen Job</Span>
+                  </BtnPrimary>
+                ) : jobDetail.status === STATUS_STATE.OPENED &&
+                  jobDetail?.is_able_to_close ? (
+                  <BtnPrimary
+                    onClick={() => {
+                      handleOpenStatus(jobDetail?.id, jobDetail)
+                    }}
+                  >
+                    <Span>Close job {jobDetail?.is_able_to_close}</Span>
+                  </BtnPrimary>
+                ) : null}
+                <BtnPrimary onClick={() => setOpenTab(true)}>
+                  <Span>View Details</Span>
                 </BtnPrimary>
-                <BtnPrimary
-                  onClick={() => setOpenTab(true)}
-                ><Span>View Details</Span></BtnPrimary>
               </FlexBox>
             </FlexBox>
           </HeadingWrapper>

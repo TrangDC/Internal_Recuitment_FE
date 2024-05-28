@@ -4,26 +4,29 @@ import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import { useParams } from 'react-router-dom'
-import TimePickerComponent from 'shared/components/form/timePickerComponent'
 import { Job } from 'features/jobs/domain/interfaces'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complete'
 import { Fragment } from 'react/jsx-runtime'
-import AppDateField from 'shared/components/input-fields/DateField'
+import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Interview } from 'features/interviews/domain/interfaces'
 import useEditInterview from '../../providers/hooks/useEditInterview'
 import { transformListItem } from 'shared/utils/utils'
 import { replaceYearWithCurrent } from 'shared/utils/date'
+import dayjs from 'dayjs'
+import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
+import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
+import { useEffect, useMemo } from 'react'
 
 interface IEditInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
   hiring_job: Job
   rowData: Interview
-  id_interview: string,
+  id_interview: string
   onSuccess?: () => void
 }
 
@@ -33,10 +36,19 @@ function EditInterviewModal({
   hiring_job,
   rowData,
   id_interview,
-  onSuccess
+  onSuccess,
 }: IEditInterviewModal) {
   const { id } = useParams()
-  const { onSubmit, control, isPending, isValid } = useEditInterview({
+  const {
+    onSubmit,
+    control,
+    isPending,
+    isValid,
+    handleGenerateToDate,
+    setValue,
+    watch,
+    trigger
+  } = useEditInterview({
     callbackSuccess: () => {
       setOpen(false)
       onSuccess?.()
@@ -52,6 +64,21 @@ function EditInterviewModal({
       end_at: new Date(replaceYearWithCurrent(rowData.end_at)),
     },
   })
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason)
+    onSubmit()
+  }
+
+  const start_from = watch('start_from')
+  const interview_date = watch('interview_date');
+
+  const date_feature = useMemo(() => {
+    return dayjs().isBefore(dayjs(interview_date));
+  }, [interview_date])
+
+  useEffect(() => {
+    trigger('start_from')
+  }, [interview_date])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -63,7 +90,7 @@ function EditInterviewModal({
         <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
           <FlexBox>
             <Box>
-              <SpanText sx={{color: '#3A3C40'}}>Job name</SpanText>
+              <SpanText sx={{ color: '#3A3C40' }}>Job name</SpanText>
               <TinyText>{hiring_job.name}</TinyText>
             </Box>
           </FlexBox>
@@ -126,9 +153,16 @@ function EditInterviewModal({
                   <FlexBox flexDirection={'column'}>
                     <AppDateField
                       label={'Select date'}
-                      value={field.value}
-                      onChange={field.onChange}
-                      format='dd/MM/yyyy'
+                      format="dd/MM/yyyy"
+                      value={field.value ? dayjs(field.value) : null}
+                      onChange={(value) => {
+                        if (value && !start_from) {
+                          setValue('start_from', dayjs().toDate())
+                        }
+
+                        field.onChange(value?.toDate())
+                      }}
+                      minDate={dayjs()}
                       textFieldProps={{
                         fullWidth: true,
                         size: 'small',
@@ -150,12 +184,21 @@ function EditInterviewModal({
                     control={control}
                     render={({ field, fieldState }) => (
                       <FlexBox flexDirection={'column'}>
-                        <TimePickerComponent
-                          label="From"
-                          field={field}
-                          required={true}
-                          timePickerProps={{
-                            timeSteps: { hours: 1, minutes: 30 },
+                        <AppTimePickers
+                          label={'From'}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={(value) => {
+                            // handleGenerateToDate(value)
+                            field.onChange(value)
+                          }}
+                          views={['hours', 'minutes']}
+                          ampm={false}
+                          minTime={date_feature ? dayjs().hour(0).minute(0) : dayjs()}
+                          textFieldProps={{
+                            required: true,
+                          }}
+                          timeSteps={{
+                            minutes: 30,
                           }}
                         />
                         <HelperTextForm
@@ -171,12 +214,18 @@ function EditInterviewModal({
                     control={control}
                     render={({ field, fieldState }) => (
                       <FlexBox flexDirection={'column'}>
-                        <TimePickerComponent
-                          label="To"
-                          field={field}
-                          required={true}
-                          timePickerProps={{
-                            timeSteps: { hours: 1, minutes: 30 },
+                        <AppTimePickers
+                          label={'To'}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={field.onChange}
+                          views={['hours', 'minutes']}
+                          ampm={false}
+                          minTime={date_feature ? dayjs().hour(0).minute(0) : dayjs()}
+                          textFieldProps={{
+                            required: true,
+                          }}
+                          timeSteps={{
+                            minutes: 30,
                           }}
                         />
                         <HelperTextForm
@@ -199,7 +248,6 @@ function EditInterviewModal({
                   <FlexBox flexDirection={'column'}>
                     <AppTextField
                       label={'Description'}
-                      required
                       size="small"
                       fullWidth
                       value={field.value}
@@ -227,15 +275,18 @@ function EditInterviewModal({
           >
             Cancel
           </AppButton>
-          <ButtonLoading
-            variant="contained"
-            size="small"
-            disabled={isValid}
-            handlesubmit={onSubmit}
-            loading={isPending}
-          >
-            Submit
-          </ButtonLoading>
+
+          <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid}
+              handlesubmit={() => {}}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
+          </UpdateRecord>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

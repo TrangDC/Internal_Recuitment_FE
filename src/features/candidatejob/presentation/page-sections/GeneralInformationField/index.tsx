@@ -1,4 +1,4 @@
-import { Box, Grid, styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import { H3, Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { DivField } from '../../providers/styles'
@@ -19,7 +19,11 @@ const DivWrapperField = styled(Box)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.grey[200]}`,
 }))
 
-const GeneralInformationField = ({candidateDetail}: {candidateDetail: Candidate}) => {
+const GeneralInformationField = ({
+  candidateDetail,
+}: {
+  candidateDetail: Candidate
+}) => {
   const { id } = useParams()
 
   const translation = useTextTranslation()
@@ -33,30 +37,18 @@ const GeneralInformationField = ({candidateDetail}: {candidateDetail: Candidate}
 
   return (
     <DivWrapperField>
-      <Grid container spacing={1}>
-        <Grid item xs={12}>
-          <FlexBox justifyContent={'space-between'}>
-            <H3>{candidateDetail.name}</H3>
-            <ButtonAdd
-              Icon={EditIcon}
-              textLable={'Edit'}
-              icon_style={{
-                '& path': {
-                  fill: 'white',
-                },
-              }}
-              onClick={() => {
-                handleOpenEdit(id as string, candidateDetail)
-              }}
-            />
-          </FlexBox>
-        </Grid>
-        <Grid item xs={12}>
+      <FlexBox justifyContent={'space-between'}>
+        <FlexBox flexDirection={'column'} gap={'15px'}>
+          <H3 sx={{ fontSize: '15px', lineHeight: '18.29px' }}>
+            {candidateDetail.name}
+          </H3>
           <FlexBox gap={'60px'}>
             <DivField>
               <FlexBox alignItems={'flex-end'} gap={'10px'}>
                 <Box>
-                  <Span>{translation.COMMON.email}</Span>
+                  <Span sx={{ fontSize: '12px' }}>
+                    {translation.COMMON.email}
+                  </Span>
                   <Tiny>{candidateDetail.email} </Tiny>
                 </Box>
                 <Box lineHeight={0}>
@@ -75,7 +67,9 @@ const GeneralInformationField = ({candidateDetail}: {candidateDetail: Candidate}
             <DivField>
               <FlexBox alignItems={'flex-end'} gap={'10px'}>
                 <Box>
-                  <Span>{translation.COMMON.phone_number}</Span>
+                  <Span sx={{ fontSize: '12px' }}>
+                    {translation.COMMON.phone_number}
+                  </Span>
                   <Tiny>{candidateDetail.phone}</Tiny>
                 </Box>
                 <Box lineHeight={0}>
@@ -92,15 +86,41 @@ const GeneralInformationField = ({candidateDetail}: {candidateDetail: Candidate}
               </FlexBox>
             </DivField>
             <DivField>
-              <Span>{translation.COMMON.dob}</Span>
+              <Span sx={{ fontSize: '12px' }}>{translation.COMMON.dob}</Span>
               <Tiny>
                 {candidateDetail.dob &&
                   format(new Date(candidateDetail.dob), 'dd/MM/yyyy')}
               </Tiny>
             </DivField>
+            <DivField>
+              <Span sx={{ fontSize: '12px' }}>
+                {translation.COMMON.created_date}
+              </Span>
+              <Tiny>
+                {candidateDetail?.created_at &&
+                  format(
+                    new Date(candidateDetail?.created_at),
+                    'HH:mm, dd/MM/yyyy'
+                  )}
+              </Tiny>
+            </DivField>
           </FlexBox>
-        </Grid>
-      </Grid>
+        </FlexBox>
+        <Box>
+          <ButtonAdd
+            Icon={EditIcon}
+            textLable={'Edit'}
+            icon_style={{
+              '& path': {
+                fill: 'white',
+              },
+            }}
+            onClick={() => {
+              handleOpenEdit(id as string, candidateDetail)
+            }}
+          />
+        </Box>
+      </FlexBox>
       {openEdit && (
         <EditCandidateModal
           open={openEdit}
