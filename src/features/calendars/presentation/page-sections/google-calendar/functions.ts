@@ -135,7 +135,6 @@ export function convertToRootDate(start: Date, end: Date, root: Date) {
 export function convertToRootByTimeNow(now: Date, root: Date) {
   const rootDate = dayjs(root)
 
-  console.log('rootDate', rootDate)
   // Lấy thông tin giờ phút từ start và end
   const startHour = dayjs(now).hour()
   const startMinute = dayjs(now).minute()

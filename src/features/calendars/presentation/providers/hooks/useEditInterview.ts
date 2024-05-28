@@ -9,6 +9,7 @@ import useEditResource from 'shared/hooks/useEditResource/useEditResource'
 import { BaseRecord } from 'shared/interfaces/common'
 import { convertToUTC } from 'shared/utils/date'
 import {
+  convertToRootByTimeNow,
   convertToRootDate,
   formatStringToDate,
 } from '../../page-sections/google-calendar/functions'
@@ -53,7 +54,16 @@ function useEditInterview(props: UseEditInterviewProps) {
     },
   })
 
-  const { handleSubmit, control, formState, watch, resetField } = useFormReturn
+  const {
+    handleSubmit,
+    control,
+    formState,
+    watch,
+    resetField,
+    getValues,
+    trigger,
+    setValue,
+  } = useFormReturn
   const isValid = !formState.isValid
   const { mutate, isPending } = useEditReturn
 
@@ -82,11 +92,48 @@ function useEditInterview(props: UseEditInterviewProps) {
     })()
   }
 
+  function onSelectedInterviewDate() {
+    const from = getValues('from')
+    const to = getValues('to')
+    const date = getValues('date')
+    if (from) {
+      const fromDate = convertToRootByTimeNow(from, date)
+      setValue('from', fromDate.toDate(), { shouldValidate: true })
+    }
+
+    if (to) {
+      const toDate = convertToRootByTimeNow(to, date)
+      setValue('to', toDate.toDate(), { shouldValidate: true })
+    }
+    trigger(['from', 'to'])
+  }
+
+  function onSelectedTo(value?: Date) {
+    const date = getValues('date')
+    if (value) {
+      const fromDate = convertToRootByTimeNow(value, date)
+      setValue('to', fromDate.toDate(), { shouldValidate: true })
+    }
+  }
+
+  function onSelectedFrom(value?: Date) {
+    const date = getValues('date')
+    if (value) {
+      const fromDate = convertToRootByTimeNow(value, date)
+      setValue('from', fromDate.toDate(), { shouldValidate: true })
+    }
+  }
+
   return {
     control,
     isValid,
     isPending,
-    actions: { onSubmit },
+    actions: {
+      onSubmit,
+      onSelectedInterviewDate,
+      onSelectedTo,
+      onSelectedFrom,
+    },
     watch,
     resetField,
     formState,

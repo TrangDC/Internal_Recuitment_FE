@@ -68,10 +68,12 @@ function Calendars(props: ICalendars) {
       transition: 'background 20ms ease-in 0s',
       boxShadow:
         'rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px',
+      borderColor: currentView === 'month' ? 'unset' : '#B6DEFC',
     }
     return {
       style: style,
       className: 'custom-event',
+      title: `${event.title} (custom title)`,
     }
   }
 
@@ -115,7 +117,6 @@ function Calendars(props: ICalendars) {
           height: 750,
           backgroundColor: '#FCFCFC',
         }}
-        selectable
         defaultDate={today}
         popup
         timeslots={1}

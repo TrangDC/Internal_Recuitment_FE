@@ -31,7 +31,8 @@ function CreateInterviewModal(props: IAddInterviewModal) {
         setOpen(false)
       },
     })
-  const { onSubmit } = actions
+  const { onSubmit, onSelectedInterviewDate, onSelectedTo, onSelectedFrom } =
+    actions
   const teamId = watch('teamId')
   const jobId = watch('jobId')
   const interviewDate = watch('date')
@@ -202,6 +203,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                           value={field.value ? dayjs(field.value) : null}
                           onChange={(value) => {
                             field.onChange(value?.toDate())
+                            onSelectedInterviewDate()
                           }}
                           textFieldProps={{
                             required: true,
@@ -226,7 +228,10 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         <AppTimePickers
                           label={'From'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={field.onChange}
+                          onChange={(value) => {
+                            if (value) onSelectedFrom(value?.toDate())
+                            else field.onChange(value)
+                          }}
                           views={['hours', 'minutes']}
                           ampm={false}
                           disabled={!interviewDate}
@@ -256,7 +261,10 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         <AppTimePickers
                           label={'To'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={field.onChange}
+                          onChange={(value) => {
+                            if (value) onSelectedTo(value?.toDate())
+                            else field.onChange(value)
+                          }}
                           views={['hours', 'minutes']}
                           ampm={false}
                           disabled={!interviewDate}

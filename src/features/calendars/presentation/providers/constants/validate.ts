@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { RULE_MESSAGES } from 'shared/constants/vaildate'
-import { isPast } from 'shared/utils/date'
+import { isAfterDate } from 'shared/utils/date'
 import * as yup from 'yup'
 
 export const CreateInterviewSchema = yup.object().shape({
@@ -15,17 +15,22 @@ export const CreateInterviewSchema = yup.object().shape({
   date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .min(
-      dayjs().startOf('day').toDate(),
-      RULE_MESSAGES.MC1('date cannot be in the past')
-    )
+    .min(dayjs().startOf('day').toDate(), 'date cannot be in the past')
     .required(RULE_MESSAGES.MC1('date')),
   from: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
     .required(RULE_MESSAGES.MC1('start from'))
+    .test(
+      'is-before-to',
+      RULE_MESSAGES.EW('end at', 'start from'),
+      function (value) {
+        const { to } = this.parent
+        return dayjs(value).isBefore(dayjs(to))
+      }
+    )
     .test('isPast', 'date cannot be in the past', function () {
-      if (isPast(this.parent.from)) return true
+      if (isAfterDate(this.parent.from, this.parent.date)) return true
       return false
     }),
   to: yup
@@ -41,7 +46,7 @@ export const CreateInterviewSchema = yup.object().shape({
       }
     )
     .test('isPast', 'date cannot be in the past', function () {
-      if (isPast(this.parent.to)) return true
+      if (isAfterDate(this.parent.from, this.parent.date)) return true
       return false
     }),
   description: yup.string(),
@@ -56,33 +61,42 @@ export const EditInterviewSchema = yup.object().shape({
   jobId: yup.string().required(RULE_MESSAGES.MC1('job')).default(''),
   interviewer: yup.array().min(1, RULE_MESSAGES.MC1('interviewer')),
   candidateId: yup.string().required(RULE_MESSAGES.MC1('candidate')),
+  candidate_job_id: yup.string().default(''),
   date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .min(
-      dayjs().startOf('day').toDate(),
-      RULE_MESSAGES.MC1('date cannot be in the past')
-    )
+    .min(dayjs().startOf('day').toDate(), 'date cannot be in the past')
     .required(RULE_MESSAGES.MC1('date')),
   from: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .required(RULE_MESSAGES.MC1('from'))
+    .required(RULE_MESSAGES.MC1('start from'))
+    .test(
+      'is-before-to',
+      RULE_MESSAGES.EW('end at', 'start from'),
+      function (value) {
+        const { to } = this.parent
+        return dayjs(value).isBefore(dayjs(to))
+      }
+    )
     .test('isPast', 'date cannot be in the past', function () {
-      if (isPast(this.parent.from)) return true
+      if (isAfterDate(this.parent.from, this.parent.date)) return true
       return false
     }),
-  candidate_job_id: yup.string().default(''),
   to: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .required(RULE_MESSAGES.MC1('to'))
-    .test('is-before-to', RULE_MESSAGES.EW('to', 'from'), function (value) {
-      const { from } = this.parent
-      return dayjs(from).isBefore(dayjs(value))
-    })
+    .required(RULE_MESSAGES.MC1('end at'))
+    .test(
+      'is-before-to',
+      RULE_MESSAGES.EW('end at', 'start from'),
+      function (value) {
+        const { from } = this.parent
+        return dayjs(from).isBefore(dayjs(value))
+      }
+    )
     .test('isPast', 'date cannot be in the past', function () {
-      if (isPast(this.parent.to)) return true
+      if (isAfterDate(this.parent.from, this.parent.date)) return true
       return false
     }),
   description: yup.string(),

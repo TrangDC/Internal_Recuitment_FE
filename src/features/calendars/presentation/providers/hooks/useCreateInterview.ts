@@ -6,14 +6,12 @@ import {
 } from '../constants/validate'
 import { NewInterviewInput } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ChosenDateType } from 'shared/components/input-fields/AppTimePicker'
 import { BaseRecord } from 'shared/interfaces/common'
 import {
   convertToRootByTimeNow,
   convertToRootDate,
 } from '../../page-sections/google-calendar/functions'
 import { convertToUTC } from 'shared/utils/date'
-import dayjs from 'dayjs'
 
 interface IUseCreateInterview {
   onSuccess: (data: BaseRecord) => void
@@ -46,10 +44,11 @@ function useCreateInterview(props: IUseCreateInterview) {
     handleSubmit,
     control,
     formState,
-    setValue,
+    trigger,
     watch,
     resetField,
     getValues,
+    setValue,
   } = useFormReturn
   const isValid = !formState.isValid
   const { mutate, isPending } = useCreateReturn
@@ -62,9 +61,9 @@ function useCreateInterview(props: IUseCreateInterview) {
           value.to,
           value.date
         )
-        const interview_date = convertToUTC(value.date).toDate().toISOString()
-        const formatStart = convertToUTC(newStart).toISOString()
-        const formatEnd = convertToUTC(newEnd).toISOString()
+        const interview_date = convertToUTC(value.date).toDate().toString()
+        const formatStart = convertToUTC(newStart).toDate().toString()
+        const formatEnd = convertToUTC(newEnd).toDate().toString()
         const formData: NewInterviewInput = {
           candidate_id: [value.candidateId],
           description: value.description ?? '',
@@ -80,15 +79,52 @@ function useCreateInterview(props: IUseCreateInterview) {
     })()
   }
 
-  console.log('formState', formState)
+  function onSelectedInterviewDate() {
+    const from = getValues('from')
+    const to = getValues('to')
+    const date = getValues('date')
+    if (from) {
+      const fromDate = convertToRootByTimeNow(from, date)
+      setValue('from', fromDate.toDate(), { shouldValidate: true })
+    }
+
+    if (to) {
+      const toDate = convertToRootByTimeNow(to, date)
+      setValue('to', toDate.toDate(), { shouldValidate: true })
+    }
+    trigger(['from', 'to'])
+  }
+
+  function onSelectedTo(value?: Date) {
+    const date = getValues('date')
+    if (value) {
+      const fromDate = convertToRootByTimeNow(value, date)
+      setValue('to', fromDate.toDate(), { shouldValidate: true })
+    }
+  }
+
+  function onSelectedFrom(value?: Date) {
+    const date = getValues('date')
+    if (value) {
+      const fromDate = convertToRootByTimeNow(value, date)
+      setValue('from', fromDate.toDate(), { shouldValidate: true })
+    }
+  }
+
   return {
     control,
     isValid,
     isPending,
-    actions: { onSubmit },
+    actions: {
+      onSubmit,
+      onSelectedInterviewDate,
+      onSelectedTo,
+      onSelectedFrom,
+    },
     watch,
     resetField,
     formState,
+    trigger,
   }
 }
 export default useCreateInterview
