@@ -9,8 +9,10 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
-import FailedModal from 'shared/components/modal/modalFailed'
 import { t } from 'i18next'
+import ModalConfirmType, {
+  ModalType,
+} from 'shared/components/modal/modalByType'
 
 interface IDeleteTeamModal {
   open: boolean
@@ -19,20 +21,43 @@ interface IDeleteTeamModal {
 }
 
 function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
-  const [openFailed, setOpenFailed] = useState<boolean>(false);
-  const [msg, setMsg] = useState<string>('');
+  const [modal, setModal] = useState<ModalType>({
+    content: '',
+    type: 'failed',
+    open: false,
+    title: 'Failed to delete',
+    onSubmit: () => {},
+  })
 
   const { onSubmit, control, isPending, isValid } = useDeleteTeam({
-    callbackSuccess: () => setOpen(false),
+    callbackSuccess: () => {
+      // setModal((prev) => ({
+      //   ...prev,
+      //   type: 'success',
+      //   open: true,
+      //   title: 'Delete successfully',
+      //   onSubmit: () => setOpen(false)
+      // }))
+      setOpen(false)
+    },
     defaultValues: {
       id: id,
       note: '',
     },
     callbackError: (data) => {
-      setMsg(t(data?.message) as string)
-      setOpenFailed(true)
-    }
+      setModal((prev) => ({
+        ...prev,
+        content: t(data?.message) as string,
+        type: 'failed',
+        open: true,
+        title: 'Failed to delete',
+      }))
+    },
   })
+
+  const handleSetOpen = (open: boolean) => {
+    setModal((prev) => ({...prev, open}))
+  }
 
   const translation = useTextTranslation()
 
@@ -96,12 +121,16 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>
-      {openFailed && <FailedModal
-        open={openFailed}
-        setOpen={setOpenFailed}
-        title="Failed to delete"
-        content={msg}
-      />}
+      {modal.open && (
+        <ModalConfirmType
+          open={modal.open}
+          setOpen={handleSetOpen}
+          title={modal.title}
+          content={modal.content}
+          type={modal.type}
+          onSubmit={modal.onSubmit}
+        />
+      )}
     </Fragment>
   )
 }

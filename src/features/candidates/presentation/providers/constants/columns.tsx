@@ -6,7 +6,6 @@ import {
 import { StyleSpanName } from '../styles/index'
 import { Candidate, CandidateJob } from 'features/candidates/domain/interfaces'
 import { CANDIDATE_STATUS } from './index'
-import { format } from 'date-fns'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { t } from 'i18next';
 
@@ -32,17 +31,6 @@ export const columns = (
     cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
     enableSorting: false,
   }),
-  columnHelper.accessor((row) => row.created_at, {
-    id: 'created_at',
-    header: () => <span>{t('created_date')}</span>,
-    size: 200,
-    enableSorting: true,
-    cell: (info) => (
-      <StyleSpanName>
-        {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}
-      </StyleSpanName>
-    ),
-  }),
   columnHelper.accessor((row) => row.status, {
     id: 'status',
     header: () => <span>{t('status')}</span>,
@@ -62,7 +50,7 @@ export const columns = (
       )
     },
   }),
-  columnHelper.accessor('id', {
+  columnHelper.accessor('created_at', {
     header: () => <span>{t('action')}</span>,
     size: 100,
     enableSorting: false,

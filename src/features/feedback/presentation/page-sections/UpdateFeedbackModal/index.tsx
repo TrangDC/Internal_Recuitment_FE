@@ -10,6 +10,7 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { FeedBack } from 'features/feedback/domain/interfaces'
 import useUpdateFeedback from '../../providers/hooks/useUpdateFeedback'
 import { Span, Tiny } from 'shared/components/Typography'
+import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 
 interface IUpdateFeedbackModal {
   open: boolean
@@ -26,7 +27,7 @@ function UpdateFeedbackModal({
   rowData,
   onSuccess,
 }: IUpdateFeedbackModal) {
-  const { onSubmit, control, isPending, isValid} = useUpdateFeedback({
+  const { onSubmit, control, isPending, isValid, setValue} = useUpdateFeedback({
     callbackSuccess: () => {
       setOpen(false)
       onSuccess?.()
@@ -36,6 +37,11 @@ function UpdateFeedbackModal({
       feedback: rowData.feedback,
     },
   })
+
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason)
+    onSubmit()
+  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -120,15 +126,17 @@ function UpdateFeedbackModal({
           >
             Cancel
           </AppButton>
-          <ButtonLoading
-            variant="contained"
-            size="small"
-            disabled={isValid}
-            handlesubmit={onSubmit}
-            loading={isPending}
-          >
-            Submit
-          </ButtonLoading>
+           <UpdateRecord  disabled={isValid} callbackSubmit={callbackSubmit}>
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid}
+              handlesubmit={() => {}}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
+          </UpdateRecord>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

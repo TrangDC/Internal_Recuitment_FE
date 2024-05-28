@@ -14,6 +14,7 @@ export const schemaUpdate = yup.object({
   id: yup.string().required(RULE_MESSAGES.MC1('id')),
   attachments: yup.mixed(),
   feedback: yup.string(),
+  note: yup.string(),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>

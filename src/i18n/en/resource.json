@@ -94,12 +94,14 @@
       "validation": {
         "failed_reason_required": "Please include failed reasons",
         "candidate_job_status_exist": "New status cannot be Current status",
-        "candidate_is_blacklist": "This candidate is in blacklist"
+        "candidate_is_blacklist": "This candidate is in blacklist",
+        "status_is_invalid_to_delete": "This job has already closed and cannot be deleted."
       }
     },
     "candidates": {
       "validation": {
-        "email_exist": "This email belongs to an existing candidate."
+        "email_exist": "This email belongs to an existing candidate.",
+        "candidate_job_exist": "This candidate is in a hiring process already"
       }
     },
     "teams": {

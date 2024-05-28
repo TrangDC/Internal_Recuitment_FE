@@ -21,6 +21,7 @@ export const schema = yup.object({
   start_from: yup.date().required(RULE_MESSAGES.MC1('start from')),
   end_at: yup
     .date()
+    .typeError(RULE_MESSAGES.MC5('end at'))
     .required(RULE_MESSAGES.MC1('end at'))
     .test('validator-time', function (value) {
       const start_form = this.parent?.start_from
@@ -62,6 +63,7 @@ export const schemaUpdate = yup.object({
   start_from: yup.date().required(RULE_MESSAGES.MC1('start from')),
   end_at: yup
     .date()
+    .typeError(RULE_MESSAGES.MC5('end at'))
     .required(RULE_MESSAGES.MC1('end at'))
     .test('validator-time', function (value) {
       const start_form = this.parent?.start_from
@@ -79,6 +81,7 @@ export const schemaUpdate = yup.object({
       return true
     }),
   description: yup.string(),
+  note: yup.string(),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>

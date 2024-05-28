@@ -5,31 +5,42 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import useCreateInterview from '../../providers/hooks/useCreateInterview'
 import { useParams } from 'react-router-dom'
-import TimePickerComponent from 'shared/components/form/timePickerComponent'
 import { Job } from 'features/jobs/domain/interfaces'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complete'
 import { Fragment } from 'react/jsx-runtime'
-import AppDateField from 'shared/components/input-fields/DateField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import dayjs from 'dayjs'
+import AppDateField from 'shared/components/input-fields/AppDateField'
+import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
+import { useEffect, useMemo } from 'react'
 
 interface ICreateInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
   hiring_job: Job
-  onSuccess?:() => void;
+  onSuccess?: () => void
 }
 
 function CreateInterviewModal({
   open,
   setOpen,
   hiring_job,
-  onSuccess
+  onSuccess,
 }: ICreateInterviewModal) {
   const { id } = useParams()
-  const { onSubmit, control, isPending, isValid } = useCreateInterview({
+  const {
+    onSubmit,
+    control,
+    isPending,
+    isValid,
+    handleGenerateToDate,
+    setValue,
+    watch,
+    trigger,
+  } = useCreateInterview({
     callbackSuccess: () => {
       setOpen(false)
       onSuccess?.()
@@ -38,6 +49,19 @@ function CreateInterviewModal({
       candidate_job_id: id,
     },
   })
+
+  const start_from = watch('start_from')
+  const interview_date = watch('interview_date')
+
+  const date_feature = useMemo(() => {
+    return dayjs().isBefore(dayjs(interview_date))
+  }, [interview_date])
+
+  useEffect(() => {
+    if (interview_date) {
+      trigger('start_from')
+    }
+  }, [interview_date])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -49,7 +73,7 @@ function CreateInterviewModal({
         <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
           <FlexBox>
             <Box>
-              <SpanText sx={{color: '#3A3C40'}}>Job name</SpanText>
+              <SpanText sx={{ color: '#3A3C40' }}>Job name</SpanText>
               <TinyText>{hiring_job.name}</TinyText>
             </Box>
           </FlexBox>
@@ -111,9 +135,16 @@ function CreateInterviewModal({
                   <FlexBox flexDirection={'column'}>
                     <AppDateField
                       label={'Select date'}
-                      format='dd/MM/yyyy'
-                      value={field.value}
-                      onChange={field.onChange}
+                      format="dd/MM/yyyy"
+                      value={field.value ? dayjs(field.value) : null}
+                      onChange={(value) => {
+                        if (value && !start_from) {
+                          setValue('start_from', dayjs().toDate())
+                        }
+
+                        field.onChange(value?.toDate())
+                      }}
+                      minDate={dayjs()}
                       textFieldProps={{
                         fullWidth: true,
                         size: 'small',
@@ -135,12 +166,23 @@ function CreateInterviewModal({
                     control={control}
                     render={({ field, fieldState }) => (
                       <FlexBox flexDirection={'column'}>
-                        <TimePickerComponent
-                          label="From"
-                          field={field}
-                          required={true}
-                          timePickerProps={{
-                            timeSteps: { hours: 1, minutes: 30 },
+                        <AppTimePickers
+                          label={'From'}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={(value) => {
+                            // handleGenerateToDate(value)
+                            field.onChange(value)
+                          }}
+                          views={['hours', 'minutes']}
+                          ampm={false}
+                          minTime={
+                            date_feature ? dayjs().hour(0).minute(0) : dayjs()
+                          }
+                          textFieldProps={{
+                            required: true,
+                          }}
+                          timeSteps={{
+                            minutes: 30,
                           }}
                         />
                         <HelperTextForm
@@ -156,12 +198,20 @@ function CreateInterviewModal({
                     control={control}
                     render={({ field, fieldState }) => (
                       <FlexBox flexDirection={'column'}>
-                        <TimePickerComponent
-                          label="To"
-                          field={field}
-                          required={true}
-                          timePickerProps={{
-                            timeSteps: { hours: 1, minutes: 30 },
+                        <AppTimePickers
+                          label={'To'}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={field.onChange}
+                          views={['hours', 'minutes']}
+                          ampm={false}
+                          minTime={
+                            date_feature ? dayjs().hour(0).minute(0) : dayjs()
+                          }
+                          textFieldProps={{
+                            required: true,
+                          }}
+                          timeSteps={{
+                            minutes: 30,
                           }}
                         />
                         <HelperTextForm
@@ -184,7 +234,6 @@ function CreateInterviewModal({
                   <FlexBox flexDirection={'column'}>
                     <AppTextField
                       label={'Description'}
-                      required
                       size="small"
                       fullWidth
                       value={field.value}

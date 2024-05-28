@@ -317,7 +317,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
           >
             {translation.COMMON.cancel}
           </AppButton>
-          <UpdateRecord callbackSubmit={callbackSubmit}>
+          <UpdateRecord  disabled={isValid} callbackSubmit={callbackSubmit}>
             <ButtonLoading
               variant="contained"
               size="small"

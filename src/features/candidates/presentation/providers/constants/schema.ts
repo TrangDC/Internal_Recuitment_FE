@@ -4,7 +4,7 @@ import * as yup from 'yup'
 
 export const schema = yup.object({
   name: yup.string().required(RULE_MESSAGES.MC1('name')).max(64, RULE_MESSAGES.MC4('name', 64)),
-  phone: yup.string().required(RULE_MESSAGES.MC1('phone')).matches(/^(0|84|\+84)\d{9}$/, "Phone number needs to start with 84 or 0 and have 9 digits after the 0"),
+  phone: yup.string().required(RULE_MESSAGES.MC1('phone')).matches(/^\+?\d+$/, RULE_MESSAGES.MC5("phone")).min(8, RULE_MESSAGES.MC2('phone', 8, 15)).max(15, RULE_MESSAGES.MC2('phone', 8, 15)),
   email: yup.string().email(RULE_MESSAGES.MC5('email')).required(RULE_MESSAGES.MC1('email')).max(64, RULE_MESSAGES.MC4('email', 64)),
   dob: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
   note: yup.string(),
@@ -15,7 +15,7 @@ export type FormDataSchema = yup.InferType<typeof schema>
 export const schemaUpdate = yup.object({
   id: yup.string().required(RULE_MESSAGES.MC1('id')),
   name: yup.string().required(RULE_MESSAGES.MC1('name')).max(64, RULE_MESSAGES.MC4('name', 64)),
-  phone: yup.string().required(RULE_MESSAGES.MC1('phone')).matches(/^(0|84|\+84)\d{9}$/, "Phone number needs to start with 84 or 0 and have 9 digits after the 0"),
+  phone: yup.string().required(RULE_MESSAGES.MC1('phone')).matches(/^\+?\d+$/, RULE_MESSAGES.MC5("phone")).min(8, RULE_MESSAGES.MC2('phone', 8, 15)).max(15, RULE_MESSAGES.MC2('phone', 8, 15)),
   email: yup.string().email(RULE_MESSAGES.MC5('email')).required(RULE_MESSAGES.MC1('email')).max(64, RULE_MESSAGES.MC4('email', 64)),
   dob: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
   note: yup.string(),

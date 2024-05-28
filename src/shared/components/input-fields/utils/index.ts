@@ -4,8 +4,8 @@ export function regexFile (file: File, regexString: string) {
     return regex.test(filename.toLowerCase())
 }
 
-export function checkMaxFile (files: any[], max: number) {
-   return files.length < max;
+export function checkMaxFile (files: number, max: number) {
+   return files <= max;
 }
 
 export function checkMaxSize (file: File, maxSize: number) {

@@ -22,6 +22,7 @@ import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidat
 import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
 import ModalConfirm from 'shared/components/modal/modalConfirm'
+import WarningModal from 'shared/components/modal/modalWarning'
 
 interface IChangeStatusModal {
   open: boolean
@@ -248,7 +249,7 @@ function ChangeStatusModal({
           </AppButton>
 
           {!!rowData?.interview_feature ? (
-            <ModalConfirm title={`This candidate still has ${rowData?.interview_feature} left, are you sure want to change the hiring status?`} callbackSubmit={onSubmit}>
+            <ModalConfirm  disabled={isValid} title={`This candidate still has ${rowData?.interview_feature} left, are you sure want to change the hiring status?`} callbackSubmit={onSubmit}>
               <ButtonLoading
                 variant="contained"
                 size="small"

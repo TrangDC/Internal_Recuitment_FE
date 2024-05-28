@@ -1,6 +1,6 @@
 import BaseModal from 'shared/components/modal'
 import { Controller, useWatch } from 'react-hook-form'
-import { FormControl } from '@mui/material'
+import { Box, FormControl } from '@mui/material'
 import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { FormDataSchema } from '../../providers/constants/schema'
@@ -15,6 +15,7 @@ import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
+import { Span, Tiny } from 'shared/components/Typography'
 
 interface IApplyJobModal {
   open: boolean
@@ -147,11 +148,23 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
                         accept: '.pdf',
                         regexString: '\\.pdf$',
                         maxFile: 1,
+                        multiple: false,
                         maxSize: 20,
                         msgError: {
                           is_valid: "One PDF file only, file size up to 20MB",
                           maxSize: "One PDF file only, file size up to 20MB",
-                        }
+                          maxFile: "One PDF file only, file size up to 20MB"
+                        },
+                        descriptionFile: () => {
+                          return (
+                            <Box>
+                              <Span sx={{ color: '#2A2E37 !important' }}> Attach file </Span>
+                              <Tiny sx={{color: '#2A2E37 !important'}}>
+                                Up to 10 files and 20MB/file
+                              </Tiny>
+                            </Box>
+                          )
+                        },
                       }}
                     />
                     <HelperTextForm

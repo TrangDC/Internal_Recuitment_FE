@@ -35,7 +35,6 @@ interface JobDetailInformationProps {
 const JobDetailInformation = ({
   jobApplicationDetail,
 }: JobDetailInformationProps) => {
-  console.log("jobApplicationDetail", jobApplicationDetail.status)
   const disabledChangeStatus = useMemo(() => {
     const disabledStatuses = [
       STATUS_CANDIDATE.KIV,

@@ -27,7 +27,7 @@ const GeneralInformation = () => {
   return (
     <BoxWrapperContainer>
       <FlexBox justifyContent={'space-between'}>
-      <FlexBox flexDirection={'column'} gap={'20px'}>
+      <FlexBox flexDirection={'column'} gap={'20px'}> 
         <Box>
           <SpanText>{translation.COMMON.name}</SpanText>
           <TinyText>{teamDetail?.name}</TinyText>
@@ -38,7 +38,14 @@ const GeneralInformation = () => {
           <FlexBox flexDirection={'column'}>
             <SpanText>{translation.MODLUE_TEAMS.team_manager}</SpanText>
             <FlexBox gap={'10px'} flexWrap={'wrap'}>
-                {teamDetail?.members?.map((member, idx) =>  <ChipField key={idx} label={member.name} />)}
+                {teamDetail?.members?.map((member, idx) =>  <ChipField sx={{
+                  backgroundColor: '#F1F9FF',
+                  '& span': {
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    color: '#121625'
+                  }
+                }} key={idx} label={member.name} />)}
             </FlexBox>
           </FlexBox>
         </Box>

@@ -12,9 +12,14 @@ const StyledInputBase = styled(Box)(({ theme }) => ({
     height: '100%',
   },
 
+  '& .MuiFormControl-root .MuiFormLabel-root': {
+    fontSize: '14px',
+    fontWeight: 500,
+  },
+
   '& .MuiFormControl-root .MuiFormLabel-root span': {
     fontSize: '13px',
-    fontWeigth: 500,
+    fontWeight: 500,
     color: ' #DB6C56',
     lineHeight: '15.85px',
   },

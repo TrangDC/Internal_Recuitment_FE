@@ -111,7 +111,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
           >
             {translation.COMMON.cancel}
           </AppButton>
-          <UpdateRecord callbackSubmit={callbackSubmit}>
+          <UpdateRecord  disabled={isValid} callbackSubmit={callbackSubmit}>
             <ButtonLoading
               variant="contained"
               size="small"

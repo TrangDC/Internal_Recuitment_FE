@@ -77,7 +77,7 @@ function DeleteHiringModal({ open, setOpen, id }: IDeleteHiringModal) {
           >
             Cancel
           </AppButton>
-          <UpdateRecord callbackSubmit={callbackSubmit}>
+          <UpdateRecord  disabled={isValid} callbackSubmit={callbackSubmit}>
             <ButtonLoading
               variant="contained"
               size="small"

@@ -23,6 +23,7 @@ const useGraphql = () => {
           status
           created_at
           is_able_to_delete
+          is_able_to_close
           total_candidates_recruited
           team {
               id
@@ -110,6 +111,7 @@ const useGraphql = () => {
         salary_from
         salary_to
         currency
+        is_able_to_close
         status
         created_at
         team {

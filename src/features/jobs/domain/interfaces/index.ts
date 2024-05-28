@@ -13,6 +13,7 @@ export type Job = {
   currency: 'vnd' | 'usd' | 'jpy'
   status: 'draft' | 'opened' | 'closed'
   is_able_to_delete: boolean,
+  is_able_to_close: boolean,
   slug: string
   team: Team
   user: Member
