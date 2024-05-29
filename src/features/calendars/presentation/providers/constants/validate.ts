@@ -15,7 +15,7 @@ export const CreateInterviewSchema = yup.object().shape({
   date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .min(dayjs().startOf('day').toDate(), 'date cannot be in the past')
+    .min(dayjs().startOf('day').toDate(), 'Date cannot be in the past')
     .required(RULE_MESSAGES.MC1('date')),
   from: yup
     .date()
@@ -29,7 +29,7 @@ export const CreateInterviewSchema = yup.object().shape({
         return dayjs(value).isBefore(dayjs(to))
       }
     )
-    .test('isPast', 'date cannot be in the past', function () {
+    .test('isPast', 'Start from cannot be in the past', function () {
       if (isAfterDate(this.parent.from, this.parent.date)) return true
       return false
     }),
@@ -45,7 +45,7 @@ export const CreateInterviewSchema = yup.object().shape({
         return dayjs(from).isBefore(dayjs(value))
       }
     )
-    .test('isPast', 'date cannot be in the past', function () {
+    .test('isPast', 'End at cannot be in the past', function () {
       if (isAfterDate(this.parent.from, this.parent.date)) return true
       return false
     }),
@@ -65,7 +65,7 @@ export const EditInterviewSchema = yup.object().shape({
   date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .min(dayjs().startOf('day').toDate(), 'date cannot be in the past')
+    .min(dayjs().startOf('day').toDate(), 'Date cannot be in the past')
     .required(RULE_MESSAGES.MC1('date')),
   from: yup
     .date()
@@ -79,7 +79,7 @@ export const EditInterviewSchema = yup.object().shape({
         return dayjs(value).isBefore(dayjs(to))
       }
     )
-    .test('isPast', 'date cannot be in the past', function () {
+    .test('isPast', 'Start from cannot be in the past', function () {
       if (isAfterDate(this.parent.from, this.parent.date)) return true
       return false
     }),
@@ -95,7 +95,7 @@ export const EditInterviewSchema = yup.object().shape({
         return dayjs(from).isBefore(dayjs(value))
       }
     )
-    .test('isPast', 'date cannot be in the past', function () {
+    .test('isPast', 'End at cannot be in the past', function () {
       if (isAfterDate(this.parent.from, this.parent.date)) return true
       return false
     }),

@@ -9,7 +9,6 @@ import {
 } from '@mui/material'
 import { SettingsContext } from 'contexts/settingsContext'
 import { FC, Fragment, useContext } from 'react'
-import LanguagePopover from './popovers/LanguagePopover'
 import ProfilePopover from './popovers/ProfilePopover'
 // import { themeSettingsTypes } from 'shared/theme'
 
