@@ -22,7 +22,7 @@ import { Box } from '@mui/material'
 import IconScreen from 'shared/components/utils/IconScreen'
 import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer } from 'shared/styles'
-import CandidateIcon from 'shared/components/icons/Candidates'
+import duotone from 'shared/components/icons'
 
 function CalendarsScreen() {
   const [openCreateInterView, setOpenCreateInterView] = useState(false)
@@ -121,7 +121,7 @@ function CalendarsScreen() {
     <Box pt={2} pb={4}>
       <Box>
         <IconScreen
-          Icon={CandidateIcon}
+          Icon={duotone.Calender}
           textLable={translation.MODLUE_CALENDAR.canlendar}
         />
       </Box>
