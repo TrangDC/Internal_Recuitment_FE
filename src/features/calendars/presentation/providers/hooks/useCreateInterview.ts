@@ -61,9 +61,9 @@ function useCreateInterview(props: IUseCreateInterview) {
           value.to,
           value.date
         )
-        const interview_date = convertToUTC(value.date).toDate().toString()
-        const formatStart = convertToUTC(newStart).toDate().toString()
-        const formatEnd = convertToUTC(newEnd).toDate().toString()
+        const interview_date = convertToUTC(value.date).toDate().toISOString()
+        const formatStart = convertToUTC(newStart).toDate().toISOString()
+        const formatEnd = convertToUTC(newEnd).toDate().toISOString()
         const formData: NewInterviewInput = {
           candidate_id: [value.candidateId],
           description: value.description ?? '',
