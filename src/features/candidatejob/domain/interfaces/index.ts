@@ -19,7 +19,7 @@ export type CandidateJob = {
   created_at: string
   steps: StepType[]
   updated_at: string
-  attachments: Attachments
+  attachments: Attachments[]
   candidate: Candidate
   hiring_job: Job
 }
