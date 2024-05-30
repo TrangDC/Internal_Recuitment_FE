@@ -1,9 +1,6 @@
 import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import {
-  DivWrapperProcess,
-  SpanGenaration,
-} from '../../providers/styles'
+import { DivWrapperProcess, SpanGenaration } from '../../providers/styles'
 import CustomTable from 'shared/components/table/CustomTable'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import { columns } from '../../providers/constants/columns'
@@ -27,7 +24,11 @@ import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
-const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) => {
+const JobApplicationHistory = ({
+  candidateDetail,
+}: {
+  candidateDetail: Candidate
+}) => {
   const {
     openCreate,
     openDelete,
@@ -68,10 +69,10 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
           const disabledStatuses = [
             STATUS_CANDIDATE.KIV,
             STATUS_CANDIDATE.OFFERED_LOST,
-            STATUS_CANDIDATE.EX_STAFTT
-          ];
-      
-          return disabledStatuses.includes(rowData?.status);
+            STATUS_CANDIDATE.EX_STAFTT,
+          ]
+
+          return disabledStatuses.includes(rowData?.status)
         },
       },
       {
@@ -88,7 +89,7 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
         onClick: (id) => {
           handleOpenDelete(id)
         },
-        title: "Delete",
+        title: 'Delete',
         Icon: <DeleteIcon />,
       },
     ],
@@ -97,7 +98,9 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
 
   const queryClient = useQueryClient()
   const handleRefreshList = () => {
-    queryClient.invalidateQueries({ queryKey: [MODLUE_QUERY_KEY.CANDIDATE, MODLUE_QUERY_KEY.CANDIDATE_JOB] })
+    queryClient.invalidateQueries({
+      queryKey: [MODLUE_QUERY_KEY.CANDIDATE, MODLUE_QUERY_KEY.CANDIDATE_JOB],
+    })
   }
 
   const translation = useTextTranslation()
@@ -105,14 +108,14 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
   return (
     <DivWrapperProcess>
       <FlexBox alignItems={'center'} justifyContent={'space-between'}>
-        <SpanGenaration sx={{fontWeight: 500}}>
+        <SpanGenaration sx={{ fontWeight: 500 }}>
           {translation.MODULE_CANDIDATE_JOB.job_application_history}
         </SpanGenaration>
         <ButtonAdd
-            Icon={Add}
-            textLable={translation.MODULE_CANDIDATE_JOB.apply_to_a_job}
-            onClick={() => setOpenCreate(true)}
-          />
+          Icon={Add}
+          textLable={translation.MODULE_CANDIDATE_JOB.apply_to_a_job}
+          onClick={() => setOpenCreate(true)}
+        />
       </FlexBox>
       <Box>
         {useTableReturn && (
@@ -138,13 +141,13 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
           onSuccess={handleRefreshList}
         />
       )}
-        {openDelete && (
-          <DeleteCandidateJobModal
-            open={openDelete}
-            setOpen={setOpenDelete}
-            id={rowId.current}
-          />
-        )}
+      {openDelete && (
+        <DeleteCandidateJobModal
+          open={openDelete}
+          setOpen={setOpenDelete}
+          id={rowId.current}
+        />
+      )}
     </DivWrapperProcess>
   )
 }

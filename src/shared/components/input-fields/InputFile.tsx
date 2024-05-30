@@ -2,23 +2,27 @@ import { Box, styled } from '@mui/material'
 import FlexBox from '../flexbox/FlexBox'
 import UploadIcon from '../icons/UploadIcon'
 import { Span, Tiny } from '../Typography'
-import { DragEvent, Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  DragEvent,
+  Fragment,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import TrashIcon from '../icons/TrashIcon'
 import useTextTranslation from 'shared/constants/text'
-import ShowFile from './ItemFile'
 import useGetUrlGetAttachment, {
-  FileAttachment,
   ParamCreateURLAttachment,
 } from 'shared/hooks/graphql/useGetUrlAttachment'
 import { v4 as uuidv4 } from 'uuid'
-import { UploadFileAttachment } from 'services/handleAttachments'
 import { checkMaxFile, checkMaxSize, regexFile, wrapperValidate } from './utils'
 import { toast } from 'react-toastify'
 import { RULE_MESSAGES } from 'shared/constants/vaildate'
 import { isEmpty } from 'lodash'
 import UploadFileComponent from './UploadFileComponent'
 import { ParamUploadFile, UploadStatus } from 'shared/interfaces'
-import { check } from 'prettier'
+import AzureStorageService from 'services/azure-storage-services'
 
 const InputFileContainer = styled(Box)(({ theme }) => ({
   border: '2px dashed #88CDFF',
@@ -113,10 +117,9 @@ const InputFile = ({
   descriptionFile,
   multiple = true,
 }: InputFileProps) => {
-
   //version2
   const [listFile, setListFile] = useState<FileUploadAttachment[]>([])
-  const changed = useRef<boolean>(false);
+  const changed = useRef<boolean>(false)
   const idFile = useMemo(() => {
     return uuidv4()
   }, [])
@@ -177,7 +180,10 @@ const InputFile = ({
   ) => {
     const { CreateAttachmentSASURL } = data
     if (!params?.file) return
-    return await UploadFileAttachment(CreateAttachmentSASURL.url, params?.file)
+    return await AzureStorageService.uploadFileToAzure({
+      url: CreateAttachmentSASURL.url,
+      file: params?.file,
+    })
   }
 
   const { handleGetUrlDownload } = useGetUrlGetAttachment({
@@ -186,8 +192,8 @@ const InputFile = ({
 
   //version 2 upload
   const handleChangeFiles = async (fileUploads: File[]) => {
-    if(!changed.current) changed.current = true;
-   
+    if (!changed.current) changed.current = true
+
     const listFileUpload: ParamCreateURLAttachment[] = []
     //validation each file
     const validate = validateFiles({
@@ -278,7 +284,7 @@ const InputFile = ({
   }
 
   useEffect(() => {
-    if(changed.current) {
+    if (changed.current) {
       callbackFileChange?.(listFile)
     }
   }, [listFile])

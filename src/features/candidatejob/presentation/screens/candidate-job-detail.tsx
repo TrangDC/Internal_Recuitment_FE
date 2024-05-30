@@ -1,9 +1,5 @@
 import { DivContainerWrapper } from '../providers/styles'
-import {
-  Box,
-  Grid,
-  styled,
-} from '@mui/material'
+import { Box, Grid, styled } from '@mui/material'
 import JobDetailInformation from '../page-sections/JobDetailInformation'
 import JobDetailAction from '../page-sections/JobDetailAction'
 import IconScreen from 'shared/components/utils/IconScreen'
@@ -20,22 +16,24 @@ const DivWrapperContainer = styled(DivContainerWrapper)(({ theme }) => ({
 }))
 
 const CandidateJobDetail = () => {
-  const { id } = useParams();
-  const { jobApplicationDetail } = useCandidateJobDetail(id as string);
+  const { id } = useParams()
+  const { jobApplicationDetail } = useCandidateJobDetail(id as string)
 
   return (
     <Box pt={2} pb={4}>
-     <Box>
+      <Box>
         <IconScreen Icon={CandidateIcon} textLable={'Job application detail'} />
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>
         <DivWrapperContainer>
           <Grid container>
-            <Grid item xs={3}>
-              <JobDetailInformation jobApplicationDetail={jobApplicationDetail}/>
+            <Grid item width={240}>
+              <JobDetailInformation
+                jobApplicationDetail={jobApplicationDetail}
+              />
             </Grid>
-            <Grid item xs={9}>
-              <JobDetailAction jobApplicationDetail={jobApplicationDetail}/>
+            <Grid item flex={1}>
+              <JobDetailAction jobApplicationDetail={jobApplicationDetail} />
             </Grid>
           </Grid>
         </DivWrapperContainer>

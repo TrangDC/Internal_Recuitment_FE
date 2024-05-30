@@ -2,10 +2,10 @@ import { Attachments } from 'features/candidates/domain/interfaces'
 import { isEmpty, reject } from 'lodash'
 import { toast } from 'react-toastify'
 import { ParamCreateURLAttachment } from 'shared/hooks/graphql/useGetUrlAttachment'
-import { downloadFile } from 'shared/utils/utils'
+import { downloadPdf } from 'shared/utils/upload-file'
 
 export const downloadFileAttachment = (
-  attachments: Attachments,
+  attachments: Attachments[],
   callback: any
 ) => {
   if (isEmpty(attachments) || !Array.isArray(attachments)) {
@@ -35,7 +35,7 @@ export const downloadFileAttachment = (
   Promise.all(results).then((values) => {
     function downloadMultipleFiles(urls: string[]) {
       urls.forEach((url) => {
-        downloadFile(url)
+        downloadPdf(url)
       })
     }
     downloadMultipleFiles(values)
@@ -58,7 +58,7 @@ export const downloadOneFile = (attachment: Attachments, callback: any) => {
     resolve(callback(paramUpload))
   })
     .then((response: any) => {
-      downloadFile(response.CreateAttachmentSASURL.url)
+      downloadPdf(response.CreateAttachmentSASURL.url)
     })
     .catch((error) => {
       toast.error((error as Error).message)

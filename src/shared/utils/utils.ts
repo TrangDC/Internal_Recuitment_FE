@@ -186,6 +186,9 @@ export const downloadBase64File = (base64, fileName, mimeType) => {
   URL.revokeObjectURL(url)
 }
 
-export function formatCurrency(number: number, locale: string = 'en-US'): string {
-  return number.toLocaleString(locale);
+export function formatCurrency(
+  number: number,
+  locale: string = 'en-US'
+): string {
+  return number.toLocaleString(locale)
 }
