@@ -6,7 +6,7 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { FormDataSchema } from '../../providers/constants/schema'
 import useApplyToJob from '../../providers/hooks/useApplyToJob'
 import useSelectJobByTeam from 'shared/hooks/graphql/useSelectJobByTeam'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Job } from 'features/jobs/domain/interfaces'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useTextTranslation from 'shared/constants/text'
@@ -16,6 +16,7 @@ import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { Span, Tiny } from 'shared/components/Typography'
+import { isEmpty } from 'lodash'
 
 interface IApplyJobModal {
   open: boolean
@@ -24,14 +25,15 @@ interface IApplyJobModal {
 }
 
 function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
-  const { onSubmit, control, isPending, isValid, resetField } = useApplyToJob({
-    callbackSuccess: () => {
-      setOpen(false)
-    },
-    defaultValues: {
-      candidate_id: candidateId,
-    },
-  })
+  const { onSubmit, control, isPending, isValid, resetField, watch } =
+    useApplyToJob({
+      callbackSuccess: () => {
+        setOpen(false)
+      },
+      defaultValues: {
+        candidate_id: candidateId,
+      },
+    })
 
   const { jobs, changeJobByTeamId } = useSelectJobByTeam()
   const team_id: string | undefined = useWatch({ control, name: 'team_id' })
@@ -42,6 +44,12 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
   }, [team_id])
 
   const translation = useTextTranslation()
+  const attachments = watch('attachments')
+  const isValidAttachments = useMemo(() => {
+    if (!Array.isArray(attachments) || isEmpty(attachments)) return true
+
+    return attachments.every((file) => file.status === 'success')
+  }, [attachments])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -115,7 +123,7 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
                 control={control}
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                     <CandidateStatusAutoComplete
+                    <CandidateStatusAutoComplete
                       multiple={false}
                       value={field.value}
                       onChange={(data: any) => {
@@ -123,6 +131,7 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
                       }}
                       textFieldProps={{
                         label: 'Status',
+                        required: true,
                       }}
                     />
                     <HelperTextForm
@@ -151,16 +160,19 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
                         multiple: false,
                         maxSize: 20,
                         msgError: {
-                          is_valid: "One PDF file only, file size up to 20MB",
-                          maxSize: "One PDF file only, file size up to 20MB",
-                          maxFile: "One PDF file only, file size up to 20MB"
+                          is_valid: 'One PDF file only, file size up to 20MB',
+                          maxSize: 'One PDF file only, file size up to 20MB',
+                          maxFile: 'One PDF file only, file size up to 20MB',
                         },
                         descriptionFile: () => {
                           return (
                             <Box>
-                              <Span sx={{ color: '#2A2E37 !important' }}> Attach file </Span>
-                              <Tiny sx={{color: '#2A2E37 !important'}}>
-                                Up to 10 files and 20MB/file
+                              <Span sx={{ color: '#2A2E37 !important' }}>
+                                {' '}
+                                Attach CV{' '}
+                              </Span>
+                              <Tiny sx={{ color: '#2A2E37 !important' }}>
+                                One PDF file only, file size up to 20MB
                               </Tiny>
                             </Box>
                           )
@@ -189,7 +201,7 @@ function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
           <ButtonLoading
             variant="contained"
             size="small"
-            disabled={isValid}
+            disabled={isValid || !isValidAttachments}
             handlesubmit={onSubmit}
             loading={isPending}
           >

@@ -23,6 +23,7 @@ import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
 import ModalConfirm from 'shared/components/modal/modalConfirm'
 import WarningModal from 'shared/components/modal/modalWarning'
+import { isEmpty } from 'lodash'
 
 interface IChangeStatusModal {
   open: boolean
@@ -38,9 +39,9 @@ interface IChangeStatusModal {
     | 'kiv'
     | 'offer_lost'
     | 'ex_staff'
-    | 'new',
-    defaultStatus?: string,
-    onSuccess?: () => void;
+    | 'new'
+  defaultStatus?: string
+  onSuccess?: () => void
 }
 
 function ChangeStatusModal({
@@ -49,7 +50,7 @@ function ChangeStatusModal({
   rowData,
   statusCurrent,
   defaultStatus = '',
-  onSuccess
+  onSuccess,
 }: IChangeStatusModal) {
   const { onSubmit, control, isPending, isValid, watch } = useChangeStatus({
     callbackSuccess: () => {
@@ -61,7 +62,7 @@ function ChangeStatusModal({
       feedback: '',
       attachments: [],
       failed_reason: [],
-      status: defaultStatus
+      status: defaultStatus,
     },
   })
 
@@ -70,7 +71,6 @@ function ChangeStatusModal({
   }, [statusCurrent])
 
   const translation = useTextTranslation()
-
   const showFailedReason = useMemo(() => {
     const watchFields = watch('status')
 
@@ -79,6 +79,13 @@ function ChangeStatusModal({
       watchFields === STATUS_CANDIDATE.OFFERED_LOST
     )
   }, [watch('status')])
+
+  const attachments = watch('attachments')
+  const isValidAttachments = useMemo(() => {
+    if (!Array.isArray(attachments) || isEmpty(attachments)) return true
+
+    return attachments.every((file) => file.status === 'success')
+  }, [attachments])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -249,11 +256,15 @@ function ChangeStatusModal({
           </AppButton>
 
           {!!rowData?.interview_feature ? (
-            <ModalConfirm  disabled={isValid} title={`This candidate still has ${rowData?.interview_feature} left, are you sure want to change the hiring status?`} callbackSubmit={onSubmit}>
+            <ModalConfirm
+              disabled={isValid || !isValidAttachments}
+              title={`This candidate still has ${rowData?.interview_feature} left, are you sure want to change the hiring status?`}
+              callbackSubmit={onSubmit}
+            >
               <ButtonLoading
                 variant="contained"
                 size="small"
-                disabled={isValid}
+                disabled={isValid || !isValidAttachments}
                 handlesubmit={() => {}}
                 loading={isPending}
               >
@@ -264,7 +275,7 @@ function ChangeStatusModal({
             <ButtonLoading
               variant="contained"
               size="small"
-              disabled={isValid}
+              disabled={isValid || !isValidAttachments}
               handlesubmit={onSubmit}
               loading={isPending}
             >

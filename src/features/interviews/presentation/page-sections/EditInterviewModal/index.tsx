@@ -69,15 +69,10 @@ function EditInterviewModal({
     onSubmit()
   }
 
-  const start_from = watch('start_from')
   const interview_date = watch('interview_date');
 
   const date_feature = useMemo(() => {
     return dayjs().isBefore(dayjs(interview_date));
-  }, [interview_date])
-
-  useEffect(() => {
-    trigger('start_from')
   }, [interview_date])
 
   return (
@@ -156,8 +151,8 @@ function EditInterviewModal({
                       format="dd/MM/yyyy"
                       value={field.value ? dayjs(field.value) : null}
                       onChange={(value) => {
-                        if (value && !start_from) {
-                          setValue('start_from', dayjs().toDate())
+                        if(value) {
+                          trigger('start_from')
                         }
 
                         field.onChange(value?.toDate())
@@ -197,6 +192,7 @@ function EditInterviewModal({
                           textFieldProps={{
                             required: true,
                           }}
+                          disabled={!interview_date}
                           timeSteps={{
                             minutes: 30,
                           }}
@@ -224,6 +220,7 @@ function EditInterviewModal({
                           textFieldProps={{
                             required: true,
                           }}
+                          disabled={!interview_date}
                           timeSteps={{
                             minutes: 30,
                           }}

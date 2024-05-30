@@ -17,6 +17,7 @@ import { formatDateToString, getTime, isPast } from 'shared/utils/date'
 import useDeleteInterview from '../../providers/hooks/useDeleteInterview'
 import DeleteOutline from 'shared/components/icons/DeleteOutline'
 import EditOutline from 'shared/components/icons/EditOutline'
+import { Fragment } from 'react/jsx-runtime'
 
 interface IDetailIntefviewModal {
   open: boolean
@@ -61,34 +62,35 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
             <FlexBox justifyContent={'space-between'} alignItems={'center'}>
               <Text13md color={'grey.500'}>
                 {formatDateToString(getValues('interview_date'), 'ddd, MMM D')}
-                {' , '}
-                {getTime(getValues('start_from'))} -
-                {getTime(getValues('end_at'))}
+                {', '}
+                {getTime(getValues('start_from'))} - {getTime(getValues('end_at'))}
               </Text13md>
               <FlexBox gap={1}>
                 {start_from && isPast(start_from) && (
-                  <EditOutline
-                    style={{
-                      height: '24px',
-                      width: '24px',
-                      color: 'red',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => {
-                      handleEditEvent(id)
-                    }}
-                  />
+                  <Fragment>
+                    <EditOutline
+                      style={{
+                        height: '24px',
+                        width: '24px',
+                        color: 'red',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        handleEditEvent(id)
+                      }}
+                    />
+                    <DeleteOutline
+                      style={{
+                        height: '24px',
+                        width: '24px',
+                        color: 'grey.300',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => onDelete()}
+                    />
+                  </Fragment>
                 )}
 
-                <DeleteOutline
-                  style={{
-                    height: '24px',
-                    width: '24px',
-                    color: 'grey.300',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => onDelete()}
-                />
                 <CloseIcon
                   sx={{
                     height: '24px',

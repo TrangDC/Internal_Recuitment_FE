@@ -32,6 +32,7 @@ import {
 } from 'shared/components/genarateInnerHTML'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { useQueryClient } from '@tanstack/react-query'
+import { areDatesEqual } from 'shared/utils/date'
 
 interface Props {
   listFeedback: FeedBack[]
@@ -74,13 +75,15 @@ const ListFeedBack = ({listFeedback}: Props) => {
 
       {!isEmpty(listFeedback) &&
         listFeedback.map((feedback, idx) => {
+          const disabledEdited = areDatesEqual(new Date(feedback.created_at), new Date(feedback.updated_at))
+       
           return (
             <BoxText key={idx}>
               <FlexBox flexDirection={'column'} gap={'10px'} width={'100%'}>
                 <FlexBox width={'100%'} justifyContent={'space-between'}>
                   <FlexBox gap={'8px'}>
                     <TinyText>{feedback.owner.name}</TinyText>
-                    {feedback.updated_at && <BoxTextSquare content="Edited" />}
+                    {!disabledEdited && <BoxTextSquare content="Edited" />}
                   </FlexBox>
                   <FlexBox gap={'15px'} onClick={(e) => e.stopPropagation()}>
                     <EditIcon

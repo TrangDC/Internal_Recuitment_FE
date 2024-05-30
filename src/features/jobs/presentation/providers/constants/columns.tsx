@@ -10,6 +10,7 @@ import { t } from 'i18next'
 import { styled } from '@mui/material'
 import { TinyText } from 'shared/components/form/styles'
 import { LOCATION_LABEL } from 'shared/constants/constants'
+import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
 
 export const StyleTinyText = styled(TinyText)(({ theme }) => ({
   color: theme.palette.grey[500],
@@ -22,7 +23,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-    header: () => <span>{t('name')}</span>,
+    header: () => <span>Job name</span>,
     // enableSorting: false,
   }),
   columnHelper.accessor((row) => row.team.name, {
@@ -34,10 +35,12 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.location, {
     id: 'location',
     header: () => <span>{t('location')}</span>,
-    cell: (info) => <StyleTinyText>
-      {/* @ts-ignore */}
-      {LOCATION_LABEL[info.getValue()]}
-    </StyleTinyText>,
+    cell: (info) => (
+      <StyleTinyText>
+        {/* @ts-ignore */}
+        {LOCATION_LABEL[info.getValue()]}
+      </StyleTinyText>
+    ),
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.user.name, {
@@ -58,7 +61,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   }),
   columnHelper.accessor((row) => row.status, {
     id: 'status',
-    size: 200,
+    size: 150,
     header: () => <span>{t('status')}</span>,
     enableSorting: false,
     cell: (info) => (
@@ -67,6 +70,23 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
         style={{
           backgroundColor: STATUS_STYLE[info.getValue()].backgroundColor,
           color: STATUS_STYLE[info.getValue()].color,
+        }}
+      />
+    ),
+  }),
+  columnHelper.accessor((row) => row.priority, {
+    id: 'priority',
+    size: 150,
+    header: () => <span>Priority</span>,
+    cell: (info) => (
+      <ChipFieldStatus
+        //@ts-ignore
+        label={PRIORITY_DATA[info.getValue()].label}
+        style={{
+          //@ts-ignore
+          backgroundColor: PRIORITY_DATA[info.getValue()].backgroundColor,
+          //@ts-ignore
+          color: PRIORITY_DATA[info.getValue()].color,
         }}
       />
     ),

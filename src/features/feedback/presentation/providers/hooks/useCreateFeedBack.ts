@@ -3,6 +3,8 @@ import useGraphql from 'features/feedback/domain/graphql/graphql'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import { schema, FormDataSchema } from '../constants/schema'
 import useCreateResource from 'shared/hooks/useCreateResource'
+import { transformListArray, transformListItem } from 'shared/utils/utils'
+import { isEmpty } from 'lodash'
 
 interface createFeedbackProps {
   defaultValues?: Partial<FormDataSchema>
@@ -10,8 +12,7 @@ interface createFeedbackProps {
 }
 
 function useCreateFeedback(props: createFeedbackProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess
-  } = props
+  const { defaultValues, callbackSuccess } = props
 
   const { createCandidateJobFeedback, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
@@ -28,13 +29,26 @@ function useCreateFeedback(props: createFeedbackProps = { defaultValues: {} }) {
     onSuccess: callbackSuccess,
   })
 
-  const { handleSubmit, control, formState } = useFormReturn
+  const { handleSubmit, control, formState, watch } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
     handleSubmit((value) => {
-      mutate(value)
+      let attachments =
+        value?.attachments && Array.isArray(value?.attachments)
+          ? value.attachments
+          : []
+
+      attachments = transformListArray(attachments, [
+        'document_id',
+        'document_name',
+      ])
+
+      mutate({
+        ...value,
+        attachments,
+      })
     })()
   }
 
@@ -43,6 +57,7 @@ function useCreateFeedback(props: createFeedbackProps = { defaultValues: {} }) {
     control,
     isValid,
     isPending,
+    watch
   }
 }
 

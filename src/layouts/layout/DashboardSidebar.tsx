@@ -13,11 +13,12 @@ const SidebarWrapper = styled(Box)<{ compact: number }>(
   ({ theme, compact }) => ({
     height: '100vh',
     position: 'fixed',
-    width: compact ? 86 : 280,
+    width: compact ? 86 : 260,
     transition: 'all .2s ease',
     zIndex: theme.zIndex.drawer,
     backgroundColor: theme.palette.background.paper,
     '&:hover': compact && { width: 280 },
+    boxShadow: 'rgba(77, 96, 122, 0.03) 0px 3px 3px -2px, rgba(77, 96, 122, 0.04) 0px 2px 6px 0px, rgba(77, 96, 122, 0.08) 0px 1px 12px 0px'
   })
 )
 

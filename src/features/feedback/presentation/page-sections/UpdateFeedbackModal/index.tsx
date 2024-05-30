@@ -11,13 +11,15 @@ import { FeedBack } from 'features/feedback/domain/interfaces'
 import useUpdateFeedback from '../../providers/hooks/useUpdateFeedback'
 import { Span, Tiny } from 'shared/components/Typography'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
+import { useMemo } from 'react'
+import { isEmpty } from 'lodash'
 
 interface IUpdateFeedbackModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
   rowData: FeedBack
-  onSuccess?: () => void;
+  onSuccess?: () => void
 }
 
 function UpdateFeedbackModal({
@@ -27,21 +29,30 @@ function UpdateFeedbackModal({
   rowData,
   onSuccess,
 }: IUpdateFeedbackModal) {
-  const { onSubmit, control, isPending, isValid, setValue} = useUpdateFeedback({
-    callbackSuccess: () => {
-      setOpen(false)
-      onSuccess?.()
-    },
-    defaultValues: {
-      id: id,
-      feedback: rowData.feedback,
-    },
-  })
+  const { onSubmit, control, isPending, isValid, setValue, watch } =
+    useUpdateFeedback({
+      callbackSuccess: () => {
+        setOpen(false)
+        onSuccess?.()
+      },
+      defaultValues: {
+        id: id,
+        feedback: rowData.feedback,
+        attachments: []
+      },
+    })
 
   const callbackSubmit = (reason: string) => {
     setValue('note', reason)
     onSubmit()
   }
+
+  const attachments = watch('attachments')
+  const isValidAttachments = useMemo(() => {
+    if (!Array.isArray(attachments) || isEmpty(attachments)) return true
+
+    return attachments.every((file) => file.status === 'success')
+  }, [attachments])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -93,13 +104,16 @@ function UpdateFeedbackModal({
                         maxSize: 20,
                         msgError: {
                           maxFile: 'Up to 10 files and 20MB/file',
-                          maxSize: 'Up to 10 files and 20MB/file'
+                          maxSize: 'Up to 10 files and 20MB/file',
                         },
                         descriptionFile: () => {
                           return (
                             <Box>
-                              <Span sx={{ color: '#2A2E37 !important' }}> Attach file </Span>
-                              <Tiny sx={{color: '#2A2E37 !important'}}>
+                              <Span sx={{ color: '#2A2E37 !important' }}>
+                                {' '}
+                                Attach file{' '}
+                              </Span>
+                              <Tiny sx={{ color: '#2A2E37 !important' }}>
                                 Up to 10 files and 20MB/file
                               </Tiny>
                             </Box>
@@ -126,11 +140,14 @@ function UpdateFeedbackModal({
           >
             Cancel
           </AppButton>
-           <UpdateRecord  disabled={isValid} callbackSubmit={callbackSubmit}>
+          <UpdateRecord
+            disabled={isValid || !isValidAttachments}
+            callbackSubmit={callbackSubmit}
+          >
             <ButtonLoading
               variant="contained"
               size="small"
-              disabled={isValid}
+              disabled={isValid || !isValidAttachments}
               handlesubmit={() => {}}
               loading={isPending}
             >

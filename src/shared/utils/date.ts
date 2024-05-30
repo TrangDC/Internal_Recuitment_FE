@@ -13,7 +13,6 @@ export function formatDateToString(value: Date | undefined, format: string) {
 }
 
 export function getTime(value: Date | undefined) {
-  console.log('value', value)
   if (value) {
     const date = dayjs(value)
     const formattedDate = date.format('HH:mm')
@@ -90,3 +89,8 @@ export function isAfterDate(a: Date, b: Date) {
   const date = dayjs(b)
   return input.isAfter(date)
 }
+
+export const areDatesEqual = (date1: Date, date2: Date) => {
+  const format = 'YYYY-MM-DD HH:mm';
+  return dayjs(date1).format(format) === dayjs(date2).format(format);
+};

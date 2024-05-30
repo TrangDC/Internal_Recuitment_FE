@@ -43,7 +43,7 @@ export default function TabJobDetail({
     <Fragment>
       <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1200}>
         <BaseModal.Header
-          title="Job detail"
+          title="Job details"
           setOpen={setOpen}
           EndHeader={
             <FlexBox>
@@ -52,7 +52,7 @@ export default function TabJobDetail({
                   sx={{
                     height: '24px',
                     width: '24px',
-                    color: greyLight[300],
+                    color: "#82868C",
                     cursor: 'pointer',
                   }}
                   onClick={() => {
@@ -65,7 +65,7 @@ export default function TabJobDetail({
                 sx={{
                   height: '24px',
                   width: '24px',
-                  color: greyLight[300],
+                  color: "#82868C",
                   cursor: 'pointer',
                 }}
                 onClick={() => {

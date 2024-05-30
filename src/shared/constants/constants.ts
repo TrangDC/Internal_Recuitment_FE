@@ -25,6 +25,12 @@ export const CURRENCY_STATE = {
   JPY: 'jpy',
 }
 
+export const CURRENCY_TEXT_LABEL = {
+  vnd: 'VND',
+  usd: 'USD',
+  jpy: 'JPY',
+}
+
 export const LOCATION_STATE = {
   HA_NOI: 'ha_noi',
   DA_NANG: 'da_nang',

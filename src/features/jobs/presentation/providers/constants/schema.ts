@@ -37,6 +37,7 @@ export const schema = yup.object({
       : schema.required(RULE_MESSAGES.MC1("unit"))
   }),
   description: yup.string().required(RULE_MESSAGES.MC1("job description")),
+  priority: yup.string().required(RULE_MESSAGES.MC1("priority")),
   note: yup.string(),
 })
 
@@ -76,6 +77,7 @@ export const schemaUpdate = yup.object({
       : schema.required(RULE_MESSAGES.MC1("unit"))
   }),
   description: yup.string().required(RULE_MESSAGES.MC1("job description")),
+  priority: yup.string().required(RULE_MESSAGES.MC1("priority")),
   note: yup.string()
 })
 

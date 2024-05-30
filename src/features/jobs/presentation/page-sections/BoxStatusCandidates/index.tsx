@@ -18,6 +18,7 @@ import ChangeStatusModal from 'features/candidatejob/presentation/page-sections/
 import { Candidate } from 'features/candidates/domain/interfaces'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import { STATUS_CANDIDATE, STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
 
 interface Props {
   title: string
@@ -47,7 +48,9 @@ const BoxStatusCandidates = ({
 
   const queryClient = useQueryClient()
   const handleRefreshList = () => {
-    queryClient.invalidateQueries({ queryKey: [ MODLUE_QUERY_KEY.CANDIDATE_JOB] })
+    queryClient.invalidateQueries({
+      queryKey: [MODLUE_QUERY_KEY.CANDIDATE_JOB],
+    })
   }
 
   const {
@@ -68,15 +71,19 @@ const BoxStatusCandidates = ({
     const data = event.dataTransfer.getData('candidate')
     const parsedData = JSON.parse(data)
 
-    if(parsedData.status === status) return;
-    const listChange = ENABLED_CHANGE_STATUS[parsedData.status];
-    if(listChange.includes(status)) {
+    if (parsedData.status === status) return
+    const listChange = ENABLED_CHANGE_STATUS[parsedData.status]
+    if (listChange.includes(status)) {
       setCandidateSelected(parsedData.candidate)
       handleOpenChangeStatus(parsedData.id, parsedData)
     } else {
-      toast.error(`Cannot move candidate from ${parsedData.status} to ${status}`)
+      toast.error(
+        //@ts-ignore
+        `Cannot move candidate from ${STATUS_CANDIDATE_TEXT[parsedData.status]} to ${STATUS_CANDIDATE_TEXT[status]}`
+      )
     }
   }
+  
 
   return (
     <DivField
@@ -87,10 +94,9 @@ const BoxStatusCandidates = ({
       onDrop={handleDropEvent}
     >
       <BoxTitle>
-        <FlexBox justifyContent={'space-between'}>
-          <Span>
-            {title} {number_candidates}
-          </Span>
+        <FlexBox gap={'10px'} alignItems={'center'}>
+          <Span>{title}</Span>
+          <Tiny color={'#4D607A'}>{number_candidates}</Tiny>
           {Note}
         </FlexBox>
       </BoxTitle>

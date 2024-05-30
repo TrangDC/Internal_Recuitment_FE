@@ -3,6 +3,7 @@ import useGraphql from 'features/feedback/domain/graphql/graphql'
 import { UpdateCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
 import useUpdateResource from 'shared/hooks/useUpdateResource'
+import { transformListArray } from 'shared/utils/utils'
 
 interface updateFeedbackProps {
   defaultValues?: Partial<FormDataSchemaUpdate>
@@ -27,13 +28,26 @@ function useUpdateFeedback(props: updateFeedbackProps = { defaultValues: {} }) {
     onSuccess: callbackSuccess,
   })
 
-  const { handleSubmit, control, formState, setValue } = useFormReturn
+  const { handleSubmit, control, formState, setValue, watch } = useFormReturn
   const isValid = !formState.isDirty || !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
     handleSubmit((value) => {
-      mutate(value)
+      let attachments =
+        value?.attachments && Array.isArray(value?.attachments)
+          ? value.attachments
+          : []
+
+      attachments = transformListArray(attachments, [
+        'document_id',
+        'document_name',
+      ])
+
+      mutate({
+        ...value,
+        attachments,
+      })
     })()
   }
 
@@ -42,7 +56,8 @@ function useUpdateFeedback(props: updateFeedbackProps = { defaultValues: {} }) {
     control,
     isValid,
     isPending,
-    setValue
+    setValue,
+    watch,
   }
 }
 

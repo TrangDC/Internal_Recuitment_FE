@@ -4,8 +4,8 @@ import LayoutSetting from "./LayoutSetting";
 
 // styled components
 const Wrapper = styled(Box)(({ theme }) => ({
-  paddingLeft: "3rem",
-  paddingRight: "3rem",
+  paddingLeft: "28px",
+  paddingRight: "28px",
   transition: "all 0.3s",
   [theme.breakpoints.down(1200)]: {
     width: "100%",

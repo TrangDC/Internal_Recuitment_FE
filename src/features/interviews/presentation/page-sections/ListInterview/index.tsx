@@ -27,8 +27,11 @@ import { Interview } from 'features/interviews/domain/interfaces'
 import DeleteInterviewModal from '../DeleteInterviewModal'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import BoxTextSquare from 'shared/components/utils/boxText'
+import { areDatesEqual, getTime, isPast } from 'shared/utils/date'
 
 interface Props {
   jobApplicationDetail: CandidateJob
@@ -58,7 +61,13 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
 
   const queryClient = useQueryClient()
   const handleRefreshList = () => {
-    queryClient.invalidateQueries({ queryKey: [ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK] })
+    queryClient.invalidateQueries({
+      queryKey: [
+        MODLUE_QUERY_KEY.CANDIDATE_JOB,
+        MODLUE_QUERY_KEY.INTERVIEWER,
+        MODLUE_QUERY_KEY.FEEDBACK,
+      ],
+    })
   }
 
   return (
@@ -77,6 +86,8 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
       </DivActionHeader>
       {!isEmpty(listInterview) &&
         listInterview.map((interview, idx) => {
+          const disabledEdited = areDatesEqual(new Date(interview.created_at), new Date(interview.updated_at))
+
           return (
             <BoxText key={idx}>
               <Accordion>
@@ -89,25 +100,37 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                     gap: '6px',
                   }}
                 >
-                  <FlexBox flexDirection={'column'} gap={'10px'} width={'100%'}>
+                  <FlexBox flexDirection={'column'} gap={'10px'} width={'100%'} paddingTop={'5px'}>
                     <FlexBox width={'100%'} justifyContent={'space-between'}>
-                      <Box>
+                      <FlexBox gap={'8px'}>
                         <TinyText>{interview.title}</TinyText>
-                      </Box>
+                        {!disabledEdited && <BoxTextSquare content="Edited" />}
+                      </FlexBox>
                       <FlexBox
                         gap={'15px'}
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <EditIcon
-                          onClick={(e) => {
-                            handleOpenEdit(interview.id, interview)
-                          }}
-                        />
-                        <DeleteIcon
-                          onClick={(e) => {
-                            handleOpenDelete(interview.id)
-                          }}
-                        />
+                        {interview.start_from &&
+                          isPast(dayjs(interview.start_from).toDate()) && (
+                            <Fragment>
+                              <EditIcon
+                                onClick={(e) => {
+                                  handleOpenEdit(interview.id, interview)
+                                }}
+                                sx={{
+                                  fontSize: '20px'
+                                }}
+                              />
+                              <DeleteIcon
+                                onClick={(e) => {
+                                  handleOpenDelete(interview.id)
+                                }}
+                                sx={{
+                                  fontSize: '20px'
+                                }}
+                              />
+                            </Fragment>
+                          )}
                       </FlexBox>
                     </FlexBox>
 
@@ -117,8 +140,11 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                         <TinyText>
                           {format(
                             new Date(interview.interview_date),
-                            'HH:mm, dd/MM/yyyy'
+                            'dd/MM/yyyy'
                           )}
+                          {', '}
+                          {getTime(dayjs(interview.start_from).toDate())} -{' '}
+                          {getTime(dayjs(interview.end_at).toDate())}
                         </TinyText>
                       </Box>
                       <Box>
@@ -167,7 +193,7 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
           hiring_job={jobApplicationDetail.hiring_job}
           open={openCreate}
           setOpen={setOpenCreate}
-         onSuccess={handleRefreshList}
+          onSuccess={handleRefreshList}
         />
       )}
 

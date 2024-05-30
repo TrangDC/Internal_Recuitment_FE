@@ -2,7 +2,7 @@ import { Box, styled } from '@mui/material'
 import FlexBox from '../flexbox/FlexBox'
 import UploadIcon from '../icons/UploadIcon'
 import { Span, Tiny } from '../Typography'
-import { DragEvent, Fragment, useMemo, useState } from 'react'
+import { DragEvent, Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import TrashIcon from '../icons/TrashIcon'
 import useTextTranslation from 'shared/constants/text'
 import ShowFile from './ItemFile'
@@ -15,6 +15,10 @@ import { UploadFileAttachment } from 'services/handleAttachments'
 import { checkMaxFile, checkMaxSize, regexFile, wrapperValidate } from './utils'
 import { toast } from 'react-toastify'
 import { RULE_MESSAGES } from 'shared/constants/vaildate'
+import { isEmpty } from 'lodash'
+import UploadFileComponent from './UploadFileComponent'
+import { ParamUploadFile, UploadStatus } from 'shared/interfaces'
+import { check } from 'prettier'
 
 const InputFileContainer = styled(Box)(({ theme }) => ({
   border: '2px dashed #88CDFF',
@@ -73,12 +77,12 @@ export interface InputFileProps {
     maxSize?: string
     is_valid?: string
   }
-  callbackFileChange?: (data: FileAttachment[]) => void
+  callbackFileChange?: (data: FileUploadAttachment[]) => void
   maxFile?: number
   maxSize?: number | null
   showList?: boolean
   descriptionFile?: () => React.ReactNode
-  multiple?: boolean,
+  multiple?: boolean
 }
 
 type UploadAttachment = {
@@ -88,6 +92,14 @@ type UploadAttachment = {
     id: string
     url: string
   }
+}
+
+type FileUploadAttachment = {
+  document_id: string
+  document_name: string
+  file: File
+  url: string
+  status: UploadStatus
 }
 
 const InputFile = ({
@@ -101,21 +113,13 @@ const InputFile = ({
   descriptionFile,
   multiple = true,
 }: InputFileProps) => {
-  const [files, setFiles] = useState<FileAttachment[]>([])
+
+  //version2
+  const [listFile, setListFile] = useState<FileUploadAttachment[]>([])
+  const changed = useRef<boolean>(false);
   const idFile = useMemo(() => {
     return uuidv4()
   }, [])
-
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const handleRemoveFile = (idx: number) => {
-    const filterFile = files.filter((file, _) => {
-      return _ !== idx
-    })
-    setFiles(filterFile)
-    callbackFileChange && callbackFileChange(filterFile)
-  }
-
   //validate version2
   function validateFiles({
     files,
@@ -182,11 +186,13 @@ const InputFile = ({
 
   //version 2 upload
   const handleChangeFiles = async (fileUploads: File[]) => {
+    if(!changed.current) changed.current = true;
+   
     const listFileUpload: ParamCreateURLAttachment[] = []
     //validation each file
     const validate = validateFiles({
       files: fileUploads,
-      lengthFileCurrent: files.length + fileUploads.length,
+      lengthFileCurrent: listFile.length + fileUploads.length,
       fieldValidate: {
         regex: regexString,
         maxFile: maxFile,
@@ -196,7 +202,7 @@ const InputFile = ({
 
     if (!validate.status) {
       toast.error(validate.msgError)
-      setLoading(false);
+      // setLoading(false)
       return
     }
 
@@ -227,7 +233,7 @@ const InputFile = ({
         })
         .catch((error) => {
           toast.error((error as Error).message)
-          setLoading(false);
+          // setLoading(false)
           return Promise.reject(error)
         })
     })
@@ -235,44 +241,47 @@ const InputFile = ({
       return values
     })
 
-    //list promise upload azure storage
-    const promisesUploadAzure = listUrlAzure.map((azureFile) => {
-      return new Promise((resolve, reject) => {
-        const { file } = azureFile
-        resolve(UploadFileAttachment(azureFile.url, file?.file as File))
-      })
-        .then((response: any) => {
-          return azureFile
-        })
-        .catch((error) => {
-          toast.error((error as Error).message)
-          setLoading(false);
-          return Promise.reject(error)
-        })
-    })
-    const listUrlAzureUpload = await Promise.all(promisesUploadAzure)
-      .then((values) => {
-        return values
-      })
-      .catch((error) => {
-        throw error
-      })
+    //handle upload
+    const newFiles: FileUploadAttachment[] = listUrlAzure.map((itemFile) => {
+      const { file, url } = itemFile
 
-    const fileEnabled = listUrlAzureUpload.map((item) => {
       return {
-        id: item?.file?.id,
-        name: item?.file?.fileName,
-        file: item?.file?.file,
+        document_id: file.id,
+        document_name: file.fileName,
+        file: file.file as File,
+        url,
+        status: 'init',
       }
     })
-    const filesUpload = [...files, ...fileEnabled]
-    //@ts-ignore
-    setFiles(filesUpload)
-    callbackFileChange?.(filesUpload as FileAttachment[])
 
-    //loading
-    setLoading(false);
+    setListFile((prev) => [...prev, ...newFiles])
   }
+
+  const handleChangeStatusFile = ({ document_id, status }: ParamUploadFile) => {
+    setListFile((prev) =>
+      prev.map((file) => {
+        if (file.document_id !== document_id) return file
+
+        return {
+          ...file,
+          status,
+        }
+      })
+    )
+  }
+
+  const handleRemoveFile = (document_id: string) => {
+    const filterFile = listFile.filter((file, _) => {
+      return file.document_id !== document_id
+    })
+    setListFile(filterFile)
+  }
+
+  useEffect(() => {
+    if(changed.current) {
+      callbackFileChange?.(listFile)
+    }
+  }, [listFile])
 
   return (
     <InputFileWrapper>
@@ -285,7 +294,7 @@ const InputFile = ({
             event.preventDefault()
             const fileEvent = event.dataTransfer.files
             const listFileSelected = []
-  
+
             if (fileEvent) {
               for (let i = 0; i < fileEvent?.length; i++) {
                 listFileSelected.push(fileEvent[i])
@@ -311,16 +320,22 @@ const InputFile = ({
           </FlexBoxContainer>
         </InputFileContainer>
       </label>
-
-      {showList && (
+      {!isEmpty(listFile) && (
         <ListFile>
-          {files.map((file, index) => {
+          {listFile.map((itemFile) => {
             return (
-              <ShowFile
-                name={file?.name}
-                size={file?.file?.size}
-                key={index}
-                IconEnd={<TrashIcon onClick={() => handleRemoveFile(index)} />}
+              <UploadFileComponent
+                IconEnd={
+                  <TrashIcon
+                    onClick={() => {
+                      handleRemoveFile(itemFile.document_id)
+                    }}
+                  />
+                }
+                {...itemFile}
+                key={itemFile.document_id}
+                onSuccess={handleChangeStatusFile}
+                onError={handleChangeStatusFile}
               />
             )
           })}
@@ -335,8 +350,7 @@ const InputFile = ({
         multiple={multiple}
         hidden
         onChange={(event) => {
-          //setLoading
-          setLoading(true);
+          // setLoading(true)
 
           const fileEvent = event.target.files
           const listFileSelected = []

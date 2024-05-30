@@ -52,5 +52,6 @@ export const ChipItem = styled(Chip)(({ theme }) => ({
   '& span': {
     fontSize: '14px',
     fontWeight: 500,
+    color: '#121625'
   },
 }))

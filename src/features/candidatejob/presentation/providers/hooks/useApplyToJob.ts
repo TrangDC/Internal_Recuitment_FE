@@ -2,7 +2,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../constants/schema'
 import { NewCandidateJobInput } from 'features/candidates/domain/interfaces'
-import { getValueOfObj, removeInfoData } from 'shared/utils/utils'
+import {
+  getValueOfObj,
+  removeInfoData,
+  transformListArray,
+} from 'shared/utils/utils'
 import useCreateResource from 'shared/hooks/useCreateResource'
 import _ from 'lodash'
 
@@ -29,17 +33,28 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     onSuccess: callbackSuccess,
   })
 
-  const { handleSubmit, control, formState, resetField } = useFormReturn
+  const { handleSubmit, control, formState, resetField, watch } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
     handleSubmit((value) => {
+      let attachments =
+        value?.attachments && Array.isArray(value?.attachments)
+          ? value.attachments
+          : []
+
+      attachments = transformListArray(attachments, [
+        'document_id',
+        'document_name',
+      ])
+
       const valueClone = removeInfoData({
         field: ['team_id'],
         object: {
           ..._.cloneDeep(value),
           hiring_job_id: getValueOfObj({ obj: value.hiring_job_id, key: 'id' }),
+          attachments: attachments,
         },
       })
       mutate(valueClone as NewCandidateJobInput)
@@ -52,6 +67,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     isValid,
     isPending,
     resetField,
+    watch,
   }
 }
 

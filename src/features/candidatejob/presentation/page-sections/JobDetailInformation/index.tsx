@@ -35,14 +35,14 @@ interface JobDetailInformationProps {
 const JobDetailInformation = ({
   jobApplicationDetail,
 }: JobDetailInformationProps) => {
-  const disabledChangeStatus = useMemo(() => {
+  const hiddenChangStatus = useMemo(() => {
     const disabledStatuses = [
       STATUS_CANDIDATE.KIV,
       STATUS_CANDIDATE.OFFERED_LOST,
       STATUS_CANDIDATE.EX_STAFTT
     ];
 
-    return disabledStatuses.includes(jobApplicationDetail?.status);
+    return !disabledStatuses.includes(jobApplicationDetail?.status);
   }, [jobApplicationDetail?.status])
 
   const {
@@ -106,12 +106,12 @@ const JobDetailInformation = ({
               />
             }
           >
-            Download
+            Download CV
           </ButtonStatus>
         </DivItemInformation>
         <DivItemInformation>
-          <ButtonStatus
-          disabled={disabledChangeStatus}
+          {hiddenChangStatus &&  <ButtonStatus
+          // disabled={showChangeStatus}
             onClick={() => {
               handleOpenChangeStatus(
                 jobApplicationDetail.id,
@@ -130,7 +130,7 @@ const JobDetailInformation = ({
             }
           >
             Change status
-          </ButtonStatus>
+          </ButtonStatus>}
         </DivItemInformation>
       </FlexBox>
       {openChangeStatus && (
