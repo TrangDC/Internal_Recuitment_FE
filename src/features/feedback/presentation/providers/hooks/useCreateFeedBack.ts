@@ -3,8 +3,7 @@ import useGraphql from 'features/feedback/domain/graphql/graphql'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import { schema, FormDataSchema } from '../constants/schema'
 import useCreateResource from 'shared/hooks/useCreateResource'
-import { transformListArray, transformListItem } from 'shared/utils/utils'
-import { isEmpty } from 'lodash'
+import { transformListArray } from 'shared/utils/utils'
 
 interface createFeedbackProps {
   defaultValues?: Partial<FormDataSchema>
