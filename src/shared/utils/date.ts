@@ -91,6 +91,12 @@ export function isAfterDate(a: Date, b: Date) {
 }
 
 export const areDatesEqual = (date1: Date, date2: Date) => {
-  const format = 'YYYY-MM-DD HH:mm';
-  return dayjs(date1).format(format) === dayjs(date2).format(format);
-};
+  const format = 'YYYY-MM-DD HH:mm'
+  return dayjs(date1).format(format) === dayjs(date2).format(format)
+}
+
+export const getLocalTimeOffset = () => {
+  const localTimezone = dayjs.tz.guess()
+  const offsetInMinutes = dayjs().tz(localTimezone).utcOffset()
+  return offsetInMinutes / 60 // đổi phút sang giờ
+}

@@ -11,7 +11,7 @@ import {
   convertToRootByTimeNow,
   convertToRootDate,
 } from '../../page-sections/google-calendar/functions'
-import { convertToUTC } from 'shared/utils/date'
+import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
 
 interface IUseCreateInterview {
   onSuccess: (data: BaseRecord) => void
@@ -61,7 +61,10 @@ function useCreateInterview(props: IUseCreateInterview) {
           value.to,
           value.date
         )
-        const interview_date = convertToUTC(value.date).toDate().toISOString()
+        const interview_date = convertToUTC(value.date)
+          .startOf('day')
+          .subtract(getLocalTimeOffset(), 'hour')
+          .toISOString()
         const formatStart = convertToUTC(newStart).toDate().toISOString()
         const formatEnd = convertToUTC(newEnd).toDate().toISOString()
         const formData: NewInterviewInput = {
@@ -83,16 +86,18 @@ function useCreateInterview(props: IUseCreateInterview) {
     const from = getValues('from')
     const to = getValues('to')
     const date = getValues('date')
+
     if (from) {
       const fromDate = convertToRootByTimeNow(from, date)
       setValue('from', fromDate.toDate(), { shouldValidate: true })
+      trigger(['from'])
     }
 
     if (to) {
       const toDate = convertToRootByTimeNow(to, date)
       setValue('to', toDate.toDate(), { shouldValidate: true })
+      trigger(['to'])
     }
-    trigger(['from', 'to'])
   }
 
   function onSelectedTo(value?: Date) {

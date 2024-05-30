@@ -7,7 +7,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import useEditResource from 'shared/hooks/useEditResource/useEditResource'
 import { BaseRecord } from 'shared/interfaces/common'
-import { convertToUTC } from 'shared/utils/date'
+import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
 import {
   convertToRootByTimeNow,
   convertToRootDate,
@@ -75,7 +75,10 @@ function useEditInterview(props: UseEditInterviewProps) {
           value.to,
           value.date
         )
-        const interview_date = convertToUTC(value.date).toDate().toISOString()
+        const interview_date = convertToUTC(value.date)
+          .startOf('day')
+          .subtract(getLocalTimeOffset(), 'hour')
+          .toISOString()
         const formatStart = convertToUTC(newStart).toISOString()
         const formatEnd = convertToUTC(newEnd).toISOString()
         const formData: UpdateCandidateInterviewInput = {
