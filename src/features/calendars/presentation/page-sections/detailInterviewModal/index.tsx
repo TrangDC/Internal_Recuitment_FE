@@ -105,7 +105,7 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
               </FlexBox>
             </FlexBox>
             <H5 color={'grey.900'}>
-              {getValues('title')} - {getValues('candidateName')}
+              {getValues('title')}
             </H5>
           </FlexBox>
           <FlexBox></FlexBox>

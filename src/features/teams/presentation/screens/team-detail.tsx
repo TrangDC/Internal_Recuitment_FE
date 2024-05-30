@@ -26,7 +26,7 @@ const JobDetail = () => {
           <IconWrapper>
             <TeamIcon sx={{ color: 'primary.main' }} />
           </IconWrapper>
-          <TextHeading>{translation.MODLUE_TEAMS.teams}</TextHeading>
+          <TextHeading>Team detail</TextHeading>
         </FlexBox>
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>

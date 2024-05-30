@@ -124,6 +124,7 @@ const JobApplicationHistory = ({candidateDetail}: {candidateDetail: Candidate}) 
           open={openCreate}
           setOpen={setOpenCreate}
           candidateId={id as string}
+          onSuccess={handleRefreshList}
         />
       )}
       {openChangeStatus && (

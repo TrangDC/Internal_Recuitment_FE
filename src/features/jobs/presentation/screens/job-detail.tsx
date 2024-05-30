@@ -115,24 +115,14 @@ const JobDetail = () => {
                 </FlexBox>
               </FlexBox>
               <FlexBox gap={1}>
-                {jobDetail.status !== STATUS_STATE.OPENED ? (
-                  <BtnPrimary
+                <BtnPrimary
                     onClick={() => {
                       handleOpenStatus(jobDetail?.id, jobDetail)
                     }}
+                    className={jobDetail.status === STATUS_STATE.OPENED && !jobDetail?.is_able_to_close ? 'disabled': ''}
                   >
-                    <Span>Reopen Job</Span>
+                    <Span>{jobDetail.status === STATUS_STATE.OPENED ? 'Close Job' : 'Reopen Job'}</Span>
                   </BtnPrimary>
-                ) : jobDetail.status === STATUS_STATE.OPENED &&
-                  jobDetail?.is_able_to_close ? (
-                  <BtnPrimary
-                    onClick={() => {
-                      handleOpenStatus(jobDetail?.id, jobDetail)
-                    }}
-                  >
-                    <Span>Close job {jobDetail?.is_able_to_close}</Span>
-                  </BtnPrimary>
-                ) : null}
                 <BtnPrimary onClick={() => setOpenTab(true)}>
                   <Span>View Details</Span>
                 </BtnPrimary>
@@ -141,7 +131,7 @@ const JobDetail = () => {
           </HeadingWrapper>
         </BoxWrapperOuterContainer>
 
-        <BoxWrapperOuterContainer>
+        <BoxWrapperOuterContainer sx={{marginTop: 0}}>
           <HeadingWrapper sx={{ marginTop: 0, padding: 2 }}>
             <GenaralInformationHiring />
           </HeadingWrapper>

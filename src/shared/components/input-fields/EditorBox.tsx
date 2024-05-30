@@ -28,6 +28,10 @@ const StyleEditorBox = styled(Box)(({ theme }) => ({
     border: 'none',
   },
 
+  '& .tox-statusbar': {
+    display: 'none !important'
+  },
+
   '& .tox-edit-area': {
     '&::before': {
       border: 'none !important',

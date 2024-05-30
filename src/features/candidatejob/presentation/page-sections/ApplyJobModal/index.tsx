@@ -22,13 +22,15 @@ interface IApplyJobModal {
   open: boolean
   setOpen: (value: boolean) => void
   candidateId: string
+  onSuccess?: () => void
 }
 
-function ApplyJobModal({ open, setOpen, candidateId }: IApplyJobModal) {
+function ApplyJobModal({ open, setOpen, candidateId, onSuccess }: IApplyJobModal) {
   const { onSubmit, control, isPending, isValid, resetField, watch } =
     useApplyToJob({
       callbackSuccess: () => {
         setOpen(false)
+        onSuccess?.()
       },
       defaultValues: {
         candidate_id: candidateId,

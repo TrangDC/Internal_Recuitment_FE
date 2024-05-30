@@ -15,7 +15,7 @@ export const CreateInterviewSchema = yup.object().shape({
   date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .min(dayjs().startOf('day').toDate(), 'Date cannot be in the past')
+    .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
     .required(RULE_MESSAGES.MC1('date')),
   from: yup
     .date()
@@ -23,7 +23,7 @@ export const CreateInterviewSchema = yup.object().shape({
     .required(RULE_MESSAGES.MC1('start from'))
     .test(
       'is-before-to',
-      RULE_MESSAGES.EW('end at', 'start from'),
+      'End time of the interview must be after the Start time',
       function (value) {
         const { to } = this.parent
         return dayjs(value).isBefore(dayjs(to))
@@ -39,7 +39,7 @@ export const CreateInterviewSchema = yup.object().shape({
     .required(RULE_MESSAGES.MC1('end at'))
     .test(
       'is-before-to',
-      RULE_MESSAGES.EW('end at', 'start from'),
+      'End time of the interview must be after the Start time',
       function (value) {
         const { from } = this.parent
         return dayjs(from).isBefore(dayjs(value))
@@ -65,7 +65,7 @@ export const EditInterviewSchema = yup.object().shape({
   date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
-    .min(dayjs().startOf('day').toDate(), 'Date cannot be in the past')
+    .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
     .required(RULE_MESSAGES.MC1('date')),
   from: yup
     .date()
@@ -73,7 +73,7 @@ export const EditInterviewSchema = yup.object().shape({
     .required(RULE_MESSAGES.MC1('start from'))
     .test(
       'is-before-to',
-      RULE_MESSAGES.EW('end at', 'start from'),
+      'End time of the interview must be after the Start time',
       function (value) {
         const { to } = this.parent
         return dayjs(value).isBefore(dayjs(to))
@@ -89,7 +89,7 @@ export const EditInterviewSchema = yup.object().shape({
     .required(RULE_MESSAGES.MC1('end at'))
     .test(
       'is-before-to',
-      RULE_MESSAGES.EW('end at', 'start from'),
+      'End time of the interview must be after the Start time',
       function (value) {
         const { from } = this.parent
         return dayjs(from).isBefore(dayjs(value))
