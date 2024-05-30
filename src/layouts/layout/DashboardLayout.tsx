@@ -20,8 +20,8 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
 
   // dashboard body wrapper custom style
   const customStyle: CSSProperties = {
-    width: `calc(100% - ${sidebarCompact ? '86px' : '280px'})`,
-    marginLeft: sidebarCompact ? '86px' : '280px',
+    width: `calc(100% - ${sidebarCompact ? '86px' : '260px'})`,
+    marginLeft: sidebarCompact ? '86px' : '260px',
   }
 
   return (

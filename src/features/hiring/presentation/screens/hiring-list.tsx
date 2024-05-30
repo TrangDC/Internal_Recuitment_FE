@@ -38,7 +38,7 @@ const HiringList = () => {
     setOpenEdit,
   } = useActionTable()
   const { useTableReturn } = useTeamTable()
-  const { handleFreeWord } = useTableReturn
+  const { handleFreeWordMultiple } = useTableReturn
   const { colummTable } = useBuildColumnTable({
     actions: [
       {
@@ -61,11 +61,12 @@ const HiringList = () => {
     columns,
   })
   const [teams, setTeams] = useState<BaseRecord[]>([])
+  const [searchField, setSearchField] = useState('')
 
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.keyCode === 13) {
       //@ts-ignore
-      handleFreeWord('name', event.target.value)
+      handleFreeWordMultiple({name: searchField, email: searchField})
     }
   }
 
@@ -104,12 +105,18 @@ const HiringList = () => {
               variant="outlined"
               size="small"
               sx={{ width: '400px', fontSize: '13px' }}
+              onChange={(e) => setSearchField(e.target.value)}
               onKeyUp={handleFreeWorld}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton>
-                      <SearchIcon sx={{ fontSize: '16px' }} />
+                      <SearchIcon
+                        sx={{ fontSize: '16px' }}
+                        onClick={() => {
+                          handleFreeWordMultiple({name: searchField, email: searchField})
+                        }}
+                      />
                     </IconButton>
                   </InputAdornment>
                 ),

@@ -20,3 +20,11 @@ export interface ResponRefreshToken {
   refreshToken: string
   tokenType: string
 }
+
+export type UploadStatus = 'init' | 'uploading' | 'error' | 'success';
+export type ParamUploadFile = {
+  document_id: string
+  file: File
+  url: string
+  status: UploadStatus
+}

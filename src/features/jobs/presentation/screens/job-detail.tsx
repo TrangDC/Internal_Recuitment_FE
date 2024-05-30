@@ -22,6 +22,7 @@ import CloseJobModal from '../page-sections/CloseJobModal'
 import TabJobDetail from '../page-sections/TabDetail'
 import { LOCATION_LABEL, STATUS_STATE } from 'shared/constants/constants'
 import { format } from 'date-fns'
+import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
 
 const JobDetail = () => {
   const [openTab, setOpenTab] = useState(false)
@@ -79,6 +80,23 @@ const JobDetail = () => {
                         backgroundColor:
                           STATUS_STYLE[jobDetail?.status]?.backgroundColor,
                         color: STATUS_STYLE[jobDetail?.status]?.color,
+                      }}
+                    />
+                  </TinyText>
+                </FlexBox>
+
+                <FlexBox gap={0.75} alignItems={'center'}>
+                  <SpanText>Priority</SpanText>
+                  <TinyText>
+                    <ChipFieldStatus
+                      //@ts-ignore
+                      label={PRIORITY_DATA[jobDetail?.priority]?.label}
+                      style={{
+                        backgroundColor:
+                          //@ts-ignore
+                          PRIORITY_DATA[jobDetail?.priority]?.backgroundColor,
+                        //@ts-ignore
+                        color: PRIORITY_DATA[jobDetail?.priority]?.color,
                       }}
                     />
                   </TinyText>

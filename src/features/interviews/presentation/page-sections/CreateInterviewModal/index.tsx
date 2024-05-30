@@ -36,7 +36,6 @@ function CreateInterviewModal({
     control,
     isPending,
     isValid,
-    handleGenerateToDate,
     setValue,
     watch,
     trigger,
@@ -47,21 +46,16 @@ function CreateInterviewModal({
     },
     defaultValues: {
       candidate_job_id: id,
+      interview_date: new Date(),
     },
   })
-
-  const start_from = watch('start_from')
+  
   const interview_date = watch('interview_date')
 
   const date_feature = useMemo(() => {
     return dayjs().isBefore(dayjs(interview_date))
   }, [interview_date])
 
-  useEffect(() => {
-    if (interview_date) {
-      trigger('start_from')
-    }
-  }, [interview_date])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -138,10 +132,9 @@ function CreateInterviewModal({
                       format="dd/MM/yyyy"
                       value={field.value ? dayjs(field.value) : null}
                       onChange={(value) => {
-                        if (value && !start_from) {
-                          setValue('start_from', dayjs().toDate())
+                        if(value) {
+                          trigger('start_from')
                         }
-
                         field.onChange(value?.toDate())
                       }}
                       minDate={dayjs()}
@@ -175,6 +168,7 @@ function CreateInterviewModal({
                           }}
                           views={['hours', 'minutes']}
                           ampm={false}
+                          disabled={!interview_date}
                           minTime={
                             date_feature ? dayjs().hour(0).minute(0) : dayjs()
                           }
@@ -207,6 +201,7 @@ function CreateInterviewModal({
                           minTime={
                             date_feature ? dayjs().hour(0).minute(0) : dayjs()
                           }
+                          disabled={!interview_date}
                           textFieldProps={{
                             required: true,
                           }}

@@ -8,9 +8,11 @@ import { useMemo } from 'react'
 import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
 import useTextTranslation from 'shared/constants/text'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import {  SpanText, TinyText } from 'shared/components/form/styles'
+import { SpanText, TinyText } from 'shared/components/form/styles'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { BoxCircle } from 'shared/styles'
+import { LOCATION_LABEL } from 'shared/constants/constants'
+import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
 
 const DivWrapperField = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -47,6 +49,7 @@ const GeneralInformationField = () => {
   const salary = useMemo(() => {
     return new SalaryFactory({
       salary_type: jobDetail.salary_type,
+      salary_unit: jobDetail.currency,
       salary_attibutes: getInfoData({
         field: ['salary_from', 'salary_to'],
         object: jobDetail,
@@ -65,19 +68,37 @@ const GeneralInformationField = () => {
               <SpanText>{translation.MODLUE_JOBS.job_name}</SpanText>
               <TinyText>{jobDetail?.name}</TinyText>
             </DivField>
+          </FlexBox>
+          <FlexBox gap={7.5}>
             <DivField>
               <SpanText>{translation.COMMON.status}</SpanText>
               <TinyText>
-              <ChipFieldStatus
-                      label={STATUS_STYLE[jobDetail?.status]?.text}
-                      style={{
-                        backgroundColor:
-                          STATUS_STYLE[jobDetail?.status]?.backgroundColor,
-                        color: STATUS_STYLE[jobDetail?.status]?.color,
-                      }}
-                    />
-                </TinyText>
+                <ChipFieldStatus
+                  label={STATUS_STYLE[jobDetail?.status]?.text}
+                  style={{
+                    backgroundColor:
+                      STATUS_STYLE[jobDetail?.status]?.backgroundColor,
+                    color: STATUS_STYLE[jobDetail?.status]?.color,
+                  }}
+                />
+              </TinyText>
             </DivField>
+
+            <DivField>
+              <SpanText>Priority</SpanText>
+              <TinyText>
+                <ChipFieldStatus
+                  //@ts-ignore
+                  label={PRIORITY_DATA[jobDetail?.priority]?.label}
+                  style={{
+                    backgroundColor:
+                      PRIORITY_DATA[jobDetail?.priority]?.backgroundColor,
+                    color: PRIORITY_DATA[jobDetail?.priority]?.color,
+                  }}
+                />
+              </TinyText>
+            </DivField>
+
             <DivField>
               <SpanText>{translation.MODLUE_TEAMS.team}</SpanText>
               <TinyText>{jobDetail?.team?.name}</TinyText>
@@ -87,11 +108,15 @@ const GeneralInformationField = () => {
           <FlexBox gap={7.5}>
             <DivField>
               <SpanText>{translation.COMMON.location}</SpanText>
-              <TinyText>{jobDetail?.location}</TinyText>
+              <TinyText>{LOCATION_LABEL[jobDetail?.location]}</TinyText>
             </DivField>
             <DivField>
               <SpanText>{translation.MODLUE_JOBS.staft_required}</SpanText>
-              <BoxCircle><TinyText sx={{color: 'white !important'}}>{jobDetail?.amount}</TinyText></BoxCircle>  
+              <BoxCircle>
+                <TinyText sx={{ color: 'white !important' }}>
+                  {jobDetail?.amount}
+                </TinyText>
+              </BoxCircle>
             </DivField>
             <DivField>
               <SpanText>{translation.MODLUE_JOBS.requester}</SpanText>
@@ -102,7 +127,9 @@ const GeneralInformationField = () => {
           <FlexBox gap={7.5}>
             <DivField>
               <SpanText>{translation.COMMON.salary}</SpanText>
-              <TinyText>{salary?.getSalaryByType()?.gerenateStringSalary()}</TinyText>
+              <TinyText>
+                {salary?.getSalaryByType()?.gerenateStringSalary()}
+              </TinyText>
             </DivField>
           </FlexBox>
         </FlexBox>

@@ -7,12 +7,11 @@ import WarningIcon from 'shared/components/icons/WarningIcon'
 interface IWarningModal {
   open: boolean
   setOpen: (value: boolean) => void
-  title: string,
-  content: string,
+  title: string
+  content: string
 }
 
-function WarningModal({ open, setOpen, title, content}: IWarningModal) {
-
+function WarningModal({ open, setOpen, title, content }: IWarningModal) {
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={560}>
       <BaseModal.Header
@@ -27,7 +26,7 @@ function WarningModal({ open, setOpen, title, content}: IWarningModal) {
             alignItems={'center'}
             marginTop={1}
           >
-            <TinyText sx={{fontSize: 15}}>{content}</TinyText>
+            <TinyText sx={{ fontSize: 15, width: '100%' }}>{content}</TinyText>
           </FlexBox>
         </FlexBox>
       </BaseModal.ContentMain>
@@ -38,8 +37,8 @@ function WarningModal({ open, setOpen, title, content}: IWarningModal) {
             size="small"
             onClick={() => setOpen(false)}
             sx={{
-                backgroundColor: '#2499EF !important',
-                color: 'white !important'
+              backgroundColor: '#2499EF !important',
+              color: 'white !important',
             }}
           >
             OK

@@ -27,7 +27,7 @@ function FailedModal({ open, setOpen, title, content}: IFailedModal) {
             alignItems={'center'}
             marginTop={1}
           >
-            <TinyText sx={{fontSize: 15}}>{content}</TinyText>
+            <TinyText sx={{fontSize: 15, width: '100%'}}>{content}</TinyText>
           </FlexBox>
         </FlexBox>
       </BaseModal.ContentMain>

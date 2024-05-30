@@ -21,7 +21,7 @@ const GenaralInformationHiring = () => {
       <Box>
         <FlexBox gap={'10px'} flexWrap={'wrap'}>
           <BoxStatusCandidates
-            title="Application"
+            title="Applied"
             number_candidates={candidatesStatus?.applied?.length}
             list_candidates={candidatesStatus?.applied}
             status={ENUM_STATUS_CANDIDATE.APPLIED}
@@ -69,7 +69,7 @@ const GenaralInformationHiring = () => {
             />}
           />
           <BoxStatusCandidates
-            title="Offer-lost"
+            title="Offered lost"
             number_candidates={candidatesStatus?.offer_lost?.length}
             list_candidates={candidatesStatus?.offer_lost}
             status={ENUM_STATUS_CANDIDATE.OFFERED_LOST}

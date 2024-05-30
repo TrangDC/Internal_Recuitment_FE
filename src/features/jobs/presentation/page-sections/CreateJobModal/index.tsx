@@ -18,6 +18,7 @@ import SalaryTypeAutoComponent from 'shared/components/autocomplete/salary-type-
 import CurrencyAutoComplete from 'shared/components/autocomplete/currency-autocomplete'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 
 interface ICreateJobModal {
   open: boolean
@@ -42,12 +43,12 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
       <BaseModal.Header
-        title={"Add a new job"}
+        title={'Add a new job'}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+          <FlexBox flexDirection={'column'}>
             <FormControl fullWidth>
               <Controller
                 control={control}
@@ -61,6 +62,30 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
+                )}
+              />
+            </FormControl>
+          </FlexBox>
+          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="priority"
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <PriorityAutoComplete
+                      value={field.value}
+                      onChange={(data) => field.onChange(data?.value)}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Priority',
+                      }}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -185,7 +210,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                       control={control}
                       render={({ field, fieldState }) => (
                         <Fragment>
-                          <InputNumberComponent<FormDataSchema>                    
+                          <InputNumberComponent<FormDataSchema>
                             label={salary_item?.label}
                             field={field}
                             fullWidth
@@ -272,7 +297,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
                     <EditorBoxComponent<FormDataSchema>
-                      label={"Job description"}
+                      label={'Job description'}
                       field={field}
                       required={true}
                     />

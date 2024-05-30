@@ -9,6 +9,8 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Span, Tiny } from 'shared/components/Typography'
+import { useMemo } from 'react'
+import { isEmpty } from 'lodash'
 
 interface ICreateFeedbackModal {
   open: boolean
@@ -23,15 +25,23 @@ function CreateFeedbackModal({
   candidate_job_id,
   onSuccess,
 }: ICreateFeedbackModal) {
-  const { onSubmit, control, isPending, isValid } = useCreateFeedback({
+  const { onSubmit, control, isPending, isValid, watch } = useCreateFeedback({
     callbackSuccess: () => {
       setOpen(false)
       onSuccess?.();
     },
     defaultValues: {
       candidate_job_id: candidate_job_id,
+      attachments: []
     },
   })
+
+  const attachments = watch('attachments');
+  const isValidAttachments = useMemo(() => {
+    if(!Array.isArray(attachments) || isEmpty(attachments)) return true;
+
+    return attachments.every((file) => file.status === 'success')
+  }, [attachments])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -119,7 +129,7 @@ function CreateFeedbackModal({
           <ButtonLoading
             variant="contained"
             size="small"
-            disabled={isValid}
+            disabled={isValid || !isValidAttachments}
             handlesubmit={onSubmit}
             loading={isPending}
           >

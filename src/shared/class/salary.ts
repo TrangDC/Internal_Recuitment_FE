@@ -1,16 +1,22 @@
+import { CURRENCY_TEXT_LABEL } from 'shared/constants/constants'
+import { formatCurrency } from 'shared/utils/utils'
+
 interface Salary {
   salary_type: string
   salary_attibutes?: any
+  salary_unit?: 'vnd' | 'usd' | 'jpy'
 }
 
 export class SalaryFactory {
   salary_type: string
+  salary_unit?: 'vnd' | 'usd' | 'jpy'
   salary_attibutes?: any
   static salaryRegistry: Record<string, any> = {}
 
-  constructor({ salary_type, salary_attibutes }: Salary) {
+  constructor({ salary_type, salary_attibutes, salary_unit }: Salary) {
     this.salary_type = salary_type
     this.salary_attibutes = salary_attibutes
+    this.salary_unit = salary_unit
   }
 
   static registerSalary(type: string, classRef: any) {
@@ -24,10 +30,11 @@ export class SalaryFactory {
   }
 
   public getSalaryByType() {
-    if(!this.salary_type) return;
+    if (!this.salary_type) return
     return new SalaryFactory.salaryRegistry[this.salary_type]({
       salary_type: this.salary_type,
       salary_attibutes: this.salary_attibutes,
+      salary_unit: this.salary_unit,
     })
   }
 }
@@ -38,16 +45,18 @@ export class RangeSalary extends SalaryFactory {
   salary_type: string = ''
   salary_from: number = 0
   salary_to: number = 0
+  salary_unit?: 'vnd' | 'usd' | 'jpy'
 
-  constructor({ salary_type, salary_attibutes }: Salary) {
+  constructor({ salary_type, salary_attibutes, salary_unit }: Salary) {
     super({ salary_type, salary_attibutes })
     this.salary_type = salary_type
     this.salary_from = salary_attibutes.salary_from
     this.salary_to = salary_attibutes.salary_to
+    this.salary_unit = salary_unit
   }
 
   public gerenateStringSalary() {
-    return `${RangeSalary.salary_name}: ${this.salary_from} - ${this.salary_to}`
+    return `${RangeSalary.salary_name}: ${formatCurrency(this.salary_from)} - ${formatCurrency(this.salary_to)} ${this.salary_unit && CURRENCY_TEXT_LABEL[this.salary_unit]}`
   }
 }
 
@@ -56,15 +65,17 @@ export class UptoSalary extends SalaryFactory {
 
   salary_type: string = ''
   salary_upto: number = 0
+  salary_unit?: 'vnd' | 'usd' | 'jpy'
 
-  constructor({ salary_type, salary_attibutes }: Salary) {
+  constructor({ salary_type, salary_attibutes, salary_unit }: Salary) {
     super({ salary_type, salary_attibutes })
     this.salary_type = salary_type
     this.salary_upto = salary_attibutes.salary_to
+    this.salary_unit = salary_unit
   }
 
   public gerenateStringSalary() {
-    return `${UptoSalary.salary_name}: ${this.salary_upto}`
+    return `${UptoSalary.salary_name}: ${formatCurrency(this.salary_upto)} ${this.salary_unit && CURRENCY_TEXT_LABEL[this.salary_unit]}`
   }
 }
 
@@ -73,15 +84,17 @@ export class MiniumSalary extends SalaryFactory {
 
   salary_type: string = ''
   salary_minium: number = 0
+  salary_unit?: 'vnd' | 'usd' | 'jpy'
 
-  constructor({ salary_type, salary_attibutes }: Salary) {
+  constructor({ salary_type, salary_attibutes, salary_unit }: Salary) {
     super({ salary_type, salary_attibutes })
     this.salary_type = salary_type
     this.salary_minium = salary_attibutes.salary_from
+    this.salary_unit = salary_unit
   }
 
   public gerenateStringSalary() {
-    return `${MiniumSalary.salary_name}: ${this.salary_minium}`
+    return `${MiniumSalary.salary_name}: ${formatCurrency(this.salary_minium)} ${this.salary_unit && CURRENCY_TEXT_LABEL[this.salary_unit]}`
   }
 }
 

@@ -7,7 +7,7 @@ import {
 } from '../constants/schema'
 import { UpdateCandidateJobStatus } from 'features/candidates/domain/interfaces'
 import { cloneDeep } from 'lodash'
-import { getInfoData, removeInfoData } from 'shared/utils/utils'
+import { getInfoData, removeInfoData, transformListArray } from 'shared/utils/utils'
 import useCreateResource from 'shared/hooks/useCreateResource'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import {
@@ -115,10 +115,21 @@ function useChangeStatus(props: useChangeStatusProps = { defaultValues: {} }) {
 
   function onSubmit() {
     handleSubmit((value) => {
+      let attachments =
+        value?.attachments && Array.isArray(value?.attachments)
+          ? value.attachments
+          : []
+
+      attachments = transformListArray(attachments, [
+        'document_id',
+        'document_name',
+      ])
+
       const valueClone = removeInfoData({
         field: ['team_id'],
         object: {
           ...cloneDeep(value),
+          attachments,
         },
       })
       setData(valueClone as UpdateCandidateJobStatus)

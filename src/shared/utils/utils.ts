@@ -47,6 +47,17 @@ export const transformListItem = (array: any[], name: string = 'id') => {
   return array.map((item) => item?.[name])
 }
 
+export const transformListArray = (
+  array: any[],
+  name: string | string[] = 'id'
+) => {
+  const value_selected = [Array.isArray(name) ? [...name] : name].flat()
+
+  return array.map((item) =>
+    getInfoData({ field: value_selected, object: item })
+  )
+}
+
 export const findItem = (
   array: any[],
   value: string,
@@ -114,7 +125,7 @@ export const getBase64 = (file: Blob): Promise<string> =>
   })
 
 export const convertDateToISOString = (date: string | Date) => {
-  return formatISO(new Date(date)) 
+  return formatISO(new Date(date))
 }
 
 export const convertSizeToMb = (size: number) => {
@@ -153,34 +164,28 @@ export const hasDirtyField = (formState: FormState<BaseRecord>): boolean => {
 
 //@ts-ignore
 export const base64ToBlob = (base64, mimeType) => {
-  const byteCharacters = atob(base64);
-  const byteNumbers = new Array(byteCharacters.length);
+  const byteCharacters = atob(base64)
+  const byteNumbers = new Array(byteCharacters.length)
   for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    byteNumbers[i] = byteCharacters.charCodeAt(i)
   }
-  const byteArray = new Uint8Array(byteNumbers);
-  return new Blob([byteArray], { type: mimeType });
-};
-
+  const byteArray = new Uint8Array(byteNumbers)
+  return new Blob([byteArray], { type: mimeType })
+}
 
 //@ts-ignore
 export const downloadBase64File = (base64, fileName, mimeType) => {
-  const blob = base64ToBlob(base64, mimeType);
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-};
+  const blob = base64ToBlob(base64, mimeType)
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = fileName
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+}
 
-
-
-
-
-
-
-
-
+export function formatCurrency(number: number, locale: string = 'en-US'): string {
+  return number.toLocaleString(locale);
+}

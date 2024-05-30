@@ -32,6 +32,7 @@ import { isEmpty } from 'lodash'
 import CloseIcon from 'shared/components/icons/CloseIcon'
 import CloseJobModal from '../page-sections/CloseJobModal'
 import { STATUS_STATE } from 'shared/constants/constants'
+import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 
 const JobsList = () => {
   const {
@@ -58,6 +59,7 @@ const JobsList = () => {
 
   const [teams, setTeams] = useState<BaseRecord[]>([])
   const [status, setStatus] = useState<BaseRecord>()
+  const [priority, setPriority] = useState<BaseRecord>()
   const [searchField, setSearchField] = useState('')
 
   const { colummTable } = useBuildColumnTable({
@@ -76,10 +78,14 @@ const JobsList = () => {
           handleOpenStatus(id, rowData)
         },
         title: (rowData) => {
-          return  rowData.status === STATUS_STATE.OPENED ? 'Close job' : 'Reopen Job'
+          return rowData.status === STATUS_STATE.OPENED
+            ? 'Close job'
+            : 'Reopen Job'
         },
         disabled: (rowData) => {
-          return !(rowData?.is_able_to_close && rowData.status === STATUS_STATE.OPENED);
+          return !(
+            rowData?.is_able_to_close && rowData.status === STATUS_STATE.OPENED
+          )
         },
         Icon: <CloseIcon />,
       },
@@ -92,7 +98,7 @@ const JobsList = () => {
         Icon: <EditIcon />,
         disabled: (rowData) => {
           return rowData.status === STATUS_STATE.CLOSED
-        }
+        },
       },
       {
         id: 'delete',
@@ -180,12 +186,45 @@ const JobsList = () => {
                 />
               }
             />
+            {/* pirority */}
+            <ButtonFieldFilter<baseInstance>
+              inputLabel={'Priority'}
+              listSelected={priority as BaseRecord}
+              setListSelected={setPriority}
+              onChange={(data) => {
+                //@ts-ignore
+                const priority = transformListItem(data, 'id')
+                handleFilter('priority', !isEmpty(priority) ? priority : null)
+              }}
+              node={
+                <PriorityAutoComplete
+                  multiple={false}
+                  value={
+                    priority && getValueOfObj({ key: 'value', obj: priority })
+                  }
+                  onChange={(data) => {
+                    const priority = getValueOfObj({
+                      key: 'value',
+                      obj: data as IOption,
+                    })
+                    handleFilter('priority', Number(priority))
+                    setPriority(data as IOption)
+                  }}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Priority',
+                    autoFocus: true,
+                  }}
+                />
+              }
+            />
           </DivFilter>
 
           <DivHeaderWrapper>
             <CustomTextField
               id="outlined-basic"
-              label={"Search by Job title"}
+              label={'Search by Job title'}
               variant="outlined"
               size="small"
               sx={{ width: '400px', fontSize: '13px' }}

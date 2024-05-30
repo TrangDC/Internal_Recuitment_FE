@@ -20,6 +20,7 @@ import SalaryTypeAutoComponent from 'shared/components/autocomplete/salary-type-
 import CurrencyAutoComplete from 'shared/components/autocomplete/currency-autocomplete'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 
 interface IEditJobModal {
   open: boolean
@@ -45,6 +46,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
       salary_to: rowData?.salary_to.toString(),
       salary_type: rowData?.salary_type,
       team_id: rowData?.team?.id,
+      priority: rowData?.priority.toString()
     },
   })
 
@@ -69,7 +71,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+        <FlexBox flexDirection={'column'}>
             <FormControl fullWidth>
               <Controller
                 control={control}
@@ -83,6 +85,31 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
+                )}
+              />
+            </FormControl>
+          </FlexBox>
+          
+          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="priority"
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                     <PriorityAutoComplete
+                      value={field.value}
+                      onChange={(data) => field.onChange(data?.value)}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Priority',
+                      }}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}

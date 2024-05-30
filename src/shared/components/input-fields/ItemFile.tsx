@@ -1,4 +1,4 @@
-import { styled } from '@mui/material'
+import { Button, Tooltip, styled } from '@mui/material'
 import React from 'react'
 import FlexBox from '../flexbox/FlexBox'
 import FileIcon from '../icons/FileIcon'
@@ -12,7 +12,6 @@ const ItemFile = styled(FlexBox)(({ theme }) => ({
   border: `1px solid #88CDFF`,
   minHeight: '45px',
   alignItems: 'center',
-  gap: '20px',
   backgroundColor: '#F1F9FF',
   borderRadius: '4px',
 }))
@@ -47,11 +46,25 @@ const ShowFile = ({ name, size, IconEnd }: ShowFileProps) => {
           <FileIcon />
         </FlexBox>
         <NameFIle>
-          <Tiny>{name}</Tiny>
+          <Tooltip title={name} placement="bottom">
+            <Button>
+              <Tiny
+                sx={{
+                  maxWidth: '150px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {name}
+              </Tiny>
+            </Button>
+          </Tooltip>
+
           <Span>{size && convertSizeToMb(size)}</Span>
         </NameFIle>
+        <FlexBox sx={{ cursor: 'pointer' }}>{IconEnd && IconEnd}</FlexBox>
       </FlexBox>
-      <FlexBox sx={{ cursor: 'pointer' }}>{IconEnd && IconEnd}</FlexBox>
     </ItemFile>
   )
 }

@@ -49,7 +49,7 @@ export const columns = (
   columnHelper.accessor('created_at', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>
-        <Span>ACTION</Span>
+        <Span>Action</Span>
       </FlexBox>
     ),
     size: 100,

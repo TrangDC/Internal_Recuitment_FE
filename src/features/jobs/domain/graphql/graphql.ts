@@ -20,6 +20,7 @@ const useGraphql = () => {
           salary_from
           salary_to
           currency
+          priority
           status
           created_at
           is_able_to_delete
@@ -110,6 +111,7 @@ const useGraphql = () => {
         salary_type
         salary_from
         salary_to
+        priority
         currency
         is_able_to_close
         status
