@@ -4,12 +4,12 @@ import FlexBox from '../flexbox/FlexBox'
 import FileIcon from '../icons/FileIcon'
 import { Span, Tiny } from '../Typography'
 import { convertSizeToMb } from 'shared/utils/utils'
-import { UploadFileToAzure } from 'services/handleAttachments'
 import LinearProgress, {
   LinearProgressProps,
 } from '@mui/material/LinearProgress'
 import { toast } from 'react-toastify'
 import { ParamUploadFile, UploadStatus } from 'shared/interfaces'
+import AzureStorageService from 'services/azure-storage-services'
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -93,18 +93,18 @@ const UploadFileComponent = ({
   status,
 }: UploadFileComponentProps) => {
   const [progress, setProgress] = useState<number>(0)
-  const progressRef = useRef<number>(0);
+  const progressRef = useRef<number>(0)
 
   useEffect(() => {
     ;(async () => {
       try {
-        await UploadFileToAzure({
+        await AzureStorageService.uploadFileToAzure({
           url,
           file,
           onProgress: (progress_current) => {
             onUploading?.({ document_id, file, url, status: 'uploading' })
             if (progress_current > progressRef.current) {
-              progressRef.current = progress_current;
+              progressRef.current = progress_current
               setProgress(progress_current)
             }
           },

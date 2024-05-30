@@ -19,7 +19,10 @@ const CandidateList = () => {
     <Box pt={2} pb={4}>
       <Box>
         <FlexBox gap={0.5} alignItems="center">
-          <IconScreen Icon={CandidateIcon} textLable={translation.MODLUE_CANDIDATES.candidates} />
+          <IconScreen
+            Icon={CandidateIcon}
+            textLable={translation.MODLUE_CANDIDATES.candidates}
+          />
         </FlexBox>
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>

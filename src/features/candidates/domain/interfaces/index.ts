@@ -1,5 +1,5 @@
-import { Job } from "features/jobs/domain/interfaces"
-import { SchemaInputNote } from "shared/schema"
+import { Job } from 'features/jobs/domain/interfaces'
+import { SchemaInputNote } from 'shared/schema'
 
 export type Candidate = {
   id: string
@@ -9,44 +9,44 @@ export type Candidate = {
   dob: string
   is_black_list: boolean
   last_apply_date: string
-  is_able_to_delete: boolean,
+  is_able_to_delete: boolean
   status:
-  | 'applied'
-  | 'interviewing'
-  | 'offering'
-  | 'hired'
-  | 'kiv'
-  | 'offer_lost'
-  | 'ex_staff'
-  | 'new'
+    | 'applied'
+    | 'interviewing'
+    | 'offering'
+    | 'hired'
+    | 'kiv'
+    | 'offer_lost'
+    | 'ex_staff'
+    | 'new'
   created_at: string
   updated_at: string
   deleted_at: string
 }
 
 export type NewCandidateInput = {
-  name: string,
-  email: string,
-  phone: string,
-  dob: Date,
-  note: string,
+  name: string
+  email: string
+  phone: string
+  dob: Date
+  note: string
 }
 
 export type UpdateCandidateInput = {
-  id: string,
-  name: string,
-  email: string,
-  phone: string,
-  dob: string,
-  note: string,
+  id: string
+  name: string
+  email: string
+  phone: string
+  dob: string
+  note: string
 }
 
 export type DeleteCandidateInput = SchemaInputNote
 
 export type BlackListCandidateInput = {
-  id: string,
-  note?: string,
-  is_black_list: boolean,
+  id: string
+  note?: string
+  is_black_list: boolean
 }
 
 export type NewCandidateJobInput = {
@@ -77,18 +77,18 @@ export type CandidateJob = {
   is_able_to_delete: boolean
   interview_feature: number
   status:
-  | 'applied'
-  | 'interviewing'
-  | 'offering'
-  | 'hired'
-  | 'kiv'
-  | 'offer_lost'
-  | 'ex_staff'
-  | 'new'
+    | 'applied'
+    | 'interviewing'
+    | 'offering'
+    | 'hired'
+    | 'kiv'
+    | 'offer_lost'
+    | 'ex_staff'
+    | 'new'
   created_at: string
-  steps:  StepType[],
+  steps: StepType[]
   updated_at: string
-  attachments: Attachments
+  attachments: Attachments[]
   candidate: Candidate
   hiring_job: Job
 }
@@ -100,9 +100,9 @@ export type FeedBackInput = {
 }
 
 export type StepType = {
-  id: string,
-  candidate_job_id: string,
-  candidate_job_status: string,
-  created_at: string,
-  updated_at: string,
+  id: string
+  candidate_job_id: string
+  candidate_job_status: string
+  created_at: string
+  updated_at: string
 }

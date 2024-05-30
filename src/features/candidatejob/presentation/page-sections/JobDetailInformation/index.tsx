@@ -3,14 +3,13 @@ import { format } from 'date-fns'
 import { CandidateJob } from 'features/candidates/domain/interfaces'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import useActionTable from '../../providers/hooks/useActionTable'
 import ChangeStatusModal from '../ChangeStatusModal'
-import { downloadFileAttachment } from '../../providers/helper'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import PreviewCV from '../../providers/components/previewCV'
 
 const DivInformation = styled(FlexBox)(({ theme }) => ({
   padding: '24px',
@@ -35,14 +34,16 @@ interface JobDetailInformationProps {
 const JobDetailInformation = ({
   jobApplicationDetail,
 }: JobDetailInformationProps) => {
+  const { attachments } = jobApplicationDetail
+  const [url, setUrl] = useState('')
   const hiddenChangStatus = useMemo(() => {
     const disabledStatuses = [
       STATUS_CANDIDATE.KIV,
       STATUS_CANDIDATE.OFFERED_LOST,
-      STATUS_CANDIDATE.EX_STAFTT
-    ];
+      STATUS_CANDIDATE.EX_STAFTT,
+    ]
 
-    return !disabledStatuses.includes(jobApplicationDetail?.status);
+    return !disabledStatuses.includes(jobApplicationDetail?.status)
   }, [jobApplicationDetail?.status])
 
   const {
@@ -55,6 +56,24 @@ const JobDetailInformation = ({
 
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
 
+  useEffect(() => {
+    if (
+      Array.isArray(attachments) &&
+      attachments[0]?.document_name &&
+      attachments[0]?.document_id
+    ) {
+      handleGetUrlDownload({
+        action: 'DOWNLOAD',
+        fileName: attachments[0]?.document_name ?? '',
+        folder: 'candidate',
+        id: attachments[0]?.document_id ?? '',
+      }).then((data) => {
+        const urlFile = data?.['CreateAttachmentSASURL']?.url ?? ''
+        setUrl(urlFile)
+      })
+    }
+  }, [attachments])
+
   return (
     <DivInformation height={'100%'}>
       <FlexBox
@@ -62,7 +81,9 @@ const JobDetailInformation = ({
         gap={'20px'}
         flexDirection={'column'}
         width={'100%'}
+        alignItems={'center'}
       >
+        <PreviewCV pageNumber={1} pdfUrl={url} />
         <DivItemInformation>
           <SpanText>Full name</SpanText>
           <TinyText>{jobApplicationDetail?.candidate?.name}</TinyText>
@@ -89,11 +110,10 @@ const JobDetailInformation = ({
         flexDirection={'column'}
         width={'100%'}
       >
-        <DivItemInformation>
+        {/* <DivItemInformation>
           <ButtonStatus
             variant="contained"
             onClick={() => {
-              const { attachments } = jobApplicationDetail
               downloadFileAttachment(attachments, handleGetUrlDownload)
             }}
             startIcon={
@@ -108,29 +128,31 @@ const JobDetailInformation = ({
           >
             Download CV
           </ButtonStatus>
-        </DivItemInformation>
+        </DivItemInformation> */}
         <DivItemInformation>
-          {hiddenChangStatus &&  <ButtonStatus
-          // disabled={showChangeStatus}
-            onClick={() => {
-              handleOpenChangeStatus(
-                jobApplicationDetail.id,
-                jobApplicationDetail
-              )
-            }}
-            variant="contained"
-            startIcon={
-              <EditIcon
-                sx={{
-                  ' path': {
-                    fill: 'white',
-                  },
-                }}
-              />
-            }
-          >
-            Change status
-          </ButtonStatus>}
+          {hiddenChangStatus && (
+            <ButtonStatus
+              // disabled={showChangeStatus}
+              onClick={() => {
+                handleOpenChangeStatus(
+                  jobApplicationDetail.id,
+                  jobApplicationDetail
+                )
+              }}
+              variant="contained"
+              startIcon={
+                <EditIcon
+                  sx={{
+                    ' path': {
+                      fill: 'white',
+                    },
+                  }}
+                />
+              }
+            >
+              Change status
+            </ButtonStatus>
+          )}
         </DivItemInformation>
       </FlexBox>
       {openChangeStatus && (

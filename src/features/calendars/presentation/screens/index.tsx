@@ -90,7 +90,6 @@ function CalendarsScreen() {
   }
 
   function handleDragStart(event: CalendarEvent) {
-    console.log('event', event)
     dragItemOutside.current = event
   }
 
