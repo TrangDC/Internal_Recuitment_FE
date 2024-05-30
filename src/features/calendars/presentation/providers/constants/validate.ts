@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { RULE_MESSAGES } from 'shared/constants/vaildate'
-import { isAfterDate } from 'shared/utils/date'
+import { isAfterDate, isPast } from 'shared/utils/date'
 import * as yup from 'yup'
 
 export const CreateInterviewSchema = yup.object().shape({
@@ -30,7 +30,7 @@ export const CreateInterviewSchema = yup.object().shape({
       }
     )
     .test('isPast', 'Start from cannot be in the past', function () {
-      if (isAfterDate(this.parent.from, this.parent.date)) return true
+      if (isPast(this.parent.from)) return true
       return false
     }),
   to: yup
@@ -46,7 +46,7 @@ export const CreateInterviewSchema = yup.object().shape({
       }
     )
     .test('isPast', 'End at cannot be in the past', function () {
-      if (isAfterDate(this.parent.from, this.parent.date)) return true
+      if (isPast(this.parent.to)) return true
       return false
     }),
   description: yup.string(),
@@ -80,7 +80,7 @@ export const EditInterviewSchema = yup.object().shape({
       }
     )
     .test('isPast', 'Start from cannot be in the past', function () {
-      if (isAfterDate(this.parent.from, this.parent.date)) return true
+      if (isPast(this.parent.from)) return true
       return false
     }),
   to: yup
@@ -96,7 +96,7 @@ export const EditInterviewSchema = yup.object().shape({
       }
     )
     .test('isPast', 'End at cannot be in the past', function () {
-      if (isAfterDate(this.parent.from, this.parent.date)) return true
+      if (isPast(this.parent.to)) return true
       return false
     }),
   description: yup.string(),
