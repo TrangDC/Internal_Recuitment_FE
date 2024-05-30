@@ -69,8 +69,8 @@ export const STATUS_CANDIDATE_TEXT = {
   offering: 'Offering',
   hired: 'Hired',
   kiv: 'KIV',
-  offer_lost: 'Offer lost',
-  ex_staff: 'EX Staff',
+  offer_lost: 'Offered lost',
+  ex_staff: 'Ex-staff',
   new: 'New',
 }
 

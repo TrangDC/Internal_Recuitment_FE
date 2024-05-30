@@ -22,7 +22,6 @@ import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidat
 import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
 import ModalConfirm from 'shared/components/modal/modalConfirm'
-import WarningModal from 'shared/components/modal/modalWarning'
 import { isEmpty } from 'lodash'
 
 interface IChangeStatusModal {
@@ -51,7 +50,7 @@ function ChangeStatusModal({
   statusCurrent,
   defaultStatus = '',
   onSuccess,
-}: IChangeStatusModal) {
+}: IChangeStatusModal) { 
   const { onSubmit, control, isPending, isValid, watch } = useChangeStatus({
     callbackSuccess: () => {
       setOpen(false)

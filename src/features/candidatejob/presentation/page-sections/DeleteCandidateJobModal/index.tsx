@@ -35,13 +35,14 @@ function DeleteCandidateJobModal({
 
   const { onSubmit, control, isPending, isValid } = useDeleteCandidateJob({
     callbackSuccess: () => {
-      setModal((prev) => ({
-        ...prev,
-        type: 'success',
-        open: true,
-        title: 'Delete successfully',
-        onSubmit: () => setOpen(false),
-      }))
+      setOpen(false)
+      // setModal((prev) => ({
+      //   ...prev,
+      //   type: 'success',
+      //   open: true,
+      //   title: 'Delete successfully',
+      //   onSubmit: () => setOpen(false),
+      // }))
     },
     defaultValues: {
       id: id,

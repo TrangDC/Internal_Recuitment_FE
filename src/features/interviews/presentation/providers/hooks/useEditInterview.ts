@@ -4,7 +4,7 @@ import { UpdateCandidateInterviewInput } from 'features/interviews/domain/interf
 import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
 import { cloneDeep } from 'lodash'
 import useUpdateResource from 'shared/hooks/useUpdateResource'
-import { convertToUTC } from 'shared/utils/date'
+import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
 import { ChosenDateType } from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
 
@@ -33,7 +33,7 @@ function useEditInterview(
   })
 
   const { handleSubmit, control, formState, setValue, watch, trigger } = useFormReturn
-  const isValid = !formState.isDirty || !formState.isValid
+  const isValid = !formState.isValid
 
   const { isPending, mutate } = useCreateReturn
 
@@ -43,9 +43,14 @@ function useEditInterview(
       const start_form = dayjs(value.start_from).year(interview_date.year()).month(interview_date.month()).date(interview_date.date());
       const end_at = dayjs(value.end_at).year(interview_date.year()).month(interview_date.month()).date(interview_date.date());
    
+      const interview_date_apply = convertToUTC(value.interview_date)
+      .startOf('day')
+      .subtract(getLocalTimeOffset(), 'hour')
+      .toISOString()
+
       const valueClone = {
         ...cloneDeep(value),
-        interview_date: convertToUTC(value.interview_date).toISOString(),
+        interview_date: interview_date_apply,
         start_from: convertToUTC(start_form.toDate()).toISOString(),
         end_at: convertToUTC(end_at.toDate()).toISOString(),
       }

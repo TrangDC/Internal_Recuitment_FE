@@ -24,6 +24,22 @@ export const schema = yup.object({
     .date()
     .typeError(RULE_MESSAGES.MC5('start from'))
     .required(RULE_MESSAGES.MC1('start from'))
+    .test('validator-time-from', function () {
+      const start_form = this.parent?.start_from
+      const end_at = this.parent?.end_at
+      const isValidate = isValid(new Date(end_at))
+      if (!isValidate) return true
+
+      const isDate1AfterDate2 = isBefore(new Date(start_form), new Date(end_at))
+      if (!isDate1AfterDate2) {
+        return this.createError({
+          path: this.path,
+          message: 'End time of the interview must be after the Start time',
+        })
+      }
+
+      return true
+    })
     .test('isPast', 'Start time cannot be past dates', function (value) {
       const { interview_date } = this.parent
 
@@ -85,6 +101,22 @@ export const schemaUpdate = yup.object({
     .date()
     .typeError(RULE_MESSAGES.MC5('start from'))
     .required(RULE_MESSAGES.MC1('start from'))
+    .test('validator-time-from', function () {
+      const start_form = this.parent?.start_from
+      const end_at = this.parent?.end_at
+      const isValidate = isValid(new Date(end_at))
+      if (!isValidate) return true
+
+      const isDate1AfterDate2 = isBefore(new Date(start_form), new Date(end_at))
+      if (!isDate1AfterDate2) {
+        return this.createError({
+          path: this.path,
+          message: 'End time of the interview must be after the Start time',
+        })
+      }
+
+      return true
+    })
     .test('isPast', 'Start time cannot be past dates', function (value) {
       const { interview_date } = this.parent
 

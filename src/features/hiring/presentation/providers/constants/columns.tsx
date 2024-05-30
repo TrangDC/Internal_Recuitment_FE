@@ -23,7 +23,7 @@ export const columns = (
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>Name</span>,
     meta: {
-      style: { width: '300px' },
+      style: { width: '800px' },
     },
   }),
   columnHelper.accessor('work_email', {
@@ -31,21 +31,21 @@ export const columns = (
     enableSorting: false,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     meta: {
-      style: { width: '300px' },
+      style: { width: '800px' },
     },
   }),
-  columnHelper.accessor((row) => row.team?.name, {
-    id: 'team',
-    header: () => <span>Team</span>,
-    enableSorting: false,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-  }),
-  columnHelper.accessor((row) => row.status, {
-    id: 'status',
-    header: () => <span>Status</span>,
-    enableSorting: false,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-  }),
+  // columnHelper.accessor((row) => row.team?.name, {
+  //   id: 'team',
+  //   header: () => <span>Team</span>,
+  //   enableSorting: false,
+  //   cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+  // }),
+  // columnHelper.accessor((row) => row.status, {
+  //   id: 'status',
+  //   header: () => <span>Status</span>,
+  //   enableSorting: false,
+  //   cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+  // }),
   columnHelper.accessor('created_at', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>

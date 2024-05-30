@@ -29,7 +29,8 @@ function useUpdateFeedback(props: updateFeedbackProps = { defaultValues: {} }) {
   })
 
   const { handleSubmit, control, formState, setValue, watch } = useFormReturn
-  const isValid = !formState.isDirty || !formState.isValid
+  const isValid = !formState.isValid
+
   const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {

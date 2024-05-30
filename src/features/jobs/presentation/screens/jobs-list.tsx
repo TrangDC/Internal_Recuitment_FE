@@ -83,9 +83,9 @@ const JobsList = () => {
             : 'Reopen Job'
         },
         disabled: (rowData) => {
-          return !(
-            rowData?.is_able_to_close && rowData.status === STATUS_STATE.OPENED
-          )
+          if(rowData?.status !== STATUS_STATE.OPENED) return false;
+          if(rowData?.is_able_to_close && rowData.status === STATUS_STATE.OPENED) return false;
+          return true;
         },
         Icon: <CloseIcon />,
       },

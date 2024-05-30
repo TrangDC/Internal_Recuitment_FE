@@ -38,7 +38,7 @@ function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title="Edit user"
+        title="Edit hiring team"
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -78,6 +78,7 @@ function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
                       required
                       size="small"
                       fullWidth
+                      disabled
                       value={field.value}
                       onChange={field.onChange}
                     />

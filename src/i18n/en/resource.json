@@ -78,16 +78,17 @@
         "job_close": "This job is closed",
         "candidate_job_status_ended": "This job is closed",
         "start_from_end_at_invalid": "The end time must be after the start time",
-        "schedule_exist": "{Candidate_name} is not available",
+        "schedule_exist": "Candidate is not available",
         "title_exist": "Title is already existed"
       }
     },
-    "hiring_job": {
+    "hiring_jobs": {
       "validation": {
         "amount_neq_zero": "Number of staff required must be greater than 0",
         "name_exist": "This team is already existed",
         "candidate_job_exist": "This job cannot be deleted as applications have already been received from candidates",
-        "candidate_job_open_exist": "Candidate job is already existed"
+        "candidate_job_open_exist": "Candidate job is already existed",
+        "priority_ugent_exist": "Priority urgent is already existed"
       }
     },
     "candidate_job": {

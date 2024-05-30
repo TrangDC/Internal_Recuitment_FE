@@ -18,7 +18,7 @@ import ChangeStatusModal from 'features/candidatejob/presentation/page-sections/
 import { Candidate } from 'features/candidates/domain/interfaces'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
-import { STATUS_CANDIDATE, STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
+import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
 
 interface Props {
   title: string
@@ -50,6 +50,9 @@ const BoxStatusCandidates = ({
   const handleRefreshList = () => {
     queryClient.invalidateQueries({
       queryKey: [MODLUE_QUERY_KEY.CANDIDATE_JOB],
+    })
+    queryClient.invalidateQueries({
+      queryKey: [MODLUE_QUERY_KEY.JOB],
     })
   }
 
@@ -87,7 +90,7 @@ const BoxStatusCandidates = ({
 
   return (
     <DivField
-      sx={{ width: '170px' }}
+      // sx={{ minWidth: '170px' }}
       onDragOver={(event) => {
         event.preventDefault()
       }}

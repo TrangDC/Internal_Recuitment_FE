@@ -130,7 +130,7 @@ function CreateInterviewModal({
                     <AppDateField
                       label={'Select date'}
                       format="dd/MM/yyyy"
-                      value={field.value ? dayjs(field.value) : null}
+                      value={dayjs(field.value)}
                       onChange={(value) => {
                         if(value) {
                           trigger('start_from')

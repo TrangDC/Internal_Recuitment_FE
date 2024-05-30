@@ -49,14 +49,14 @@ const HiringList = () => {
         title: 'Edit',
         Icon: <EditIcon />,
       },
-      {
-        id: 'delete',
-        onClick: (id) => {
-          handleOpenDelete(id)
-        },
-        title: 'Change status',
-        Icon: <EditIcon />,
-      },
+      // {
+      //   id: 'change_status',
+      //   onClick: (id) => {
+      //     handleOpenDelete(id)
+      //   },
+      //   title: 'Change status',
+      //   Icon: <EditIcon />,
+      // },
     ],
     columns,
   })
@@ -75,7 +75,7 @@ const HiringList = () => {
       <IconScreen Icon={HiringTeam} textLable={'Hiring Team'} />
       <BoxWrapperOuterContainer>
         <HeadingWrapper>
-          <DivFilter>
+          {/* <DivFilter>
             <ButtonFieldFilter<baseInstance>
               inputLabel={'Teams'}
               listSelected={teams}
@@ -97,7 +97,7 @@ const HiringList = () => {
                 />
               }
             />
-          </DivFilter>
+          </DivFilter> */}
           <DivHeaderWrapper>
             <CustomTextField
               id="outlined-basic"
