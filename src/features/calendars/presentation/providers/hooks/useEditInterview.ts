@@ -35,7 +35,6 @@ function useEditInterview(props: UseEditInterviewProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
-
       const { currentDate, newEnd, newStart } = formatStringToDate(
         data.start_from,
         data.end_at,
@@ -120,6 +119,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     if (value) {
       const fromDate = convertToRootByTimeNow(value, date)
       setValue('to', fromDate.toDate(), { shouldValidate: true })
+      trigger('from')
     }
   }
 
