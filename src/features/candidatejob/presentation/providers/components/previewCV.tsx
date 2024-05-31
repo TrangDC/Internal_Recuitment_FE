@@ -9,6 +9,7 @@ import {
   downloadPdf,
   downloadPdfAndOpenInNewTab,
 } from 'shared/utils/upload-file'
+import DownloadWhiteIcon from 'shared/components/icons/DownloadWhiteIcon'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -75,6 +76,7 @@ function PreviewCV({ pdfUrl, pageNumber }: IPreviewCV) {
         right={0}
         bottom={0}
         sx={{ backgroundColor: '#00000040' }}
+        borderRadius={'4px'}
       ></Box>
       <FlexBox
         position={'absolute'}
@@ -93,6 +95,7 @@ function PreviewCV({ pdfUrl, pageNumber }: IPreviewCV) {
           variant="outlined"
           sx={{
             height: 26,
+            justifyContent: 'start',
           }}
           onClick={onPreview}
         >
@@ -100,10 +103,11 @@ function PreviewCV({ pdfUrl, pageNumber }: IPreviewCV) {
         </AppButton>
         <AppButton
           size="small"
-          startIcon={<DownloadIcon />}
+          startIcon={<DownloadWhiteIcon />}
           variant="contained"
           sx={{
             height: 26,
+            justifyContent: 'start',
           }}
           onClick={onDownload}
         >
