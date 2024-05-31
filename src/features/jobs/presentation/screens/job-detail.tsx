@@ -44,7 +44,7 @@ const JobDetail = () => {
           <H5>{jobDetail?.name}</H5>
         </FlexBox>
       </Box>
-      <FlexBox flexDirection={'column'} gap={2.5} marginTop={4}>
+      <FlexBox flexDirection={'column'} gap={2.5} marginTop={0}>
         <BoxWrapperOuterContainer>
           <HeadingWrapper sx={{ marginTop: 0 }}>
             <FlexBox
