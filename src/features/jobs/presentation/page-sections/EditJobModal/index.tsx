@@ -21,6 +21,8 @@ import CurrencyAutoComplete from 'shared/components/autocomplete/currency-autoco
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
+import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
+import { isEmpty } from 'lodash'
 
 interface IEditJobModal {
   open: boolean
@@ -61,6 +63,20 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
   const callbackSubmit = (reason: string) => {
     setValue('note', reason)
     onSubmit()
+  }
+
+  const handleChangeManager = async (team_id: string) => {
+    if(!team_id) {
+      setValue('created_by', '');
+      return;
+    }
+
+    const { member_first } = await getMembersByTeam(team_id)
+    if(isEmpty(member_first)) {
+      setValue('created_by', '')
+      return;
+    };
+    setValue('created_by', member_first?.id)
   }
 
   return (
@@ -128,7 +144,10 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                     <TeamsAutoComplete
                       name={field.name}
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={(value) => {
+                        field.onChange(value)
+                        handleChangeManager(value as string)
+                      }}
                       multiple={false}
                       textFieldProps={{
                         required: true,

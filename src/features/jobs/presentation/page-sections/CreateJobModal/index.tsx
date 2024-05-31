@@ -26,19 +26,16 @@ interface ICreateJobModal {
 }
 
 function CreateJobModal({ open, setOpen }: ICreateJobModal) {
-  const { onSubmit, control, isPending, isValid, setValue } = useCreateJob({
+  const { action, control, isPending, isValid } = useCreateJob({
     callbackSuccess: () => {
       setOpen(false)
     },
   })
 
-  const translation = useTextTranslation()
+  const { handleChangeManager, onSubmit, resetSalary } = action;
 
+  const translation = useTextTranslation()
   const salary = useWatch({ control, name: 'salary_type' })
-  const resetSalary = () => {
-    setValue('salary_from', '0')
-    setValue('salary_to', '0')
-  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
@@ -71,7 +68,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
               />
             </FormControl>
           </FlexBox>
-          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+          <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FormControl fullWidth>
               <Controller
                 control={control}
@@ -104,7 +101,10 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                     <TeamsAutoComplete
                       name={field.name}
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={(value) => {
+                        field.onChange(value)
+                        handleChangeManager(value as string)
+                      }}
                       multiple={false}
                       textFieldProps={{
                         required: true,
@@ -119,7 +119,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
               />
             </FormControl>
           </FlexBox>
-          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+          <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FormControl fullWidth>
               <Controller
                 control={control}

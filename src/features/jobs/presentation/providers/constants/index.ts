@@ -20,6 +20,7 @@ export const LOCATION_DATA = [
   {name: 'Đà Nẵng', value: LOCATION_STATE.DA_NANG},
   {name: 'Hồ Chí Minh', value: LOCATION_STATE.HO_CHI_MINH},
   {name: 'Japan', value: LOCATION_STATE.JAPAN},
+  {name: 'Singapore', value: LOCATION_STATE.SINGAPORE},
 ]
 
 export const STATUS_DATA = [

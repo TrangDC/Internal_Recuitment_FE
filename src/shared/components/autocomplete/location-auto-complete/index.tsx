@@ -16,6 +16,7 @@ export const options: IOption[] = [
   {label: 'Đà Nẵng', value: LOCATION_STATE.DA_NANG},
   {label: 'Hồ Chí Minh', value: LOCATION_STATE.HO_CHI_MINH},
   {label: 'Japan', value: LOCATION_STATE.JAPAN},
+  {label: 'Singapore', value: LOCATION_STATE.SINGAPORE},
 ]
 
 export default LocationAutoComplete
