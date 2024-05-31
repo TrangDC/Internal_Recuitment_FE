@@ -66,7 +66,7 @@ const HiringList = () => {
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.keyCode === 13) {
       //@ts-ignore
-      handleFreeWordMultiple({name: searchField, email: searchField})
+      handleFreeWordMultiple({name: searchField, work_email: searchField})
     }
   }
 
@@ -114,7 +114,7 @@ const HiringList = () => {
                       <SearchIcon
                         sx={{ fontSize: '16px' }}
                         onClick={() => {
-                          handleFreeWordMultiple({name: searchField, email: searchField})
+                          handleFreeWordMultiple({name: searchField, work_email: searchField})
                         }}
                       />
                     </IconButton>
