@@ -8,7 +8,7 @@ export const CANDIDATE_STATUS = {
   kiv: {text: 'KIV', backgroundColor: '#FF9777'},
   offer_lost: {text: 'Offered lost', backgroundColor: '#82868C'},
   ex_staff: {text: 'Ex-staff', backgroundColor: '#FC105C'},
-  new: {text: 'New', backgroundColor: '#11D300'},
+  new: {text: 'New', backgroundColor: '#2CC5BD'},
 }
 
 export const STATUS_CANDIDATE_DATA = [
