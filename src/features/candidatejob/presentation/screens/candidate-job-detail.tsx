@@ -27,7 +27,7 @@ const CandidateJobDetail = () => {
       <Box sx={{ width: '100%', marginTop: '20px' }}>
         <DivWrapperContainer>
           <Grid container>
-            <Grid item width={240}>
+            <Grid item width={220}>
               <JobDetailInformation
                 jobApplicationDetail={jobApplicationDetail}
               />

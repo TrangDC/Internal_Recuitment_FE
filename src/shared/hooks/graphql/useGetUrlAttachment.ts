@@ -56,7 +56,6 @@ const useGetUrlGetAttachment = (props: createAttachmentProps = {}) => {
     mutationKey: [queryKey],
     mutationFn: (newAttachment: ParamCreateURLAttachment) => {
       const { file, callback, ...otherValue } = newAttachment
-      console.log('newAttachment', newAttachment)
       return fetchGraphQL<BaseRecord>(createUrlGetAttachment.query, {
         input: otherValue,
       })
