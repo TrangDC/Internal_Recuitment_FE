@@ -13,6 +13,7 @@ import {
   convertToRootDate,
   formatStringToDate,
 } from '../../page-sections/google-calendar/functions'
+import dayjs from 'dayjs'
 type UseEditInterviewProps = {
   id: string
   onSuccess: (data: BaseRecord) => void
@@ -34,11 +35,13 @@ function useEditInterview(props: UseEditInterviewProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
+
       const { currentDate, newEnd, newStart } = formatStringToDate(
         data.start_from,
         data.end_at,
         data.interview_date
       )
+
       return {
         description: data.description,
         candidateId: data.candidate_job.candidate_id,
@@ -79,6 +82,7 @@ function useEditInterview(props: UseEditInterviewProps) {
           .startOf('day')
           .subtract(getLocalTimeOffset(), 'hour')
           .toISOString()
+
         const formatStart = convertToUTC(newStart).toISOString()
         const formatEnd = convertToUTC(newEnd).toISOString()
         const formData: UpdateCandidateInterviewInput = {

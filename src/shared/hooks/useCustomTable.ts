@@ -109,20 +109,27 @@ const useCustomTable = ({
   }
 
   function handleSorTable(id: string) {
+    const sortDefault = variables?.orderBy?.field
+      ? variables?.orderBy?.field
+      : 'created_at'
+    //@ts-ignore
     setSorting((prev) => {
       if (id === prev.field) {
         const isDescending = prev.direction === 'DESC'
         const fieldSort = isDescending
-          ? variables?.orderBy?.field || 'created_at'
+          ? variables?.orderBy?.field || sortDefault
           : id
-        const directionSort =
-          fieldSort === 'created_at'
-            ? prev.direction === 'ASC'
+
+        let directionSort =
+          fieldSort === sortDefault
+            ? prev.field === sortDefault
+              ? prev.direction === 'ASC'
+                ? 'DESC'
+                : 'ASC'
+              : 'DESC'
+            : prev.direction === 'ASC'
               ? 'DESC'
               : 'ASC'
-            : isDescending
-              ? 'ASC'
-              : 'DESC'
 
         return {
           direction: directionSort,

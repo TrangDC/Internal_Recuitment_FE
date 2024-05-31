@@ -6,6 +6,7 @@ import { FC, useState } from 'react'
 import ArrowLeftToLine from 'shared/components/icons/ArrowLeftToLine'
 import MultiLevelMenu from './MultiLevelMenu'
 import MobileSidebar from './MobileSidebar'
+import { Link } from 'react-router-dom'
 
 const TOP_HEADER_AREA = 70
 
@@ -18,7 +19,8 @@ const SidebarWrapper = styled(Box)<{ compact: number }>(
     zIndex: theme.zIndex.drawer,
     backgroundColor: theme.palette.background.paper,
     '&:hover': compact && { width: 280 },
-    boxShadow: 'rgba(77, 96, 122, 0.03) 0px 3px 3px -2px, rgba(77, 96, 122, 0.04) 0px 2px 6px 0px, rgba(77, 96, 122, 0.08) 0px 1px 12px 0px'
+    boxShadow:
+      'rgba(77, 96, 122, 0.03) 0px 3px 3px -2px, rgba(77, 96, 122, 0.04) 0px 2px 6px 0px, rgba(77, 96, 122, 0.08) 0px 1px 12px 0px',
   })
 )
 
@@ -85,7 +87,10 @@ const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
       <FlexBetween pt={3} pr={2} pl={4} pb={1} height={TOP_HEADER_AREA}>
         {/* LOGO */}
         <FlexBox alignItems={'center'}>
-          <img src="/static/logo/logo.svg" alt="logo" width={40} />
+          <Link to={'/dashboard/teams'} style={{ display: 'flex' }}>
+            <img src="/static/logo/logo.svg" alt="logo" width={40} />
+          </Link>
+
           {!COMPACT && <StyledLogo>TREC</StyledLogo>}
         </FlexBox>
         <Box mx={'auto'}></Box>

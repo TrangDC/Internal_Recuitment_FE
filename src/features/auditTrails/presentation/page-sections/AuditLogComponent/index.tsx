@@ -11,24 +11,37 @@ import AuditTrailsList from 'features/auditTrails/presentation/page-sections/Aud
 import { forwardRef, useImperativeHandle } from 'react'
 import useAuditTrails from 'features/auditTrails/presentation/providers/hooks/useAuditTrails'
 import useTextTranslation from 'shared/constants/text'
-import { DateFieldContainer, DateFieldHeader, DateFieldIcon, DateFieldTime, StyleDivider } from '../../providers/styles'
+import {
+  DateFieldContainer,
+  DateFieldHeader,
+  DateFieldIcon,
+  DateFieldTime,
+  StyleDivider,
+} from '../../providers/styles'
 
 interface Props {
-  module: string,
+  module: string
 }
 
-const LogsComponent = ({module}: Props, ref:any) => {
+const LogsComponent = ({ module }: Props, ref: any) => {
   const { id } = useParams()
-  const { auditrails_history, handleFilter, handleFreeWord } = useAuditTrails(id as string, module) 
+  const { auditrails_history, handleFilter, handleFreeWord } = useAuditTrails(
+    id as string,
+    module
+  )
 
-  const translation = useTextTranslation();
+  const translation = useTextTranslation()
 
-  useImperativeHandle(ref, () => {
-    return {
-      handleFilter,
-      handleFreeWord,
-    };
-  }, []);
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        handleFilter,
+        handleFreeWord,
+      }
+    },
+    []
+  )
 
   return (
     <FlexBox flexDirection={'column'} gap={'16px'}>
@@ -49,9 +62,14 @@ const LogsComponent = ({module}: Props, ref:any) => {
                   </DateFieldIcon>
                   <DateFieldTime>
                     <Span>
-                      {translation.COMMON.update} {format(new Date(auditrail.updatedAt), 'dd-MM-yyyy HH:mm:ss')}
+                      {translation.COMMON.update}{' '}
+                      {format(
+                        new Date(auditrail.updatedAt),
+                        'dd-MM-yyyy HH:mm:ss'
+                      )}
                     </Span>
-                    <Tiny>{auditrail.note}</Tiny>
+                    <Tiny>Reason: {auditrail.note}</Tiny>
+                    <Tiny>Create by: {auditrail?.createdInfo?.name}</Tiny>
                   </DateFieldTime>
                 </DateFieldHeader>
               </AccordionSummary>

@@ -14,7 +14,6 @@ import BaseModal from 'shared/components/modal'
 import { useContextCalendar } from '../../providers/contexts/calendarProvider/CalendarProvider'
 import useGetInterview from '../../providers/hooks/useGetInterview'
 import { formatDateToString, getTime, isPast } from 'shared/utils/date'
-import useDeleteInterview from '../../providers/hooks/useDeleteInterview'
 import DeleteOutline from 'shared/components/icons/DeleteOutline'
 import EditOutline from 'shared/components/icons/EditOutline'
 import { Fragment } from 'react/jsx-runtime'
@@ -35,18 +34,11 @@ const labelStyle = {
 
 function DetailIntefviewModal(props: IDetailIntefviewModal) {
   const { open, setOpen, id } = props
-  const { handleEditEvent } = useContextCalendar()
+  const { handleEditEvent, handleDeleteEvent } = useContextCalendar()
   const { useFormReturn, navigateToCandidate, navigateToCandidateJob } =
     useGetInterview({
       id: id,
     })
-
-  const { onDelete } = useDeleteInterview({
-    id: id,
-    onSuccess: () => {
-      setOpen(false)
-    },
-  })
 
   const { getValues, watch } = useFormReturn
   const start_from = watch('start_from')
@@ -86,7 +78,9 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
                         color: 'grey.300',
                         cursor: 'pointer',
                       }}
-                      onClick={() => onDelete()}
+                      onClick={() => {
+                        handleDeleteEvent(id)
+                      }}
                     />
                   </Fragment>
                 )}

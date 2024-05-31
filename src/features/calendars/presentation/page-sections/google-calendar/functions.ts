@@ -165,9 +165,11 @@ export function formatStringToDate(
   end: string,
   currentDate: string
 ) {
+  const now = dayjs()
+
   const startDate = replaceYearWithCurrent(start)
   const endDate = replaceYearWithCurrent(end)
-  const interview_date = dayjs(currentDate).toDate()
+  const interview_date = dayjs(currentDate).hour(now.hour()).minute(now.minute()).toDate()
   const { newEnd, newStart } = convertToRootDate(
     new Date(startDate),
     new Date(endDate),
