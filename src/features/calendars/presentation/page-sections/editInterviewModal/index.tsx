@@ -17,6 +17,7 @@ import dayjs from 'dayjs'
 import useEditInterview from '../../providers/hooks/useEditInterview'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
+import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 
 interface IEditInterviewModal {
   open: boolean
@@ -36,6 +37,12 @@ function EditInterviewModal(props: IEditInterviewModal) {
   const { onSubmit, onSelectedFrom, onSelectedInterviewDate, onSelectedTo } =
     actions
   const interviewDate = watch('date')
+
+  const callbackSubmit = (reason: string) => {
+    // setValue('note', reason)
+    onSubmit()
+  }
+
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -192,7 +199,7 @@ function EditInterviewModal(props: IEditInterviewModal) {
                         <AppDateField
                           label={'Select date'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={(value) => {
+                          onChange={(value) => {  
                             field.onChange(value?.toDate())
                             onSelectedInterviewDate()
                           }}
@@ -313,15 +320,17 @@ function EditInterviewModal(props: IEditInterviewModal) {
           >
             Cancel
           </AppButton>
-          <ButtonLoading
-            variant="contained"
-            size="small"
-            disabled={isValid}
-            handlesubmit={onSubmit}
-            loading={isPending}
-          >
-            Submit
-          </ButtonLoading>
+          <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid}
+              handlesubmit={() => {}}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
+          </UpdateRecord>
         </BaseModal.Footer>
       </BaseModal.Wrapper>
     </ConfirmableModalProvider>

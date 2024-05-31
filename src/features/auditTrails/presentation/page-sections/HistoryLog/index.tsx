@@ -1,18 +1,26 @@
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import AppDateField from 'shared/components/input-fields/DateField'
-import SearchInput from 'shared/components/input-fields/SearchInput'
 import useTextTranslation from 'shared/constants/text'
-import { KeyboardEventHandler, useRef } from 'react'
+import { KeyboardEventHandler, useRef, useState } from 'react'
 import { convertDateToISOString } from 'shared/utils/utils'
 import AuditLogComponent from 'features/auditTrails/presentation/page-sections/AuditLogComponent'
-import { FormWrapper, HistoryWrapper, LogsWrapper } from '../../providers/styles'
+import {
+  FormWrapper,
+  HistoryWrapper,
+  LogsWrapper,
+} from '../../providers/styles'
+import { IconButton, InputAdornment } from '@mui/material'
+import SearchIcon from 'shared/components/icons/SearchIcon'
+import AppTextField from 'shared/components/input-fields/AppTextField'
 
 interface Props {
-    module: string,
+  module: string
 }
 
-const HistoryLogAuditTrails = ({module}: Props) => {
+const HistoryLogAuditTrails = ({ module }: Props) => {
   const translation = useTextTranslation()
+  const [searchField, setSearchField] = useState('')
+
   const refLog = useRef<{
     handleFilter: (name: string, value: string) => void
     handleFreeWord: (name: string, value: string) => void
@@ -29,12 +37,12 @@ const HistoryLogAuditTrails = ({module}: Props) => {
   const handleSearch = (name: string, value: string) => {
     const handleFreeWord = refLog?.current?.['handleFreeWord']
 
-    if (!handleFreeWord || !value) return
+    if (!handleFreeWord) return
 
     handleFreeWord(name, value)
   }
 
-  const handleFreeWorld: KeyboardEventHandler<HTMLInputElement> = (event) => {
+  const handleFreeWord: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.keyCode === 13) {
       //@ts-ignore
       handleSearch('recordChange', event.target.value)
@@ -45,23 +53,62 @@ const HistoryLogAuditTrails = ({module}: Props) => {
     <HistoryWrapper>
       <FormWrapper>
         <FlexBox gap={'8px'}>
-          <SearchInput
+          <AppTextField
+            label={'Search'}
+            // required
             size="small"
-            position_icon="end"
-            sx={{ width: '203px', maxWidth: '100%', padding: '0 4px' }}
-            icon_style={{fontSize: 16}}
-            onKeyUp={handleFreeWorld}
+            sx={{ width: '203px',
+
+            '& .MuiInputBase-root': {
+              paddingRight: 0,
+            }
+            }}
+            // fullWidth
+            onKeyUp={handleFreeWord}
+            value={searchField}
+            onChange={(e) => setSearchField(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton>
+                    <SearchIcon
+                      sx={{ fontSize: '16px' }}
+                      onClick={() => {
+                        handleSearch('recordChange', searchField)
+                      }}
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
+
           <AppDateField
-            label={translation.COMMON.from_date}
+            label={'From date'}
             onChange={(value) => {
               handleChangeDate('fromDate', value)
             }}
+            format="dd/MM/yyyy"
+            sx={{
+              width: '160px'
+            }}
+            textFieldProps={{
+              fullWidth: true,
+              size: 'small',
+            }}
           />
-          <AppDateField
-            label={translation.COMMON.to_date}
+           <AppDateField
+            label={'To date'}
             onChange={(value) => {
               handleChangeDate('toDate', value)
+            }}
+            format="dd/MM/yyyy"
+            sx={{
+              width: '160px'
+            }}
+            textFieldProps={{
+              fullWidth: true,
+              size: 'small',
             }}
           />
         </FlexBox>

@@ -23,11 +23,13 @@ import IconScreen from 'shared/components/utils/IconScreen'
 import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer } from 'shared/styles'
 import duotone from 'shared/components/icons'
+import DeleteInterviewModal from '../page-sections/deleteInterviewModal'
 
 function CalendarsScreen() {
   const [openCreateInterView, setOpenCreateInterView] = useState(false)
   const [openDetailInterView, setOpenDetailInterView] = useState(false)
   const [openEditInterView, setOpenEditInterView] = useState(false)
+  const [openDeleteInterView, setOpenDeleteInterView] = useState(false)
   const eventId = useRef<string>('')
   const dragItemOutside = useRef<CalendarEvent>()
   const { myEvents, isLoading, handlePagination } = useGetAllInterview()
@@ -82,7 +84,10 @@ function CalendarsScreen() {
     }
   }
 
-  function handleDeleteEvent(id: string) {}
+  function handleDeleteEvent(id: string) {
+    eventId.current = id
+    setOpenDeleteInterView(true)
+  }
 
   function handleEditEvent(id: string) {
     eventId.current = id
@@ -158,6 +163,16 @@ function CalendarsScreen() {
               open={openEditInterView}
               id={eventId.current}
               setOpen={setOpenEditInterView}
+            />
+          )}
+          {openDeleteInterView && (
+            <DeleteInterviewModal
+              open={openDeleteInterView}
+              id={eventId.current}
+              setOpen={setOpenDeleteInterView}
+              onSuccess={() => {
+                setOpenDetailInterView(false)
+              }}
             />
           )}
         </CalendarProvider>

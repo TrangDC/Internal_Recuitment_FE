@@ -39,15 +39,11 @@ function useEditInterview(
 
   function onSubmit() {
     handleSubmit((value) => {
-      const interview_date = dayjs(value.interview_date);
+      let interview_date = dayjs(value.interview_date);
       const start_form = dayjs(value.start_from).year(interview_date.year()).month(interview_date.month()).date(interview_date.date());
       const end_at = dayjs(value.end_at).year(interview_date.year()).month(interview_date.month()).date(interview_date.date());
-   
-      const interview_date_apply = convertToUTC(value.interview_date)
-      .startOf('day')
-      .subtract(getLocalTimeOffset(), 'hour')
-      .toISOString()
 
+      const interview_date_apply = convertToUTC(value.interview_date).toISOString()
       const valueClone = {
         ...cloneDeep(value),
         interview_date: interview_date_apply,

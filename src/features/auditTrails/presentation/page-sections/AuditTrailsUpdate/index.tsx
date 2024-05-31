@@ -10,6 +10,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useTranslation } from 'react-i18next'
 import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
 import { TinyText } from 'shared/components/form/styles'
+import { renderTextRecord } from '../../providers/functions'
 
 interface Props {
   data: {
@@ -34,23 +35,18 @@ const AuditTrailsUpdate = ({ data, type, module }: Props) => {
         </FlexBox>
         <FlexBox flexDirection={'column'} gap={'8px'}>
           {data.map((item, idx) => {
+             const old_value = renderTextRecord(item.field, item.value.oldValue).record_value
+             const new_value = renderTextRecord(item.field, item.value.newValue).record_value
+
             return (
               <FlexBox key={idx} gap={'8px'} alignItems={'center'}>
                 <TinyText>{t(item.field)}: </TinyText>
                 <DateFieldDivison>
                   <Tiny>
-                    {t(item.field) === 'Description' ? (
-                      <GenerateInnerHTML innerHTML={item.value.oldValue} />
-                    ) : (
-                      item.value.oldValue
-                    )}
+                    {old_value}
                   </Tiny>
                   <ArrowForwardIcon />
-                  <TinyText> {t(item.field) === 'Description' ? (
-                      <GenerateInnerHTML innerHTML={item.value.newValue} />
-                    ) : (
-                      item.value.newValue
-                    )}</TinyText>
+                  <TinyText>{new_value}</TinyText>
                 </DateFieldDivison>
               </FlexBox>
             )

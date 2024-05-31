@@ -42,8 +42,10 @@ export const schema = yup.object({
     })
     .test('isPast', 'Start time cannot be past dates', function (value) {
       const { interview_date } = this.parent
+      if (!isValid(interview_date) || !interview_date) return false;
 
       let start_form = dayjs(value)
+
 
       if (interview_date) {
         const interview_date_current = dayjs(this.parent.interview_date)
@@ -53,7 +55,7 @@ export const schema = yup.object({
           .date(interview_date_current.date())
       }
 
-      return dayjs().isBefore(start_form.toDate())
+      return dayjs().isBefore(start_form)
     }),
   end_at: yup
     .date()
@@ -119,8 +121,10 @@ export const schemaUpdate = yup.object({
     })
     .test('isPast', 'Start time cannot be past dates', function (value) {
       const { interview_date } = this.parent
+      if (!isValid(interview_date) || !interview_date) return false;
 
       let start_form = dayjs(value)
+
 
       if (interview_date) {
         const interview_date_current = dayjs(this.parent.interview_date)
@@ -130,7 +134,7 @@ export const schemaUpdate = yup.object({
           .date(interview_date_current.date())
       }
 
-      return dayjs().isBefore(start_form.toDate())
+      return dayjs().isBefore(start_form)
     }),
   end_at: yup
     .date()

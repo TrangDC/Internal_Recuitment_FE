@@ -19,6 +19,13 @@ export const SALARY_STATE = {
   NEGOTITATION: 'negotiate',
 }
 
+export const SALARY_TYPE_TEXT = {
+  range: 'Range',
+  up_to: 'Up to',
+  minimum: 'Minimum',
+  negotiate: 'Negotiate'
+}
+
 export const CURRENCY_STATE = {
   VND: 'vnd',
   USD: 'usd',

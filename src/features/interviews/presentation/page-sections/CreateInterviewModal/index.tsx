@@ -132,9 +132,7 @@ function CreateInterviewModal({
                       format="dd/MM/yyyy"
                       value={dayjs(field.value)}
                       onChange={(value) => {
-                        if(value) {
-                          trigger('start_from')
-                        }
+                        trigger('start_from')
                         field.onChange(value?.toDate())
                       }}
                       minDate={dayjs()}

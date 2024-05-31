@@ -68,7 +68,6 @@
   "to_date": "To date",
   "update_record": "Update record",
   "sub_title_update_record": "What information or note have you updated the record?",
-
   "model": {
     "candidate_interviews": {
       "validation": {
@@ -83,29 +82,51 @@
       }
     },
     "hiring_jobs": {
+      "model_name": "Job",
+      "name": "Job name",
+      "description": "Job description",
+      "amount": "Staff required",
+      "status": "Status",
+      "created_by": "Requester",
+      "team": "Team",
+      "location": "Location",
+      "salary_type": "Salary",
+      "salary_from": "From",
+      "salary_to": "To",
+      "currency": "Unit",
       "validation": {
         "amount_neq_zero": "Number of staff required must be greater than 0",
         "name_exist": "This team is already existed",
         "candidate_job_exist": "This job cannot be deleted as applications have already been received from candidates",
         "candidate_job_open_exist": "Candidate job is already existed",
-        "priority_ugent_exist": "Priority urgent is already existed"
+        "priority_ugent_exist": "Each team can only have one job with URGENT priority.",
+        "priority_high_exist": "Each team can only have one job with HIGH priority."
       }
     },
     "candidate_job": {
       "validation": {
         "failed_reason_required": "Please include failed reasons",
-        "candidate_job_status_exist": "New status cannot be Current status",
+        "candidate_job_status_exist": "Candidate is already on the same status with this job",
         "candidate_is_blacklist": "This candidate is in blacklist",
         "status_is_invalid_to_delete": "This job has already closed and cannot be deleted."
       }
     },
     "candidates": {
+      "model_name": "Candidates",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "dob": "DOB",
+      "is_blacklist": "Black list",
       "validation": {
         "email_exist": "This email belongs to an existing candidate.",
         "candidate_job_exist": "This candidate is in a hiring process already"
       }
     },
     "teams": {
+      "name": "Name",
+      "model_name": "Team",
+      "members": "Members",
       "validation": {
         "name_exist": "This team is already existed.",
         "user_in_another_team": "This manager already in another team",
