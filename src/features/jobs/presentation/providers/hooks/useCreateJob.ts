@@ -2,10 +2,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../../providers/constants/schema'
 import { NewHiringJobInput } from 'features/jobs/domain/interfaces'
-import _ from 'lodash'
+import _, { isEmpty } from 'lodash'
 import { convertCurrencyToNumber } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 import useCreateResource from 'shared/hooks/useCreateResource'
+import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
 
 interface createJobProps {
   defaultValues?: Partial<FormDataSchema>
@@ -53,12 +54,35 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     })()
   }
 
+  const handleChangeManager = async (team_id: string) => {
+    if(!team_id) {
+      setValue('created_by', '');
+      return;
+    }
+
+    const { member_first } = await getMembersByTeam(team_id)
+    if(isEmpty(member_first)) {
+      setValue('created_by', '')
+      return;
+    };
+    setValue('created_by', member_first?.id)
+  }
+
+  const resetSalary = () => {
+    setValue('salary_from', '0')
+    setValue('salary_to', '0')
+  }
+
   return {
-    onSubmit,
     control,
     isValid,
     isPending,
     setValue,
+    action: {
+      resetSalary,
+      handleChangeManager,
+      onSubmit,
+    }
   }
 }
 

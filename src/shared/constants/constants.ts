@@ -43,6 +43,7 @@ export const LOCATION_STATE = {
   DA_NANG: 'da_nang',
   HO_CHI_MINH: 'ho_chi_minh',
   JAPAN: 'japan',
+  SINGAPORE: 'singapore'
 }
 
 export const LOCATION_LABEL = {
