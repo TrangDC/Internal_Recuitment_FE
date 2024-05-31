@@ -13,7 +13,7 @@ import {
 import { useParams } from 'react-router-dom'
 import useJobDetail from '../providers/hooks/useJobDetail'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { STATUS_STYLE } from '../providers/constants'
 import GenaralInformationHiring from '../page-sections/GeneralInformationHiring'
@@ -34,6 +34,10 @@ const JobDetail = () => {
   const { openStatus, setOpenStatus, handleOpenStatus, rowId, rowData } =
     useActionTable()
 
+    const disabledBtn = useMemo(() => {
+      return jobDetail.status === STATUS_STATE.OPENED && !jobDetail?.is_able_to_close;
+    }, [jobDetail])
+console.log("disabled", disabledBtn)
   return (
     <Box pt={2} pb={4}>
       <Box>
@@ -117,9 +121,10 @@ const JobDetail = () => {
               <FlexBox gap={1}>
                 <BtnPrimary
                     onClick={() => {
+                      if(disabledBtn) return;
                       handleOpenStatus(jobDetail?.id, jobDetail)
                     }}
-                    className={jobDetail.status === STATUS_STATE.OPENED && !jobDetail?.is_able_to_close ? 'disabled': ''}
+                    className={disabledBtn ? 'disabled': ''}
                   >
                     <Span>{jobDetail.status === STATUS_STATE.OPENED ? 'Close Job' : 'Reopen Job'}</Span>
                   </BtnPrimary>
