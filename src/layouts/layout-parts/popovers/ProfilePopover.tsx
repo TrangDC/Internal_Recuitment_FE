@@ -36,7 +36,7 @@ const StyledSmall = styled(Small)(({ theme }) => ({
 const ProfilePopover: FC = () => {
   const anchorRef = useRef(null)
   const navigate = useNavigate()
-  const { user } = useAuth() 
+  const { user } = useAuth()
   const [open, setOpen] = useState(false)
   const upSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
 
@@ -99,7 +99,7 @@ const ProfilePopover: FC = () => {
             />
 
             <Box width={'calc(100% - 40px)'}>
-              <H6 width={'100%'}>{user?.name || 'Aaron Cooper'}</H6>
+              <H6 width={'100%'}>{user?.name ?? ''}</H6>
               <Tiny
                 sx={{
                   wordBreak: 'break-all',

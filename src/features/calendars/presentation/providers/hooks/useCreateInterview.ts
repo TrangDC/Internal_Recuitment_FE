@@ -105,6 +105,7 @@ function useCreateInterview(props: IUseCreateInterview) {
     if (value) {
       const fromDate = convertToRootByTimeNow(value, date)
       setValue('to', fromDate.toDate(), { shouldValidate: true })
+      trigger('from')
     }
   }
 
