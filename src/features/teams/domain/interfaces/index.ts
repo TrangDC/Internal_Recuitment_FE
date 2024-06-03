@@ -1,5 +1,3 @@
-import { SchemaInputNote } from "shared/schema"
-
 export type Member = {
   id: string
   name: string
@@ -17,25 +15,17 @@ export type Team = {
   created_at: string,
   updated_at: string,
   deleted_at: string,
-}
-
-export type Managers = {
-  id: number,
-  name: string,
-  email: string,
+  note: string,
 }
 
 export type NewTeamInput = {
   name: string
-  members?: string[]
-  note?: string,
+  members: string[]
+  note: string,
 }
 
-export type UpdateTypeInput = {
-  id: string
+export type UpdateTeamInput = {
   name: string
-  members?: string[]
-  note?: string,
+  members: string[]
+  note: string,
 }
-
-export type DeleteTeamInput = SchemaInputNote

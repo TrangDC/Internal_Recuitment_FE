@@ -1,5 +1,5 @@
 import useGraphql from 'features/calendars/domain/graphql'
-import useCreateResource from 'shared/hooks/useCreateResource'
+import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
 import {
   CreateInterviewFrom,
   CreateInterviewSchema,

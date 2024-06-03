@@ -1,11 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
-import { DeleteTeamInput } from 'features/teams/domain/interfaces'
 import {
   schemaDelete,
   FormDataSchemaDelete,
 } from '../../providers/constants/schema'
 import useDeleteResource from 'shared/hooks/useDeleteResource'
+import { DeleteCandidateJobInput } from 'features/candidatejob/domain/interfaces'
 
 interface deleteTeamProps {
   defaultValues?: Partial<FormDataSchemaDelete>
@@ -18,7 +18,7 @@ function useDeleteCandidateJob(props: deleteTeamProps = { defaultValues: {} }) {
 
   const { deleteCandidateJob, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useDeleteResource<
-    DeleteTeamInput,
+  DeleteCandidateJobInput,
     FormDataSchemaDelete
   >({
     mutationKey: [queryKey],

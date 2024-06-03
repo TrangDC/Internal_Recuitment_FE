@@ -43,7 +43,7 @@ function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-          <FlexBox justifyContent={'center'} gap={2} alignItems={'center'}>
+          <FlexBox justifyContent={'center'}>
             <FormControl fullWidth>
               <Controller
                 control={control}

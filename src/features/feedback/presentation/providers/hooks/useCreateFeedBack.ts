@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/feedback/domain/graphql/graphql'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import { schema, FormDataSchema } from '../constants/schema'
-import useCreateResource from 'shared/hooks/useCreateResource'
+import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
 import { transformListArray } from 'shared/utils/utils'
 
 interface createFeedbackProps {

@@ -2,8 +2,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../constants/schema'
 import { NewCandidateInput } from 'features/candidates/domain/interfaces'
-import useCreateResource from 'shared/hooks/useCreateResource'
 import { convertDateToISOString } from 'shared/utils/utils'
+import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
 
 interface createCandidateProps {
   defaultValues?: Partial<FormDataSchema>

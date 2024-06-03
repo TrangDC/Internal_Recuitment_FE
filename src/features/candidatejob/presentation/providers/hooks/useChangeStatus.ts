@@ -8,7 +8,7 @@ import {
 import { UpdateCandidateJobStatus } from 'features/candidates/domain/interfaces'
 import { cloneDeep } from 'lodash'
 import { getInfoData, removeInfoData, transformListArray } from 'shared/utils/utils'
-import useCreateResource from 'shared/hooks/useCreateResource'
+import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import {
   FormDataSchema,

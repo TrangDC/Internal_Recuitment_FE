@@ -23,3 +23,8 @@ export type CandidateJob = {
   candidate: Candidate
   hiring_job: Job
 }
+
+export type DeleteCandidateJobInput = {
+  id: string
+  note: string
+}

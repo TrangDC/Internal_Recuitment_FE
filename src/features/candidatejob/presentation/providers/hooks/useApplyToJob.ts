@@ -7,8 +7,8 @@ import {
   removeInfoData,
   transformListArray,
 } from 'shared/utils/utils'
-import useCreateResource from 'shared/hooks/useCreateResource'
 import _ from 'lodash'
+import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
 
 interface useApplyToJobProps {
   defaultValues?: Partial<FormDataSchema>

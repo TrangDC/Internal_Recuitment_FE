@@ -5,7 +5,7 @@ import {
   UpdateCandidateInterviewInput,
 } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
-import useEditResource from 'shared/hooks/useEditResource/useEditResource'
+import useEditResource from 'shared/hooks/crud-hook/useEditResource/useEditResource'
 import { BaseRecord } from 'shared/interfaces/common'
 import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
 import {
@@ -13,7 +13,7 @@ import {
   convertToRootDate,
   formatStringToDate,
 } from '../../page-sections/google-calendar/functions'
-import dayjs from 'dayjs'
+
 type UseEditInterviewProps = {
   id: string
   onSuccess: (data: BaseRecord) => void
@@ -92,6 +92,7 @@ function useEditInterview(props: UseEditInterviewProps) {
           end_at: formatEnd,
           title: value.title,
           candidate_job_id: value.candidate_job_id,
+          note: ''
         }
         mutate(formData)
       }

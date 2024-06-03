@@ -1,37 +1,50 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/teams/domain/graphql/graphql'
-import { UpdateTypeInput } from 'features/teams/domain/interfaces'
+import {
+  Team,
+  UpdateTeamInput,
+} from 'features/teams/domain/interfaces'
 import {
   FormDataSchemaUpdate,
   schemaUpdate,
 } from '../../providers/constants/schema'
-import useUpdateResource from 'shared/hooks/useUpdateResource'
+import { BaseRecord } from 'shared/interfaces'
+import { transformListItem } from 'shared/utils/utils'
+import { useEditResource } from 'shared/hooks/crud-hook'
 
-interface updateTeamProps {
-  defaultValues?: Partial<FormDataSchemaUpdate>
-  callbackSuccess?: (value: any) => void
+type UseEditTeamProps = {
+  id: string
+  onSuccess: (data: BaseRecord) => void
 }
 
-function useUpdateTeam(props: updateTeamProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess } = props
-
-  const { updateTeam, queryKey } = useGraphql()
-  const { useCreateReturn, useFormReturn } = useUpdateResource<
-    UpdateTypeInput,
-    FormDataSchemaUpdate
+function useUpdateTeam(props: UseEditTeamProps) {
+  const { id, onSuccess } = props
+  const { updateTeam, getTeamDetail, queryKey } = useGraphql()
+  const { useEditReturn, useFormReturn, isGetting } = useEditResource<
+    Team,
+    FormDataSchemaUpdate,
+    UpdateTeamInput
   >({
-    mutationKey: [queryKey],
-    queryString: updateTeam,
-    defaultValues: {
-      ...defaultValues,
-    },
     resolver: yupResolver(schemaUpdate),
-    onSuccess: callbackSuccess,
+    editBuildQuery: updateTeam,
+    oneBuildQuery: getTeamDetail,
+    queryKey: [queryKey],
+    id,
+    onSuccess,
+    formatDefaultValues(data) {
+      const members = transformListItem(data?.members);
+ 
+      return {
+        name: data.name,
+        members: members,
+        note: '',
+      }
+    },
   })
 
   const { handleSubmit, control, formState, setValue } = useFormReturn
   const isValid = !formState.isValid
-  const { isPending, mutate } = useCreateReturn
+  const { mutate, isPending } = useEditReturn
 
   function onSubmit() {
     handleSubmit((value) => {
@@ -40,11 +53,15 @@ function useUpdateTeam(props: updateTeamProps = { defaultValues: {} }) {
   }
 
   return {
-    onSubmit,
     control,
     isValid,
     isPending,
+    actions: {
+      onSubmit,
+    },
+    formState,
     setValue,
+    isGetting
   }
 }
 

@@ -2,7 +2,6 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Member, Team } from 'features/teams/domain/interfaces'
 import useUpdateTeam from '../../providers/hooks/useUpdateTeam'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
@@ -12,26 +11,22 @@ import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complet
 import { Fragment } from 'react/jsx-runtime'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import { transformListItem } from 'shared/utils/utils'
 
 interface IEditTeamModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  rowData?: Team
 }
 
-function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
-  const { onSubmit, control, isPending, isValid, setValue } = useUpdateTeam({
-    defaultValues: {
-      name: rowData?.name,
-      id: rowData?.id,
-      members: transformListItem(rowData?.members as Member[]),
-    },
-    callbackSuccess: () => {
-      setOpen(false)
-    },
-  })
+function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
+  const { actions, control, isValid, isPending, setValue, isGetting } =
+    useUpdateTeam({
+      id: id,
+      onSuccess: () => {
+        setOpen(false)
+      },
+    })
+  const { onSubmit } = actions
 
   const translation = useTextTranslation()
 
@@ -57,21 +52,24 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
               <Controller
                 control={control}
                 name="name"
-                render={({ field, fieldState }) => (
-                  <FlexBox alignItems={'center'} flexDirection={'column'}>
-                    <AppTextField
-                      label={'Name'}
-                      required
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
+                render={({ field, fieldState }) => {
+                  return (
+                    <FlexBox alignItems={'center'} flexDirection={'column'}>
+                      <AppTextField
+                        label={'Name'}
+                        required
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        loading={isGetting}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )
+                }}
               />
             </FormControl>
           </FlexBox>
@@ -111,7 +109,7 @@ function EditTeamModal({ open, setOpen, rowData }: IEditTeamModal) {
           >
             {translation.COMMON.cancel}
           </AppButton>
-          <UpdateRecord  disabled={isValid} callbackSubmit={callbackSubmit}>
+          <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
             <ButtonLoading
               variant="contained"
               size="small"

@@ -19,9 +19,9 @@ export const navigations = [
     path: '/dashboard/hiring',
     icon: duotone.HiringTeam,
   },
-  {
-    name: 'Settings',
-    path: '/dashboard/settings',
-    icon: duotone.Settings,
-  },
+  // {
+  //   name: 'Settings',
+  //   path: '/dashboard/settings',
+  //   icon: duotone.Settings,
+  // },
 ];
