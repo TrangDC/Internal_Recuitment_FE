@@ -4,16 +4,13 @@ import Add from 'shared/components/icons/Add'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
 import useTeamTable from '../providers/hooks/useTeamTable'
-import CreateTeamModal from '../page-sections/CreateTeamModal/index'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../providers/hooks/useActionTable'
-import EditTeamModal from '../page-sections/EditTeamModal/index'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
-import DeleteTeamModal from '../page-sections/DeleteTeamModal'
 import { KeyboardEventHandler, useState } from 'react'
 import useTextTranslation from 'shared/constants/text'
 import { useNavigate } from 'react-router-dom'
@@ -21,6 +18,7 @@ import TeamIcon from 'shared/components/icons/Team'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import IconScreen from 'shared/components/utils/IconScreen'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
+import { CreateTeamModal, DeleteTeamModal, EditTeamModal } from '../page-sections'
 
 const TeamList = () => {
   const {
@@ -31,7 +29,6 @@ const TeamList = () => {
     handleOpenDelete,
     openEdit,
     rowId,
-    rowData,
     setOpenEdit,
     setOpenDelete,
   } = useActionTable()
@@ -56,8 +53,8 @@ const TeamList = () => {
       },
       {
         id: 'edit',
-        onClick: (id, rowData) => {
-          handleOpenEdit(id, rowData)
+        onClick: (id) => {
+          handleOpenEdit(id)
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
@@ -69,9 +66,6 @@ const TeamList = () => {
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
-        // disabled: (rowData) => {
-        //   return !rowData.is_able_to_delete;
-        // }
       },
     ],
     columns,
@@ -137,7 +131,6 @@ const TeamList = () => {
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
-          rowData={rowData.current}
         />
       )}
       {openDelete && (

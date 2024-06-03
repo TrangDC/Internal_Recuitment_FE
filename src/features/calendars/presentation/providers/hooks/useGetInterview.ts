@@ -1,6 +1,6 @@
 import useGraphql from 'features/calendars/domain/graphql'
 import { CandidateInterview } from 'features/calendars/domain/interfaces'
-import useGetResource from 'shared/hooks/useEditResource/useGetResource'
+import useGetResource from 'shared/hooks/crud-hook/useEditResource/useGetResource'
 import { GetInterviewFrom, getOneInterviewSchema } from '../constants/validate'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'

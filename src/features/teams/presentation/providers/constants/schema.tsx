@@ -10,16 +10,9 @@ export const schema = yup.object({
 export type FormDataSchema = yup.InferType<typeof schema>
 
 export const schemaUpdate = yup.object({
-  id: yup.string().required(RULE_MESSAGES.MC1('id')),
-  name: yup.string().required(RULE_MESSAGES.MC1('name')).max(64, RULE_MESSAGES.MC4('name', 64)),
-  members: yup.array(),
-  note: yup.string(),
+  name: yup.string().required(RULE_MESSAGES.MC1('name')).max(64, RULE_MESSAGES.MC4('name', 64)).default(''),
+  members: yup.array().default([]),
+  note: yup.string().default(''),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>
-
-export const schemaDelete = yup.object({
-  id: yup.string().required(RULE_MESSAGES.MC1('id')),
-  note: yup.string(),
-});
-export type FormDataSchemaDelete = yup.InferType<typeof schemaDelete>

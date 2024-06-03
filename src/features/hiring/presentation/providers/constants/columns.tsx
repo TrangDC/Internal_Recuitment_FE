@@ -11,6 +11,7 @@ import { Span } from 'shared/components/Typography'
 
 export const StyleTinyText = styled(TinyText)(({ theme }) => ({
   color: theme.palette.grey[500],
+  fontWeight: 500,
 }))
 
 const columnHelper = createColumnHelper<Hiring>()

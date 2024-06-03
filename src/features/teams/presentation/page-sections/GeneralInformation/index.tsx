@@ -20,7 +20,6 @@ const GeneralInformation = () => {
     handleOpenEdit,
     openEdit,
     rowId,
-    rowData,
     setOpenEdit,
   } = useActionTable()
 
@@ -60,7 +59,7 @@ const GeneralInformation = () => {
                 },
               }}
               onClick={() => {
-                handleOpenEdit(id as string, teamDetail)
+                handleOpenEdit(id as string)
               }}
             />
       </Box>
@@ -70,7 +69,6 @@ const GeneralInformation = () => {
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
-          rowData={rowData.current}
         />
       )}
     </BoxWrapperContainer>

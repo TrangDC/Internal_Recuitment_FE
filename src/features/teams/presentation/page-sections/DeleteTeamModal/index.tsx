@@ -1,11 +1,9 @@
 import BaseModal from 'shared/components/modal'
-import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useDeleteTeam from '../../providers/hooks/useDeleteTeam'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
-import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
@@ -21,6 +19,7 @@ interface IDeleteTeamModal {
 }
 
 function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
+  const [note, setNote] = useState('')
   const [modal, setModal] = useState<ModalType>({
     content: '',
     type: 'failed',
@@ -29,22 +28,12 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
     onSubmit: () => {},
   })
 
-  const { onSubmit, control, isPending, isValid } = useDeleteTeam({
-    callbackSuccess: () => {
-      // setModal((prev) => ({
-      //   ...prev,
-      //   type: 'success',
-      //   open: true,
-      //   title: 'Delete successfully',
-      //   onSubmit: () => setOpen(false)
-      // }))
+  const { onDelete, isPending } = useDeleteTeam({
+    id: id,
+    onSuccess: () => {
       setOpen(false)
     },
-    defaultValues: {
-      id: id,
-      note: '',
-    },
-    callbackError: (data) => {
+    onError: (data) => {
       setModal((prev) => ({
         ...prev,
         content: t(data?.message) as string,
@@ -56,7 +45,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
   })
 
   const handleSetOpen = (open: boolean) => {
-    setModal((prev) => ({...prev, open}))
+    setModal((prev) => ({ ...prev, open }))
   }
 
   const translation = useTextTranslation()
@@ -76,25 +65,14 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
               marginTop={1}
             >
               <FormControl fullWidth>
-                <Controller
-                  control={control}
-                  name="note"
-                  render={({ field, fieldState }) => (
-                    <FlexBox alignItems={'center'} flexDirection={'column'}>
-                      <AppTextField
-                        label={'Description'}
-                        size="small"
-                        fullWidth
-                        value={field.value}
-                        onChange={field.onChange}
-                        multiline
-                        minRows={4}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </FlexBox>
-                  )}
+                <AppTextField
+                  label={'Description'}
+                  size="small"
+                  fullWidth
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  multiline
+                  minRows={4}
                 />
               </FormControl>
             </FlexBox>
@@ -112,9 +90,8 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
             <ButtonLoading
               variant="contained"
               size="small"
-              disabled={isValid}
-              handlesubmit={onSubmit}
               loading={isPending}
+              handlesubmit={() => onDelete({ note })}
             >
               Submit
             </ButtonLoading>

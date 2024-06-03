@@ -1,7 +1,13 @@
-import { styled, TextField, TextFieldProps } from '@mui/material'
+import { SkeletonProps, styled, TextField, TextFieldProps } from '@mui/material'
 import { FC } from 'react'
+import SkeletonField from './SkeletonField'
 
-const StyledTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
+type CustomTextFieldProps = TextFieldProps & {
+  loading?: boolean
+  skeletonProps?: SkeletonProps
+}
+
+const StyledTextField = styled(TextField)<CustomTextFieldProps>(({ theme }) => ({
   '& .MuiOutlinedInput-input': {
     fontWeight: 500,
     color: theme.palette.text.primary,
@@ -32,8 +38,9 @@ const StyledTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
   '& .MuiSvgIcon-root': { color: theme.palette.text.disabled },
 }))
 
-const AppTextField: FC<TextFieldProps> = (props) => {
-  return <StyledTextField {...props} />
+const AppTextField: FC<CustomTextFieldProps> = (props) => {
+  const {loading, skeletonProps, ...inputProps} = props;
+  return loading ? <SkeletonField {...skeletonProps}/> : <StyledTextField {...inputProps} />
 }
 
 export default AppTextField

@@ -17,6 +17,7 @@ export type UpdateCandidateInterviewInput = {
   start_from: string
   end_at: string
   interviewer: string[]
+  note: string,
 }
 
 export type FilterCalendar = {
