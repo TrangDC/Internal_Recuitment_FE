@@ -87,12 +87,43 @@ const useGraphql = () => {
     },
   })
 
+  const getFeedback = buildQuery({
+    operation: 'GetCandidateJobFeedback',
+    options: {
+      type: 'query',
+    },
+    node: `
+        data {
+          id
+          created_by
+          candidate_job_id
+          feedback
+          created_at
+          updated_at
+          owner {
+            id
+            name
+            work_email
+          }
+          attachments {
+            id 
+            document_name
+            document_id
+          }
+        }
+    `,
+    params: {
+      id: 'ID!',
+    },
+  })
+
   return {
     queryKey,
     getAllCandidateJobFeedbacks,
     createCandidateJobFeedback,
     updateCandidateJobFeedback,
-    deleteCandidateJobFeedback
+    deleteCandidateJobFeedback,
+    getFeedback
   }
 }
 

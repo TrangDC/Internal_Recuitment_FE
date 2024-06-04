@@ -1,15 +1,9 @@
-import { Box, Chip, styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 
 export const ListFeedbackContainer = styled(Box)(({ theme }) => ({
   width: '100%',
 }))
-
-export const StyleSpanName = styled('span')`
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 15.85px;
-`
 
 export const DivActionHeader = styled(FlexBox)(({ theme }) => ({
   width: '100%',
@@ -43,14 +37,4 @@ export const BoxText = styled(Box)(({ theme }) => ({
   border: '1px solid #E3E6EB',
   borderRadius: '4px',
   marginTop: '10px',
-}))
-
-export const ChipItem = styled(Chip)(({ theme }) => ({
-  height: '24px',
-  backgroundColor: theme.palette.primary[50],
-
-  '& span': {
-    fontSize: '14px',
-    fontWeight: 500,
-  },
 }))

@@ -29,14 +29,14 @@ export type Interview = {
 } 
 
 export type UpdateCandidateInterviewInput = {
-  id: string,
   title: string
-  description?: string
+  description: string
   candidate_job_id: string
   interview_date: Date
   start_from: Date
   end_at: Date
   interviewer: string[]
+  note: string,
 }
 
 export type DeleteInterviewInput = SchemaInputNote

@@ -1,6 +1,6 @@
 import { CandidateJob } from "features/candidatejob/domain/interfaces"
-import { Attachments } from "features/candidates/domain/interfaces"
 import { Member } from "features/teams/domain/interfaces"
+import { Attachments } from "shared/interfaces"
 import { SchemaInputNote } from "shared/schema"
 
 export type NewCandidateJobFeedbackInput = {
@@ -13,12 +13,12 @@ export type NewCandidateJobFeedbackInput = {
 }
 
 export type UpdateCandidateJobFeedbackInput = {
-  id: string
   feedback: string
   attachments: {
     document_name: string,
     document_id: string,
-  }
+  }[]
+  note: string
 }
 
 export type FeedBack = {

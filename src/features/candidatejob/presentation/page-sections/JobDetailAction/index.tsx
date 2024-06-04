@@ -1,7 +1,6 @@
 import { Divider } from '@mui/material'
 import { DivAction, DivActionWrapper } from '../../providers/styles'
 import StepInterview from 'features/interviews/presentation/page-sections/StepInterview'
-import ListInterview from 'features/interviews/presentation/page-sections/ListInterview'
 import ListFeedBack from 'features/feedback/presentation/page-sections/ListFeedback'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import useGetCandidateJobInterview from '../../providers/hooks/useGetCandidateJobInterview'
@@ -9,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import { FeedBack } from 'features/feedback/domain/interfaces'
 import { Interview } from 'features/interviews/domain/interfaces'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
+import { ListInterview } from 'features/interviews/presentation/page-sections'
 
 const JobDetailAction = ({
   jobApplicationDetail,

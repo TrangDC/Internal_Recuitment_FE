@@ -1,13 +1,9 @@
 import BaseModal from 'shared/components/modal'
-import { Controller, useWatch } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
-import AutoCompleteComponent from 'shared/components/form/autoCompleteComponent'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { FormDataSchema } from '../../providers/constants/schema'
 import useApplyToJob from '../../providers/hooks/useApplyToJob'
-import useSelectJobByTeam from 'shared/hooks/graphql/useSelectJobByTeam'
-import { useEffect, useMemo } from 'react'
-import { Job } from 'features/jobs/domain/interfaces'
+import { useMemo } from 'react'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useTextTranslation from 'shared/constants/text'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -17,6 +13,7 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
+import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 
 interface IApplyJobModal {
   open: boolean
@@ -25,7 +22,12 @@ interface IApplyJobModal {
   onSuccess?: () => void
 }
 
-function ApplyJobModal({ open, setOpen, candidateId, onSuccess }: IApplyJobModal) {
+function ApplyJobModal({
+  open,
+  setOpen,
+  candidateId,
+  onSuccess,
+}: IApplyJobModal) {
   const { onSubmit, control, isPending, isValid, resetField, watch } =
     useApplyToJob({
       callbackSuccess: () => {
@@ -37,16 +39,10 @@ function ApplyJobModal({ open, setOpen, candidateId, onSuccess }: IApplyJobModal
       },
     })
 
-  const { jobs, changeJobByTeamId } = useSelectJobByTeam()
-  const team_id: string | undefined = useWatch({ control, name: 'team_id' })
-
-  useEffect(() => {
-    changeJobByTeamId(team_id ? [team_id] : [])
-    resetField('hiring_job_id')
-  }, [team_id])
-
   const translation = useTextTranslation()
   const attachments = watch('attachments')
+  const team_id = watch('team_id')
+
   const isValidAttachments = useMemo(() => {
     if (!Array.isArray(attachments) || isEmpty(attachments)) return true
 
@@ -73,6 +69,7 @@ function ApplyJobModal({ open, setOpen, candidateId, onSuccess }: IApplyJobModal
                       value={field.value || ''}
                       onChange={(value) => {
                         field.onChange(value)
+                        resetField('hiring_job_id')
                       }}
                       multiple={false}
                       textFieldProps={{
@@ -92,20 +89,25 @@ function ApplyJobModal({ open, setOpen, candidateId, onSuccess }: IApplyJobModal
           <FlexBox justifyContent={'center'} alignItems={'center'}>
             <FormControl fullWidth>
               <Controller
-                key={jobs.toString()}
                 name="hiring_job_id"
                 shouldUnregister
                 control={control}
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                    <AutoCompleteComponent<FormDataSchema, Job>
-                      options={jobs}
-                      label="name"
-                      required
-                      inputLabel={translation.MODLUE_JOBS.job_name}
-                      field={field}
+                    <JobsAutoComplete
+                      name={field.name}
+                      value={field.value}
                       disabled={!team_id}
-                      fullWidth
+                      filter={{
+                        team_ids: team_id ? [team_id] : undefined,
+                        status: 'opened',
+                      }}
+                      multiple={false}
+                      onChange={field.onChange}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Job name',
+                      }}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -119,7 +121,6 @@ function ApplyJobModal({ open, setOpen, candidateId, onSuccess }: IApplyJobModal
           <FlexBox justifyContent={'center'} alignItems={'center'}>
             <FormControl fullWidth>
               <Controller
-                key={jobs.toString()}
                 name="status"
                 shouldUnregister
                 control={control}

@@ -46,23 +46,3 @@ export type BlackListCandidateInput = {
   is_black_list: boolean
 }
 
-export type NewCandidateJobInput = {
-  candidate_id: string
-  hiring_job_id: string
-  status: string
-  attachments?: string
-}
-
-export type UpdateCandidateJobStatus = {
-  id: string
-  status: string
-  attachments: Attachments
-  feedback?: string
-  failed_reason?: string[]
-}
-
-export type Attachments = {
-  id: string
-  document_name: string
-  document_id: string
-}

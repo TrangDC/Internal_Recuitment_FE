@@ -7,23 +7,21 @@ import { columns } from '../../providers/constants/columns'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import useActionTable from '../../providers/hooks/useActionTable'
 import EditIcon from 'shared/components/icons/EditIcon'
-import ApplyJobModal from '../ApplyJobModal'
 import { useNavigate, useParams } from 'react-router-dom'
 import useApplyJobTable from '../../providers/hooks/useApplyJobTable'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import useTextTranslation from 'shared/constants/text'
-import ChangeStatusModal from '../ChangeStatusModal'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { downloadFileAttachment } from '../../providers/helper'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import DeleteCandidateJobModal from '../DeleteCandidateJobModal'
 import Add from 'shared/components/icons/Add'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
+import { ApplyJobModal, ChangeStatusModal, DeleteCandidateJobModal } from '../index'
 
 const JobApplicationHistory = ({
   candidateDetail,
@@ -53,7 +51,7 @@ const JobApplicationHistory = ({
     actions: [
       {
         id: 'detail',
-        onClick: (id, rowData) => {
+        onClick: (id) => {
           navigate(`/dashboard/job-application-detail/${id}`)
         },
         title: 'Detail',

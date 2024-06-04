@@ -5,10 +5,8 @@ import Add from 'shared/components/icons/Add'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../../providers/constants/columns'
 import useCandidateTable from '../../providers/hooks/useCandidateTable'
-import CreateCandiateModal from '../../page-sections/CreateCandidateModal/index'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../../providers/hooks/useActionTable'
-import EditCandidateModal from '../../page-sections/EditCandidateModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import {
@@ -23,7 +21,6 @@ import { useNavigate } from 'react-router-dom'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import BlackListIcon from 'shared/components/icons/BlackListIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import DeleteCandidateModal from '../../page-sections/DeleteCandidateModal'
 import {
   Fragment,
   KeyboardEventHandler,
@@ -54,7 +51,7 @@ import { ArrowDownward } from '@mui/icons-material'
 import { MenuItemComponent } from 'shared/components/menuItemComponent'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import useExportSample from '../../providers/hooks/useExportSample'
-import BlackListCandidateModal from '../BlackListCandidateModal'
+import { BlackListCandidateModal, CreateCandidateModal, DeleteCandidateModal, EditCandidateModal} from '../index'
 
 const Candidates = () => {
   const {
@@ -318,7 +315,7 @@ const Candidates = () => {
       </BoxWrapperOuterContainer>
 
       {openCreate && (
-        <CreateCandiateModal open={openCreate} setOpen={setOpenCreate} />
+        <CreateCandidateModal open={openCreate} setOpen={setOpenCreate} />
       )}
       {openEdit && (
         <EditCandidateModal

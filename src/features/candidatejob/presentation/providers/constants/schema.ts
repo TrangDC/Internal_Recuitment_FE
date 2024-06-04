@@ -6,7 +6,7 @@ import { isEmpty } from 'lodash'
 export const schema = yup.object({
   team_id: yup.string().required(RULE_MESSAGES.MC1('team')),
   candidate_id: yup.string().required(RULE_MESSAGES.MC1('candidate_id')),
-  hiring_job_id: yup.object().required(RULE_MESSAGES.MC1('job name')),
+  hiring_job_id: yup.string().required(RULE_MESSAGES.MC1('job name')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
   attachments: yup
     .array()
@@ -18,7 +18,6 @@ export const schema = yup.object({
 export type FormDataSchema = yup.InferType<typeof schema>
 
 export const schemaChangeStatus = yup.object({
-  id: yup.string().required(RULE_MESSAGES.MC1('id')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
   failed_reason: yup
     .array()
@@ -39,14 +38,9 @@ export const schemaChangeStatus = yup.object({
     ),
   attachments: yup.mixed(),
   feedback: yup.string(),
+  note: yup.string(),
 })
 
 export type FormDataSchemaChangeStatus = yup.InferType<
   typeof schemaChangeStatus
 >
-
-export const schemaDelete = yup.object({
-  id: yup.string().required(RULE_MESSAGES.MC1('id')),
-  note: yup.string(),
-});
-export type FormDataSchemaDelete = yup.InferType<typeof schemaDelete>

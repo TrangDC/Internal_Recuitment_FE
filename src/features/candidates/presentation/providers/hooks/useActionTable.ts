@@ -7,8 +7,6 @@ const useActionTable = <T extends object>() => {
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openBlackList, setOpenBlackList] = useState(false)
-  const [openChangeStatus, setOpenChangeStatus] = useState(false)
-
 
   function handleOpenEdit(id: string) {
     rowId.current = id
@@ -25,26 +23,18 @@ const useActionTable = <T extends object>() => {
     setOpenBlackList(true)
   }
 
-  function handleOpenChangeStatus(id: string) {
-    rowId.current = id
-    setOpenChangeStatus(true)
-  }
-
   return {
     openCreate,
     openEdit,
     openDelete,
     openBlackList,
-    openChangeStatus,
     setOpenBlackList,
     setOpenCreate,
     setOpenDelete,
     setOpenEdit,
-    setOpenChangeStatus,
     handleOpenEdit,
     handleOpenDelete,
     handleOpenBlackList,
-    handleOpenChangeStatus,
     rowId,
     rowData,
   }

@@ -1,5 +1,6 @@
-import { Attachments, Candidate } from 'features/candidates/domain/interfaces'
+import { Candidate } from 'features/candidates/domain/interfaces'
 import { Job } from 'features/jobs/domain/interfaces'
+import { Attachments } from 'shared/interfaces'
 
 export type StepType = {
   id: string
@@ -32,7 +33,29 @@ export type CandidateJob = {
   hiring_job: Job
 }
 
+export type NewCandidateJobInput = {
+  candidate_id: string
+  hiring_job_id: string
+  status: string
+  attachments?: string
+}
+
 export type DeleteCandidateJobInput = {
   id: string
   note: string
 }
+
+export type UpdateStatus = {
+  status: string,
+  note: string,
+  failed_reason: string[]
+}
+export type UpdateCandidateJobStatus = {
+  status: string
+  attachments: Attachments
+  feedback: string
+  failed_reason: string[]
+  note: string
+}
+
+

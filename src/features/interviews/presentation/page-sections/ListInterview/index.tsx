@@ -16,14 +16,11 @@ import { Box, Button } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import useActionTable from '../../providers/hooks/useActionTable'
-import CreateInterviewModal from '../CreateInterviewModal'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
 import EditIcon from 'shared/components/icons/EditIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import EditInterviewModal from '../EditInterviewModal'
 import { Interview } from 'features/interviews/domain/interfaces'
-import DeleteInterviewModal from '../DeleteInterviewModal'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { Fragment, useMemo } from 'react'
@@ -32,6 +29,7 @@ import dayjs from 'dayjs'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import { areDatesEqual, getTime, isPast } from 'shared/utils/date'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
+import { CreateInterviewModal, DeleteInterviewModal, EditInterviewModal } from '../index'
 
 interface Props {
   jobApplicationDetail: CandidateJob
@@ -86,7 +84,10 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
       </DivActionHeader>
       {!isEmpty(listInterview) &&
         listInterview.map((interview, idx) => {
-          const disabledEdited = areDatesEqual(new Date(interview.created_at), new Date(interview.updated_at))
+          const disabledEdited = areDatesEqual(
+            new Date(interview.created_at),
+            new Date(interview.updated_at)
+          )
 
           return (
             <BoxText key={idx}>
@@ -100,7 +101,12 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                     gap: '6px',
                   }}
                 >
-                  <FlexBox flexDirection={'column'} gap={'10px'} width={'100%'} paddingTop={'5px'}>
+                  <FlexBox
+                    flexDirection={'column'}
+                    gap={'10px'}
+                    width={'100%'}
+                    paddingTop={'5px'}
+                  >
                     <FlexBox width={'100%'} justifyContent={'space-between'}>
                       <FlexBox gap={'8px'}>
                         <TinyText>{interview.title}</TinyText>
@@ -115,10 +121,10 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                             <Fragment>
                               <EditIcon
                                 onClick={(e) => {
-                                  handleOpenEdit(interview.id, interview)
+                                  handleOpenEdit(interview.id)
                                 }}
                                 sx={{
-                                  fontSize: '20px'
+                                  fontSize: '20px',
                                 }}
                               />
                               <DeleteIcon
@@ -126,7 +132,7 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                                   handleOpenDelete(interview.id)
                                 }}
                                 sx={{
-                                  fontSize: '20px'
+                                  fontSize: '20px',
                                 }}
                               />
                             </Fragment>
@@ -199,7 +205,6 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
 
       {openEdit && (
         <EditInterviewModal
-          rowData={rowData.current as Interview}
           id_interview={rowId.current}
           hiring_job={jobApplicationDetail.hiring_job}
           open={openEdit}

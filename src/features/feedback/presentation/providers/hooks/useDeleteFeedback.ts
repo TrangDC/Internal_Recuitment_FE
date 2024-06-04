@@ -1,50 +1,35 @@
-import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/feedback/domain/graphql/graphql'
-import { DeleteFeedbackInput } from 'features/feedback/domain/interfaces'
-import { schemaDelete, FormDataSchemaDelete } from '../constants/schema'
-import useDeleteResource from 'shared/hooks/useDeleteResource'
+import { BaseRecord } from 'shared/interfaces'
+import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
+import { useDeleteResource } from 'shared/hooks/crud-hook'
 
-interface deleteTeamProps {
-  defaultValues?: Partial<FormDataSchemaDelete>
-  callbackSuccess?: (data: any) => void
-  callbackError?: (data: any) => void
+type UseDeleteTeamProps = {
+  id: string
+  onSuccess: (data: BaseRecord) => void
+  onError?: (data: BaseRecord) => void;
 }
 
-function useDeleteFeedback(props: deleteTeamProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess, callbackError} = props
-
-  const { deleteCandidateJobFeedback, queryKey } = useGraphql()
-  const { useCreateReturn, useFormReturn } = useDeleteResource<
-    DeleteFeedbackInput,
-    FormDataSchemaDelete
-  >({
+function useDeleteFeedback(props: UseDeleteTeamProps) {
+  const { id, onSuccess, onError } = props
+  const { queryKey, deleteCandidateJobFeedback } = useGraphql()
+  const { useDeleteReturn } = useDeleteResource({
     mutationKey: [queryKey],
+    id,
+    onSuccess,
+    onError,
     queryString: deleteCandidateJobFeedback,
-    defaultValues: {
-      ...defaultValues,
-    },
-    resolver: yupResolver(schemaDelete),
-    onSuccess: callbackSuccess,
-    onError: callbackError,
     showErrorMsg: false,
   })
 
-  const { handleSubmit, control, formState } = useFormReturn
-  const isValid = !formState.isValid
-  const { isPending, mutate } = useCreateReturn
+  const { mutate, isPending } = useDeleteReturn
 
-  function onSubmit() {
-    handleSubmit((value) => {
-      mutate(value)
-    })()
+  function onDelete(data: payloadDelete) {
+    mutate(data)
   }
 
   return {
-    onSubmit,
-    control,
-    isValid,
     isPending,
+    onDelete,
   }
 }
-
 export default useDeleteFeedback

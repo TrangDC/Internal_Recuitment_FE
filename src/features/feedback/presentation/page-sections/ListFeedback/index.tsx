@@ -11,16 +11,13 @@ import { Box, Button } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import useActionTable from '../../providers/hooks/useActionTable'
-import CreateFeedbackModal from '../CreateFeedbackModal'
 import { useParams } from 'react-router-dom'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import EditIcon from 'shared/components/icons/EditIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import UpdateFeedbackModal from '../UpdateFeedbackModal'
 import { FeedBack } from 'features/feedback/domain/interfaces'
-import DeleteFeedbackModal from '../DeleteFeedbackModal'
 import ShowFile from 'shared/components/input-fields/ItemFile'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import {
@@ -33,6 +30,7 @@ import {
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { useQueryClient } from '@tanstack/react-query'
 import { areDatesEqual } from 'shared/utils/date'
+import { CreateFeedbackModal, DeleteFeedbackModal, UpdateFeedbackModal } from '../index'
 
 interface Props {
   listFeedback: FeedBack[]
@@ -58,7 +56,6 @@ const ListFeedBack = ({listFeedback}: Props) => {
   const handleRefreshList = () => {
     queryClient.invalidateQueries({ queryKey: [ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK] })
   }
-
 
   return (
     <ListFeedbackContainer>

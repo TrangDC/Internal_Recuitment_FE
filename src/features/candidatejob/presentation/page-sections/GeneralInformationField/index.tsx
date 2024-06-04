@@ -1,7 +1,7 @@
-import { Box, styled } from '@mui/material'
+import { Box } from '@mui/material'
 import { H3, Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { DivField } from '../../providers/styles'
+import { DivField, DivWrapperField } from '../../providers/styles'
 import { useParams } from 'react-router-dom'
 import { format } from 'date-fns'
 import useTextTranslation from 'shared/constants/text'
@@ -12,12 +12,6 @@ import useActionTable from 'features/candidates/presentation/providers/hooks/use
 import EditCandidateModal from 'features/candidates/presentation/page-sections/EditCandidateModal'
 import CopyIcon from 'shared/components/icons/CopyIcon'
 import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
-
-const DivWrapperField = styled(Box)(({ theme }) => ({
-  width: '100%',
-  padding: '24px 16px',
-  borderBottom: `1px solid ${theme.palette.grey[200]}`,
-}))
 
 const GeneralInformationField = ({
   candidateDetail,

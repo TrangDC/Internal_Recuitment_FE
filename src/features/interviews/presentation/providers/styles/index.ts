@@ -5,12 +5,6 @@ export const ListInterviewContainer = styled(Box)(({ theme }) => ({
   width: '100%',
 }))
 
-export const StyleSpanName = styled('span')`
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 15.85px;
-`
-
 export const DivActionHeader = styled(FlexBox)(({ theme }) => ({
   width: '100%',
   justifyContent: 'space-between',

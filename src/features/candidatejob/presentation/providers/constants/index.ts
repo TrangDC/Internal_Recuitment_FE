@@ -11,16 +11,6 @@ export const CANDIDATE_STATUS = {
   new: {text: 'New', backgroundColor: '#FC105C'},
 }
 
-export const STATUS_CANDIDATE_HIRING = [
-  {name: 'APPLIED', value: STATUS_CANDIDATE.APPLIED},
-  {name: 'INTERVIEWING', value: STATUS_CANDIDATE.INTERVIEWING},
-  {name: 'OFFERING', value: STATUS_CANDIDATE.OFFERING},
-  {name: 'HIRED', value: STATUS_CANDIDATE.HIRED},
-  {name: 'KIV', value: STATUS_CANDIDATE.KIV},
-  {name: 'EX-STAFTT', value: STATUS_CANDIDATE.EX_STAFTT},
-  {name: 'OFFERED LOST', value: STATUS_CANDIDATE.OFFERED_LOST},
-]
-
 export const list_status_disabled = {
   [STATUS_CANDIDATE.APPLIED]: [
     STATUS_CANDIDATE.APPLIED,

@@ -28,3 +28,9 @@ export type ParamUploadFile = {
   url: string
   status: UploadStatus
 }
+
+export type Attachments = {
+  id: string
+  document_name: string
+  document_id: string
+}

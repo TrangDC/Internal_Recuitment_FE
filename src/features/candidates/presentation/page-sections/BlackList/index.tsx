@@ -3,10 +3,8 @@ import { Box } from '@mui/system'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../../providers/constants/columns'
 import useCandidateTable from '../../providers/hooks/useCandidateTable'
-import CreateCandiateModal from '../../page-sections/CreateCandidateModal/index'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../../providers/hooks/useActionTable'
-import EditCandidateModal from '../../page-sections/EditCandidateModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import {
@@ -20,7 +18,6 @@ import { BaseRecord, baseInstance } from 'shared/interfaces'
 import { useNavigate } from 'react-router-dom'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import DeleteCandidateModal from '../../page-sections/DeleteCandidateModal'
 import { KeyboardEventHandler, useMemo, useState } from 'react'
 import { getValueOfObj, transformListItem } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
@@ -33,7 +30,7 @@ import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reas
 import { isEmpty } from 'lodash'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
-import BlackListCandidateModal from '../BlackListCandidateModal'
+import { BlackListCandidateModal, CreateCandidateModal, DeleteCandidateModal, EditCandidateModal } from '../index'
 
 const BlackList = () => {
   const {
@@ -234,7 +231,7 @@ const BlackList = () => {
       </BoxWrapperOuterContainer>
 
       {openCreate && (
-        <CreateCandiateModal open={openCreate} setOpen={setOpenCreate} />
+        <CreateCandidateModal open={openCreate} setOpen={setOpenCreate} />
       )}
       {openEdit && (
         <EditCandidateModal

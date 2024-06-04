@@ -3,10 +3,10 @@ import useGraphql from 'features/interviews/domain/graphql/graphql'
 import { NewCandidateInterviewInput } from 'features/interviews/domain/interfaces'
 import { schema, FormDataSchema } from '../constants/schema'
 import { cloneDeep } from 'lodash'
-import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
 import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
 import { ChosenDateType } from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
+import { useCreateResource } from 'shared/hooks/crud-hook'
 
 interface createInterviewProps {
   defaultValues?: Partial<FormDataSchema>

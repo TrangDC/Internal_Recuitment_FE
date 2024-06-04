@@ -7,9 +7,8 @@ const useActionTable = <T extends object>() => {
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
 
-  function handleOpenEdit(id: string, data: T) {
+  function handleOpenEdit(id: string) {
     rowId.current = id
-    rowData.current = data
     setOpenEdit(true)
   }
 

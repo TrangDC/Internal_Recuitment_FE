@@ -3,7 +3,6 @@ import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import { useParams } from 'react-router-dom'
 import { Job } from 'features/jobs/domain/interfaces'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -14,18 +13,15 @@ import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Interview } from 'features/interviews/domain/interfaces'
 import useEditInterview from '../../providers/hooks/useEditInterview'
-import { transformListItem } from 'shared/utils/utils'
-import { replaceYearWithCurrent } from 'shared/utils/date'
 import dayjs from 'dayjs'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
-import { useEffect, useMemo } from 'react'
+import {  useMemo } from 'react'
 
 interface IEditInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
   hiring_job: Job
-  rowData: Interview
   id_interview: string
   onSuccess?: () => void
 }
@@ -34,41 +30,19 @@ function EditInterviewModal({
   open,
   setOpen,
   hiring_job,
-  rowData,
   id_interview,
   onSuccess,
 }: IEditInterviewModal) {
-  const { id } = useParams()
-  const {
-    onSubmit,
-    control,
-    isPending,
-    isValid,
-    handleGenerateToDate,
-    setValue,
-    watch,
-    trigger
-  } = useEditInterview({
-    callbackSuccess: () => {
+  const { actions, control, isValid, isPending, isGetting, watch, trigger } =
+  useEditInterview({
+    id: id_interview,
+    onSuccess: () => {
       setOpen(false)
       onSuccess?.()
     },
-    defaultValues: {
-      id: id_interview,
-      candidate_job_id: id,
-      title: rowData.title,
-      interview_date: new Date(rowData.interview_date),
-      description: rowData.description,
-      interviewer: transformListItem(rowData.interviewer, 'id'),
-      start_from: new Date(replaceYearWithCurrent(rowData.start_from)),
-      end_at: new Date(replaceYearWithCurrent(rowData.end_at)),
-    },
   })
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
-  }
 
+  const { callbackSubmit } = actions;
   const interview_date = watch('interview_date');
 
   const date_feature = useMemo(() => {
@@ -104,6 +78,7 @@ function EditInterviewModal({
                       value={field.value}
                       onChange={field.onChange}
                       disabled
+                      loading={isGetting}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -183,7 +158,6 @@ function EditInterviewModal({
                           label={'From'}
                           value={field.value ? dayjs(field.value) : null}
                           onChange={(value) => {
-                            // handleGenerateToDate(value)
                             field.onChange(value)
                           }}
                           views={['hours', 'minutes']}
@@ -252,6 +226,7 @@ function EditInterviewModal({
                       multiline
                       minRows={4}
                       disabled
+                      loading={isGetting}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}

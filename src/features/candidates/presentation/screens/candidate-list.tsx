@@ -1,11 +1,10 @@
 import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import TabCustomize from 'shared/components/tab'
-import Candidates from '../page-sections/Candidates'
-import BlackList from '../page-sections/BlackList'
 import useTextTranslation from 'shared/constants/text'
 import CandidateIcon from 'shared/components/icons/Candidates'
 import IconScreen from 'shared/components/utils/IconScreen'
+import { BlackList, Candidates } from '../page-sections'
 
 const CandidateList = () => {
   const translation = useTextTranslation()

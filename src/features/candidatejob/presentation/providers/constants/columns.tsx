@@ -3,28 +3,34 @@ import {
   ActionGroupButtons,
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
-import { StyleSpanName } from '../styles/index'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { t } from 'i18next'
 import { format } from 'date-fns'
 import { CANDIDATE_STATUS } from 'features/candidates/presentation/providers/constants'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
+import { TinyText } from 'shared/components/form/styles'
+import { styled } from '@mui/material'
 
 const columnHelper = createColumnHelper<CandidateJob>()
+
+export const StyleTinyText = styled(TinyText)(({ theme }) => ({
+  color: theme.palette.grey[500],
+  fontWeight: 500,
+}))
 
 export const columns = (
   actions: TOptionItem<CandidateJob>[]
 ): ColumnDef<CandidateJob, any>[] => [
   columnHelper.accessor((row) => row.hiring_job.name, {
     id: 'job_name',
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>{t('job_name')}</span>,
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.hiring_job.team.name, {
     id: 'team',
     header: () => <span>{t('team')}</span>,
-    cell: (info) => <StyleSpanName>{info.getValue()}</StyleSpanName>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.updated_at, {
@@ -32,9 +38,9 @@ export const columns = (
     size: 200,
     header: () => <span>Last update</span>,
     cell: (info) => (
-      <StyleSpanName>
+      <StyleTinyText>
         {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}
-      </StyleSpanName>
+      </StyleTinyText>
     ),
   }),
   columnHelper.accessor((row) => row.status, {

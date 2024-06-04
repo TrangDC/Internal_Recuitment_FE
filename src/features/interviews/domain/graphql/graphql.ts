@@ -37,7 +37,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'CandidateInterviewFilter!',
-      orderBy: 'CandidateInterviewOrder', 
+      orderBy: 'CandidateInterviewOrder',
       freeWord: 'CandidateInterviewFreeWord',
     },
   })
@@ -69,7 +69,7 @@ const useGraphql = () => {
     `,
     params: {
       input: 'UpdateCandidateInterviewInput!',
-      id: 'ID!'
+      id: 'ID!',
     },
   })
 
@@ -80,17 +80,49 @@ const useGraphql = () => {
     },
     node: ``,
     params: {
-      id: 'ID!'
+      id: 'ID!',
     },
   })
 
+  const getInterview = buildQuery({
+    operation: 'GetCandidateInterview',
+    options: {
+      type: 'query',
+    },
+    node: `
+        data {  
+          id
+          title
+          description
+          interview_date
+          candidate_job_id
+          start_from
+          interviewer {
+            id
+            name
+            work_email
+            status
+          }
+          candidate_job {
+            id
+          }
+          end_at
+          created_at
+          updated_at
+        }
+    `,
+    params: {
+      id: 'ID!',
+    },
+  })
 
   return {
     queryKey,
     updateCandidateInterview,
     getAllCandidateInterview,
     createCandidateInterview,
-    deleteCandidateInterview
+    deleteCandidateInterview,
+    getInterview,
   }
 }
 
