@@ -4,7 +4,6 @@ import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import useUpdateCandidate from '../../providers/hooks/useUpdateCandidate'
-import { getInfoData } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -20,28 +19,22 @@ interface IEditCandidateModal {
   rowData?: Candidate
 }
 
-function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
-  const { onSubmit, control, isPending, isValid, setValue } =
+function EditCandidateModal({
+  open,
+  setOpen,
+  rowData,
+  id,
+}: IEditCandidateModal) {
+  const { actions, control, isPending, isValid, isGetting } =
     useUpdateCandidate({
-      defaultValues: getInfoData({
-        field: ['dob', 'email', 'phone', 'name', 'id'],
-        object: {
-          ...rowData,
-          note: '',
-          dob: rowData?.dob ? new Date(rowData?.dob as string) : rowData?.dob,
-        },
-      }),
-      callbackSuccess: () => {
+      id: id,
+      onSuccess: () => {
         setOpen(false)
       },
     })
 
+  const { callbackSubmit } = actions
   const translation = useTextTranslation()
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
-  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -65,6 +58,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
+                      loading={isGetting}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -86,6 +80,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
+                      loading={isGetting}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -109,6 +104,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
+                      loading={isGetting}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -127,6 +123,7 @@ function EditCandidateModal({ open, setOpen, rowData }: IEditCandidateModal) {
                       label={'DOB'}
                       value={field.value}
                       onChange={field.onChange}
+                      format="dd/MM/yyyy"
                       textFieldProps={{
                         fullWidth: true,
                         size: 'small',

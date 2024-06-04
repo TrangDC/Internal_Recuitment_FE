@@ -4,7 +4,7 @@ import { DivWrapperProcess, SpanGenaration } from '../../providers/styles'
 import CustomTable from 'shared/components/table/CustomTable'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import { columns } from '../../providers/constants/columns'
-import { Candidate, CandidateJob } from 'features/candidates/domain/interfaces'
+import { Candidate } from 'features/candidates/domain/interfaces'
 import useActionTable from '../../providers/hooks/useActionTable'
 import EditIcon from 'shared/components/icons/EditIcon'
 import ApplyJobModal from '../ApplyJobModal'
@@ -23,6 +23,7 @@ import Add from 'shared/components/icons/Add'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 
 const JobApplicationHistory = ({
   candidateDetail,

@@ -4,17 +4,17 @@ import { Job, UpdateJobStatus } from 'features/jobs/domain/interfaces'
 import {
   schemaChangeStatus,
   FormDataSchemaChangeStatus,
-} from '../../providers/constants/schema'
-import useUpdateResourceOther from 'shared/hooks/crud-hook/useUpdateResourceOther'
+} from '../constants/schema'
 import { BaseRecord } from 'shared/interfaces'
 import { STATUS_STATE } from 'shared/constants/constants'
+import { useUpdateResourceOther } from 'shared/hooks/crud-hook'
 
 type UseChangeStatusProps = {
   id: string
   onSuccess: (data: BaseRecord) => void
 }
 
-function useCloseJob(props: UseChangeStatusProps) {
+function useChangeStatusJob(props: UseChangeStatusProps) {
   const { id, onSuccess } = props
 
   const { changeStatusJob, queryKey, getJobDetail } = useGraphql()
@@ -66,4 +66,4 @@ function useCloseJob(props: UseChangeStatusProps) {
   }
 }
 
-export default useCloseJob
+export default useChangeStatusJob

@@ -37,7 +37,6 @@ import {
   HeadingWrapper,
 } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
-import AddBlackListCandidateModal from '../AddBlackListCandidateModal'
 import { handleImportFile } from '../../providers/utils'
 import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
@@ -55,6 +54,7 @@ import { ArrowDownward } from '@mui/icons-material'
 import { MenuItemComponent } from 'shared/components/menuItemComponent'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import useExportSample from '../../providers/hooks/useExportSample'
+import BlackListCandidateModal from '../BlackListCandidateModal'
 
 const Candidates = () => {
   const {
@@ -100,7 +100,7 @@ const Candidates = () => {
     actions: [
       {
         id: 'detail',
-        onClick: (id, rowData) => {
+        onClick: (id) => {
           navigate(`/dashboard/candidate-detail/${id}`)
         },
         title: translation.COMMON.detail,
@@ -108,8 +108,8 @@ const Candidates = () => {
       },
       {
         id: 'edit',
-        onClick: (id, rowData) => {
-          handleOpenEdit(id, rowData)
+        onClick: (id) => {
+          handleOpenEdit(id)
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
@@ -336,11 +336,10 @@ const Candidates = () => {
         />
       )}
       {openBlackList && (
-        <AddBlackListCandidateModal
+        <BlackListCandidateModal
           open={openBlackList}
           setOpen={setOpenBlackList}
           id={rowId.current}
-          title={translation.MODLUE_CANDIDATES.add_blackList}
         />
       )}
     </DivContainerWrapper>

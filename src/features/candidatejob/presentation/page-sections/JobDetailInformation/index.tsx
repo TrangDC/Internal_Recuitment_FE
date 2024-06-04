@@ -1,6 +1,5 @@
 import { Box, Button, styled } from '@mui/material'
 import { format } from 'date-fns'
-import { CandidateJob } from 'features/candidates/domain/interfaces'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import EditIcon from 'shared/components/icons/EditIcon'
@@ -10,6 +9,7 @@ import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useEffect, useMemo, useState } from 'react'
 import PreviewCV from '../../providers/components/previewCV'
+import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 
 const DivInformation = styled(FlexBox)(({ theme }) => ({
   padding: '24px',

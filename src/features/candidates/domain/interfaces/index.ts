@@ -1,4 +1,3 @@
-import { Job } from 'features/jobs/domain/interfaces'
 import { SchemaInputNote } from 'shared/schema'
 
 export type Candidate = {
@@ -6,7 +5,7 @@ export type Candidate = {
   name: string
   email: string
   phone: string
-  dob: string
+  dob: Date
   is_black_list: boolean
   last_apply_date: string
   is_able_to_delete: boolean
@@ -33,19 +32,17 @@ export type NewCandidateInput = {
 }
 
 export type UpdateCandidateInput = {
-  id: string
   name: string
   email: string
   phone: string
-  dob: string
+  dob: Date
   note: string
 }
 
 export type DeleteCandidateInput = SchemaInputNote
 
 export type BlackListCandidateInput = {
-  id: string
-  note?: string
+  note: string
   is_black_list: boolean
 }
 
@@ -68,41 +65,4 @@ export type Attachments = {
   id: string
   document_name: string
   document_id: string
-}
-
-export type CandidateJob = {
-  id: string
-  candidate_id: string
-  hiring_job_id: string
-  is_able_to_delete: boolean
-  interview_feature: number
-  status:
-    | 'applied'
-    | 'interviewing'
-    | 'offering'
-    | 'hired'
-    | 'kiv'
-    | 'offer_lost'
-    | 'ex_staff'
-    | 'new'
-  created_at: string
-  steps: StepType[]
-  updated_at: string
-  attachments: Attachments[]
-  candidate: Candidate
-  hiring_job: Job
-}
-
-//interview
-export type FeedBackInput = {
-  attachments: Attachments
-  feedback?: string
-}
-
-export type StepType = {
-  id: string
-  candidate_job_id: string
-  candidate_job_status: string
-  created_at: string
-  updated_at: string
 }

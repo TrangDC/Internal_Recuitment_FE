@@ -19,7 +19,6 @@ import useActionTable from '../../providers/hooks/useActionTable'
 import CreateInterviewModal from '../CreateInterviewModal'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
-import { CandidateJob } from 'features/candidates/domain/interfaces'
 import EditIcon from 'shared/components/icons/EditIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditInterviewModal from '../EditInterviewModal'
@@ -32,6 +31,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import { areDatesEqual, getTime, isPast } from 'shared/utils/date'
+import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 
 interface Props {
   jobApplicationDetail: CandidateJob

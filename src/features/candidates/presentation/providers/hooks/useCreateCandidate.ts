@@ -3,7 +3,7 @@ import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../constants/schema'
 import { NewCandidateInput } from 'features/candidates/domain/interfaces'
 import { convertDateToISOString } from 'shared/utils/utils'
-import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
+import { useCreateResource } from 'shared/hooks/crud-hook'
 
 interface createCandidateProps {
   defaultValues?: Partial<FormDataSchema>

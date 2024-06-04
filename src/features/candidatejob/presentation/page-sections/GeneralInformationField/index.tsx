@@ -116,7 +116,7 @@ const GeneralInformationField = ({
               },
             }}
             onClick={() => {
-              handleOpenEdit(id as string, candidateDetail)
+              handleOpenEdit(id as string)
             }}
           />
         </Box>

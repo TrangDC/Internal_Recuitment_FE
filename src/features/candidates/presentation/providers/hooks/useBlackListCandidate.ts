@@ -1,66 +1,67 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/candidates/domain/graphql/graphql'
-import { BlackListCandidateInput } from 'features/candidates/domain/interfaces'
-import { useForm } from 'react-hook-form'
-import { fetchGraphQL } from 'services/graphql-services'
+import { BlackListCandidateInput, Candidate } from 'features/candidates/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import {
   schemaBlackList,
   FormDataSchemaBlackList
 } from '../../providers/constants/schema'
 import _ from 'lodash'
-import toastSuccess from 'shared/components/toast/toastSuccess'
+import { useUpdateResourceOther } from 'shared/hooks/crud-hook'
 
-interface deleteCandidateProps {
-  defaultValues?: Partial<FormDataSchemaBlackList>
-  callbackSuccess?: (value: any) => void
+type UseChangeStatusProps = {
+  id: string
+  onSuccess: (data: BaseRecord) => void
 }
 
-function useBlackListCandidate(props: deleteCandidateProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess } = props
+function useChangeStatusJob(props: UseChangeStatusProps) {
+  const { id, onSuccess } = props
 
-  const queryClient = useQueryClient()
-  const { handleSubmit, ...useFormReturn } = useForm<FormDataSchemaBlackList>({
+  const { blackListCandidate, queryKey, getCandidate } = useGraphql()
+  const { useEditReturn, useFormReturn, formData } = useUpdateResourceOther<
+    Candidate,
+    FormDataSchemaBlackList,
+    BlackListCandidateInput
+  >({
     resolver: yupResolver(schemaBlackList),
-    defaultValues: {
-      ...defaultValues,
+    editBuildQuery: blackListCandidate,
+    oneBuildQuery: getCandidate,
+    queryKey: [queryKey],
+    id,
+    onSuccess,
+    formatDefaultValues(data) {
+      return {
+        note: '',
+        is_black_list: !data.is_black_list
+      }
     },
   })
 
-  const { blackListCandidate, queryKey } = useGraphql()
-  const { mutate } = useMutation({
-    mutationKey: [queryKey],
-    mutationFn: (newCandidate: BlackListCandidateInput) => {
-      const { id,  note, is_black_list} = newCandidate
-
-      return fetchGraphQL<BaseRecord>(blackListCandidate.query, {
-        id,
-        is_black_list,
-        note,
-      })
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] })
-      toastSuccess('Add to BlackList successfully')
-      callbackSuccess && callbackSuccess(data)
-    },
-  })
+  const { handleSubmit, control, formState } = useFormReturn
+  const isValid = !formState.isValid
+  const { isPending, mutate } = useEditReturn
 
   function onSubmit() {
-    handleSubmit((value: FormDataSchemaBlackList) => {
-      const valueClone = _.cloneDeep(value)
-
-      mutate(valueClone)
+    handleSubmit((value) => {
+      mutate(value as BlackListCandidateInput)
     })()
   }
 
+  function renderTitle() {
+    if(typeof formData?.is_black_list !== 'boolean') return '';
+    return formData?.is_black_list ? "Do you want to remove users from the blacklist?" : "Do you want to add users to the blacklist?"
+  }
+
   return {
-    onSubmit,
-    useFormReturn: {
-      ...useFormReturn,
-    },
+    control,
+    isValid,
+    isPending,
+    actions: {
+      onSubmit,
+      renderTitle,
+    }
   }
 }
 
-export default useBlackListCandidate
+export default useChangeStatusJob
+

@@ -1,4 +1,4 @@
-import { StepType } from 'features/candidates/domain/interfaces'
+import { StepType } from 'features/candidatejob/domain/interfaces'
 import { useEffect, useState } from 'react'
 import StepperComponent from 'shared/components/stepper'
 
