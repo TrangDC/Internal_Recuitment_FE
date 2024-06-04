@@ -2,51 +2,67 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
 import {
+  Candidate,
   UpdateCandidateInput,
 } from 'features/candidates/domain/interfaces'
-import useUpdateResource from 'shared/hooks/useUpdateResource'
+import { BaseRecord } from 'shared/interfaces'
+import { useEditResource } from 'shared/hooks/crud-hook'
 
-interface createCandidateProps {
-  defaultValues?: Partial<FormDataSchemaUpdate>
-  callbackSuccess?: (value: any) => void
+type UseEditCandidateProps = {
+  id: string
+  onSuccess: (data: BaseRecord) => void
 }
 
-function useUpdateCandidate(
-  props: createCandidateProps = { defaultValues: {} }
-) {
-  const { defaultValues, callbackSuccess } = props
-
-  const { updateCandidate, queryKey } = useGraphql()
-  const { useCreateReturn, useFormReturn } = useUpdateResource<
-  UpdateCandidateInput,
-    FormDataSchemaUpdate
+function useUpdateCandidate(props: UseEditCandidateProps) {
+  const { id, onSuccess } = props
+  const { updateCandidate, getCandidate, queryKey } = useGraphql()
+  const { useEditReturn, useFormReturn, isGetting } = useEditResource<
+    Candidate,
+    FormDataSchemaUpdate,
+    UpdateCandidateInput
   >({
-    mutationKey: [queryKey],
-    queryString: updateCandidate,
-    defaultValues: {
-      ...defaultValues,
-    },
     resolver: yupResolver(schemaUpdate),
-    onSuccess: callbackSuccess,
+    editBuildQuery: updateCandidate,
+    oneBuildQuery: getCandidate,
+    queryKey: [queryKey],
+    id,
+    onSuccess,
+    formatDefaultValues(data) {
+      return {
+        email: data.email,
+        name: data.name,
+        phone: data.phone,
+        dob: data.dob ? new Date(data.dob) : data.dob,
+        note: '',
+      }
+    },
   })
 
   const { handleSubmit, control, formState, setValue } = useFormReturn
   const isValid = !formState.isValid
-  const { isPending, mutate } = useCreateReturn
+  const { isPending, mutate } = useEditReturn
 
   function onSubmit() {
     handleSubmit((value) => {
-      mutate(value)
+      mutate(value as UpdateCandidateInput)
     })()
   }
 
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason)
+    onSubmit()
+  }
 
   return {
-    onSubmit,
+    actions: {
+      onSubmit,
+      callbackSubmit,
+    },
     control,
     isValid,
     isPending,
     setValue,
+    isGetting,
   }
 }
 

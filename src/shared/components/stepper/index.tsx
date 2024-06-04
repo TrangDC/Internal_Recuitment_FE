@@ -3,8 +3,8 @@ import { TinyText } from '../form/styles'
 import { get } from 'lodash'
 import FlexBox from '../flexbox/FlexBox'
 import CheckIcon from '../icons/CheckIcon'
-import { StepType } from 'features/candidates/domain/interfaces'
 import {  STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
+import { StepType } from 'features/candidatejob/domain/interfaces'
 
 const StepperContainer = styled(FlexBox)(({ theme }) => ({
   width: '100%',

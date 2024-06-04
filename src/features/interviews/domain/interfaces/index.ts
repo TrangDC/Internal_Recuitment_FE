@@ -1,4 +1,4 @@
-import { CandidateJob } from "features/candidates/domain/interfaces"
+import { CandidateJob } from "features/candidatejob/domain/interfaces"
 import { FeedBack } from "features/feedback/domain/interfaces"
 import { Member } from "features/teams/domain/interfaces"
 import { SchemaInputNote } from "shared/schema"

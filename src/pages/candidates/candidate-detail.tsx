@@ -1,4 +1,4 @@
-import CandiateDetail from 'features/candidates/presentation/screens/candidate-detail';
+import CandiateDetail from 'features/candidatejob/presentation/screens/candidate-job-list';
 
 const CandidatePageDetail = () => {
   return <CandiateDetail />

@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { buildQuery, fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
-const queryKey = 'export-sample'
+const queryKey = MODLUE_QUERY_KEY.EXPORT_TEMPLATE
 const exportSampleCandidate = buildQuery({
     operation: 'ExportSampleCandidate',
     options: {

@@ -8,7 +8,7 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import useCloseJob from '../../providers/hooks/useCloseJob'
+import useChangeStatusJob from '../../providers/hooks/useChangeStatusJob'
 
 interface IChangeStatusJobModal {
   open: boolean
@@ -17,7 +17,7 @@ interface IChangeStatusJobModal {
 }
 
 function ChangeStatusJobModal({ open, setOpen, id }: IChangeStatusJobModal) {
-  const { action, control, isPending, isValid } = useCloseJob({
+  const { action, control, isPending, isValid } = useChangeStatusJob({
     id: id,
     onSuccess: () => {
       setOpen(false)

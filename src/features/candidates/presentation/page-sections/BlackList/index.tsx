@@ -26,7 +26,6 @@ import { getValueOfObj, transformListItem } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import RemoveBlackListIcon from 'shared/components/icons/RemoveBlackListIcon'
-import UnBlackListCandidateModal from '../UnBlackListCandidateModal'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
@@ -34,6 +33,7 @@ import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reas
 import { isEmpty } from 'lodash'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
+import BlackListCandidateModal from '../BlackListCandidateModal'
 
 const BlackList = () => {
   const {
@@ -85,8 +85,8 @@ const BlackList = () => {
       },
       {
         id: 'edit',
-        onClick: (id, rowData) => {
-          handleOpenEdit(id, rowData)
+        onClick: (id) => {
+          handleOpenEdit(id)
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
@@ -114,15 +114,19 @@ const BlackList = () => {
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.keyCode === 13) {
       //@ts-ignore
-      handleFreeWordMultiple({name: searchField, phone: searchField, email: searchField})
+      handleFreeWordMultiple({
+        name: searchField,
+        phone: searchField,
+        email: searchField,
+      })
     }
   }
 
   return (
     <DivContainerWrapper>
       <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
-        <HeadingWrapper >
-            <FlexBox width={'100%'}>
+        <HeadingWrapper>
+          <FlexBox width={'100%'}>
             <DivFilter>
               <ButtonFieldFilter<baseInstance>
                 inputLabel={'Status'}
@@ -205,7 +209,11 @@ const BlackList = () => {
                       <SearchIcon
                         sx={{ fontSize: '16px' }}
                         onClick={() => {
-                          handleFreeWordMultiple({name: searchField, phone: searchField, email: searchField})
+                          handleFreeWordMultiple({
+                            name: searchField,
+                            phone: searchField,
+                            email: searchField,
+                          })
                         }}
                       />
                     </IconButton>
@@ -244,11 +252,10 @@ const BlackList = () => {
         />
       )}
       {openBlackList && (
-        <UnBlackListCandidateModal
+        <BlackListCandidateModal
           open={openBlackList}
           setOpen={setOpenBlackList}
           id={rowId.current}
-          title="Do you want to remove users from the blacklist?"
         />
       )}
     </DivContainerWrapper>

@@ -1,88 +1,91 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Button, Grid } from '@mui/material'
-import InputComponent from 'shared/components/form/inputComponent'
+import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { CustomeButtonCancel } from 'shared/components/form/styles'
-import { FormDataSchemaBlackList } from '../../providers/constants/schema'
 import useTextTranslation from 'shared/constants/text'
 import useBlackListCandidate from '../../providers/hooks/useBlackListCandidate'
+import AppTextField from 'shared/components/input-fields/AppTextField'
+import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import AppButton from 'shared/components/buttons/AppButton'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 
 interface IBlackListCandidateModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  is_black_list?: boolean
-  title: string
 }
 
 function BlackListCandidateModal({
   open,
   setOpen,
   id,
-  is_black_list = true,
-  title,
 }: IBlackListCandidateModal) {
-  const { onSubmit, useFormReturn } = useBlackListCandidate({
-    callbackSuccess: () => setOpen(false),
-    defaultValues: {
-      id: id,
-      is_black_list: is_black_list,
-      note: '',
+  const { actions, control, isPending, isValid } = useBlackListCandidate({
+    id: id,
+    onSuccess: () => {
+      setOpen(false)
     },
   })
-  const {
-    control,
-    formState: { errors },
-  } = useFormReturn
+
+  const {onSubmit, renderTitle} = actions;
   const translation = useTextTranslation()
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title={title}
+        title={renderTitle()}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Controller
-                name="note"
-                control={control}
-                render={({ field }) => (
-                  <InputComponent<FormDataSchemaBlackList>
-                    errors={errors}
-                    label={translation.COMMON.description}
-                    field={field}
-                    fullWidth
-                    multiline
-                    minRows={4}
-                    type='text'
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
-        </form>
+      <FlexBox flexDirection={'column'} gap={2}>
+            <FlexBox
+              justifyContent={'center'}
+              alignItems={'center'}
+              marginTop={1}
+            >
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="note"
+                  render={({ field, fieldState }) => (
+                    <FlexBox alignItems={'center'} flexDirection={'column'}>
+                      <AppTextField
+                        label={'Description'}
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        multiline
+                        minRows={4}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+          </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <CustomeButtonCancel
-            type="button"
-            variant="contained"
-            onClick={() => setOpen(false)}
-          >
-            {translation.COMMON.cancel}
-          </CustomeButtonCancel>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={onSubmit}
-          >
-            {translation.COMMON.save}
-          </Button>
+        <AppButton
+              variant="outlined"
+              size="small"
+              onClick={() => setOpen(false)}
+            >
+              {translation.COMMON.cancel}
+            </AppButton>
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

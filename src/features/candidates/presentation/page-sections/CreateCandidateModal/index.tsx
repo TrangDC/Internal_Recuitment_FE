@@ -107,6 +107,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                     <AppDateField
                       label={'DOB'}
                       value={field.value}
+                      format="dd/MM/yyyy"
                       onChange={field.onChange}
                       textFieldProps={{
                         fullWidth: true,

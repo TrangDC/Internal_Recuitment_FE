@@ -7,7 +7,6 @@ import {
   CANDIDATE_STATUS,
   list_status_disabled,
 } from '../../providers/constants'
-import { CandidateJob } from 'features/candidates/domain/interfaces'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useChangeStatus from '../../providers/hooks/useChangeStatus'
 import useTextTranslation from 'shared/constants/text'
@@ -23,6 +22,7 @@ import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
 import ModalConfirm from 'shared/components/modal/modalConfirm'
 import { isEmpty } from 'lodash'
+import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 
 interface IChangeStatusModal {
   open: boolean
