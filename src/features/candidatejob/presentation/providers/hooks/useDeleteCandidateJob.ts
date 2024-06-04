@@ -1,53 +1,35 @@
-import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
-import {
-  schemaDelete,
-  FormDataSchemaDelete,
-} from '../../providers/constants/schema'
-import useDeleteResource from 'shared/hooks/useDeleteResource'
-import { DeleteCandidateJobInput } from 'features/candidatejob/domain/interfaces'
+import { BaseRecord } from 'shared/interfaces'
+import { useDeleteResource } from 'shared/hooks/crud-hook'
+import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
 
-interface deleteTeamProps {
-  defaultValues?: Partial<FormDataSchemaDelete>
-  callbackSuccess?: (data: any) => void
-  callbackError?: (data: any) => void
+type UseDeleteCandidateJobProps = {
+  id: string
+  onSuccess: (data: BaseRecord) => void
+  onError?: (data: BaseRecord) => void;
 }
 
-function useDeleteCandidateJob(props: deleteTeamProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess, callbackError } = props
-
-  const { deleteCandidateJob, queryKey } = useGraphql()
-  const { useCreateReturn, useFormReturn } = useDeleteResource<
-  DeleteCandidateJobInput,
-    FormDataSchemaDelete
-  >({
+function useDeleteCandidateJob(props: UseDeleteCandidateJobProps) {
+  const { id, onSuccess, onError } = props
+  const { queryKey, deleteCandidateJob } = useGraphql()
+  const { useDeleteReturn } = useDeleteResource({
     mutationKey: [queryKey],
+    id,
+    onSuccess,
+    onError,
     queryString: deleteCandidateJob,
-    defaultValues: {
-      ...defaultValues,
-    },
-    resolver: yupResolver(schemaDelete),
-    onSuccess: callbackSuccess,
-    onError: callbackError,
     showErrorMsg: false,
   })
 
-  const { handleSubmit, control, formState } = useFormReturn
-  const isValid = !formState.isValid
-  const { isPending, mutate } = useCreateReturn
+  const { mutate, isPending } = useDeleteReturn
 
-  function onSubmit() {
-    handleSubmit((value) => {
-      mutate(value)
-    })()
+  function onDelete(data: payloadDelete) {
+    mutate(data)
   }
 
   return {
-    onSubmit,
-    control,
-    isValid,
     isPending,
+    onDelete,
   }
 }
-
 export default useDeleteCandidateJob

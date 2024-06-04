@@ -39,9 +39,6 @@ function useGetResource<Response, FormData extends FieldValues>({
     mode: 'onChange',
     defaultValues: formatData,
     resolver,
-    resetOptions: {
-      keepDefaultValues: false
-    },
   })
 
   const { reset } = useFormReturn

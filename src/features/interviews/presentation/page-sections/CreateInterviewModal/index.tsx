@@ -15,7 +15,7 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import dayjs from 'dayjs'
 import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 interface ICreateInterviewModal {
   open: boolean
@@ -36,7 +36,6 @@ function CreateInterviewModal({
     control,
     isPending,
     isValid,
-    setValue,
     watch,
     trigger,
   } = useCreateInterview({

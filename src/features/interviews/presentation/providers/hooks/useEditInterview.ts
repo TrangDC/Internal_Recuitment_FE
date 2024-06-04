@@ -1,41 +1,55 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/interviews/domain/graphql/graphql'
-import { UpdateCandidateInterviewInput } from 'features/interviews/domain/interfaces'
+import { Interview, UpdateCandidateInterviewInput } from 'features/interviews/domain/interfaces'
 import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
 import { cloneDeep } from 'lodash'
-import useUpdateResource from 'shared/hooks/useUpdateResource'
-import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
-import { ChosenDateType } from 'shared/components/input-fields/AppTimePicker'
+import { convertToUTC, replaceYearWithCurrent } from 'shared/utils/date'
 import dayjs from 'dayjs'
+import { BaseRecord } from 'shared/interfaces'
+import { useEditResource } from 'shared/hooks/crud-hook'
+import { transformListItem } from 'shared/utils/utils'
 
-interface updateInterview {
-  defaultValues?: Partial<FormDataSchemaUpdate>
-  callbackSuccess?: (value: any) => void
+type UseEditInterviewProps = {
+  id: string
+  onSuccess: (data: BaseRecord) => void
 }
 
-function useEditInterview(
-  props: updateInterview = { defaultValues: {} }
-) {
-  const { defaultValues, callbackSuccess } = props
-
-  const { updateCandidateInterview, queryKey } = useGraphql()
-  const { useCreateReturn, useFormReturn } = useUpdateResource<
-  UpdateCandidateInterviewInput,
-  FormDataSchemaUpdate
+function useEditInterview(props: UseEditInterviewProps) {
+  const { id, onSuccess } = props
+  const { updateCandidateInterview, getInterview, queryKey } = useGraphql()
+  const { useEditReturn, useFormReturn, isGetting } = useEditResource<
+    Interview,
+    FormDataSchemaUpdate,
+    UpdateCandidateInterviewInput
   >({
-    mutationKey: [queryKey],
-    queryString: updateCandidateInterview,
-    defaultValues: {
-      ...defaultValues,
-    },
     resolver: yupResolver(schemaUpdate),
-    onSuccess: callbackSuccess,
+    editBuildQuery: updateCandidateInterview,
+    oneBuildQuery: getInterview,
+    queryKey: [queryKey],
+    id,
+    onSuccess,
+    formatDefaultValues(data) {
+      const interviewers = transformListItem(data.interviewer, 'id');
+      const start_form = new Date(replaceYearWithCurrent(data.start_from));
+      const end_at = new Date(replaceYearWithCurrent(data.end_at))
+
+      return {
+        description: data.description,
+        title: data.title,
+        candidate_job_id: data.candidate_job.id,
+        interview_date: new Date(data.interview_date),
+        interviewer: interviewers,
+        start_from: start_form,
+        end_at: end_at,
+        note: '',
+      }
+    },
   })
 
-  const { handleSubmit, control, formState, setValue, watch, trigger } = useFormReturn
+   const { handleSubmit, control, formState, setValue, watch, trigger } = useFormReturn
   const isValid = !formState.isValid
 
-  const { isPending, mutate } = useCreateReturn
+  const { isPending, mutate } = useEditReturn
 
   function onSubmit() {
     handleSubmit((value) => {
@@ -51,31 +65,31 @@ function useEditInterview(
         end_at: convertToUTC(end_at.toDate()).toISOString(),
       }
 
-      mutate(valueClone)
+      //@ts-ignore
+      mutate(valueClone) 
     })()
   }
 
-  function handleGenerateToDate(value: ChosenDateType) {
-    if (value) {
-      let  to = value.add(30, 'minute')
-      const endOfDay = dayjs().endOf('day')
-      if (to.isAfter(endOfDay)) {
-        to = endOfDay
-      }
-      setValue('end_at', to.toDate());
-    }
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason)
+    onSubmit()
   }
 
   return {
-    onSubmit,
     control,
     isValid,
     isPending,
-    handleGenerateToDate,
+    actions: {
+      onSubmit,
+      callbackSubmit
+    },
+    formState,
     setValue,
-    watch,
+    isGetting,
+    watch, 
     trigger
   }
 }
 
 export default useEditInterview
+

@@ -1,7 +1,7 @@
-import { Attachments } from 'features/candidates/domain/interfaces'
 import { isEmpty, reject } from 'lodash'
 import { toast } from 'react-toastify'
 import { ParamCreateURLAttachment } from 'shared/hooks/graphql/useGetUrlAttachment'
+import { Attachments } from 'shared/interfaces'
 import { downloadPdf } from 'shared/utils/upload-file'
 
 export const downloadFileAttachment = (

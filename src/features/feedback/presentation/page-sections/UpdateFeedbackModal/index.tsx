@@ -1,5 +1,5 @@
 import BaseModal from 'shared/components/modal'
-import { Controller } from 'react-hook-form'
+import { Controller, useWatch } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
@@ -26,33 +26,25 @@ function UpdateFeedbackModal({
   open,
   setOpen,
   id,
-  rowData,
   onSuccess,
 }: IUpdateFeedbackModal) {
-  const { onSubmit, control, isPending, isValid, setValue, watch } =
+  const { actions, control, isValid, isPending, isGetting } =
     useUpdateFeedback({
-      callbackSuccess: () => {
+      id: id,
+      onSuccess: () => {
         setOpen(false)
         onSuccess?.()
       },
-      defaultValues: {
-        id: id,
-        feedback: rowData.feedback,
-        attachments: []
-      },
     })
+  const { callbackSubmit } = actions
+  const attachments = useWatch({ control, name: 'attachments' })
 
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
-  }
-
-  const attachments = watch('attachments')
   const isValidAttachments = useMemo(() => {
     if (!Array.isArray(attachments) || isEmpty(attachments)) return true
 
     return attachments.every((file) => file.status === 'success')
   }, [attachments])
+
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -77,6 +69,7 @@ function UpdateFeedbackModal({
                       onChange={field.onChange}
                       minRows={4}
                       multiline
+                      loading={isGetting}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}

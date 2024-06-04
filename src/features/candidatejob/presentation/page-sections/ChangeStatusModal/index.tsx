@@ -51,13 +51,14 @@ function ChangeStatusModal({
   defaultStatus = '',
   onSuccess,
 }: IChangeStatusModal) { 
-  const { onSubmit, control, isPending, isValid, watch } = useChangeStatus({
+  const { onSubmit, control, isPending, isValid, watch} =
+  useChangeStatus({
+    id: rowData?.id as string,
     callbackSuccess: () => {
       setOpen(false)
       onSuccess?.()
     },
     defaultValues: {
-      id: rowData?.id,
       feedback: '',
       attachments: [],
       failed_reason: [],

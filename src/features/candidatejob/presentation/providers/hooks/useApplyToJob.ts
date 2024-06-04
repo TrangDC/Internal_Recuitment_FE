@@ -1,14 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../constants/schema'
-import { NewCandidateJobInput } from 'features/candidates/domain/interfaces'
 import {
-  getValueOfObj,
   removeInfoData,
   transformListArray,
 } from 'shared/utils/utils'
 import _ from 'lodash'
-import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
+import { useCreateResource } from 'shared/hooks/crud-hook'
+import { NewCandidateJobInput } from 'features/candidatejob/domain/interfaces'
 
 interface useApplyToJobProps {
   defaultValues?: Partial<FormDataSchema>
@@ -53,7 +52,6 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
         field: ['team_id'],
         object: {
           ..._.cloneDeep(value),
-          hiring_job_id: getValueOfObj({ obj: value.hiring_job_id, key: 'id' }),
           attachments: attachments,
         },
       })

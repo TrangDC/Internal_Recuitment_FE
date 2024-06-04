@@ -1,4 +1,3 @@
-import { Box, Button, styled } from '@mui/material'
 import { format } from 'date-fns'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
@@ -10,22 +9,7 @@ import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useEffect, useMemo, useState } from 'react'
 import PreviewCV from '../../providers/components/previewCV'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
-
-const DivInformation = styled(FlexBox)(({ theme }) => ({
-  padding: '24px',
-  flexWrap: 'wrap',
-  gap: '20px',
-  borderRight: '1px solid',
-  borderColor: theme.palette.grey[200],
-}))
-
-const DivItemInformation = styled(Box)(({ theme }) => ({
-  width: '100%',
-}))
-
-const ButtonStatus = styled(Button)(({ theme }) => ({
-  width: '100%',
-}))
+import { ButtonStatus, DivInformation, DivItemInformation } from '../../providers/styles'
 
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
@@ -110,29 +94,10 @@ const JobDetailInformation = ({
         flexDirection={'column'}
         width={'100%'}
       >
-        {/* <DivItemInformation>
-          <ButtonStatus
-            variant="contained"
-            onClick={() => {
-              downloadFileAttachment(attachments, handleGetUrlDownload)
-            }}
-            startIcon={
-              <DownloadIcon
-                sx={{
-                  ' path': {
-                    fill: 'white',
-                  },
-                }}
-              />
-            }
-          >
-            Download CV
-          </ButtonStatus>
-        </DivItemInformation> */}
+
         <DivItemInformation>
           {hiddenChangStatus && (
             <ButtonStatus
-              // disabled={showChangeStatus}
               onClick={() => {
                 handleOpenChangeStatus(
                   jobApplicationDetail.id,
