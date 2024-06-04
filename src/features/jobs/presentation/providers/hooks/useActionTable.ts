@@ -9,9 +9,8 @@ const useActionTable = () => {
   const [openDelete, setOpenDelete] = useState(false)
   const [openStatus, setOpenStatus] = useState(false)
 
-  function handleOpenEdit(id: string, data: Job) {
+  function handleOpenEdit(id: string) {
     rowId.current = id
-    rowData.current = data
     setOpenEdit(true)
   }
 
@@ -20,9 +19,8 @@ const useActionTable = () => {
     setOpenDelete(true)
   }
 
-  function handleOpenStatus(id: string, data: Job) {
+  function handleOpenStatus(id: string) {
     rowId.current = id
-    rowData.current = data
     setOpenStatus(true)
   }
 

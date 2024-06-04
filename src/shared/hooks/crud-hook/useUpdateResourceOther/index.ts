@@ -6,8 +6,8 @@ import NotificationService from 'services/notification-service'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { BaseRecord } from 'shared/interfaces/common'
 import ErrorException from 'shared/interfaces/response'
-import useGetResource, { IuseGetResource } from './useGetResource'
 import { FieldValues, Resolver } from 'react-hook-form'
+import useGetResource, { IuseGetResource } from '../useGetResource'
 
 interface IuseEditResource<Response, FormData>
   extends IuseGetResource<Response, FormData> {
@@ -19,11 +19,7 @@ interface IuseEditResource<Response, FormData>
   resolver: Resolver<FormData & FieldValues, any> | undefined
 }
 
-interface InputUpdate extends BaseRecord{
-  note: string,
-}
-
-function useEditResource<Response, FormData extends FieldValues, Input extends InputUpdate>({
+function useEditResource<Response, FormData extends FieldValues, Input>({
   id,
   editBuildQuery,
   oneBuildQuery,
@@ -34,7 +30,7 @@ function useEditResource<Response, FormData extends FieldValues, Input extends I
   formatDefaultValues,
 }: IuseEditResource<Response, FormData>) {
   const queryClient = useQueryClient()
-  const { useFormReturn, isGetting } = useGetResource<Response, FormData>({
+  const { useFormReturn, isGetting, formData } = useGetResource<Response, FormData>({
     id: id,
     oneBuildQuery,
     queryKey: queryKey,
@@ -45,11 +41,9 @@ function useEditResource<Response, FormData extends FieldValues, Input extends I
   const useEditReturn = useMutation({
     mutationKey: queryKey,
     mutationFn: (payload: Input) => {
-      const { note, ...inputUpdate } = payload;
       return  GraphQLClientService.fetchGraphQL(editBuildQuery.query, {
-        id: id,
-        input: inputUpdate,
-        note: note ?? ''
+        id,
+        ...payload
       })
     },
     onSuccess: (data) => {
@@ -73,6 +67,7 @@ function useEditResource<Response, FormData extends FieldValues, Input extends I
     isGetting,
     useFormReturn,
     useEditReturn,
+    formData,
   }
 }
 

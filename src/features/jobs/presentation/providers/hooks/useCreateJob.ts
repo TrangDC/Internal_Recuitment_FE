@@ -5,8 +5,8 @@ import { NewHiringJobInput } from 'features/jobs/domain/interfaces'
 import _, { isEmpty } from 'lodash'
 import { convertCurrencyToNumber } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
-import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
 import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
+import { useCreateResource } from 'shared/hooks/crud-hook'
 
 interface createJobProps {
   defaultValues?: Partial<FormDataSchema>

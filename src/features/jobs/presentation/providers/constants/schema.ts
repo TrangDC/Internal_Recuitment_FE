@@ -1,6 +1,5 @@
 import { SALARY_STATE } from 'shared/constants/constants'
 import { RULE_MESSAGES } from 'shared/constants/vaildate'
-import { FormDataSchemaNote, schemaNote } from 'shared/schema'
 import { convertCurrencyToNumber } from 'shared/utils/utils'
 import * as yup from 'yup'
 
@@ -44,7 +43,6 @@ export const schema = yup.object({
 export type FormDataSchema = yup.InferType<typeof schema>
 
 export const schemaUpdate = yup.object({
-  id: yup.string().required(),
   team_id: yup.string().required(RULE_MESSAGES.MC1("team")),
   name: yup.string().max(64, RULE_MESSAGES.MC4("name", 64)).required(RULE_MESSAGES.MC1("name")),
   location: yup.string().required(RULE_MESSAGES.MC1("location")),
@@ -83,11 +81,7 @@ export const schemaUpdate = yup.object({
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>
 
-export const schemaDelete = schemaNote
-export type FormDataSchemaDelete = FormDataSchemaNote
-
 export const schemaChangeStatus = yup.object({
-  id: yup.string().required(RULE_MESSAGES.MC1("id")),
   status: yup.string().required(RULE_MESSAGES.MC1("status")),
   note: yup.string(),
 })

@@ -5,7 +5,6 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { FormDataSchema } from '../../providers/constants/schema'
 import useCreateJob from '../../providers/hooks/useCreateJob'
 import { SALARY_RENDER } from '../../providers/constants'
-import EditorBoxComponent from 'shared/components/form/editorComponent'
 import useTextTranslation from 'shared/constants/text'
 import InputNumberComponent from 'shared/components/form/inputNumberComponent'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -19,6 +18,7 @@ import CurrencyAutoComplete from 'shared/components/autocomplete/currency-autoco
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
+import EditorBoxField from 'shared/components/input-fields/EditorField'
 
 interface ICreateJobModal {
   open: boolean
@@ -296,10 +296,11 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 name="description"
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                    <EditorBoxComponent<FormDataSchema>
+                    <EditorBoxField
                       label={'Job description'}
-                      field={field}
-                      required={true}
+                      required
+                      value={field.value}
+                      onEditorChange={field.onChange}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}

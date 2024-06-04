@@ -6,7 +6,6 @@ import { FormDataSchemaUpdate as FormDataSchema } from '../../providers/constant
 import { Job } from 'features/jobs/domain/interfaces'
 import { SALARY_RENDER } from '../../providers/constants'
 import useUpdateJob from '../../providers/hooks/useEditJob'
-import EditorBoxComponent from 'shared/components/form/editorComponent'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import InputNumberComponent from 'shared/components/form/inputNumberComponent'
@@ -21,63 +20,26 @@ import CurrencyAutoComplete from 'shared/components/autocomplete/currency-autoco
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
-import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
-import { isEmpty } from 'lodash'
+import EditorBoxField from 'shared/components/input-fields/EditorField'
 
 interface IEditJobModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  rowData?: Job
 }
 
-function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
-  const { onSubmit, control, isPending, isValid, setValue } = useUpdateJob({
-    callbackSuccess: () => {
-      setOpen(false)
-    },
-    defaultValues: {
-      amount: rowData?.amount,
-      created_by: rowData?.user?.id,
-      currency: rowData?.currency,
-      description: rowData?.description,
-      id: rowData?.id,
-      location: rowData?.location,
-      name: rowData?.name,
-      salary_from: rowData?.salary_from.toString(),
-      salary_to: rowData?.salary_to.toString(),
-      salary_type: rowData?.salary_type,
-      team_id: rowData?.team?.id,
-      priority: rowData?.priority.toString()
-    },
-  })
+function EditJobModal({ open, setOpen, id }: IEditJobModal) {
+  const { actions, control, isPending, isValid, isGetting } =
+    useUpdateJob({
+      id: id,
+      onSuccess: () => {
+        setOpen(false)
+      },
+    })
+  const { resetSalary, callbackSubmit, handleChangeManager } = actions
 
   const translation = useTextTranslation()
-
   const salary = useWatch({ control, name: 'salary_type' })
-  const resetSalary = () => {
-    setValue('salary_from', '0')
-    setValue('salary_to', '0')
-  }
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
-  }
-
-  const handleChangeManager = async (team_id: string) => {
-    if(!team_id) {
-      setValue('created_by', '');
-      return;
-    }
-
-    const { member_first } = await getMembersByTeam(team_id)
-    if(isEmpty(member_first)) {
-      setValue('created_by', '')
-      return;
-    };
-    setValue('created_by', member_first?.id)
-  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
@@ -87,7 +49,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
         <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-        <FlexBox flexDirection={'column'}>
+          <FlexBox flexDirection={'column'}>
             <FormControl fullWidth>
               <Controller
                 control={control}
@@ -101,6 +63,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
+                      loading={isGetting}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -110,7 +73,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
               />
             </FormControl>
           </FlexBox>
-          
+
           <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
             <FormControl fullWidth>
               <Controller
@@ -118,7 +81,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                 name="priority"
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                     <PriorityAutoComplete
+                    <PriorityAutoComplete
                       value={field.value}
                       onChange={(data) => field.onChange(data?.value)}
                       multiple={false}
@@ -321,6 +284,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                         fullWidth
                         value={field.value}
                         onChange={field.onChange}
+                        loading={isGetting}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
@@ -339,10 +303,12 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
                 name="description"
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                    <EditorBoxComponent<FormDataSchema>
-                      label={"Job description"}
-                      field={field}
-                      required={true}
+                    <EditorBoxField
+                      label={'Job description'}
+                      required
+                      value={field.value}
+                      onEditorChange={field.onChange}
+                      loading={isGetting}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -363,7 +329,7 @@ function EditJobModal({ open, setOpen, rowData }: IEditJobModal) {
           >
             {translation.COMMON.cancel}
           </AppButton>
-          <UpdateRecord  disabled={isValid} callbackSubmit={callbackSubmit}>
+          <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
             <ButtonLoading
               variant="contained"
               size="small"

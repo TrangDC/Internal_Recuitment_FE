@@ -90,7 +90,6 @@ const BoxStatusCandidates = ({
 
   return (
     <DivField
-      // sx={{ minWidth: '170px' }}
       onDragOver={(event) => {
         event.preventDefault()
       }}

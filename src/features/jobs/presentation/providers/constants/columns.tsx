@@ -24,7 +24,6 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>Job name</span>,
-    // enableSorting: false,
   }),
   columnHelper.accessor((row) => row.team.name, {
     id: 'team',
