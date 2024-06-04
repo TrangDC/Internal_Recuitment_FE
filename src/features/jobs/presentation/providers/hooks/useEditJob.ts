@@ -2,41 +2,57 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
 import { FormDataSchemaUpdate, schemaUpdate } from '../../providers/constants/schema'
 import {
+  Job,
   UpdateHiringJobInput,
 } from 'features/jobs/domain/interfaces'
-import _ from 'lodash'
+import _, { isEmpty } from 'lodash'
 import { convertCurrencyToNumber } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
-import useUpdateResource from 'shared/hooks/useUpdateResource'
+import { BaseRecord } from 'shared/interfaces'
+import { useEditResource } from 'shared/hooks/crud-hook'
+import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
 
-interface createJobProps {
-  defaultValues?: Partial<FormDataSchemaUpdate>
-  callbackSuccess?: (value: any) => void
+type UseEditJobProps = {
+  id: string
+  onSuccess: (data: BaseRecord) => void
 }
 
-function useUpdateJob(props: createJobProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess } = props
-  const { updateJob, queryKey } = useGraphql()
-  const { useCreateReturn, useFormReturn } = useUpdateResource<
-  UpdateHiringJobInput,
-  FormDataSchemaUpdate
->({
-  mutationKey: [queryKey],
-  queryString: updateJob,
-  defaultValues: {
-    name: '',
-    salary_from: "0",
-    salary_to: "0",
-    note: '',
-    ...defaultValues,
-  },
-  resolver: yupResolver(schemaUpdate),
-  onSuccess: callbackSuccess
-})
+function useUpdateJob(props: UseEditJobProps) {
+  const { id, onSuccess } = props
+  const { updateJob, getJobDetail, queryKey } = useGraphql()
+  const { useEditReturn, useFormReturn, isGetting } = useEditResource<
+    Job,
+    FormDataSchemaUpdate,
+    UpdateHiringJobInput
+  >({
+    resolver: yupResolver(schemaUpdate),
+    editBuildQuery: updateJob,
+    oneBuildQuery: getJobDetail,
+    queryKey: [queryKey],
+    id,
+    onSuccess,
+    formatDefaultValues(data) {
+ 
+      return {
+        name: data.name,
+        priority: data.priority.toString(),
+        team_id: data.team.id,
+        location: data.location,
+        amount: data.amount,
+        salary_type: data.salary_type,
+        salary_from: data.salary_from.toString(),
+        salary_to: data.salary_to.toString(),
+        currency: data.currency,
+        created_by: data.user.id,
+        description: data.description,
+        note: '',
+      }
+    },
+  })
 
   const { handleSubmit, control, formState, setValue } = useFormReturn
   const isValid = !formState.isValid
-  const { isPending, mutate } = useCreateReturn
+  const { isPending, mutate } = useEditReturn
 
   function onSubmit() {
     handleSubmit((value) => {
@@ -49,16 +65,47 @@ function useUpdateJob(props: createJobProps = { defaultValues: {} }) {
         salary_to: convertCurrencyToNumber(value.salary_to),
       }
 
-      mutate(valueClone)
+      mutate(valueClone as UpdateHiringJobInput)
     })()
   }
 
+  const resetSalary = () => {
+    setValue('salary_from', '0')
+    setValue('salary_to', '0')
+  }
+
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason)
+    onSubmit()
+  }
+
+  const handleChangeManager = async (team_id: string) => {
+    if (!team_id) {
+      setValue('created_by', '')
+      return
+    }
+
+    const { member_first } = await getMembersByTeam(team_id)
+    if (isEmpty(member_first)) {
+      setValue('created_by', '')
+      return
+    }
+    setValue('created_by', member_first?.id)
+  }
+
   return {
-    onSubmit,
     control,
     isValid,
     isPending,
+    actions: {
+      onSubmit,
+      callbackSubmit,
+      handleChangeManager,
+      resetSalary
+    },
+    formState,
     setValue,
+    isGetting
   }
 }
 

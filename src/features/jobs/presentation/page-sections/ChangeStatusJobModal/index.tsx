@@ -9,35 +9,29 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import useCloseJob from '../../providers/hooks/useCloseJob'
-import { Job } from 'features/jobs/domain/interfaces'
-import { STATUS_STATE } from 'shared/constants/constants'
 
-interface ICloseJobModal {
+interface IChangeStatusJobModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  rowData?: Job
 }
 
-function CloseJobModal({ open, setOpen, id, rowData }: ICloseJobModal) {
-  const { onSubmit, control, isPending, isValid } = useCloseJob({
-    callbackSuccess: () => setOpen(false),
-    defaultValues: {
-      id: id,
-      note: '',
-      status:
-        rowData?.status === STATUS_STATE.OPENED
-          ? STATUS_STATE.CLOSED
-          : STATUS_STATE.OPENED,
+function ChangeStatusJobModal({ open, setOpen, id }: IChangeStatusJobModal) {
+  const { action, control, isPending, isValid } = useCloseJob({
+    id: id,
+    onSuccess: () => {
+      setOpen(false)
     },
   })
+
+  const { onSubmit, renderTitle } = action;
   const translation = useTextTranslation()
 
   return (
     <Fragment>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <BaseModal.Header
-          title={`Do you want to ${rowData?.status === STATUS_STATE.OPENED ? 'close' : 'reopen'} this job?`}
+          title={renderTitle()}
           setOpen={setOpen}
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
@@ -97,4 +91,4 @@ function CloseJobModal({ open, setOpen, id, rowData }: ICloseJobModal) {
   )
 }
 
-export default CloseJobModal
+export default ChangeStatusJobModal

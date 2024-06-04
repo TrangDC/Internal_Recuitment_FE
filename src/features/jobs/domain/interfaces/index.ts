@@ -1,5 +1,4 @@
 import { Member, Team } from 'features/teams/domain/interfaces'
-import { SchemaInputNote } from 'shared/schema'
 
 export type Job = {
   id: string
@@ -17,7 +16,7 @@ export type Job = {
   slug: string
   team: Team
   user: Member
-  priority: "1" | "2" | "3" | "4"
+  priority: 1 | 2 | 3 | 4
   total_candidates_recruited: number,
   created_at: string
   updated_at: string
@@ -30,36 +29,32 @@ export type NewHiringJobInput = {
   amount: number,
   location: 'ha_noi' | 'ho_chi_minh' | 'da_nang' | 'japan',
   salary_type: 'range' | 'up_to' | 'negotiate' | 'minimum',
-  salary_from?: number,
-  salary_to?: number,
+  salary_from: number,
+  salary_to: number,
   team_id: string,
   currency: 'vnd' | 'usd' | 'jpy',
   created_by: string,
-  description?: string,
-  note?: string,
+  description: string,
+  note: string,
 }
 
 export type UpdateHiringJobInput = {
-  id: string,
-  status?: string,
   name: string,
   amount: number,
   location: 'ha_noi' | 'ho_chi_minh' | 'da_nang' | 'japan',
   salary_type: 'range' | 'up_to' | 'negotiate' | 'minimum',
-  salary_from?: number,
-  salary_to?: number,
+  salary_from: number,
+  salary_to: number,
   team_id: string,
   currency: 'vnd' | 'usd' | 'jpy',
   created_by: string,
-  description?: string,
+  description: string,
   note: string,
 }
-
-export type DeleteJobInput = SchemaInputNote;
 
 export type UpdateJobStatus = {
   id: string,
   status: 'draft' | 'opened' | 'closed',
-  note?: string,
+  note: string,
 }
 

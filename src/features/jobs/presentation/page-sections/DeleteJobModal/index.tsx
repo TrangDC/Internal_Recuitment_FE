@@ -1,5 +1,4 @@
 import BaseModal from 'shared/components/modal'
-import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useDeleteJob from '../../providers/hooks/useDeleteJob'
@@ -7,10 +6,11 @@ import useTextTranslation from 'shared/constants/text'
 import { Fragment, useState } from 'react'
 import { t } from 'i18next'
 import AppTextField from 'shared/components/input-fields/AppTextField'
-import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import ModalConfirmType, { ModalType } from 'shared/components/modal/modalByType'
+import ModalConfirmType, {
+  ModalType,
+} from 'shared/components/modal/modalByType'
 interface IDeleteJobModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -18,6 +18,7 @@ interface IDeleteJobModal {
 }
 
 function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
+  const [note, setNote] = useState('')
   const [modal, setModal] = useState<ModalType>({
     content: '',
     type: 'failed',
@@ -26,23 +27,12 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
     onSubmit: () => {},
   })
 
-
-  const { onSubmit, control, isPending, isValid } = useDeleteJob({
-    callbackSuccess: () => {
-      // setModal((prev) => ({
-      //   ...prev,
-      //   type: 'success',
-      //   open: true,
-      //   title: 'Delete successfully',
-      //   onSubmit: () => setOpen(false)
-      // }))
+  const { onDelete, isPending } = useDeleteJob({
+    id: id,
+    onSuccess: () => {
       setOpen(false)
     },
-    defaultValues: {
-      id: id,
-      note: '',
-    },
-    callbackError: (data) => {
+    onError: (data) => {
       setModal((prev) => ({
         ...prev,
         content: t(data?.message) as string,
@@ -52,9 +42,9 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
       }))
     },
   })
-  
+
   const handleSetOpen = (open: boolean) => {
-    setModal((prev) => ({...prev, open}))
+    setModal((prev) => ({ ...prev, open }))
   }
 
   const translation = useTextTranslation()
@@ -74,25 +64,14 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
               marginTop={1}
             >
               <FormControl fullWidth>
-                <Controller
-                  control={control}
-                  name="note"
-                  render={({ field, fieldState }) => (
-                    <FlexBox alignItems={'center'} flexDirection={'column'}>
-                      <AppTextField
-                        label={'Description'}
-                        size="small"
-                        fullWidth
-                        value={field.value}
-                        onChange={field.onChange}
-                        multiline
-                        minRows={4}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </FlexBox>
-                  )}
+                <AppTextField
+                  label={'Description'}
+                  size="small"
+                  fullWidth
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  multiline
+                  minRows={4}
                 />
               </FormControl>
             </FlexBox>
@@ -110,8 +89,7 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
             <ButtonLoading
               variant="contained"
               size="small"
-              disabled={isValid}
-              handlesubmit={onSubmit}
+              handlesubmit={() => onDelete({ note })}
               loading={isPending}
             >
               Submit
@@ -119,7 +97,7 @@ function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>
-       {modal.open && (
+      {modal.open && (
         <ModalConfirmType
           open={modal.open}
           setOpen={handleSetOpen}

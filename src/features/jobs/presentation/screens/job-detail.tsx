@@ -18,11 +18,10 @@ import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { STATUS_STYLE } from '../providers/constants'
 import GenaralInformationHiring from '../page-sections/GeneralInformationHiring'
 import useActionTable from '../providers/hooks/useActionTable'
-import CloseJobModal from '../page-sections/CloseJobModal'
-import TabJobDetail from '../page-sections/TabDetail'
 import { LOCATION_LABEL, STATUS_STATE } from 'shared/constants/constants'
 import { format } from 'date-fns'
 import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
+import { CloseJobModal, TabJobDetail } from '../page-sections'
 
 const JobDetail = () => {
   const [openTab, setOpenTab] = useState(false)
@@ -37,7 +36,7 @@ const JobDetail = () => {
     const disabledBtn = useMemo(() => {
       return jobDetail.status === STATUS_STATE.OPENED && !jobDetail?.is_able_to_close;
     }, [jobDetail])
-console.log("disabled", disabledBtn)
+
   return (
     <Box pt={2} pb={4}>
       <Box>
@@ -122,7 +121,7 @@ console.log("disabled", disabledBtn)
                 <BtnPrimary
                     onClick={() => {
                       if(disabledBtn) return;
-                      handleOpenStatus(jobDetail?.id, jobDetail)
+                      handleOpenStatus(jobDetail?.id)
                     }}
                     className={disabledBtn ? 'disabled': ''}
                   >
@@ -148,7 +147,6 @@ console.log("disabled", disabledBtn)
           open={openStatus}
           setOpen={setOpenStatus}
           id={rowId.current}
-          rowData={rowData.current}
         />
       )}
 

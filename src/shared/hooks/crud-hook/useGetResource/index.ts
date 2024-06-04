@@ -44,7 +44,7 @@ function useGetResource<Response, FormData extends FieldValues>({
     },
   })
 
-  const { reset, setValue } = useFormReturn
+  const { reset } = useFormReturn
 
   useEffect(() => {
     if (formatData) {
@@ -54,6 +54,7 @@ function useGetResource<Response, FormData extends FieldValues>({
 
   return {
     useFormReturn,
+    formData: formatData as Response,
     isGetting: isLoading,
   }
 }

@@ -56,7 +56,7 @@ export default function TabJobDetail({
                     cursor: 'pointer',
                   }}
                   onClick={() => {
-                    handleOpenEdit(job_detail.id, job_detail)
+                    handleOpenEdit(job_detail.id)
                   }}
                 />
               )}
@@ -90,7 +90,6 @@ export default function TabJobDetail({
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
-          rowData={rowData.current}
         />
       )}
     </Fragment>

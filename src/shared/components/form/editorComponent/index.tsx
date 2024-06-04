@@ -3,6 +3,7 @@ import { DivError, DivWrapper } from '../styles'
 import { get } from 'lodash'
 import { IAllProps } from '@tinymce/tinymce-react'
 import EditorBox from 'shared/components/input-fields/EditorBox'
+import SkeletonField from 'shared/components/input-fields/SkeletonField'
 
 interface TinyProps<T extends FieldValues> extends IAllProps {
   field: {
@@ -13,16 +14,19 @@ interface TinyProps<T extends FieldValues> extends IAllProps {
   errors?: FieldErrors<T>
   label?: string,
   required?: boolean,
+  loading?: boolean,
 }
 
 const EditorBoxComponent = <T extends object>({
   field,
   errors,
+  loading,
   ...props
 }: TinyProps<T>) => {
   const error = get(errors, field.name as string)
 
   return (
+    loading ? <SkeletonField height={100}/> :
     <DivWrapper>
       <EditorBox
       defaultValue={field.value}

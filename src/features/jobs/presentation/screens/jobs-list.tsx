@@ -4,17 +4,14 @@ import Add from 'shared/components/icons/Add'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
 import useJobTable from '../providers/hooks/useJobTable'
-import CreateJobModal from '../page-sections/CreateJobModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../providers/hooks/useActionTable'
-import EditJobModal from '../page-sections/EditJobModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
 import { DivFilter, DivHeaderWrapper } from '../providers/styles'
 import EditIcon from 'shared/components/icons/EditIcon'
 import { useNavigate } from 'react-router-dom'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
-import DeleteJobModal from '../page-sections/DeleteJobModal'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import { KeyboardEventHandler, useState } from 'react'
 import { BaseRecord, baseInstance } from 'shared/interfaces'
@@ -30,9 +27,9 @@ import StatusJobAutoComplete from 'shared/components/autocomplete/status-job-aut
 import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
 import { isEmpty } from 'lodash'
 import CloseIcon from 'shared/components/icons/CloseIcon'
-import CloseJobModal from '../page-sections/CloseJobModal'
 import { STATUS_STATE } from 'shared/constants/constants'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
+import { CloseJobModal, CreateJobModal, DeleteJobModal, EditJobModal } from '../page-sections'
 
 const JobsList = () => {
   const {
@@ -47,7 +44,6 @@ const JobsList = () => {
     setOpenStatus,
     handleOpenStatus,
     rowId,
-    rowData,
     setOpenEdit,
   } = useActionTable()
 
@@ -74,8 +70,8 @@ const JobsList = () => {
       },
       {
         id: 'Close job',
-        onClick: (id, rowData) => {
-          handleOpenStatus(id, rowData)
+        onClick: (id) => {
+          handleOpenStatus(id)
         },
         title: (rowData) => {
           return rowData.status === STATUS_STATE.OPENED
@@ -92,7 +88,7 @@ const JobsList = () => {
       {
         id: 'edit',
         onClick: (id, rowData) => {
-          handleOpenEdit(id, rowData)
+          handleOpenEdit(id)
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
@@ -270,7 +266,6 @@ const JobsList = () => {
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
-          rowData={rowData.current}
         />
       )}
 
@@ -287,7 +282,6 @@ const JobsList = () => {
           open={openStatus}
           setOpen={setOpenStatus}
           id={rowId.current}
-          rowData={rowData.current}
         />
       )}
     </Box>
