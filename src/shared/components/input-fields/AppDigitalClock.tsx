@@ -1,7 +1,5 @@
 import { TextFieldProps, useTheme } from '@mui/material'
 import {
-  DigitalClock,
-  DigitalClockProps,
   LocalizationProvider,
   TimeField,
   TimePickerProps,
@@ -17,12 +15,9 @@ interface AppTimePickersProps extends TimePickerProps<ChosenDateType> {
 }
 
 export default function AppTimePickers(props: AppTimePickersProps) {
-  const theme = useTheme()
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <TimeField
-       
-      />
+      <TimeField />
     </LocalizationProvider>
   )
 }

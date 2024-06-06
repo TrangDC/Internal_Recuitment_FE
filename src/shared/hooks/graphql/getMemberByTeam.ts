@@ -2,7 +2,6 @@ import { Member } from 'features/teams/domain/interfaces'
 import { buildQuery, fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
 
-const queryKey = 'user_by_team'
 const getAllUser = buildQuery({
   operation: 'GetTeam',
   options: {

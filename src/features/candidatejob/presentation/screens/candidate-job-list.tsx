@@ -14,7 +14,7 @@ const CandidateJobList = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={CandidateIcon} textLable={'Candidate details'} />
+        <IconScreen Icon={CandidateIcon} textLable={'Candidate details'} link='/dashboard/candidates'/>
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>
         <TabCustomize renderItem={renderItem} />

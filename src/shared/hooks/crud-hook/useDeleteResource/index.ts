@@ -8,6 +8,7 @@ import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { t } from 'i18next'
 import { payloadDelete } from '../interfaces'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 interface IuseDeleteResource {
   mutationKey: string[]
@@ -26,6 +27,8 @@ function useDeleteResource({
   id,
   showErrorMsg = true,
 }: IuseDeleteResource) {
+  const { handleSuccess, handleFailed } = usePopup()
+
   const queryClient = useQueryClient()
   const useDeleteReturn = useMutation({
     mutationKey,
@@ -39,18 +42,29 @@ function useDeleteResource({
     onSuccess: (data) => {
       if (isLeft(data)) {
         onError?.(unwrapEither(data))
-        return (
-          showErrorMsg &&
-          NotificationService.showError(t(unwrapEither(data).message))
-        )
+        // return (
+        //   showErrorMsg &&
+        //   NotificationService.showError(t(unwrapEither(data).message))
+        // )
+        return handleFailed({
+          title: NotificationService.generateMessageFailed('DELETE'),
+          content: t(unwrapEither(data).message) as string,
+        })
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
       onSuccess?.(unwrapEither(data))
-      return NotificationService.showSuccess('DELETE')
+      return handleSuccess({
+        title: NotificationService.generateMessage('DELETE'),
+      })
+      // return NotificationService.showSuccess('DELETE')
     },
     onError(error) {
       onError?.(error)
-      showErrorMsg && NotificationService.showError(error.message)
+      // showErrorMsg && NotificationService.showError(error.message)
+      return handleFailed({
+        title: NotificationService.generateMessageFailed('DELETE'),
+        content: t(error.message) as string,
+      })
     },
   })
   return {

@@ -7,9 +7,6 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
-import ModalConfirmType, {
-  ModalType,
-} from 'shared/components/modal/modalByType'
 
 interface IDeleteInterviewModal {
   open: boolean
@@ -24,13 +21,6 @@ function DeleteInterviewModal({
   id,
   onSuccess,
 }: IDeleteInterviewModal) {
-  const [modal, setModal] = useState<ModalType>({
-    content: '',
-    type: 'failed',
-    open: false,
-    title: 'Failed to delete',
-    onSubmit: () => {},
-  })
   const [note, setNote] = useState('')
 
   const { onDelete, isPending } = useDeleteInterview({
@@ -40,10 +30,6 @@ function DeleteInterviewModal({
       setOpen(false)
     },
   })
-
-  const handleSetOpen = (open: boolean) => {
-    setModal((prev) => ({ ...prev, open }))
-  }
 
   const translation = useTextTranslation()
 
@@ -95,16 +81,6 @@ function DeleteInterviewModal({
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>
-      {modal.open && (
-        <ModalConfirmType
-          open={modal.open}
-          setOpen={handleSetOpen}
-          title={modal.title}
-          content={modal.content}
-          type={modal.type}
-          onSubmit={modal.onSubmit}
-        />
-      )}
     </Fragment>
   )
 }

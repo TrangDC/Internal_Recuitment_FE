@@ -25,8 +25,8 @@ const JobDetailAction = ({
   }, [statusSelected, candidateJobInterview])
 
   useEffect(() => {
-    jobApplicationDetail.status && setStatusSelected(jobApplicationDetail.status)
-  }, [jobApplicationDetail.status])
+    jobApplicationDetail?.status && setStatusSelected(jobApplicationDetail?.status)
+  }, [jobApplicationDetail?.status])
 
   return (
     <DivActionWrapper>

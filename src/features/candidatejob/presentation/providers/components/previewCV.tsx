@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 import AppButton from 'shared/components/buttons/AppButton'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import icons from 'shared/components/icons'
-import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import { pdfjs } from 'react-pdf'
 import {
   downloadPdf,

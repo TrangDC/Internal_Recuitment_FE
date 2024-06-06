@@ -20,9 +20,9 @@ import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
-import ModalConfirm from 'shared/components/modal/modalConfirm'
 import { isEmpty } from 'lodash'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 interface IChangeStatusModal {
   open: boolean
@@ -50,9 +50,9 @@ function ChangeStatusModal({
   statusCurrent,
   defaultStatus = '',
   onSuccess,
-}: IChangeStatusModal) { 
-  const { onSubmit, control, isPending, isValid, watch} =
-  useChangeStatus({
+}: IChangeStatusModal) {
+  const { handleWarning, handleReset } = usePopup()
+  const { onSubmit, control, isPending, isValid, watch } = useChangeStatus({
     id: rowData?.id as string,
     callbackSuccess: () => {
       setOpen(false)
@@ -86,6 +86,23 @@ function ChangeStatusModal({
 
     return attachments.every((file) => file.status === 'success')
   }, [attachments])
+
+  const handleSubmit = () => {
+    const isFeature = !!rowData?.interview_feature
+    if (!isFeature) {
+      onSubmit()
+      return
+    }
+
+    handleWarning({
+      title: 'Warning',
+      content: `This candidate still has ${rowData?.interview_feature} left, are you sure want to change the hiring status?`,
+      onSubmit: () => {
+        onSubmit()
+        handleReset()
+      },
+    })
+  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -254,34 +271,15 @@ function ChangeStatusModal({
           >
             {translation.COMMON.cancel}
           </AppButton>
-
-          {!!rowData?.interview_feature ? (
-            <ModalConfirm
-              disabled={isValid || !isValidAttachments}
-              title={`This candidate still has ${rowData?.interview_feature} left, are you sure want to change the hiring status?`}
-              callbackSubmit={onSubmit}
-            >
-              <ButtonLoading
-                variant="contained"
-                size="small"
-                disabled={isValid || !isValidAttachments}
-                handlesubmit={() => {}}
-                loading={isPending}
-              >
-                Submit
-              </ButtonLoading>
-            </ModalConfirm>
-          ) : (
-            <ButtonLoading
-              variant="contained"
-              size="small"
-              disabled={isValid || !isValidAttachments}
-              handlesubmit={onSubmit}
-              loading={isPending}
-            >
-              Submit
-            </ButtonLoading>
-          )}
+          <ButtonLoading
+            variant="contained"
+            size="small"
+            disabled={isValid || !isValidAttachments}
+            handlesubmit={handleSubmit}
+            loading={isPending}
+          >
+            Submit
+          </ButtonLoading>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>

@@ -6,7 +6,6 @@ import {
   schemaBlackList,
   FormDataSchemaBlackList
 } from '../../providers/constants/schema'
-import _ from 'lodash'
 import { useUpdateResourceOther } from 'shared/hooks/crud-hook'
 
 type UseChangeStatusProps = {

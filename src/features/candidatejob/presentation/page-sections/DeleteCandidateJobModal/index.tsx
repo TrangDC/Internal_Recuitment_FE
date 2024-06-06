@@ -7,10 +7,6 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
-import { t } from 'i18next'
-import ModalConfirmType, {
-  ModalType,
-} from 'shared/components/modal/modalByType'
 
 interface IDeleteCandidateJobModal {
   open: boolean
@@ -24,33 +20,12 @@ function DeleteCandidateJobModal({
   id,
 }: IDeleteCandidateJobModal) {
   const [note, setNote] = useState('')
-  const [modal, setModal] = useState<ModalType>({
-    content: '',
-    type: 'failed',
-    open: false,
-    title: 'Failed to delete',
-    onSubmit: () => {},
-  })
-
   const { onDelete, isPending } = useDeleteCandidateJob({
     id: id,
     onSuccess: () => {
       setOpen(false)
     },
-    onError: (data) => {
-      setModal((prev) => ({
-        ...prev,
-        content: t(data?.message) as string,
-        type: 'failed',
-        open: true,
-        title: 'Failed to delete',
-      }))
-    },
   })
-
-  const handleSetOpen = (open: boolean) => {
-    setModal((prev) => ({ ...prev, open }))
-  }
 
   const translation = useTextTranslation()
 
@@ -102,16 +77,6 @@ function DeleteCandidateJobModal({
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>
-      {modal.open && (
-        <ModalConfirmType
-          open={modal.open}
-          setOpen={handleSetOpen}
-          title={modal.title}
-          content={modal.content}
-          type={modal.type}
-          onSubmit={modal.onSubmit}
-        />
-      )}
     </Fragment>
   )
 }

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { RULE_MESSAGES } from 'shared/constants/vaildate'
-import { isAfterDate, isPast } from 'shared/utils/date'
+import { isPast } from 'shared/utils/date'
 import * as yup from 'yup'
 
 export const CreateInterviewSchema = yup.object().shape({
