@@ -1,10 +1,10 @@
-import { buildQuery } from 'services/graphql-services'
+import GraphQLClientService from 'services/refactor/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.JOB
 
-  const getAllJob = buildQuery({
+  const getAllJob = GraphQLClientService.buildQuery({
     operation: 'GetAllHiringJobs',
     options: {
       type: 'query',
@@ -52,7 +52,7 @@ const useGraphql = () => {
     },
   })
 
-  const createJob = buildQuery({
+  const createJob = GraphQLClientService.buildQuery({
     operation: 'CreateHiringJob',
     options: {
       type: 'mutation',
@@ -68,7 +68,7 @@ const useGraphql = () => {
     },
   })
 
-  const updateJob = buildQuery({
+  const updateJob = GraphQLClientService.buildQuery({
     operation: 'UpdateHiringJob',
     options: {
       type: 'mutation',
@@ -85,7 +85,7 @@ const useGraphql = () => {
     },
   })
 
-  const deleteJob = buildQuery({
+  const deleteJob = GraphQLClientService.buildQuery({
     operation: 'DeleteHiringJob',
     options: {
       type: 'mutation',
@@ -97,7 +97,7 @@ const useGraphql = () => {
     },
   })
 
-  const getJobDetail = buildQuery({
+  const getJobDetail = GraphQLClientService.buildQuery({
     operation: 'GetHiringJob',
     options: {
       type: 'query',
@@ -133,7 +133,7 @@ const useGraphql = () => {
     },
   })
 
-  const changeStatusJob = buildQuery({
+  const changeStatusJob = GraphQLClientService.buildQuery({
     operation: 'UpdateHiringJobStatus',
     options: {
       type: 'mutation',
@@ -149,6 +149,140 @@ const useGraphql = () => {
     },
   })
 
+  const getCandidatesByJob = GraphQLClientService.buildQuery({
+    operation: 'GetCandidateJobGroupByStatus',
+    options: {
+      type: 'query',
+    },
+    node: `
+        data {
+          hired {
+              id
+              candidate_id
+              hiring_job_id
+              status
+              candidate {
+                  id
+                  name,
+                  phone,
+                  status,
+              }
+              hiring_job {
+                id
+                name
+              }
+              created_at
+          }
+          kiv {
+              id
+              candidate_id
+              hiring_job_id
+              status
+               candidate {
+                  id
+                  name,
+                  phone,
+                  status,
+              }
+              hiring_job {
+                id
+                name
+              }
+              created_at
+          }
+          offer_lost {
+              id
+              candidate_id
+              hiring_job_id
+              status
+               candidate {
+                  id
+                  name,
+                  phone,
+                  status,
+              }
+              hiring_job {
+                id
+                name
+              }
+              created_at
+          }
+          ex_staff {
+              id
+              candidate_id
+              hiring_job_id
+              status
+               candidate {
+                  id
+                  name,
+                  phone,
+                  status,
+              }
+              hiring_job {
+                id
+                name
+              }
+              created_at
+          }
+          applied {
+              id
+              candidate_id
+              hiring_job_id
+              status
+               candidate {
+                  id
+                  name,
+                  phone,
+                  status,
+              }
+              hiring_job {
+                id
+                name
+              }
+              created_at
+          }
+          interviewing {
+              id
+              candidate_id
+              hiring_job_id
+              status
+               candidate {
+                  id
+                  name,
+                  phone,
+                  status,
+              }
+              hiring_job {
+                id
+                name
+              }
+              created_at
+          }
+          offering {
+              id
+              candidate_id
+              hiring_job_id
+              status
+               candidate {
+                  id
+                  name,
+                  phone,
+                  status,
+              }
+              hiring_job {
+                id
+                name
+              }
+              created_at
+          }
+        }
+      `,
+    params: {
+      filter: 'CandidateJobGroupByStatusFilter!',
+      orderBy: 'CandidateJobOrder',
+    },
+  })
+
   return {
     queryKey,
     getAllJob,
@@ -157,6 +291,7 @@ const useGraphql = () => {
     getJobDetail,
     deleteJob,
     changeStatusJob,
+    getCandidatesByJob,
   }
 }
 

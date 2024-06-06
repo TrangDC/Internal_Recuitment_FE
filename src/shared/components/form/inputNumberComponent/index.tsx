@@ -13,6 +13,7 @@ interface AdditionalProps<T extends FieldValues> {
     name: string
   }
   thousandSeparator?: boolean,
+  allowNegative?: boolean,
   sx?: SxProps,
 }
 
@@ -28,6 +29,7 @@ const InputNumberComponent = <T extends object>({
   field,
   size = 'small',
   thousandSeparator = false,
+  allowNegative = true,
   sx,
   ...props
 }: InputControllerProps<T>) => {
@@ -38,6 +40,7 @@ const InputNumberComponent = <T extends object>({
       <NumericFormat
         sx={{ width: props?.fullWidth ? '100%' : '400px', ...sx }}
         size={size}
+        allowNegative={allowNegative}
         {...props}
         {...field}
         value={field.value}

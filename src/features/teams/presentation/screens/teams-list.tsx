@@ -1,10 +1,8 @@
 import { IconButton, InputAdornment } from '@mui/material'
 import { Box } from '@mui/system'
 import Add from 'shared/components/icons/Add'
-import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
 import useTeamTable from '../providers/hooks/useTeamTable'
-import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../providers/hooks/useActionTable'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
@@ -19,6 +17,7 @@ import ButtonAdd from 'shared/components/utils/buttonAdd'
 import IconScreen from 'shared/components/utils/IconScreen'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import { CreateTeamModal, DeleteTeamModal, EditTeamModal } from '../page-sections'
+import { useBuildColumnTable, CustomTable } from 'shared/components/table'
 
 const TeamList = () => {
   const {

@@ -1,5 +1,5 @@
 import useGraphql from 'features/teams/domain/graphql/graphql'
-import useCustomTable from 'shared/hooks/useCustomTable'
+import useCustomTable from 'shared/components/table/hooks/useCustomTable'
 
 const useTeamTable = (variables = {}) => {
   const { getAllTeam, queryKey } = useGraphql()

@@ -1,10 +1,8 @@
 import { IconButton, InputAdornment } from '@mui/material'
 import { Box } from '@mui/system'
 import Add from 'shared/components/icons/Add'
-import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
 import useJobTable from '../providers/hooks/useJobTable'
-import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../providers/hooks/useActionTable'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
@@ -30,6 +28,7 @@ import CloseIcon from 'shared/components/icons/CloseIcon'
 import { STATUS_STATE } from 'shared/constants/constants'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import { CloseJobModal, CreateJobModal, DeleteJobModal, EditJobModal } from '../page-sections'
+import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 
 const JobsList = () => {
   const {

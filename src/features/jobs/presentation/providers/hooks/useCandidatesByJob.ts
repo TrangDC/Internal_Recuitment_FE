@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { Candidate } from 'features/candidates/domain/interfaces'
-import { buildQuery, fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
+import { useMemo } from 'react'
+import GraphQLClientService from 'services/refactor/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const queryKey = MODLUE_QUERY_KEY.CANDIDATE_JOB
-const getCandidatesByJob = buildQuery({
+const getCandidatesByJob = GraphQLClientService.buildQuery({
   operation: 'GetCandidateJobGroupByStatus',
   options: {
     type: 'query',
@@ -168,24 +169,24 @@ const useCandidatesByJob = (hiring_job_id: string) => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      fetchGraphQL<BaseRecord>(getCandidatesByJob.query, {
+      GraphQLClientService.fetchGraphQL(getCandidatesByJob.query, {
         filter: {
           hiring_job_id,
         },
       }),
   })
 
-  const candidatesStatus: CandidatesByStatus =
-    data?.[getCandidatesByJob.operation]?.data
-
-  const totalPage = Math.ceil(
-    (data?.[getCandidatesByJob.operation]?.pagination?.total ?? 0) / 10
-  )
+  const candidatesStatus: CandidatesByStatus = useMemo(() => {
+    if (data && isRight(data)) {
+      const response = unwrapEither(data)
+      return response?.[getCandidatesByJob.operation]?.data
+    }
+    return {}
+  }, [data])
 
   return {
     ...otherValue,
     candidatesStatus: candidatesStatus,
-    totalPage,
   }
 }
 

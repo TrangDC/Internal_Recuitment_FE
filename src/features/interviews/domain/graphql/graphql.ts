@@ -1,9 +1,9 @@
-import { buildQuery } from 'services/graphql-services'
+import GraphQLClientService from 'services/refactor/graphql-service'
 
 const useGraphql = () => {
   const queryKey = 'interviewers'
 
-  const getAllCandidateInterview = buildQuery({
+  const getAllCandidateInterview = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidateInterviews',
     options: {
       type: 'query',
@@ -42,7 +42,7 @@ const useGraphql = () => {
     },
   })
 
-  const createCandidateInterview = buildQuery({
+  const createCandidateInterview = GraphQLClientService.buildQuery({
     operation: 'CreateCandidateInterview',
     options: {
       type: 'mutation',
@@ -57,7 +57,7 @@ const useGraphql = () => {
     },
   })
 
-  const updateCandidateInterview = buildQuery({
+  const updateCandidateInterview = GraphQLClientService.buildQuery({
     operation: 'UpdateCandidateInterview',
     options: {
       type: 'mutation',
@@ -73,7 +73,7 @@ const useGraphql = () => {
     },
   })
 
-  const deleteCandidateInterview = buildQuery({
+  const deleteCandidateInterview = GraphQLClientService.buildQuery({
     operation: 'DeleteCandidateInterview',
     options: {
       type: 'mutation',
@@ -84,7 +84,7 @@ const useGraphql = () => {
     },
   })
 
-  const getInterview = buildQuery({
+  const getInterview = GraphQLClientService.buildQuery({
     operation: 'GetCandidateInterview',
     options: {
       type: 'query',

@@ -17,7 +17,7 @@ import {
 } from '@mui/material'
 import AppPagination from '../AppPagination'
 import { useEffect, useMemo } from 'react'
-import { IuseCustomTableReturn } from 'shared/hooks/useCustomTable'
+import { IuseCustomTableReturn } from 'shared/components/table/hooks/useCustomTable'
 import { BodyTableCell, HeadTableCell } from './styles'
 import { v4 as uuidv4 } from 'uuid'
 import IconSortBy from './components/IconSortBy'
