@@ -9,9 +9,10 @@ interface IWarningModal {
   setOpen: (value: boolean) => void
   title: string
   content: string
+  onSubmit?: () => void
 }
 
-function WarningModal({ open, setOpen, title, content }: IWarningModal) {
+function WarningModal({ open, setOpen, title, content, onSubmit }: IWarningModal) {
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={560}>
       <BaseModal.Header
@@ -35,7 +36,10 @@ function WarningModal({ open, setOpen, title, content }: IWarningModal) {
           <AppButton
             variant="outlined"
             size="small"
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              onSubmit?.()
+              setOpen(false)
+            }}
             sx={{
               backgroundColor: '#2499EF !important',
               color: 'white !important',

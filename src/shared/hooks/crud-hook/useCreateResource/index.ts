@@ -8,6 +8,7 @@ import { BaseRecord } from 'shared/interfaces'
 import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { t } from 'i18next'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 interface IUseCreateResource<P> {
   mutationKey: string[]
@@ -26,6 +27,8 @@ function useCreateResource<T, P extends FieldValues>({
   onError,
   onSuccess,
 }: IUseCreateResource<P>) {
+  const { handleSuccess, handleFailed } = usePopup()
+
   const queryClient = useQueryClient()
   const useFormReturn = useForm<P>({
     defaultValues,
@@ -44,15 +47,26 @@ function useCreateResource<T, P extends FieldValues>({
     onSuccess: (data) => {
       if (isLeft(data)) {
         onError?.(unwrapEither(data))
-        return NotificationService.showError(t(unwrapEither(data).message))
+        // return NotificationService.showError(t(unwrapEither(data).message))
+        return handleFailed({
+          title: NotificationService.generateMessageFailed('CREATE'),
+          content: t(unwrapEither(data).message) as string,
+        })
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
       onSuccess?.(unwrapEither(data))
-      return NotificationService.showSuccess('CREATE')
+      return handleSuccess({
+        title: NotificationService.generateMessage('CREATE'),
+      })
+      // return NotificationService.showSuccess('CREATE')
     },
     onError(error) {
       onError?.(error)
-      NotificationService.showError(error.message)
+      // NotificationService.showError(error.message)
+      return handleFailed({
+        title: NotificationService.generateMessageFailed('CREATE'),
+        content: t(error.message) as string,
+      })
     },
   })
   return {

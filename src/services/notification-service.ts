@@ -23,6 +23,21 @@ class NotificationService {
         return 'Internal system error'
     }
   }
+
+  static generateMessageFailed(action: Action): string {
+    switch (action) {
+      case 'CREATE':
+        return 'Failed to create'
+      case 'EDIT':
+        return 'Failed to edit'
+      case 'DELETE':
+        return 'Failed to delete'
+      case 'UPLOAD':
+        return 'Failed to upload'
+      default:
+        return 'Internal system error'
+    }
+  }
 }
 
 export default NotificationService

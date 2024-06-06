@@ -18,7 +18,6 @@ interface Props {
 }
 
 const HistoryLogAuditTrails = ({ module }: Props) => {
-  const translation = useTextTranslation()
   const [searchField, setSearchField] = useState('')
 
   const refLog = useRef<{

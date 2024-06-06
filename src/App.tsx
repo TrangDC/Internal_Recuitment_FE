@@ -10,10 +10,13 @@ import RTL from 'shared/components/RTL'
 import { Toaster } from 'react-hot-toast'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
+import ModalConfirmType from 'shared/components/modal/modalByType'
 
 const App: FC = () => {
   const router = createBrowserRouter(routes())
   const { settings } = useSettings()
+  const { open, setOpen, title, content, onSubmit, type } = usePopup()
 
   const theme = createCustomTheme({
     theme: settings.theme,
@@ -41,6 +44,16 @@ const App: FC = () => {
           />
           <CssBaseline />
           <RouterProvider router={router} />
+          {open && (
+            <ModalConfirmType
+              open={open}
+              setOpen={setOpen}
+              title={title}
+              content={content}
+              type={type}
+              onSubmit={onSubmit}
+            />
+          )}
         </RTL>
       </ThemeProvider>
     </StyledEngineProvider>

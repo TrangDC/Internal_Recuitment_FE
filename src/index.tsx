@@ -8,6 +8,7 @@ import App from './App'
 import 'nprogress/nprogress.css'
 import 'simplebar-react/dist/simplebar.min.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { PopupProvider } from 'contexts/popupProvider'
 
 let ReactQueryDevtoolsProduction = null
 if (process.env.NODE_ENV !== 'production') {
@@ -27,15 +28,17 @@ root.render(
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <SettingsProvider>
         <JWTAuthProvider>
-          <QueryClientProvider client={queryClient}>
-            <App />
-            {ReactQueryDevtoolsProduction && (
-              <ReactQueryDevtoolsProduction
-                initialIsOpen={false}
-                buttonPosition="bottom-right"
-              />
-            )}
-          </QueryClientProvider>
+          <PopupProvider>
+            <QueryClientProvider client={queryClient}>
+              <App />
+              {ReactQueryDevtoolsProduction && (
+                <ReactQueryDevtoolsProduction
+                  initialIsOpen={false}
+                  buttonPosition="bottom-right"
+                />
+              )}
+            </QueryClientProvider>
+          </PopupProvider>
         </JWTAuthProvider>
       </SettingsProvider>
     </LocalizationProvider>

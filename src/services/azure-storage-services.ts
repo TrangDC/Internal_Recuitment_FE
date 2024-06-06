@@ -12,7 +12,6 @@ class AzureStorageService {
     file,
     onProgress,
   }: UploadFileToAzure) => {
-    console.log('file', file)
     return await axios.put(url, file, {
       headers: {
         'x-ms-version': '2020-04-08',

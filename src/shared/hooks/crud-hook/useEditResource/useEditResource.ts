@@ -9,6 +9,7 @@ import ErrorException from 'shared/interfaces/response'
 import { FieldValues, Resolver } from 'react-hook-form'
 import useGetResource, { IuseGetResource } from '../useGetResource'
 import { t } from 'i18next'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 interface IuseEditResource<Response, FormData>
   extends IuseGetResource<Response, FormData> {
@@ -34,6 +35,8 @@ function useEditResource<Response, FormData extends FieldValues, Input extends I
   resolver,
   formatDefaultValues,
 }: IuseEditResource<Response, FormData>) {
+  const { handleSuccess, handleFailed } = usePopup()
+
   const queryClient = useQueryClient()
   const { useFormReturn, isGetting } = useGetResource<Response, FormData>({
     id: id,
@@ -56,17 +59,28 @@ function useEditResource<Response, FormData extends FieldValues, Input extends I
     onSuccess: (data) => {
       if (isLeft(data)) {
         onError?.(unwrapEither(data))
-        return NotificationService.showError(t(unwrapEither(data).message))
+        // return NotificationService.showError(t(unwrapEither(data).message))
+        return handleFailed({
+          title: NotificationService.generateMessageFailed('EDIT'),
+          content: t(unwrapEither(data).message) as string,
+        })
       }
       queryClient.invalidateQueries({
         queryKey: queryKey,
       })
       onSuccess?.(unwrapEither(data))
-      return NotificationService.showSuccess('EDIT')
+      // return NotificationService.showSuccess('EDIT')
+      return handleSuccess({
+        title: NotificationService.generateMessage('EDIT'),
+      })
     },
     onError(error) {
       onError?.(error)
-      NotificationService.showError(error.message)
+      // NotificationService.showError(error.message)
+      return handleFailed({
+        title: NotificationService.generateMessageFailed('EDIT'),
+        content: t(error.message) as string,
+      })
     },
   })
 

@@ -7,10 +7,6 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { useState } from 'react'
-import { t } from 'i18next'
-import ModalConfirmType, {
-  ModalType,
-} from 'shared/components/modal/modalByType'
 interface IDeleteCandidateModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -19,33 +15,12 @@ interface IDeleteCandidateModal {
 
 function DeleteCandidateModal({ open, setOpen, id }: IDeleteCandidateModal) {
   const [note, setNote] = useState('')
-  const [modal, setModal] = useState<ModalType>({
-    content: '',
-    type: 'failed',
-    open: false,
-    title: 'Failed to delete',
-    onSubmit: () => {},
-  })
-
   const { onDelete, isPending } = useDeleteCandidate({
     id: id,
     onSuccess: () => {
       setOpen(false)
     },
-    onError: (data) => {
-      setModal((prev) => ({
-        ...prev,
-        content: t(data?.message) as string,
-        type: 'failed',
-        open: true,
-        title: 'Failed to delete',
-      }))
-    },
   })
-
-  const handleSetOpen = (open: boolean) => {
-    setModal((prev) => ({ ...prev, open }))
-  }
 
   const translation = useTextTranslation()
 
@@ -88,7 +63,6 @@ function DeleteCandidateModal({ open, setOpen, id }: IDeleteCandidateModal) {
           <ButtonLoading
             variant="contained"
             size="small"
-            // disabled={isValid}
             handlesubmit={() => onDelete({ note })}
             loading={isPending}
           >
@@ -96,16 +70,6 @@ function DeleteCandidateModal({ open, setOpen, id }: IDeleteCandidateModal) {
           </ButtonLoading>
         </FlexBox>
       </BaseModal.Footer>
-      {modal.open && (
-        <ModalConfirmType
-          open={modal.open}
-          setOpen={handleSetOpen}
-          title={modal.title}
-          content={modal.content}
-          type={modal.type}
-          onSubmit={modal.onSubmit}
-        />
-      )}
     </BaseModal.Wrapper>
   )
 }

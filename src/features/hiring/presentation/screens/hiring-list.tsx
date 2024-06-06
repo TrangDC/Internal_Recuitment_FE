@@ -48,7 +48,6 @@ const HiringList = () => {
     ],
     columns,
   })
-  const [teams, setTeams] = useState<BaseRecord[]>([])
   const [searchField, setSearchField] = useState('')
 
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {

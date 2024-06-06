@@ -1,7 +1,6 @@
 import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import IconWrapper from 'shared/components/IconWrapper'
-import { H5, Span } from 'shared/components/Typography'
+import { Span } from 'shared/components/Typography'
 import useTextTranslation from 'shared/constants/text'
 import Jobs from 'shared/components/icons/Jobs'
 import {
@@ -22,6 +21,7 @@ import { LOCATION_LABEL, STATUS_STATE } from 'shared/constants/constants'
 import { format } from 'date-fns'
 import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
 import { CloseJobModal, TabJobDetail } from '../page-sections'
+import IconScreen from 'shared/components/utils/IconScreen'
 
 const JobDetail = () => {
   const [openTab, setOpenTab] = useState(false)
@@ -30,7 +30,7 @@ const JobDetail = () => {
   const { jobDetail } = useJobDetail(id as String)
   const translation = useTextTranslation()
 
-  const { openStatus, setOpenStatus, handleOpenStatus, rowId, rowData } =
+  const { openStatus, setOpenStatus, handleOpenStatus, rowId } =
     useActionTable()
 
     const disabledBtn = useMemo(() => {
@@ -40,12 +40,7 @@ const JobDetail = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <FlexBox gap={0.5} alignItems="center">
-          <IconWrapper>
-            <Jobs sx={{ color: 'primary.main' }} />
-          </IconWrapper>
-          <H5>{jobDetail?.name}</H5>
-        </FlexBox>
+        <IconScreen Icon={Jobs} textLable={jobDetail?.name} link='/dashboard/jobs'/>
       </Box>
       <FlexBox flexDirection={'column'} gap={2.5} marginTop={0}>
         <BoxWrapperOuterContainer>

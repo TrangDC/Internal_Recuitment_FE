@@ -8,7 +8,6 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Tiny } from 'shared/components/Typography'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useTranslation } from 'react-i18next'
-import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
 import { TinyText } from 'shared/components/form/styles'
 import {
   convertStringToArray,

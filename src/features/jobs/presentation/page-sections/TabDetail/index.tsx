@@ -7,7 +7,6 @@ import HistoryLog from '../HistoryLog'
 import TabCustomize from 'shared/components/tab'
 import GeneralInformationField from '../GeneralInformationField'
 import CloseIcon from '@mui/icons-material/Close'
-import { greyLight } from 'shared/theme/colors'
 import EditIcon from 'shared/components/icons/EditIcon'
 import useActionTable from '../../providers/hooks/useActionTable'
 import EditJobModal from '../EditJobModal'
@@ -32,7 +31,7 @@ export default function TabJobDetail({
     { label: 'History Log', Component: HistoryLog },
   ]
 
-  const { openEdit, setOpenEdit, handleOpenEdit, rowId, rowData } =
+  const { openEdit, setOpenEdit, handleOpenEdit, rowId } =
     useActionTable()
 
   const showEdit = useMemo(() => {

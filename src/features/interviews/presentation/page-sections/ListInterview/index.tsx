@@ -47,7 +47,6 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
     handleOpenDelete,
     setOpenDelete,
     rowId,
-    rowData,
   } = useActionTable()
 
   const showInterview = useMemo(() => {

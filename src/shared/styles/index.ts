@@ -58,11 +58,10 @@ export const BtnPrimary = styled(FlexBox)(({ theme }) => ({
   '&.disabled': {
     cursor: 'not-allowed',
     backgroundColor: '#babfc5',
-    border:  `1px solid #BABFC5`,
-    color: '#ffffff'
-  }
+    border: `1px solid #BABFC5`,
+    color: '#ffffff',
+  },
 }))
-
 
 export const BoxCircle = styled(Box)(({ theme }) => ({
   width: 'fit-content',
@@ -84,6 +83,13 @@ export const StyleTinyText = styled(TinyText)(({ theme }) => ({
 export const LinkText = styled(Link)(({ theme }) => ({
   fontWeight: 500,
   cursor: 'pointer',
-  color: 'rgb(31, 132, 235)'
+  color: 'rgb(31, 132, 235)',
 }))
 
+export const LinkGoBack = styled(Link)(({ theme }) => ({
+  fontWeight: 600,
+  cursor: 'pointer',
+  fontSize: '13px',
+  lineHeight: '15.85px',
+  color: '#82868C',
+}))
