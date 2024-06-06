@@ -1,9 +1,7 @@
 import { IconButton, InputAdornment } from '@mui/material'
 import { Box } from '@mui/system'
-import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
 import useTeamTable from '../providers/hooks/useHiringTable'
-import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../providers/hooks/useActionTable'
 import EditHiringModal from '../page-sections/EditHiringModal'
 import SearchIcon from 'shared/components/icons/SearchIcon'
@@ -17,6 +15,7 @@ import {
 } from 'features/candidates/presentation/providers/styles'
 import { BaseRecord } from 'shared/interfaces'
 import { KeyboardEventHandler, useState } from 'react'
+import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 
 const HiringList = () => {
   const {

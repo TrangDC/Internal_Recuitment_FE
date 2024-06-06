@@ -1,9 +1,9 @@
-import { buildQuery } from 'services/graphql-services'
+import GraphQLClientService from 'services/refactor/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.CANDIDATE
-  const getAllCandidates = buildQuery({
+  const getAllCandidates = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidates',
     options: {
       type: 'query',
@@ -35,7 +35,7 @@ const useGraphql = () => {
       freeWord: 'CandidateFreeWord',
     },
   })
-  const createCandidate = buildQuery({
+  const createCandidate = GraphQLClientService.buildQuery({
     operation: 'CreateCandidate',
     options: {
       type: 'mutation',
@@ -51,7 +51,7 @@ const useGraphql = () => {
     },
   })
 
-  const updateCandidate = buildQuery({
+  const updateCandidate = GraphQLClientService.buildQuery({
     operation: 'UpdateCandidate',
     options: {
       type: 'mutation',
@@ -68,7 +68,7 @@ const useGraphql = () => {
     },
   })
 
-  const deleteCandidate = buildQuery({
+  const deleteCandidate = GraphQLClientService.buildQuery({
     operation: 'DeleteCandidate',
     options: {
       type: 'mutation',
@@ -80,7 +80,7 @@ const useGraphql = () => {
     },
   })
 
-  const blackListCandidate = buildQuery({
+  const blackListCandidate = GraphQLClientService.buildQuery({
     operation: 'SetBlackListCandidate',
     options: {
       type: 'mutation',
@@ -93,7 +93,7 @@ const useGraphql = () => {
     },
   })
 
-  const getCandidate = buildQuery({
+  const getCandidate = GraphQLClientService.buildQuery({
     operation: 'GetCandidate',
     options: {
       type: 'query',
@@ -115,7 +115,7 @@ const useGraphql = () => {
     },
   })
 
-  const getAllCandidateJob = buildQuery({
+  const getAllCandidateJob = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidateJobs',
     options: {
       type: 'query',
@@ -144,7 +144,7 @@ const useGraphql = () => {
     },
   })
 
-  const createCandidateJob = buildQuery({
+  const createCandidateJob = GraphQLClientService.buildQuery({
     operation: 'CreateCandidateJob',
     options: {
       type: 'mutation',

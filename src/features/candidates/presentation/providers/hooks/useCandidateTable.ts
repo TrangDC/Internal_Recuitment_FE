@@ -1,5 +1,5 @@
 import useGraphql from 'features/candidates/domain/graphql/graphql'
-import useCustomTable from 'shared/hooks/useCustomTable'
+import useCustomTable from 'shared/components/table/hooks/useCustomTable'
 
 const useCandidateTable = (variables = {}) => {
   const { getAllCandidates, queryKey } = useGraphql()

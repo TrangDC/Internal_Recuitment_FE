@@ -8,6 +8,7 @@ import { BaseRecord } from 'shared/interfaces/common'
 import ErrorException from 'shared/interfaces/response'
 import { FieldValues, Resolver } from 'react-hook-form'
 import useGetResource, { IuseGetResource } from '../useGetResource'
+import { t } from 'i18next'
 
 interface IuseEditResource<Response, FormData>
   extends IuseGetResource<Response, FormData> {
@@ -55,7 +56,7 @@ function useEditResource<Response, FormData extends FieldValues, Input extends I
     onSuccess: (data) => {
       if (isLeft(data)) {
         onError?.(unwrapEither(data))
-        return NotificationService.showError(unwrapEither(data).message)
+        return NotificationService.showError(t(unwrapEither(data).message))
       }
       queryClient.invalidateQueries({
         queryKey: queryKey,

@@ -1,21 +1,28 @@
 import { useQuery } from '@tanstack/react-query'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
-import { fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
+import { useMemo } from 'react'
+import GraphQLClientService from 'services/refactor/graphql-service'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const useCandidateJobDetail = (id: String) => {
   const { getCandidateJob, queryKey } = useGraphql()
 
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
-    queryFn: async () => fetchGraphQL<BaseRecord>(getCandidateJob.query, {
-      id,
-    }),
+    queryFn: async () =>
+      GraphQLClientService.fetchGraphQL(getCandidateJob.query, {
+        id,
+      }),
   })
 
-  const jobApplicationDetail: CandidateJob =
-    data?.[getCandidateJob.operation]?.data ?? {}
+  const jobApplicationDetail: CandidateJob = useMemo(() => {
+    if (data && isRight(data)) {
+      const response = unwrapEither(data)
+      return response?.[getCandidateJob.operation]?.data
+    }
+    return {}
+  }, [data])
 
   return {
     ...otherValue,

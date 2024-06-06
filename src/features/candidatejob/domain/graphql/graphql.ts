@@ -1,10 +1,10 @@
-import { buildQuery } from 'services/graphql-services'
+import GraphQLClientService from 'services/refactor/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.CANDIDATE_JOB
 
-  const getCandidate = buildQuery({
+  const getCandidate = GraphQLClientService.buildQuery({
     operation: 'GetCandidate',
     options: {
       type: 'query',
@@ -26,7 +26,7 @@ const useGraphql = () => {
     },
   })
 
-  const getAllCandidateJob = buildQuery({
+  const getAllCandidateJob = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidateJobs',
     options: {
       type: 'query',
@@ -71,7 +71,7 @@ const useGraphql = () => {
     },
   })
 
-  const createCandidateJob = buildQuery({
+  const createCandidateJob = GraphQLClientService.buildQuery({
     operation: 'CreateCandidateJob',
     options: {
       type: 'mutation',
@@ -86,7 +86,7 @@ const useGraphql = () => {
     },
   })
 
-  const changeStatusCandidate = buildQuery({
+  const changeStatusCandidate = GraphQLClientService.buildQuery({
     operation: 'UpdateCandidateJobStatus',
     options: {
       type: 'mutation',
@@ -102,7 +102,7 @@ const useGraphql = () => {
     },
   })
 
-  const createCandidateJobFeedback = buildQuery({
+  const createCandidateJobFeedback = GraphQLClientService.buildQuery({
     operation: 'CreateCandidateJobFeedback',
     options: {
       type: 'mutation',
@@ -117,7 +117,7 @@ const useGraphql = () => {
     },
   })
 
-  const getCandidateJob = buildQuery({
+  const getCandidateJob = GraphQLClientService.buildQuery({
     operation: 'GetCandidateJob',
     options: {
       type: 'query',
@@ -161,7 +161,7 @@ const useGraphql = () => {
     },
   })
 
-  const getCandidateJobInterview = buildQuery({
+  const getCandidateJobInterview = GraphQLClientService.buildQuery({
     operation: 'GetCandidateJobGroupByInterview',
     options: {
       type: 'query',
@@ -298,7 +298,7 @@ const useGraphql = () => {
     },
   })
 
-  const deleteCandidateJob = buildQuery({
+  const deleteCandidateJob = GraphQLClientService.buildQuery({
     operation: 'DeleteCandidateJob',
     options: {
       type: 'mutation',

@@ -1,10 +1,10 @@
-import { buildQuery } from 'services/graphql-services'
+import GraphQLClientService from 'services/refactor/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.TEAM
 
-  const getAllTeam = buildQuery({
+  const getAllTeam = GraphQLClientService.buildQuery({
     operation: 'GetAllTeams',
     options: {
       type: 'query',
@@ -38,7 +38,7 @@ const useGraphql = () => {
     },
   })
 
-  const createTeam = buildQuery({
+  const createTeam = GraphQLClientService.buildQuery({
     operation: 'CreateTeam',
     options: {
       type: 'mutation',
@@ -54,7 +54,7 @@ const useGraphql = () => {
     },
   })
 
-  const updateTeam = buildQuery({
+  const updateTeam = GraphQLClientService.buildQuery({
     operation: 'UpdateTeam',
     options: {
       type: 'mutation',
@@ -71,7 +71,7 @@ const useGraphql = () => {
     },
   })
 
-  const deleteTeam = buildQuery({
+  const deleteTeam = GraphQLClientService.buildQuery({
     operation: 'DeleteTeam',
     options: {
       type: 'mutation',
@@ -83,7 +83,7 @@ const useGraphql = () => {
     },
   })
 
-  const getTeamDetail = buildQuery({
+  const getTeamDetail = GraphQLClientService.buildQuery({
     operation: 'GetTeam',
     options: {
       type: 'query',

@@ -19,6 +19,7 @@ import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import EditorBoxField from 'shared/components/input-fields/EditorField'
+import NumberField from 'shared/components/input-fields/NumberField'
 
 interface ICreateJobModal {
   open: boolean
@@ -32,7 +33,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
     },
   })
 
-  const { handleChangeManager, onSubmit, resetSalary } = action;
+  const { handleChangeManager, onSubmit, resetSalary } = action
 
   const translation = useTextTranslation()
   const salary = useWatch({ control, name: 'salary_type' })
@@ -223,6 +224,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                             }}
                             required={true}
                             thousandSeparator={salary_item?.thousandSeparator}
+                            allowNegative={false}
                           />
                           <HelperTextForm
                             message={fieldState.error?.message}
@@ -271,13 +273,18 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                   name="amount"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <AppTextField
-                        label={'Staff required'}
-                        required
-                        size="small"
-                        fullWidth
+                      <NumberField
+                        label="Staff required"        
+                        //@ts-ignore
+                        size={'small'}
+                        required={true}
+                        fullWidth={true}
                         value={field.value}
-                        onChange={field.onChange}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(value.replaceAll('.', ''))
+                        }}
+                        allowNegative={false}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

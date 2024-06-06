@@ -38,7 +38,7 @@ function useUpdateJob(props: UseEditJobProps) {
         priority: data.priority.toString(),
         team_id: data.team.id,
         location: data.location,
-        amount: data.amount,
+        amount: data.amount.toString(),
         salary_type: data.salary_type,
         salary_from: data.salary_from.toString(),
         salary_to: data.salary_to.toString(),
@@ -63,6 +63,7 @@ function useUpdateJob(props: UseEditJobProps) {
         salary_type: salary_type,
         salary_from: convertCurrencyToNumber(value.salary_from),
         salary_to: convertCurrencyToNumber(value.salary_to),
+        amount: Number(value.amount)
       }
 
       mutate(valueClone as UpdateHiringJobInput)

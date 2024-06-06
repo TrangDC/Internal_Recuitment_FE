@@ -2,10 +2,8 @@ import { IconButton, InputAdornment } from '@mui/material'
 import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Add from 'shared/components/icons/Add'
-import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../../providers/constants/columns'
 import useCandidateTable from '../../providers/hooks/useCandidateTable'
-import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../../providers/hooks/useActionTable'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import { CustomTextField } from 'shared/components/form/styles'
@@ -52,6 +50,7 @@ import { MenuItemComponent } from 'shared/components/menuItemComponent'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import useExportSample from '../../providers/hooks/useExportSample'
 import { BlackListCandidateModal, CreateCandidateModal, DeleteCandidateModal, EditCandidateModal} from '../index'
+import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 
 const Candidates = () => {
   const {

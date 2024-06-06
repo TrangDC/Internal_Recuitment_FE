@@ -1,8 +1,6 @@
 import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { DivWrapperProcess, SpanGenaration } from '../../providers/styles'
-import CustomTable from 'shared/components/table/CustomTable'
-import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import { columns } from '../../providers/constants/columns'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import useActionTable from '../../providers/hooks/useActionTable'
@@ -22,6 +20,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { ApplyJobModal, ChangeStatusModal, DeleteCandidateJobModal } from '../index'
+import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 
 const JobApplicationHistory = ({
   candidateDetail,

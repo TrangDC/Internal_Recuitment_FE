@@ -1,8 +1,8 @@
-import { buildQuery } from 'services/graphql-services'
+import GraphQLClientService from 'services/refactor/graphql-service'
 
 const useGraphql = () => {
   const queryKey = 'hiring'
-  const getAllHiringTeam = buildQuery({
+  const getAllHiringTeam = GraphQLClientService.buildQuery({
     operation: 'GetAllUsers',
     options: {
       type: 'query',
@@ -34,7 +34,7 @@ const useGraphql = () => {
     },
   })
 
-  const updateUser = buildQuery({
+  const updateUser = GraphQLClientService.buildQuery({
     operation: 'UpdateUser',
     options: {
       type: 'mutation',
@@ -51,7 +51,7 @@ const useGraphql = () => {
     },
   })
 
-  const changeStatusUser = buildQuery({
+  const changeStatusUser = GraphQLClientService.buildQuery({
     operation: 'UpdateUserStatus',
     options: {
       type: 'mutation',
@@ -68,7 +68,7 @@ const useGraphql = () => {
     },
   })
 
-  const getUser = buildQuery({
+  const getUser = GraphQLClientService.buildQuery({
     operation: 'GetUser',
     options: {
       type: 'query',
