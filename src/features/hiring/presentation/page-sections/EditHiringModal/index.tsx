@@ -17,23 +17,14 @@ interface IEditHiringModal {
   rowData?: Hiring
 }
 
-function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
-  const { onSubmit, control, isPending, isValid, setValue } = useEditHiring({
-    defaultValues: {
-      name: rowData?.name,
-      id: rowData?.id,
-      work_email: rowData?.work_email,
-      note: '',
-    },
-    callbackSuccess: () => {
+function EditHiringModal({ open, setOpen, id }: IEditHiringModal) {
+  const { actions, control, isValid, isPending, isGetting } = useEditHiring({
+    id: id,
+    onSuccess: () => {
       setOpen(false)
     },
   })
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
-  }
+  const { callbackSubmit } = actions
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -49,7 +40,7 @@ function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
                 control={control}
                 name="name"
                 render={({ field, fieldState }) => (
-                  <FlexBox alignItems={'center'} flexDirection={'column'}>
+                  <FlexBox flexDirection={'column'}>
                     <AppTextField
                       label={'Name'}
                       required
@@ -57,6 +48,7 @@ function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
                       fullWidth
                       value={field.value}
                       onChange={field.onChange}
+                      loading={isGetting}
                     />
                     <HelperTextForm
                       message={fieldState.error?.message}
@@ -80,6 +72,7 @@ function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
                       fullWidth
                       disabled
                       value={field.value}
+                      loading={isGetting}
                       onChange={field.onChange}
                     />
                     <HelperTextForm
@@ -101,7 +94,7 @@ function EditHiringModal({ open, setOpen, rowData }: IEditHiringModal) {
           >
             Cancel
           </AppButton>
-          <UpdateRecord  disabled={isValid} callbackSubmit={callbackSubmit}>
+          <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
             <ButtonLoading
               variant="contained"
               size="small"

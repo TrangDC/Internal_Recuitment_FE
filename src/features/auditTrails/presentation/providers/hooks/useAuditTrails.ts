@@ -82,7 +82,6 @@ const useAuditTrails = (recordId: string, module: string) => {
   const handleFilter = (key: string, value: any) => {
    const cloneFilter = cloneDeep(filter);
    cloneFilter[key] = value;
-
    setFilter(cloneFilter);
   }
 

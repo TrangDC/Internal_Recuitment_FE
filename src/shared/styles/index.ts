@@ -1,6 +1,8 @@
 import { Box, styled } from '@mui/material'
+import { Link } from 'react-router-dom'
 import FlexBetween from 'shared/components/flexbox/FlexBetween'
 import FlexBox from 'shared/components/flexbox/FlexBox'
+import { TinyText } from 'shared/components/form/styles'
 
 export const BoxWrapperOuterContainer = styled(Box)(({ theme }) => ({
   borderRadius: '8px',
@@ -73,3 +75,15 @@ export const BoxCircle = styled(Box)(({ theme }) => ({
   color: 'white',
   justifyContent: 'center',
 }))
+
+export const StyleTinyText = styled(TinyText)(({ theme }) => ({
+  color: theme.palette.grey[500],
+  fontWeight: 500,
+}))
+
+export const LinkText = styled(Link)(({ theme }) => ({
+  fontWeight: 500,
+  cursor: 'pointer',
+  color: 'rgb(31, 132, 235)'
+}))
+

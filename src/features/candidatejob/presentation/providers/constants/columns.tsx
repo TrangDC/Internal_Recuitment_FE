@@ -8,22 +8,16 @@ import { t } from 'i18next'
 import { format } from 'date-fns'
 import { CANDIDATE_STATUS } from 'features/candidates/presentation/providers/constants'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
-import { TinyText } from 'shared/components/form/styles'
-import { styled } from '@mui/material'
+import { LinkText, StyleTinyText } from 'shared/styles'
 
 const columnHelper = createColumnHelper<CandidateJob>()
-
-export const StyleTinyText = styled(TinyText)(({ theme }) => ({
-  color: theme.palette.grey[500],
-  fontWeight: 500,
-}))
 
 export const columns = (
   actions: TOptionItem<CandidateJob>[]
 ): ColumnDef<CandidateJob, any>[] => [
   columnHelper.accessor((row) => row.hiring_job.name, {
     id: 'job_name',
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => <LinkText to={`/dashboard/job-application-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('job_name')}</span>,
     enableSorting: false,
   }),

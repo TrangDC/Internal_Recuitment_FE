@@ -2,13 +2,14 @@ import {
   DateFieldBody,
   DateFieldDivison,
   DateFieldInformation,
+  FieldOld,
+  FieldRecord,
   StyleChip,
 } from '../../providers/styles'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Tiny } from 'shared/components/Typography'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useTranslation } from 'react-i18next'
-import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
 import { TinyText } from 'shared/components/form/styles'
 import { renderTextRecord } from '../../providers/functions'
 
@@ -39,16 +40,16 @@ const AuditTrailsUpdate = ({ data, type, module }: Props) => {
              const new_value = renderTextRecord(item.field, item.value.newValue).record_value
 
             return (
-              <FlexBox key={idx} gap={'8px'} alignItems={'center'}>
+              <FieldRecord key={idx}>
                 <TinyText>{t(item.field)}: </TinyText>
                 <DateFieldDivison>
-                  <Tiny>
+                  <FieldOld>
                     {old_value}
-                  </Tiny>
-                  <ArrowForwardIcon />
-                  <TinyText>{new_value}</TinyText>
+                  </FieldOld>
+                  <ArrowForwardIcon sx={{color: '#2499EF !important'}}/>
+                  <TinyText fontWeight={500}>{new_value}</TinyText>
                 </DateFieldDivison>
-              </FlexBox>
+              </FieldRecord>
             )
           })}
         </FlexBox>

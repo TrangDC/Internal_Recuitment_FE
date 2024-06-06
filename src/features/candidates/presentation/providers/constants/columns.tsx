@@ -7,22 +7,16 @@ import { Candidate } from 'features/candidates/domain/interfaces'
 import { CANDIDATE_STATUS } from './index'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { t } from 'i18next';
-import { TinyText } from 'shared/components/form/styles'
-import { styled } from '@mui/material'
+import { LinkText, StyleTinyText } from 'shared/styles'
 
 const columnHelper = createColumnHelper<Candidate>()
-
-export const StyleTinyText = styled(TinyText)(({ theme }) => ({
-  color: theme.palette.grey[500],
-  fontWeight: 500,
-}))
 
 export const columns = (
   actions: TOptionItem<Candidate>[]
 ): ColumnDef<Candidate, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => <LinkText to={`/dashboard/candidate-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('name')}</span>,
   }),
   columnHelper.accessor((row) => row.email, {

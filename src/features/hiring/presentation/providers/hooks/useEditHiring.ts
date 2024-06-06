@@ -1,48 +1,66 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/hiring/domain/graphql/graphql'
-import { HiringInput } from 'features/hiring/domain/interfaces'
+import { Hiring, HiringInput } from 'features/hiring/domain/interfaces'
 import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
-import useUpdateResource from 'shared/hooks/useUpdateResource'
+import { BaseRecord } from 'shared/interfaces'
+import { useEditResource } from 'shared/hooks/crud-hook'
 
-interface EditHiringProps {
-  defaultValues?: Partial<FormDataSchemaUpdate>
-  callbackSuccess?: (value: any) => void
+type UseChangeStatusProps = {
+  id: string
+  onSuccess: (data: BaseRecord) => void
 }
 
-function useEditHiring(props: EditHiringProps = { defaultValues: {} }) {
-  const { defaultValues, callbackSuccess } = props
-
-  const { updateUser, queryKey } = useGraphql()
-  const { useCreateReturn, useFormReturn } = useUpdateResource<
-  HiringInput,
-    FormDataSchemaUpdate
+function useEditHiring(props: UseChangeStatusProps) {
+  const { id, onSuccess } = props
+  const { updateUser, getUser, queryKey } = useGraphql()
+  const { useEditReturn, useFormReturn, isGetting } = useEditResource<
+    Hiring,
+    FormDataSchemaUpdate,
+    HiringInput
   >({
-    mutationKey: [queryKey],
-    queryString: updateUser,
-    defaultValues: {
-      status: 'active',
-      ...defaultValues,
-    },
     resolver: yupResolver(schemaUpdate),
-    onSuccess: callbackSuccess,
+    editBuildQuery: updateUser,
+    oneBuildQuery: getUser,
+    queryKey: [queryKey],
+    id,
+    onSuccess,
+    formatDefaultValues(data) {
+ 
+      return {
+        status: data.status,
+        name: data.name,
+        work_email: data.work_email,
+        note: '',
+      }
+    },
   })
 
   const { handleSubmit, control, formState, setValue } = useFormReturn
   const isValid = !formState.isValid
-  const { isPending, mutate } = useCreateReturn
+  const { mutate, isPending } = useEditReturn
 
   function onSubmit() {
     handleSubmit((value) => {
-      mutate(value)
+      mutate(value as HiringInput)
     })()
   }
 
+  const callbackSubmit = (reason: string) => {
+    setValue('note', reason)
+    onSubmit()
+  }
+
   return {
-    onSubmit,
     control,
     isValid,
     isPending,
+    actions: {
+      onSubmit,
+      callbackSubmit
+    },
+    formState,
     setValue,
+    isGetting
   }
 }
 

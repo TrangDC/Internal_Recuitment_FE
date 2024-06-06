@@ -1,5 +1,6 @@
 import useGraphql from 'features/calendars/domain/graphql'
-import useDeleteResource from 'shared/hooks/refactor/useDeleteResource'
+import { useDeleteResource } from 'shared/hooks/crud-hook'
+import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
 import { BaseRecord } from 'shared/interfaces/common'
 
 type UseDeleteInterviewProps = {
@@ -19,7 +20,7 @@ function useDeleteInterview(props: UseDeleteInterviewProps) {
 
   const { mutate, isPending } = useDeleteReturn
 
-  function onDelete(data?: BaseRecord) {
+  function onDelete(data: payloadDelete) {
     mutate(data)
   }
 

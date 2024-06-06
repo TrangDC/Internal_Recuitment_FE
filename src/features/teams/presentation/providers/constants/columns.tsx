@@ -7,23 +7,17 @@ import {
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Span } from 'shared/components/Typography'
 import { t } from 'i18next'
-import { TinyText } from 'shared/components/form/styles'
 import ChipField from 'shared/components/input-fields/ChipField'
-import { styled } from '@mui/material'
+import { LinkText, StyleTinyText } from 'shared/styles'
 
 const columnHelper = createColumnHelper<Team>()
-
-export const StyleTinyText = styled(TinyText)(({ theme }) => ({
-  color: theme.palette.grey[500],
-  fontWeight: 500,
-}))
 
 export const columns = (
   actions: TOptionItem<Team>[]
 ): ColumnDef<Team, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => <LinkText to={`/dashboard/team-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('name')}</span>,
     meta: {
       style: { width: '300px' },
@@ -52,7 +46,7 @@ export const columns = (
   }),
   columnHelper.accessor('opening_requests', {
     header: () => <span>{t('open_requests')}</span>,
-    cell: (info) => info.renderValue(),
+    cell: (info) => <StyleTinyText>{info.renderValue()}</StyleTinyText>,
     meta: {
       style: { width: '300px' },
     },

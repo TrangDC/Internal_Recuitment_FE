@@ -126,7 +126,7 @@
     "teams": {
       "name": "Name",
       "model_name": "Team",
-      "members": "Members",
+      "members": "Team’s manager",
       "validation": {
         "name_exist": "This team is already existed.",
         "user_in_another_team": "This manager already in another team",

@@ -1,5 +1,4 @@
 import useGraphql from 'features/calendars/domain/graphql'
-import useCreateResource from 'shared/hooks/crud-hook/useCreateResource'
 import {
   CreateInterviewFrom,
   CreateInterviewSchema,
@@ -12,6 +11,7 @@ import {
   convertToRootDate,
 } from '../../page-sections/google-calendar/functions'
 import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
+import { useCreateResource } from 'shared/hooks/crud-hook'
 
 interface IUseCreateInterview {
   onSuccess: (data: BaseRecord) => void

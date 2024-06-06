@@ -3,7 +3,6 @@ import { Box } from '@mui/system'
 import CustomTable from 'shared/components/table/CustomTable'
 import { columns } from '../providers/constants/columns'
 import useTeamTable from '../providers/hooks/useHiringTable'
-import CreateHiringModal from '../page-sections/CreateHiringModal'
 import useBuildColumnTable from 'shared/hooks/useBuildColumnTable'
 import useActionTable from '../providers/hooks/useActionTable'
 import EditHiringModal from '../page-sections/EditHiringModal'
@@ -14,23 +13,13 @@ import IconScreen from 'shared/components/utils/IconScreen'
 import HiringTeam from 'shared/components/icons/HiringTeams'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import {
-  DivFilter,
   DivHeaderWrapper,
 } from 'features/candidates/presentation/providers/styles'
-import { BaseRecord, baseInstance } from 'shared/interfaces'
-import ChangeStatusModal from '../page-sections/ChangeStatusModal'
-import { transformListItem } from 'shared/utils/utils'
+import { BaseRecord } from 'shared/interfaces'
 import { KeyboardEventHandler, useState } from 'react'
-import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
-import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 
 const HiringList = () => {
   const {
-    openCreate,
-    setOpenCreate,
-    openDelete,
-    setOpenDelete,
-    handleOpenDelete,
     handleOpenEdit,
     openEdit,
     rowId,
@@ -133,22 +122,12 @@ const HiringList = () => {
           )}
         </Box>
       </BoxWrapperOuterContainer>
-      {openCreate && (
-        <CreateHiringModal open={openCreate} setOpen={setOpenCreate} />
-      )}
       {openEdit && (
         <EditHiringModal
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
           rowData={rowData.current}
-        />
-      )}
-      {openDelete && (
-        <ChangeStatusModal
-          open={openDelete}
-          setOpen={setOpenDelete}
-          id={rowId.current}
         />
       )}
     </Box>

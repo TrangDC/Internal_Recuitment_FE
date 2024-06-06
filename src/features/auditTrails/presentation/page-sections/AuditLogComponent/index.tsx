@@ -10,7 +10,6 @@ import { format } from 'date-fns'
 import AuditTrailsList from 'features/auditTrails/presentation/page-sections/AuditTrailsList'
 import { forwardRef, useImperativeHandle } from 'react'
 import useAuditTrails from 'features/auditTrails/presentation/providers/hooks/useAuditTrails'
-import useTextTranslation from 'shared/constants/text'
 import {
   DateFieldContainer,
   DateFieldHeader,
@@ -29,8 +28,6 @@ const LogsComponent = ({ module }: Props, ref: any) => {
     id as string,
     module
   )
-
-  const translation = useTextTranslation()
 
   useImperativeHandle(
     ref,
@@ -60,8 +57,15 @@ const LogsComponent = ({ module }: Props, ref: any) => {
                     <DateIcon />
                   </DateFieldIcon>
                   <DateFieldTime>
-                    <Span>
-                      {translation.COMMON.update}{' '}
+                    <Span
+                      color={'#2A2E37 !important'}
+                      textTransform={'capitalize'}
+                    >
+                      {' '}
+                      {auditrail.actionType}
+                    </Span>
+                    <Span color={'#2A2E37 !important'}>
+                      {' '}
                       {format(
                         new Date(auditrail.updatedAt),
                         'dd-MM-yyyy HH:mm:ss'
