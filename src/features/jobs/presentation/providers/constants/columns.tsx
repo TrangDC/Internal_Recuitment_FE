@@ -7,22 +7,16 @@ import { Job } from 'features/jobs/domain/interfaces'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { STATUS_STYLE } from './index'
 import { t } from 'i18next'
-import { styled } from '@mui/material'
-import { TinyText } from 'shared/components/form/styles'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
-
-export const StyleTinyText = styled(TinyText)(({ theme }) => ({
-  color: theme.palette.grey[500],
-  fontWeight: 500,
-}))
+import { LinkText, StyleTinyText } from 'shared/styles'
 
 const columnHelper = createColumnHelper<Job>()
 
 export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => <LinkText to={`/dashboard/job-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>Job name</span>,
   }),
   columnHelper.accessor((row) => row.team.name, {

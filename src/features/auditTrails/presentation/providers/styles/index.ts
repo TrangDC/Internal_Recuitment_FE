@@ -1,4 +1,5 @@
 import { Box, Divider, styled } from '@mui/material'
+import { Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import FlexRowAlign from 'shared/components/flexbox/FlexRowAlign'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
@@ -74,7 +75,6 @@ export const StyleDivider = styled(Divider)(({ theme }) => ({
   height: '100%',
   top: '45px',
   left: '16px',
-  maxHeight: '56px',
 }))
 
 export const HistoryWrapper = styled(Box)(({ theme }) => ({
@@ -90,3 +90,13 @@ export const LogsWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
   marginTop: '10px',
 }))
+
+export const FieldRecord = styled(FlexBox)(({ theme }) => ({
+ gap: '8px',
+ alignItems: 'center',
+ color: '#002743',
+}))
+
+export const FieldOld = styled(Tiny)(({ theme }) => ({
+  color: '#82868C'
+ }))

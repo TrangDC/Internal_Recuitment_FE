@@ -4,7 +4,7 @@ import { GetInterviewFrom, getOneInterviewSchema } from '../constants/validate'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { formatStringToDate } from '../../page-sections/google-calendar/functions'
-import useGetResource from 'shared/hooks/crud-hook/useGetResource'
+import { useGetResource } from 'shared/hooks/crud-hook'
 
 export interface IUseGetInterview {
   id: string

@@ -33,6 +33,7 @@ const useGraphql = () => {
       freeWord: 'UserFreeWord',
     },
   })
+
   const updateUser = buildQuery({
     operation: 'UpdateUser',
     options: {
@@ -67,11 +68,34 @@ const useGraphql = () => {
     },
   })
 
+  const getUser = buildQuery({
+    operation: 'GetUser',
+    options: {
+      type: 'query',
+    },
+    node: `
+        data {
+          id
+          name
+          work_email
+          status
+          team {
+            id
+            name
+          }
+        }
+    `,
+    params: {
+      id: 'ID!',
+    },
+  })
+
   return {
     getAllHiringTeam,
     queryKey,
     updateUser,
     changeStatusUser,
+    getUser,
   }
 }
 

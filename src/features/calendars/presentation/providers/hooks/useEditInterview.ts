@@ -5,7 +5,6 @@ import {
   UpdateCandidateInterviewInput,
 } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
-import useEditResource from 'shared/hooks/crud-hook/useEditResource/useEditResource'
 import { BaseRecord } from 'shared/interfaces/common'
 import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
 import {
@@ -13,6 +12,7 @@ import {
   convertToRootDate,
   formatStringToDate,
 } from '../../page-sections/google-calendar/functions'
+import { useEditResource } from 'shared/hooks/crud-hook'
 
 type UseEditInterviewProps = {
   id: string

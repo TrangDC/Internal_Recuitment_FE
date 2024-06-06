@@ -10,7 +10,6 @@ export const schema = yup.object({
 export type FormDataSchema = yup.InferType<typeof schema>
 
 export const schemaUpdate = yup.object({
-  id: yup.string().required(RULE_MESSAGES.MC1('id')),
   name: yup.string().required(RULE_MESSAGES.MC1('name')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
   work_email: yup.string().email(RULE_MESSAGES.MC5('work_email')).required(RULE_MESSAGES.MC1('work_email')),
@@ -20,7 +19,6 @@ export const schemaUpdate = yup.object({
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>
 
 export const schemaChangeStatus = yup.object({
-  id: yup.string().required(RULE_MESSAGES.MC1('id')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
   note: yup.string(),
 });

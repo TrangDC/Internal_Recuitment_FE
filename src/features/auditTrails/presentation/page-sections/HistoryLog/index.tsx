@@ -22,16 +22,16 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
   const [searchField, setSearchField] = useState('')
 
   const refLog = useRef<{
-    handleFilter: (name: string, value: string) => void
+    handleFilter: (name: string, value: string | null) => void
     handleFreeWord: (name: string, value: string) => void
   }>()
 
-  const handleChangeDate = (name: string, value: Date | null) => {
+  const handleChangeDate = (name: string, value: Date) => {
+   
     const handleFilter = refLog?.current?.['handleFilter']
 
-    if (!handleFilter || !value) return
-
-    handleFilter(name, convertDateToISOString(value.toString()))
+    if (!handleFilter) return
+    handleFilter(name, value ? convertDateToISOString(value.toString()) : value)
   }
 
   const handleSearch = (name: string, value: string) => {
@@ -86,7 +86,7 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
           <AppDateField
             label={'From date'}
             onChange={(value) => {
-              handleChangeDate('fromDate', value)
+              handleChangeDate('fromDate', value as Date)
             }}
             format="dd/MM/yyyy"
             sx={{
@@ -100,7 +100,7 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
            <AppDateField
             label={'To date'}
             onChange={(value) => {
-              handleChangeDate('toDate', value)
+              handleChangeDate('toDate', value as Date)
             }}
             format="dd/MM/yyyy"
             sx={{

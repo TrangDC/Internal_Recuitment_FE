@@ -87,7 +87,7 @@ function DeleteInterviewModal({
             <ButtonLoading
               variant="contained"
               size="small"
-              handlesubmit={() => onDelete({ id, note })}
+              handlesubmit={() => onDelete({ note })}
               loading={isPending}
             >
               Submit

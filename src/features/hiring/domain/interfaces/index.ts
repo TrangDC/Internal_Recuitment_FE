@@ -11,14 +11,12 @@ export type Hiring = {
 }
 
 export type HiringInput = {
-  id: string,
   name: string,
   work_email: string,
-  // team: string,
+  note: string,
 }
 
 export type ChangeStatusUser = {
-  id: string,
   note: string,
   status: 'active' | 'inactive'
 }
