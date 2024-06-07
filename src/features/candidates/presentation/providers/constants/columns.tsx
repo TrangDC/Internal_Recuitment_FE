@@ -18,15 +18,30 @@ export const columns = (
     id: 'name',
     cell: (info) => <LinkText to={`/dashboard/candidate-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('name')}</span>,
+    meta: {
+      style: {
+        width: '400px'
+      }
+    }
   }),
   columnHelper.accessor((row) => row.email, {
     id: 'email',
     header: () => <span>{t('email')}</span>,
+    meta: {
+      style: {
+        width: '500px'
+      }
+    },
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
   columnHelper.accessor((row) => row.phone, {
     id: 'phone',
     header: () => <span>{t('phone_number')}</span>,
+    meta: {
+      style: {
+        width: '400px'
+      }
+    },
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     enableSorting: false,
   }),
@@ -34,6 +49,11 @@ export const columns = (
     id: 'status',
     header: () => <span>{t('status')}</span>,
     enableSorting: false,
+    meta: {
+      style: {
+        width: '200px'
+      }
+    },
     cell: (info) => {
       //@ts-ignore
       const status = CANDIDATE_STATUS[info.getValue()]
@@ -53,6 +73,17 @@ export const columns = (
     header: () => <span>{t('action')}</span>,
     size: 100,
     enableSorting: false,
+    meta: {
+      isPinned: 'right',
+      style: {
+        minWidth: '100px',
+        maxWidth: '100px',
+        display: 'flex',
+        justifyContent: 'center',
+        paddingLeft: 0,
+        background: 'rgb(252, 252, 252)'
+      }
+    },
     cell: (info) => {
       const id = info.row.original.id
 

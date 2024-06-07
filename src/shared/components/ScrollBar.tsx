@@ -9,8 +9,13 @@ const StyledScrollBar = styled(SimpleBar)(({ theme }) => ({
     "&:before": { backgroundColor: alpha(theme.palette.grey[400], 0.6) },
     "&.simplebar-visible:before": { opacity: 1 },
   },
-  "& .simplebar-track.simplebar-vertical": { width: 9 },
-  "& .simplebar-track.simplebar-horizontal .simplebar-scrollbar": { height: 6 },
+  
+  "& .simplebar-track.simplebar-vertical": { width: 9},
+  "& .simplebar-track.simplebar-horizontal .simplebar-scrollbar": { height: 7,
+    '&::before': {
+        height: '100%'
+    }
+   },
   "& .simplebar-mask": { zIndex: "inherit" },
 }));
 

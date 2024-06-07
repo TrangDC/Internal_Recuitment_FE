@@ -2,6 +2,7 @@ import {
   DateFieldBody,
   DateFieldDivison,
   DateFieldInformation,
+  FieldRecord,
   StyleChip,
 } from '../../providers/styles'
 import FlexBox from 'shared/components/flexbox/FlexBox'
@@ -30,11 +31,9 @@ const AuditTrailsCreate = ({ data, type, module }: Props) => {
     <DateFieldBody>
       <DateFieldInformation>
         <FlexBox alignItems={'center'} gap={'8px'}>
-          <Tiny>
-            {convertStringToArray(module).length > 2
-              ? t(module)
-              : t(getLastString(module))}
-          </Tiny>
+          {/* <Tiny>
+            {t(module)}
+          </Tiny> */}
           <StyleChip label={type} sx={{ backgroundColor: '#ffaf46' }} />
         </FlexBox>
         <FlexBox flexDirection={'column'} gap={'8px'}>
@@ -42,13 +41,13 @@ const AuditTrailsCreate = ({ data, type, module }: Props) => {
             const { record_value } = renderTextRecord(item.field, item.value)
 
             return (
-              <FlexBox key={idx} gap={'8px'}>
-                <TinyText>{t(item.field)}: </TinyText>
+              <FieldRecord key={idx}>
+                <TinyText >{t(item.field)}: </TinyText>
                 <DateFieldDivison>
                   <ArrowForwardIcon />
                   <TinyText>{record_value}</TinyText>
                 </DateFieldDivison>
-              </FlexBox>
+              </FieldRecord>
             )
           })}
         </FlexBox>

@@ -5,7 +5,7 @@ import * as yup from 'yup'
 
 export const schema = yup.object({
   team_id: yup.string().required(RULE_MESSAGES.MC1("team")),
-  name: yup.string().max(64, RULE_MESSAGES.MC4("name", 64)).required(RULE_MESSAGES.MC1("name")),
+  name: yup.string().max(64, RULE_MESSAGES.MC4("Job name", 64)).required(RULE_MESSAGES.MC1("Job name")),
   location: yup.string().required(RULE_MESSAGES.MC1("location")),
   created_by: yup.string().required(RULE_MESSAGES.MC1("requester")),
   amount: yup.string().required(RULE_MESSAGES.MC1("staff required")).test('validator-amount', function(value) {
@@ -54,7 +54,7 @@ export type FormDataSchema = yup.InferType<typeof schema>
 
 export const schemaUpdate = yup.object({
   team_id: yup.string().required(RULE_MESSAGES.MC1("team")),
-  name: yup.string().max(64, RULE_MESSAGES.MC4("name", 64)).required(RULE_MESSAGES.MC1("name")),
+  name: yup.string().max(64, RULE_MESSAGES.MC4("Job name", 64)).required(RULE_MESSAGES.MC1("Job name")),
   location: yup.string().required(RULE_MESSAGES.MC1("location")),
   created_by: yup.string().required(RULE_MESSAGES.MC1("requester")),
   amount: yup.string().required(RULE_MESSAGES.MC1("staff required")).test('validator-amount', function(value) {

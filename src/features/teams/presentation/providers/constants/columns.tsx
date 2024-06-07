@@ -20,11 +20,14 @@ export const columns = (
     cell: (info) => <LinkText to={`/dashboard/team-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('name')}</span>,
     meta: {
-      style: { width: '300px' },
+      style: { width: '500px' },
     },
   }),
   columnHelper.accessor((row) => row.members, {
     id: 'members',
+    meta: {
+      style: { width: '500px' },
+    },
     cell: (info) => {
       return (
         <FlexBox gap={'10px'} flexWrap={'wrap'}>
@@ -39,17 +42,14 @@ export const columns = (
       )
     },
     header: () => <span>{t('manager')}</span>,
-    meta: {
-      style: { width: '300px' },
-    },
     enableSorting: false,
   }),
   columnHelper.accessor('opening_requests', {
     header: () => <span>{t('open_requests')}</span>,
-    cell: (info) => <StyleTinyText>{info.renderValue()}</StyleTinyText>,
     meta: {
-      style: { width: '300px' },
+      style: { width: '500px' },
     },
+    cell: (info) => <StyleTinyText>{info.renderValue()}</StyleTinyText>,
   }),
   columnHelper.accessor('newest_applied', {
     header: () => (
@@ -60,7 +60,15 @@ export const columns = (
     size: 100,
     enableSorting: false,
     meta: {
-      style: { width: '100px' },
+      isPinned: 'right',
+      style: {
+        minWidth: '100px',
+        maxWidth: '100px',
+        display: 'flex',
+        justifyContent: 'center',
+        paddingLeft: 0,
+        background: 'rgb(252, 252, 252)'
+      }
     },
     cell: (info) => {
       const id = info.row.original.id

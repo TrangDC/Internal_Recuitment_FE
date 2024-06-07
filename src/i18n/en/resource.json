@@ -96,7 +96,7 @@
       "currency": "Unit",
       "validation": {
         "amount_neq_zero": "Number of staff required must be greater than 0",
-        "name_exist": "This team is already existed",
+        "name_exist": "Job name is already existed",
         "candidate_job_exist": "This job cannot be deleted as applications have already been received from candidates",
         "candidate_job_open_exist": "Candidate job is already existed",
         "priority_ugent_exist": "Each team can only have one job with URGENT priority.",
@@ -117,7 +117,7 @@
       "email": "Email",
       "phone": "Phone",
       "dob": "DOB",
-      "is_blacklist": "Black list",
+      "is_blacklist": "Blacklist",
       "validation": {
         "email_exist": "This email belongs to an existing candidate.",
         "candidate_job_exist": "This candidate is in a hiring process already"
