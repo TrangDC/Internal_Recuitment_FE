@@ -1,6 +1,6 @@
 import { StepConnector, StepConnectorProps, styled } from '@mui/material'
 import { TinyText } from '../form/styles'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import FlexBox from '../flexbox/FlexBox'
 import CheckIcon from '../icons/CheckIcon'
 import {  STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
@@ -79,7 +79,7 @@ const StepperComponent = ({
 
   return (
     <StepperContainer>
-      {steps.map((step, idx) => {
+      {!isEmpty(steps) && steps.map((step, idx) => {
         return (
           <FlexBox
             alignItems={'center'}

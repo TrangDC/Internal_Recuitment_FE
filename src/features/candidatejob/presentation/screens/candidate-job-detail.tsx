@@ -10,11 +10,12 @@ import useCandidateJobDetail from '../providers/hooks/useCandidateJobDetail'
 const CandidateJobDetail = () => {
   const { id } = useParams()
   const { jobApplicationDetail } = useCandidateJobDetail(id as string)
+  console.log("🚀 ~ CandidateJobDetail ~ jobApplicationDetail:", jobApplicationDetail)
 
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={CandidateIcon} textLable={'Job application detail'} />
+        <IconScreen Icon={CandidateIcon} textLable={'Job application detail'} link={`/dashboard/candidate-detail/${jobApplicationDetail?.candidate_id}`}/>
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>
         <DivWrapperContainer>

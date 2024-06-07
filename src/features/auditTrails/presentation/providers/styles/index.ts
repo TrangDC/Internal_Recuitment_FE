@@ -98,5 +98,6 @@ export const FieldRecord = styled(FlexBox)(({ theme }) => ({
 }))
 
 export const FieldOld = styled(Tiny)(({ theme }) => ({
-  color: '#82868C'
+  color: '#82868C',
+  lineHeight: '15.85px'
  }))

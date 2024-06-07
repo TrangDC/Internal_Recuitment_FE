@@ -56,7 +56,15 @@ export const columns = (
     size: 100,
     enableSorting: false,
     meta: {
-      style: {width: '100px'}
+      isPinned: 'right',
+      style: {
+        minWidth: '100px',
+        maxWidth: '100px',
+        display: 'flex',
+        justifyContent: 'center',
+        paddingLeft: 0,
+        background: 'rgb(252, 252, 252)'
+      }
     },
     cell: (info) => {
       const id = info.row.original.id

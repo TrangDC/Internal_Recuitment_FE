@@ -31,7 +31,7 @@ const AuditTrailsUpdate = ({ data, type, module }: Props) => {
     <DateFieldBody>
       <DateFieldInformation>
         <FlexBox alignItems={'center'} gap={'8px'}>
-          <Tiny>{t(module)}</Tiny>
+          {/* <Tiny>{t(module)}</Tiny> */}
           <StyleChip label={type} sx={{backgroundColor: "#5CBAFE"}}/>
         </FlexBox>
         <FlexBox flexDirection={'column'} gap={'8px'}>

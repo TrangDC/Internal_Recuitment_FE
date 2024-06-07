@@ -53,7 +53,7 @@ export function renderLocation(text: string) {
 }
 
 export function renderDate(text: string) {
-    return dayjs(text).format('hh:mm, DD/MM/YYYY')
+    return dayjs(text).format('DD/MM/YYYY')
 }
 
 export function renderYesNo(text: string) {

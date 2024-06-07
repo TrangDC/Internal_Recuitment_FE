@@ -13,7 +13,6 @@ import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import {
   DivHeaderWrapper,
 } from 'features/candidates/presentation/providers/styles'
-import { BaseRecord } from 'shared/interfaces'
 import { KeyboardEventHandler, useState } from 'react'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 
