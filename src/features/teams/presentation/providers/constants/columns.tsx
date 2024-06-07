@@ -19,15 +19,11 @@ export const columns = (
     id: 'name',
     cell: (info) => <LinkText to={`/dashboard/team-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('name')}</span>,
-    meta: {
-      style: { width: '500px' },
-    },
+    size: 600,
   }),
   columnHelper.accessor((row) => row.members, {
     id: 'members',
-    meta: {
-      style: { width: '500px' },
-    },
+    size: 600,
     cell: (info) => {
       return (
         <FlexBox gap={'10px'} flexWrap={'wrap'}>
@@ -46,9 +42,7 @@ export const columns = (
   }),
   columnHelper.accessor('opening_requests', {
     header: () => <span>{t('open_requests')}</span>,
-    meta: {
-      style: { width: '500px' },
-    },
+    size: 600,
     cell: (info) => <StyleTinyText>{info.renderValue()}</StyleTinyText>,
   }),
   columnHelper.accessor('newest_applied', {
@@ -59,17 +53,7 @@ export const columns = (
     ),
     size: 100,
     enableSorting: false,
-    meta: {
-      isPinned: 'right',
-      style: {
-        minWidth: '100px',
-        maxWidth: '100px',
-        display: 'flex',
-        justifyContent: 'center',
-        paddingLeft: 0,
-        background: 'rgb(252, 252, 252)'
-      }
-    },
+    id: 'action',
     cell: (info) => {
       const id = info.row.original.id
 

@@ -19,11 +19,7 @@ export const columns = (
     id: 'job_name',
     cell: (info) => <LinkText to={`/dashboard/job-application-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('job_name')}</span>,
-    meta: {
-      style: {
-        width: '400px'
-      }
-    },
+    size: 400,
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.hiring_job.team.name, {
@@ -39,13 +35,8 @@ export const columns = (
   }),
   columnHelper.accessor((row) => row.updated_at, {
     id: 'updated_at',
-    size: 200,
+    size: 400,
     header: () => <span>Last update</span>,
-    meta: {
-      style: {
-        width: '400px'
-      }
-    },
     cell: (info) => (
       <StyleTinyText>
         {format(new Date(info.getValue()), 'HH:mm, dd/MM/yyyy')}
@@ -71,17 +62,7 @@ export const columns = (
   columnHelper.accessor('created_at', {
     header: () => <span>{t('action')}</span>,
     size: 100,
-    meta: {
-      isPinned: 'right',
-      style: {
-        minWidth: '100px',
-        maxWidth: '100px',
-        display: 'flex',
-        justifyContent: 'center',
-        paddingLeft: 0,
-        background: 'rgb(252, 252, 252)'
-      }
-    },
+    id: 'action',
     cell: (info) => {
       const id = info.row.original.id
 
