@@ -23,17 +23,13 @@ export const columns = (
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>Name</span>,
-    meta: {
-      style: { width: '800px' },
-    },
+    size: 800,
   }),
   columnHelper.accessor('work_email', {
     header: () => <span>Email</span>,
     enableSorting: false,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-    meta: {
-      style: { width: '800px' },
-    },
+    size: 800,
   }),
   // columnHelper.accessor((row) => row.team?.name, {
   //   id: 'team',
@@ -55,17 +51,7 @@ export const columns = (
     ),
     size: 100,
     enableSorting: false,
-    meta: {
-      isPinned: 'right',
-      style: {
-        minWidth: '100px',
-        maxWidth: '100px',
-        display: 'flex',
-        justifyContent: 'center',
-        paddingLeft: 0,
-        background: 'rgb(252, 252, 252)'
-      }
-    },
+    id: 'action',
     cell: (info) => {
       const id = info.row.original.id
 

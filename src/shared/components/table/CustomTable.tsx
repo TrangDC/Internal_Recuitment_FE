@@ -87,17 +87,12 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
     handleChangePage(page)
   }
 
-  function setStickyColumn<T extends object>(column: Column<T>): CSSProperties {
+  function setStyleColumn<T extends object>(column: Column<T>): CSSProperties {
     const meta = column.columnDef.meta
     const style = meta?.style ?? {}
-    const isPinned = meta?.isPinned || false
 
     return {
-      left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
-      right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
-      position: isPinned ? 'sticky' : 'relative',
-      zIndex: isPinned ? 2 : 1,
-      width: 'auto',
+      width: column.getSize(),
       ...style,
     }
   }
@@ -124,8 +119,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
               {getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
-                    const meta = header.column.columnDef.meta
-                    const stickyColumn = setStickyColumn<T>(header.column)
+                    const styleColumn = setStyleColumn<T>(header.column)
 
                     return (
                       <HeadTableCell
@@ -134,8 +128,9 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                           header.column.getCanSort() &&
                             handleSorTable(header.id)
                         }}
+                        id={header.id}
                         {...header.column.columnDef.meta}
-                        style={{ minWidth: '200px', width: 'auto', ...stickyColumn }}
+                        style={{ minWidth: '200px', ...styleColumn }}
                       >
                         <DivHeader>
                           {header.isPlaceholder
@@ -174,14 +169,15 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                 : getRowModel().rows.map((row) => (
                     <TableRow key={row.id}>
                       {row.getVisibleCells().map((cell) => {
-                        const stickyColumn = setStickyColumn<T>(cell.column)
+                        const styleColumn = setStyleColumn<T>(cell.column)
 
                         return (
                           <BodyTableCell
                             component="td"
                             scope="row"
-                            key={cell.id}
-                            style={{...stickyColumn}}
+                            key={cell.column.id}
+                            id={`${cell.column.id}`}
+                            style={{...styleColumn}}
                           >
                             {flexRender(
                               cell.column.columnDef.cell,

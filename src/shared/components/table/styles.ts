@@ -9,7 +9,18 @@ export const TableCellStyle = styled(TableCell)(({ theme }) => ({
  borderBottom: '1px solid #e3e6eb',
  '&:first-of-type': {
   paddingLeft: '16px',
- }
+ },
+ '&#action': {
+    minWidth: '100px !important',
+    maxWidth: '100px',
+    display: 'flex',
+    justifyContent: 'center',
+    paddingLeft: 0,
+    background: 'rgb(252, 252, 252)',
+    zIndex: 2,
+    position: 'sticky',
+    right: 0,
+  }
 }))
 
 export const HeadTableCell = styled(TableCellStyle)(({ theme }) => ({
@@ -36,6 +47,18 @@ export const BodyTableCell = styled(TableCellStyle)(({ theme }) => ({
   '&:nth-last-child(1 of .column-sticky)': {
     BorderRight: '1px solid rgba(0, 0, 0, 0.15)',
   },
+  
+  '&#action': {
+    minWidth: '100px !important',
+    maxWidth: '100px',
+    display: 'flex',
+    justifyContent: 'center',
+    paddingLeft: 0,
+    background: 'rgb(252, 252, 252)',
+    zIndex: 2,
+    position: 'sticky',
+    right: 0,
+  }
 }))
 
 
