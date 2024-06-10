@@ -130,7 +130,11 @@ function Calendars(props: ICalendars) {
         handleDragStart={handleDragStart}
         eventPropGetter={eventStyleGetter}
         slotPropGetter={slotPropGetter}
-        formats={{ timeGutterFormat: 'HH:mm' }}
+        formats={{
+          timeGutterFormat: 'HH:mm',
+          eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
+            `${localizer?.format(start, 'HH:mm', culture)} - ${localizer?.format(end, 'HH:mm', culture)}`,
+        }}
         scrollToTime={today}
         showMultiDayTimes
       />

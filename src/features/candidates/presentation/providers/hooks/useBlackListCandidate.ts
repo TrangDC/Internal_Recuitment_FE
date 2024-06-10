@@ -31,7 +31,7 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
     formatDefaultValues(data) {
       return {
         note: '',
-        is_black_list: !data.is_black_list
+        is_black_list: !data?.is_black_list
       }
     },
   })

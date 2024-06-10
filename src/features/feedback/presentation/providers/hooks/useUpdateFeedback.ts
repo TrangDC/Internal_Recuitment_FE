@@ -31,7 +31,7 @@ function useUpdateFeedback(props: UseEditFeedbackProps) {
 
       return {
         note: '',
-        feedback: data.feedback,
+        feedback: data?.feedback,
         attachments: [],
       }
     },

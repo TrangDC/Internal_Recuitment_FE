@@ -27,7 +27,7 @@ function useChangeStatus(props: UseChangeStatusProps) {
     formatDefaultValues(data) {
  
       return {
-        status: data.status,
+        status: data?.status ?? '',
         note: '',
       }
     },

@@ -49,6 +49,7 @@ function useGetAllInterview() {
         const from = convertFromUTC(new Date(o.start_from)).toDate()
         const to = convertFromUTC(new Date(o.end_at)).toDate()
         const { newEnd, newStart } = convertToRootDate(from, to, interview_date)
+
         return {
           resource: {
             id: o.id,

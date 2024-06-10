@@ -29,10 +29,10 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
     onSuccess,
     formatDefaultValues(data) {
       return {
-        email: data.email,
-        name: data.name,
-        phone: data.phone,
-        dob: data.dob ? new Date(data.dob) : data.dob,
+        email: data?.email ?? '',
+        name: data?.name ?? '',
+        phone: data?.phone ?? '',
+        dob: data?.dob ? new Date(data?.dob) : data?.dob,
         note: '',
       }
     },

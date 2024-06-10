@@ -27,9 +27,9 @@ function useEditHiring(props: UseChangeStatusProps) {
     formatDefaultValues(data) {
  
       return {
-        status: data.status,
-        name: data.name,
-        work_email: data.work_email,
+        status: data?.status ?? '',
+        name: data?.name ?? '',
+        work_email: data?.work_email ?? '',
         note: '',
       }
     },

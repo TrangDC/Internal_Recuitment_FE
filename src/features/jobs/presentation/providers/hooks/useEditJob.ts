@@ -34,17 +34,17 @@ function useUpdateJob(props: UseEditJobProps) {
     formatDefaultValues(data) {
  
       return {
-        name: data.name,
-        priority: data.priority.toString(),
-        team_id: data.team.id,
-        location: data.location,
-        amount: data.amount.toString(),
-        salary_type: data.salary_type,
-        salary_from: data.salary_from.toString(),
-        salary_to: data.salary_to.toString(),
-        currency: data.currency,
-        created_by: data.user.id,
-        description: data.description,
+        name: data?.name ?? '',
+        priority: data?.priority.toString() ?? '',
+        team_id: data?.team.id ?? '',
+        location: data?.location ?? '',
+        amount: data?.amount.toString() ?? '',
+        salary_type: data?.salary_type ?? '',
+        salary_from: data?.salary_from.toString() ?? '',
+        salary_to: data?.salary_to.toString() ?? '',
+        currency: data?.currency ?? '',
+        created_by: data?.user.id ?? '',
+        description: data?.description ?? '',
         note: '',
       }
     },

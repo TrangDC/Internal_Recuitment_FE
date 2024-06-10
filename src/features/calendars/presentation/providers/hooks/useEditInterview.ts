@@ -36,22 +36,22 @@ function useEditInterview(props: UseEditInterviewProps) {
     onSuccess,
     formatDefaultValues(data) {
       const { currentDate, newEnd, newStart } = formatStringToDate(
-        data.start_from,
-        data.end_at,
-        data.interview_date
+        data?.start_from ?? new Date().toString(),
+        data?.end_at ?? new Date().toString(),
+        data?.interview_date ?? new Date().toString()
       )
 
       return {
-        description: data.description,
-        candidateId: data.candidate_job.candidate_id,
+        description: data?.description ?? '',
+        candidateId: data?.candidate_job.candidate_id  ?? '',
         date: currentDate,
         from: newStart,
-        jobId: data.candidate_job.hiring_job_id,
-        teamId: data.candidate_job.hiring_job.team.id,
-        title: data.title,
+        jobId: data?.candidate_job.hiring_job_id ?? '',
+        teamId: data?.candidate_job.hiring_job.team.id ?? '',
+        title: data?.title ?? '',
         to: newEnd,
-        interviewer: data.interviewer.map((o) => o.id),
-        candidate_job_id: data.candidate_job_id,
+        interviewer: data?.interviewer.map((o) => o.id),
+        candidate_job_id: data?.candidate_job_id ?? '',
       }
     },
   })

@@ -10,7 +10,9 @@ import { getInfoData, removeInfoData, transformListArray } from 'shared/utils/ut
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import {
   FormDataSchema,
+  FormDataSchemaUpdate,
   schema,
+  schemaUpdate,
 } from 'features/feedback/presentation/providers/constants/schema'
 import { useState } from 'react'
 import { useCreateResource, useEditResource } from 'shared/hooks/crud-hook'
@@ -33,15 +35,20 @@ function ChangeStatus(props: propsChangeStatus) {
   const { changeStatusCandidate, queryKey, getCandidateJob } = useGraphql()
   const { useEditReturn, useFormReturn } = useEditResource<
     CandidateJob,
-    FormDataSchema,
+    Pick<FormDataSchemaUpdate, 'note'>,
     UpdateStatus
   >({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schemaUpdate),
     editBuildQuery: changeStatusCandidate,
     oneBuildQuery: getCandidateJob,
     queryKey: [queryKey],
     id,
     onSuccess: mutationFeedback,
+    formatDefaultValues(data) {
+      return {
+        note: ''
+      }
+    },
   })
 
   const { formState } = useFormReturn

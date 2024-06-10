@@ -32,10 +32,10 @@ function useUpdateTeam(props: UseEditTeamProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
-      const members = transformListItem(data?.members);
+      const members = transformListItem(data?.members ?? []);
  
       return {
-        name: data.name,
+        name: data?.name ?? '',
         members: members,
         note: '',
       }
