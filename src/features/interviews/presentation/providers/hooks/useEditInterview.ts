@@ -29,15 +29,15 @@ function useEditInterview(props: UseEditInterviewProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
-      const interviewers = transformListItem(data.interviewer, 'id');
-      const start_form = new Date(replaceYearWithCurrent(data.start_from));
-      const end_at = new Date(replaceYearWithCurrent(data.end_at))
+      const interviewers = transformListItem(data?.interviewer ?? [], 'id');
+      const start_form = new Date(replaceYearWithCurrent(data?.start_from ?? new Date().toString()));
+      const end_at = new Date(replaceYearWithCurrent(data?.end_at ?? new Date().toString()))
 
       return {
-        description: data.description,
-        title: data.title,
-        candidate_job_id: data.candidate_job.id,
-        interview_date: new Date(data.interview_date),
+        description: data?.description ?? '',
+        title: data?.title ?? '',
+        candidate_job_id: data?.candidate_job.id ?? '',
+        interview_date: new Date(data?.interview_date ?? new Date()),
         interviewer: interviewers,
         start_from: start_form,
         end_at: end_at,

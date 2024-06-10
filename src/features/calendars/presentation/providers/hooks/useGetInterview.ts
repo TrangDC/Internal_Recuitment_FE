@@ -20,27 +20,28 @@ function useGetInterview({ id }: IUseGetInterview) {
     oneBuildQuery: getCandidateInterview,
     queryKey: [queryKey],
     resolver: yupResolver(getOneInterviewSchema),
-    formatDefaultValues: (data: CandidateInterview) => {
+    formatDefaultValues: (data) => {
       const { currentDate, newEnd, newStart } = formatStringToDate(
-        data.start_from,
-        data.end_at,
-        data.interview_date
+        data?.start_from ?? new Date().toString(),
+        data?.end_at ?? new Date().toString(),
+        data?.interview_date ?? new Date().toString()
       )
+      
       return {
-        id: data.id,
-        candidateEmail: data.candidate_job.candidate.email,
-        description: data.description,
-        interviewer: data.interviewer ?? [],
-        phone: data.candidate_job.candidate.phone,
-        candidateName: data.candidate_job.candidate.name,
-        title: data.title,
+        id: data?.id ?? '',
+        candidateEmail: data?.candidate_job.candidate.email ?? '',
+        description: data?.description ?? '',
+        interviewer: data?.interviewer ?? [],
+        phone: data?.candidate_job.candidate.phone ?? '',
+        candidateName: data?.candidate_job.candidate.name ?? '',
+        title: data?.title ?? '',
         interview_date: currentDate,
         end_at: newEnd,
         start_from: newStart,
-        team: data.candidate_job.hiring_job.team.name,
-        job: data.candidate_job.hiring_job.name,
-        hiring_job_id: data.candidate_job.hiring_job_id,
-        candidate_id: data.candidate_job.candidate_id,
+        team: data?.candidate_job.hiring_job.team.name ?? '',
+        job: data?.candidate_job.hiring_job.name ?? '',
+        hiring_job_id: data?.candidate_job.hiring_job_id ?? '',
+        candidate_id: data?.candidate_job.candidate_id ?? '',
       }
     },
   })

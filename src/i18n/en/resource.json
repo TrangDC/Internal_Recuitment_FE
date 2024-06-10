@@ -128,7 +128,7 @@
       "model_name": "Team",
       "members": "Team’s manager",
       "validation": {
-        "name_exist": "This team is already existed.",
+        "name_exist": "Name has already existed",
         "user_in_another_team": "This manager already in another team",
         "cannot_delete_team": "There are already jobs or interviewers for this team, can not delete this team."
       }
