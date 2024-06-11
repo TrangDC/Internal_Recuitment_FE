@@ -31,7 +31,7 @@ const JobDetailAction = ({
   return (
     <DivActionWrapper>
       <DivAction>
-        <StepInterview steps={jobApplicationDetail.steps} onChange={setStatusSelected} defaultValue={jobApplicationDetail.status}/>
+        <StepInterview steps={jobApplicationDetail?.steps} onChange={setStatusSelected} defaultValue={jobApplicationDetail?.status}/>
       </DivAction>
       <Divider />
         <Fragment>

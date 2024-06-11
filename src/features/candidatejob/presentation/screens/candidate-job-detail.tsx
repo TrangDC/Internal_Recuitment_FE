@@ -10,7 +10,6 @@ import useCandidateJobDetail from '../providers/hooks/useCandidateJobDetail'
 const CandidateJobDetail = () => {
   const { id } = useParams()
   const { jobApplicationDetail } = useCandidateJobDetail(id as string)
-  console.log("🚀 ~ CandidateJobDetail ~ jobApplicationDetail:", jobApplicationDetail)
 
   return (
     <Box pt={2} pb={4}>
