@@ -51,8 +51,8 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
 
   const showInterview = useMemo(() => {
     return (
-      jobApplicationDetail.status === STATUS_CANDIDATE.APPLIED ||
-      jobApplicationDetail.status === STATUS_CANDIDATE.INTERVIEWING
+      jobApplicationDetail?.status === STATUS_CANDIDATE.APPLIED ||
+      jobApplicationDetail?.status === STATUS_CANDIDATE.INTERVIEWING
     )
   }, [jobApplicationDetail?.status])
 
