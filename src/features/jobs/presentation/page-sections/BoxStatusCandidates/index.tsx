@@ -94,6 +94,9 @@ const BoxStatusCandidates = ({
         event.preventDefault()
       }}
       onDrop={handleDropEvent}
+      sx={{
+        minWidth: '170px',
+      }}
     >
       <BoxTitle>
         <FlexBox gap={'10px'} alignItems={'center'}>
