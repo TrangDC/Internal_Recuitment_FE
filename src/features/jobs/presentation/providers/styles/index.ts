@@ -73,3 +73,7 @@ export const BoxFieldContainer = styled(Box)(({ theme }) => ({
   },
 }))
 
+export const BoxHiringProcess = styled(Box)(({ theme }) => ({
+  width: 'calc(100% / 7)'
+}))
+

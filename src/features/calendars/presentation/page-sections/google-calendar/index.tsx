@@ -12,6 +12,7 @@ import { CalendarEvent, RangeDate } from './interface'
 import BackdropLoading from './BackdropLoading'
 import { getColorEvent } from './functions'
 import CustomHeaders from './Header'
+import Scrollbar from 'shared/components/ScrollBar'
 
 const djLocalizer = dayjsLocalizer(dayjs)
 
@@ -92,54 +93,58 @@ function Calendars(props: ICalendars) {
   }
 
   return (
-    <Card
-      sx={{
-        boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;',
-        position: 'relative',
-      }}
-    >
-      <DragAndDropCalendar
-        localizer={djLocalizer}
-        defaultView="month"
-        events={myEvents}
-        view={currentView}
-        components={{
-          toolbar: ToolBar,
-          week: {
-            header: CustomHeaders,
-          },
-          day: {
-            header: CustomHeaders,
-          },
+    <Scrollbar>
+      <Card
+        sx={{
+          boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;',
+          position: 'relative',
+          minWidth: '1200px'
         }}
-        views={['month', 'day', 'week']}
-        style={{
-          height: 750,
-          backgroundColor: '#FCFCFC',
-        }}
-        defaultDate={today}
-        popup
-        timeslots={1}
-        resizable={false}
-        onSelectSlot={onSelectSlot}
-        onView={handleViewChange}
-        onEventDrop={onDropEvent}
-        onSelectEvent={onSelectEvent}
-        onDropFromOutside={onDropFromOutside}
-        onRangeChange={onRangeChange}
-        handleDragStart={handleDragStart}
-        eventPropGetter={eventStyleGetter}
-        slotPropGetter={slotPropGetter}
-        formats={{
-          timeGutterFormat: 'HH:mm',
-          eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
-            `${localizer?.format(start, 'HH:mm', culture)} - ${localizer?.format(end, 'HH:mm', culture)}`,
-        }}
-        scrollToTime={today}
-        showMultiDayTimes
-      />
-      <BackdropLoading isLoading={isLoading} />
-    </Card>
+      >
+        <DragAndDropCalendar
+          localizer={djLocalizer}
+          defaultView="month"
+          events={myEvents}
+          view={currentView}
+          
+          components={{
+            toolbar: ToolBar,
+            week: {
+              header: CustomHeaders,
+            },
+            day: {
+              header: CustomHeaders,
+            },
+          }}
+          views={['month', 'day', 'week']}
+          style={{
+            height: 750,
+            backgroundColor: '#FCFCFC',
+          }}
+          defaultDate={today}
+          popup
+          timeslots={1}
+          resizable={false}
+          onSelectSlot={onSelectSlot}
+          onView={handleViewChange}
+          onEventDrop={onDropEvent}
+          onSelectEvent={onSelectEvent}
+          onDropFromOutside={onDropFromOutside}
+          onRangeChange={onRangeChange}
+          handleDragStart={handleDragStart}
+          eventPropGetter={eventStyleGetter}
+          slotPropGetter={slotPropGetter}
+          formats={{
+            timeGutterFormat: 'HH:mm',
+            eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
+              `${localizer?.format(start, 'HH:mm', culture)} - ${localizer?.format(end, 'HH:mm', culture)}`,
+          }}
+          scrollToTime={today}
+          showMultiDayTimes
+        />
+        <BackdropLoading isLoading={isLoading} />
+      </Card>
+     </Scrollbar>
   )
 }
 
