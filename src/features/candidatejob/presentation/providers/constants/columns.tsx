@@ -2,13 +2,12 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import {
   ActionGroupButtons,
   TOptionItem,
-} from 'shared/components/ActionGroupButtons'
-import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
+} from 'shared/components/ActionGroupButtons' 
 import { t } from 'i18next'
 import { format } from 'date-fns'
-import { CANDIDATE_STATUS } from 'features/candidates/presentation/providers/constants'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { LinkText, StyleTinyText } from 'shared/styles'
+import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
 
 const columnHelper = createColumnHelper<CandidateJob>()
 
@@ -45,15 +44,7 @@ export const columns = (
     enableSorting: false,
     size: 200,
     cell: (info) => (
-      <ChipFieldStatus
-        //@ts-ignore
-        label={CANDIDATE_STATUS[info.getValue()]['text']}
-        style={{
-          //@ts-ignore
-          backgroundColor: CANDIDATE_STATUS[info.getValue()]['backgroundColor'],
-          color: 'white',
-        }}
-      />
+      <ChipCandidate status={info.row.original.status}/>
     ),
   }),
   columnHelper.accessor('created_at', {

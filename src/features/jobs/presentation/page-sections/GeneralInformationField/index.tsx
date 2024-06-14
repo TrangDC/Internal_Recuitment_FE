@@ -8,11 +8,10 @@ import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
 import useTextTranslation from 'shared/constants/text'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { BoxCircle } from 'shared/styles'
 import { LOCATION_LABEL } from 'shared/constants/constants'
-import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
-import { JobStatus } from 'shared/class/job-status'
+import ChipJob from 'shared/class/job-status/components/ChipJob'
+import ChipPriority from 'shared/class/priority/components/ChipPriority'
 
 const DivWrapperField = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -59,10 +58,6 @@ const GeneralInformationField = () => {
 
   const translation = useTextTranslation()
 
-  const field_status = useMemo(() => {
-    return JobStatus.STATUS_STYLE?.[jobDetail?.status]
-  }, [jobDetail?.status])
-
   return (
     <FlexBox flexDirection={'column'} width={'100%'}>
       <DivWrapperField>
@@ -77,28 +72,14 @@ const GeneralInformationField = () => {
             <DivField>
               <SpanText>{translation.COMMON.status}</SpanText>
               <TinyText>
-                <ChipFieldStatus
-                  label={field_status?.text}
-                  style={{
-                    backgroundColor: field_status?.backgroundColor,
-                    color: field_status?.color,
-                  }}
-                />
+                <ChipJob status={jobDetail?.status}/>
               </TinyText>
             </DivField>
 
             <DivField>
               <SpanText>Priority</SpanText>
               <TinyText>
-                <ChipFieldStatus
-                  //@ts-ignore
-                  label={PRIORITY_DATA[jobDetail?.priority]?.label}
-                  style={{
-                    backgroundColor:
-                      PRIORITY_DATA[jobDetail?.priority]?.backgroundColor,
-                    color: PRIORITY_DATA[jobDetail?.priority]?.color,
-                  }}
-                />
+                <ChipPriority status={jobDetail?.priority}/>
               </TinyText>
             </DivField>
 

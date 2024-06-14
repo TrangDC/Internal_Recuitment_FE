@@ -4,10 +4,9 @@ import {
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
 import { Candidate } from 'features/candidates/domain/interfaces'
-import { CANDIDATE_STATUS } from './index'
-import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { t } from 'i18next';
 import { LinkText, StyleTinyText } from 'shared/styles'
+import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
 
 const columnHelper = createColumnHelper<Candidate>()
 
@@ -18,30 +17,18 @@ export const columns = (
     id: 'name',
     cell: (info) => <LinkText to={`/dashboard/candidate-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('name')}</span>,
-    meta: {
-      style: {
-        width: '400px'
-      }
-    }
+    size: 400,
   }),
   columnHelper.accessor((row) => row.email, {
     id: 'email',
     header: () => <span>{t('email')}</span>,
-    meta: {
-      style: {
-        width: '500px'
-      }
-    },
+    size: 500,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
   columnHelper.accessor((row) => row.phone, {
     id: 'phone',
     header: () => <span>{t('phone_number')}</span>,
-    meta: {
-      style: {
-        width: '400px'
-      }
-    },
+    size: 400,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     enableSorting: false,
   }),
@@ -49,24 +36,9 @@ export const columns = (
     id: 'status',
     header: () => <span>{t('status')}</span>,
     enableSorting: false,
-    meta: {
-      style: {
-        width: '200px'
-      }
-    },
+    size: 200,
     cell: (info) => {
-      //@ts-ignore
-      const status = CANDIDATE_STATUS[info.getValue()]
-
-      return (
-        <ChipFieldStatus
-          label={status.text}
-          style={{
-            backgroundColor: status.backgroundColor,
-            color: 'white',
-          }}
-        />
-      )
+      return <ChipCandidate status={info.row.original.status}/>
     },
   }),
   columnHelper.accessor('created_at', {

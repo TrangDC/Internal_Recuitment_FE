@@ -4,7 +4,7 @@ import { Span } from 'shared/components/Typography'
 import useTextTranslation from 'shared/constants/text'
 import Jobs from 'shared/components/icons/Jobs'
 import {
-  BoxCircle,
+  BoxCircle, 
   BoxWrapperOuterContainer,
   BtnPrimary,
   HeadingWrapper,
@@ -13,17 +13,17 @@ import { useParams } from 'react-router-dom'
 import useJobDetail from '../providers/hooks/useJobDetail'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import { useMemo, useState } from 'react'
-import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import GenaralInformationHiring from '../page-sections/GeneralInformationHiring'
 import useActionTable from '../providers/hooks/useActionTable'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import { format } from 'date-fns'
-import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
 import { CloseJobModal, TabJobDetail } from '../page-sections'
 import IconScreen from 'shared/components/utils/IconScreen'
 import { JobStatus } from 'shared/class/job-status'
+import ChipJob from 'shared/class/job-status/components/ChipJob'
+import ChipPriority from 'shared/class/priority/components/ChipPriority'
 
-const { STATUS_STATE, STATUS_STYLE } = JobStatus
+const { STATUS_STATE } = JobStatus
 
 const JobDetail = () => {
   const [openTab, setOpenTab] = useState(false)
@@ -41,9 +41,6 @@ const JobDetail = () => {
     )
   }, [jobDetail])
 
-  const field_status = useMemo(() => {
-    return STATUS_STYLE?.[jobDetail?.status]
-  }, [jobDetail?.status])
 
   return (
     <Box pt={2} pb={4}>
@@ -84,30 +81,14 @@ const JobDetail = () => {
                 <FlexBox gap={0.75} alignItems={'center'}>
                   <SpanText>{translation.COMMON.status}</SpanText>
                   <TinyText>
-                    <ChipFieldStatus
-                      label={field_status?.text}
-                      style={{
-                        backgroundColor: field_status?.backgroundColor,
-                        color: field_status?.color,
-                      }}
-                    />
+                    <ChipJob status={jobDetail?.status}/>
                   </TinyText>
                 </FlexBox>
 
                 <FlexBox gap={0.75} alignItems={'center'}>
                   <SpanText>Priority</SpanText>
                   <TinyText>
-                    <ChipFieldStatus
-                      //@ts-ignore
-                      label={PRIORITY_DATA[jobDetail?.priority]?.label}
-                      style={{
-                        backgroundColor:
-                          //@ts-ignore
-                          PRIORITY_DATA[jobDetail?.priority]?.backgroundColor,
-                        //@ts-ignore
-                        color: PRIORITY_DATA[jobDetail?.priority]?.color,
-                      }}
-                    />
+                    <ChipPriority status={jobDetail?.priority}/>
                   </TinyText>
                 </FlexBox>
 
