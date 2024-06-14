@@ -22,7 +22,7 @@ const STATUS_STYLE = {
   },
 }
 
-type TYPE_JOB_STATUS = 'draft' | 'opened' | 'closed'
+export type TYPE_JOB_STATUS = 'draft' | 'opened' | 'closed'
 
 export class JobStatus {
   static STATUS_STATE = STATUS_STATE

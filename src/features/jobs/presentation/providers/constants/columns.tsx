@@ -4,19 +4,22 @@ import {
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
 import { Job } from 'features/jobs/domain/interfaces'
-import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { t } from 'i18next'
 import { LOCATION_LABEL } from 'shared/constants/constants'
-import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
 import { LinkText, StyleTinyText } from 'shared/styles'
-import { JobStatus } from 'shared/class/job-status'
+import ChipJob from 'shared/class/job-status/components/ChipJob'
+import ChipPriority from 'shared/class/priority/components/ChipPriority'
 
 const columnHelper = createColumnHelper<Job>()
 
 export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <LinkText to={`/dashboard/job-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
+    cell: (info) => (
+      <LinkText to={`/dashboard/job-detail/${info.row.original.id}`}>
+        {info.getValue()}
+      </LinkText>
+    ),
     header: () => <span>Job name</span>,
   }),
   columnHelper.accessor((row) => row.team.name, {
@@ -57,17 +60,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     header: () => <span>{t('status')}</span>,
     enableSorting: false,
     cell: (info) => {
-      const field_status = JobStatus.STATUS_STYLE[info.row.original.status];
-
-      return (
-        <ChipFieldStatus
-          label={field_status?.text}
-          style={{
-            backgroundColor: field_status?.backgroundColor,
-            color: field_status?.color,
-          }}
-        />
-      )
+      return <ChipJob status={info.row.original.status} />
     },
   }),
   columnHelper.accessor((row) => row.priority, {
@@ -75,17 +68,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     size: 150,
     header: () => <span>Priority</span>,
     cell: (info) => {
-      const priority =  PRIORITY_DATA[info.row.original.priority]
-
-        return (
-        <ChipFieldStatus
-        label={priority?.label}
-        style={{
-          backgroundColor: priority?.backgroundColor,
-          color: priority?.color,
-        }}
-      />
-      )
+      return <ChipPriority status={info.row.original.priority}/>
     },
   }),
   columnHelper.accessor((row) => row.skill, {

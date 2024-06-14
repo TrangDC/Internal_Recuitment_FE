@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import useGraphql from 'features/skill/domain/graphql/graphql'
+import useGraphql from 'features/skillType/domain/graphql/graphql'
 import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
 import {
   SkillType,
