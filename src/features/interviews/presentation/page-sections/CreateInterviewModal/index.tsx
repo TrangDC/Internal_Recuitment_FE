@@ -8,7 +8,6 @@ import { useParams } from 'react-router-dom'
 import { Job } from 'features/jobs/domain/interfaces'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
-import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complete'
 import { Fragment } from 'react/jsx-runtime'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
@@ -16,6 +15,7 @@ import dayjs from 'dayjs'
 import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import { useMemo } from 'react'
+import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 
 interface ICreateInterviewModal {
   open: boolean
@@ -101,7 +101,7 @@ function CreateInterviewModal({
                 name="interviewer"
                 render={({ field, fieldState }) => (
                   <Fragment>
-                    <MemberAutoComplete
+                    <InterViewerAutoComplete
                       value={field.value || []}
                       onChange={field.onChange}
                       multiple={true}

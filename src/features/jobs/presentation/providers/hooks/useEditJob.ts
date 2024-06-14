@@ -45,6 +45,7 @@ function useUpdateJob(props: UseEditJobProps) {
         currency: data?.currency ?? '',
         created_by: data?.user.id ?? '',
         description: data?.description ?? '',
+        skill: data?.skill ?? [],
         note: '',
       }
     },

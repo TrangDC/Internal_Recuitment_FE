@@ -192,5 +192,3 @@ export function formatCurrency(
 ): string {
   return number.toLocaleString(locale)
 }
-
-

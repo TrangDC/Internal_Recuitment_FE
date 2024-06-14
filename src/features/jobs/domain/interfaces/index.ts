@@ -18,6 +18,7 @@ export type Job = {
   user: Member
   priority: 1 | 2 | 3 | 4
   total_candidates_recruited: number,
+  skill: string[]
   created_at: string
   updated_at: string
   deleted_at: string
@@ -36,6 +37,7 @@ export type NewHiringJobInput = {
   created_by: string,
   description: string,
   note: string,
+  skill: string[]
 }
 
 export type UpdateHiringJobInput = {
@@ -50,6 +52,7 @@ export type UpdateHiringJobInput = {
   created_by: string,
   description: string,
   note: string,
+  skill: string[]
 }
 
 export type UpdateJobStatus = {

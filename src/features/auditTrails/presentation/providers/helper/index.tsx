@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { STATUS_STYLE } from 'features/jobs/presentation/providers/constants'
+import { JobStatus } from 'shared/class/job-status'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { CURRENCY_TEXT_LABEL, LOCATION_LABEL, SALARY_TYPE_TEXT } from 'shared/constants/constants'
 import { getLastString } from 'shared/utils/convert-string'
@@ -25,7 +25,7 @@ export function renderCurrencyEnum(text: string) {
 
 export function renderStatusHiringJob(text: string) {
   const status = getLastString(text)
-  const status_data = STATUS_STYLE[status]
+  const status_data = JobStatus.STATUS_STYLE[status]
 
   return status_data ? (
     <ChipFieldStatus

@@ -19,7 +19,7 @@ export const columns = (
     id: 'job_name',
     cell: (info) => <LinkText to={`/dashboard/job-application-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('job_name')}</span>,
-    size: 400,
+    size: 500,
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.hiring_job.team.name, {
@@ -27,15 +27,11 @@ export const columns = (
     header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     enableSorting: false,
-    meta: {
-      style: {
-        width: '400px'
-      }
-    },
+    size: 500,
   }),
   columnHelper.accessor((row) => row.updated_at, {
     id: 'updated_at',
-    size: 400,
+    size: 500,
     header: () => <span>Last update</span>,
     cell: (info) => (
       <StyleTinyText>
@@ -47,6 +43,7 @@ export const columns = (
     id: 'status',
     header: () => <span>{t('status')}</span>,
     enableSorting: false,
+    size: 200,
     cell: (info) => (
       <ChipFieldStatus
         //@ts-ignore

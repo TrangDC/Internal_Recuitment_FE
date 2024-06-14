@@ -32,6 +32,7 @@ import Jobs from './Jobs'
 import Candidates from './Candidates'
 import HiringTeam from './HiringTeams'
 import RemoveRedEye from './RemoveRedEye'
+import Skill from './SkillIcon'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -69,4 +70,5 @@ export default {
   Team,
   Jobs,
   RemoveRedEye,
+  Skill,
 }

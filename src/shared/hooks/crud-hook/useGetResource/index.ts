@@ -38,6 +38,7 @@ function useGetResource<Response, FormData extends FieldValues>({
     setIsGetting(false)
     return undefined
   }
+
   const useFormReturn = useForm<FormData>({
     mode: 'onChange',
     defaultValues: async () => {

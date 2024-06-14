@@ -20,6 +20,7 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
+import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 
 interface ICreateJobModal {
   open: boolean
@@ -169,6 +170,33 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
             </FormControl>
           </FlexBox>
           <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="skill"
+                render={({ field, fieldState }) => (
+                  <Fragment>
+                    <SkillAutoComplete
+                      name={field.name}
+                      value={field.value}
+                      onChange={(value) => {
+                        field.onChange(value)
+                      }}
+                      multiple={true}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Skill',
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </Fragment>
+                )}
+              />
+            </FormControl>
+          </FlexBox>
+          <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FlexBox
               justifyContent={'center'}
               alignItems={'flex-start'}
@@ -274,14 +302,14 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <NumberField
-                        label="Staff required"        
+                        label="Staff required"
                         //@ts-ignore
                         size={'small'}
                         required={true}
                         fullWidth={true}
                         value={field.value}
                         onChange={(e) => {
-                          const value = e.target.value;
+                          const value = e.target.value
                           field.onChange(value.replaceAll('.', ''))
                         }}
                         allowNegative={false}

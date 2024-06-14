@@ -21,6 +21,7 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
+import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 
 interface IEditJobModal {
   open: boolean
@@ -162,6 +163,33 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                       textFieldProps={{
                         required: true,
                         label: 'Requester',
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </Fragment>
+                )}
+              />
+            </FormControl>
+          </FlexBox>
+          <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="skill"
+                render={({ field, fieldState }) => (
+                  <Fragment>
+                    <SkillAutoComplete
+                      name={field.name}
+                      value={field.value}
+                      onChange={(value) => {
+                        field.onChange(value)
+                      }}
+                      multiple={true}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Skill',
                       }}
                     />
                     <HelperTextForm

@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from 'shared/components/icons/EditIcon'
 import useActionTable from '../../providers/hooks/useActionTable'
 import EditJobModal from '../EditJobModal'
-import { STATUS_STATE } from 'shared/constants/constants'
+import { JobStatus } from 'shared/class/job-status'
 
 interface ITabJobDetail {
   open: boolean
@@ -35,7 +35,7 @@ export default function TabJobDetail({
     useActionTable()
 
   const showEdit = useMemo(() => {
-    return job_detail.status === STATUS_STATE.OPENED
+    return job_detail.status === JobStatus.STATUS_STATE.OPENED
   }, [job_detail?.status])
 
   return (

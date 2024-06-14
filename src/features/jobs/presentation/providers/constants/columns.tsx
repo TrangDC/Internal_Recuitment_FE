@@ -5,11 +5,11 @@ import {
 } from 'shared/components/ActionGroupButtons'
 import { Job } from 'features/jobs/domain/interfaces'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
-import { STATUS_STYLE } from './index'
 import { t } from 'i18next'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
 import { LinkText, StyleTinyText } from 'shared/styles'
+import { JobStatus } from 'shared/class/job-status'
 
 const columnHelper = createColumnHelper<Job>()
 
@@ -30,8 +30,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     header: () => <span>{t('location')}</span>,
     cell: (info) => (
       <StyleTinyText>
-        {/* @ts-ignore */}
-        {LOCATION_LABEL[info.getValue()]}
+        {LOCATION_LABEL[info.row.original.location]}
       </StyleTinyText>
     ),
     enableSorting: false,
@@ -57,32 +56,45 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     size: 150,
     header: () => <span>{t('status')}</span>,
     enableSorting: false,
-    cell: (info) => (
-      <ChipFieldStatus
-        label={STATUS_STYLE[info.getValue()].text}
-        style={{
-          backgroundColor: STATUS_STYLE[info.getValue()].backgroundColor,
-          color: STATUS_STYLE[info.getValue()].color,
-        }}
-      />
-    ),
+    cell: (info) => {
+      const field_status = JobStatus.STATUS_STYLE[info.row.original.status];
+
+      return (
+        <ChipFieldStatus
+          label={field_status?.text}
+          style={{
+            backgroundColor: field_status?.backgroundColor,
+            color: field_status?.color,
+          }}
+        />
+      )
+    },
   }),
   columnHelper.accessor((row) => row.priority, {
     id: 'priority',
     size: 150,
     header: () => <span>Priority</span>,
-    cell: (info) => (
-      <ChipFieldStatus
-        //@ts-ignore
-        label={PRIORITY_DATA[info.getValue()].label}
+    cell: (info) => {
+      const priority =  PRIORITY_DATA[info.row.original.priority]
+
+        return (
+        <ChipFieldStatus
+        label={priority?.label}
         style={{
-          //@ts-ignore
-          backgroundColor: PRIORITY_DATA[info.getValue()].backgroundColor,
-          //@ts-ignore
-          color: PRIORITY_DATA[info.getValue()].color,
+          backgroundColor: priority?.backgroundColor,
+          color: priority?.color,
         }}
       />
-    ),
+      )
+    },
+  }),
+  columnHelper.accessor((row) => row.skill, {
+    id: 'skill',
+    size: 150,
+    header: () => <span>Skills</span>,
+    cell: (info) => {
+      return 'skill'
+    },
   }),
   columnHelper.accessor('created_at', {
     header: () => <span>{t('action')}</span>,

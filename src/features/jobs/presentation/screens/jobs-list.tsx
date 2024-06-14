@@ -25,10 +25,18 @@ import StatusJobAutoComplete from 'shared/components/autocomplete/status-job-aut
 import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
 import { isEmpty } from 'lodash'
 import CloseIcon from 'shared/components/icons/CloseIcon'
-import { STATUS_STATE } from 'shared/constants/constants'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
-import { CloseJobModal, CreateJobModal, DeleteJobModal, EditJobModal } from '../page-sections'
+import {
+  CloseJobModal,
+  CreateJobModal,
+  DeleteJobModal,
+  EditJobModal,
+} from '../page-sections'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
+import { JobStatus } from 'shared/class/job-status'
+import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
+
+const { STATUS_STATE } = JobStatus
 
 const JobsList = () => {
   const {
@@ -55,6 +63,8 @@ const JobsList = () => {
   const [teams, setTeams] = useState<BaseRecord[]>([])
   const [status, setStatus] = useState<BaseRecord>()
   const [priority, setPriority] = useState<BaseRecord>()
+  const [skills, setSkills] = useState<BaseRecord[]>([])
+
   const [searchField, setSearchField] = useState('')
 
   const { colummTable } = useBuildColumnTable({
@@ -78,9 +88,13 @@ const JobsList = () => {
             : 'Reopen Job'
         },
         disabled: (rowData) => {
-          if(rowData?.status !== STATUS_STATE.OPENED) return false;
-          if(rowData?.is_able_to_close && rowData.status === STATUS_STATE.OPENED) return false;
-          return true;
+          if (rowData?.status !== STATUS_STATE.OPENED) return false
+          if (
+            rowData?.is_able_to_close &&
+            rowData.status === STATUS_STATE.OPENED
+          )
+            return false
+          return true
         },
         Icon: <CloseIcon />,
       },
@@ -146,7 +160,7 @@ const JobsList = () => {
                   open={true}
                   disableCloseOnSelect={true}
                   textFieldProps={{
-                    label: 'Status',
+                    label: 'Team',
                     autoFocus: true,
                   }}
                 />
@@ -209,6 +223,38 @@ const JobsList = () => {
                   disableCloseOnSelect={true}
                   textFieldProps={{
                     label: 'Priority',
+                    autoFocus: true,
+                  }}
+                />
+              }
+            />
+
+            <ButtonFieldFilter<baseInstance>
+              inputLabel={'Skill'}
+              listSelected={skills}
+              setListSelected={setSkills}
+              showLabel={'name'}
+              onChange={(data) => {
+                //@ts-ignore
+                const ids = transformListItem(data, 'id')
+                handleFilter('skill', !isEmpty(ids) ? ids : null)
+              }}
+              node={
+                <SkillAutoComplete
+                  name="skill"
+                  multiple={true}
+                  value={transformListItem(skills, 'id')}
+                  onCustomChange={(data) => {
+                    console.log("🚀 ~ JobsList ~ data:", data)
+                    setSkills(data)
+                  }}
+                  onChange={(value) => {
+                    handleFilter('skill', !isEmpty(value) ? value : null)
+                  }}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Skill',
                     autoFocus: true,
                   }}
                 />
