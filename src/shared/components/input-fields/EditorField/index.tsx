@@ -1,9 +1,11 @@
 import { useRef, useState } from 'react'
 import { Editor, IAllProps } from '@tinymce/tinymce-react'
-import { Box, styled } from '@mui/material'
 import { getBase64 } from 'shared/utils/utils'
-import { Span } from '../Typography'
-import SkeletonField from './SkeletonField'
+import SkeletonField from '../SkeletonField'
+import { Span } from 'shared/components/Typography'
+import { PluginName, addPluginCustomize } from './plugins'
+import { StyleBoxLabel, StyleEditorBox } from './styles'
+import './styles/index.css'
 
 interface TinyProps extends IAllProps {
   label?: string
@@ -12,60 +14,9 @@ interface TinyProps extends IAllProps {
   callbackChange?: (value: string) => void
   required?: boolean
   value: string
-  loading?: boolean,
+  loading?: boolean
+  pluginCustomize?: PluginName[]
 }
-
-const StyleEditorBox = styled(Box)(({ theme }) => ({
-  marginTop: '10px',
-  border: '1px solid #dadce0',
-  padding: '5px',
-  position: 'relative',
-  borderRadius: '4px',
-  transition: '250ms',
-
-  '&.activeEditor': {
-    borderColor: '#1a73e8',
-  },
-
-  '& .tox-tinymce': {
-    border: 'none',
-  },
-
-  '& .tox-statusbar': {
-    display: 'none !important',
-  },
-
-  '& .tox-edit-area': {
-    '&::before': {
-      border: 'none !important',
-      outline: 'none !important',
-    },
-  },
-}))
-
-const StyleBoxLabel = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  zIndex: 10,
-  top: '65px',
-  left: '15px',
-  color: '#80868b',
-  transition: ' 250ms',
-
-  '&.activeBox': {
-    top: '-10px',
-    padding: '0 10px',
-    background: 'white',
-    color: '#1a73e8',
-    fontSize: '12px',
-  },
-
-  '&.existValue': {
-    top: '-10px',
-    padding: '0 10px',
-    background: 'white',
-    fontSize: '12px',
-  },
-}))
 
 export default function EditorBoxField({
   label = '',
@@ -75,12 +26,15 @@ export default function EditorBoxField({
   required = false,
   value,
   loading,
+  pluginCustomize = [],
   ...props
 }: TinyProps) {
   const [focused, setFocused] = useState<Boolean>(false)
-  const editorRef = useRef(null)
+  const editorRef = useRef<Editor>(null)
 
-  return loading ? <SkeletonField height={100}/> : (
+  return loading ? (
+    <SkeletonField height={100} />
+  ) : (
     <StyleEditorBox className={`${focused && 'activeEditor'}`}>
       {label && (
         <StyleBoxLabel
@@ -100,8 +54,11 @@ export default function EditorBoxField({
           setFocused(false)
         }}
         value={value}
-        //@ts-ignore
-        onInit={(_evt, editor) => (editorRef.current = editor)}
+        onInit={(_evt, editor) => {
+          addPluginCustomize(editor, pluginCustomize)
+          //@ts-ignore
+          editorRef.current = editor
+        }}
         init={{
           height: 200,
           menubar: false,

@@ -14,14 +14,16 @@ import useJobDetail from '../providers/hooks/useJobDetail'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import { useMemo, useState } from 'react'
 import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
-import { STATUS_STYLE } from '../providers/constants'
 import GenaralInformationHiring from '../page-sections/GeneralInformationHiring'
 import useActionTable from '../providers/hooks/useActionTable'
-import { LOCATION_LABEL, STATUS_STATE } from 'shared/constants/constants'
+import { LOCATION_LABEL } from 'shared/constants/constants'
 import { format } from 'date-fns'
 import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
 import { CloseJobModal, TabJobDetail } from '../page-sections'
 import IconScreen from 'shared/components/utils/IconScreen'
+import { JobStatus } from 'shared/class/job-status'
+
+const { STATUS_STATE, STATUS_STYLE } = JobStatus
 
 const JobDetail = () => {
   const [openTab, setOpenTab] = useState(false)
@@ -33,14 +35,24 @@ const JobDetail = () => {
   const { openStatus, setOpenStatus, handleOpenStatus, rowId } =
     useActionTable()
 
-    const disabledBtn = useMemo(() => {
-      return jobDetail.status === STATUS_STATE.OPENED && !jobDetail?.is_able_to_close;
-    }, [jobDetail])
+  const disabledBtn = useMemo(() => {
+    return (
+      jobDetail.status === STATUS_STATE.OPENED && !jobDetail?.is_able_to_close
+    )
+  }, [jobDetail])
+
+  const field_status = useMemo(() => {
+    return STATUS_STYLE?.[jobDetail?.status]
+  }, [jobDetail?.status])
 
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={Jobs} textLable={jobDetail?.name} link='/dashboard/jobs'/>
+        <IconScreen
+          Icon={Jobs}
+          textLable={jobDetail?.name}
+          link="/dashboard/jobs"
+        />
       </Box>
       <FlexBox flexDirection={'column'} gap={2.5} marginTop={0}>
         <BoxWrapperOuterContainer>
@@ -73,11 +85,10 @@ const JobDetail = () => {
                   <SpanText>{translation.COMMON.status}</SpanText>
                   <TinyText>
                     <ChipFieldStatus
-                      label={STATUS_STYLE[jobDetail?.status]?.text}
+                      label={field_status?.text}
                       style={{
-                        backgroundColor:
-                          STATUS_STYLE[jobDetail?.status]?.backgroundColor,
-                        color: STATUS_STYLE[jobDetail?.status]?.color,
+                        backgroundColor: field_status?.backgroundColor,
+                        color: field_status?.color,
                       }}
                     />
                   </TinyText>
@@ -114,14 +125,18 @@ const JobDetail = () => {
               </FlexBox>
               <FlexBox gap={1}>
                 <BtnPrimary
-                    onClick={() => {
-                      if(disabledBtn) return;
-                      handleOpenStatus(jobDetail?.id)
-                    }}
-                    className={disabledBtn ? 'disabled': ''}
-                  >
-                    <Span>{jobDetail.status === STATUS_STATE.OPENED ? 'Close Job' : 'Reopen Job'}</Span>
-                  </BtnPrimary>
+                  onClick={() => {
+                    if (disabledBtn) return
+                    handleOpenStatus(jobDetail?.id)
+                  }}
+                  className={disabledBtn ? 'disabled' : ''}
+                >
+                  <Span>
+                    {jobDetail.status === STATUS_STATE.OPENED
+                      ? 'Close Job'
+                      : 'Reopen Job'}
+                  </Span>
+                </BtnPrimary>
                 <BtnPrimary onClick={() => setOpenTab(true)}>
                   <Span>View Details</Span>
                 </BtnPrimary>
@@ -130,7 +145,7 @@ const JobDetail = () => {
           </HeadingWrapper>
         </BoxWrapperOuterContainer>
 
-        <BoxWrapperOuterContainer sx={{marginTop: 0}}>
+        <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
           <HeadingWrapper sx={{ marginTop: 0, padding: 2 }}>
             <GenaralInformationHiring />
           </HeadingWrapper>

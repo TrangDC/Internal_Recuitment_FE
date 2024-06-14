@@ -1,9 +1,9 @@
-import { STATUS_STATE } from 'shared/constants/constants'
 import { AutocompleteBase } from '../autocomplete-base'
 import {
   IAutocompleteCommonProps,
   IOption,
 } from '../autocomplete-base/interface'
+import { JobStatus } from 'shared/class/job-status'
 
 function StatusJobAutoComplete<Multiple extends boolean>(
   props: IAutocompleteCommonProps<Multiple>
@@ -11,8 +11,10 @@ function StatusJobAutoComplete<Multiple extends boolean>(
   return <AutocompleteBase<Multiple> {...props} options={options} />
 }
 
+const { STATUS_STATE } = JobStatus;
+
 export const options: IOption[] = [
-  { label: 'Opening', value:  STATUS_STATE.OPENED },
+  { label: 'Opening', value: STATUS_STATE.OPENED },
   { label: 'Closed', value: STATUS_STATE.CLOSED },
 ]
 

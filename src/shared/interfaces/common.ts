@@ -22,5 +22,7 @@ export enum MODLUE_QUERY_KEY {
   USER = 'user',
   FEEDBACK = 'feedback',
   CANDIDATE_JOB = 'candidateJob',
-  EXPORT_TEMPLATE = 'export_template'
+  EXPORT_TEMPLATE = 'export_template',
+  SKILL = 'skill',
+  SKILL_TYPE = 'skill_type'
 }

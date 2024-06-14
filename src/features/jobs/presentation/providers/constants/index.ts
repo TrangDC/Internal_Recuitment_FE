@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react'
-import { CURRENCY_STATE, LOCATION_STATE, SALARY_STATE, STATUS_CANDIDATE, STATUS_STATE } from 'shared/constants/constants'
+import { CURRENCY_STATE, LOCATION_STATE, SALARY_STATE, STATUS_CANDIDATE } from 'shared/constants/constants'
 import { t } from 'i18next';
 
 export const SALARY_DATA = [
@@ -22,30 +22,6 @@ export const LOCATION_DATA = [
   {name: 'Japan', value: LOCATION_STATE.JAPAN},
   {name: 'Singapore', value: LOCATION_STATE.SINGAPORE},
 ]
-
-export const STATUS_DATA = [
-  {name: 'DRAFT', value: STATUS_STATE.DRAFT},
-  {name: 'OPENED', value: STATUS_STATE.OPENED},
-  {name: 'CLOSED', value: STATUS_STATE.CLOSED},
-]
-
-export const STATUS_STYLE = {
-  [STATUS_STATE.DRAFT]: {
-    backgroundColor: '#eff3f5',
-    color: 'black',
-    text: 'Draft'
-  },
-  [STATUS_STATE.OPENED]: {
-    backgroundColor: '#20A4A9',
-    color: 'white',
-    text: 'Opening'
-  },
-  [STATUS_STATE.CLOSED]: {
-    backgroundColor: '#82868C',
-    color: 'white',
-    text: 'Closed'
-  },
-}
 
 export type SALARY_RENDER_TYPE = {
     name: string,

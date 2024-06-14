@@ -6,8 +6,10 @@ import {
   FormDataSchemaChangeStatus,
 } from '../constants/schema'
 import { BaseRecord } from 'shared/interfaces'
-import { STATUS_STATE } from 'shared/constants/constants'
 import { useUpdateResourceOther } from 'shared/hooks/crud-hook'
+import { JobStatus } from 'shared/class/job-status'
+
+const { STATUS_STATE }= JobStatus;
 
 type UseChangeStatusProps = {
   id: string

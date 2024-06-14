@@ -53,13 +53,6 @@ export const LOCATION_LABEL = {
   japan: 'Japan',
 }
 
-
-export const STATUS_STATE = {
-  DRAFT: 'draft',
-  OPENED: 'opened',
-  CLOSED: 'closed',
-}
-
 export const STATUS_CANDIDATE = {
   APPLIED: 'applied',
   INTERVIEWING: 'interviewing',

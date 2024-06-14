@@ -26,7 +26,7 @@ export interface AutocompleteValueBackEndCommonProps<
   disabled?:boolean
   getOptionLabel?: (option: T) => ReactNode
   disableCloseOnSelect?:boolean
-  open?: boolean,
+  open?: boolean
 }
 
 export interface IAutocompleteBackEndProps<

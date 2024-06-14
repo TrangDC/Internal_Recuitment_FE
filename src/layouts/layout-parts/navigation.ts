@@ -19,6 +19,12 @@ export const navigations = [
     path: '/dashboard/hiring',
     icon: duotone.HiringTeam,
   },
+  { type: 'label', label: 'System' },
+  {
+    name: 'Skill',
+    path: '/dashboard/skill',
+    icon: duotone.Skill,
+  },
   // {
   //   name: 'Settings',
   //   path: '/dashboard/settings',

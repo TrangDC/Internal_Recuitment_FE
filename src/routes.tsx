@@ -45,6 +45,8 @@ const SettingList = Loadable(lazy(() => import('./pages/setting/index')))
 
 const Calendars = Loadable(lazy(() => import('./pages/calendars/index')))
 
+const Skill = Loadable(lazy(() => import('./pages/skill/index')))
+
 // 404/Error page
 const Error = Loadable(lazy(() => import('./pages/404')))
 
@@ -84,6 +86,7 @@ const dashboardRoutes = [
   { path: 'calendars', element: <Calendars /> },
   { path: 'hiring', element: <HiringList /> },
   { path: 'settings', element: <SettingList /> },
+  { path: 'skill', element: <Skill /> },
 ]
 
 export default routes

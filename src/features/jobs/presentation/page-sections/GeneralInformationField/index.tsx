@@ -2,7 +2,6 @@ import { Box, styled } from '@mui/material'
 import useJobDetail from '../../providers/hooks/useJobDetail'
 import { useParams } from 'react-router-dom'
 import { getInfoData } from 'shared/utils/utils'
-import { STATUS_STYLE } from '../../providers/constants'
 import { SalaryFactory } from 'shared/class/salary'
 import { useMemo } from 'react'
 import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
@@ -13,6 +12,7 @@ import ChipFieldStatus from 'shared/components/input-fields/ChipFieldStatus'
 import { BoxCircle } from 'shared/styles'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import { PRIORITY_DATA } from 'shared/components/autocomplete/priority-auto-complete'
+import { JobStatus } from 'shared/class/job-status'
 
 const DivWrapperField = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -59,6 +59,10 @@ const GeneralInformationField = () => {
 
   const translation = useTextTranslation()
 
+  const field_status = useMemo(() => {
+    return JobStatus.STATUS_STYLE?.[jobDetail?.status]
+  }, [jobDetail?.status])
+
   return (
     <FlexBox flexDirection={'column'} width={'100%'}>
       <DivWrapperField>
@@ -74,11 +78,10 @@ const GeneralInformationField = () => {
               <SpanText>{translation.COMMON.status}</SpanText>
               <TinyText>
                 <ChipFieldStatus
-                  label={STATUS_STYLE[jobDetail?.status]?.text}
+                  label={field_status?.text}
                   style={{
-                    backgroundColor:
-                      STATUS_STYLE[jobDetail?.status]?.backgroundColor,
-                    color: STATUS_STYLE[jobDetail?.status]?.color,
+                    backgroundColor: field_status?.backgroundColor,
+                    color: field_status?.color,
                   }}
                 />
               </TinyText>
