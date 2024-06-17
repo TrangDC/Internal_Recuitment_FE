@@ -18,7 +18,7 @@ interface JobDetailInformationProps {
 const JobDetailInformation = ({
   jobApplicationDetail,
 }: JobDetailInformationProps) => {
-  const { attachments } = jobApplicationDetail
+  const attachments = jobApplicationDetail?.attachments || []
   const [url, setUrl] = useState('')
   const hiddenChangStatus = useMemo(() => {
     const disabledStatuses = [
