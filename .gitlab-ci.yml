@@ -13,7 +13,7 @@ include: "/.gitlab/.gitlab-ci.template.yml"
   variables:
     REACT_APP_ENDPOINT_API: https://trec-api.techvify.com/graphql
     REACT_APP_ENDPOINT_BE: https://trec-api.techvify.com
-    TINY_API_KEY: m5ns5e2shd3u2ay824oascwk9b686h38b910l23p6uj2incu
+    TINY_API_KEY: 620prxjy4scyrk644plakexmeua9xa0g4rmbtzxrklkxtxw8
   rules:
     - if: $PIPELINE_NAME == "CD" && $ENVIRONMENT == "production"
     - when: never
