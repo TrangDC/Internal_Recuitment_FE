@@ -7,7 +7,6 @@ import { Candidate } from 'features/candidates/domain/interfaces'
 import { t } from 'i18next';
 import { LinkText, StyleTinyText } from 'shared/styles'
 import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
-import { format } from 'date-fns';
 import dayjs from 'dayjs';
 
 const columnHelper = createColumnHelper<Candidate>()
@@ -61,7 +60,7 @@ export const columns = (
     size: 200,
     cell: (info) => {
       return (
-        <StyleTinyText>{dayjs(info.getValue()).format('DD/MM/YYYY')}</StyleTinyText>
+        <StyleTinyText>{info.getValue() && dayjs(info.getValue()).format('DD/MM/YYYY')}</StyleTinyText>
       )
     },
   }),
