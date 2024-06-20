@@ -13,7 +13,7 @@ function StatusJobAutoComplete<Multiple extends boolean>(
 
 const { STATUS_STATE } = JobStatus;
 
-export const options: IOption[] = [
+const options: IOption[] = [
   { label: 'Opening', value: STATUS_STATE.OPENED },
   { label: 'Closed', value: STATUS_STATE.CLOSED },
 ]

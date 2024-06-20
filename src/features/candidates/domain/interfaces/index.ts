@@ -1,3 +1,4 @@
+import { Member } from 'features/teams/domain/interfaces'
 import { SchemaInputNote } from 'shared/schema'
 
 export type Candidate = {
@@ -6,9 +7,16 @@ export type Candidate = {
   email: string
   phone: string
   dob: Date
+  country: string
+  reference_uid: string
+  reference_type: string
+  reference_value: string
+  description: string
+  recruit_time: Date
   is_black_list: boolean
   last_apply_date: string
   is_able_to_delete: boolean
+  reference_user: Member
   status:
     | 'applied'
     | 'interviewing'

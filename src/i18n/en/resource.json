@@ -144,6 +144,11 @@
         "job_close": "This job is closed",
         "candidate_is_blacklist": "Cannot edit candidates in blacklist"
       }
+    },
+    "skills": {
+      "validation": {
+        "name_exist": "Name has already existed"
+      }
     }
   },
   "excel": {

@@ -27,15 +27,14 @@ import {
   useState,
 } from 'react'
 import useTextTranslation from 'shared/constants/text'
-import {
-  BoxWrapperOuterContainer,
-  HeadingWrapper,
-} from 'shared/styles'
+import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { handleImportFile } from '../../providers/utils'
 import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
-import CandidateStatusAutoComplete, { options_status_new } from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete, {
+  options_status_new,
+} from 'shared/components/autocomplete/candidate-status-auto-complete'
 import {
   downloadBase64File,
   getValueOfObj,
@@ -49,8 +48,16 @@ import { ArrowDownward } from '@mui/icons-material'
 import { MenuItemComponent } from 'shared/components/menuItemComponent'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import useExportSample from '../../providers/hooks/useExportSample'
-import { BlackListCandidateModal, CreateCandidateModal, DeleteCandidateModal, EditCandidateModal} from '../index'
+import {
+  BlackListCandidateModal,
+  CreateCandidateModal,
+  DeleteCandidateModal,
+  EditCandidateModal,
+} from '../index'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
+import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
+import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
+import DateRangeFilter from 'shared/components/button-filter/date-range-filter'
 
 const Candidates = () => {
   const {
@@ -76,10 +83,12 @@ const Candidates = () => {
       is_black_list: false,
     },
   })
-  const { handleFilter, handleFreeWordMultiple} = useTableReturn
+  const { handleFilter, handleFilterMultiple, handleFreeWordMultiple } = useTableReturn
   const translation = useTextTranslation()
   const [failedReason, setFailedReason] = useState<BaseRecord[]>([])
   const [status, setStatus] = useState<BaseRecord[]>([])
+  const [recruiter, setRecruiter] = useState<BaseRecord[]>([])
+  const [skills, setSkills] = useState<BaseRecord[]>([])
 
   const [searchField, setSearchField] = useState('')
   const refInput = useRef<HTMLInputElement>(null)
@@ -132,7 +141,11 @@ const Candidates = () => {
 
   const handleFreeWorld: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.keyCode === 13) {
-      handleFreeWordMultiple({name: searchField, phone: searchField, email: searchField})
+      handleFreeWordMultiple({
+        name: searchField,
+        phone: searchField,
+        email: searchField,
+      })
     }
   }
   const { base64Example } = useExportSample()
@@ -142,7 +155,7 @@ const Candidates = () => {
     <DivContainerWrapper>
       <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
         <HeadingWrapper>
-          <FlexBox width={'100%'}>
+          <FlexBox width={'100%'} gap={'16px'}>
             <DivFilter>
               <ButtonFieldFilter<baseInstance>
                 inputLabel={'Status'}
@@ -210,6 +223,86 @@ const Candidates = () => {
                 />
               )}
             </DivFilter>
+            {/* add */}
+            <DivFilter>
+              <ButtonFieldFilter<baseInstance>
+                inputLabel={'By recruiter'}
+                showLabel={'name'}
+                listSelected={recruiter as BaseRecord}
+                setListSelected={setRecruiter}
+                onChange={(data) => {
+                  //@ts-ignore
+                  const recruiter = transformListItem(data, 'id')
+                  handleFilter(
+                    'reference_uid',
+                    !isEmpty(recruiter) ? recruiter : null
+                  )
+                }}
+                node={
+                  <InterViewerAutoComplete
+                    multiple={true}
+                    name="member" 
+                    value={transformListItem(recruiter, 'id')}
+                    onChange={(value) => {
+                      handleFilter(
+                        'reference_uid',
+                        !isEmpty(value) ? value : null
+                      )
+                    }}
+                    onCustomChange={(data) => {
+                      setRecruiter(data)
+                    }}
+                    open={true}
+                    disableCloseOnSelect={true}
+                    textFieldProps={{
+                      label: 'By recruiter',
+                      autoFocus: true,
+                    }}
+                  />
+                }
+              />
+            </DivFilter>
+
+            <DivFilter>
+              <DateRangeFilter
+                onChange={({ fromDate, toDate }) => {
+                 
+                  handleFilterMultiple({recruit_time_from_date: fromDate, recruit_time_to_date: toDate})
+                }}
+              />
+            </DivFilter>
+            {/* <DivFilter>
+            <ButtonFieldFilter<baseInstance>
+              inputLabel={'Skills'}
+              listSelected={skills}
+              setListSelected={setSkills}
+              showLabel={'name'}
+              onChange={(data) => {
+                //@ts-ignore
+                const ids = transformListItem(data, 'id')
+                handleFilter('skill', !isEmpty(ids) ? ids : null)
+              }}
+              node={
+                <SkillAutoComplete
+                  name="skill"
+                  multiple={true}
+                  value={transformListItem(skills, 'id')}
+                  onCustomChange={(data) => {
+                    setSkills(data)
+                  }}
+                  onChange={(value) => {
+                    handleFilter('skill', !isEmpty(value) ? value : null)
+                  }}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Skills',
+                    autoFocus: true,
+                  }}
+                />
+              }
+            />
+            </DivFilter> */}
           </FlexBox>
 
           <DivHeaderWrapper>
@@ -227,7 +320,11 @@ const Candidates = () => {
                       <SearchIcon
                         sx={{ fontSize: '16px' }}
                         onClick={() => {
-                          handleFreeWordMultiple({name: searchField, phone: searchField, email: searchField})
+                          handleFreeWordMultiple({
+                            name: searchField,
+                            phone: searchField,
+                            email: searchField,
+                          })
                         }}
                       />
                     </IconButton>

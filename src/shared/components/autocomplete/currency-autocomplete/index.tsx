@@ -11,7 +11,7 @@ function CurrencyAutoComplete<Multiple extends boolean>(
   return <AutocompleteBase<Multiple> {...props} options={options} />
 }
 
-export const options: IOption[] = [
+const options: IOption[] = [
   {label: 'VND', value: CURRENCY_STATE.VND},
   {label: 'USD', value: CURRENCY_STATE.USD},
   {label: 'JPY', value: CURRENCY_STATE.JPY},

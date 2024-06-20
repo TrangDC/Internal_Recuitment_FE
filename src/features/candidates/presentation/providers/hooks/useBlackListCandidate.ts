@@ -29,6 +29,7 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
+      console.log("🚀 ~ formatDefaultValues ~ data:", data)
       return {
         note: '',
         is_black_list: !data?.is_black_list
@@ -48,7 +49,7 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
 
   function renderTitle() {
     if(typeof formData?.is_black_list !== 'boolean') return '';
-    return formData?.is_black_list ? "Do you want to remove users from the blacklist?" : "Do you want to add users to the blacklist?"
+    return !formData?.is_black_list ? "Do you want to remove users from the blacklist?" : "Do you want to add users to the blacklist?"
   }
 
   return {

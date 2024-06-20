@@ -11,7 +11,7 @@ function SalaryTypeAutoComponent<Multiple extends boolean>(
   return <AutocompleteBase<Multiple> {...props} options={options} />
 }
 
-export const options: IOption[] = [
+const options: IOption[] = [
   {label: 'Range', value: SALARY_STATE.RANGE},
   {label: 'Up to', value: SALARY_STATE.UP_TO},
   {label: 'Minimum', value: SALARY_STATE.MINIMUM},

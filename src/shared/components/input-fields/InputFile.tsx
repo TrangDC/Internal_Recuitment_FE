@@ -107,8 +107,8 @@ type FileUploadAttachment = {
 }
 
 const InputFile = ({
-  accept = '*/*',
-  regexString = '\\.(pdf|docx?|jpe?g|png|gif|bmp|tiff)$',
+  accept = ".jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .odt, .xls, .xlsx, .ods, .ppt, .pptx, .odp, .mp4, .avi, .mkv, .mov",
+  regexString = '\.(jpg|jpeg|png|gif|pdf|doc|docx|odt|xls|xlsx|ods|ppt|pptx|odp|mp4|avi|mkv|mov)$',
   callbackFileChange,
   maxFile = 5,
   maxSize = null,
@@ -356,8 +356,6 @@ const InputFile = ({
         multiple={multiple}
         hidden
         onChange={(event) => {
-          // setLoading(true)
-
           const fileEvent = event.target.files
           const listFileSelected = []
 

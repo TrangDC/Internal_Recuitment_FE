@@ -27,7 +27,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     salary_from: "0",
     salary_to: "0",
     note: '',
-    skill: [],
+    // skill: [],
     ...defaultValues,
   },
   resolver: yupResolver(schema),
