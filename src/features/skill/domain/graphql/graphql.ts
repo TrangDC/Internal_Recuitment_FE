@@ -26,7 +26,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'SkillFilter',
-      orderBy: 'SkillOrder', 
+      orderBy: 'SkillOrder',
       freeWord: 'SkillFreeWord',
     },
   })
@@ -42,6 +42,7 @@ const useGraphql = () => {
     `,
     params: {
       input: 'NewSkillInput!',
+      note: 'String!',
     },
   })
 
@@ -58,6 +59,7 @@ const useGraphql = () => {
     params: {
       input: 'UpdateSkillInput!',
       id: 'ID!',
+      note: 'String!',
     },
   })
 
@@ -69,6 +71,7 @@ const useGraphql = () => {
     node: ``,
     params: {
       id: 'ID!',
+      note: 'String!',
     },
   })
 
@@ -95,7 +98,7 @@ const useGraphql = () => {
     createSkill,
     updateSkill,
     deleteSkill,
-    getSkillDetail
+    getSkillDetail,
   }
 }
 

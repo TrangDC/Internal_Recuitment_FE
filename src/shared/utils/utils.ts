@@ -192,3 +192,11 @@ export function formatCurrency(
 ): string {
   return number.toLocaleString(locale)
 }
+
+export const removeStatusAttachment = (
+  attachments: any[] | undefined
+) => {
+  let result = attachments && Array.isArray(attachments) ? attachments : []
+
+  return transformListArray(result, ['document_id', 'document_name'])
+}

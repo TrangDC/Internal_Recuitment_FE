@@ -52,7 +52,7 @@ export type UpdateHiringJobInput = {
   created_by: string,
   description: string,
   note: string,
-  skill: string[]
+  // skill: string[]
 }
 
 export type UpdateJobStatus = {

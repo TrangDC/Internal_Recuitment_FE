@@ -7,6 +7,7 @@ import {
 import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
+import { transformListArray } from 'shared/utils/utils'
 
 type UseEditFeedbackProps = {
   id: string
@@ -28,7 +29,6 @@ function useUpdateFeedback(props: UseEditFeedbackProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
-
       return {
         note: '',
         feedback: data?.feedback,
@@ -43,7 +43,20 @@ function useUpdateFeedback(props: UseEditFeedbackProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      mutate(value as UpdateCandidateJobFeedbackInput)
+      let attachments =
+        value?.attachments && Array.isArray(value?.attachments)
+          ? value.attachments
+          : []
+
+      attachments = transformListArray(attachments, [
+        'document_id',
+        'document_name',
+      ])
+
+      mutate({
+        ...value,
+        attachments: attachments,
+      } as UpdateCandidateJobFeedbackInput)
     })()
   }
 

@@ -7,12 +7,9 @@ import {
   styled,
   Box,
 } from '@mui/material'
-import React, { useMemo } from 'react'
+import React from 'react'
 import DownIcon from '../icons/DownIcon'
-import { get, isEmpty, isEqual } from 'lodash'
-import ChipField from './ChipField'
 import { SpanText } from '../form/styles'
-import { BaseRecord } from 'shared/interfaces'
 
 const ButtonFilterStyled = styled(Button)(({ theme }) => ({
   display: 'flex',
@@ -54,39 +51,23 @@ const PopperStyled = styled(Popper)(({ theme }) => ({
   zIndex: 1300,
 }))
 
-const ListStyled = styled('div')(({ theme }) => ({
-  display: 'flex',
-  gap: '10px',
-  flexWrap: 'wrap'
-}))
 
-type ButtonFilterProps<T> = {
+type ButtonFilterProps = {
   inputLabel: string
-  listSelected: BaseRecord | BaseRecord[]
-  setListSelected: (value: BaseRecord[]) => void
-  showLabel?: string
   node: React.ReactNode
-  onChange?: (data: BaseRecord[]) => void;
 }
 
-const ButtonFieldFilter = <T extends object>({
+const ButtonFilter = ({
   inputLabel,
-  showLabel = 'label',
-  listSelected,
-  setListSelected,
   node,
-  onChange,
   ...props
-}: ButtonFilterProps<T> & ButtonProps) => {
+}: ButtonFilterProps & ButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget)
   }
 
-  const selected = useMemo(() => {
-    return Array.isArray(listSelected) ? listSelected : listSelected ? [listSelected] : []
-  }, [listSelected])
   return (
     <ClickAwayListener
       onClickAway={() => {
@@ -106,30 +87,9 @@ const ButtonFieldFilter = <T extends object>({
             {node}
           </TypographyStyled>
         </PopperStyled>
-
-        <ListStyled>
-          {!isEmpty(selected) &&
-            selected.map((chip: BaseRecord, index: number) => {
-              return (
-                <ChipField
-                  label={get(chip, showLabel)}
-                  key={index}
-                  onDelete={() => {
-                    const filterOption = selected.filter(
-                      (option: BaseRecord) => {
-                        return !isEqual(option, chip)
-                      }
-                    )
-                    onChange?.(filterOption)
-                    setListSelected(filterOption as T[])
-                  }}
-                />
-              )
-            })}
-        </ListStyled>
       </Box>
     </ClickAwayListener>
   )
 }
 
-export default ButtonFieldFilter
+export default ButtonFilter

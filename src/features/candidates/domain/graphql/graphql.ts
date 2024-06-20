@@ -19,6 +19,13 @@ const useGraphql = () => {
           dob
           status
           is_black_list
+          reference_type
+          reference_value
+          recruit_time
+          reference_user {
+            name
+          }
+          country
           created_at
         }
       }
@@ -107,6 +114,12 @@ const useGraphql = () => {
         dob
         status
         is_black_list
+        reference_type
+        reference_value
+        reference_uid
+        recruit_time
+        description
+        country
         created_at
       }
     `,

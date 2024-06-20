@@ -169,7 +169,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
               />
             </FormControl>
           </FlexBox>
-          <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
+          {/* <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FormControl fullWidth>
               <Controller
                 control={control}
@@ -195,7 +195,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 )}
               />
             </FormControl>
-          </FlexBox>
+          </FlexBox> */}
           <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FlexBox
               justifyContent={'center'}

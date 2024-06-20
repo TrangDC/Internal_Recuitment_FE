@@ -28,6 +28,7 @@ export interface IuseCustomTableReturn {
   handleSorTable: (id: string) => void
   handleFreeWord: (key: string, value: string) => void
   handleFreeWordMultiple: (freeWords: BaseRecord) => void
+  handleFilterMultiple: (filter: BaseRecord) => void
   handleFilter: (key: string, value: any) => void
   totalPage: number
   refetch: () => void
@@ -156,6 +157,10 @@ const useCustomTable = ({
     setFilter((prev) => removeNonExistInObj({ ...prev, [key]: value }))
   }
 
+  function handleFilterMultiple(filter: BaseRecord) {
+    setFilter((prev) => ({...prev, ...filter}))
+  }
+
   return {
     isLoading,
     error,
@@ -164,6 +169,7 @@ const useCustomTable = ({
     handleSorTable,
     handleFreeWord,
     handleFreeWordMultiple,
+    handleFilterMultiple,
     handleFilter,
     totalPage,
     refetch,

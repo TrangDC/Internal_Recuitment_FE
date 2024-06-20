@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../constants/schema'
 import { NewCandidateInput } from 'features/candidates/domain/interfaces'
-import { convertDateToISOString } from 'shared/utils/utils'
+import { convertDateToISOString, removeStatusAttachment } from 'shared/utils/utils'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 
 interface createCandidateProps {
@@ -31,17 +31,25 @@ function useCreateCandidate(props: createCandidateProps) {
     onSuccess: callbackSuccess,
   })
 
-  const { handleSubmit, control, formState } = useFormReturn
+  const { handleSubmit, control, formState, watch, setValue } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
     handleSubmit((value) => {
+      let attachments = removeStatusAttachment(value?.attachments);
+
       mutate({
         ...value,
         dob: value.dob ? convertDateToISOString(value.dob) : value.dob,
+        recruit_time: value.recruit_time ? convertDateToISOString(value.recruit_time) : value.recruit_time,
+        attachments: attachments
       })
     })()
+  }
+
+  const resetSourceValue = () => {
+    setValue('reference_value', '')
   }
 
   return {
@@ -49,6 +57,10 @@ function useCreateCandidate(props: createCandidateProps) {
     control,
     isValid,
     isPending,
+    watch,
+    actions: {
+      resetSourceValue
+    }
   }
 }
 

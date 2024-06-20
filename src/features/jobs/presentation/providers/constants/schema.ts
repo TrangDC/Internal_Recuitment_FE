@@ -45,7 +45,7 @@ export const schema = yup.object({
       ? schema.notRequired()
       : schema.required(RULE_MESSAGES.MC1("unit"))
   }),
-  skill: yup.array().min(1, RULE_MESSAGES.MC1("Skill")).required(RULE_MESSAGES.MC1("Skill")),
+  // skill: yup.array().min(1, RULE_MESSAGES.MC1("Skill")).required(RULE_MESSAGES.MC1("Skill")),
   description: yup.string().required(RULE_MESSAGES.MC1("job description")),
   priority: yup.string().required(RULE_MESSAGES.MC1("priority")),
   note: yup.string(),
@@ -95,7 +95,7 @@ export const schemaUpdate = yup.object({
       ? schema.notRequired()
       : schema.required(RULE_MESSAGES.MC1("unit"))
   }),
-  skill: yup.array().min(1, RULE_MESSAGES.MC1("Skill")).required(RULE_MESSAGES.MC1("Skill")),
+  // skill: yup.array().min(1, RULE_MESSAGES.MC1("Skill")).required(RULE_MESSAGES.MC1("Skill")),
   description: yup.string().required(RULE_MESSAGES.MC1("job description")),
   priority: yup.string().required(RULE_MESSAGES.MC1("priority")),
   note: yup.string()

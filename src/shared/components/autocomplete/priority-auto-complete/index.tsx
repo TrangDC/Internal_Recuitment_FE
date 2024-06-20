@@ -17,7 +17,7 @@ export const PRIORITY_STATE = {
     LOW: '4'
 }
 
-export const options: IOption[] = [
+const options: IOption[] = [
   {label: 'Urgent', value: PRIORITY_STATE.URGENT},
   {label: 'High', value: PRIORITY_STATE.HIGHT},
   {label: 'Medium', value: PRIORITY_STATE.MEDIUM},

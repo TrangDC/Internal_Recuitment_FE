@@ -91,8 +91,6 @@ function UpdateFeedbackModal({
                     <InputFileComponent
                       field={field}
                       inputFileProps={{
-                        accept: '.*',
-                        regexString: '.*',
                         maxFile: 10,
                         maxSize: 20,
                         msgError: {

@@ -173,7 +173,7 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
               />
             </FormControl>
           </FlexBox>
-          <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
+          {/* <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FormControl fullWidth>
               <Controller
                 control={control}
@@ -199,7 +199,7 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                 )}
               />
             </FormControl>
-          </FlexBox>
+          </FlexBox> */}
           <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FlexBox
               justifyContent={'center'}

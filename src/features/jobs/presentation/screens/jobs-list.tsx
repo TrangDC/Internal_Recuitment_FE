@@ -229,7 +229,7 @@ const JobsList = () => {
               }
             />
 
-            <ButtonFieldFilter<baseInstance>
+            {/* <ButtonFieldFilter<baseInstance>
               inputLabel={'Skill'}
               listSelected={skills}
               setListSelected={setSkills}
@@ -259,7 +259,7 @@ const JobsList = () => {
                   }}
                 />
               }
-            />
+            /> */}
           </DivFilter>
 
           <DivHeaderWrapper>

@@ -7,6 +7,8 @@ import { Candidate } from 'features/candidates/domain/interfaces'
 import { t } from 'i18next';
 import { LinkText, StyleTinyText } from 'shared/styles'
 import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
+import { format } from 'date-fns';
+import dayjs from 'dayjs';
 
 const columnHelper = createColumnHelper<Candidate>()
 
@@ -41,6 +43,37 @@ export const columns = (
       return <ChipCandidate status={info.row.original.status}/>
     },
   }),
+  columnHelper.accessor((row) => row.reference_user, {
+    id: 'recruiter',
+    header: () => <span>Recruiter</span>,
+    enableSorting: false,
+    size: 200,
+    cell: (info) => {
+      return (
+        <StyleTinyText>{info.row.original.reference_user?.name}</StyleTinyText>
+      )
+    },
+  }),
+  columnHelper.accessor((row) => row.recruit_time, {
+    id: 'recruit_time',
+    header: () => <span>Recruit time</span>,
+    enableSorting: false,
+    size: 200,
+    cell: (info) => {
+      return (
+        <StyleTinyText>{dayjs(info.getValue()).format('DD/MM/YYYY')}</StyleTinyText>
+      )
+    },
+  }),
+  // columnHelper.accessor((row) => row.status, {
+  //   id: 'created_at',
+  //   header: () => <span>Skills</span>,
+  //   enableSorting: false,
+  //   size: 200,
+  //   cell: (info) => {
+  //     return <ChipCandidate status={info.row.original.status}/>
+  //   },
+  // }),
   columnHelper.accessor('created_at', {
     header: () => <span>{t('action')}</span>,
     size: 100,
