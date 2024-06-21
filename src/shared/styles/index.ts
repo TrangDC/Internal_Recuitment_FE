@@ -1,5 +1,6 @@
 import { Box, styled } from '@mui/material'
 import { Link } from 'react-router-dom'
+import { Span } from 'shared/components/Typography'
 import FlexBetween from 'shared/components/flexbox/FlexBetween'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { TinyText } from 'shared/components/form/styles'
@@ -86,7 +87,7 @@ export const LinkText = styled(Link)(({ theme }) => ({
   color: 'rgb(31, 132, 235)',
 }))
 
-export const LinkGoBack = styled(Link)(({ theme }) => ({
+export const LinkGoBack = styled(Span)(({ theme }) => ({
   fontWeight: 600,
   cursor: 'pointer',
   fontSize: '13px',
