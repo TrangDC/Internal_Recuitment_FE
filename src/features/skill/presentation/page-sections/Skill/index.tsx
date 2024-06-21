@@ -117,7 +117,7 @@ const Skill = () => {
             <FlexBox gap={'10px'}>
               <ButtonAdd
                 Icon={Add}
-                textLable={'Add skill'}
+                textLable={'Add a new skill'}
                 onClick={() => setOpenCreate(true)}
               />
             </FlexBox>
