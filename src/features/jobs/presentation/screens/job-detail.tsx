@@ -48,7 +48,7 @@ const JobDetail = () => {
         <IconScreen
           Icon={Jobs}
           textLable={jobDetail?.name}
-          link="/dashboard/jobs"
+          go_back={true}
         />
       </Box>
       <FlexBox flexDirection={'column'} gap={2.5} marginTop={0}>
