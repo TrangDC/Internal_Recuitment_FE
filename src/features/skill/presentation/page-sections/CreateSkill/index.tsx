@@ -26,7 +26,7 @@ function CreateSkill({ open, setOpen }: ICreateSkill) {
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title="Add new skill"
+        title="Add a new skill"
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain>

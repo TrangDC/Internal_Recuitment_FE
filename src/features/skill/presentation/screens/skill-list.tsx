@@ -12,7 +12,7 @@ const SkillList = () => {
         <FlexBox gap={0.5} alignItems="center">
           <IconScreen
             Icon={SkillIcon}
-            textLable="Skill"
+            textLable="Skill management"
           />
         </FlexBox>
       </Box>

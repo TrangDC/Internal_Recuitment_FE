@@ -55,7 +55,7 @@ function DetailSkillModal({ open, setOpen, id, handleOpenEdit }: IDetailSkillMod
           }
         ></BaseModal.Header>
         <Scrollbar sx={{ maxHeight: '500px' }}>
-          <Box padding={2}>
+          <Box padding={'16px 32px'}>
             <FlexBox flexDirection={'column'} gap={2}>
               <FlexBox gap={2}>
                 <FormControl fullWidth>

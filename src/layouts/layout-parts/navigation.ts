@@ -21,7 +21,7 @@ export const navigations = [
   },
   { type: 'label', label: 'System' },
   {
-    name: 'Skill',
+    name: 'Skill management',
     path: '/dashboard/skill',
     icon: duotone.Skill,
   },
