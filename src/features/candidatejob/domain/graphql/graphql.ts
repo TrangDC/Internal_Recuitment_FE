@@ -19,6 +19,7 @@ const useGraphql = () => {
         status
         is_black_list
         created_at
+        country
       }
     `,
     params: {

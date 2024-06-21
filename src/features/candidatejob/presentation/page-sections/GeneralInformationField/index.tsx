@@ -37,6 +37,16 @@ const GeneralInformationField = ({
             {candidateDetail.name}
           </H3>
           <FlexBox gap={'60px'}>
+          <DivField>
+              <FlexBox alignItems={'flex-end'} gap={'10px'}>
+                <Box>
+                  <Span sx={{ fontSize: '12px' }}>
+                    Nationality
+                  </Span>
+                  <Tiny>{candidateDetail.country} </Tiny>
+                </Box>
+              </FlexBox>
+            </DivField>
             <DivField>
               <FlexBox alignItems={'flex-end'} gap={'10px'}>
                 <Box>

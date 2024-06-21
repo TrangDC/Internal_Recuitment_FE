@@ -14,10 +14,9 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import CandidateSourceAutoComplete, { CANDIDATE_SOURCE_STATE, TypeCandidateSource } from 'shared/components/autocomplete/candidate-source-auto-complete'
 import NationalityAutoComplete from 'shared/components/autocomplete/nationality-auto-complete'
 import CandidateBySource from '../CreateCandidateModal/components/CandidateBySource'
-import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complete'
-import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import { Span, Tiny } from 'shared/components/Typography'
+import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 
 interface IEditCandidateModal {
   open: boolean
@@ -228,7 +227,7 @@ function EditCandidateModal({
                 name="reference_uid"
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                    <MemberAutoComplete
+                    <InterViewerAutoComplete
                       value={field.value || []}
                       onChange={field.onChange}
                       multiple={false}
@@ -307,7 +306,6 @@ function EditCandidateModal({
                   <FlexBox flexDirection={'column'}>
                     <AppTextField
                       label={'Description'}
-                      required
                       size="small"
                       fullWidth
                       value={field.value}

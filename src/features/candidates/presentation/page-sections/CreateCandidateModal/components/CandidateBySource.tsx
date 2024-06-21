@@ -27,7 +27,7 @@ const CandidateBySource = ({ source, name, value, onChange, required = false }: 
           }}
           multiple={false}
           textFieldProps={{
-            label: `EB`,
+            label: `Recruit Channel`,
             required: required
           }}
         />
@@ -41,7 +41,7 @@ const CandidateBySource = ({ source, name, value, onChange, required = false }: 
           }}
           multiple={false}
           textFieldProps={{
-            label: `REC`,
+            label: `Recruit Channel`,
             required: required
           }}
         />
@@ -55,7 +55,7 @@ const CandidateBySource = ({ source, name, value, onChange, required = false }: 
           }}
           multiple={false}
           textFieldProps={{
-            label: `Hiring Platform`,
+            label: `Recruit platform`,
             required: required
           }}
         />
@@ -63,7 +63,7 @@ const CandidateBySource = ({ source, name, value, onChange, required = false }: 
     case CANDIDATE_SOURCE_STATE.REFERENCE:
       return (
         <AppTextField
-          label={'Reference'}
+          label={'Referrer'}
           required={required}
           size="small"
           fullWidth
