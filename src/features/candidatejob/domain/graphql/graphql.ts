@@ -189,6 +189,7 @@ const useGraphql = () => {
               work_email
             }
             edit_able
+            edited
             created_at
             updated_at
           }
@@ -206,6 +207,7 @@ const useGraphql = () => {
               document_name
               document_id
             }
+            edited
             created_at
             updated_at
           }
@@ -230,6 +232,7 @@ const useGraphql = () => {
               work_email
             }
             edit_able
+            edited
             created_at
             updated_at
           }
@@ -247,6 +250,7 @@ const useGraphql = () => {
               document_name
               document_id
             }
+            edited
             created_at
             updated_at
           }
@@ -271,6 +275,7 @@ const useGraphql = () => {
               work_email
             }
             edit_able
+            edited
             created_at
             updated_at
           }
@@ -288,6 +293,7 @@ const useGraphql = () => {
               document_name
               document_id
             }
+            edited
             created_at
             updated_at
           }

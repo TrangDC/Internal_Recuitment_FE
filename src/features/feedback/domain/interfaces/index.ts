@@ -31,6 +31,7 @@ export type FeedBack = {
   updated_at: string
   owner: Member
   attachments: Attachments[]
+  edited: boolean
 }
 
 export type DeleteFeedbackInput = SchemaInputNote
