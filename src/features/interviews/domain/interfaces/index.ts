@@ -26,6 +26,7 @@ export type Interview = {
   owner: Member
   interviewer: Member[]
   candidate_job_id: string
+  edited: boolean
 } 
 
 export type UpdateCandidateInterviewInput = {

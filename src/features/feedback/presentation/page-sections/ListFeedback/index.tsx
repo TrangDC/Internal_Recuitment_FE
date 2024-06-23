@@ -71,16 +71,14 @@ const ListFeedBack = ({listFeedback}: Props) => {
       </DivActionHeader>
 
       {!isEmpty(listFeedback) &&
-        listFeedback.map((feedback, idx) => {
-          const disabledEdited = areDatesEqual(new Date(feedback.created_at), new Date(feedback.updated_at))
-       
+        listFeedback.map((feedback, idx) => {       
           return (
             <BoxText key={idx}>
               <FlexBox flexDirection={'column'} gap={'10px'} width={'100%'}>
                 <FlexBox width={'100%'} justifyContent={'space-between'}>
                   <FlexBox gap={'8px'}>
                     <TinyText>{feedback.owner.name}</TinyText>
-                    {!disabledEdited && <BoxTextSquare content="Edited" />}
+                    {feedback.edited && <BoxTextSquare content="Edited" />}
                   </FlexBox>
                   <FlexBox gap={'15px'} onClick={(e) => e.stopPropagation()}>
                     <EditIcon

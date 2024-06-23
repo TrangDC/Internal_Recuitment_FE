@@ -83,11 +83,6 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
       </DivActionHeader>
       {!isEmpty(listInterview) &&
         listInterview.map((interview, idx) => {
-          const disabledEdited = areDatesEqual(
-            new Date(interview.created_at),
-            new Date(interview.updated_at)
-          )
-
           return (
             <BoxText key={idx}>
               <Accordion>
@@ -109,7 +104,7 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                     <FlexBox width={'100%'} justifyContent={'space-between'}>
                       <FlexBox gap={'8px'}>
                         <TinyText>{interview.title}</TinyText>
-                        {!disabledEdited && <BoxTextSquare content="Edited" />}
+                        {interview.edited && <BoxTextSquare content="Edited" />}
                       </FlexBox>
                       <FlexBox
                         gap={'15px'}
