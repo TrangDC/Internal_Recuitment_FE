@@ -279,7 +279,7 @@ const useGraphql = () => {
       `,
     params: {
       filter: 'CandidateJobGroupByStatusFilter!',
-      orderBy: 'CandidateJobOrder',
+      orderBy: 'CandidateJobByOrder',
     },
   })
 

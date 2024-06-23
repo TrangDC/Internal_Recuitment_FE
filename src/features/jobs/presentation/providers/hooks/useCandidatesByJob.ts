@@ -136,7 +136,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
     `,
   params: {
     filter: 'CandidateJobGroupByStatusFilter!',
-    orderBy: 'CandidateJobOrder',
+    orderBy: 'CandidateJobByOrder',
   },
 })
 
