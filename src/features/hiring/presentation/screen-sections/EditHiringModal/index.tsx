@@ -2,13 +2,13 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useEditHiring from '../../providers/hooks/useEditHiring'
 import { Hiring } from 'features/hiring/domain/interfaces'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import useEditHiring from 'features/hiring/hooks/useEditHiring'
 
 interface IEditHiringModal {
   open: boolean

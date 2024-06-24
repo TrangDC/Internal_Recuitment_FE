@@ -24,5 +24,6 @@ export enum MODLUE_QUERY_KEY {
   CANDIDATE_JOB = 'candidateJob',
   EXPORT_TEMPLATE = 'export_template',
   SKILL = 'skill',
-  SKILL_TYPE = 'skill_type'
+  SKILL_TYPE = 'skill_type',
+  GROUP_CANDIDATE_STATUS = 'group_candidate_status'
 }

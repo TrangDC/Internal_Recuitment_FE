@@ -5,6 +5,20 @@ export const PRIORITY_STATE = {
   LOW: 4,
 }
 
+export const getPriorityByStatus = (status: string): number => {
+  switch(status) {
+    case 'urgent': 
+      return 1;
+    case 'hight':
+      return 2;
+    case 'medium':
+      return 3;
+    case 'low':
+    default:
+      return 4;
+  }
+}
+
 export const PRIORITY_STYLE = {
   1: { label: 'Urgent', backgroundColor: '#E50000', color: '#FFFFFF' },
   2: { label: 'High', backgroundColor: '#FC105C', color: '#FFFFFF' },

@@ -19,12 +19,21 @@ export const REC_STATE = {
     OTHERS: 'others',
 }
 
+export const REC_SOURCE_LABEL = {
+  linkedin: 'Linkedin',
+  facebook: 'Facebook',
+  instagram: 'Instagram',
+  thread: 'Theard',
+  github: 'Github',
+  others: 'Others',
+}
+
 const options: IOption[] = [
   {label: 'Linkedin', value: REC_STATE.LINKEDIN},
   {label: 'Facebook', value: REC_STATE.FACEBOOK},
   {label: 'Instagram', value: REC_STATE.INSTAGRAM},
-  {label: 'Theard', value: REC_STATE.INSTAGRAM},
-  {label: 'Github', value: REC_STATE.THREAD},
+  {label: 'Theard', value: REC_STATE.THREAD},
+  {label: 'Github', value: REC_STATE.GITHUB},
   {label: 'Others', value: REC_STATE.OTHERS},
 ]
 

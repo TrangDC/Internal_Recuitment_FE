@@ -21,6 +21,7 @@ type Record = {
       newValue: string
     }
   }[]
+  sub_module: Record[] | null
   module: string
 }
 
@@ -66,6 +67,12 @@ const AuditTrailsList = ({ record_changes }: Props) => {
                     data={record?.delete}
                     type="Delete"
                   />
+                </Grid>
+              )}
+
+              {!isEmpty(record?.sub_module) && record?.sub_module && (
+                <Grid item xs={12}>
+                  <AuditTrailsList record_changes={record?.sub_module} />
                 </Grid>
               )}
             </Grid>

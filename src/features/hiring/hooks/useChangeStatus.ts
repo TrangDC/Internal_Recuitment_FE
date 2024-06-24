@@ -1,9 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/hiring/domain/graphql/graphql'
 import { ChangeStatusUser, Hiring } from 'features/hiring/domain/interfaces'
-import { schemaChangeStatus, FormDataSchemaUpdateStatus } from '../constants/schema'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
+import { FormDataSchemaUpdateStatus, schemaChangeStatus } from '../shared/constants/schema'
 
 type UseChangeStatusProps = {
   id: string

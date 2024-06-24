@@ -27,7 +27,7 @@ function BlackListCandidateModal({
     },
   })
 
-  const {onSubmit, renderTitle} = actions;
+  const { onSubmit, renderTitle } = actions
   const translation = useTextTranslation()
 
   return (
@@ -37,55 +37,55 @@ function BlackListCandidateModal({
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-      <FlexBox flexDirection={'column'} gap={2}>
-            <FlexBox
-              justifyContent={'center'}
-              alignItems={'center'}
-              marginTop={1}
-            >
-              <FormControl fullWidth>
-                <Controller
-                  control={control}
-                  name="note"
-                  render={({ field, fieldState }) => (
-                    <FlexBox alignItems={'center'} flexDirection={'column'}>
-                      <AppTextField
-                        label={'Description'}
-                        size="small"
-                        fullWidth
-                        value={field.value}
-                        onChange={field.onChange}
-                        multiline
-                        minRows={4}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </FlexBox>
-                  )}
-                />
-              </FormControl>
-            </FlexBox>
+        <FlexBox flexDirection={'column'} gap={2}>
+          <FlexBox
+            justifyContent={'center'}
+            alignItems={'center'}
+            marginTop={1}
+          >
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="note"
+                render={({ field, fieldState }) => (
+                  <FlexBox alignItems={'center'} flexDirection={'column'}>
+                    <AppTextField
+                      label={'Description'}
+                      size="small"
+                      fullWidth
+                      value={field.value}
+                      onChange={field.onChange}
+                      multiline
+                      minRows={4}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
+                )}
+              />
+            </FormControl>
           </FlexBox>
+        </FlexBox>
       </BaseModal.ContentMain>
       <BaseModal.Footer>
         <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-        <AppButton
-              variant="outlined"
-              size="small"
-              onClick={() => setOpen(false)}
-            >
-              {translation.COMMON.cancel}
-            </AppButton>
-            <ButtonLoading
-              variant="contained"
-              size="small"
-              disabled={isValid}
-              handlesubmit={onSubmit}
-              loading={isPending}
-            >
-              Submit
-            </ButtonLoading>
+          <AppButton
+            variant="outlined"
+            size="small"
+            onClick={() => setOpen(false)}
+          >
+            {translation.COMMON.cancel}
+          </AppButton>
+          <ButtonLoading
+            variant="contained"
+            size="small"
+            disabled={isValid}
+            handlesubmit={onSubmit}
+            loading={isPending}
+          >
+            Submit
+          </ButtonLoading>
         </FlexBox>
       </BaseModal.Footer>
     </BaseModal.Wrapper>
