@@ -24,7 +24,7 @@ interface Props {
 
 const LogsComponent = ({ module }: Props, ref: any) => {
   const { id } = useParams()
-  const { auditrails_history, handleFilter, handleFreeWord } = useAuditTrails(
+  const { auditrails_history, handleMultipleFilter, handleFreeWord } = useAuditTrails(
     id as string,
     module
   )
@@ -33,7 +33,7 @@ const LogsComponent = ({ module }: Props, ref: any) => {
     ref,
     () => {
       return {
-        handleFilter,
+        handleMultipleFilter,
         handleFreeWord,
       }
     },

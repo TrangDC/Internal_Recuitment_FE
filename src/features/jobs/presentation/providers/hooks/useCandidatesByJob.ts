@@ -5,7 +5,7 @@ import GraphQLClientService from 'services/refactor/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
-const queryKey = MODLUE_QUERY_KEY.CANDIDATE_JOB
+const queryKey = MODLUE_QUERY_KEY.GROUP_CANDIDATE_STATUS
 const getCandidatesByJob = GraphQLClientService.buildQuery({
   operation: 'GetCandidateJobGroupByStatus',
   options: {
@@ -18,6 +18,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             candidate_id
             hiring_job_id
             status
+            interview_feature
             candidate {
                 id
                 name,
@@ -35,6 +36,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             candidate_id
             hiring_job_id
             status
+            interview_feature
              candidate {
                 id
                 name,
@@ -52,6 +54,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             candidate_id
             hiring_job_id
             status
+            interview_feature
              candidate {
                 id
                 name,
@@ -66,6 +69,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
         }
         ex_staff {
             id
+            interview_feature
             candidate_id
             hiring_job_id
             status
@@ -83,6 +87,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
         }
         applied {
             id
+            interview_feature
             candidate_id
             hiring_job_id
             status
@@ -100,6 +105,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
         }
         interviewing {
             id
+            interview_feature
             candidate_id
             hiring_job_id
             status
@@ -117,6 +123,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
         }
         offering {
             id
+            interview_feature
             candidate_id
             hiring_job_id
             status

@@ -51,6 +51,7 @@ function ChangeStatusModal({
   defaultStatus = '',
   onSuccess,
 }: IChangeStatusModal) {
+  console.log("rowData", rowData)
   const { handleWarning, handleReset } = usePopup()
   const { onSubmit, control, isPending, isValid, watch } = useChangeStatus({
     id: rowData?.id as string,

@@ -94,6 +94,7 @@
       "salary_from": "From",
       "salary_to": "To",
       "currency": "Unit",
+      "priority": "Priority",
       "validation": {
         "amount_neq_zero": "Number of staff required must be greater than 0",
         "name_exist": "Job name has already existed",
@@ -112,13 +113,25 @@
         "job_is_closed": "This job has already closed and cannot be deleted"
       }
     },
+    "candidate_jobs": {
+      "model_name": "Candidate Job",
+      "hiring_job": "Job name",
+      "status": "Status",
+      "document": "Attach CV"
+    },
     "candidates": {
-      "model_name": "Candidates",
+      "model_name": "Candidate",
       "name": "Name",
       "email": "Email",
       "phone": "Phone",
       "dob": "DOB",
+      "recruit_time": "Recruit time",
       "is_blacklist": "Blacklist",
+      "description": "Description",
+      "country": "Nationality",
+      "document": "Candidate attachments",
+      "reference_type": "Candidate source",
+      "reference_value": "Recruit Channel",
       "validation": {
         "email_exist": "This email belongs to an existing candidate.",
         "candidate_job_exist": "This candidate is in a hiring process already"
@@ -140,10 +153,25 @@
       }
     },
     "candidate_job_feedbacks": {
+      "created_by": "Created by",
+      "model_name": "Feedback",
+      "feedback": "Description",
+      "document": "Attach file",
       "validation": {
         "job_close": "This job is closed",
         "candidate_is_blacklist": "Cannot edit candidates in blacklist"
       }
+    },
+    "candidate_interviews": {
+      "model_name": "Interview",
+      "title": "Interview title",
+      "interview_date": "Interview date",
+      "start_from": "From",
+      "end_at": "To",
+      "created_by": "Created by",
+      "status": "Status",
+      "members": "Interviewer",
+      "description": "Description"
     },
     "skills": {
       "validation": {

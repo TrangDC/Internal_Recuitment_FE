@@ -52,8 +52,8 @@ type AuditTrailsJob = {
 }[]
 
 const useAuditTrails = (recordId: string, module: string) => {
-  const [filter, setFilter] = useState<Record<string, any>>({});
-  const [freeWord, setFreeWord]= useState<Record<string, string>>({});
+  const [filter, setFilter] = useState<Record<string, any>>({})
+  const [freeWord, setFreeWord] = useState<Record<string, string>>({})
 
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey, filter, freeWord],
@@ -66,7 +66,7 @@ const useAuditTrails = (recordId: string, module: string) => {
         },
         freeWord: {
           ...freeWord,
-        }
+        },
       }),
   })
 
@@ -80,17 +80,21 @@ const useAuditTrails = (recordId: string, module: string) => {
   )
 
   const handleFilter = (key: string, value: any) => {
-   const cloneFilter = cloneDeep(filter);
-   cloneFilter[key] = value;
-   setFilter(cloneFilter);
+    const cloneFilter = cloneDeep(filter)
+    cloneFilter[key] = value
+    setFilter(cloneFilter)
   }
 
   const handleFreeWord = (key: string, value: any) => {
-    const cloneFreeWord = cloneDeep(freeWord);
-    cloneFreeWord[key] = value;
- 
-    setFreeWord(cloneFreeWord);
-   }
+    const cloneFreeWord = cloneDeep(freeWord)
+    cloneFreeWord[key] = value
+
+    setFreeWord(cloneFreeWord)
+  }
+
+  const handleMultipleFilter = (record: BaseRecord) => {
+    setFilter((prev) => ({...prev, ...record}))
+  }
 
   return {
     ...otherValue,
@@ -98,6 +102,7 @@ const useAuditTrails = (recordId: string, module: string) => {
     totalPage,
     handleFilter,
     handleFreeWord,
+    handleMultipleFilter
   }
 }
 

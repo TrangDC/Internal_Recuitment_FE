@@ -1,83 +1,186 @@
-import { convertStringToArray } from "shared/utils/convert-string"
-import { renderCurrencyEN, renderCurrencyEnum, renderDate, renderDescription, renderLocation, renderSalaryByType, renderStatusHiringJob, renderText, renderYesNo } from "../helper";
-import { ReactNode } from "react";
+import { convertStringToArray } from 'shared/utils/convert-string'
+import {
+  renderAttachment,
+  renderCurrencyEN,
+  renderCurrencyEnum,
+  renderDate,
+  renderDateTime,
+  renderDescription,
+  renderLocation,
+  renderPriority,
+  renderReferenceType,
+  renderReferenceValue,
+  renderSalaryByType,
+  renderStatusCandidateJob,
+  renderStatusHiringJob,
+  renderText,
+  renderYesNo,
+} from '../helper'
+import { ReactNode } from 'react'
+import { BaseRecord } from 'shared/interfaces'
 
-type renderValueReturn = (text: string) => any;
+type renderValueReturn = (text: string, records: BaseRecord) => any
 
 type renderTextRecordReturn = {
-    renderValue: renderValueReturn;
-    record_value: string | ReactNode
+  renderValue: renderValueReturn
+  record_value: string | ReactNode
 }
 
-export const renderTextRecord = (field_string: string, recordString: string): renderTextRecordReturn => {
-    const [path, model, field] = convertStringToArray(field_string);
-    let renderValue: renderValueReturn;
+export const renderTextRecord = (
+  field_string: string,
+  recordString: string,
+  records: BaseRecord
+): renderTextRecordReturn => {
+  const [path, model, field] = convertStringToArray(field_string)
+  let renderValue: renderValueReturn
 
-    switch (model) {
-        case 'hiring_jobs':
-            renderValue = renderFieldHiringJob(field);
-            break;
-        case 'candidates':
-            renderValue = renderFieldCandidate(field);
-            break;
-        default:
-            renderValue = renderText;
-            break;
+  switch (model) {
+    case 'hiring_jobs':
+      renderValue = renderFieldHiringJob(field)
+      break
+    case 'candidates':
+      renderValue = renderFieldCandidate(field)
+      break
+    case 'candidate_jobs':
+      renderValue = renderFieldCandidateJob(field)
+      break
+    case 'candidate_job_feedbacks':
+      renderValue = renderFieldCandidateJobFeedback(field)
+      break
+    case 'candidate_interviews':
+      renderValue = renderFieldCandidateInterview(field)
+      break
+    default:
+      renderValue = renderText
+      break
+  }
+
+  const record_value = renderValue(recordString, records)
+
+  return {
+    renderValue,
+    record_value,
+  }
+}
+
+function renderFieldCandidateJobFeedback(field: string): renderValueReturn {
+  let renderValue
+
+  switch (field) {
+    case 'description':
+      renderValue = renderDescription
+      break
+    case 'document':
+      renderValue = renderAttachment
+      break
+    default: {
+      renderValue = renderText
     }
+  }
 
-    const record_value = renderValue(recordString)
+  return renderValue
+}
 
-    return {
-        renderValue,
-        record_value,
-    };
+function renderFieldCandidateInterview(field: string): renderValueReturn {
+  let renderValue
+
+  switch (field) {
+    case 'interview_date':
+      renderValue = renderDate
+      break
+    case 'start_from':
+      renderValue = renderDateTime
+      break
+    case 'end_at':
+      renderValue = renderDateTime
+      break
+    default: {
+      renderValue = renderText
+    }
+  }
+
+  return renderValue
 }
 
 function renderFieldHiringJob(field: string): renderValueReturn {
-    let renderValue;
+  let renderValue
 
-    switch (field) {
-        case 'description':
-            renderValue = renderDescription
-            break;
-        case 'salary_from':
-        case 'salary_to':
-            renderValue = renderCurrencyEN
-            break;
-        case 'currency':
-            renderValue = renderCurrencyEnum
-            break;
-        case 'status':
-            renderValue = renderStatusHiringJob
-            break;
-        case 'salary_type':
-            renderValue = renderSalaryByType
-            break;
-        case 'location':
-            renderValue = renderLocation
-            break;
-        default: {
-            renderValue = renderText;
-        }
+  switch (field) {
+    case 'description':
+      renderValue = renderDescription
+      break
+    case 'salary_from':
+    case 'salary_to':
+      renderValue = renderCurrencyEN
+      break
+    case 'currency':
+      renderValue = renderCurrencyEnum
+      break
+    case 'status':
+      renderValue = renderStatusHiringJob
+      break
+    case 'priority':
+      renderValue = renderPriority
+      break
+    case 'salary_type':
+      renderValue = renderSalaryByType
+      break
+    case 'location':
+      renderValue = renderLocation
+      break
+    default: {
+      renderValue = renderText
     }
+  }
 
-    return renderValue;
+  return renderValue
+}
+
+function renderFieldCandidateJob(field: string): renderValueReturn {
+  let renderValue
+
+  switch (field) {
+    case 'status':
+      renderValue = renderStatusCandidateJob
+      break
+    case 'document':
+      renderValue = renderAttachment
+      break
+    default: {
+      renderValue = renderText
+    }
+  }
+
+  return renderValue
 }
 
 function renderFieldCandidate(field: string): renderValueReturn {
-    let renderValue;
+  let renderValue
 
-    switch (field) {
-        case 'dob':
-            renderValue = renderDate
-            break;
-        case 'is_blacklist':
-            renderValue = renderYesNo
-        break;
-        default: {
-            renderValue = renderText;
-        }
+  switch (field) {
+    case 'dob':
+    case 'recruit_time':
+      renderValue = renderDate
+      break
+    case 'is_blacklist':
+      renderValue = renderYesNo
+      break
+    case 'reference_type':
+      renderValue = renderReferenceType
+      break
+    case 'reference_value':
+      renderValue = renderReferenceValue
+      break
+    case 'description':
+      renderValue = renderDescription
+      break
+    case 'document':
+      renderValue = renderAttachment
+      break
+    default: {
+      renderValue = renderText
     }
+  }
 
-    return renderValue;
+  return renderValue
 }

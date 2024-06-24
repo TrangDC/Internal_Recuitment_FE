@@ -25,6 +25,21 @@ export const EB_STATE = {
     OTHERS: 'others',
 }
 
+export const EB_SOURCE_LABEL = {
+  tiktok_techvify_official: 'TikTok TECHVIFY Official',
+  tiktok_thedevdad: 'TikTok Thedevdad',
+  linkedin_junie_truong: 'Linkedin Junie Trương',
+  other_linkedin: 'Other Linkedin',
+  group_seeding: 'Group Seeding',
+  fanpage_techvify_careers: 'Fanpage TECHVIFY Careers',
+  google_search: 'Google Search (Website)',
+  youtube_techvify_careers: 'Youtube TECHVIFY Careers',
+  thread: 'Thread',
+  instagram: 'Instagram',
+  twitter: 'Twitter',
+  others: 'Others',
+}
+
 const options: IOption[] = [
   {label: 'TikTok TECHVIFY Official', value: EB_STATE.TIKTOK_TECHVIFY_OFFICIAL},
   {label: 'TikTok Thedevdad', value: EB_STATE.TIKTOK_THEDEVDAD},

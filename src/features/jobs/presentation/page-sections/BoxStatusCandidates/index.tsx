@@ -54,6 +54,9 @@ const BoxStatusCandidates = ({
     queryClient.invalidateQueries({
       queryKey: [MODLUE_QUERY_KEY.JOB],
     })
+    queryClient.invalidateQueries({
+      queryKey: [MODLUE_QUERY_KEY.GROUP_CANDIDATE_STATUS],
+    })
   }
 
   const {
@@ -86,7 +89,6 @@ const BoxStatusCandidates = ({
       )
     }
   }
-  
 
   return (
     <DivField

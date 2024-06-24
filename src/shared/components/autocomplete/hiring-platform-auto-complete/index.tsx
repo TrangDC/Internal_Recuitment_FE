@@ -16,6 +16,12 @@ export const REC_STATE = {
     ITVIEC: 'itviec',
 }
 
+export const HIRING_PLATFORM_LABEL = {
+  topcv: 'TopCV',
+  vietnam_works: 'VietnamWorks',
+  itviec: 'ITviec',
+}
+
 const options: IOption[] = [
   {label: 'TopCV', value: REC_STATE.TOPCV},
   {label: 'VietnamWorks', value: REC_STATE.VIETNAM_WORKS},

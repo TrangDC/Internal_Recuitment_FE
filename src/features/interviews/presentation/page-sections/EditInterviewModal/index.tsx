@@ -16,6 +16,7 @@ import dayjs from 'dayjs'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import {  useMemo } from 'react'
+import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 
 interface IEditInterviewModal {
   open: boolean
@@ -95,7 +96,7 @@ function EditInterviewModal({
                 name="interviewer"
                 render={({ field, fieldState }) => (
                   <Fragment>
-                    <MemberAutoComplete
+                    <InterViewerAutoComplete
                       value={field.value || []}
                       onChange={field.onChange}
                       multiple={true}

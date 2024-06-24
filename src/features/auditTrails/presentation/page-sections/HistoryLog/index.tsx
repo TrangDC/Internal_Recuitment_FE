@@ -1,7 +1,6 @@
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import AppDateField from 'shared/components/input-fields/DateField'
-import useTextTranslation from 'shared/constants/text'
-import { KeyboardEventHandler, useRef, useState } from 'react'
+import { KeyboardEventHandler, useEffect, useRef, useState } from 'react'
 import { convertDateToISOString } from 'shared/utils/utils'
 import AuditLogComponent from 'features/auditTrails/presentation/page-sections/AuditLogComponent'
 import {
@@ -12,25 +11,26 @@ import {
 import { IconButton, InputAdornment } from '@mui/material'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import AppTextField from 'shared/components/input-fields/AppTextField'
+import dayjs from 'dayjs'
+import { BaseRecord } from 'shared/interfaces'
 
 interface Props {
   module: string
 }
 
 const HistoryLogAuditTrails = ({ module }: Props) => {
-  const [searchField, setSearchField] = useState('')
+  const [searchField, setSearchField] = useState('');
+  const [fromDate, setFromDate] = useState<Date | null>();
+  const [toDate, setToDate] = useState<Date | null>();
 
   const refLog = useRef<{
-    handleFilter: (name: string, value: string | null) => void
+    handleMultipleFilter: (record: BaseRecord) => void
     handleFreeWord: (name: string, value: string) => void
   }>()
 
-  const handleChangeDate = (name: string, value: Date) => {
-   
-    const handleFilter = refLog?.current?.['handleFilter']
-
-    if (!handleFilter) return
-    handleFilter(name, value ? convertDateToISOString(value.toString()) : value)
+  const handleChangeDate = (record: BaseRecord) => {
+    const handleFilter = refLog?.current?.['handleMultipleFilter']
+    handleFilter?.(record);
   }
 
   const handleSearch = (name: string, value: string) => {
@@ -48,13 +48,19 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
     }
   }
 
+  useEffect(() => {
+    const start_form = fromDate ? fromDate : dayjs('2023-01-01').toDate();
+    const end_date = toDate ? toDate : dayjs().toDate();
+
+    handleChangeDate({fromDate: convertDateToISOString(start_form), toDate: convertDateToISOString(end_date)})
+  }, [fromDate, toDate])
+
   return (
     <HistoryWrapper>
       <FormWrapper>
         <FlexBox gap={'8px'}>
           <AppTextField
             label={'Search'}
-            // required
             size="small"
             sx={{ width: '203px',
 
@@ -62,7 +68,6 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
               paddingRight: 0,
             }
             }}
-            // fullWidth
             onKeyUp={handleFreeWord}
             value={searchField}
             onChange={(e) => setSearchField(e.target.value)}
@@ -85,7 +90,7 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
           <AppDateField
             label={'From date'}
             onChange={(value) => {
-              handleChangeDate('fromDate', value as Date)
+              setFromDate(value)
             }}
             format="dd/MM/yyyy"
             sx={{
@@ -99,7 +104,7 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
            <AppDateField
             label={'To date'}
             onChange={(value) => {
-              handleChangeDate('toDate', value as Date)
+              setToDate(value)
             }}
             format="dd/MM/yyyy"
             sx={{

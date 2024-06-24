@@ -20,6 +20,14 @@ export const CANDIDATE_SOURCE_STATE = {
   HEADHUNT: 'headhunt',
 }
 
+export const CANDIDATE_SOURCE_LABEL = {
+  eb: 'EB',
+  rec: 'REC',
+  hiring_platform: 'Hiring platform',
+  reference: 'Reference',
+  headhunt: 'Reference',
+}
+
 const options: IOption[] = [
   {
     label: 'EB',
