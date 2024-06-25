@@ -20,23 +20,22 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import { FeedBack } from 'features/feedback/domain/interfaces'
 import ShowFile from 'shared/components/input-fields/ItemFile'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
-import {
-  downloadOneFile,
-} from 'features/candidatejob/presentation/providers/helper'
+import { downloadOneFile } from 'features/candidatejob/presentation/providers/helper'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
-import {
-  innerHTMLTextArea,
-} from 'shared/components/genarateInnerHTML'
+import { innerHTMLTextArea } from 'shared/components/genarateInnerHTML'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { useQueryClient } from '@tanstack/react-query'
-import { areDatesEqual } from 'shared/utils/date'
-import { CreateFeedbackModal, DeleteFeedbackModal, UpdateFeedbackModal } from '../index'
+import {
+  CreateFeedbackModal,
+  DeleteFeedbackModal,
+  UpdateFeedbackModal,
+} from '../index'
 
 interface Props {
   listFeedback: FeedBack[]
 }
 
-const ListFeedBack = ({listFeedback}: Props) => {
+const ListFeedBack = ({ listFeedback }: Props) => {
   const {
     openCreate,
     setOpenCreate,
@@ -54,7 +53,13 @@ const ListFeedBack = ({listFeedback}: Props) => {
 
   const queryClient = useQueryClient()
   const handleRefreshList = () => {
-    queryClient.invalidateQueries({ queryKey: [ MODLUE_QUERY_KEY.CANDIDATE_JOB,MODLUE_QUERY_KEY.INTERVIEWER, MODLUE_QUERY_KEY.FEEDBACK] })
+    queryClient.invalidateQueries({
+      queryKey: [
+        MODLUE_QUERY_KEY.CANDIDATE_JOB,
+        MODLUE_QUERY_KEY.INTERVIEWER,
+        MODLUE_QUERY_KEY.FEEDBACK,
+      ],
+    })
   }
 
   return (
@@ -71,7 +76,7 @@ const ListFeedBack = ({listFeedback}: Props) => {
       </DivActionHeader>
 
       {!isEmpty(listFeedback) &&
-        listFeedback.map((feedback, idx) => {       
+        listFeedback.map((feedback, idx) => {
           return (
             <BoxText key={idx}>
               <FlexBox flexDirection={'column'} gap={'10px'} width={'100%'}>

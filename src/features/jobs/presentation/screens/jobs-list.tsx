@@ -1,29 +1,20 @@
-import { IconButton, InputAdornment } from '@mui/material'
 import { Box } from '@mui/system'
 import Add from 'shared/components/icons/Add'
 import { columns } from '../providers/constants/columns'
 import useJobTable from '../providers/hooks/useJobTable'
 import useActionTable from '../providers/hooks/useActionTable'
-import SearchIcon from 'shared/components/icons/SearchIcon'
-import { CustomTextField } from 'shared/components/form/styles'
-import { DivFilter, DivHeaderWrapper } from '../providers/styles'
+import { DivHeaderWrapper } from '../providers/styles'
 import EditIcon from 'shared/components/icons/EditIcon'
 import { useNavigate } from 'react-router-dom'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import { KeyboardEventHandler, useState } from 'react'
-import { BaseRecord, baseInstance } from 'shared/interfaces'
-import { getValueOfObj, transformListItem } from 'shared/utils/utils'
 import useTextTranslation from 'shared/constants/text'
 import Jobs from 'shared/components/icons/Jobs'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import IconScreen from 'shared/components/utils/IconScreen'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
-import ButtonFieldFilter from 'shared/components/input-fields/ButtonFieldFilter'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 import StatusJobAutoComplete from 'shared/components/autocomplete/status-job-autocomplete'
-import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
-import { isEmpty } from 'lodash'
 import CloseIcon from 'shared/components/icons/CloseIcon'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import {
@@ -34,7 +25,10 @@ import {
 } from '../page-sections'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import { JobStatus } from 'shared/class/job-status'
-import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
+import SearchInput from 'shared/components/table/components/SearchInput'
+import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
+import useFilterJobs from '../providers/hooks/useFilterJobs'
+import FlexBox from 'shared/components/flexbox/FlexBox'
 
 const { STATUS_STATE } = JobStatus
 
@@ -55,17 +49,15 @@ const JobsList = () => {
   } = useActionTable()
 
   const navigate = useNavigate()
+  const { useFilterReturn, useSearchListReturn } = useFilterJobs()
+  const { dataFilterWithValue, controlFilter } = useFilterReturn
+  const { search, searchRef, handleSearch } = useSearchListReturn
+  const { useTableReturn } = useJobTable({
+    filters: dataFilterWithValue,
+    search: search,
+  })
 
-  const { useTableReturn } = useJobTable()
-  const { handleFreeWord, handleFilter } = useTableReturn
   const translation = useTextTranslation()
-
-  const [teams, setTeams] = useState<BaseRecord[]>([])
-  const [status, setStatus] = useState<BaseRecord>()
-  const [priority, setPriority] = useState<BaseRecord>()
-  const [skills, setSkills] = useState<BaseRecord[]>([])
-
-  const [searchField, setSearchField] = useState('')
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -121,13 +113,6 @@ const JobsList = () => {
     columns,
   })
 
-  const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if (event.keyCode === 13) {
-      //@ts-ignore
-      handleFreeWord('name', event.target.value)
-    }
-  }
-
   return (
     <Box pt={2} pb={4}>
       <Box>
@@ -135,28 +120,25 @@ const JobsList = () => {
       </Box>
       <BoxWrapperOuterContainer>
         <HeadingWrapper>
-          <DivFilter>
-            <ButtonFieldFilter<baseInstance>
-              inputLabel={'Team'}
-              listSelected={teams}
-              setListSelected={setTeams}
-              showLabel={'name'}
-              onChange={(data) => {
-                //@ts-ignore
-                const ids = transformListItem(data, 'id')
-                handleFilter('team_ids', !isEmpty(ids) ? ids : null)
-              }}
-              node={
+          <FlexBox>
+            {' '}
+            <ControllerFilter
+              control={controlFilter}
+              title="Team"
+              keyName={'team_ids'}
+              Node={({ onFilter, value }) => (
                 <TeamsAutoComplete
                   name="team"
                   multiple={true}
-                  value={transformListItem(teams, 'id')}
-                  onCustomChange={(data) => {
-                    setTeams(data)
-                  }}
-                  onChange={(value) => {
-                    handleFilter('team_ids', !isEmpty(value) ? value : null)
-                  }}
+                  value={value}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
                   open={true}
                   disableCloseOnSelect={true}
                   textFieldProps={{
@@ -164,28 +146,17 @@ const JobsList = () => {
                     autoFocus: true,
                   }}
                 />
-              }
+              )}
             />
-            <ButtonFieldFilter<baseInstance>
-              inputLabel={'Status'}
-              listSelected={status as BaseRecord}
-              setListSelected={setStatus}
-              onChange={(data) => {
-                //@ts-ignore
-                const status = transformListItem(data, 'id')
-                handleFilter('status', !isEmpty(status) ? status : null)
-              }}
-              node={
+            <ControllerFilter
+              control={controlFilter}
+              title="Status"
+              keyName={'status'}
+              Node={({ onFilter, value }) => (
                 <StatusJobAutoComplete
                   multiple={false}
-                  value={status && getValueOfObj({ key: 'value', obj: status })}
-                  onChange={(data) => {
-                    handleFilter(
-                      'status',
-                      getValueOfObj({ key: 'value', obj: data as IOption })
-                    )
-                    setStatus(data as IOption)
-                  }}
+                  value={value}
+                  onChange={(data) => onFilter(data)}
                   open={true}
                   disableCloseOnSelect={true}
                   textFieldProps={{
@@ -193,32 +164,17 @@ const JobsList = () => {
                     autoFocus: true,
                   }}
                 />
-              }
+              )}
             />
-            {/* pirority */}
-            <ButtonFieldFilter<baseInstance>
-              inputLabel={'Priority'}
-              listSelected={priority as BaseRecord}
-              setListSelected={setPriority}
-              onChange={(data) => {
-                //@ts-ignore
-                const priority = transformListItem(data, 'id')
-                handleFilter('priority', !isEmpty(priority) ? priority : null)
-              }}
-              node={
+            <ControllerFilter
+              control={controlFilter}
+              title="Priority"
+              keyName={'priority'}
+              Node={({ onFilter, value }) => (
                 <PriorityAutoComplete
                   multiple={false}
-                  value={
-                    priority && getValueOfObj({ key: 'value', obj: priority })
-                  }
-                  onChange={(data) => {
-                    const priority = getValueOfObj({
-                      key: 'value',
-                      obj: data as IOption,
-                    })
-                    handleFilter('priority', Number(priority))
-                    setPriority(data as IOption)
-                  }}
+                  value={value}
+                  onChange={(data) => onFilter(data)}
                   open={true}
                   disableCloseOnSelect={true}
                   textFieldProps={{
@@ -226,65 +182,15 @@ const JobsList = () => {
                     autoFocus: true,
                   }}
                 />
-              }
+              )}
             />
-
-            {/* <ButtonFieldFilter<baseInstance>
-              inputLabel={'Skill'}
-              listSelected={skills}
-              setListSelected={setSkills}
-              showLabel={'name'}
-              onChange={(data) => {
-                //@ts-ignore
-                const ids = transformListItem(data, 'id')
-                handleFilter('skill', !isEmpty(ids) ? ids : null)
-              }}
-              node={
-                <SkillAutoComplete
-                  name="skill"
-                  multiple={true}
-                  value={transformListItem(skills, 'id')}
-                  onCustomChange={(data) => {
-                    console.log("🚀 ~ JobsList ~ data:", data)
-                    setSkills(data)
-                  }}
-                  onChange={(value) => {
-                    handleFilter('skill', !isEmpty(value) ? value : null)
-                  }}
-                  open={true}
-                  disableCloseOnSelect={true}
-                  textFieldProps={{
-                    label: 'Skill',
-                    autoFocus: true,
-                  }}
-                />
-              }
-            /> */}
-          </DivFilter>
-
+          </FlexBox>
           <DivHeaderWrapper>
-            <CustomTextField
-              id="outlined-basic"
-              label={'Search by Job title'}
-              variant="outlined"
-              size="small"
-              sx={{ width: '400px', fontSize: '13px' }}
-              onKeyUp={handleFreeWorld}
-              onChange={(e) => setSearchField(e.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton>
-                      <SearchIcon
-                        sx={{ fontSize: '16px' }}
-                        onClick={() => {
-                          handleFreeWord('name', searchField)
-                        }}
-                      />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+            <SearchInput
+              ref={searchRef}
+              onEnter={handleSearch}
+              placeholder="Search by Team's name"
+              onSearch={handleSearch}
             />
             <ButtonAdd
               Icon={Add}

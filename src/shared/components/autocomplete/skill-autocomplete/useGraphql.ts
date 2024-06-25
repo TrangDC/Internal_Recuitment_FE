@@ -5,7 +5,7 @@ const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.SKILL
 
   const getAllSkill = buildQuery({
-    operation: 'GetAllSkills',
+    operation: 'SelectionSkills',
     options: {
       type: 'query',
     },

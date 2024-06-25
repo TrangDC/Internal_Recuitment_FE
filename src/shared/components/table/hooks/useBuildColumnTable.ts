@@ -10,7 +10,6 @@ const useBuildColumnTable = <T extends object>({
   actions,
   columns,
 }: IuseBuildColumnTable<T>) => {
-
   return {
     colummTable: columns(actions),
   }

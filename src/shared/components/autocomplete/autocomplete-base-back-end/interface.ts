@@ -18,14 +18,14 @@ export interface AutocompleteValueBackEndCommonProps<
 > {
   value: string[] | string
   name: string
-  onChange: (value: CustomAutocompleteValueBackEnd2<Multiple>) => void
+  onChange?: (value: CustomAutocompleteValueBackEnd2<Multiple>) => void
   onCustomChange?: (value: CustomAutocompleteValueBackEnd<T, Multiple>) => void
   multiple?: Multiple
   textFieldProps: TextFieldProps
   filter?: BaseRecord
-  disabled?:boolean
+  disabled?: boolean
   getOptionLabel?: (option: T) => ReactNode
-  disableCloseOnSelect?:boolean
+  disableCloseOnSelect?: boolean
   open?: boolean
 }
 
@@ -38,16 +38,16 @@ export interface IAutocompleteBackEndProps<
   selectedKey: keyof T
   value: string[] | string
   textFieldProps: TextFieldProps
-  onChange: (value: CustomAutocompleteValueBackEnd2<Multiple>) => void
+  onChange?: (value: CustomAutocompleteValueBackEnd2<Multiple>) => void
   multiple?: Multiple
   queryKey: string[]
   queryString: IBuildQueryReturn
   onCustomChange?: (value: CustomAutocompleteValueBackEnd<T, Multiple>) => void
   filter?: BaseRecord
-  disabled?:boolean
+  disabled?: boolean
   getOptionLabel?: (option: T) => ReactNode
-  disableCloseOnSelect?:boolean
-  open?: boolean,
+  disableCloseOnSelect?: boolean
+  open?: boolean
 }
 export type Leaves<T> = T extends object
   ? {

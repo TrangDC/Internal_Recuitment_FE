@@ -3,11 +3,14 @@ import { useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { IBuildQueryReturn, fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
-import { removeNonExistInObj } from 'shared/utils/utils'
+import { ISearchData } from './useSearchList'
 interface IuseCustomTable {
   buildQuery: IBuildQueryReturn
-  variables: any
+  search?: ISearchData
+  filters?: BaseRecord
   queryKey: string
+  perPage?: number
+  orderBy?: ISorting
 }
 
 interface IPagination {
@@ -26,10 +29,6 @@ export interface IuseCustomTableReturn {
   sortData: []
   handleChangePage: (page: number) => void
   handleSorTable: (id: string) => void
-  handleFreeWord: (key: string, value: string) => void
-  handleFreeWordMultiple: (freeWords: BaseRecord) => void
-  handleFilterMultiple: (filter: BaseRecord) => void
-  handleFilter: (key: string, value: any) => void
   totalPage: number
   refetch: () => void
   variables: {
@@ -40,8 +39,11 @@ export interface IuseCustomTableReturn {
 
 const useCustomTable = ({
   buildQuery,
-  variables,
+  filters,
+  perPage = 10,
+  search,
   queryKey,
+  orderBy,
 }: IuseCustomTable): IuseCustomTableReturn => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -49,24 +51,17 @@ const useCustomTable = ({
   const initialPage = params.get('page') ? Number(params.get('page')) : 1
   const initialPerPage = params.get('perPage')
     ? Number(params.get('perPage'))
-    : 10
+    : perPage
   const [pagination, setPagination] = useState<IPagination>({
     page: initialPage,
     perPage: initialPerPage,
   })
   const [sorting, setSorting] = useState<ISorting>(
-    variables?.orderBy || {
+    orderBy || {
       direction: 'DESC',
       field: 'created_at',
     }
   )
-  const [freeWord, setFreeWord] = useState<Record<string, any>>(
-    variables?.freeWord || {}
-  )
-  const [filter, setFilter] = useState<Record<string, any>>(
-    variables?.filter || {}
-  )
-
   const { isLoading, error, data, refetch } = useQuery({
     // gcTime: 0,
     queryKey: [
@@ -74,21 +69,16 @@ const useCustomTable = ({
       pagination.page,
       pagination.perPage,
       sorting,
-      freeWord,
-      filter,
+      filters,
+      search,
     ],
     queryFn: async () =>
       fetchGraphQL<BaseRecord>(buildQuery.query, {
-        ...variables,
         orderBy: {
           ...sorting,
         },
-        freeWord: {
-          ...freeWord,
-        },
-        filter: {
-          ...filter,
-        },
+        filter: filters,
+        freeWord: search,
         pagination: {
           page: pagination.page,
           perPage: pagination.perPage,
@@ -110,16 +100,12 @@ const useCustomTable = ({
   }
 
   function handleSorTable(id: string) {
-    const sortDefault = variables?.orderBy?.field
-      ? variables?.orderBy?.field
-      : 'created_at'
+    const sortDefault = orderBy?.field ? orderBy?.field : 'created_at'
     //@ts-ignore
     setSorting((prev) => {
       if (id === prev.field) {
         const isDescending = prev.direction === 'DESC'
-        const fieldSort = isDescending
-          ? variables?.orderBy?.field || sortDefault
-          : id
+        const fieldSort = isDescending ? orderBy?.field || sortDefault : id
 
         let directionSort =
           fieldSort === sortDefault
@@ -145,32 +131,12 @@ const useCustomTable = ({
     })
   }
 
-  function handleFreeWord(key: string, value: string) {
-    setFreeWord((prev) => ({ ...prev, [key]: value }))
-  }
-
-  function handleFreeWordMultiple(freeWord: BaseRecord) {
-    setFreeWord((prev) => ({ ...prev, ...freeWord }))
-  }
-
-  function handleFilter(key: string, value: string) {
-    setFilter((prev) => removeNonExistInObj({ ...prev, [key]: value }))
-  }
-
-  function handleFilterMultiple(filter: BaseRecord) {
-    setFilter((prev) => ({...prev, ...filter}))
-  }
-
   return {
     isLoading,
     error,
     sortData,
     handleChangePage,
     handleSorTable,
-    handleFreeWord,
-    handleFreeWordMultiple,
-    handleFilterMultiple,
-    handleFilter,
     totalPage,
     refetch,
     variables: {

@@ -5,7 +5,7 @@ const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.JOB
 
   const getAllHiringJobs = buildQuery({
-    operation: 'GetAllHiringJobs',
+    operation: 'SelectionHiringJobs',
     options: {
       type: 'query',
     },

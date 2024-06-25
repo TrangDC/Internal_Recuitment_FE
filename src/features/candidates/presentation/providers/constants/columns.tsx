@@ -4,10 +4,10 @@ import {
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
 import { Candidate } from 'features/candidates/domain/interfaces'
-import { t } from 'i18next';
+import { t } from 'i18next'
 import { LinkText, StyleTinyText } from 'shared/styles'
 import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 
 const columnHelper = createColumnHelper<Candidate>()
 
@@ -16,7 +16,11 @@ export const columns = (
 ): ColumnDef<Candidate, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <LinkText to={`/dashboard/candidate-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
+    cell: (info) => (
+      <LinkText to={`/dashboard/candidate-detail/${info.row.original.id}`}>
+        {info.getValue()}
+      </LinkText>
+    ),
     header: () => <span>{t('name')}</span>,
     size: 400,
   }),
@@ -39,7 +43,7 @@ export const columns = (
     enableSorting: false,
     size: 200,
     cell: (info) => {
-      return <ChipCandidate status={info.row.original.status}/>
+      return <ChipCandidate status={info.row.original.status} />
     },
   }),
   columnHelper.accessor((row) => row.reference_user, {
@@ -60,7 +64,9 @@ export const columns = (
     size: 200,
     cell: (info) => {
       return (
-        <StyleTinyText>{info.getValue() && dayjs(info.getValue()).format('DD/MM/YYYY')}</StyleTinyText>
+        <StyleTinyText>
+          {info.getValue() && dayjs(info.getValue()).format('DD/MM/YYYY')}
+        </StyleTinyText>
       )
     },
   }),
@@ -73,7 +79,7 @@ export const columns = (
   //     return <ChipCandidate status={info.row.original.status}/>
   //   },
   // }),
-  columnHelper.accessor('created_at', {
+  columnHelper.accessor('id', {
     header: () => <span>{t('action')}</span>,
     size: 100,
     enableSorting: false,
@@ -93,4 +99,3 @@ export const columns = (
     },
   }),
 ]
-
