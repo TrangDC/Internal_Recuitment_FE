@@ -2,7 +2,6 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import useUpdateCandidate from '../../providers/hooks/useUpdateCandidate'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
@@ -11,7 +10,10 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppDateField from 'shared/components/input-fields/DateField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import CandidateSourceAutoComplete, { CANDIDATE_SOURCE_STATE, TypeCandidateSource } from 'shared/components/autocomplete/candidate-source-auto-complete'
+import CandidateSourceAutoComplete, {
+  CANDIDATE_SOURCE_STATE,
+  TypeCandidateSource,
+} from 'shared/components/autocomplete/candidate-source-auto-complete'
 import NationalityAutoComplete from 'shared/components/autocomplete/nationality-auto-complete'
 import CandidateBySource from '../CreateCandidateModal/components/CandidateBySource'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
@@ -22,15 +24,9 @@ interface IEditCandidateModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  rowData?: Candidate
 }
 
-function EditCandidateModal({
-  open,
-  setOpen,
-  rowData,
-  id,
-}: IEditCandidateModal) {
+function EditCandidateModal({ open, setOpen, id }: IEditCandidateModal) {
   const { actions, control, isPending, isValid, isGetting, watch } =
     useUpdateCandidate({
       id: id,
@@ -42,7 +38,7 @@ function EditCandidateModal({
   const { callbackSubmit, resetSourceValue } = actions
   const translation = useTextTranslation()
 
-  const candidate_source = watch('reference_type');
+  const candidate_source = watch('reference_type')
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -51,8 +47,8 @@ function EditCandidateModal({
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
-      <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-        <FlexBox gap={2}>
+        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+          <FlexBox gap={2}>
             <FormControl fullWidth>
               <Controller
                 control={control}
@@ -234,7 +230,8 @@ function EditCandidateModal({
                       name={field.name}
                       textFieldProps={{
                         label: `Recruiter`,
-                        required: candidate_source === CANDIDATE_SOURCE_STATE.REC
+                        required:
+                          candidate_source === CANDIDATE_SOURCE_STATE.REC,
                       }}
                     />
                     <HelperTextForm
