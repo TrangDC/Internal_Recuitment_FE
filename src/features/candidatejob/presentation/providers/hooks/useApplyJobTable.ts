@@ -1,14 +1,13 @@
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
 import useCustomTable from 'shared/components/table/hooks/useCustomTable'
+import { IUseCustomCommonTable } from 'shared/components/table/interface'
 
-const useApplyJobTable = (candidate_id: string) => {
+const useApplyJobTable = (props: IUseCustomCommonTable) => {
   const { getAllCandidateJob, queryKey } = useGraphql()
   const useTableReturn = useCustomTable({
     buildQuery: getAllCandidateJob,
-    variables: {
-        filter: {candidate_id: candidate_id}
-    },
     queryKey,
+    ...props,
   })
 
   return {

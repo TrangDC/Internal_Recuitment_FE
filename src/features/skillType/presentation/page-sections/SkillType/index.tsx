@@ -1,33 +1,21 @@
-import { IconButton, InputAdornment } from '@mui/material'
 import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Add from 'shared/components/icons/Add'
 import { columns } from '../../providers/constants/columns'
 import useSkillTypeTable from '../../providers/hooks/useSkillTypeTable'
 import useActionTable from '../../providers/hooks/useActionTable'
-import SearchIcon from 'shared/components/icons/SearchIcon'
-import { CustomTextField } from 'shared/components/form/styles'
-import {
-  DivContainerWrapper,
-  DivHeaderWrapper,
-} from '../../providers/styles'
+import { DivContainerWrapper, DivHeaderWrapper } from '../../providers/styles'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import EditIcon from 'shared/components/icons/EditIcon'
 import { useNavigate } from 'react-router-dom'
-import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import {
-  KeyboardEventHandler,
-  useState,
-} from 'react'
 import useTextTranslation from 'shared/constants/text'
-import {
-  BoxWrapperOuterContainer,
-  HeadingWrapper,
-} from 'shared/styles'
+import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
-import { CreateSkillType, DeleteSkillType, EditSkillType} from '../index'
+import { CreateSkillType, DeleteSkillType, EditSkillType } from '../index'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
+import useFilterSkillType from '../../providers/hooks/useFilterSkillType'
+import SearchInput from 'shared/components/table/components/SearchInput'
 
 const SkillType = () => {
   const {
@@ -43,16 +31,16 @@ const SkillType = () => {
   } = useActionTable<Candidate>()
 
   const navigate = useNavigate()
+  const { useSearchListReturn } = useFilterSkillType()
+  const { handleSearch, search, searchRef } = useSearchListReturn
 
   const { useTableReturn } = useSkillTypeTable({
-    filter: {
+    filters: {
       is_black_list: false,
     },
+    search,
   })
-  const { handleFreeWordMultiple} = useTableReturn
   const translation = useTextTranslation()
-  const [searchField, setSearchField] = useState('')
-
   const { colummTable } = useBuildColumnTable({
     actions: [
       // {
@@ -83,38 +71,16 @@ const SkillType = () => {
     columns,
   })
 
-  const handleFreeWorld: KeyboardEventHandler<HTMLInputElement> = (event) => {
-    if (event.keyCode === 13) {
-      handleFreeWordMultiple({name: searchField, phone: searchField, email: searchField})
-    }
-  }
-
   return (
     <DivContainerWrapper>
       <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
         <HeadingWrapper>
           <DivHeaderWrapper>
-            <CustomTextField
-              label="Search by name"
-              variant="outlined"
-              size="small"
-              sx={{ width: '400px', fontSize: '13px' }}
-              onKeyUp={handleFreeWorld}
-              onChange={(e) => setSearchField(e.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton>
-                      <SearchIcon
-                        sx={{ fontSize: '16px' }}
-                        onClick={() => {
-                          handleFreeWordMultiple({name: searchField, phone: searchField, email: searchField})
-                        }}
-                      />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+            <SearchInput
+              ref={searchRef}
+              onEnter={handleSearch}
+              placeholder="Search by name"
+              onSearch={handleSearch}
             />
             <FlexBox gap={'10px'}>
               <ButtonAdd

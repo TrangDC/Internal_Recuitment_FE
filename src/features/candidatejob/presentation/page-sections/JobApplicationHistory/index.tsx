@@ -19,7 +19,11 @@ import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
-import { ApplyJobModal, ChangeStatusModal, DeleteCandidateJobModal } from '../index'
+import {
+  ApplyJobModal,
+  ChangeStatusModal,
+  DeleteCandidateJobModal,
+} from '../index'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 
 const JobApplicationHistory = ({
@@ -41,7 +45,9 @@ const JobApplicationHistory = ({
   } = useActionTable<CandidateJob>()
 
   const { id } = useParams()
-  const { useTableReturn } = useApplyJobTable(id as string)
+  const { useTableReturn } = useApplyJobTable({
+    filters: { candidate_id: id },
+  })
   const navigate = useNavigate()
 
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
