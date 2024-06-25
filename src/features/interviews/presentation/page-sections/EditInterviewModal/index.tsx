@@ -6,7 +6,6 @@ import { SpanText, TinyText } from 'shared/components/form/styles'
 import { Job } from 'features/jobs/domain/interfaces'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
-import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complete'
 import { Fragment } from 'react/jsx-runtime'
 import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppButton from 'shared/components/buttons/AppButton'
@@ -15,7 +14,7 @@ import useEditInterview from '../../providers/hooks/useEditInterview'
 import dayjs from 'dayjs'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
-import {  useMemo } from 'react'
+import { useMemo } from 'react'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 
 interface IEditInterviewModal {
@@ -34,19 +33,19 @@ function EditInterviewModal({
   onSuccess,
 }: IEditInterviewModal) {
   const { actions, control, isValid, isPending, isGetting, watch, trigger } =
-  useEditInterview({
-    id: id_interview,
-    onSuccess: () => {
-      setOpen(false)
-      onSuccess?.()
-    },
-  })
+    useEditInterview({
+      id: id_interview,
+      onSuccess: () => {
+        setOpen(false)
+        onSuccess?.()
+      },
+    })
 
-  const { callbackSubmit } = actions;
-  const interview_date = watch('interview_date');
+  const { callbackSubmit } = actions
+  const interview_date = watch('interview_date')
 
   const date_feature = useMemo(() => {
-    return dayjs().isBefore(dayjs(interview_date));
+    return dayjs().isBefore(dayjs(interview_date))
   }, [interview_date])
 
   return (
@@ -126,7 +125,7 @@ function EditInterviewModal({
                       format="dd/MM/yyyy"
                       value={dayjs(field.value)}
                       onChange={(value) => {
-                        if(value) {
+                        if (value) {
                           trigger('start_from')
                         }
 
@@ -162,7 +161,9 @@ function EditInterviewModal({
                           }}
                           views={['hours', 'minutes']}
                           ampm={false}
-                          minTime={date_feature ? dayjs().hour(0).minute(0) : dayjs()}
+                          minTime={
+                            date_feature ? dayjs().hour(0).minute(0) : dayjs()
+                          }
                           textFieldProps={{
                             required: true,
                           }}
@@ -190,7 +191,9 @@ function EditInterviewModal({
                           onChange={field.onChange}
                           views={['hours', 'minutes']}
                           ampm={false}
-                          minTime={date_feature ? dayjs().hour(0).minute(0) : dayjs()}
+                          minTime={
+                            date_feature ? dayjs().hour(0).minute(0) : dayjs()
+                          }
                           textFieldProps={{
                             required: true,
                           }}
