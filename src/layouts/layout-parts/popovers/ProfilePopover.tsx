@@ -116,7 +116,7 @@ const ProfilePopover: FC = () => {
         }
       >
         <Box pt={1}>
-          <StyledSmall onClick={() => handleMenuItem('/dashboard/profile')}>
+          {/* <StyledSmall onClick={() => handleMenuItem('/dashboard/profile')}>
             Set Status
           </StyledSmall>
 
@@ -132,8 +132,7 @@ const ProfilePopover: FC = () => {
             Manage Team
           </StyledSmall>
 
-          <Divider sx={{ my: 1 }} />
-
+          <Divider sx={{ my: 1 }} /> */}
           <StyledSmall
             onClick={() => {
               handleLogOut()

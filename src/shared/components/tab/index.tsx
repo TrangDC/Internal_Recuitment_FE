@@ -44,10 +44,12 @@ const TabWrapper = styled(Tab)(({ theme }) => ({
 }))
 
 const TabPanelStyle = styled(TabPanel)(({ theme }) => ({
-  borderRadius: '8px',
+  borderBottomLeftRadius: '8px',
+  borderBottomRightRadius: '8px',
+  borderTopRightRadius: '8px',
   overflow: 'hidden',
   boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
-  height: '100%'
+  height: '100%',
 }))
 
 const TabListWrapper = styled(TabList)(({ theme }) => ({
@@ -60,16 +62,16 @@ const TabListWrapper = styled(TabList)(({ theme }) => ({
     height: 'auto',
 
     '& .MuiButtonBase-root': {
-      borderRight: '1px solid #E3E6EB'
+      borderRight: '1px solid #E3E6EB',
     },
 
     '& .MuiTab-root': {
-      backgroundColor: "white",
+      backgroundColor: 'white',
     },
 
     '& .Mui-selected ': {
-      backgroundColor: '#F1F9FF'
-    }
+      backgroundColor: '#F1F9FF',
+    },
   },
 
   '&.vertical .MuiTabs-indicator': {
@@ -104,7 +106,12 @@ const TabCustomize = ({ renderItem, TabListProps }: TabProps) => {
   return (
     <TabContext value={value}>
       <FlexBox flexDirection={orientationVertical ? 'row' : 'column'}>
-        <Box sx={{ width: 'fit-content', boxShadow: "0px 2px 4px 0px rgba(96, 97, 112, 0.16)" }}>
+        <Box
+          sx={{
+            width: 'fit-content',
+            boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
+          }}
+        >
           <TabListWrapper
             onChange={handleChange}
             className={`${orientationVertical && 'vertical'}`}

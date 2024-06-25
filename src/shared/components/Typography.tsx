@@ -264,6 +264,9 @@ export const LinkText: React.FC<BoxProps & Props> = (props) => {
       ellipsis={ellipsis ? 1 : 0}
       className={clsx({ [className || '']: true })}
       color={'primary.600'}
+      sx={{
+        cursor: 'pointer',
+      }}
       {...others}
     >
       {children}

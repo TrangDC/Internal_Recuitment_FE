@@ -1,7 +1,7 @@
 import { Chip, ChipProps, styled } from '@mui/material'
 
 const ChipStyled = styled(Chip)(({ theme }) => ({
-  backgroundColor: theme.palette.primary[100],
+  backgroundColor: theme.palette.primary[50],
 
   '&.MuiButtonBase-root span': {
     fontSize: '14px',

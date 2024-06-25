@@ -314,7 +314,6 @@ const Candidates = () => {
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
-          rowData={rowData.current}
         />
       )}
       {openDelete && (

@@ -9,7 +9,13 @@ import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useEffect, useMemo, useState } from 'react'
 import PreviewCV from '../../providers/components/previewCV'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
-import { ButtonStatus, DivInformation, DivItemInformation } from '../../providers/styles'
+import {
+  ButtonStatus,
+  DivInformation,
+  DivItemInformation,
+} from '../../providers/styles'
+import { LinkText } from 'shared/components/Typography'
+import { useNavigate } from 'react-router-dom'
 
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
@@ -18,7 +24,9 @@ interface JobDetailInformationProps {
 const JobDetailInformation = ({
   jobApplicationDetail,
 }: JobDetailInformationProps) => {
+  const navigate = useNavigate()
   const attachments = jobApplicationDetail?.attachments || []
+  const candidateId = jobApplicationDetail?.candidate_id
   const [url, setUrl] = useState('')
   const hiddenChangStatus = useMemo(() => {
     const disabledStatuses = [
@@ -70,7 +78,15 @@ const JobDetailInformation = ({
         <PreviewCV pageNumber={1} pdfUrl={url} />
         <DivItemInformation>
           <SpanText>Full name</SpanText>
-          <TinyText>{jobApplicationDetail?.candidate?.name}</TinyText>
+          <LinkText
+            fontSize={13}
+            lineHeight={'15.85px'}
+            onClick={() =>
+              navigate(`/dashboard/candidate-detail/${candidateId}`)
+            }
+          >
+            {jobApplicationDetail?.candidate?.name}
+          </LinkText>
         </DivItemInformation>
         <DivItemInformation>
           <SpanText>Applied on</SpanText>
@@ -94,7 +110,6 @@ const JobDetailInformation = ({
         flexDirection={'column'}
         width={'100%'}
       >
-
         <DivItemInformation>
           {hiddenChangStatus && (
             <ButtonStatus
