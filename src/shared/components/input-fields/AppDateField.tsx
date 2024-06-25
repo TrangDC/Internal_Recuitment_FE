@@ -22,6 +22,7 @@ const AppDateField = (props: CustomDatePickerProps) => {
           textField: { size: 'small', ...props.textFieldProps },
         }}
         sx={{
+          backgroundColor: 'white',
           '& .MuiOutlinedInput-input': {
             fontWeight: 500,
             color: theme.palette.text.primary,

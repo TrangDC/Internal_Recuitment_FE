@@ -20,7 +20,6 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
-import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 
 interface ICreateJobModal {
   open: boolean

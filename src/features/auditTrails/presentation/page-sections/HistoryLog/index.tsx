@@ -19,9 +19,9 @@ interface Props {
 }
 
 const HistoryLogAuditTrails = ({ module }: Props) => {
-  const [searchField, setSearchField] = useState('');
-  const [fromDate, setFromDate] = useState<Date | null>();
-  const [toDate, setToDate] = useState<Date | null>();
+  const [searchField, setSearchField] = useState('')
+  const [fromDate, setFromDate] = useState<Date | null>()
+  const [toDate, setToDate] = useState<Date | null>()
 
   const refLog = useRef<{
     handleMultipleFilter: (record: BaseRecord) => void
@@ -30,7 +30,7 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
 
   const handleChangeDate = (record: BaseRecord) => {
     const handleFilter = refLog?.current?.['handleMultipleFilter']
-    handleFilter?.(record);
+    handleFilter?.(record)
   }
 
   const handleSearch = (name: string, value: string) => {
@@ -49,10 +49,13 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
   }
 
   useEffect(() => {
-    const start_form = fromDate ? fromDate : dayjs('2023-01-01').toDate();
-    const end_date = toDate ? toDate : dayjs().toDate();
+    const start_form = fromDate ? fromDate : dayjs('2023-01-01').toDate()
+    const end_date = toDate ? toDate : dayjs().toDate()
 
-    handleChangeDate({fromDate: convertDateToISOString(start_form), toDate: convertDateToISOString(end_date)})
+    handleChangeDate({
+      fromDate: convertDateToISOString(start_form),
+      toDate: convertDateToISOString(end_date),
+    })
   }, [fromDate, toDate])
 
   return (
@@ -62,11 +65,12 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
           <AppTextField
             label={'Search'}
             size="small"
-            sx={{ width: '203px',
+            sx={{
+              width: '203px',
 
-            '& .MuiInputBase-root': {
-              paddingRight: 0,
-            }
+              '& .MuiInputBase-root': {
+                paddingRight: 0,
+              },
             }}
             onKeyUp={handleFreeWord}
             value={searchField}
@@ -94,21 +98,21 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
             }}
             format="dd/MM/yyyy"
             sx={{
-              width: '160px'
+              width: '160px',
             }}
             textFieldProps={{
               fullWidth: true,
               size: 'small',
             }}
           />
-           <AppDateField
+          <AppDateField
             label={'To date'}
             onChange={(value) => {
               setToDate(value)
             }}
             format="dd/MM/yyyy"
             sx={{
-              width: '160px'
+              width: '160px',
             }}
             textFieldProps={{
               fullWidth: true,

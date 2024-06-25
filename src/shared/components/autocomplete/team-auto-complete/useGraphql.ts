@@ -5,7 +5,7 @@ const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.TEAM
 
   const getAllTeams = buildQuery({
-    operation: 'GetAllTeams',
+    operation: 'SelectionTeams',
     options: {
       type: 'query',
     },

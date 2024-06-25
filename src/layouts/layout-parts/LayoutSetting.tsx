@@ -1,60 +1,60 @@
-import { Clear } from "@mui/icons-material";
-import { Button, Divider, Drawer, IconButton, Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import FlexBox from "shared/components/flexbox/FlexBox";
-import { H5 } from "shared/components/Typography";
-import useSettings from "shared/hooks/useSettings";
-import { Fragment, useState } from "react";
-import { themeSettingsTypes } from "shared/theme";
+import { Clear } from '@mui/icons-material'
+import { Button, Divider, Drawer, IconButton, Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import { H5 } from 'shared/components/Typography'
+import useSettings from 'shared/hooks/useSettings'
+import { Fragment, useState } from 'react'
+import { themeSettingsTypes } from 'shared/theme'
 
 const CustomDrawer = styled(Drawer)(({ theme }) => ({
   flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  width: "250px",
-  "& .MuiPaper-root": {
-    transition: theme.transitions.create("width", {
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  width: '250px',
+  '& .MuiPaper-root': {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    overflow: "initial",
-    width: "250px",
+    overflow: 'initial',
+    width: '250px',
     boxShadow: theme.shadows[2],
   },
-}));
+}))
 
 const layoutName = {
-  position: "absolute",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100%",
-  width: "100%",
-  borderRadius: "8px",
-  background: "rgba(0,0,0,0.3)",
+  position: 'absolute',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
+  width: '100%',
+  borderRadius: '8px',
+  background: 'rgba(0,0,0,0.3)',
   zIndex: 12,
-};
+}
 const LayoutBox = styled(Box)(({ theme }) => ({
-  width: "100%",
-  cursor: "pointer",
-  overflow: "hidden",
-  borderRadius: "8px",
-  marginBottom: "20px",
-  position: "relative",
+  width: '100%',
+  cursor: 'pointer',
+  overflow: 'hidden',
+  borderRadius: '8px',
+  marginBottom: '20px',
+  position: 'relative',
   boxShadow: theme.shadows[1],
-  "& .layout-name": { display: "none" },
-  "&:hover .layout-name": layoutName,
-  "& .selected": layoutName,
-}));
+  '& .layout-name': { display: 'none' },
+  '&:hover .layout-name': layoutName,
+  '& .selected': layoutName,
+}))
 
 const LayoutSetting = () => {
-  const [open, setOpen] = useState(false);
-  const { settings, saveSettings } = useSettings();
+  const [open, setOpen] = useState(false)
+  const { settings, saveSettings } = useSettings()
 
   const changeLayout = (value: string) => {
-    setOpen(false);
-    saveSettings({ ...settings, activeLayout: value } as themeSettingsTypes);
-  };
+    setOpen(false)
+    saveSettings({ ...settings, activeLayout: value } as themeSettingsTypes)
+  }
 
   return (
     <Fragment>
@@ -63,14 +63,14 @@ const LayoutSetting = () => {
         variant="outlined"
         color="warning"
         sx={{
-          top: "40%",
+          top: '40%',
           right: -40,
-          height: "30px",
-          position: "fixed",
-          bgcolor: "warning.main",
-          borderRadius: "0 0 5px 5px",
-          transform: "rotate(90deg)",
-          "&:hover": { bgcolor: "warning.main" },
+          height: '30px',
+          position: 'fixed',
+          bgcolor: 'warning.main',
+          borderRadius: '0 0 5px 5px',
+          transform: 'rotate(90deg)',
+          '&:hover': { bgcolor: 'warning.main' },
         }}
       >
         Layouts
@@ -91,15 +91,15 @@ const LayoutSetting = () => {
 
         <Divider />
 
-        <FlexBox sx={{ flexDirection: "column", p: "20px" }}>
+        <FlexBox sx={{ flexDirection: 'column', p: '20px' }}>
           {demoLayouts.map((item) => (
             <LayoutBox key={item.name} onClick={() => changeLayout(item.name)}>
               <Box
-                sx={{ overflow: "hidden" }}
+                sx={{ overflow: 'hidden' }}
                 className={
                   settings.activeLayout === item.name
-                    ? "layout-name selected"
-                    : "layout-name"
+                    ? 'layout-name selected'
+                    : 'layout-name'
                 }
               >
                 <Button variant="contained">{item.title}</Button>
@@ -111,15 +111,15 @@ const LayoutSetting = () => {
         </FlexBox>
       </CustomDrawer>
     </Fragment>
-  );
-};
+  )
+}
 
 const demoLayouts = [
   {
-    name: "layout3",
-    title: "Layout V3",
-    imgUrl: "/static/layouts/layout-v3.png",
+    name: 'layout3',
+    title: 'Layout V3',
+    imgUrl: '/static/layouts/layout-v3.png',
   },
-];
+]
 
-export default LayoutSetting;
+export default LayoutSetting

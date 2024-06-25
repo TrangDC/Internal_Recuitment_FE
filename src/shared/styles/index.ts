@@ -6,7 +6,6 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { TinyText } from 'shared/components/form/styles'
 
 export const BoxWrapperOuterContainer = styled(Box)(({ theme }) => ({
-  borderRadius: '8px',
   boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
   overflow: 'hidden',
   marginTop: '20px',
@@ -20,8 +19,6 @@ export const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   borderWidth: '0px 0px 1px 0px',
   borderStyle: 'solid',
   borderColor: '#E3E6EB',
-  borderTopRightRadius: '8px',
-  borderTopLeftRadius: '8px',
   [theme.breakpoints.down(453)]: {
     '& .MuiButton-root': { order: 2 },
     '& .MuiTabs-root': {

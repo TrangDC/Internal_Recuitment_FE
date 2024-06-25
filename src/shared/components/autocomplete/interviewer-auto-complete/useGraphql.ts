@@ -4,7 +4,7 @@ import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.INTERVIEWER
   const getAllUsers = buildQuery({
-    operation: 'GetAllUsers',
+    operation: 'SelectionUsers',
     options: {
       type: 'query',
     },

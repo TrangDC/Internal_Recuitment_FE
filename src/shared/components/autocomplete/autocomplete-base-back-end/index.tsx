@@ -77,7 +77,9 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
   return (
     <Autocomplete<T, Multiple>
       {...props}
-      disableCloseOnSelect={disableCloseOnSelect ? disableCloseOnSelect : multiple}
+      disableCloseOnSelect={
+        disableCloseOnSelect ? disableCloseOnSelect : multiple
+      }
       size="small"
       value={(getValue as any) ?? null}
       options={options}
@@ -124,6 +126,7 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
           color: '#121625',
           backgroundColor: '#F1F9FF',
         },
+        backgroundColor: 'white',
       }}
     />
   )

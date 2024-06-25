@@ -9,7 +9,6 @@ import {
 } from '@tanstack/react-table'
 import {
   Box,
-  Paper,
   Skeleton,
   Table,
   TableBody,
@@ -106,13 +105,11 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
   return (
     <Box
       sx={{
-        borderRadius: '8px',
         overflow: 'hidden',
-        border: '1px solid #E3E6EB',
         width: '100%',
       }}
     >
-      <TableContainer component={Paper}>
+      <TableContainer>
         <Scrollbar>
           <Table size="small" aria-label="a dense table">
             <TableHead>
@@ -177,7 +174,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                             scope="row"
                             key={cell.column.id}
                             id={`${cell.column.id}`}
-                            style={{...styleColumn}}
+                            style={{ ...styleColumn }}
                           >
                             {flexRender(
                               cell.column.columnDef.cell,

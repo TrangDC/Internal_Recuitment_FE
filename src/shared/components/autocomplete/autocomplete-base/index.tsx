@@ -14,7 +14,15 @@ export const AutocompleteBase = <Multiple extends boolean = false>(
     multiple?: Multiple
   }
 ) => {
-  const { multiple, textFieldProps, value, onChange, options, disabled, list_disabled = [] } = props
+  const {
+    multiple,
+    textFieldProps,
+    value,
+    onChange,
+    options,
+    disabled,
+    list_disabled = [],
+  } = props
   let getValue: IOption[] | IOption | undefined
   if (multiple) {
     getValue = options.filter((o) => value.includes(o.value.toString()))
@@ -59,6 +67,9 @@ export const AutocompleteBase = <Multiple extends boolean = false>(
           {option ? option.label : ''}
         </li>
       )}
+      sx={{
+        backgroundColor: 'white',
+      }}
     />
   )
 }
