@@ -21,12 +21,14 @@ const GeneralInformationField = ({
   const { id } = useParams()
 
   const translation = useTextTranslation()
-  const { handleOpenEdit, openEdit, rowId, rowData, setOpenEdit } =
+  const { handleOpenEdit, openEdit, rowId, setOpenEdit } =
     useActionTable<Candidate>()
 
   const handleCopyClipBoard = (content: string) => {
     navigator.clipboard.writeText(content)
-    ToastCopyClipBoard()
+    ToastCopyClipBoard({
+      type: 'success',
+    })
   }
 
   return (

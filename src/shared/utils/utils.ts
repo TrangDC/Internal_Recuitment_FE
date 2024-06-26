@@ -1,6 +1,7 @@
 import { formatISO } from 'date-fns'
 import _, { isEmpty } from 'lodash'
 import { FormState } from 'react-hook-form'
+import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
 import { BaseRecord } from 'shared/interfaces'
 
 export const searchByName = (listData: any[], searchValue: string) => {
@@ -193,10 +194,52 @@ export function formatCurrency(
   return number.toLocaleString(locale)
 }
 
-export const removeStatusAttachment = (
-  attachments: any[] | undefined
-) => {
+export const removeStatusAttachment = (attachments: any[] | undefined) => {
   let result = attachments && Array.isArray(attachments) ? attachments : []
 
   return transformListArray(result, ['document_id', 'document_name'])
+}
+
+export const handleCopyClipBoard = (url: string, content: string) => {
+  const htmlLink = `<a href="${url}">${content}</a>`
+  const type = 'text/html'
+  const tempTextArea = document.createElement('textarea')
+  tempTextArea.value = htmlLink
+  const blob = new Blob([htmlLink], { type })
+  const data = [new ClipboardItem({ [type]: blob })]
+  navigator.clipboard
+    .write(data)
+    .then(() => {
+      ToastCopyClipBoard({
+        type: 'success',
+      })
+    })
+    .catch(() => {
+      ToastCopyClipBoard({
+        type: 'error',
+        content: 'Copy to clipboard failed',
+      })
+    })
+}
+
+export const getDomain = () => {
+  const currentUrl = window.location.href
+  const url = new URL(currentUrl)
+  const domain = `${url.protocol}//${url.hostname}${url.port ? `:${url.port}` : ''}`
+  return domain
+}
+
+export async function previewFile(files: string) {
+  const response = await fetch(files)
+  if (response.ok) {
+    const blob = await response.blob()
+    console.log('blob', blob)
+    const fileType = blob.type
+    const fileUrl = URL.createObjectURL(blob)
+    let viewerUrl
+
+    viewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${fileUrl}`
+
+    window.open(viewerUrl, '_blank')
+  }
 }

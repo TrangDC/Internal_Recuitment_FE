@@ -54,6 +54,9 @@ const useGraphql = () => {
               name
             }
           }
+          candidate {
+            name
+          }
           created_at
           updated_at
         }
@@ -316,6 +319,23 @@ const useGraphql = () => {
     },
   })
 
+  const updateCandidateJobAttachment = GraphQLClientService.buildQuery({
+    operation: 'UpdateCandidateJobAttachment',
+    options: {
+      type: 'mutation',
+    },
+    node: `        
+      data {
+         id
+      }
+    `,
+    params: {
+      id: 'ID!',
+      input: 'UpdateCandidateAttachment!',
+      note: 'String',
+    },
+  })
+
   return {
     queryKey,
     getCandidate,
@@ -325,7 +345,8 @@ const useGraphql = () => {
     createCandidateJobFeedback,
     getCandidateJob,
     getCandidateJobInterview,
-    deleteCandidateJob
+    deleteCandidateJob,
+    updateCandidateJobAttachment,
   }
 }
 

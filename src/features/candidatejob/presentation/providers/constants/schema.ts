@@ -11,7 +11,7 @@ export const schema = yup.object({
   attachments: yup
     .array()
     .required(RULE_MESSAGES.MC1('attachments'))
-    .min(1, "CV is missing"),
+    .min(1, 'CV is missing'),
   note: yup.string(),
 })
 
@@ -41,6 +41,14 @@ export const schemaChangeStatus = yup.object({
   note: yup.string(),
 })
 
+export const schemaUpdateJobAttachment = yup.object({
+  attachments: yup.mixed(),
+})
+
 export type FormDataSchemaChangeStatus = yup.InferType<
   typeof schemaChangeStatus
+>
+
+export type FormDataSchemaUpdateJobAttachments = yup.InferType<
+  typeof schemaUpdateJobAttachment
 >

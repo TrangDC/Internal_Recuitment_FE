@@ -25,6 +25,11 @@ import {
   DeleteCandidateJobModal,
 } from '../index'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
+import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
+import LinkIcon from 'shared/components/icons/Link'
+import ViewIcon from 'shared/components/icons/View'
+import EditCandidateJobModal from '../EditCandidateJobModal'
+import { openPDFInNewTab } from 'shared/utils/upload-file'
 
 const JobApplicationHistory = ({
   candidateDetail,
@@ -32,16 +37,19 @@ const JobApplicationHistory = ({
   candidateDetail: Candidate
 }) => {
   const {
+    rowId,
+    rowData,
+    openEdit,
     openCreate,
     openDelete,
+    openChangeStatus,
+    setOpenEdit,
     setOpenDelete,
     setOpenCreate,
-    handleOpenChangeStatus,
+    handleOpenEdit,
     handleOpenDelete,
-    openChangeStatus,
     setOpenChangeStatus,
-    rowData,
-    rowId,
+    handleOpenChangeStatus,
   } = useActionTable<CandidateJob>()
 
   const { id } = useParams()
@@ -78,6 +86,45 @@ const JobApplicationHistory = ({
 
           return disabledStatuses.includes(rowData?.status)
         },
+      },
+      {
+        id: 'edit-application',
+        onClick: (id, rowData) => {
+          handleOpenEdit(id, rowData)
+        },
+        title: 'Edit application',
+        Icon: <EditIcon />,
+      },
+      {
+        id: 'copy-application-link',
+        onClick: (id, rowData) => {
+          const url = `${getDomain()}/dashboard/job-application-detail/${id}`
+          handleCopyClipBoard(
+            url,
+            `[APPLICATION] ${rowData.candidate.name}_${rowData.hiring_job.name}`
+          )
+        },
+        title: 'Copy application link',
+        Icon: <LinkIcon />,
+      },
+      {
+        id: 'view-cv',
+        onClick: (_, rowData) => {
+          const attachments = rowData.attachments
+          if (attachments?.length > 0) {
+            handleGetUrlDownload({
+              action: 'DOWNLOAD',
+              fileName: attachments[0].document_name ?? '',
+              folder: 'candidate',
+              id: attachments[0]?.document_id ?? '',
+            }).then(async (data) => {
+              const urlFile = data?.['CreateAttachmentSASURL']?.url ?? ''
+              openPDFInNewTab(urlFile)
+            })
+          }
+        },
+        title: 'View CV',
+        Icon: <ViewIcon />,
       },
       {
         id: 'download',
@@ -150,6 +197,14 @@ const JobApplicationHistory = ({
           open={openDelete}
           setOpen={setOpenDelete}
           id={rowId.current}
+        />
+      )}
+      {openEdit && (
+        <EditCandidateJobModal
+          open={openEdit}
+          setOpen={setOpenEdit}
+          candidateId={rowId.current}
+          onSuccess={handleRefreshList}
         />
       )}
     </DivWrapperProcess>

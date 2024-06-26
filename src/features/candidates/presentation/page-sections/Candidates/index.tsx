@@ -19,7 +19,11 @@ import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reas
 import CandidateStatusAutoComplete, {
   options_status_new,
 } from 'shared/components/autocomplete/candidate-status-auto-complete'
-import { downloadBase64File } from 'shared/utils/utils'
+import {
+  downloadBase64File,
+  getDomain,
+  handleCopyClipBoard,
+} from 'shared/utils/utils'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useImportFile } from 'shared/hooks/graphql/useUpload'
 import { ArrowDownward } from '@mui/icons-material'
@@ -41,6 +45,7 @@ import useTextTranslation from 'shared/constants/text'
 import ControllerDateRange from 'shared/components/table/components/tooltip-filter/ControllerDateRange'
 import dayjs from 'dayjs'
 import AppDateRangePicker from 'shared/components/input-fields/AppDateRangePicker'
+import LinkIcon from 'shared/components/icons/Link'
 
 const Candidates = () => {
   const {
@@ -52,7 +57,6 @@ const Candidates = () => {
     handleOpenDelete,
     openEdit,
     rowId,
-    rowData,
     setOpenEdit,
     openBlackList,
     handleOpenBlackList,
@@ -91,6 +95,18 @@ const Candidates = () => {
         Icon: <SearchIconSmall />,
       },
       {
+        id: 'copy-link-to-profile',
+        onClick: (id, rowData) => {
+          const url = `${getDomain()}/dashboard/candidate-detail/${id}`
+          handleCopyClipBoard(
+            url,
+            `[PROFILE] ${rowData.name}${rowData.dob ? '_' + dayjs(rowData.dob).format('DDMMYYYY') : ''}`
+          )
+        },
+        title: 'Copy application link',
+        Icon: <LinkIcon />,
+      },
+      {
         id: 'edit',
         onClick: (id) => {
           handleOpenEdit(id)
@@ -100,7 +116,7 @@ const Candidates = () => {
       },
       {
         id: 'black_list',
-        onClick: (id, rowData) => {
+        onClick: (id) => {
           handleOpenBlackList(id)
         },
         title: translation.COMMON.add_to_blackList,

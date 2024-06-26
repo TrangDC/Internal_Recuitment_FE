@@ -26,7 +26,7 @@ export const downloadPdf = async (pdfUrl: string) => {
   }
 }
 
-export const downloadPdfAndOpenInNewTab = async (urlFile: string) => {
+export const openPDFInNewTab = async (urlFile: string) => {
   try {
     const response = await fetch(urlFile)
     if (!response.ok) {

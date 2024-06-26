@@ -46,8 +46,8 @@ export type DeleteCandidateJobInput = {
 }
 
 export type UpdateStatus = {
-  status: string,
-  note: string,
+  status: string
+  note: string
   failed_reason: string[]
 }
 export type UpdateCandidateJobStatus = {
@@ -58,4 +58,7 @@ export type UpdateCandidateJobStatus = {
   note: string
 }
 
-
+export type UpdateCandidateAttachment = {
+  attachments: Attachments[]
+  note: string
+}
