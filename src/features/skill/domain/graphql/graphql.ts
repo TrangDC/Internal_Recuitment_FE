@@ -14,7 +14,7 @@ const useGraphql = () => {
           id
           name
           description
-          createdAt
+          created_at
         }
       }
       pagination {
