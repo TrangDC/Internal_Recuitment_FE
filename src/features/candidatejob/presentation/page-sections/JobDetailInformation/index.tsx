@@ -15,7 +15,9 @@ import {
   DivItemInformation,
 } from '../../providers/styles'
 import { LinkText } from 'shared/components/Typography'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import AppButton from 'shared/components/buttons/AppButton'
+import EditCandidateJobModal from '../EditCandidateJobModal'
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }
@@ -23,7 +25,9 @@ interface JobDetailInformationProps {
 const JobDetailInformation = ({
   jobApplicationDetail,
 }: JobDetailInformationProps) => {
+  const { id } = useParams()
   const navigate = useNavigate()
+  const [openEditCandidateJob, setOpenEditCandidateJob] = useState(false)
   const attachments = jobApplicationDetail?.attachments || []
   const candidateId = jobApplicationDetail?.candidate_id
   const [url, setUrl] = useState('')
@@ -110,28 +114,47 @@ const JobDetailInformation = ({
         width={'100%'}
       >
         <DivItemInformation>
-          {hiddenChangStatus && (
-            <ButtonStatus
+          <FlexBox flexDirection={'column'} gap={1}>
+            <AppButton
               onClick={() => {
-                handleOpenChangeStatus(
-                  jobApplicationDetail.id,
-                  jobApplicationDetail
-                )
+                setOpenEditCandidateJob(true)
               }}
-              variant="contained"
+              variant="outlined"
               startIcon={
                 <EditIcon
                   sx={{
                     ' path': {
-                      fill: 'white',
+                      fill: '#1F84EB',
                     },
                   }}
                 />
               }
             >
-              Change status
-            </ButtonStatus>
-          )}
+              Edit application
+            </AppButton>
+            {hiddenChangStatus && (
+              <ButtonStatus
+                onClick={() => {
+                  handleOpenChangeStatus(
+                    jobApplicationDetail.id,
+                    jobApplicationDetail
+                  )
+                }}
+                variant="contained"
+                startIcon={
+                  <EditIcon
+                    sx={{
+                      ' path': {
+                        fill: 'white',
+                      },
+                    }}
+                  />
+                }
+              >
+                Change status
+              </ButtonStatus>
+            )}
+          </FlexBox>
         </DivItemInformation>
       </FlexBox>
       {openChangeStatus && (
@@ -142,6 +165,13 @@ const JobDetailInformation = ({
           id={rowId.current}
           rowData={rowData.current}
           statusCurrent={jobApplicationDetail?.status}
+        />
+      )}
+      {openEditCandidateJob && id && (
+        <EditCandidateJobModal
+          open={openEditCandidateJob}
+          setOpen={setOpenEditCandidateJob}
+          candidateId={id}
         />
       )}
     </DivInformation>
