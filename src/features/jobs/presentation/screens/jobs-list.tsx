@@ -29,6 +29,7 @@ import SearchInput from 'shared/components/table/components/SearchInput'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import useFilterJobs from '../providers/hooks/useFilterJobs'
 import FlexBox from 'shared/components/flexbox/FlexBox'
+import { handleCopyClipBoard } from 'shared/utils/utils'
 
 const { STATUS_STATE } = JobStatus
 

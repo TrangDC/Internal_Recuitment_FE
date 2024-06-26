@@ -9,7 +9,6 @@
   "delete_team": "Do you want to delete this team?",
   "open_requests": "Opening requests",
   "manager": "Manager",
-
   "jobs": "Jobs",
   "requester": "Requester",
   "staft_required": "Staft required",
@@ -24,19 +23,17 @@
   "general_information": "General Information",
   "history_log": "History log",
   "hiring_process": "Hiring process",
-
   "candidates": "Candidates",
   "blacklist": "Blacklist",
   "add_new_candidate": "Add new candidate",
   "edit_candidate": "Edit candidate",
   "add_blackList": "Do you want to add users to the blacklist?",
   "delete_candidate": "Do you want to delete candidate?",
-
   "job_application_history": "Job application history",
   "apply_to_a_job": "Apply to a job",
+  "edit_apply_to_a_job": "Edit job application",
   "applied_date": "Applied date",
   "change_status": "Change status",
-
   "drag_and_drop": "Drag & drop your file here of",
   "browse_file": "Browse file",
   "email": "Email",
@@ -69,18 +66,6 @@
   "update_record": "Update record",
   "sub_title_update_record": "What information or note have you updated the record?",
   "model": {
-    "candidate_interviews": {
-      "validation": {
-        "candidate_job_status_changed": "message_value",
-        "candidate_not_found": "message_value",
-        "candidate_is_blacklist": "This candidate is in blacklist",
-        "job_close": "This job is closed",
-        "candidate_job_status_ended": "This job is closed",
-        "start_from_end_at_invalid": "The end time must be after the start time",
-        "schedule_exist": "Candidate is not available",
-        "title_exist": "Title has already existed"
-      }
-    },
     "hiring_jobs": {
       "model_name": "Job",
       "name": "Job name",
@@ -171,7 +156,17 @@
       "created_by": "Created by",
       "status": "Status",
       "members": "Interviewer",
-      "description": "Description"
+      "description": "Description",
+      "validation": {
+        "candidate_job_status_changed": "message_value",
+        "candidate_not_found": "message_value",
+        "candidate_is_blacklist": "This candidate is in blacklist",
+        "job_close": "This job is closed",
+        "candidate_job_status_ended": "This job is closed",
+        "start_from_end_at_invalid": "The end time must be after the start time",
+        "schedule_exist": "Candidate is not available",
+        "title_exist": "Title has already existed"
+      }
     },
     "skills": {
       "validation": {

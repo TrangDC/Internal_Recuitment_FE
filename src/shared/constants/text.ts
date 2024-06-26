@@ -45,6 +45,7 @@ const useTextTranslation = () => {
     MODULE_CANDIDATE_JOB: {
       job_application_history: t('job_application_history'),
       apply_to_a_job: t('apply_to_a_job'),
+      edit_apply_to_a_job: t('edit_apply_to_a_job'),
       applied_date: t('applied_date'),
       change_status: t('change_status'),
     },

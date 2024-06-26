@@ -8,19 +8,17 @@ import { Tiny } from 'shared/components/Typography'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 
 type IProps = {
-  handlesubmit: (note?: string) => void
+  handlesubmit: (note: string) => void
   children: ReactNode
   title: string
   loading: boolean
   Icon?: ReactNode
   subTitle?: string
-  setOpen: (value: boolean) => void
-  open: boolean
   disabled: boolean
 }
 
 type ModalConfirmpProps = {
-  onClick: (note?: string) => void
+  onClick: (note: string) => void
   title: string
   loading: boolean
   Icon?: ReactNode

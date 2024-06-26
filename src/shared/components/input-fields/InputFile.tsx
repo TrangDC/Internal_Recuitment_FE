@@ -107,8 +107,8 @@ type FileUploadAttachment = {
 }
 
 const InputFile = ({
-  accept = ".jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .odt, .xls, .xlsx, .ods, .ppt, .pptx, .odp, .mp4, .avi, .mkv, .mov",
-  regexString = '\.(jpg|jpeg|png|gif|pdf|doc|docx|odt|xls|xlsx|ods|ppt|pptx|odp|mp4|avi|mkv|mov)$',
+  accept = '.jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .odt, .xls, .xlsx, .ods, .ppt, .pptx, .odp, .mp4, .avi, .mkv, .mov',
+  regexString = '.(jpg|jpeg|png|gif|pdf|doc|docx|odt|xls|xlsx|ods|ppt|pptx|odp|mp4|avi|mkv|mov)$',
   callbackFileChange,
   maxFile = 5,
   maxSize = null,
@@ -138,6 +138,7 @@ const InputFile = ({
       msgError: '',
     }
 
+    console.log('files', files)
     const maxFileValidate = wrapperValidate(
       () => checkMaxFile(lengthFileCurrent, fieldValidate.maxFile),
       msgError?.maxFile ? msgError?.maxFile : RULE_MESSAGES.MC4('file', maxFile)
@@ -226,6 +227,7 @@ const InputFile = ({
       listFileUpload.push(paramUpload)
     })
 
+    console.log('listFileUpload', listFileUpload)
     //list promise get urls from azure
     const getUrlAzures = listFileUpload.map((fileUpload) => {
       return new Promise((resolve, reject) => {

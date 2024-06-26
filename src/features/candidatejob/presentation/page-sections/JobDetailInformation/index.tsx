@@ -16,7 +16,6 @@ import {
 } from '../../providers/styles'
 import { LinkText } from 'shared/components/Typography'
 import { useNavigate } from 'react-router-dom'
-
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }

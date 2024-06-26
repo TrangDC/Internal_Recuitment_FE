@@ -1,7 +1,9 @@
 import { FieldErrors } from 'react-hook-form'
 import { DivError, DivWrapper } from '../styles'
 import { get } from 'lodash'
-import InputFile, { InputFileProps } from 'shared/components/input-fields/InputFile'
+import InputFile, {
+  InputFileProps,
+} from 'shared/components/input-fields/InputFile'
 
 type InputFileComponentProps<T extends object> = {
   errors?: FieldErrors<T>
@@ -9,8 +11,8 @@ type InputFileComponentProps<T extends object> = {
     onChange: (value: any) => void
     value: any
     name: string
-  },
-  inputFileProps?: InputFileProps, 
+  }
+  inputFileProps?: InputFileProps
 }
 
 const InputFileComponent = <T extends object>({
@@ -24,8 +26,12 @@ const InputFileComponent = <T extends object>({
     <DivWrapper>
       <InputFile
         {...props.inputFileProps}
-        callbackFileChange={(data) => {       
-          const ids_file = data.map((data) => ({document_name: data.document_name, document_id: data.document_id, status: data.status}))
+        callbackFileChange={(data) => {
+          const ids_file = data.map((data) => ({
+            document_name: data.document_name,
+            document_id: data.document_id,
+            status: data.status,
+          }))
           field.onChange(ids_file)
         }}
       />
