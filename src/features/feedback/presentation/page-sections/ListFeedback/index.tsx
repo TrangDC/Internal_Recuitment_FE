@@ -20,7 +20,7 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import { FeedBack } from 'features/feedback/domain/interfaces'
 import ShowFile from 'shared/components/input-fields/ItemFile'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
-import { downloadOneFile } from 'features/candidatejob/presentation/providers/helper'
+// import { downloadOneFile } from 'features/candidatejob/presentation/providers/helper'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { innerHTMLTextArea } from 'shared/components/genarateInnerHTML'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
@@ -30,6 +30,7 @@ import {
   DeleteFeedbackModal,
   UpdateFeedbackModal,
 } from '../index'
+import { downloadOneFile } from '../../providers/helper'
 
 interface Props {
   listFeedback: FeedBack[]

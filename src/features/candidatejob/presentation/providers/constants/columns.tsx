@@ -39,7 +39,7 @@ export const columns = (
     ),
   }),
   columnHelper.accessor((row) => row.status, {
-    id: 'status',
+    id: 'created_at',
     header: () => <span>{t('status')}</span>,
     enableSorting: false,
     size: 200,

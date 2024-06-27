@@ -51,10 +51,10 @@ export function renderCurrencyEN(text: string) {
   return Number(text).toLocaleString(locale)
 }
 
-type type_currency = keyof typeof CURRENCY_TEXT_LABEL
+type TYPE_CURRENCY = keyof typeof CURRENCY_TEXT_LABEL
 export function renderCurrencyEnum(text: string) {
   const unit = getLastString(text)
-  return CURRENCY_TEXT_LABEL[unit as type_currency]
+  return CURRENCY_TEXT_LABEL[unit as TYPE_CURRENCY]
 }
 
 export function renderStatusHiringJob(text: string) {
@@ -74,16 +74,16 @@ export function renderPriority(text: string) {
   return <ChipPriority status={value_status as TYPE_PRIORITY_STATUS} />
 }
 
-type type_salary_type = keyof typeof SALARY_TYPE_TEXT
+type TYPE_SALARY_TYPE = keyof typeof SALARY_TYPE_TEXT
 export function renderSalaryByType(text: string) {
   const salary_type = getLastString(text)
-  return SALARY_TYPE_TEXT[salary_type as type_salary_type]
+  return SALARY_TYPE_TEXT[salary_type as TYPE_SALARY_TYPE]
 }
 
-type type_location = keyof typeof LOCATION_LABEL
+type TYPE_LOCATION = keyof typeof LOCATION_LABEL
 export function renderLocation(text: string) {
   const location_data = getLastString(text)
-  return LOCATION_LABEL[location_data as type_location]
+  return LOCATION_LABEL[location_data as TYPE_LOCATION]
 }
 
 export function renderDate(text: string) {
@@ -99,27 +99,27 @@ export function renderYesNo(text: string) {
   return boolean.charAt(0).toUpperCase() + boolean.slice(1)
 }
 
-type type_reference_type = keyof typeof CANDIDATE_SOURCE_LABEL
+export type TYPE_REFERENCE_TYPE = keyof typeof CANDIDATE_SOURCE_LABEL
 export function renderReferenceType(text: string) {
   const reference_type = getLastString(text)
 
-  return CANDIDATE_SOURCE_LABEL[reference_type as type_reference_type]
+  return CANDIDATE_SOURCE_LABEL[reference_type as TYPE_REFERENCE_TYPE]
 }
 
 //reference_value
-type type_reference_value_EB = keyof typeof EB_SOURCE_LABEL
-export function renderReferenceEB(text: type_reference_value_EB) {
+export type TYPE_REFERENCE_VALUE_EB = keyof typeof EB_SOURCE_LABEL
+export function renderReferenceEB(text: TYPE_REFERENCE_VALUE_EB) {
   return EB_SOURCE_LABEL[text]
 }
 
-type type_reference_value_REC = keyof typeof REC_SOURCE_LABEL
-export function renderReferenceREC(text: type_reference_value_REC) {
+export type TYPE_REFERENCE_VALUE_REC = keyof typeof REC_SOURCE_LABEL
+export function renderReferenceREC(text: TYPE_REFERENCE_VALUE_REC) {
   return REC_SOURCE_LABEL[text]
 }
 
-type type_reference_value_Hiring_platform = keyof typeof HIRING_PLATFORM_LABEL
+export type TYPE_REFERENCE_VALUE_HIRING_PLATFORM = keyof typeof HIRING_PLATFORM_LABEL
 export function renderReferenceHiringPlatform(
-  text: type_reference_value_Hiring_platform
+  text: TYPE_REFERENCE_VALUE_HIRING_PLATFORM
 ) {
   return HIRING_PLATFORM_LABEL[text]
 }
@@ -129,19 +129,23 @@ export function renderReferenceValue(text: string) {
   const reference_type = reference_array[3]
   const reference_value = reference_array[5]
 
+  return renderReferenceValueByType(reference_type, reference_value)
+}
+
+export function renderReferenceValueByType(reference_type: string, reference_value: string) {
   switch (reference_type) {
     case CANDIDATE_SOURCE_STATE.EB:
-      return renderReferenceEB(reference_value as type_reference_value_EB)
+      return renderReferenceEB(reference_value as TYPE_REFERENCE_VALUE_EB)
     case CANDIDATE_SOURCE_STATE.REC:
-      return renderReferenceREC(reference_value as type_reference_value_REC)
+      return renderReferenceREC(reference_value as TYPE_REFERENCE_VALUE_REC)
     case CANDIDATE_SOURCE_STATE.HIRING_PLATFORM:
       return renderReferenceHiringPlatform(
-        reference_value as type_reference_value_Hiring_platform
+        reference_value as TYPE_REFERENCE_VALUE_HIRING_PLATFORM
       )
     case CANDIDATE_SOURCE_STATE.REFERENCE:
     case CANDIDATE_SOURCE_STATE.HEADHUNT:
     default:
-      return text
+      return reference_value
   }
 }
 

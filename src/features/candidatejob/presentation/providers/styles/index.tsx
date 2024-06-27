@@ -1,5 +1,5 @@
 import { Box, Button, styled } from '@mui/material'
-import { Span } from 'shared/components/Typography'
+import { Span, Text13md, Tiny12md } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 
 export const DivWrapperProcess = styled(Box)(({ theme }) => ({
@@ -73,4 +73,12 @@ export const DivWrapperContainer = styled(DivContainerWrapper)(({ theme }) => ({
   borderStyle: 'solid',
   borderColor: '#E3E6EB',
   borderRadius: '8px',
+}))
+
+export const TextLabel = styled(Tiny12md)(({ theme }) => ({
+  color: '#4D607A'
+}))
+
+export const TextValue = styled(Text13md)(({ theme }) => ({
+  color: '##0B0E1E'
 }))

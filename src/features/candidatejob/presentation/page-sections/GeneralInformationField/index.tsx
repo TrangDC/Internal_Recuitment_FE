@@ -12,6 +12,8 @@ import useActionTable from 'features/candidates/presentation/providers/hooks/use
 import EditCandidateModal from 'features/candidates/presentation/page-sections/EditCandidateModal'
 import CopyIcon from 'shared/components/icons/CopyIcon'
 import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
+import { BtnPrimary } from 'shared/styles'
+import CandidateInformationModal from '../CandidateInformationModal'
 
 const GeneralInformationField = ({
   candidateDetail,
@@ -21,8 +23,15 @@ const GeneralInformationField = ({
   const { id } = useParams()
 
   const translation = useTextTranslation()
-  const { handleOpenEdit, openEdit, rowId, setOpenEdit } =
-    useActionTable<Candidate>()
+  const {
+    handleOpenEdit,
+    openEdit,
+    rowId,
+    setOpenEdit,
+    openDetail,
+    setOpenDetail,
+    handleOpenDetail,
+  } = useActionTable<Candidate>()
 
   const handleCopyClipBoard = (content: string) => {
     navigator.clipboard.writeText(content)
@@ -110,7 +119,10 @@ const GeneralInformationField = ({
             </DivField>
           </FlexBox>
         </FlexBox>
-        <Box>
+        <FlexBox alignItems={'center'} gap={'8px'}>
+          <BtnPrimary onClick={() => handleOpenDetail(id as string)}>
+            <Span>View profile</Span>
+          </BtnPrimary>
           <ButtonAdd
             Icon={EditIcon}
             textLable={'Edit'}
@@ -123,13 +135,22 @@ const GeneralInformationField = ({
               handleOpenEdit(id as string)
             }}
           />
-        </Box>
+        </FlexBox>
       </FlexBox>
       {openEdit && (
         <EditCandidateModal
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
+        />
+      )}
+
+      {openDetail && (
+        <CandidateInformationModal
+          open={openDetail}
+          setOpen={setOpenDetail}
+          id={rowId.current}
+          handleOpenEdit={handleOpenEdit}
         />
       )}
     </DivWrapperField>

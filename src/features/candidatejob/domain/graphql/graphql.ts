@@ -20,6 +20,19 @@ const useGraphql = () => {
         is_black_list
         created_at
         country
+        reference_type
+        reference_value
+        reference_user {
+          id
+          name
+        }
+        recruit_time
+        description
+        attachments {
+          id
+          document_name
+          document_id
+        }
       }
     `,
     params: {

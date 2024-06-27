@@ -26,6 +26,32 @@ export const downloadPdf = async (pdfUrl: string) => {
   }
 }
 
+export const downloadFile = async (urlDownload: string, name: string) => {
+  try {
+    const response = await fetch(urlDownload)
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+
+    const blob = await response.blob()
+    const url = URL.createObjectURL(blob)
+
+    const a = document.createElement('a')
+    a.href = url
+    a.download = name 
+    document.body.appendChild(a)
+    a.click()
+
+    setTimeout(() => {
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    }, 100)
+  } catch (error) {
+    console.error('Failed to download PDF:', error)
+  }
+}
+
 export const openPDFInNewTab = async (urlFile: string) => {
   try {
     const response = await fetch(urlFile)
