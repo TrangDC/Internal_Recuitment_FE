@@ -37,20 +37,19 @@ export const BtnPrimary = styled(FlexBox)(({ theme }) => ({
   marginLeft: 'auto',
   border: `1px solid ${theme.palette.primary[300]}`,
   backgroundColor: theme.palette.primary[50],
-  fontSize: '13px',
-  fontWeight: 600,
-  color: theme.palette.primary[600],
   height: '40px',
   borderRadius: '4px',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '12px 20px 15px',
+  padding: '12px 20px',
   gap: '10px',
   cursor: 'pointer',
 
   '& span': {
     margin: 0,
-    marginTop: '5px',
+    fontSize: '13px',
+    fontWeight: 600,
+    color: theme.palette.primary[600],
   },
 
   '&.disabled': {

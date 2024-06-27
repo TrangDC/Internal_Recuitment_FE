@@ -1,4 +1,6 @@
+import { TYPE_REFERENCE_TYPE } from 'features/auditTrails/presentation/providers/helper'
 import { Member } from 'features/teams/domain/interfaces'
+import { Attachments } from 'shared/interfaces'
 import { SchemaInputNote } from 'shared/schema'
 
 export type Candidate = {
@@ -9,7 +11,7 @@ export type Candidate = {
   dob: Date
   country: string
   reference_uid: string
-  reference_type: string
+  reference_type: TYPE_REFERENCE_TYPE
   reference_value: string
   description: string
   recruit_time: Date
@@ -29,6 +31,7 @@ export type Candidate = {
   created_at: string
   updated_at: string
   deleted_at: string
+  attachments: Attachments[]
 }
 
 export type NewCandidateInput = {

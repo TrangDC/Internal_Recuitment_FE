@@ -1,11 +1,12 @@
 import { SvgIcon, SvgIconProps } from '@mui/material'
 
-const EditIcon = (props: SvgIconProps) => { 
+const EditIcon = ({sx = {fontSize: '16px'}, ...props}: SvgIconProps) => { 
   return (
     <SvgIcon
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      sx={sx}
       {...props}
     >
       <path
@@ -15,12 +16,5 @@ const EditIcon = (props: SvgIconProps) => {
     </SvgIcon>
   )
 }
-
-EditIcon.defaultProps = {
-  sx: {
-    fontSize: '16px'
-  }
-};
-
 
 export default EditIcon
