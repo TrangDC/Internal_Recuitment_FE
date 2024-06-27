@@ -29,6 +29,7 @@ export default function EditorBoxField({
   pluginCustomize = [],
   ...props
 }: TinyProps) {
+  const [isFullScreen, setIsFullScreen] = useState(false)
   const [focused, setFocused] = useState<Boolean>(false)
   const editorRef = useRef<Editor>(null)
 
@@ -58,6 +59,9 @@ export default function EditorBoxField({
           addPluginCustomize(editor, pluginCustomize)
           //@ts-ignore
           editorRef.current = editor
+          editor.on('FullscreenStateChanged', (e) => {
+            setIsFullScreen(e.state)
+          })
         }}
         init={{
           height: 200,
@@ -90,7 +94,7 @@ export default function EditorBoxField({
             'undo redo | blocks fontfamily fontsize | ' +
             'bold italic forecolor | alignleft aligncenter ' +
             'alignright alignjustify | bullist numlist outdent indent | ' +
-            'link image code | help',
+            'link image code fullscreen | help',
           images_upload_handler: async (blobInfo) => {
             const { blob } = blobInfo
 

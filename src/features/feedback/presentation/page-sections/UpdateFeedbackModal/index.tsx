@@ -13,6 +13,7 @@ import { Span, Tiny } from 'shared/components/Typography'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import { useMemo } from 'react'
 import { isEmpty } from 'lodash'
+import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 
 interface IUpdateFeedbackModal {
   open: boolean
@@ -28,7 +29,7 @@ function UpdateFeedbackModal({
   id,
   onSuccess,
 }: IUpdateFeedbackModal) {
-  const { actions, control, isValid, isPending, isGetting } =
+  const { actions, control, isValid, isPending, isGetting, formState } =
     useUpdateFeedback({
       id: id,
       onSuccess: () => {
@@ -45,109 +46,110 @@ function UpdateFeedbackModal({
     return attachments.every((file) => file.status === 'success')
   }, [attachments])
 
-
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header
-        title="Edit Feedback"
-        setOpen={setOpen}
-      ></BaseModal.Header>
-      <BaseModal.ContentMain maxHeight="500px">
-        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="feedback"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <AppTextField
-                      label={'Description'}
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                      minRows={4}
-                      multiline
-                      loading={isGetting}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
+    <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
+      <BaseModal.Wrapper open={open} setOpen={setOpen}>
+        <BaseModal.Header
+          title="Edit Feedback"
+          setOpen={setOpen}
+        ></BaseModal.Header>
+        <BaseModal.ContentMain maxHeight="500px">
+          <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="feedback"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Description'}
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        minRows={4}
+                        multiline
+                        loading={isGetting}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
 
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                name="attachments"
-                shouldUnregister
-                control={control}
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <InputFileComponent
-                      field={field}
-                      inputFileProps={{
-                        maxFile: 10,
-                        maxSize: 20,
-                        msgError: {
-                          maxFile: 'Up to 10 files and 20MB/file',
-                          maxSize: 'Up to 10 files and 20MB/file',
-                        },
-                        descriptionFile: () => {
-                          return (
-                            <Box>
-                              <Span sx={{ color: '#2A2E37 !important' }}>
-                                {' '}
-                                Attach file{' '}
-                              </Span>
-                              <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                Up to 10 files and 20MB/file
-                              </Tiny>
-                            </Box>
-                          )
-                        },
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  name="attachments"
+                  shouldUnregister
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <InputFileComponent
+                        field={field}
+                        inputFileProps={{
+                          maxFile: 10,
+                          maxSize: 20,
+                          msgError: {
+                            maxFile: 'Up to 10 files and 20MB/file',
+                            maxSize: 'Up to 10 files and 20MB/file',
+                          },
+                          descriptionFile: () => {
+                            return (
+                              <Box>
+                                <Span sx={{ color: '#2A2E37 !important' }}>
+                                  {' '}
+                                  Attach file{' '}
+                                </Span>
+                                <Tiny sx={{ color: '#2A2E37 !important' }}>
+                                  Up to 10 files and 20MB/file
+                                </Tiny>
+                              </Box>
+                            )
+                          },
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
           </FlexBox>
-        </FlexBox>
-      </BaseModal.ContentMain>
-      <BaseModal.Footer>
-        <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <AppButton
-            variant="outlined"
-            size="small"
-            onClick={() => setOpen(false)}
-          >
-            Cancel
-          </AppButton>
-          <UpdateRecord
-            disabled={isValid || !isValidAttachments}
-            callbackSubmit={callbackSubmit}
-          >
-            <ButtonLoading
-              variant="contained"
+        </BaseModal.ContentMain>
+        <BaseModal.Footer>
+          <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
+            <AppButton
+              variant="outlined"
               size="small"
-              disabled={isValid || !isValidAttachments}
-              handlesubmit={() => {}}
-              loading={isPending}
+              onClick={() => setOpen(false)}
             >
-              Submit
-            </ButtonLoading>
-          </UpdateRecord>
-        </FlexBox>
-      </BaseModal.Footer>
-    </BaseModal.Wrapper>
+              Cancel
+            </AppButton>
+            <UpdateRecord
+              disabled={isValid || !isValidAttachments}
+              callbackSubmit={callbackSubmit}
+            >
+              <ButtonLoading
+                variant="contained"
+                size="small"
+                disabled={isValid || !isValidAttachments}
+                handlesubmit={() => {}}
+                loading={isPending}
+              >
+                Submit
+              </ButtonLoading>
+            </UpdateRecord>
+          </FlexBox>
+        </BaseModal.Footer>
+      </BaseModal.Wrapper>
+    </ConfirmableModalProvider>
   )
 }
 

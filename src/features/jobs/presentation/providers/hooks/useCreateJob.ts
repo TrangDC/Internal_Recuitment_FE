@@ -17,23 +17,22 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
   const { createJob, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-  NewHiringJobInput,
-  FormDataSchema
->({
-  mutationKey: [queryKey],
-  queryString: createJob,
-  defaultValues: {
-    name: '',
-    salary_from: "0",
-    salary_to: "0",
-    note: '',
-    // skill: [],
-    ...defaultValues,
-  },
-  resolver: yupResolver(schema),
-  onSuccess: callbackSuccess
-})
-
+    NewHiringJobInput,
+    FormDataSchema
+  >({
+    mutationKey: [queryKey],
+    queryString: createJob,
+    defaultValues: {
+      name: '',
+      salary_from: '0',
+      salary_to: '0',
+      note: '',
+      // skill: [],
+      ...defaultValues,
+    },
+    resolver: yupResolver(schema),
+    onSuccess: callbackSuccess,
+  })
 
   const { handleSubmit, control, formState, setValue } = useFormReturn
   const isValid = !formState.isValid
@@ -41,10 +40,13 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      const salary_type = value.salary_type;
+      const salary_type = value.salary_type
       const valueClone = {
         ..._.cloneDeep(value),
-        currency: salary_type !== SALARY_STATE.NEGOTITATION ? value.currency : CURRENCY_STATE.VND,
+        currency:
+          salary_type !== SALARY_STATE.NEGOTITATION
+            ? value.currency
+            : CURRENCY_STATE.VND,
         salary_type: salary_type,
         salary_from: convertCurrencyToNumber(value.salary_from),
         salary_to: convertCurrencyToNumber(value.salary_to),
@@ -56,16 +58,16 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
   }
 
   const handleChangeManager = async (team_id: string) => {
-    if(!team_id) {
-      setValue('created_by', '');
-      return;
+    if (!team_id) {
+      setValue('created_by', '')
+      return
     }
 
     const { member_first } = await getMembersByTeam(team_id)
-    if(isEmpty(member_first)) {
+    if (isEmpty(member_first)) {
       setValue('created_by', '')
-      return;
-    };
+      return
+    }
     setValue('created_by', member_first?.id)
   }
 
@@ -79,11 +81,12 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     isValid,
     isPending,
     setValue,
+    formState,
     action: {
       resetSalary,
       handleChangeManager,
       onSubmit,
-    }
+    },
   }
 }
 

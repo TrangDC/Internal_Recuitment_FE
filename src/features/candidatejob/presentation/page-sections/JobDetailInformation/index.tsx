@@ -18,6 +18,9 @@ import { LinkText } from 'shared/components/Typography'
 import { useNavigate, useParams } from 'react-router-dom'
 import AppButton from 'shared/components/buttons/AppButton'
 import EditCandidateJobModal from '../EditCandidateJobModal'
+import { Box } from '@mui/material'
+import CopyIcon from 'shared/components/icons/CopyIcon'
+import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }
@@ -103,7 +106,22 @@ const JobDetailInformation = ({
         </DivItemInformation>
         <DivItemInformation>
           <SpanText>Job applied</SpanText>
-          <TinyText>{jobApplicationDetail?.hiring_job?.name}</TinyText>
+          <FlexBox lineHeight={0} gap={1}>
+            <TinyText>{jobApplicationDetail?.hiring_job?.name}</TinyText>
+            <CopyIcon
+              sx={{
+                cursor: 'pointer',
+                fontSize: '16px',
+              }}
+              onClick={() => {
+                const url = `${getDomain()}/dashboard/job-application-detail/${id}`
+                handleCopyClipBoard(
+                  url,
+                  `[APPLICATION] ${jobApplicationDetail.candidate.name}_${jobApplicationDetail?.hiring_job?.name}`
+                )
+              }}
+            />
+          </FlexBox>
         </DivItemInformation>
       </FlexBox>
       <FlexBox

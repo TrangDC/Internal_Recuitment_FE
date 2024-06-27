@@ -1,10 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/skill/domain/graphql/graphql'
 import { schemaUpdate, FormDataSchemaUpdate } from '../constants/schema'
-import {
-  Skill,
-  SkillInputUpdate,
-} from 'features/skill/domain/interfaces'
+import { Skill, SkillInputUpdate } from 'features/skill/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 
@@ -61,6 +58,7 @@ function useUpdateSkill(props: UseEditCandidateProps) {
     isPending,
     setValue,
     isGetting,
+    formState,
   }
 }
 

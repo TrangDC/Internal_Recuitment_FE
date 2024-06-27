@@ -21,7 +21,7 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
-import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
+import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 
 interface IEditJobModal {
   open: boolean
@@ -30,150 +30,152 @@ interface IEditJobModal {
 }
 
 function EditJobModal({ open, setOpen, id }: IEditJobModal) {
-  const { actions, control, isPending, isValid, isGetting } = useUpdateJob({
-    id: id,
-    onSuccess: () => {
-      setOpen(false)
-    },
-  })
+  const { actions, control, isPending, isValid, isGetting, formState } =
+    useUpdateJob({
+      id: id,
+      onSuccess: () => {
+        setOpen(false)
+      },
+    })
   const { resetSalary, callbackSubmit, handleChangeManager } = actions
 
   const translation = useTextTranslation()
   const salary = useWatch({ control, name: 'salary_type' })
 
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
-      <BaseModal.Header
-        title={translation.MODLUE_JOBS.edit_job}
-        setOpen={setOpen}
-      ></BaseModal.Header>
-      <BaseModal.ContentMain maxHeight="500px">
-        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-          <FlexBox flexDirection={'column'}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="name"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <AppTextField
-                      label={'Job name'}
-                      required
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                      loading={isGetting}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
+    <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
+      <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
+        <BaseModal.Header
+          title={translation.MODLUE_JOBS.edit_job}
+          setOpen={setOpen}
+        ></BaseModal.Header>
+        <BaseModal.ContentMain maxHeight="500px">
+          <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+            <FlexBox flexDirection={'column'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="name"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Job name'}
+                        required
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        loading={isGetting}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
 
-          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="priority"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <PriorityAutoComplete
-                      value={field.value}
-                      onChange={(data) => field.onChange(data?.value)}
-                      multiple={false}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Priority',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+            <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="priority"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <PriorityAutoComplete
+                        value={field.value}
+                        onChange={(data) => field.onChange(data?.value)}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Priority',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
 
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="team_id"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <TeamsAutoComplete
-                      name={field.name}
-                      value={field.value}
-                      onChange={(value) => {
-                        field.onChange(value)
-                        handleChangeManager(value as string)
-                      }}
-                      multiple={false}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Team',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="location"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <LocationAutoComplete
-                      value={field.value}
-                      onChange={(data) => field.onChange(data?.value)}
-                      multiple={false}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Location',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="team_id"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <TeamsAutoComplete
+                        name={field.name}
+                        value={field.value}
+                        onChange={(value) => {
+                          field.onChange(value)
+                          handleChangeManager(value as string)
+                        }}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Team',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="location"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <LocationAutoComplete
+                        value={field.value}
+                        onChange={(data) => field.onChange(data?.value)}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Location',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
 
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="created_by"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <MemberAutoComplete
-                      name={field.name}
-                      value={field.value}
-                      onChange={field.onChange}
-                      multiple={false}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Requester',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-          {/* <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="created_by"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <MemberAutoComplete
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Requester',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            {/* <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FormControl fullWidth>
               <Controller
                 control={control}
@@ -200,122 +202,150 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
               />
             </FormControl>
           </FlexBox> */}
-          <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FlexBox
               justifyContent={'center'}
               alignItems={'flex-start'}
-              width={'100%'}
               gap={2}
             >
-              <FormControl fullWidth>
-                <Controller
-                  control={control}
-                  name="salary_type"
-                  render={({ field, fieldState }) => (
-                    <Fragment>
-                      <SalaryTypeAutoComponent
-                        value={field.value}
-                        onChange={(data) => {
-                          field.onChange(data?.value)
-                          resetSalary()
-                        }}
-                        multiple={false}
-                        textFieldProps={{
-                          required: true,
-                          label: 'Salary',
-                        }}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </Fragment>
-                  )}
-                />
-              </FormControl>
+              <FlexBox
+                justifyContent={'center'}
+                alignItems={'flex-start'}
+                width={'100%'}
+                gap={2}
+              >
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="salary_type"
+                    render={({ field, fieldState }) => (
+                      <Fragment>
+                        <SalaryTypeAutoComponent
+                          value={field.value}
+                          onChange={(data) => {
+                            field.onChange(data?.value)
+                            resetSalary()
+                          }}
+                          multiple={false}
+                          textFieldProps={{
+                            required: true,
+                            label: 'Salary',
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </Fragment>
+                    )}
+                  />
+                </FormControl>
 
-              {SALARY_RENDER.map((salary_item, index) => {
-                return salary_item.typeComponent === 'textField' &&
-                  salary_item.accept.includes(salary) ? (
-                  <FormControl fullWidth key={index}>
-                    <Controller
-                      //@ts-ignore
-                      name={salary_item.name}
-                      control={control}
-                      render={({ field, fieldState }) => (
-                        <Fragment>
-                          <InputNumberComponent<FormDataSchema>
-                            label={salary_item?.label}
-                            field={field}
-                            fullWidth
-                            type={salary_item?.type}
-                            style={salary_item?.style}
-                            sx={{
-                              '&.MuiFormControl-root': {
-                                marginTop: '0px !important',
-                              },
-                            }}
-                            required={true}
-                            thousandSeparator={salary_item?.thousandSeparator}
-                          />
-                          <HelperTextForm
-                            message={fieldState.error?.message}
-                          ></HelperTextForm>
-                        </Fragment>
-                      )}
-                    />
-                  </FormControl>
-                ) : salary_item.typeComponent === 'autoComplete' &&
-                  salary_item.accept.includes(salary) ? (
-                  <FormControl fullWidth key={index}>
-                    <Controller
-                      //@ts-ignore
-                      name={salary_item.name}
-                      control={control}
-                      render={({ field, fieldState }) => (
-                        <Fragment>
-                          <CurrencyAutoComplete
-                            value={field.value as string}
-                            onChange={(data) => field.onChange(data?.value)}
-                            multiple={false}
-                            textFieldProps={{
-                              required: true,
-                              label: 'Unit',
-                            }}
-                          />
-                          <HelperTextForm
-                            message={fieldState.error?.message}
-                          ></HelperTextForm>
-                        </Fragment>
-                      )}
-                    />
-                  </FormControl>
-                ) : null
-              })}
+                {SALARY_RENDER.map((salary_item, index) => {
+                  return salary_item.typeComponent === 'textField' &&
+                    salary_item.accept.includes(salary) ? (
+                    <FormControl fullWidth key={index}>
+                      <Controller
+                        //@ts-ignore
+                        name={salary_item.name}
+                        control={control}
+                        render={({ field, fieldState }) => (
+                          <Fragment>
+                            <InputNumberComponent<FormDataSchema>
+                              label={salary_item?.label}
+                              field={field}
+                              fullWidth
+                              type={salary_item?.type}
+                              style={salary_item?.style}
+                              sx={{
+                                '&.MuiFormControl-root': {
+                                  marginTop: '0px !important',
+                                },
+                              }}
+                              required={true}
+                              thousandSeparator={salary_item?.thousandSeparator}
+                            />
+                            <HelperTextForm
+                              message={fieldState.error?.message}
+                            ></HelperTextForm>
+                          </Fragment>
+                        )}
+                      />
+                    </FormControl>
+                  ) : salary_item.typeComponent === 'autoComplete' &&
+                    salary_item.accept.includes(salary) ? (
+                    <FormControl fullWidth key={index}>
+                      <Controller
+                        //@ts-ignore
+                        name={salary_item.name}
+                        control={control}
+                        render={({ field, fieldState }) => (
+                          <Fragment>
+                            <CurrencyAutoComplete
+                              value={field.value as string}
+                              onChange={(data) => field.onChange(data?.value)}
+                              multiple={false}
+                              textFieldProps={{
+                                required: true,
+                                label: 'Unit',
+                              }}
+                            />
+                            <HelperTextForm
+                              message={fieldState.error?.message}
+                            ></HelperTextForm>
+                          </Fragment>
+                        )}
+                      />
+                    </FormControl>
+                  ) : null
+                })}
+              </FlexBox>
+              <FlexBox
+                justifyContent={'center'}
+                alignItems={'center'}
+                width={'100%'}
+                gap={2}
+              >
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="amount"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <NumberField
+                          label="Staff required"
+                          //@ts-ignore
+                          size={'small'}
+                          required={true}
+                          fullWidth={true}
+                          value={field.value}
+                          onChange={(e) => {
+                            const value = e.target.value
+                            field.onChange(value.replaceAll('.', ''))
+                          }}
+                          allowNegative={false}
+                          loading={isGetting}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
             </FlexBox>
-            <FlexBox
-              justifyContent={'center'}
-              alignItems={'center'}
-              width={'100%'}
-              gap={2}
-            >
+
+            <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
               <FormControl fullWidth>
                 <Controller
                   control={control}
-                  name="amount"
+                  name="description"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <NumberField
-                        label="Staff required"
-                        //@ts-ignore
-                        size={'small'}
-                        required={true}
-                        fullWidth={true}
+                      <EditorBoxField
+                        label={'Job description'}
+                        required
                         value={field.value}
-                        onChange={(e) => {
-                          const value = e.target.value
-                          field.onChange(value.replaceAll('.', ''))
-                        }}
-                        allowNegative={false}
+                        onEditorChange={field.onChange}
                         loading={isGetting}
                       />
                       <HelperTextForm
@@ -327,54 +357,31 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
               </FormControl>
             </FlexBox>
           </FlexBox>
-
-          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="description"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <EditorBoxField
-                      label={'Job description'}
-                      required
-                      value={field.value}
-                      onEditorChange={field.onChange}
-                      loading={isGetting}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-        </FlexBox>
-      </BaseModal.ContentMain>
-      <BaseModal.Footer>
-        <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <AppButton
-            variant="outlined"
-            size="small"
-            onClick={() => setOpen(false)}
-          >
-            {translation.COMMON.cancel}
-          </AppButton>
-          <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
-            <ButtonLoading
-              variant="contained"
+        </BaseModal.ContentMain>
+        <BaseModal.Footer>
+          <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
+            <AppButton
+              variant="outlined"
               size="small"
-              disabled={isValid}
-              handlesubmit={() => {}}
-              loading={isPending}
+              onClick={() => setOpen(false)}
             >
-              Submit
-            </ButtonLoading>
-          </UpdateRecord>
-        </FlexBox>
-      </BaseModal.Footer>
-    </BaseModal.Wrapper>
+              {translation.COMMON.cancel}
+            </AppButton>
+            <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
+              <ButtonLoading
+                variant="contained"
+                size="small"
+                disabled={isValid}
+                handlesubmit={() => {}}
+                loading={isPending}
+              >
+                Submit
+              </ButtonLoading>
+            </UpdateRecord>
+          </FlexBox>
+        </BaseModal.Footer>
+      </BaseModal.Wrapper>
+    </ConfirmableModalProvider>
   )
 }
 

@@ -7,7 +7,10 @@ import {
 } from 'features/candidates/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
-import { convertDateToISOString, removeStatusAttachment } from 'shared/utils/utils'
+import {
+  convertDateToISOString,
+  removeStatusAttachment,
+} from 'shared/utils/utils'
 
 type UseEditCandidateProps = {
   id: string
@@ -54,7 +57,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      let attachments = removeStatusAttachment(value?.attachments);
+      let attachments = removeStatusAttachment(value?.attachments)
 
       mutate({
         ...value,
@@ -63,7 +66,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
         recruit_time: value.recruit_time
           ? convertDateToISOString(value.recruit_time)
           : value.recruit_time,
-        attachments: attachments
+        attachments: attachments,
       })
     })()
   }
@@ -88,6 +91,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
     isPending,
     setValue,
     isGetting,
+    formState,
     watch,
   }
 }

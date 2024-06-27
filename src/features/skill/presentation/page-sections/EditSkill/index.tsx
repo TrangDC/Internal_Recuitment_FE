@@ -9,6 +9,7 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 
 interface IEditSkillModal {
   open: boolean
@@ -16,12 +17,8 @@ interface IEditSkillModal {
   id: string
 }
 
-function EditSkillModal({
-  open,
-  setOpen,
-  id,
-}: IEditSkillModal) {
-  const { actions, control, isPending, isValid, isGetting } =
+function EditSkillModal({ open, setOpen, id }: IEditSkillModal) {
+  const { actions, control, isPending, isValid, isGetting, formState } =
     useUpdateSkill({
       id: id,
       onSuccess: () => {
@@ -33,87 +30,89 @@ function EditSkillModal({
   const translation = useTextTranslation()
 
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header
-        title={"Edit skill"}
-        setOpen={setOpen}
-      ></BaseModal.Header>
-      <BaseModal.ContentMain>
-        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="name"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <AppTextField
-                      label={'Name'}
-                      required
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                      loading={isGetting}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+    <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
+      <BaseModal.Wrapper open={open} setOpen={setOpen}>
+        <BaseModal.Header
+          title={'Edit skill'}
+          setOpen={setOpen}
+        ></BaseModal.Header>
+        <BaseModal.ContentMain>
+          <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="name"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Name'}
+                        required
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        loading={isGetting}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="description"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Description'}
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        multiline
+                        minRows={4}
+                        loading={isGetting}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
           </FlexBox>
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="description"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <AppTextField
-                      label={'Description'}
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                      multiline
-                      minRows={4}
-                      loading={isGetting}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-        </FlexBox>
-      </BaseModal.ContentMain>
-      <BaseModal.Footer>
-        <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <AppButton
-            variant="outlined"
-            size="small"
-            onClick={() => setOpen(false)}
-          >
-            {translation.COMMON.cancel}
-          </AppButton>
-          <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
-            <ButtonLoading
-              variant="contained"
+        </BaseModal.ContentMain>
+        <BaseModal.Footer>
+          <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
+            <AppButton
+              variant="outlined"
               size="small"
-              disabled={isValid}
-              handlesubmit={() => {}}
-              loading={isPending}
+              onClick={() => setOpen(false)}
             >
-              Submit
-            </ButtonLoading>
-          </UpdateRecord>
-        </FlexBox>
-      </BaseModal.Footer>
-    </BaseModal.Wrapper>
+              {translation.COMMON.cancel}
+            </AppButton>
+            <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
+              <ButtonLoading
+                variant="contained"
+                size="small"
+                disabled={isValid}
+                handlesubmit={() => {}}
+                loading={isPending}
+              >
+                Submit
+              </ButtonLoading>
+            </UpdateRecord>
+          </FlexBox>
+        </BaseModal.Footer>
+      </BaseModal.Wrapper>
+    </ConfirmableModalProvider>
   )
 }
 
