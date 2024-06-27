@@ -226,7 +226,6 @@ const InputFile = ({
       listFileUpload.push(paramUpload)
     })
 
-    console.log('listFileUpload', listFileUpload)
     //list promise get urls from azure
     const getUrlAzures = listFileUpload.map((fileUpload) => {
       return new Promise((resolve, reject) => {

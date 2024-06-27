@@ -88,11 +88,11 @@ const JobApplicationHistory = ({
         },
       },
       {
-        id: 'edit-application',
+        id: 'edit-cv',
         onClick: (id, rowData) => {
           handleOpenEdit(id, rowData)
         },
-        title: 'Edit application',
+        title: 'Edit CV',
         Icon: <EditIcon />,
       },
       {

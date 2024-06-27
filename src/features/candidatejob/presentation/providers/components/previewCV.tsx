@@ -20,13 +20,20 @@ interface IPreviewCV {
 function PreviewCV({ pdfUrl, pageNumber }: IPreviewCV) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [page, setPage] = useState<any>(null)
+  const [isSuccess, setIsSuccess] = useState(false)
   useEffect(() => {
     const loadPage = async () => {
-      if (pdfUrl) {
-        const loadingTask = pdfjs.getDocument(pdfUrl)
-        const pdf = await loadingTask.promise
-        const page = await pdf.getPage(pageNumber)
-        setPage(page)
+      try {
+        if (pdfUrl) {
+          const loadingTask = pdfjs.getDocument(pdfUrl)
+          const pdf = await loadingTask.promise
+          const page = await pdf.getPage(pageNumber)
+          setPage(page)
+          setIsSuccess(true)
+        }
+      } catch (err) {
+        setIsSuccess(false)
+        console.log(err)
       }
     }
     loadPage()
@@ -62,7 +69,7 @@ function PreviewCV({ pdfUrl, pageNumber }: IPreviewCV) {
       borderRadius={'4px'}
       border={'hidden'}
     >
-      <canvas ref={canvasRef} width={170} height={240}></canvas>
+      {isSuccess && <canvas ref={canvasRef} width={170} height={240}></canvas>}
       <Box
         width={'100%'}
         height={'100%'}
