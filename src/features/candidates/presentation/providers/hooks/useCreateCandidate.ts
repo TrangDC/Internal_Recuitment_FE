@@ -29,6 +29,8 @@ function useCreateCandidate(props: createCandidateProps) {
       phone: '',
       note: '',
       dob: null,
+      reference_uid: '',
+      description: ''
     },
     resolver: yupResolver(schema),
     onSuccess: callbackSuccess,
