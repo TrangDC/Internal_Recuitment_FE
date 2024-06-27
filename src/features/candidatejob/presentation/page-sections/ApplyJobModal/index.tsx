@@ -14,6 +14,7 @@ import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidat
 import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
+import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 
 interface IApplyJobModal {
   open: boolean
@@ -28,16 +29,23 @@ function ApplyJobModal({
   candidateId,
   onSuccess,
 }: IApplyJobModal) {
-  const { onSubmit, control, isPending, isValid, resetField, watch } =
-    useApplyToJob({
-      callbackSuccess: () => {
-        setOpen(false)
-        onSuccess?.()
-      },
-      defaultValues: {
-        candidate_id: candidateId,
-      },
-    })
+  const {
+    onSubmit,
+    control,
+    isPending,
+    isValid,
+    resetField,
+    watch,
+    formState,
+  } = useApplyToJob({
+    callbackSuccess: () => {
+      setOpen(false)
+      onSuccess?.()
+    },
+    defaultValues: {
+      candidate_id: candidateId,
+    },
+  })
 
   const translation = useTextTranslation()
   const attachments = watch('attachments')
@@ -50,169 +58,171 @@ function ApplyJobModal({
   }, [attachments])
 
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header
-        title={translation.MODULE_CANDIDATE_JOB.apply_to_a_job}
-        setOpen={setOpen}
-      ></BaseModal.Header>
-      <BaseModal.ContentMain maxHeight="500px">
-        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="team_id"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <TeamsAutoComplete
-                      name={field.name}
-                      value={field.value || ''}
-                      onChange={(value) => {
-                        field.onChange(value)
-                        resetField('hiring_job_id')
-                      }}
-                      multiple={false}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Team',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
+    <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
+      <BaseModal.Wrapper open={open} setOpen={setOpen}>
+        <BaseModal.Header
+          title={translation.MODULE_CANDIDATE_JOB.apply_to_a_job}
+          setOpen={setOpen}
+        ></BaseModal.Header>
+        <BaseModal.ContentMain maxHeight="500px">
+          <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="team_id"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <TeamsAutoComplete
+                        name={field.name}
+                        value={field.value || ''}
+                        onChange={(value) => {
+                          field.onChange(value)
+                          resetField('hiring_job_id')
+                        }}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Team',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
 
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                name="hiring_job_id"
-                shouldUnregister
-                control={control}
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <JobsAutoComplete
-                      name={field.name}
-                      value={field.value}
-                      disabled={!team_id}
-                      filter={{
-                        team_ids: team_id ? [team_id] : undefined,
-                        status: 'opened',
-                      }}
-                      multiple={false}
-                      onChange={field.onChange}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Job name',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  name="hiring_job_id"
+                  shouldUnregister
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <JobsAutoComplete
+                        name={field.name}
+                        value={field.value}
+                        disabled={!team_id}
+                        filter={{
+                          team_ids: team_id ? [team_id] : undefined,
+                          status: 'opened',
+                        }}
+                        multiple={false}
+                        onChange={field.onChange}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Job name',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
 
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                name="status"
-                shouldUnregister
-                control={control}
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <CandidateStatusAutoComplete
-                      multiple={false}
-                      value={field.value}
-                      onChange={(data: any) => {
-                        field.onChange(data.value)
-                      }}
-                      textFieldProps={{
-                        label: 'Status',
-                        required: true,
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  name="status"
+                  shouldUnregister
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <CandidateStatusAutoComplete
+                        multiple={false}
+                        value={field.value}
+                        onChange={(data: any) => {
+                          field.onChange(data.value)
+                        }}
+                        textFieldProps={{
+                          label: 'Status',
+                          required: true,
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
 
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                name="attachments"
-                shouldUnregister
-                control={control}
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <InputFileComponent
-                      field={field}
-                      inputFileProps={{
-                        accept: '.pdf',
-                        regexString: '\\.pdf$',
-                        maxFile: 1,
-                        multiple: false,
-                        maxSize: 20,
-                        msgError: {
-                          is_valid: 'One PDF file only, file size up to 20MB',
-                          maxSize: 'One PDF file only, file size up to 20MB',
-                          maxFile: 'One PDF file only, file size up to 20MB',
-                        },
-                        descriptionFile: () => {
-                          return (
-                            <Box>
-                              <Span sx={{ color: '#2A2E37 !important' }}>
-                                {' '}
-                                Attach CV{' '}
-                              </Span>
-                              <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                One PDF file only, file size up to 20MB
-                              </Tiny>
-                            </Box>
-                          )
-                        },
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  name="attachments"
+                  shouldUnregister
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <InputFileComponent
+                        field={field}
+                        inputFileProps={{
+                          accept: '.pdf',
+                          regexString: '\\.pdf$',
+                          maxFile: 1,
+                          multiple: false,
+                          maxSize: 20,
+                          msgError: {
+                            is_valid: 'One PDF file only, file size up to 20MB',
+                            maxSize: 'One PDF file only, file size up to 20MB',
+                            maxFile: 'One PDF file only, file size up to 20MB',
+                          },
+                          descriptionFile: () => {
+                            return (
+                              <Box>
+                                <Span sx={{ color: '#2A2E37 !important' }}>
+                                  {' '}
+                                  Attach CV{' '}
+                                </Span>
+                                <Tiny sx={{ color: '#2A2E37 !important' }}>
+                                  One PDF file only, file size up to 20MB
+                                </Tiny>
+                              </Box>
+                            )
+                          },
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
           </FlexBox>
-        </FlexBox>
-      </BaseModal.ContentMain>
-      <BaseModal.Footer>
-        <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <AppButton
-            variant="outlined"
-            size="small"
-            onClick={() => setOpen(false)}
-          >
-            {translation.COMMON.cancel}
-          </AppButton>
-          <ButtonLoading
-            variant="contained"
-            size="small"
-            disabled={isValid || !isValidAttachments}
-            handlesubmit={onSubmit}
-            loading={isPending}
-          >
-            Submit
-          </ButtonLoading>
-        </FlexBox>
-      </BaseModal.Footer>
-    </BaseModal.Wrapper>
+        </BaseModal.ContentMain>
+        <BaseModal.Footer>
+          <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
+            <AppButton
+              variant="outlined"
+              size="small"
+              onClick={() => setOpen(false)}
+            >
+              {translation.COMMON.cancel}
+            </AppButton>
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid || !isValidAttachments}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
+          </FlexBox>
+        </BaseModal.Footer>
+      </BaseModal.Wrapper>
+    </ConfirmableModalProvider>
   )
 }
 

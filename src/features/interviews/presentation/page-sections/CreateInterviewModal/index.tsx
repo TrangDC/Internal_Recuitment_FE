@@ -16,6 +16,7 @@ import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import { useMemo } from 'react'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
+import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 
 interface ICreateInterviewModal {
   open: boolean
@@ -31,239 +32,234 @@ function CreateInterviewModal({
   onSuccess,
 }: ICreateInterviewModal) {
   const { id } = useParams()
-  const {
-    onSubmit,
-    control,
-    isPending,
-    isValid,
-    watch,
-    trigger,
-  } = useCreateInterview({
-    callbackSuccess: () => {
-      setOpen(false)
-      onSuccess?.()
-    },
-    defaultValues: {
-      candidate_job_id: id,
-      interview_date: new Date(),
-    },
-  })
-  
+  const { onSubmit, control, isPending, isValid, watch, trigger, formState } =
+    useCreateInterview({
+      callbackSuccess: () => {
+        setOpen(false)
+        onSuccess?.()
+      },
+      defaultValues: {
+        candidate_job_id: id,
+        interview_date: new Date(),
+      },
+    })
+
   const interview_date = watch('interview_date')
 
   const date_feature = useMemo(() => {
     return dayjs().isBefore(dayjs(interview_date))
   }, [interview_date])
 
-
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header
-        title="Add New Interview"
-        setOpen={setOpen}
-      ></BaseModal.Header>
-      <BaseModal.ContentMain maxHeight="500px">
-        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-          <FlexBox>
-            <Box>
-              <SpanText sx={{ color: '#3A3C40' }}>Job name</SpanText>
-              <TinyText>{hiring_job.name}</TinyText>
-            </Box>
-          </FlexBox>
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="title"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <AppTextField
-                      label={'Interview title'}
-                      required
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
+    <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
+      <BaseModal.Wrapper open={open} setOpen={setOpen}>
+        <BaseModal.Header
+          title="Add New Interview"
+          setOpen={setOpen}
+        ></BaseModal.Header>
+        <BaseModal.ContentMain maxHeight="500px">
+          <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+            <FlexBox>
+              <Box>
+                <SpanText sx={{ color: '#3A3C40' }}>Job name</SpanText>
+                <TinyText>{hiring_job.name}</TinyText>
+              </Box>
+            </FlexBox>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="title"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Interview title'}
+                        required
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
 
-          <FlexBox>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="interviewer"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <InterViewerAutoComplete
-                      value={field.value || []}
-                      onChange={field.onChange}
-                      multiple={true}
-                      name={field.name}
-                      textFieldProps={{
-                        label: `Interviewer`,
-                        required: true,
-                      }}
+            <FlexBox>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="interviewer"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <InterViewerAutoComplete
+                        value={field.value || []}
+                        onChange={field.onChange}
+                        multiple={true}
+                        name={field.name}
+                        textFieldProps={{
+                          label: `Interviewer`,
+                          required: true,
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="interview_date"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppDateField
+                        label={'Select date'}
+                        format="dd/MM/yyyy"
+                        value={dayjs(field.value)}
+                        onChange={(value) => {
+                          trigger('start_from')
+                          field.onChange(value?.toDate())
+                        }}
+                        minDate={dayjs()}
+                        textFieldProps={{
+                          fullWidth: true,
+                          size: 'small',
+                          required: true,
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <FlexBox gap={2}>
+                  <FormControl fullWidth>
+                    <Controller
+                      name="start_from"
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <FlexBox flexDirection={'column'}>
+                          <AppTimePickers
+                            label={'From'}
+                            value={field.value ? dayjs(field.value) : null}
+                            onChange={(value) => {
+                              // handleGenerateToDate(value)
+                              field.onChange(value)
+                            }}
+                            views={['hours', 'minutes']}
+                            ampm={false}
+                            disabled={!interview_date}
+                            minTime={
+                              date_feature ? dayjs().hour(0).minute(0) : dayjs()
+                            }
+                            textFieldProps={{
+                              required: true,
+                            }}
+                            timeSteps={{
+                              minutes: 30,
+                            }}
+                          />
+                          <HelperTextForm
+                            message={fieldState.error?.message}
+                          ></HelperTextForm>
+                        </FlexBox>
+                      )}
                     />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="interview_date"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <AppDateField
-                      label={'Select date'}
-                      format="dd/MM/yyyy"
-                      value={dayjs(field.value)}
-                      onChange={(value) => {
-                        trigger('start_from')
-                        field.onChange(value?.toDate())
-                      }}
-                      minDate={dayjs()}
-                      textFieldProps={{
-                        fullWidth: true,
-                        size: 'small',
-                        required: true,
-                      }}
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <Controller
+                      name="end_at"
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <FlexBox flexDirection={'column'}>
+                          <AppTimePickers
+                            label={'To'}
+                            value={field.value ? dayjs(field.value) : null}
+                            onChange={field.onChange}
+                            views={['hours', 'minutes']}
+                            ampm={false}
+                            minTime={
+                              date_feature ? dayjs().hour(0).minute(0) : dayjs()
+                            }
+                            disabled={!interview_date}
+                            textFieldProps={{
+                              required: true,
+                            }}
+                            timeSteps={{
+                              minutes: 30,
+                            }}
+                          />
+                          <HelperTextForm
+                            message={fieldState.error?.message}
+                          ></HelperTextForm>
+                        </FlexBox>
+                      )}
                     />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <FlexBox gap={2}>
-                <FormControl fullWidth>
-                  <Controller
-                    name="start_from"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <FlexBox flexDirection={'column'}>
-                        <AppTimePickers
-                          label={'From'}
-                          value={field.value ? dayjs(field.value) : null}
-                          onChange={(value) => {
-                            // handleGenerateToDate(value)
-                            field.onChange(value)
-                          }}
-                          views={['hours', 'minutes']}
-                          ampm={false}
-                          disabled={!interview_date}
-                          minTime={
-                            date_feature ? dayjs().hour(0).minute(0) : dayjs()
-                          }
-                          textFieldProps={{
-                            required: true,
-                          }}
-                          timeSteps={{
-                            minutes: 30,
-                          }}
-                        />
-                        <HelperTextForm
-                          message={fieldState.error?.message}
-                        ></HelperTextForm>
-                      </FlexBox>
-                    )}
-                  />
-                </FormControl>
-                <FormControl fullWidth>
-                  <Controller
-                    name="end_at"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <FlexBox flexDirection={'column'}>
-                        <AppTimePickers
-                          label={'To'}
-                          value={field.value ? dayjs(field.value) : null}
-                          onChange={field.onChange}
-                          views={['hours', 'minutes']}
-                          ampm={false}
-                          minTime={
-                            date_feature ? dayjs().hour(0).minute(0) : dayjs()
-                          }
-                          disabled={!interview_date}
-                          textFieldProps={{
-                            required: true,
-                          }}
-                          timeSteps={{
-                            minutes: 30,
-                          }}
-                        />
-                        <HelperTextForm
-                          message={fieldState.error?.message}
-                        ></HelperTextForm>
-                      </FlexBox>
-                    )}
-                  />
-                </FormControl>
-              </FlexBox>
-            </FormControl>
-          </FlexBox>
+                  </FormControl>
+                </FlexBox>
+              </FormControl>
+            </FlexBox>
 
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="description"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <AppTextField
-                      label={'Description'}
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                      multiline
-                      minRows={4}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="description"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Description'}
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        multiline
+                        minRows={4}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
           </FlexBox>
-        </FlexBox>
-      </BaseModal.ContentMain>
-      <BaseModal.Footer>
-        <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <AppButton
-            variant="outlined"
-            size="small"
-            onClick={() => setOpen(false)}
-          >
-            Cancel
-          </AppButton>
-          <ButtonLoading
-            variant="contained"
-            size="small"
-            disabled={isValid}
-            handlesubmit={onSubmit}
-            loading={isPending}
-          >
-            Submit
-          </ButtonLoading>
-        </FlexBox>
-      </BaseModal.Footer>
-    </BaseModal.Wrapper>
+        </BaseModal.ContentMain>
+        <BaseModal.Footer>
+          <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
+            <AppButton
+              variant="outlined"
+              size="small"
+              onClick={() => setOpen(false)}
+            >
+              Cancel
+            </AppButton>
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
+          </FlexBox>
+        </BaseModal.Footer>
+      </BaseModal.Wrapper>
+    </ConfirmableModalProvider>
   )
 }
 

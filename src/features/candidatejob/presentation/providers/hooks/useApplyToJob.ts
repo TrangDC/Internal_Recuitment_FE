@@ -1,10 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../constants/schema'
-import {
-  removeInfoData,
-  transformListArray,
-} from 'shared/utils/utils'
+import { removeInfoData, transformListArray } from 'shared/utils/utils'
 import _ from 'lodash'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { NewCandidateJobInput } from 'features/candidatejob/domain/interfaces'
@@ -64,6 +61,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     control,
     isValid,
     isPending,
+    formState,
     resetField,
     watch,
   }

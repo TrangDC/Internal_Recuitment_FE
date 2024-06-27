@@ -6,7 +6,11 @@ import {
   FormDataSchemaChangeStatus,
 } from '../constants/schema'
 import { cloneDeep } from 'lodash'
-import { getInfoData, removeInfoData, transformListArray } from 'shared/utils/utils'
+import {
+  getInfoData,
+  removeInfoData,
+  transformListArray,
+} from 'shared/utils/utils'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import {
   FormDataSchema,
@@ -16,18 +20,22 @@ import {
 } from 'features/feedback/presentation/providers/constants/schema'
 import { useState } from 'react'
 import { useCreateResource, useEditResource } from 'shared/hooks/crud-hook'
-import { CandidateJob, UpdateCandidateJobStatus, UpdateStatus } from 'features/candidatejob/domain/interfaces'
+import {
+  CandidateJob,
+  UpdateCandidateJobStatus,
+  UpdateStatus,
+} from 'features/candidatejob/domain/interfaces'
 
 interface useChangeStatusProps {
   defaultValues?: Partial<FormDataSchemaChangeStatus>
   callbackSuccess?: (value: any) => void
-  id: string,
+  id: string
 }
 
 interface propsChangeStatus {
   mutationFeedback: () => void
   callbackSuccess?: (value: any) => void
-  id: string,
+  id: string
 }
 
 function ChangeStatus(props: propsChangeStatus) {
@@ -46,7 +54,7 @@ function ChangeStatus(props: propsChangeStatus) {
     onSuccess: mutationFeedback,
     formatDefaultValues(data) {
       return {
-        note: ''
+        note: '',
       }
     },
   })
@@ -146,7 +154,7 @@ function useChangeStatus(props: useChangeStatusProps) {
       mutateChangeStatus(
         removeInfoData({
           field: ['feedback', 'attachments'],
-          object: valueClone
+          object: valueClone,
         }) as UpdateStatus
       )
     })()
@@ -158,6 +166,7 @@ function useChangeStatus(props: useChangeStatusProps) {
     isValid,
     isPending: isPendingStatus,
     watch,
+    formState,
   }
 }
 

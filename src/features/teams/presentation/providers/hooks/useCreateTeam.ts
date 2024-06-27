@@ -21,10 +21,10 @@ function useCreateTeam(props: createTeamProps = {}) {
     defaultValues: {
       name: '',
       members: [],
-      note: ''
+      note: '',
     },
     resolver: yupResolver(schema),
-    onSuccess: callbackSuccess
+    onSuccess: callbackSuccess,
   })
 
   const { handleSubmit, control, formState } = useFormReturn
@@ -42,6 +42,7 @@ function useCreateTeam(props: createTeamProps = {}) {
     control,
     isValid,
     isPending,
+    formState,
   }
 }
 

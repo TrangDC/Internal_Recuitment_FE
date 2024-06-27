@@ -23,6 +23,7 @@ import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
+import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 
 interface IChangeStatusModal {
   open: boolean
@@ -51,21 +52,22 @@ function ChangeStatusModal({
   defaultStatus = '',
   onSuccess,
 }: IChangeStatusModal) {
-  console.log("rowData", rowData)
+  console.log('rowData', rowData)
   const { handleWarning, handleReset } = usePopup()
-  const { onSubmit, control, isPending, isValid, watch } = useChangeStatus({
-    id: rowData?.id as string,
-    callbackSuccess: () => {
-      setOpen(false)
-      onSuccess?.()
-    },
-    defaultValues: {
-      feedback: '',
-      attachments: [],
-      failed_reason: [],
-      status: defaultStatus,
-    },
-  })
+  const { onSubmit, control, isPending, isValid, watch, formState } =
+    useChangeStatus({
+      id: rowData?.id as string,
+      callbackSuccess: () => {
+        setOpen(false)
+        onSuccess?.()
+      },
+      defaultValues: {
+        feedback: '',
+        attachments: [],
+        failed_reason: [],
+        status: defaultStatus,
+      },
+    })
 
   const statusDisabledList = useMemo(() => {
     return list_status_disabled[statusCurrent]
@@ -106,83 +108,56 @@ function ChangeStatusModal({
   }
 
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen}>
-      <BaseModal.Header
-        title={translation.MODULE_CANDIDATE_JOB.change_status}
-        setOpen={setOpen}
-      ></BaseModal.Header>
-      <BaseModal.ContentMain maxHeight="500px">
-        <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <CustomTextField
-                label="Job name"
-                size="small"
-                value={rowData?.hiring_job?.name}
-                fullWidth
-                focused
-                required
-                disabled
-              />
-            </FormControl>
-          </FlexBox>
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <CustomTextField
-                label="Current status"
-                size="small"
-                //@ts-ignore
-                value={CANDIDATE_STATUS?.[rowData?.status]?.text}
-                fullWidth
-                required
-                focused
-                disabled
-              />
-            </FormControl>
-            <FormControl fullWidth sx={{ marginTop: '10px' }}>
-              <Controller
-                name="status"
-                shouldUnregister
-                control={control}
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <CandidateStatusAutoComplete
-                      multiple={false}
-                      value={field.value}
-                      list_disabled={statusDisabledList}
-                      onChange={(data: any) => {
-                        field.onChange(data.value)
-                      }}
-                      textFieldProps={{
-                        label: 'New status',
-                        required: true,
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-          {showFailedReason && (
+    <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
+      <BaseModal.Wrapper open={open} setOpen={setOpen}>
+        <BaseModal.Header
+          title={translation.MODULE_CANDIDATE_JOB.change_status}
+          setOpen={setOpen}
+        ></BaseModal.Header>
+        <BaseModal.ContentMain maxHeight="500px">
+          <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
             <FlexBox gap={2}>
               <FormControl fullWidth>
+                <CustomTextField
+                  label="Job name"
+                  size="small"
+                  value={rowData?.hiring_job?.name}
+                  fullWidth
+                  focused
+                  required
+                  disabled
+                />
+              </FormControl>
+            </FlexBox>
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <CustomTextField
+                  label="Current status"
+                  size="small"
+                  //@ts-ignore
+                  value={CANDIDATE_STATUS?.[rowData?.status]?.text}
+                  fullWidth
+                  required
+                  focused
+                  disabled
+                />
+              </FormControl>
+              <FormControl fullWidth sx={{ marginTop: '10px' }}>
                 <Controller
-                  name="failed_reason"
+                  name="status"
                   shouldUnregister
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <FailedReasonAutoComplete
-                        multiple={true}
-                        value={field.value || []}
-                        onChange={(data) => {
-                          field.onChange(transformListItem(data, 'value'))
+                      <CandidateStatusAutoComplete
+                        multiple={false}
+                        value={field.value}
+                        list_disabled={statusDisabledList}
+                        onChange={(data: any) => {
+                          field.onChange(data.value)
                         }}
                         textFieldProps={{
-                          label: 'Failed reason',
+                          label: 'New status',
                           required: true,
                         }}
                       />
@@ -194,96 +169,125 @@ function ChangeStatusModal({
                 />
               </FormControl>
             </FlexBox>
-          )}
+            {showFailedReason && (
+              <FlexBox gap={2}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="failed_reason"
+                    shouldUnregister
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <FailedReasonAutoComplete
+                          multiple={true}
+                          value={field.value || []}
+                          onChange={(data) => {
+                            field.onChange(transformListItem(data, 'value'))
+                          }}
+                          textFieldProps={{
+                            label: 'Failed reason',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+            )}
 
-          <FlexBox gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="feedback"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <AppTextField
-                      label={'Feedback'}
-                      size="small"
-                      fullWidth
-                      value={field.value}
-                      onChange={field.onChange}
-                      minRows={4}
-                      multiline
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="feedback"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Feedback'}
+                        size="small"
+                        fullWidth
+                        value={field.value}
+                        onChange={field.onChange}
+                        minRows={4}
+                        multiline
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  name="attachments"
+                  shouldUnregister
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <InputFileComponent
+                        field={field}
+                        inputFileProps={{
+                          accept: '.pdf, .png, .jpg, .jpeg, .doc, .docx',
+                          regexString: '.(pdf|png|jpg|jpeg|doc|docx)$',
+                          maxFile: 10,
+                          maxSize: 20,
+                          msgError: {
+                            maxSize: 'Up to 10 files and 20MB/file',
+                          },
+                          descriptionFile: () => {
+                            return (
+                              <Box>
+                                <Span sx={{ color: '#2A2E37 !important' }}>
+                                  {' '}
+                                  Attach file{' '}
+                                </Span>
+                                <Tiny sx={{ color: '#2A2E37 !important' }}>
+                                  Up to 10 files and 20MB/file
+                                </Tiny>
+                              </Box>
+                            )
+                          },
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
           </FlexBox>
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                name="attachments"
-                shouldUnregister
-                control={control}
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <InputFileComponent
-                      field={field}
-                      inputFileProps={{
-                        accept: '.pdf, .png, .jpg, .jpeg, .doc, .docx',
-                        regexString: '.(pdf|png|jpg|jpeg|doc|docx)$',
-                        maxFile: 10,
-                        maxSize: 20,
-                        msgError: {
-                          maxSize: 'Up to 10 files and 20MB/file',
-                        },
-                        descriptionFile: () => {
-                          return (
-                            <Box>
-                              <Span sx={{ color: '#2A2E37 !important' }}>
-                                {' '}
-                                Attach file{' '}
-                              </Span>
-                              <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                Up to 10 files and 20MB/file
-                              </Tiny>
-                            </Box>
-                          )
-                        },
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+        </BaseModal.ContentMain>
+        <BaseModal.Footer>
+          <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
+            <AppButton
+              variant="outlined"
+              size="small"
+              onClick={() => setOpen(false)}
+            >
+              {translation.COMMON.cancel}
+            </AppButton>
+            <ButtonLoading
+              variant="contained"
+              size="small"
+              disabled={isValid || !isValidAttachments}
+              handlesubmit={handleSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonLoading>
           </FlexBox>
-        </FlexBox>
-      </BaseModal.ContentMain>
-      <BaseModal.Footer>
-        <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-          <AppButton
-            variant="outlined"
-            size="small"
-            onClick={() => setOpen(false)}
-          >
-            {translation.COMMON.cancel}
-          </AppButton>
-          <ButtonLoading
-            variant="contained"
-            size="small"
-            disabled={isValid || !isValidAttachments}
-            handlesubmit={handleSubmit}
-            loading={isPending}
-          >
-            Submit
-          </ButtonLoading>
-        </FlexBox>
-      </BaseModal.Footer>
-    </BaseModal.Wrapper>
+        </BaseModal.Footer>
+      </BaseModal.Wrapper>
+    </ConfirmableModalProvider>
   )
 }
 
