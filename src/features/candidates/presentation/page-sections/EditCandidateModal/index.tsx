@@ -226,8 +226,10 @@ function EditCandidateModal({ open, setOpen, id }: IEditCandidateModal) {
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <InterViewerAutoComplete
-                        value={field.value || []}
-                        onChange={field.onChange}
+                        value={field.value || ''}
+                        onChange={(data) => {
+                          field.onChange(data ?? '')
+                        }}
                         multiple={false}
                         name={field.name}
                         textFieldProps={{

@@ -27,7 +27,7 @@ const CandidateBySource = ({ source, name, value, onChange, required = false }: 
           }}
           multiple={false}
           textFieldProps={{
-            label: `Recruit Channel`,
+            label: `Recruit channel`,
             required: required
           }}
         />
@@ -41,7 +41,7 @@ const CandidateBySource = ({ source, name, value, onChange, required = false }: 
           }}
           multiple={false}
           textFieldProps={{
-            label: `Recruit Channel`,
+            label: `Recruit channel`,
             required: required
           }}
         />
