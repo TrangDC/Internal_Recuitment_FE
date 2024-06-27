@@ -187,7 +187,8 @@ function ApplyJobModal({
                                   Attach CV{' '}
                                 </Span>
                                 <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                  One PDF file only, file size up to 20MB
+                                  One PDF,WORD,EXCEL file only, file size up to
+                                  20mb
                                 </Tiny>
                               </Box>
                             )

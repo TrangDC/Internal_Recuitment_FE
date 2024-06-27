@@ -138,7 +138,6 @@ const InputFile = ({
       msgError: '',
     }
 
-    console.log('files', files)
     const maxFileValidate = wrapperValidate(
       () => checkMaxFile(lengthFileCurrent, fieldValidate.maxFile),
       msgError?.maxFile ? msgError?.maxFile : RULE_MESSAGES.MC4('file', maxFile)
