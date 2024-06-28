@@ -65,7 +65,6 @@ const Candidates = () => {
 
   const navigate = useNavigate()
   const translation = useTextTranslation()
-  const [status, setStatus] = useState<string>('')
   const { useFilterReturn, useSearchListReturn } = useFilterCandidates()
   const { controlFilter, dataFilterWithValue } = useFilterReturn
   const { handleSearch, search, searchRef } = useSearchListReturn
@@ -79,10 +78,10 @@ const Candidates = () => {
   })
   const showFailedReason = useMemo(() => {
     return (
-      status === STATUS_CANDIDATE.KIV ||
-      status === STATUS_CANDIDATE.OFFERED_LOST
+      dataFilterWithValue.status === STATUS_CANDIDATE.KIV ||
+      dataFilterWithValue.status === STATUS_CANDIDATE.OFFERED_LOST
     )
-  }, [status])
+  }, [dataFilterWithValue])
 
   const { colummTable } = useBuildColumnTable({
     actions: [
@@ -152,7 +151,6 @@ const Candidates = () => {
                   value={value}
                   onChange={(data) => {
                     onFilter(data)
-                    setStatus(data?.value ?? '')
                   }}
                   open={true}
                   disableCloseOnSelect={true}
