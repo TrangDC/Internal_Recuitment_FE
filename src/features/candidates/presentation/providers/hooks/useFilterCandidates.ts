@@ -1,6 +1,7 @@
 import useFilter from 'shared/components/table/hooks/useFilter'
 import useSearchList from 'shared/components/table/hooks/useSearchList'
 import { CandidateFilter } from '../constants/schema-filter'
+import { isEmpty } from 'lodash'
 
 function useFilterCandidates() {
   const useSearchListReturn = useSearchList({
@@ -20,8 +21,12 @@ function useFilterCandidates() {
           data?.recruit_time_from_date?.value ?? undefined,
         recruit_time_to_date: data?.recruit_time_to_date?.value ?? undefined,
         status: data?.status?.value,
-        reference_uid: data?.reference_uid?.map((o) => o.value),
-        failed_reason: data?.failed_reason?.map((o) => o.value),
+        reference_uid: !isEmpty(data?.reference_uid)
+          ? data?.reference_uid?.map((o) => o.value)
+          : null,
+        failed_reason: !isEmpty(data?.reference_uid)
+          ? data?.failed_reason?.map((o) => o.value)
+          : null,
       }
     },
   })
