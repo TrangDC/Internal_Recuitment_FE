@@ -7,7 +7,6 @@ import useActionTable from '../../providers/hooks/useActionTable'
 import { DivContainerWrapper, DivHeaderWrapper } from '../../providers/styles'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import EditIcon from 'shared/components/icons/EditIcon'
-import { useNavigate } from 'react-router-dom'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
@@ -16,6 +15,8 @@ import { CreateSkillType, DeleteSkillType, EditSkillType } from '../index'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import useFilterSkillType from '../../providers/hooks/useFilterSkillType'
 import SearchInput from 'shared/components/table/components/SearchInput'
+import IconScreen from 'shared/components/utils/IconScreen'
+import SkillIcon from 'shared/components/icons/SkillIcon'
 
 const SkillType = () => {
   const {
@@ -60,53 +61,62 @@ const SkillType = () => {
   })
 
   return (
-    <DivContainerWrapper>
-      <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
-        <HeadingWrapper>
-          <DivHeaderWrapper>
-            <SearchInput
-              ref={searchRef}
-              onEnter={handleSearch}
-              placeholder="Search by skill type name"
-              onSearch={handleSearch}
-            />
-            <FlexBox gap={'10px'}>
-              <ButtonAdd
-                Icon={Add}
-                textLable={'Add a new skill type'}
-                onClick={() => setOpenCreate(true)}
-              />
-            </FlexBox>
-          </DivHeaderWrapper>
-        </HeadingWrapper>
-        <Box>
-          {useTableReturn && (
-            <CustomTable
-              columns={colummTable}
-              useTableReturn={useTableReturn}
+    <Box pt={2} pb={4}>
+      <Box>
+        <FlexBox gap={0.5} alignItems="center">
+          <IconScreen Icon={SkillIcon} textLable="Skill type management" />
+        </FlexBox>
+      </Box>
+      <Box sx={{ width: '100%', marginTop: '20px' }}>
+        <DivContainerWrapper>
+          <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
+            <HeadingWrapper>
+              <DivHeaderWrapper>
+                <SearchInput
+                  ref={searchRef}
+                  onEnter={handleSearch}
+                  placeholder="Search by skill type name"
+                  onSearch={handleSearch}
+                />
+                <FlexBox gap={'10px'}>
+                  <ButtonAdd
+                    Icon={Add}
+                    textLable={'Add a new skill type'}
+                    onClick={() => setOpenCreate(true)}
+                  />
+                </FlexBox>
+              </DivHeaderWrapper>
+            </HeadingWrapper>
+            <Box>
+              {useTableReturn && (
+                <CustomTable
+                  columns={colummTable}
+                  useTableReturn={useTableReturn}
+                />
+              )}
+            </Box>
+          </BoxWrapperOuterContainer>
+
+          {openCreate && (
+            <CreateSkillType open={openCreate} setOpen={setOpenCreate} />
+          )}
+          {openEdit && (
+            <EditSkillType
+              open={openEdit}
+              setOpen={setOpenEdit}
+              id={rowId.current}
             />
           )}
-        </Box>
-      </BoxWrapperOuterContainer>
-
-      {openCreate && (
-        <CreateSkillType open={openCreate} setOpen={setOpenCreate} />
-      )}
-      {openEdit && (
-        <EditSkillType
-          open={openEdit}
-          setOpen={setOpenEdit}
-          id={rowId.current}
-        />
-      )}
-      {openDelete && (
-        <DeleteSkillType
-          open={openDelete}
-          setOpen={setOpenDelete}
-          id={rowId.current}
-        />
-      )}
-    </DivContainerWrapper>
+          {openDelete && (
+            <DeleteSkillType
+              open={openDelete}
+              setOpen={setOpenDelete}
+              id={rowId.current}
+            />
+          )}
+        </DivContainerWrapper>
+      </Box>
+    </Box>
   )
 }
 
