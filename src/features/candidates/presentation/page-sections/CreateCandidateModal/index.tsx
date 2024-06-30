@@ -19,6 +19,7 @@ import CandidateBySource from './components/CandidateBySource'
 import NationalityAutoComplete from 'shared/components/autocomplete/nationality-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import SkillTree from 'shared/components/tree/skill-tree'
 
 interface ICreateCandidateModal {
   open: boolean
@@ -238,9 +239,6 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                   )}
                 />
               </FormControl>
-            </FlexBox>
-
-            <FlexBox gap={2}>
               <FormControl fullWidth>
                 <Controller
                   control={control}
@@ -264,31 +262,24 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                   )}
                 />
               </FormControl>
-              {/* <FormControl fullWidth>
+            </FlexBox>
+
+            <FlexBox gap={2}>
+              
+              <FormControl fullWidth>
               <Controller
                 control={control}
-                name="candidate_skill"
+                name="entity_skill_records"
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                    <SkillAutoComplete
-                      name={field.name}
-                      value={field.value || []}
-                      onChange={(value) => {
-                        field.onChange(value)
-                      }}
-                      multiple={true}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Candidate skills',
-                      }}
-                    />
+                    <SkillTree value={field.value} onChange={field.onChange}/>
                     <HelperTextForm
                       message={fieldState.error?.message}
                     ></HelperTextForm>
                   </FlexBox>
                 )}
               />
-            </FormControl> */}
+            </FormControl>
             </FlexBox>
 
             <FlexBox gap={2}>

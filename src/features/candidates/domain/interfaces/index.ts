@@ -1,4 +1,5 @@
 import { TYPE_REFERENCE_TYPE } from 'features/auditTrails/presentation/providers/helper'
+import { entity_skill_type, SkillType } from 'features/skillType/domain/interfaces'
 import { Member } from 'features/teams/domain/interfaces'
 import { Attachments } from 'shared/interfaces'
 import { SchemaInputNote } from 'shared/schema'
@@ -32,6 +33,7 @@ export type Candidate = {
   updated_at: string
   deleted_at: string
   attachments: Attachments[]
+  entity_skill_types: entity_skill_type[]
 }
 
 export type NewCandidateInput = {

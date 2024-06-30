@@ -2,7 +2,7 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useUpdateCandidate from '../../providers/hooks/useUpdateSkillType'
+import useUpdateSkillType from '../../providers/hooks/useUpdateSkillType'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -22,7 +22,7 @@ function EditSkillModal({
   id,
 }: IEditSkillModal) {
   const { actions, control, isPending, isValid, isGetting } =
-    useUpdateCandidate({
+    useUpdateSkillType({
       id: id,
       onSuccess: () => {
         setOpen(false)

@@ -30,27 +30,15 @@ const SkillType = () => {
     setOpenEdit,
   } = useActionTable<Candidate>()
 
-  const navigate = useNavigate()
   const { useSearchListReturn } = useFilterSkillType()
   const { handleSearch, search, searchRef } = useSearchListReturn
 
   const { useTableReturn } = useSkillTypeTable({
-    filters: {
-      is_black_list: false,
-    },
     search,
   })
   const translation = useTextTranslation()
   const { colummTable } = useBuildColumnTable({
     actions: [
-      // {
-      //   id: 'detail',
-      //   onClick: (id) => {
-      //     navigate(`/dashboard/candidate-detail/${id}`)
-      //   },
-      //   title: translation.COMMON.detail,
-      //   Icon: <SearchIconSmall />,
-      // },
       {
         id: 'edit',
         onClick: (id) => {
@@ -79,13 +67,13 @@ const SkillType = () => {
             <SearchInput
               ref={searchRef}
               onEnter={handleSearch}
-              placeholder="Search by name"
+              placeholder="Search by skill type name"
               onSearch={handleSearch}
             />
             <FlexBox gap={'10px'}>
               <ButtonAdd
                 Icon={Add}
-                textLable={'Add skill type'}
+                textLable={'Add a new skill type'}
                 onClick={() => setOpenCreate(true)}
               />
             </FlexBox>

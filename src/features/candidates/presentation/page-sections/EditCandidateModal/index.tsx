@@ -20,6 +20,7 @@ import InputFileComponent from 'shared/components/form/inputFileComponent'
 import { Span, Tiny } from 'shared/components/Typography'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import SkillTree from 'shared/components/tree/skill-tree'
 
 interface IEditCandidateModal {
   open: boolean
@@ -170,7 +171,6 @@ function EditCandidateModal({ open, setOpen, id }: IEditCandidateModal) {
                 />
               </FormControl>
             </FlexBox>
-            {/* add */}
             <FlexBox gap={2}>
               <FormControl fullWidth>
                 <Controller
@@ -245,9 +245,6 @@ function EditCandidateModal({ open, setOpen, id }: IEditCandidateModal) {
                   )}
                 />
               </FormControl>
-            </FlexBox>
-
-            <FlexBox gap={2}>
               <FormControl fullWidth>
                 <Controller
                   control={control}
@@ -271,31 +268,23 @@ function EditCandidateModal({ open, setOpen, id }: IEditCandidateModal) {
                   )}
                 />
               </FormControl>
-              {/* <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="candidate_skill"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <SkillAutoComplete
-                      name={field.name}
-                      value={field.value || []}
-                      onChange={(value) => {
-                        field.onChange(value)
-                      }}
-                      multiple={true}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Candidate skills',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl> */}
+            </FlexBox>
+
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="entity_skill_records"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <SkillTree value={field.value} onChange={field.onChange}/>
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
             </FlexBox>
 
             <FlexBox gap={2}>

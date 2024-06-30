@@ -22,6 +22,7 @@ function useGetResource<Response, FormData extends FieldValues>({
 }: IuseGetResource<Response, FormData>) {
   const queryClient = useQueryClient()
   const [isGetting, setIsGetting] = useState(false)
+  const [formData, setFormData] = useState<Response>()
   async function getDataById(): Promise<Response | undefined> {
     setIsGetting(true)
     const data = await queryClient.fetchQuery({
@@ -43,6 +44,7 @@ function useGetResource<Response, FormData extends FieldValues>({
     mode: 'onChange',
     defaultValues: async () => {
       const data = await getDataById()
+      setFormData(data)
       return formatDefaultValues(data)
     },
     resolver,
@@ -51,7 +53,7 @@ function useGetResource<Response, FormData extends FieldValues>({
   return {
     useFormReturn,
     isGetting: isGetting,
-    formData: useFormReturn.formState.defaultValues
+    formData: formData,
   }
 }
 

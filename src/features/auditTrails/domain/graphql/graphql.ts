@@ -49,7 +49,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'CandidateJobFilter!',
-      orderBy: 'CandidateJobOrder', 
+      orderBy: 'CandidateJobOrder',
       freeWord: 'CandidateJobFreeWord',
     },
   })

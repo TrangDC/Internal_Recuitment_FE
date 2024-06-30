@@ -26,6 +26,17 @@ const useGraphql = () => {
           id
           name
         }
+        entity_skill_types {
+          id
+          name
+          orderId
+          entity_skills {
+            id
+            name
+            orderId
+            skill_id
+          }
+        }
         recruit_time
         description
         attachments {

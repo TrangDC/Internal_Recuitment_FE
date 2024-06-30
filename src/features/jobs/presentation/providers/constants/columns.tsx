@@ -22,11 +22,29 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     ),
     header: () => <span>Job name</span>,
   }),
+  columnHelper.accessor((row) => row.status, {
+    id: 'status',
+    size: 150,
+    header: () => <span>{t('status')}</span>,
+    enableSorting: false,
+    cell: (info) => {
+      return <ChipJob status={info.row.original.status} />
+    },
+  }),
+  columnHelper.accessor((row) => row.priority, {
+    id: 'priority',
+    size: 150,
+    header: () => <span>Priority</span>,
+    cell: (info) => {
+      return <ChipPriority status={info.row.original.priority}/>
+    },
+  }),
   columnHelper.accessor((row) => row.team.name, {
     id: 'team',
     header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     enableSorting: false,
+    size: 100,
   }),
   columnHelper.accessor((row) => row.location, {
     id: 'location',
@@ -48,36 +66,13 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     id: 'amount',
     header: () => <span>{t('staft_required')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    size: 150,
   }),
   columnHelper.accessor((row) => row.total_candidates_recruited, {
     id: 'total_candidates_recruited',
     header: () => <span>{t('hired')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-  }),
-  columnHelper.accessor((row) => row.status, {
-    id: 'status',
-    size: 150,
-    header: () => <span>{t('status')}</span>,
-    enableSorting: false,
-    cell: (info) => {
-      return <ChipJob status={info.row.original.status} />
-    },
-  }),
-  columnHelper.accessor((row) => row.priority, {
-    id: 'priority',
-    size: 150,
-    header: () => <span>Priority</span>,
-    cell: (info) => {
-      return <ChipPriority status={info.row.original.priority}/>
-    },
-  }),
-  columnHelper.accessor((row) => row.skill, {
-    id: 'skill',
-    size: 150,
-    header: () => <span>Skills</span>,
-    cell: (info) => {
-      return 'skill'
-    },
+    size: 100,
   }),
   columnHelper.accessor('created_at', {
     header: () => <span>{t('action')}</span>,

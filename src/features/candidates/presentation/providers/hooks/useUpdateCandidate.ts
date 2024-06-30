@@ -9,8 +9,12 @@ import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import {
   convertDateToISOString,
+  formatRecordSkill,
   removeStatusAttachment,
+  updateRecordSkill,
 } from 'shared/utils/utils'
+import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
+import { entity_skill_type } from 'features/skillType/domain/interfaces'
 
 type UseEditCandidateProps = {
   id: string
@@ -32,6 +36,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
+      const entity_skill_records = formatRecordSkill(data?.entity_skill_types)
       return {
         email: data?.email ?? '',
         name: data?.name ?? '',
@@ -47,6 +52,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
           : data?.recruit_time,
         reference_uid: data?.reference_uid ?? '',
         attachments: [],
+        entity_skill_records: entity_skill_records,
       }
     },
   })
@@ -58,6 +64,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
   function onSubmit() {
     handleSubmit((value) => {
       let attachments = removeStatusAttachment(value?.attachments)
+      const entity_skill = updateRecordSkill(value.entity_skill_records);
 
       mutate({
         ...value,
@@ -67,6 +74,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
           ? convertDateToISOString(value.recruit_time)
           : value.recruit_time,
         attachments: attachments,
+        entity_skill_records: entity_skill,
       })
     })()
   }

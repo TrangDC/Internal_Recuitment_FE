@@ -22,6 +22,14 @@ const useGraphql = () => {
           reference_type
           reference_value
           recruit_time
+          entity_skill_types {
+            id
+            name
+            entity_skills {
+              id
+              name
+            }
+          }
           reference_user {
             name
           }
@@ -120,6 +128,17 @@ const useGraphql = () => {
         recruit_time
         description
         country
+        entity_skill_types {
+          id
+          name
+          orderId
+          entity_skills {
+            id
+            name
+            orderId
+            skill_id
+          }
+        }
         created_at
       }
     `,

@@ -9,6 +9,7 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
 
 interface ICreateSkill {
   open: boolean
@@ -55,6 +56,31 @@ function CreateSkill({ open, setOpen }: ICreateSkill) {
                   )}
                 />
               </FormControl>
+              <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="skill_type_id"
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                     <SkillTypeAutoComplete
+                      name={field.name}
+                      value={field.value}
+                      onChange={(value) => {
+                        field.onChange(value)
+                      }}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'Type',
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
+                )}
+              />
+            </FormControl>
             </FlexBox>
             <FlexBox gap={2}>
               <FormControl fullWidth>

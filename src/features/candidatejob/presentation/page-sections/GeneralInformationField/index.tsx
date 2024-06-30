@@ -14,6 +14,8 @@ import CopyIcon from 'shared/components/icons/CopyIcon'
 import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
 import { BtnPrimary } from 'shared/styles'
 import CandidateInformationModal from '../CandidateInformationModal'
+import { useMemo } from 'react'
+import { ChipLimit } from 'shared/components/chip-stack'
 
 const GeneralInformationField = ({
   candidateDetail,
@@ -40,9 +42,20 @@ const GeneralInformationField = ({
     })
   }
 
+  const candidate_skills = useMemo(() => {
+    if (!candidateDetail.entity_skill_types) return []
+
+    const skill_types = candidateDetail.entity_skill_types
+    return skill_types
+      ? skill_types.flatMap((type) => {
+          return type.entity_skills.map((skill) => skill.name)
+        })
+      : []
+  }, [candidateDetail])
+
   return (
     <DivWrapperField>
-      <FlexBox justifyContent={'space-between'}>
+      <FlexBox justifyContent={'space-between'} gap={1} flexWrap={'wrap'}>
         <FlexBox flexDirection={'column'} gap={'15px'}>
           <H3 sx={{ fontSize: '15px', lineHeight: '18.29px' }}>
             {candidateDetail.name}
@@ -116,6 +129,12 @@ const GeneralInformationField = ({
                     'HH:mm, dd/MM/yyyy'
                   )}
               </Tiny>
+            </DivField>
+            <DivField>
+              <Span sx={{ fontSize: '12px' }}>Candidate skills</Span>
+              <Box>
+                <ChipLimit chips={candidate_skills} limit={2} />
+              </Box>
             </DivField>
           </FlexBox>
         </FlexBox>

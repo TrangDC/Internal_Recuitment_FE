@@ -66,6 +66,11 @@
   "update_record": "Update record",
   "sub_title_update_record": "What information or note have you updated the record?",
   "model": {
+    "skill_types": {
+      "validation": {
+        "name_exist": "Name has already existed"
+      }
+    },
     "hiring_jobs": {
       "model_name": "Job",
       "name": "Job name",

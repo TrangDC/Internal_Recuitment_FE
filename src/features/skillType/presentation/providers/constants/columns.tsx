@@ -3,23 +3,23 @@ import {
   ActionGroupButtons,
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { t } from 'i18next';
 import { LinkText, StyleTinyText } from 'shared/styles'
+import { SkillType } from 'features/skillType/domain/interfaces';
 
-const columnHelper = createColumnHelper<Candidate>()
+const columnHelper = createColumnHelper<SkillType>()
 
 export const columns = (
-  actions: TOptionItem<Candidate>[]
-): ColumnDef<Candidate, any>[] => [
+  actions: TOptionItem<SkillType>[]
+): ColumnDef<SkillType, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => <LinkText to={`/dashboard/candidate-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('name')}</span>,
     size: 800,
   }),
-  columnHelper.accessor((row) => row.phone, {
-    id: 'phone',
+  columnHelper.accessor((row) => row.description, {
+    id: 'created_at',
     header: () => <span>Description</span>,
     size: 800,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
@@ -35,7 +35,7 @@ export const columns = (
 
       return (
         <>
-          <ActionGroupButtons<Candidate>
+          <ActionGroupButtons<SkillType>
             rowId={id}
             actions={actions}
             rowData={info.row.original}

@@ -22,6 +22,16 @@ export const columns = (
     header: () => <span>{t('name')}</span>,
     size: 500,
   }),
+  columnHelper.accessor((row) => row.skill_type, {
+    id: 'skill_type',
+    cell: (info) => (
+      <StyleTinyText>
+        {info.row.original.skill_type.name}
+      </StyleTinyText>
+    ),
+    header: () => <span>{t('name')}</span>,
+    size: 500,
+  }),
   columnHelper.accessor((row) => row.description, {
     id: 'description',
     header: () => <span>Description</span>,
