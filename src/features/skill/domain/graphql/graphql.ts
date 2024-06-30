@@ -13,6 +13,10 @@ const useGraphql = () => {
         node {
           id
           name
+          skill_type {
+            id
+            name
+          }
           description
           created_at
         }
@@ -84,6 +88,10 @@ const useGraphql = () => {
       data {
         id
         name
+        skill_type {
+          id
+          name
+        }
         description
       }
     `,

@@ -18,7 +18,7 @@ export const columns = (
     id: 'job_name',
     cell: (info) => <LinkText to={`/dashboard/job-application-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('job_name')}</span>,
-    size: 500,
+    size: 400,
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.hiring_job.team.name, {
@@ -26,11 +26,11 @@ export const columns = (
     header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     enableSorting: false,
-    size: 500,
+    size: 100,
   }),
   columnHelper.accessor((row) => row.updated_at, {
     id: 'updated_at',
-    size: 500,
+    size: 400,
     header: () => <span>Last update</span>,
     cell: (info) => (
       <StyleTinyText>

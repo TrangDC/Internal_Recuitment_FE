@@ -2,7 +2,7 @@ import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Add from 'shared/components/icons/Add'
 import { columns } from '../../providers/constants/columns'
-import useCandidateTable from '../../providers/hooks/useSkillTable'
+import useSkillTypeTable from '../../providers/hooks/useSkillTable'
 import useActionTable from '../../providers/hooks/useActionTable'
 import { DivContainerWrapper, DivHeaderWrapper } from '../../providers/styles'
 import { Candidate } from 'features/candidates/domain/interfaces'
@@ -35,7 +35,7 @@ const Skill = () => {
   } = useActionTable<Candidate>()
   const { useSearchListReturn } = useFilterSkills()
   const { handleSearch, search, searchRef } = useSearchListReturn
-  const { useTableReturn } = useCandidateTable({
+  const { useTableReturn } = useSkillTypeTable({
     search,
   })
   const translation = useTextTranslation()

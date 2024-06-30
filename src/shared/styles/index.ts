@@ -90,3 +90,4 @@ export const LinkGoBack = styled(Span)(({ theme }) => ({
   lineHeight: '15.85px',
   color: '#82868C',
 }))
+

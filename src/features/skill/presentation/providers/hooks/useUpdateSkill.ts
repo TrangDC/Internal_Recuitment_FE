@@ -28,6 +28,7 @@ function useUpdateSkill(props: UseEditCandidateProps) {
       return {
         name: data?.name ?? '',
         description: data?.description ?? '',
+        skill_type_id: data?.skill_type?.id ?? '',
         note: '',
       }
     },

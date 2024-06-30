@@ -1,7 +1,9 @@
 import { formatISO } from 'date-fns'
-import _, { isEmpty } from 'lodash'
+import { entity_skill_type } from 'features/skillType/domain/interfaces'
+import _, { cloneDeep, isEmpty } from 'lodash'
 import { FormState } from 'react-hook-form'
 import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
+import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
 import { BaseRecord } from 'shared/interfaces'
 
 export const searchByName = (listData: any[], searchValue: string) => {
@@ -242,4 +244,40 @@ export async function previewFile(files: string) {
 
     window.open(viewerUrl, '_blank')
   }
+}
+
+export const updateRecordSkill = (data: SELECTED_SKILL) => {
+  const cloneData = cloneDeep(data);
+
+  _.forOwn(cloneData, (value, key) => {
+    if (_.isArray(value) && _.isEmpty(value)) {
+      delete cloneData[key];
+    }
+  });
+
+  const transform = Object.keys(cloneData).flatMap((key, idx) => {
+    const value = cloneData[key];
+
+    return value.map((item, index) => {
+      return {
+        id: item.id,
+        skill_id: item.skill_id,
+        orderId: ((idx + 1) * 1000) + (index + 1),
+      }
+    })
+
+  });
+
+  return transform;
+}
+
+export const formatRecordSkill = (entity_skill_types: entity_skill_type[] | undefined) => {
+  if(!entity_skill_types) return {};
+
+  const entity_skill_records = entity_skill_types.reduce((current: SELECTED_SKILL, next: entity_skill_type) => {
+    current[next.id] = next.entity_skills.map((skill) => ({ id: skill.id, skill_id: skill.skill_id, parent_id: next.id, skill_name: skill.name }))
+    return current
+  }, {})
+
+  return entity_skill_records;
 }

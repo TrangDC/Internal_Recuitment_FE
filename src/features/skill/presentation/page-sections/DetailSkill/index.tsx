@@ -73,6 +73,22 @@ function DetailSkillModal({ open, setOpen, id, handleOpenEdit }: IDetailSkillMod
                     </FlexBox>
                   </Box>
                 </FormControl>
+
+                <FormControl fullWidth>
+                  <Box>
+                    <Tiny12md color={'grey.500'}>Type</Tiny12md>
+                    <FlexBox
+                      alignItems={'center'}
+                      gap={1}
+                      width={'100%'}
+                      marginTop={1}
+                    >
+                      <Text13md color={'grey.900'} fontWeight={600}>
+                        {formData?.skill_type?.name}
+                      </Text13md>
+                    </FlexBox>
+                  </Box>
+                </FormControl>
               </FlexBox>
               <FlexBox gap={2}>
                 <FormControl fullWidth>

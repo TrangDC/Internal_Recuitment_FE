@@ -5,6 +5,7 @@ import { NewCandidateInput } from 'features/candidates/domain/interfaces'
 import {
   convertDateToISOString,
   removeStatusAttachment,
+  updateRecordSkill,
 } from 'shared/utils/utils'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 
@@ -30,7 +31,8 @@ function useCreateCandidate(props: createCandidateProps) {
       note: '',
       dob: null,
       reference_uid: '',
-      description: ''
+      description: '',
+      entity_skill_records: {}
     },
     resolver: yupResolver(schema),
     onSuccess: callbackSuccess,
@@ -42,6 +44,7 @@ function useCreateCandidate(props: createCandidateProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
+      const entity_skill = updateRecordSkill(value.entity_skill_records);
       let attachments = removeStatusAttachment(value?.attachments)
 
       mutate({
@@ -51,6 +54,7 @@ function useCreateCandidate(props: createCandidateProps) {
           ? convertDateToISOString(value.recruit_time)
           : value.recruit_time,
         attachments: attachments,
+        entity_skill_records: entity_skill,
       })
     })()
   }

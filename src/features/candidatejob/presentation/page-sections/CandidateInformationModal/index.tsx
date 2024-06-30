@@ -13,6 +13,8 @@ import ShowFile from 'shared/components/input-fields/ItemFile'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import { downloadOneFile } from '../../providers/helper'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
+import { useMemo } from 'react'
+import { ChipLimit } from 'shared/components/chip-stack'
 
 interface ICandidateInformationModal {
   open: boolean
@@ -29,6 +31,17 @@ function CandidateInformationModal({
 }: ICandidateInformationModal) {
   const { candidateDetail } = useGetCandidateDetail(id)
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
+
+  const candidate_skills = useMemo(() => {
+    if (!candidateDetail.entity_skill_types) return []
+
+    const skill_types = candidateDetail.entity_skill_types
+    return skill_types
+      ? skill_types.flatMap((type) => {
+          return type.entity_skills.map((skill) => skill.name)
+        })
+      : []
+  }, [candidateDetail])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -208,6 +221,23 @@ function CandidateInformationModal({
                     >
                       <TextValue fontWeight={600}>
                         {dayjs(candidateDetail.recruit_time).format('DD/MM/YYYY')}
+                      </TextValue>
+                    </FlexBox>
+                  </Box>
+                </FormControl>
+              </FlexBox>
+              <FlexBox gap={2}>
+                <FormControl fullWidth>
+                  <Box>
+                    <TextLabel>Candidate skills</TextLabel>
+                    <FlexBox
+                      alignItems={'center'}
+                      gap={1}
+                      width={'100%'}
+                      marginTop={1}
+                    >
+                      <TextValue fontWeight={600}>
+                      <ChipLimit chips={candidate_skills} />
                       </TextValue>
                     </FlexBox>
                   </Box>

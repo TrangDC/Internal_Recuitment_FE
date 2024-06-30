@@ -29,7 +29,6 @@ import SearchInput from 'shared/components/table/components/SearchInput'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import useFilterJobs from '../providers/hooks/useFilterJobs'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { handleCopyClipBoard } from 'shared/utils/utils'
 
 const { STATUS_STATE } = JobStatus
 
@@ -190,7 +189,7 @@ const JobsList = () => {
             <SearchInput
               ref={searchRef}
               onEnter={handleSearch}
-              placeholder="Search by Team's name"
+              placeholder="Search by Job's name"
               onSearch={handleSearch}
             />
             <ButtonAdd

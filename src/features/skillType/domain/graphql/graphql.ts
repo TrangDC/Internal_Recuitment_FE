@@ -3,8 +3,8 @@ import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.SKILL_TYPE
-  const getAllCandidates = GraphQLClientService.buildQuery({
-    operation: 'GetAllCandidates',
+  const getAllSkillTypes = GraphQLClientService.buildQuery({
+    operation: 'GetAllSkillTypes',
     options: {
       type: 'query',
     },
@@ -13,12 +13,7 @@ const useGraphql = () => {
         node {
           id
           name
-          email
-          phone
-          is_able_to_delete
-          dob
-          status
-          is_black_list
+          description
           created_at
         }
       }
@@ -30,13 +25,13 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'CandidateFilter',
-      orderBy: 'CandidateOrder', 
-      freeWord: 'CandidateFreeWord',
+      filter: 'SkillTypeFilter',
+      orderBy: 'SkillTypeOrder', 
+      freeWord: 'SkillTypeFreeWord',
     },
   })
-  const createCandidate = GraphQLClientService.buildQuery({
-    operation: 'CreateCandidate',
+  const createSkillType = GraphQLClientService.buildQuery({
+    operation: 'CreateSkillType',
     options: {
       type: 'mutation',
     },
@@ -46,13 +41,13 @@ const useGraphql = () => {
       }
     `,
     params: {
-      input: 'NewCandidateInput!',
+      input: 'NewSkillTypeInput!',
       note: 'String!'
     },
   })
 
-  const updateCandidate = GraphQLClientService.buildQuery({
-    operation: 'UpdateCandidate',
+  const updateSkillType = GraphQLClientService.buildQuery({
+    operation: 'UpdateSkillType',
     options: {
       type: 'mutation',
     },
@@ -62,14 +57,14 @@ const useGraphql = () => {
       }
     `,
     params: {
-      input: 'UpdateCandidateInput!',
+      input: 'UpdateSkillTypeInput!',
       id: 'ID!',
       note: 'String!'
     },
   })
 
-  const deleteCandidate = GraphQLClientService.buildQuery({
-    operation: 'DeleteCandidate',
+  const deleteSkillType = GraphQLClientService.buildQuery({
+    operation: 'DeleteSkillType',
     options: {
       type: 'mutation',
     },
@@ -80,21 +75,8 @@ const useGraphql = () => {
     },
   })
 
-  const blackListCandidate = GraphQLClientService.buildQuery({
-    operation: 'SetBlackListCandidate',
-    options: {
-      type: 'mutation',
-    },
-    node: ``,
-    params: {
-      id: 'ID!',
-      is_black_list: 'Boolean!',
-      note: 'String!'
-    },
-  })
-
-  const getCandidate = GraphQLClientService.buildQuery({
-    operation: 'GetCandidate',
+  const getSkillType = GraphQLClientService.buildQuery({
+    operation: 'GetSkillType',
     options: {
       type: 'query',
     },
@@ -102,11 +84,7 @@ const useGraphql = () => {
       data {
         id
         name
-        email
-        phone
-        dob
-        status
-        is_black_list
+        description
         created_at
       }
     `,
@@ -115,60 +93,13 @@ const useGraphql = () => {
     },
   })
 
-  const getAllCandidateJob = GraphQLClientService.buildQuery({
-    operation: 'GetAllCandidateJobs',
-    options: {
-      type: 'query',
-    },
-    node: `
-      edges {
-        node {
-          id
-          candidate_id
-          hiring_job_id
-          status
-          created_at
-        }
-      }
-      pagination {
-        page
-        perPage
-        total
-      }
-    `,
-    params: {
-      pagination: 'PaginationInput',
-      filter: 'CandidateJobFilter!',
-      orderBy: 'CandidateJobOrder', 
-      freeWord: 'CandidateJobFreeWord',
-    },
-  })
-
-  const createCandidateJob = GraphQLClientService.buildQuery({
-    operation: 'CreateCandidateJob',
-    options: {
-      type: 'mutation',
-    },
-    node: `
-      data {
-        id
-      }
-    `,
-    params: {
-      input: 'NewCandidateJobInput!',
-    },
-  })
-
   return {
-    getAllCandidates,
+    getAllSkillTypes,
     queryKey,
-    createCandidate,
-    updateCandidate,
-    deleteCandidate,
-    blackListCandidate,
-    getCandidate,
-    getAllCandidateJob,
-    createCandidateJob
+    createSkillType,
+    updateSkillType,
+    deleteSkillType,
+    getSkillType,
   }
 }
 

@@ -92,6 +92,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
 
     return {
       width: column.getSize(),
+      minWidth: column.getSize(),
       ...style,
     }
   }

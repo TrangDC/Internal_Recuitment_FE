@@ -7,6 +7,7 @@ import {
 } from 'features/skillType/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
+import { SkillInputUpdate } from 'features/skill/domain/interfaces'
 
 type UseEditSillTypeProps = {
   id: string
@@ -15,15 +16,15 @@ type UseEditSillTypeProps = {
 
 function useUpdateSkillType(props: UseEditSillTypeProps) {
   const { id, onSuccess } = props
-  const { updateCandidate, getCandidate, queryKey } = useGraphql()
+  const { updateSkillType, getSkillType, queryKey } = useGraphql()
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     SkillType,
     FormDataSchemaUpdate,
     SkillTypeInputUpdate
   >({
     resolver: yupResolver(schemaUpdate),
-    editBuildQuery: updateCandidate,
-    oneBuildQuery: getCandidate,
+    editBuildQuery: updateSkillType,
+    oneBuildQuery: getSkillType,
     queryKey: [queryKey],
     id,
     onSuccess,
@@ -42,8 +43,7 @@ function useUpdateSkillType(props: UseEditSillTypeProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      console.log('🚀 ~ handleSubmit edit ~ value:', value)
-      // mutate(value as SkillInputUpdate)
+      mutate(value as SkillInputUpdate)
     })()
   }
 

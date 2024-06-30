@@ -37,7 +37,7 @@ export const schema = yup.object({
         : schema.notRequired()
     }),
   recruit_time: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
-  // candidate_skill: yup.array(),
+  entity_skill_records: yup.mixed(),
   description: yup.string(),
   attachments: yup.array(),
 })
@@ -78,7 +78,7 @@ export const schemaUpdate = yup.object({
         : schema.notRequired()
     }),
   recruit_time: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
-  // candidate_skill: yup.array(),
+  entity_skill_records: yup.mixed(),
   description: yup.string(),
   attachments: yup.array(),
 })
