@@ -1,25 +1,27 @@
-import useFilter from 'shared/components/table/hooks/useFilter'
-import useSearchList from 'shared/components/table/hooks/useSearchList'
 import { JobsFilter } from '../constants/schema-filter'
-import { isEmpty } from 'lodash'
+import { useFilterTable } from 'shared/components/table'
 
 function useFilterJobs() {
-  const useSearchListReturn = useSearchList({
-    searchKey: ['name'],
-  })
-  const useFilterReturn = useFilter<JobsFilter>({
-    defaultFilter: {
-      team_ids: [],
-      priority: '',
-      status: '',
+  const { useFilterReturn, useSearchListReturn } = useFilterTable<JobsFilter>({
+    filter: {
+      defaultFilter: {
+        team_ids: [],
+        priority: '',
+        status: '',
+      },
+      formatDataWithValue: (data) => {
+        return {
+          priority: Number(data?.priority?.value) || undefined,
+          status: data?.status?.value,
+          team_ids: data?.team_ids?.map((o) => o.value),
+        }
+      },
     },
-    formatDataWithValue: (data) => {
-      return {
-        priority: Number(data?.priority?.value) || undefined,
-        status: data?.status?.value,
-        team_ids: !isEmpty(data?.team_ids) ? data?.team_ids?.map((o) => o.value) : null,
-      }
+    page: 'jobs',
+    search: {
+      searchKey: ['name'],
     },
+    shouldCacheData: true,
   })
   return {
     useSearchListReturn,

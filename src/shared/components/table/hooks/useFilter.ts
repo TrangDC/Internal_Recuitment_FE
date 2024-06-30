@@ -10,8 +10,10 @@ import { IOption } from 'shared/components/autocomplete/autocomplete-base/interf
 import _, { isArray } from 'lodash'
 
 function useFilter<T>(props: UseFilter<T>): UseFilterReturn<T> {
-  const { defaultFilter, formatDataWithValue } = props
-  const [filter, setFilter] = useState<ListFiltersData<T>>()
+  const { defaultFilter, formatDataWithValue, cacheData } = props
+  const [filter, setFilter] = useState<ListFiltersData<T> | undefined>(
+    cacheData
+  )
 
   function onFilter(params: ParamFilter<T>) {
     if (!params.value) {

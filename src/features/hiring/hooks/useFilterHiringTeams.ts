@@ -1,10 +1,15 @@
-import useSearchList from 'shared/components/table/hooks/useSearchList'
+import { useFilterTable } from 'shared/components/table'
 
 function useFilterHiringTeams() {
-  const useSearchListReturn = useSearchList({
-    searchKey: ['name', 'work_email'],
+  const { useFilterReturn, useSearchListReturn } = useFilterTable({
+    search: {
+      searchKey: ['name', 'work_email'],
+    },
+    shouldCacheData: true,
+    page: 'hiring-team',
   })
   return {
+    useFilterReturn,
     useSearchListReturn,
   }
 }

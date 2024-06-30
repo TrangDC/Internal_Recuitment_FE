@@ -1,8 +1,6 @@
 import { Box } from '@mui/system'
 import Add from 'shared/components/icons/Add'
-import { columns } from '../providers/constants/columns'
-import useTeamTable from '../providers/hooks/useTeamTable'
-import useActionTable from '../providers/hooks/useActionTable'
+import { columns } from '../../shared/constants/columns'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
@@ -19,7 +17,9 @@ import {
 } from '../page-sections'
 import { useBuildColumnTable, CustomTable } from 'shared/components/table'
 import SearchInput from 'shared/components/table/components/SearchInput'
-import useFilterTeams from '../providers/hooks/useFilterTeams'
+import useFilterTeams from 'features/teams/hooks/useFilterTeams'
+import useActionTable from 'features/teams/hooks/useActionTable'
+import useTeamTable from 'features/teams/hooks/useTeamTable'
 
 const TeamList = () => {
   const {

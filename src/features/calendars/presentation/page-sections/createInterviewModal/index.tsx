@@ -1,6 +1,5 @@
 import { FormControl } from '@mui/material'
 import BaseModal from 'shared/components/modal'
-import useCreateInterview from '../../providers/hooks/useCreateInterview'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Controller } from 'react-hook-form'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -17,6 +16,7 @@ import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
+import useCreateInterview from 'features/calendars/hooks/useCreateInterview'
 
 interface IAddInterviewModal {
   open: boolean

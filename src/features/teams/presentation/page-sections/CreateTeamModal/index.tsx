@@ -2,7 +2,6 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useCreateTeam from '../../providers/hooks/useCreateTeam'
 import useTextTranslation from 'shared/constants/text'
 import { Fragment } from 'react/jsx-runtime'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -11,6 +10,7 @@ import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complet
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import AppButton from 'shared/components/buttons/AppButton'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import useCreateTeam from 'features/teams/hooks/useCreateTeam'
 
 interface ICreateTeamModal {
   open: boolean

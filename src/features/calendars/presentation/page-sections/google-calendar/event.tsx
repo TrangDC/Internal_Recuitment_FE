@@ -1,7 +1,7 @@
 import { ComponentType, useCallback, useState } from 'react'
 import { EventProps } from 'react-big-calendar'
-import { useContextCalendar } from '../../providers/contexts/calendarProvider/CalendarProvider'
 import { CalendarEvent } from './interface'
+import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 
 type ActionMenu = 'DELETE'
 

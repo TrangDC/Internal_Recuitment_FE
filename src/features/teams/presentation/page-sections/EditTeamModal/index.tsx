@@ -2,7 +2,6 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useUpdateTeam from '../../providers/hooks/useUpdateTeam'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -12,6 +11,7 @@ import { Fragment } from 'react/jsx-runtime'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import useUpdateTeam from 'features/teams/hooks/useUpdateTeam'
 
 interface IEditTeamModal {
   open: boolean

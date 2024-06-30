@@ -1,5 +1,4 @@
 import useGraphql from 'features/calendars/domain/graphql'
-import { EditInterviewFrom, EditInterviewSchema } from '../constants/validate'
 import {
   CandidateInterview,
   UpdateCandidateInterviewInput,
@@ -7,12 +6,17 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BaseRecord } from 'shared/interfaces/common'
 import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
+
+import { useEditResource } from 'shared/hooks/crud-hook'
+import {
+  EditInterviewFrom,
+  EditInterviewSchema,
+} from '../shared/constants/validate'
 import {
   convertToRootByTimeNow,
   convertToRootDate,
   formatStringToDate,
-} from '../../page-sections/google-calendar/functions'
-import { useEditResource } from 'shared/hooks/crud-hook'
+} from '../presentation/page-sections/google-calendar/functions'
 
 type UseEditInterviewProps = {
   id: string
@@ -43,7 +47,7 @@ function useEditInterview(props: UseEditInterviewProps) {
 
       return {
         description: data?.description ?? '',
-        candidateId: data?.candidate_job.candidate_id  ?? '',
+        candidateId: data?.candidate_job.candidate_id ?? '',
         date: currentDate,
         from: newStart,
         jobId: data?.candidate_job.hiring_job_id ?? '',
@@ -92,7 +96,7 @@ function useEditInterview(props: UseEditInterviewProps) {
           end_at: formatEnd,
           title: value.title,
           candidate_job_id: value.candidate_job_id,
-          note: ''
+          note: '',
         }
         mutate(formData)
       }

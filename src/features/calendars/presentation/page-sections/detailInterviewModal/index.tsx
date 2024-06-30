@@ -11,12 +11,12 @@ import {
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import ChipField from 'shared/components/input-fields/ChipField'
 import BaseModal from 'shared/components/modal'
-import { useContextCalendar } from '../../providers/contexts/calendarProvider/CalendarProvider'
-import useGetInterview from '../../providers/hooks/useGetInterview'
 import { formatDateToString, getTime, isPast } from 'shared/utils/date'
 import DeleteOutline from 'shared/components/icons/DeleteOutline'
 import EditOutline from 'shared/components/icons/EditOutline'
 import { Fragment } from 'react/jsx-runtime'
+import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
+import useGetInterview from 'features/calendars/hooks/useGetInterview'
 
 interface IDetailIntefviewModal {
   open: boolean
@@ -55,7 +55,8 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
               <Text13md color={'grey.500'}>
                 {formatDateToString(getValues('interview_date'), 'ddd, MMM D')}
                 {', '}
-                {getTime(getValues('start_from'))} - {getTime(getValues('end_at'))}
+                {getTime(getValues('start_from'))} -{' '}
+                {getTime(getValues('end_at'))}
               </Text13md>
               <FlexBox gap={1}>
                 {start_from && isPast(start_from) && (
@@ -98,9 +99,7 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
                 />
               </FlexBox>
             </FlexBox>
-            <H5 color={'grey.900'}>
-              {getValues('title')}
-            </H5>
+            <H5 color={'grey.900'}>{getValues('title')}</H5>
           </FlexBox>
           <FlexBox></FlexBox>
         </FlexBox>
