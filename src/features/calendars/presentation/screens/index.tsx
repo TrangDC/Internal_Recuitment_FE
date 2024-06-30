@@ -8,10 +8,7 @@ import {
 } from 'react-big-calendar/lib/addons/dragAndDrop'
 import { CalendarEvent } from '../page-sections/google-calendar/interface'
 import DetailIntefviewModal from '../page-sections/detailInterviewModal'
-import CalendarProvider from '../providers/contexts/calendarProvider/CalendarProvider'
-import useGetAllInterview from '../providers/hooks/useGetAllInterview'
 import EditInterviewModal from '../page-sections/editInterviewModal'
-import useDragDropInterview from '../providers/hooks/useDragDropInterview'
 import { convertToUTC } from 'shared/utils/date'
 import { isDate } from 'lodash'
 import {
@@ -24,6 +21,9 @@ import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer } from 'shared/styles'
 import duotone from 'shared/components/icons'
 import DeleteInterviewModal from '../page-sections/deleteInterviewModal'
+import useGetAllInterview from 'features/calendars/hooks/useGetAllInterview'
+import useDragDropInterview from 'features/calendars/hooks/useDragDropInterview'
+import CalendarProvider from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 
 function CalendarsScreen() {
   const [openCreateInterView, setOpenCreateInterView] = useState(false)

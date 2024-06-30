@@ -7,8 +7,8 @@ import { ChosenDateType } from './DatePickerCalendar'
 import { Button, IconButton } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { buttonToolBarList } from '../constant'
-import { useContextCalendar } from '../../../providers/contexts/calendarProvider/CalendarProvider'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 
 function ToolBar(props: ToolbarProps) {
   const { view, onView, onNavigate, date } = props

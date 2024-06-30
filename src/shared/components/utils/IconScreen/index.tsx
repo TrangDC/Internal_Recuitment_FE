@@ -22,7 +22,7 @@ const IconScreen = ({
   parent_style,
   go_back = false,
 }: Props) => {
-const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <FlexBox gap={0.5} alignItems={'center'} sx={{ ...parent_style }}>

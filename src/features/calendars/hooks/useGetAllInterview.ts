@@ -7,16 +7,16 @@ import {
 import { useMemo, useState } from 'react'
 import GraphQLClientService from 'services/refactor/graphql-service'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
+import { isArray } from 'lodash'
+import dayjs from 'dayjs'
+import { convertFromUTC, convertToUTC } from 'shared/utils/date'
 import {
   CalendarEvent,
   RangeDate,
-} from '../../page-sections/google-calendar/interface'
-import { isArray } from 'lodash'
+} from '../presentation/page-sections/google-calendar/interface'
 import randomColor, {
   convertToRootDate,
-} from '../../page-sections/google-calendar/functions'
-import dayjs from 'dayjs'
-import { convertFromUTC, convertToUTC } from 'shared/utils/date'
+} from '../presentation/page-sections/google-calendar/functions'
 
 function useGetAllInterview() {
   const { getAllCandidateInterview4Calendar, queryKey } = useGraphql()

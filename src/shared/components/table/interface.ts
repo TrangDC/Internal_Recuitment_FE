@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import { IOption } from 'shared/components/autocomplete/autocomplete-base/interface'
 import { ISearchData } from './hooks/useSearchList'
 import { BaseRecord } from 'shared/interfaces'
+import { ModuleProject } from './hooks/useStoreData'
 
 export type ListFiltersData<T> = {
   [key in keyof T]: ConditionValue<T[key]>
@@ -22,6 +23,7 @@ export type ListFiltersDataWithKey = {
 
 export type UseFilter<T> = {
   defaultFilter?: T
+  cacheData?: ListFiltersData<T>
   formatDataWithValue?: (
     data: ListFiltersData<T> | undefined
   ) => DataFilterWithValue<T>

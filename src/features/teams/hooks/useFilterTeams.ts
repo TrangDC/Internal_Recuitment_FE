@@ -1,16 +1,17 @@
 import { useFilterTable } from 'shared/components/table'
 
-function useFilterSkills() {
-  const { useSearchListReturn } = useFilterTable({
+function useFilterTeams() {
+  const { useFilterReturn, useSearchListReturn } = useFilterTable({
     search: {
       searchKey: ['name'],
     },
-    page: 'skill',
+    page: 'teams',
     shouldCacheData: true,
   })
   return {
+    useFilterReturn,
     useSearchListReturn,
   }
 }
 
-export default useFilterSkills
+export default useFilterTeams

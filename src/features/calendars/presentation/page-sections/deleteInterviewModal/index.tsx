@@ -1,12 +1,12 @@
 import BaseModal from 'shared/components/modal'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useDeleteInterview from '../../providers/hooks/useDeleteInterview'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
+import useDeleteInterview from 'features/calendars/hooks/useDeleteInterview'
 
 interface IDeleteInterviewModal {
   open: boolean

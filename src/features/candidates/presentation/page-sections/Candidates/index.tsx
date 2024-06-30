@@ -62,16 +62,19 @@ const Candidates = () => {
     handleOpenBlackList,
     setOpenBlackList,
   } = useActionTable<Candidate>()
-
+  const is_black_list = false
   const navigate = useNavigate()
   const translation = useTextTranslation()
-  const { useFilterReturn, useSearchListReturn } = useFilterCandidates()
+  const [status, setStatus] = useState<string>('')
+  const { useFilterReturn, useSearchListReturn } = useFilterCandidates({
+    is_black_list,
+  })
   const { controlFilter, dataFilterWithValue } = useFilterReturn
   const { handleSearch, search, searchRef } = useSearchListReturn
   const refInput = useRef<HTMLInputElement>(null)
   const { useTableReturn } = useCandidateTable({
     filters: {
-      is_black_list: false,
+      is_black_list,
       ...dataFilterWithValue,
     },
     search,

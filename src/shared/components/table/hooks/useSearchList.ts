@@ -17,7 +17,7 @@ function useSearchList({
   const searchRef = useRef(null)
   const handleSearch = () => {
     if (!searchRef?.current) return
-    const text = (searchRef.current as HTMLInputElement).value?.toLowerCase()
+    const text = (searchRef.current as HTMLInputElement).value
     const searchMap = searchKey.reduce((a, v) => ({ ...a, [v]: text }), {})
     setSearch?.({
       ...searchMap,

@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/teams/domain/graphql/graphql'
 import { NewTeamInput } from 'features/teams/domain/interfaces'
-import { schema, FormDataSchema } from '../../providers/constants/schema'
 import { useCreateResource } from 'shared/hooks/crud-hook'
+import { FormDataSchema, schema } from '../shared/constants/schema'
 
 interface createTeamProps {
   callbackSuccess?: (value: any) => void

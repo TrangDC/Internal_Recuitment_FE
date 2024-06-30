@@ -14,10 +14,10 @@ import { Fragment } from 'react'
 import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
-import useEditInterview from '../../providers/hooks/useEditInterview'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
+import useEditInterview from 'features/calendars/hooks/useEditInterview'
 
 interface IEditInterviewModal {
   open: boolean
@@ -199,7 +199,7 @@ function EditInterviewModal(props: IEditInterviewModal) {
                         <AppDateField
                           label={'Select date'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={(value) => {  
+                          onChange={(value) => {
                             field.onChange(value?.toDate())
                             onSelectedInterviewDate()
                           }}

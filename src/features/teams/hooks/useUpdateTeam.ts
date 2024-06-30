@@ -1,16 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/teams/domain/graphql/graphql'
-import {
-  Team,
-  UpdateTeamInput,
-} from 'features/teams/domain/interfaces'
-import {
-  FormDataSchemaUpdate,
-  schemaUpdate,
-} from '../../providers/constants/schema'
+import { Team, UpdateTeamInput } from 'features/teams/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import { transformListItem } from 'shared/utils/utils'
 import { useEditResource } from 'shared/hooks/crud-hook'
+import { FormDataSchemaUpdate, schemaUpdate } from '../shared/constants/schema'
 
 type UseEditTeamProps = {
   id: string
@@ -32,8 +26,8 @@ function useUpdateTeam(props: UseEditTeamProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
-      const members = transformListItem(data?.members ?? []);
- 
+      const members = transformListItem(data?.members ?? [])
+
       return {
         name: data?.name ?? '',
         members: members,
@@ -61,7 +55,7 @@ function useUpdateTeam(props: UseEditTeamProps) {
     },
     formState,
     setValue,
-    isGetting
+    isGetting,
   }
 }
 

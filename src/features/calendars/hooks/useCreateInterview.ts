@@ -1,17 +1,17 @@
 import useGraphql from 'features/calendars/domain/graphql'
-import {
-  CreateInterviewFrom,
-  CreateInterviewSchema,
-} from '../constants/validate'
 import { NewInterviewInput } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BaseRecord } from 'shared/interfaces/common'
+import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
+import { useCreateResource } from 'shared/hooks/crud-hook'
+import {
+  CreateInterviewFrom,
+  CreateInterviewSchema,
+} from '../shared/constants/validate'
 import {
   convertToRootByTimeNow,
   convertToRootDate,
-} from '../../page-sections/google-calendar/functions'
-import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
-import { useCreateResource } from 'shared/hooks/crud-hook'
+} from '../presentation/page-sections/google-calendar/functions'
 
 interface IUseCreateInterview {
   onSuccess: (data: BaseRecord) => void

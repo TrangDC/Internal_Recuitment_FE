@@ -37,16 +37,17 @@ const BlackList = () => {
     handleOpenDelete,
     openEdit,
     rowId,
-    rowData,
     setOpenEdit,
     openBlackList,
     handleOpenBlackList,
     setOpenBlackList,
   } = useActionTable<Candidate>()
-
+  const is_black_list = true
   const navigate = useNavigate()
   const [status, setStatus] = useState<string>('')
-  const { useFilterReturn, useSearchListReturn } = useFilterCandidates()
+  const { useFilterReturn, useSearchListReturn } = useFilterCandidates({
+    is_black_list,
+  })
   const { controlFilter, dataFilterWithValue } = useFilterReturn
   const { handleSearch, search, searchRef } = useSearchListReturn
   const showFailedReason = useMemo(() => {
@@ -58,7 +59,7 @@ const BlackList = () => {
 
   const { useTableReturn } = useCandidateTable({
     filters: {
-      is_black_list: true,
+      is_black_list,
       ...dataFilterWithValue,
     },
     search,
