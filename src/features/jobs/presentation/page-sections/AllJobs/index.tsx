@@ -26,6 +26,9 @@ import StatusJobAutoComplete from 'shared/components/autocomplete/status-job-aut
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import { Fragment } from 'react/jsx-runtime'
+import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
+import LocationAutoComplete from 'shared/components/autocomplete/location-auto-complete'
+import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 
 const { STATUS_STATE } = JobStatus
 
@@ -112,7 +115,7 @@ const AllJob = () => {
 
   return (
     <Fragment>
-      <BoxWrapperOuterContainer sx={{marginTop: 0}}>
+      <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
         <HeadingWrapper>
           <FlexBox>
             {' '}
@@ -178,12 +181,82 @@ const AllJob = () => {
                 />
               )}
             />
+            <ControllerFilter
+              control={controlFilter}
+              title="Skill"
+              keyName={'skill_ids'}
+              Node={({ onFilter, value }) => (
+                <SkillAutoComplete
+                  name="skill"
+                  multiple={true}
+                  value={value}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Skill',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+            <ControllerFilter
+              control={controlFilter}
+              title="Location"
+              keyName={'location'}
+              Node={({ onFilter, value }) => (
+                <LocationAutoComplete
+                  multiple={false}
+                  value={value}
+                  onChange={(data) => onFilter(data)}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Location',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+            <ControllerFilter
+              control={controlFilter}
+              title="Requester"
+              keyName={'created_by_ids'}
+              Node={({ onFilter, value }) => (
+                <InterViewerAutoComplete
+                  name="requester"
+                  multiple={true}
+                  value={value}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Requester',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
           </FlexBox>
           <DivHeaderWrapper>
             <SearchInput
               ref={searchRef}
               onEnter={handleSearch}
-              placeholder="Search by Team's name"
+              placeholder="Search by Job title"
               onSearch={handleSearch}
             />
             <ButtonAdd

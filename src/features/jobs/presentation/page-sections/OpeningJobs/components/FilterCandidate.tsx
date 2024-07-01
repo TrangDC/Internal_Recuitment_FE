@@ -3,16 +3,17 @@ import {
   DivFilter,
   DivHeaderWrapper,
 } from 'features/candidates/presentation/providers/styles'
-import { Fragment, KeyboardEventHandler, useState } from 'react'
-import JobFilter from 'shared/components/button-filter/job-filter'
-import PriorityFilter from 'shared/components/button-filter/priority-filter'
-import SkillFilter from 'shared/components/button-filter/skill-filter'
-import TeamFilter from 'shared/components/button-filter/team-filter'
+import {
+  Fragment,
+  KeyboardEventHandler,
+  useEffect,
+  useState,
+} from 'react'
 import { CustomTextField } from 'shared/components/form/styles'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
-import { isEmpty } from 'lodash'
+import _ from 'lodash'
 import useTextTranslation from 'shared/constants/text'
 import { Add } from '@mui/icons-material'
 import useActionTable from '../../../providers/hooks/useActionTable'
@@ -21,13 +22,26 @@ import { BtnPrimary } from 'shared/styles'
 import { Span } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import ApplyJobModal from '../../ApplyJobCandidate'
+import useFilterJobsOpening from 'features/jobs/presentation/providers/hooks/useFilterJobsOpening'
+import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
+import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
+import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
+import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
+import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
+import { BaseRecord } from 'shared/interfaces'
+import { removeEmptyInObject } from 'shared/utils/utils'
+import LocationAutoComplete from 'shared/components/autocomplete/location-auto-complete'
+import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 
 const FilterCandidate = () => {
   const translation = useTextTranslation()
   const [searchField, setSearchField] = useState('')
+  const [filter, setFilter] = useState<BaseRecord>({})
+
   const { openCreate, setOpenCreate, openCreateApply, setOpenCreateApply } =
     useActionTable()
-  const { handleFilter, handleFreeWord, handleAddCandidate } = useContextChangeStatus()
+  const { handleFilter, handleFreeWord, handleAddCandidate } =
+    useContextChangeStatus()
 
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.keyCode === 13) {
@@ -37,34 +51,164 @@ const FilterCandidate = () => {
     }
   }
 
+  const { useFilterReturn } = useFilterJobsOpening()
+  const { dataFilterWithValue, controlFilter } = useFilterReturn
+
+  useEffect(() => {
+    if (!_.isEqual(filter, dataFilterWithValue)) {
+      setFilter(dataFilterWithValue)
+      handleFilter({
+        ...removeEmptyInObject(dataFilterWithValue),
+      })
+    }
+  }, [dataFilterWithValue])
+
   return (
     <Fragment>
       <DivFilter>
-        <JobFilter
-          onChange={({ ids }) => {
-            handleFilter({
-              hiring_job_id: !isEmpty(ids) ? ids : null,
-            })
-          }}
+        <ControllerFilter
+          control={controlFilter}
+          title="Job"
+          keyName={'hiring_job_id'}
+          Node={({ onFilter, value }) => (
+            <JobsAutoComplete
+              name="job"
+              multiple={true}
+              value={value}
+              onCustomChange={(data) =>
+                onFilter(
+                  data.map((value) => ({
+                    label: value.name,
+                    value: value.id,
+                  }))
+                )
+              }
+              open={true}
+              disableCloseOnSelect={true}
+              textFieldProps={{
+                label: 'Job',
+                autoFocus: true,
+              }}
+            />
+          )}
         />
 
-        <TeamFilter
-          onChange={({ ids }) => {
-            handleFilter({ team_id: !isEmpty(ids) ? ids : null })
-          }}
+        <ControllerFilter
+          control={controlFilter}
+          title="Team"
+          keyName={'team_id'}
+          Node={({ onFilter, value }) => (
+            <TeamsAutoComplete
+              name="team"
+              multiple={true}
+              value={value}
+              onCustomChange={(data) =>
+                onFilter(
+                  data.map((value) => ({
+                    label: value.name,
+                    value: value.id,
+                  }))
+                )
+              }
+              open={true}
+              disableCloseOnSelect={true}
+              textFieldProps={{
+                label: 'Team',
+                autoFocus: true,
+              }}
+            />
+          )}
         />
 
-        <PriorityFilter
-          onChange={({ id }) => {
-            handleFilter({ priority: id ? Number(id) : null })
-          }}
+        <ControllerFilter
+          control={controlFilter}
+          title="Priority"
+          keyName={'priority'}
+          Node={({ onFilter, value }) => (
+            <PriorityAutoComplete
+              multiple={false}
+              value={value}
+              onChange={(data) => onFilter(data)}
+              open={true}
+              disableCloseOnSelect={true}
+              textFieldProps={{
+                label: 'Priority',
+                autoFocus: true,
+              }}
+            />
+          )}
+        />
+        <ControllerFilter
+          control={controlFilter}
+          title="Skill"
+          keyName={'skill_ids'}
+          Node={({ onFilter, value }) => (
+            <SkillAutoComplete
+              name="skill"
+              multiple={true}
+              value={value}
+              onCustomChange={(data) =>
+                onFilter(
+                  data.map((value) => ({
+                    label: value.name,
+                    value: value.id,
+                  }))
+                )
+              }
+              open={true}
+              disableCloseOnSelect={true}
+              textFieldProps={{
+                label: 'Skill',
+                autoFocus: true,
+              }}
+            />
+          )}
         />
 
-        <SkillFilter
-          onChange={({ ids }) => {
-            handleFilter({ skill_id: !isEmpty(ids) ? ids : null })
-          }}
-        />
+<ControllerFilter
+              control={controlFilter}
+              title="Location"
+              keyName={'location'}
+              Node={({ onFilter, value }) => (
+                <LocationAutoComplete
+                  multiple={false}
+                  value={value}
+                  onChange={(data) => onFilter(data)}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Location',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+            <ControllerFilter
+              control={controlFilter}
+              title="Requester"
+              keyName={'created_by_ids'}
+              Node={({ onFilter, value }) => (
+                <InterViewerAutoComplete
+                  name="requester"
+                  multiple={true}
+                  value={value}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Requester',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
       </DivFilter>
 
       <DivHeaderWrapper>
@@ -110,7 +254,11 @@ const FilterCandidate = () => {
       )}
 
       {openCreateApply && (
-        <ApplyJobModal open={openCreateApply} setOpen={setOpenCreateApply} onSuccess={handleAddCandidate}/>
+        <ApplyJobModal
+          open={openCreateApply}
+          setOpen={setOpenCreateApply}
+          onSuccess={handleAddCandidate}
+        />
       )}
     </Fragment>
   )

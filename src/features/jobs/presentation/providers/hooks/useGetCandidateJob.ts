@@ -307,6 +307,10 @@ const useCandidatesJob = () => {
     let nextCandidateJobList = cloneDeep(dataCandidate)
     const candidateUtil = handleGetItemByStatus(key);
     const { setData } = candidateUtil;
+    if(page === 1) {
+      setData(nextCandidateJobList);
+      return;
+    }
     setData((prev: CandidateStatusItem[]) => unionBy(prev, nextCandidateJobList, 'id'))
   }
 
