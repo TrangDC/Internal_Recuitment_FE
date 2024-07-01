@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash'
 import { CandidateFilter } from '../constants/schema-filter'
 import { useFilterTable } from 'shared/components/table'
 
@@ -16,6 +17,9 @@ function useFilterCandidates(props: UseFilterCandidates) {
           recruit_time_from_date: '',
           recruit_time_to_date: '',
           failed_reason: [],
+          skill_ids: [],
+          skill_type_ids: [],
+          reference_type: ''
         },
         formatDataWithValue: (data) => {
           return {
@@ -26,6 +30,9 @@ function useFilterCandidates(props: UseFilterCandidates) {
             status: data?.status?.value,
             reference_uid: data?.reference_uid?.map((o) => o.value),
             failed_reason: data?.failed_reason?.map((o) => o.value),
+            skill_ids: !isEmpty(data?.skill_ids) ? data?.skill_ids?.map((o) => o.value) : undefined,
+            reference_type: data?.reference_type?.value ?? undefined,
+            skill_type_ids: !isEmpty(data?.skill_type_ids) ? data?.skill_type_ids?.map((o) => o.value) : undefined,
           }
         },
       },

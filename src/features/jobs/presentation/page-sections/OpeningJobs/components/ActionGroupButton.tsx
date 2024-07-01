@@ -11,6 +11,7 @@ import useActionTable from 'features/candidatejob/presentation/providers/hooks/u
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { DeleteCandidateJobModal } from 'features/candidatejob/presentation/page-sections'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
+import EditCandidateJobModal from 'features/candidatejob/presentation/page-sections/EditCandidateJobModal'
 
 interface IActionGroupButtons {
   rowId: string
@@ -25,8 +26,14 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
 
   const { handleRemoveCandidate } = useContextChangeStatus()
 
-  const { openDelete, setOpenDelete, handleOpenDelete } =
-    useActionTable<CandidateJob>()
+  const {
+    openDelete,
+    setOpenDelete,
+    handleOpenDelete,
+    openEdit,
+    setOpenEdit,
+    handleOpenEdit,
+  } = useActionTable<CandidateJob>()
 
   return (
     <Fragment>
@@ -36,7 +43,7 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
           {
             id: 'detail',
             onClick: (id, data) => {
-              navigate(`/dashboard/candidate-detail/${data.candidate_id}`)
+              navigate(`/dashboard/job-application-detail/${id}`)
             },
             title: translation.COMMON.detail,
             Icon: <SearchIconSmall />,
@@ -44,7 +51,7 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
           {
             id: 'edit',
             onClick: (id, rowData) => {
-              // handleOpenEdit(id)
+              handleOpenEdit(id)
             },
             title: translation.COMMON.edit,
             Icon: <EditIcon />,
@@ -64,10 +71,6 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
         rowData={rowData}
       />
 
-      {/* {openEdit && (
-        <EditCandidateModal open={openEdit} setOpen={setOpenEdit} id={rowId} onSuccess={handleRefreshList}/>
-      )} */}
-
       {openDelete && (
         <DeleteCandidateJobModal
           open={openDelete}
@@ -76,6 +79,14 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
           onSuccess={() => {
             handleRemoveCandidate(rowData?.status, rowId)
           }}
+        />
+      )}
+
+      {openEdit && (
+        <EditCandidateJobModal
+          open={openEdit}
+          setOpen={setOpenEdit}
+          candidateId={rowId}
         />
       )}
     </Fragment>

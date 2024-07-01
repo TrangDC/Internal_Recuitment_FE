@@ -96,9 +96,9 @@ const JobDetailInformation = ({
         <DivItemInformation>
           <SpanText>Applied on</SpanText>
           <TinyText>
-            {jobApplicationDetail?.candidate?.last_apply_date &&
+            {jobApplicationDetail?.created_at &&
               format(
-                new Date(jobApplicationDetail?.candidate.last_apply_date),
+                new Date(jobApplicationDetail.created_at),
                 'HH:mm, dd/MM/yyyy'
               )}
           </TinyText>

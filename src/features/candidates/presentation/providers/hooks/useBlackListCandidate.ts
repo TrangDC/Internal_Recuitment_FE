@@ -29,7 +29,6 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
-      console.log("🚀 ~ formatDefaultValues ~ data:", data)
       return {
         note: '',
         is_black_list: !data?.is_black_list

@@ -1,14 +1,14 @@
 import { isEmpty } from 'lodash'
-import { JobsFilter } from '../constants/schema-filter'
+import { JobsFilterOpening } from '../constants/schema-filter'
 import { useFilterTable } from 'shared/components/table'
 
-function useFilterJobs() {
-  const { useFilterReturn, useSearchListReturn } = useFilterTable<JobsFilter>({
+function useFilterJobsOpening() {
+  const { useFilterReturn, useSearchListReturn } = useFilterTable<JobsFilterOpening>({
     filter: {
       defaultFilter: {
-        team_ids: [],
+        hiring_job_id: [],
         priority: '',
-        status: '',
+        team_id: [],
         skill_ids: [],
         location: '',
         created_by_ids: [],
@@ -16,8 +16,8 @@ function useFilterJobs() {
       formatDataWithValue: (data) => {
         return {
           priority: Number(data?.priority?.value) || undefined,
-          status: data?.status?.value,
-          team_ids: data?.team_ids?.map((o) => o.value),
+          hiring_job_id: data?.hiring_job_id?.map((o) => o.value),
+          team_id: !isEmpty(data?.team_id) ? data?.team_id?.map((o) => o.value) : undefined,
           skill_ids: data?.skill_ids?.map((o) => o.value),
           location: data?.location?.value || undefined,
           created_by_ids: !isEmpty(data?.created_by_ids) ? data?.created_by_ids?.map((o) => o.value) : undefined,
@@ -36,4 +36,4 @@ function useFilterJobs() {
   }
 }
 
-export default useFilterJobs
+export default useFilterJobsOpening

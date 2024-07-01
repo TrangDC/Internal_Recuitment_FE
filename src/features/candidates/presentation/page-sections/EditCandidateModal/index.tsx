@@ -305,7 +305,7 @@ function EditCandidateModal({
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <AppTextField
-                        label={'Description'}
+                        label={'HR Note'}
                         size="small"
                         fullWidth
                         value={field.value}

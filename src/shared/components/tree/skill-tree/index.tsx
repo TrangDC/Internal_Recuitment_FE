@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { ChipSkill, SkillContainerWrapper } from './style'
 import { TextFieldProps } from '@mui/material'
 import { Skill } from 'features/skill/domain/interfaces'
+import Scrollbar from 'shared/components/ScrollBar'
 
 export type TYPE_LIST_SELECTED = {
   id: string
@@ -46,6 +47,7 @@ export default function SkillTree({
     parent_data = updateListChild(parent_data, skill_id, data)
 
     const newData = { ...value, [parent_id]: parent_data }
+    if(isEmpty(parent_data)) delete newData[parent_id];
     onChange(newData)
   }
 
@@ -106,7 +108,8 @@ export default function SkillTree({
               />
             </FlexBox>
             <Box>
-              {options.map((skill_type) => {
+            <Scrollbar sx={{ maxHeight: '250px' }}>
+            {options.map((skill_type) => {
                 return (
                   <AccordionComponent
                     onChange={handleOnChange}
@@ -116,6 +119,8 @@ export default function SkillTree({
                   />
                 )
               })}
+            </Scrollbar>
+             
             </Box>
           </SkillContainerWrapper>
         }

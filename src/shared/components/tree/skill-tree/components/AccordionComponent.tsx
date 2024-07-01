@@ -16,6 +16,7 @@ import {
 } from '../style'
 import DownIcon from 'shared/components/icons/DownIcon'
 import { Skill } from 'features/skill/domain/interfaces'
+import { isEmpty } from 'lodash'
 
 type TYPE_LIST_SELECTED = {
   id: string
@@ -54,6 +55,7 @@ const AccordionComponent = ({
           <Tiny>{skill_type.name}</Tiny>
           <Box onClick={(e) => e.stopPropagation()}>
             <Checkbox
+              indeterminate={(child_checked.length < skills.length) && !isEmpty(child_checked)}
               checked={isExistKey(id, selected)}
               onChange={() => {
                 handleChangeParent({

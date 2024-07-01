@@ -161,6 +161,7 @@ const useGraphql = () => {
         candidate_id
         hiring_job_id
         status
+        created_at
         steps {
           id
           candidate_job_id
@@ -176,6 +177,7 @@ const useGraphql = () => {
             dob
             status
             is_black_list
+            created_at
             last_apply_date
         }
         attachments {

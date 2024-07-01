@@ -46,6 +46,9 @@ import ControllerDateRange from 'shared/components/table/components/tooltip-filt
 import dayjs from 'dayjs'
 import AppDateRangePicker from 'shared/components/input-fields/AppDateRangePicker'
 import LinkIcon from 'shared/components/icons/Link'
+import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
+import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
+import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
 
 const Candidates = () => {
   const {
@@ -233,6 +236,81 @@ const Candidates = () => {
                   }
                   fromDate={fromValue ? dayjs(fromValue) : null}
                   toDate={toValue ? dayjs(toValue) : null}
+                />
+              )}
+            />
+
+            <ControllerFilter
+              control={controlFilter}
+              title="Skill type"
+              keyName={'skill_type_ids'}
+              Node={({ onFilter, value }) => (
+                <SkillTypeAutoComplete
+                  name="skill_type"
+                  multiple={true}
+                  value={value}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Skill type',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+
+            <ControllerFilter
+              control={controlFilter}
+              title="Skill"
+              keyName={'skill_ids'}
+              Node={({ onFilter, value }) => (
+                <SkillAutoComplete
+                  name="skill"
+                  multiple={true}
+                  value={value}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Skill',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+
+<ControllerFilter
+              control={controlFilter}
+              title="Candidate source"
+              keyName={'reference_type'}
+              Node={({ onFilter, value }) => (
+                <CandidateSourceAutoComplete
+                multiple={false}
+                value={value}
+                onChange={(data) => {
+                  onFilter(data)
+                }}
+                open={true}
+                disableCloseOnSelect={true}
+                textFieldProps={{
+                  label: 'Candidate source',
+                  autoFocus: true,
+                }}
                 />
               )}
             />

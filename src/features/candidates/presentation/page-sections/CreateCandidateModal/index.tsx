@@ -290,7 +290,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <AppTextField
-                        label={'Description'}
+                        label={'HR Note'}
                         size="small"
                         fullWidth
                         value={field.value}

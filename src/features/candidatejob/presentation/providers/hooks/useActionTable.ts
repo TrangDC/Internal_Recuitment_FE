@@ -19,7 +19,7 @@ const useActionTable = <T extends object>() => {
     setOpenChangeStatus(true)
   }
 
-  function handleOpenEdit(id: string, data: T) {
+  function handleOpenEdit(id: string, data?: T) {
     rowId.current = id
     rowData.current = data
     setOpenEdit(true)

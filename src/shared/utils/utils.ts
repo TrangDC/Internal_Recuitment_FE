@@ -119,6 +119,22 @@ export const removeNonExistInObj = (obj: Record<string, any>) => {
   return newObj
 }
 
+export const removeEmptyInObject = (obj: Record<string, any>) => {
+  let newObj: Record<string, any> = {}
+
+  Object.keys(obj).forEach((item) => {
+    if((Array.isArray(obj[item]) && isEmpty(obj[item]))) {
+      newObj[item] = undefined
+      return;
+    }
+    newObj[item] = obj[item]
+  })
+
+  return newObj
+}
+
+
+
 export const getBase64 = (file: Blob): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
