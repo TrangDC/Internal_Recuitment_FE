@@ -372,7 +372,12 @@ const useCandidatesJob = () => {
     const dropCandidate = handleGetItemByStatus(updateStatus);
 
     //get candidate move
-    const candidateMove = dragCandidate.data.find((item) => item.id === id);
+    let candidateMove = dragCandidate.data.find((item) => item.id === id);
+    if(candidateMove) {
+      //@ts-ignore
+      candidateMove = {...candidateMove, status: updateStatus, candidate: {...candidateMove.candidate, status: updateStatus}}
+    }
+
     handleRemoveCandidate(prevStatus, id)
 
     dropCandidate.setData((prev: CandidateStatusItem[]) => {

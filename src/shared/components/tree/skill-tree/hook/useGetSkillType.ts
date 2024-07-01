@@ -22,7 +22,11 @@ function useGetSkillType() {
   })
 
   const skill_types = useMemo(() => {
-    return data?.[getAllSkillTypes.operation]?.edges?.map((item: any) => item?.node) ?? []
+    const data_skill: SkillType[] = data?.[getAllSkillTypes.operation]?.edges?.map((item: any) => item?.node) ?? []
+
+    return data_skill.filter((skill_type) => {
+      return !isEmpty(skill_type.skills)
+    });
   }, [data])
 
   useEffect(() => {
