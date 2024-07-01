@@ -28,8 +28,8 @@ function useFilterCandidates(props: UseFilterCandidates) {
             recruit_time_to_date:
               data?.recruit_time_to_date?.value ?? undefined,
             status: data?.status?.value,
-            reference_uid: data?.reference_uid?.map((o) => o.value),
-            failed_reason: data?.failed_reason?.map((o) => o.value),
+            reference_uid:!isEmpty(data?.reference_uid) ? data?.reference_uid?.map((o) => o.value) : undefined,
+            failed_reason: !isEmpty(data?.failed_reason) ? data?.failed_reason?.map((o) => o.value) : undefined,
             skill_ids: !isEmpty(data?.skill_ids) ? data?.skill_ids?.map((o) => o.value) : undefined,
             reference_type: data?.reference_type?.value ?? undefined,
             skill_type_ids: !isEmpty(data?.skill_type_ids) ? data?.skill_type_ids?.map((o) => o.value) : undefined,
