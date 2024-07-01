@@ -17,8 +17,8 @@ function useFilterJobs() {
         return {
           priority: Number(data?.priority?.value) || undefined,
           status: data?.status?.value,
-          team_ids: data?.team_ids?.map((o) => o.value),
-          skill_ids: data?.skill_ids?.map((o) => o.value),
+          team_ids: !isEmpty(data?.team_ids) ? data?.team_ids?.map((o) => o.value) : undefined,
+          skill_ids:!isEmpty(data?.skill_ids) ? data?.skill_ids?.map((o) => o.value) : undefined,
           location: data?.location?.value || undefined,
           created_by_ids: !isEmpty(data?.created_by_ids) ? data?.created_by_ids?.map((o) => o.value) : undefined,
         }
