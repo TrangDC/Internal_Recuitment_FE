@@ -52,7 +52,7 @@ const BoxCandidate = ({
   list_candidates = [],
   Note,
   status,
-}: Props) => {
+}: Props) => {  
   const navigate = useNavigate()
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()
 
@@ -124,7 +124,7 @@ const BoxCandidate = ({
               draggable={true}
               onDragStart={handleDragStart(item)}
             >
-              <SpanInfo>{item.candidate.name}</SpanInfo>
+              <SpanInfo>{item?.candidate?.name}</SpanInfo>
               <FlexBox flexDirection={'column'} gap={'10px'}>
                 <FlexBox alignItems={'center'} gap={'6px'}>
                   <PhoneIcon
@@ -135,7 +135,7 @@ const BoxCandidate = ({
                       },
                     }}
                   />{' '}
-                  <TinyInfo>{item.candidate.phone}</TinyInfo>
+                  <TinyInfo>{item?.candidate?.phone}</TinyInfo>
                 </FlexBox>
 
                 <FlexBox alignItems={'center'} gap={'6px'}>
@@ -148,8 +148,8 @@ const BoxCandidate = ({
                     }}
                   />{' '}
                   <TinyInfo>
-                    {item.hiring_job.team?.name} .{' '}
-                    {LOCATION_LABEL[item.hiring_job.location]}
+                    {item?.hiring_job?.team?.name} .{' '}
+                    {LOCATION_LABEL[item?.hiring_job?.location]}
                   </TinyInfo>
                 </FlexBox>
 
@@ -165,10 +165,10 @@ const BoxCandidate = ({
                   <TinyLink
                     onClick={(e) => {
                       e.stopPropagation()
-                      navigate(`/dashboard/job-detail/${item.hiring_job_id}`)
+                      navigate(`/dashboard/job-detail/${item?.hiring_job_id}`)
                     }}
                   >
-                    {item.hiring_job.name}
+                    {item?.hiring_job.name}
                   </TinyLink>
                 </FlexBox>
 
@@ -182,9 +182,9 @@ const BoxCandidate = ({
                     },
                   }}
                 >
-                  <ChipPriority status={item.hiring_job?.priority} />
+                  <ChipPriority status={item?.hiring_job?.priority} />
                   <Box onClick={(e) => e.stopPropagation()}>
-                    <ActionsButton rowId={item.id} rowData={item} />
+                    <ActionsButton rowId={item?.id} rowData={item} />
                   </Box>
                 </FlexBox>
               </FlexBox>
