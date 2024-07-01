@@ -25,11 +25,6 @@ export const navigations = [
     path: '/dashboard/skill',
     icon: duotone.Skill,
   },
-  {
-    name: 'Skill type management',
-    path: '/dashboard/skill-type',
-    icon: duotone.Skill,
-  },
   // {
   //   name: 'Settings',
   //   path: '/dashboard/settings',
