@@ -122,6 +122,7 @@ const useGraphql = () => {
     node: `
       data {
         id
+        status
       }
     `,
     params: {
@@ -138,6 +139,10 @@ const useGraphql = () => {
     node: `
       data {
         id
+        candidate_job {
+          id
+          status
+        }
       }
     `,
     params: {

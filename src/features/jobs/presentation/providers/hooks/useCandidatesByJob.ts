@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Candidate } from 'features/candidates/domain/interfaces'
+import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import { useMemo } from 'react'
 import GraphQLClientService from 'services/refactor/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
@@ -142,25 +142,12 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
       }
     `,
   params: {
-    filter: 'CandidateJobGroupByStatusFilter!',
+    filter: 'CandidateJobGroupByStatusFilter',
     orderBy: 'CandidateJobByOrder',
+    freeWord: 'CandidateJobGroupByStatusFreeWord',
+    pagination: 'PaginationInput'
   },
 })
-
-export type CandidateStatusItem = {
-  id: string
-  candidate_id: string
-  status: string
-  hiring_job_id: string
-  attachments: {
-    id: string
-    document_name: string
-    document_id: string
-  }
-  candidate: Candidate
-  created_at: string
-  updated_at: string
-}
 
 type CandidatesByStatus = {
   kiv: CandidateStatusItem[]
@@ -179,6 +166,10 @@ const useCandidatesByJob = (hiring_job_id: string) => {
       GraphQLClientService.fetchGraphQL(getCandidatesByJob.query, {
         filter: {
           hiring_job_id,
+        },
+        orderBy: {
+          direction: 'DESC',
+          field: 'created_at',
         },
       }),
   })

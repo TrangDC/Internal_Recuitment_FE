@@ -4,7 +4,7 @@ import { Span } from 'shared/components/Typography'
 import useTextTranslation from 'shared/constants/text'
 import Jobs from 'shared/components/icons/Jobs'
 import {
-  BoxCircle, 
+  BoxCircle,
   BoxWrapperOuterContainer,
   BtnPrimary,
   HeadingWrapper,
@@ -22,6 +22,7 @@ import IconScreen from 'shared/components/utils/IconScreen'
 import { JobStatus } from 'shared/class/job-status'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
+import { ChipLimit } from 'shared/components/chip-stack'
 
 const { STATUS_STATE } = JobStatus
 
@@ -41,15 +42,21 @@ const JobDetail = () => {
     )
   }, [jobDetail])
 
+  const job_skills = useMemo(() => {
+    if (!jobDetail.entity_skill_types) return []
+
+    const skill_types = jobDetail.entity_skill_types
+    return skill_types
+      ? skill_types.flatMap((type) => {
+          return type.entity_skills.map((skill) => skill.name)
+        })
+      : []
+  }, [jobDetail])
 
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen
-          Icon={Jobs}
-          textLable={jobDetail?.name}
-          go_back={true}
-        />
+        <IconScreen Icon={Jobs} textLable={jobDetail?.name} go_back={true} />
       </Box>
       <FlexBox flexDirection={'column'} gap={2.5} marginTop={0}>
         <BoxWrapperOuterContainer>
@@ -81,14 +88,14 @@ const JobDetail = () => {
                 <FlexBox gap={0.75} alignItems={'center'}>
                   <SpanText>{translation.COMMON.status}</SpanText>
                   <TinyText>
-                    <ChipJob status={jobDetail?.status}/>
+                    <ChipJob status={jobDetail?.status} />
                   </TinyText>
                 </FlexBox>
 
                 <FlexBox gap={0.75} alignItems={'center'}>
                   <SpanText>Priority</SpanText>
                   <TinyText>
-                    <ChipPriority status={jobDetail?.priority}/>
+                    <ChipPriority status={jobDetail?.priority} />
                   </TinyText>
                 </FlexBox>
 
@@ -101,6 +108,14 @@ const JobDetail = () => {
                         new Date(jobDetail?.created_at),
                         'HH:mm, dd/MM/yyyy'
                       )}
+                  </TinyText>
+                </FlexBox>
+
+                <FlexBox gap={0.75} alignItems={'center'}>
+                  <SpanText>Skills</SpanText>
+
+                  <TinyText>
+                    <ChipLimit chips={job_skills} limit={2} />
                   </TinyText>
                 </FlexBox>
               </FlexBox>

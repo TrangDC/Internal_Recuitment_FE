@@ -9,6 +9,7 @@ import { LOCATION_LABEL } from 'shared/constants/constants'
 import { LinkText, StyleTinyText } from 'shared/styles'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
+import { ChipLimit } from 'shared/components/chip-stack'
 
 const columnHelper = createColumnHelper<Job>()
 
@@ -73,6 +74,24 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     header: () => <span>{t('hired')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     size: 100,
+  }),
+  columnHelper.accessor((row) => row.entity_skill_types, {
+    id: 'entity_skill',
+    header: () => <span>Skill required</span>,
+    size: 200,
+    cell: (info) => {
+      const skill_types = info.row.original.entity_skill_types
+      const label_list = skill_types ? skill_types.flatMap((type) => {
+        return  type.entity_skills.map((skill) => skill.name)
+      }) : []
+
+      return (
+        <StyleTinyText>
+          <ChipLimit chips={label_list} limit={2} />
+        </StyleTinyText>
+      )
+    },
+    enableSorting: false,
   }),
   columnHelper.accessor('created_at', {
     header: () => <span>{t('action')}</span>,

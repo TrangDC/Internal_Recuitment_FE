@@ -5,7 +5,6 @@ import {
   Candidate,
   UpdateCandidateInput,
 } from 'features/candidates/domain/interfaces'
-import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import {
   convertDateToISOString,
@@ -13,12 +12,10 @@ import {
   removeStatusAttachment,
   updateRecordSkill,
 } from 'shared/utils/utils'
-import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
-import { entity_skill_type } from 'features/skillType/domain/interfaces'
 
 type UseEditCandidateProps = {
   id: string
-  onSuccess: (data: BaseRecord) => void
+  onSuccess: (data: Candidate) => void
 }
 
 function useUpdateCandidate(props: UseEditCandidateProps) {
@@ -34,7 +31,10 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
     oneBuildQuery: getCandidate,
     queryKey: [queryKey],
     id,
-    onSuccess,
+    onSuccess: (data) => {
+      const candidate: Candidate = data[updateCandidate.operation]?.data;
+      onSuccess?.(candidate)
+    },
     formatDefaultValues(data) {
       const entity_skill_records = formatRecordSkill(data?.entity_skill_types)
       return {

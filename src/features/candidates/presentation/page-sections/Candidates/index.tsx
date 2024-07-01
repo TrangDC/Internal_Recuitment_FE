@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import BlackListIcon from 'shared/components/icons/BlackListIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import { Fragment, useMemo, useRef, useState } from 'react'
+import { Fragment, useMemo, useRef } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { handleImportFile } from '../../providers/utils'
@@ -65,7 +65,6 @@ const Candidates = () => {
   const is_black_list = false
   const navigate = useNavigate()
   const translation = useTextTranslation()
-  const [status, setStatus] = useState<string>('')
   const { useFilterReturn, useSearchListReturn } = useFilterCandidates({
     is_black_list,
   })

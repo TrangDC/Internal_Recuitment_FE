@@ -1,7 +1,6 @@
 import {
   DateFieldBody,
   DateFieldDivison,
-  DateFieldInformation,
   FieldOld,
   FieldRecord,
   StyleChip,

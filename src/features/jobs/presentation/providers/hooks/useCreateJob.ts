@@ -3,7 +3,7 @@ import useGraphql from 'features/jobs/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../../providers/constants/schema'
 import { NewHiringJobInput } from 'features/jobs/domain/interfaces'
 import _, { isEmpty } from 'lodash'
-import { convertCurrencyToNumber } from 'shared/utils/utils'
+import { convertCurrencyToNumber, updateRecordSkill } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
 import { useCreateResource } from 'shared/hooks/crud-hook'
@@ -27,7 +27,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
       salary_from: '0',
       salary_to: '0',
       note: '',
-      // skill: [],
+      entity_skill_records: {},
       ...defaultValues,
     },
     resolver: yupResolver(schema),
@@ -41,6 +41,8 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
   function onSubmit() {
     handleSubmit((value) => {
       const salary_type = value.salary_type
+      const entity_skill = updateRecordSkill(value.entity_skill_records);
+
       const valueClone = {
         ..._.cloneDeep(value),
         currency:
@@ -51,6 +53,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
         salary_from: convertCurrencyToNumber(value.salary_from),
         salary_to: convertCurrencyToNumber(value.salary_to),
         status: 'opened',
+        entity_skill_records: entity_skill,
       }
 
       mutate(valueClone)

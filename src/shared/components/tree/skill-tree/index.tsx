@@ -10,6 +10,8 @@ import SearchInput from 'shared/components/table/components/SearchInput'
 import CloseIcon from '@mui/icons-material/Close'
 import { useEffect, useState } from 'react'
 import { ChipSkill, SkillContainerWrapper } from './style'
+import { TextFieldProps } from '@mui/material'
+import { Skill } from 'features/skill/domain/interfaces'
 
 export type TYPE_LIST_SELECTED = {
   id: string
@@ -25,9 +27,14 @@ export type SELECTED_SKILL = {
 interface Props {
   value: SELECTED_SKILL
   onChange: (data: SELECTED_SKILL) => void
+  textFieldProps?: TextFieldProps
 }
 
-export default function SkillTree({ value, onChange }: Props) {
+export default function SkillTree({
+  value,
+  onChange,
+  textFieldProps = { variant: 'outlined', label: 'Candidate skills' },
+}: Props) {
   const { options, actions, searchRef } = useGetSkillType()
   const { handleSearch, handleReset } = actions
 
@@ -42,12 +49,14 @@ export default function SkillTree({ value, onChange }: Props) {
     onChange(newData)
   }
 
-  const handleChangeParent = (data: { id: string }) => {
-    const { id } = data
+  const handleChangeParent = (data: { id: string, skills: Skill[] }) => {
+    const { id, skills } = data
+
     const list_select = cloneDeep(value)
     const exist_parent = isExistKey(id, value)
+    const skill_list = skills.map((skill) => ({id: '', parent_id: id, skill_id: skill.id, skill_name: skill.name}))
     if (!exist_parent) {
-      list_select[id] = []
+      list_select[id] = skill_list
     } else {
       delete list_select[id]
     }
@@ -55,7 +64,7 @@ export default function SkillTree({ value, onChange }: Props) {
   }
 
   useEffect(() => {
-    if(!isEmpty(value)) {
+    if (typeof value === 'object') {
       const data = transformSkillRecord(value)
       setSkills(data)
     }
@@ -65,10 +74,7 @@ export default function SkillTree({ value, onChange }: Props) {
     <Fragment>
       <PopperWrapper
         inputLabel="candidate skill"
-        textFieldProps={{
-          variant: 'outlined',
-          label: 'Candidate skills',
-        }}
+        textFieldProps={textFieldProps}
         tag={skills.map((skill) => (
           <ChipSkill
             key={skill.skill_id}

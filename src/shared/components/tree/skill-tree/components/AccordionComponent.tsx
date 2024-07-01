@@ -15,6 +15,7 @@ import {
   FlexBoxBody,
 } from '../style'
 import DownIcon from 'shared/components/icons/DownIcon'
+import { Skill } from 'features/skill/domain/interfaces'
 
 type TYPE_LIST_SELECTED = {
   id: string
@@ -27,7 +28,7 @@ interface Props {
   skill_type: SkillType
   onChange: (data: TYPE_LIST_SELECTED) => void
   selected: SELECTED_SKILL
-  handleChangeParent: ({ id }: { id: string }) => void
+  handleChangeParent: ({ id }: { id: string, skills: Skill[] }) => void
 }
 
 const AccordionComponent = ({
@@ -36,7 +37,7 @@ const AccordionComponent = ({
   selected,
   handleChangeParent,
 }: Props) => {
-  const { id } = skill_type
+  const { id, skills } = skill_type
 
   const child_checked = useMemo(() => {
     return selected?.[id] ?? []
@@ -57,6 +58,7 @@ const AccordionComponent = ({
               onChange={() => {
                 handleChangeParent({
                   id: id,
+                  skills,
                 })
               }}
             />

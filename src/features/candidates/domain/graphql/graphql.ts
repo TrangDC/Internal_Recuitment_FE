@@ -74,6 +74,8 @@ const useGraphql = () => {
     node: `
       data {
         id
+        name
+        phone
       }
     `,
     params: {

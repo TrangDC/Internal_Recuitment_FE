@@ -1,3 +1,5 @@
+import { Candidate } from 'features/candidates/domain/interfaces'
+import { entity_skill_type } from 'features/skillType/domain/interfaces'
 import { Member, Team } from 'features/teams/domain/interfaces'
 
 export type Job = {
@@ -19,6 +21,7 @@ export type Job = {
   priority: 1 | 2 | 3 | 4
   total_candidates_recruited: number,
   skill: string[]
+  entity_skill_types: entity_skill_type[]
   created_at: string
   updated_at: string
   deleted_at: string
@@ -61,3 +64,18 @@ export type UpdateJobStatus = {
   note: string,
 }
 
+export type CandidateStatusItem = {
+  id: string
+  candidate_id: string
+  status: string
+  hiring_job_id: string
+  hiring_job: Job
+  attachments: {
+    id: string
+    document_name: string
+    document_id: string
+  }
+  candidate: Candidate
+  created_at: string
+  updated_at: string
+}

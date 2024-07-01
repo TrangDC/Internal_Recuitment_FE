@@ -45,7 +45,7 @@ export const schema = yup.object({
       ? schema.notRequired()
       : schema.required(RULE_MESSAGES.MC1("unit"))
   }),
-  // skill: yup.array().min(1, RULE_MESSAGES.MC1("Skill")).required(RULE_MESSAGES.MC1("Skill")),
+  entity_skill_records: yup.mixed(),
   description: yup.string().required(RULE_MESSAGES.MC1("job description")),
   priority: yup.string().required(RULE_MESSAGES.MC1("priority")),
   note: yup.string(),
@@ -95,7 +95,7 @@ export const schemaUpdate = yup.object({
       ? schema.notRequired()
       : schema.required(RULE_MESSAGES.MC1("unit"))
   }),
-  // skill: yup.array().min(1, RULE_MESSAGES.MC1("Skill")).required(RULE_MESSAGES.MC1("Skill")),
+  entity_skill_records: yup.mixed(),
   description: yup.string().required(RULE_MESSAGES.MC1("job description")),
   priority: yup.string().required(RULE_MESSAGES.MC1("priority")),
   note: yup.string()
@@ -109,3 +109,17 @@ export const schemaChangeStatus = yup.object({
 })
 
 export type FormDataSchemaChangeStatus = yup.InferType<typeof schemaChangeStatus>
+
+export const schemaApplyJob = yup.object({
+  team_id: yup.string().required(RULE_MESSAGES.MC1('team')),
+  candidate_id: yup.string().required(RULE_MESSAGES.MC1('candidate_id')),
+  hiring_job_id: yup.string().required(RULE_MESSAGES.MC1('job name')),
+  status: yup.string().required(RULE_MESSAGES.MC1('status')),
+  attachments: yup
+    .array()
+    .required(RULE_MESSAGES.MC1('attachments'))
+    .min(1, "CV is missing"),
+  note: yup.string(),
+})
+
+export type FormDataSchemaApplyJob = yup.InferType<typeof schemaApplyJob>

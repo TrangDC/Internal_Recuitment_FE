@@ -21,19 +21,29 @@ import { Span, Tiny } from 'shared/components/Typography'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTree from 'shared/components/tree/skill-tree'
+import { Candidate } from 'features/candidates/domain/interfaces'
 
 interface IEditCandidateModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
+  rowData?: Candidate
+  onSuccess?: (data: Candidate) => void;
 }
 
-function EditCandidateModal({ open, setOpen, id }: IEditCandidateModal) {
+function EditCandidateModal({
+  open,
+  setOpen,
+  rowData,
+  onSuccess,
+  id,
+}: IEditCandidateModal) {
   const { actions, control, isPending, isValid, isGetting, watch, formState } =
     useUpdateCandidate({
       id: id,
-      onSuccess: () => {
+      onSuccess: (data) => {
         setOpen(false)
+        onSuccess?.(data)
       },
     })
 

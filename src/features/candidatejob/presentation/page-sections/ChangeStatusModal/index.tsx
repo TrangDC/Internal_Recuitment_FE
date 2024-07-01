@@ -25,6 +25,11 @@ import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 
+export type onSuccessChangeStatus = {
+  prevStatus: string
+  id: string
+  updateStatus: string
+}
 interface IChangeStatusModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -41,7 +46,11 @@ interface IChangeStatusModal {
     | 'ex_staff'
     | 'new'
   defaultStatus?: string
-  onSuccess?: () => void
+  onSuccess?: ({
+    prevStatus,
+    id,
+    updateStatus,
+  }: onSuccessChangeStatus) => void
 }
 
 function ChangeStatusModal({
@@ -54,20 +63,19 @@ function ChangeStatusModal({
 }: IChangeStatusModal) {
   console.log('rowData', rowData)
   const { handleWarning, handleReset } = usePopup()
-  const { onSubmit, control, isPending, isValid, watch, formState } =
-    useChangeStatus({
-      id: rowData?.id as string,
-      callbackSuccess: () => {
-        setOpen(false)
-        onSuccess?.()
-      },
-      defaultValues: {
-        feedback: '',
-        attachments: [],
-        failed_reason: [],
-        status: defaultStatus,
-      },
-    })
+  const { onSubmit, control, isPending, isValid, watch, formState } = useChangeStatus({
+    id: rowData?.id as string,
+    callbackSuccess: (data) => {
+      setOpen(false)
+      onSuccess?.({id: data?.id, prevStatus: statusCurrent, updateStatus: data?.status})
+    },
+    defaultValues: {
+      feedback: '',
+      attachments: [],
+      failed_reason: [],
+      status: defaultStatus,
+    },
+  })
 
   const statusDisabledList = useMemo(() => {
     return list_status_disabled[statusCurrent]
