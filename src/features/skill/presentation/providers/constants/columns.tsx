@@ -29,7 +29,7 @@ export const columns = (
         {info.row.original.skill_type.name}
       </StyleTinyText>
     ),
-    header: () => <span>{t('name')}</span>,
+    header: () => <span>Skill type</span>,
     size: 500,
   }),
   columnHelper.accessor((row) => row.description, {

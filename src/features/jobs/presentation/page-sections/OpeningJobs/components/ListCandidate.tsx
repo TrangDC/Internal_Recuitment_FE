@@ -36,19 +36,19 @@ const ListCandidate = () => {
 
         <BoxCandidate
           title="INTERVIEWING"
-          number_candidates={1}
+          number_candidates={interviewing?.length}
           status="interviewing"
           list_candidates={interviewing}
         />
         <BoxCandidate
           title="OFFERING"
-          number_candidates={1}
+          number_candidates={offering?.length}
           status="offering"
           list_candidates={offering}
         />
         <BoxCandidate
           title="HIRED"
-          number_candidates={1}
+          number_candidates={hired?.length}
           status="hired"
           list_candidates={hired}
           Note={
@@ -65,7 +65,7 @@ const ListCandidate = () => {
         />
         <BoxCandidate
           title="KIV"
-          number_candidates={1}
+          number_candidates={kiv?.length}
           status="kiv"
           list_candidates={kiv}
           Note={
@@ -82,7 +82,7 @@ const ListCandidate = () => {
         />
         <BoxCandidate
           title="OFFERED LOST"
-          number_candidates={1}
+          number_candidates={offerLost?.length}
           status="offer_lost"
           list_candidates={offerLost}
           Note={
@@ -99,7 +99,7 @@ const ListCandidate = () => {
         />
         <BoxCandidate
           title="EX-STAFF"
-          number_candidates={1}
+          number_candidates={exStaff?.length}
           status="ex_staff"
           list_candidates={exStaff}
         />

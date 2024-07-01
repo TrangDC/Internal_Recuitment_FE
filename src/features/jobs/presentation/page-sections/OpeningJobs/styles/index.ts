@@ -6,5 +6,5 @@ export const TinyLink = styled(Tiny12md)(({ theme }) => ({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   color: '#1F84EB !important',
-  cursor: 'pointer'
+  cursor: 'pointer',
 }))

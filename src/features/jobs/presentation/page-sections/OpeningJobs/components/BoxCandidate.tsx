@@ -162,12 +162,14 @@ const BoxCandidate = ({
                       },
                     }}
                   />
-                  <Box onClick={(e) => {
-                    e.stopPropagation()
-                    navigate(`/dashboard/job-detail/${item.hiring_job_id}`)
-                  }}>
-                    <TinyLink sx={{}}>{item.hiring_job.name}</TinyLink>
-                  </Box>
+                  <TinyLink
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      navigate(`/dashboard/job-detail/${item.hiring_job_id}`)
+                    }}
+                  >
+                    {item.hiring_job.name} asdfasdfasdfasdfasdfasdf
+                  </TinyLink>
                 </FlexBox>
 
                 <FlexBox

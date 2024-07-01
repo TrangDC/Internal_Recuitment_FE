@@ -4,7 +4,7 @@ import {
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
 import { t } from 'i18next';
-import { LinkText, StyleTinyText } from 'shared/styles'
+import { StyleTinyText } from 'shared/styles'
 import { SkillType } from 'features/skillType/domain/interfaces';
 
 const columnHelper = createColumnHelper<SkillType>()
@@ -14,7 +14,7 @@ export const columns = (
 ): ColumnDef<SkillType, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <LinkText to={`/dashboard/candidate-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>{t('name')}</span>,
     size: 800,
   }),
