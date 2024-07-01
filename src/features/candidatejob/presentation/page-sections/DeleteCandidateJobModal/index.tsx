@@ -7,23 +7,27 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
+import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 
 interface IDeleteCandidateJobModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
+  onSuccess?: (id: string) => void;
 }
 
 function DeleteCandidateJobModal({
   open,
   setOpen,
   id,
+  onSuccess
 }: IDeleteCandidateJobModal) {
   const [note, setNote] = useState('')
   const { onDelete, isPending } = useDeleteCandidateJob({
     id: id,
     onSuccess: () => {
       setOpen(false)
+      onSuccess?.(id)
     },
   })
 

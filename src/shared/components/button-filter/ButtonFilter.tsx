@@ -6,6 +6,7 @@ import {
   ClickAwayListener,
   styled,
   Box,
+  TypographyProps,
 } from '@mui/material'
 import React from 'react'
 import DownIcon from '../icons/DownIcon'
@@ -36,8 +37,7 @@ const ButtonFilterStyled = styled(Button)(({ theme }) => ({
 }))
 
 const TypographyStyled = styled(Typography)(({ theme }) => ({
-  minWidth: '285px',
-  maxWidth: '500px',
+  width: '285px',
   backgroundColor: theme.palette.primary.light,
   boxShadow:
     'rgba(40, 41, 61, 0.04) 0px 2px 4px 0px, rgba(96, 97, 112, 0.16) 0px 8px 16px 0px',
@@ -55,11 +55,13 @@ const PopperStyled = styled(Popper)(({ theme }) => ({
 type ButtonFilterProps = {
   inputLabel: string
   node: React.ReactNode
+  typographyProps?: TypographyProps
 }
 
 const ButtonFilter = ({
   inputLabel,
   node,
+  typographyProps,
   ...props
 }: ButtonFilterProps & ButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
@@ -83,7 +85,7 @@ const ButtonFilter = ({
           <SpanText>{inputLabel}</SpanText>
         </ButtonFilterStyled>
         <PopperStyled open={Boolean(anchorEl)} anchorEl={anchorEl}>
-          <TypographyStyled sx={{ p: 1, pr: 2, pl: 2 }}>
+          <TypographyStyled sx={{ p: 1, pr: 2, pl: 2 }} {...typographyProps}>
             {node}
           </TypographyStyled>
         </PopperStyled>

@@ -5,6 +5,7 @@ const useActionTable = () => {
   const rowId = useRef('')
   const rowData = useRef<Job>()
   const [openCreate, setOpenCreate] = useState(false)
+  const [openCreateApply, setOpenCreateApply] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openStatus, setOpenStatus] = useState(false)
@@ -29,6 +30,8 @@ const useActionTable = () => {
     openEdit,
     openDelete,
     setOpenCreate,
+    openCreateApply,
+    setOpenCreateApply,
     setOpenEdit,
     setOpenDelete,
     handleOpenEdit,

@@ -6,7 +6,7 @@ import {
   UpdateHiringJobInput,
 } from 'features/jobs/domain/interfaces'
 import _, { isEmpty } from 'lodash'
-import { convertCurrencyToNumber } from 'shared/utils/utils'
+import { convertCurrencyToNumber, formatRecordSkill, updateRecordSkill } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
@@ -32,7 +32,8 @@ function useUpdateJob(props: UseEditJobProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
- 
+      const entity_skill_records = formatRecordSkill(data?.entity_skill_types)
+
       return {
         name: data?.name ?? '',
         priority: data?.priority.toString() ?? '',
@@ -45,7 +46,7 @@ function useUpdateJob(props: UseEditJobProps) {
         currency: data?.currency ?? '',
         created_by: data?.user.id ?? '',
         description: data?.description ?? '',
-        // skill: data?.skill ?? [],
+        entity_skill_records: entity_skill_records,
         note: '',
       }
     },
@@ -58,13 +59,16 @@ function useUpdateJob(props: UseEditJobProps) {
   function onSubmit() {
     handleSubmit((value) => {
       const salary_type = value.salary_type;
+      const entity_skill = updateRecordSkill(value.entity_skill_records);
+
       const valueClone = {
         ..._.cloneDeep(value),
         currency: salary_type !== SALARY_STATE.NEGOTITATION ? value.currency : CURRENCY_STATE.VND,
         salary_type: salary_type,
         salary_from: convertCurrencyToNumber(value.salary_from),
         salary_to: convertCurrencyToNumber(value.salary_to),
-        amount: Number(value.amount)
+        amount: Number(value.amount),
+        entity_skill_records: entity_skill,
       }
 
       mutate(valueClone as UpdateHiringJobInput)

@@ -22,6 +22,7 @@ import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-c
 import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import SkillTree from 'shared/components/tree/skill-tree'
 
 interface IEditJobModal {
   open: boolean
@@ -175,25 +176,14 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                 />
               </FormControl>
             </FlexBox>
-            {/* <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
+            <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
             <FormControl fullWidth>
               <Controller
                 control={control}
-                name="skill"
+                name="entity_skill_records"
                 render={({ field, fieldState }) => (
                   <Fragment>
-                    <SkillAutoComplete
-                      name={field.name}
-                      value={field.value}
-                      onChange={(value) => {
-                        field.onChange(value)
-                      }}
-                      multiple={true}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Skill',
-                      }}
-                    />
+                    <SkillTree value={field.value} onChange={field.onChange} textFieldProps={{label: "Skill"}}/>
                     <HelperTextForm
                       message={fieldState.error?.message}
                     ></HelperTextForm>
@@ -201,7 +191,7 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                 )}
               />
             </FormControl>
-          </FlexBox> */}
+          </FlexBox>
             <FlexBox
               justifyContent={'center'}
               alignItems={'flex-start'}

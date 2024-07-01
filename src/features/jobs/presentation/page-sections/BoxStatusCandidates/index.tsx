@@ -7,7 +7,6 @@ import {
 import { Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import PhoneIcon from 'shared/components/icons/PhoneIcon'
-import { CandidateStatusItem } from '../../providers/hooks/useCandidatesByJob'
 import { DragEventHandler, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ENABLED_CHANGE_STATUS } from '../../providers/constants'
@@ -19,6 +18,7 @@ import { Candidate } from 'features/candidates/domain/interfaces'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
+import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 
 interface Props {
   title: string

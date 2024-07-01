@@ -86,7 +86,10 @@ function CreateFeedbackprops(
       feedback: '',
     },
     resolver: yupResolver(schema),
-    onSuccess: callbackSuccess,
+    onSuccess: (data) => {
+     const response = data[createCandidateJobFeedback.operation]?.data?.candidate_job;
+      callbackSuccess?.(response)
+    },
   })
 
   const { formState } = useFormReturn
@@ -115,7 +118,7 @@ function useChangeStatus(props: useChangeStatusProps) {
           candidate_job_id: id,
         })
       } else {
-        callbackSuccess?.(data)
+        callbackSuccess?.({...data, id})
       }
     },
   })

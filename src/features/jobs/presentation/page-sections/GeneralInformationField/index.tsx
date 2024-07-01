@@ -12,6 +12,7 @@ import { BoxCircle } from 'shared/styles'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
+import { ChipLimit } from 'shared/components/chip-stack'
 
 const DivWrapperField = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -44,6 +45,17 @@ const GeneralInformationField = () => {
   const { id } = useParams()
 
   const { jobDetail } = useJobDetail(id as String)
+
+  const job_skills = useMemo(() => {
+    if (!jobDetail.entity_skill_types) return []
+
+    const skill_types = jobDetail.entity_skill_types
+    return skill_types
+      ? skill_types.flatMap((type) => {
+          return type.entity_skills.map((skill) => skill.name)
+        })
+      : []
+  }, [jobDetail])
 
   const salary = useMemo(() => {
     return new SalaryFactory({
@@ -115,7 +127,18 @@ const GeneralInformationField = () => {
                 {salary?.getSalaryByType()?.gerenateStringSalary()}
               </TinyText>
             </DivField>
+
+            <DivField>
+              <SpanText>Skills</SpanText>
+              <TinyText>
+              <ChipLimit chips={job_skills} />
+              </TinyText>
+            </DivField>
+
+            <DivField>
+            </DivField>
           </FlexBox>
+
         </FlexBox>
       </DivWrapperField>
 

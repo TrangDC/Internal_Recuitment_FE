@@ -1,7 +1,7 @@
 export type Member = {
   id: string
   name: string
-  work_email: number
+  work_email: string
 }
 
 export type Team = {

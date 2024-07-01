@@ -9,6 +9,7 @@ export const BoxWrapperOuterContainer = styled(Box)(({ theme }) => ({
   boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
   overflow: 'hidden',
   marginTop: '20px',
+  width: '100%'
 }))
 
 export const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
@@ -48,8 +49,9 @@ export const BtnPrimary = styled(FlexBox)(({ theme }) => ({
   '& span': {
     margin: 0,
     fontSize: '13px',
-    fontWeight: 600,
     color: theme.palette.primary[600],
+    lineHeight: '15.85px',
+    fontWeight: 600,
   },
 
   '&.disabled': {

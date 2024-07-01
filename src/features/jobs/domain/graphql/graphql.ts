@@ -27,6 +27,14 @@ const useGraphql = () => {
           is_able_to_delete
           is_able_to_close
           total_candidates_recruited
+          entity_skill_types {
+            id
+            name
+            entity_skills {
+              id
+              name
+            }
+          }
           team {
               id
               name
@@ -116,6 +124,17 @@ const useGraphql = () => {
         currency
         is_able_to_close
         status
+        entity_skill_types {
+          id
+          name
+          orderId
+          entity_skills {
+            id
+            name
+            orderId
+            skill_id
+          }
+        }
         created_at
         team {
             id
@@ -283,6 +302,44 @@ const useGraphql = () => {
     },
   })
 
+ 
+  const createCandidateJob = GraphQLClientService.buildQuery({
+    operation: 'CreateCandidateJob',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        id
+        candidate_id
+        interview_feature
+        status
+        created_at
+        candidate {
+          id
+          name
+          phone
+          status
+        }
+        hiring_job {
+          id
+          is_able_to_close
+          location
+          name
+          priority
+          status
+          team {
+            id
+            name
+          }
+        }
+      }
+    `,
+    params: {
+      input: 'NewCandidateJobInput!',
+    },
+  })
+
   return {
     queryKey,
     getAllJob,
@@ -292,6 +349,7 @@ const useGraphql = () => {
     deleteJob,
     changeStatusJob,
     getCandidatesByJob,
+    createCandidateJob
   }
 }
 

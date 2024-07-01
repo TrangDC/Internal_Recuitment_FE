@@ -27,6 +27,15 @@ const DateRangeFilter = ({ onChange }: Props) => {
     <FlexBox flexDirection={'column'}>
       <ButtonFilter
         inputLabel={'Recruit time'}
+        typographyProps={{
+          sx: {
+            p: 1,
+            pr: 2,
+            pl: 2,
+            width: '100%',
+            maxWidth: '500px',
+          },
+        }}
         node={
           <FlexBox gap={'8px'}>
             <AppDateField
