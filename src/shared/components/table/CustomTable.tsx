@@ -169,7 +169,6 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                       {row.getVisibleCells().map((cell) => {
                         const styleColumn = setStyleColumn<T>(cell.column)
 
-                        console.log('cell', cell.column.id)
                         return (
                           <BodyTableCell
                             component="td"

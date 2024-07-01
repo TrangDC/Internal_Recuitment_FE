@@ -168,7 +168,7 @@ const BoxCandidate = ({
                       navigate(`/dashboard/job-detail/${item.hiring_job_id}`)
                     }}
                   >
-                    {item.hiring_job.name} asdfasdfasdfasdfasdfasdf
+                    {item.hiring_job.name}
                   </TinyLink>
                 </FlexBox>
 

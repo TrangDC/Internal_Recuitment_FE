@@ -23,26 +23,14 @@ export const columns = (
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>Name</span>,
-    size: 800,
+    size: 500,
   }),
   columnHelper.accessor('work_email', {
     header: () => <span>Email</span>,
     enableSorting: false,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-    size: 800,
+    size: 500,
   }),
-  // columnHelper.accessor((row) => row.team?.name, {
-  //   id: 'team',
-  //   header: () => <span>Team</span>,
-  //   enableSorting: false,
-  //   cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-  // }),
-  // columnHelper.accessor((row) => row.status, {
-  //   id: 'status',
-  //   header: () => <span>Status</span>,
-  //   enableSorting: false,
-  //   cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-  // }),
   columnHelper.accessor('created_at', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>

@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-// import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../constants/schema'
 import { SkillTypeInput } from 'features/skillType/domain/interfaces'
 import { useCreateResource } from 'shared/hooks/crud-hook'
