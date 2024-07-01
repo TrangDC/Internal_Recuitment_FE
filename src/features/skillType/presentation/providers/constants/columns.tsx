@@ -16,7 +16,7 @@ export const columns = (
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>{t('name')}</span>,
-    size: 800,
+    size: 300,
   }),
   columnHelper.accessor((row) => row.description, {
     id: 'created_at',

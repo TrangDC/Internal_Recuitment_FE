@@ -19,7 +19,7 @@ export const columns = (
     id: 'name',
     cell: (info) => <LinkText to={`/dashboard/team-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
     header: () => <span>{t('name')}</span>,
-    size: 600,
+    size: 300,
   }),
   columnHelper.accessor((row) => row.members, {
     id: 'members',
@@ -42,7 +42,7 @@ export const columns = (
   }),
   columnHelper.accessor('opening_requests', {
     header: () => <span>{t('open_requests')}</span>,
-    size: 600,
+    size: 200,
     cell: (info) => <StyleTinyText>{info.renderValue()}</StyleTinyText>,
   }),
   columnHelper.accessor('newest_applied', {

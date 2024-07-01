@@ -20,7 +20,7 @@ export const columns = (
       </StyleTinyText>
     ),
     header: () => <span>{t('name')}</span>,
-    size: 500,
+    size: 300,
   }),
   columnHelper.accessor((row) => row.skill_type, {
     id: 'skill_type',
@@ -30,7 +30,8 @@ export const columns = (
       </StyleTinyText>
     ),
     header: () => <span>Skill type</span>,
-    size: 500,
+    size: 300,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.description, {
     id: 'description',
