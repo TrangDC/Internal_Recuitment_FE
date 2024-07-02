@@ -4,7 +4,7 @@ const customInterface = createSchemaFilter({
   team_ids: 'string[]',
   status: 'string',
   priority: 'string',
-  skill_ids: 'string[]',
+  skill_id: 'string[]',
   location: 'string',
   created_by_ids: 'string[]'
 })
@@ -15,7 +15,7 @@ const customInterfaceJobOpening = createSchemaFilter({
   hiring_job_id: 'string[]',
   team_id: 'string[]',
   priority: 'string',
-  skill_ids: 'string[]',
+  skill_id: 'string[]',
   location: 'string',
   created_by_ids: 'string[]'
 })

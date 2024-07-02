@@ -141,7 +141,7 @@ const FilterCandidate = () => {
         <ControllerFilter
           control={controlFilter}
           title="Skill"
-          keyName={'skill_ids'}
+          keyName={'skill_id'}
           Node={({ onFilter, value }) => (
             <SkillAutoComplete
               name="skill"

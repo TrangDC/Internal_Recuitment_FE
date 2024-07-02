@@ -17,6 +17,7 @@ const ChipsWithLimit = ({ chips, limit = chips.length }: Props) => {
         {chips.slice(0, limit).map((chip, index) => (
           <ChipField key={index} label={chip} />
         ))}
+
         {chips.length > limit && (
           <ChipField label={`+${chips.length - limit}`} />
         )}
