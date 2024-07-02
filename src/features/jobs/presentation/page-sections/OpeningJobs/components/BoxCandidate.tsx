@@ -56,7 +56,8 @@ const BoxCandidate = ({
   const navigate = useNavigate()
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()
 
-  const { handleUpdateStatus } = useContextChangeStatus()
+  const { actions } = useContextChangeStatus()
+  const { handleUpdateStatus } = actions;
 
   const {
     handleOpenChangeStatus,
@@ -79,7 +80,7 @@ const BoxCandidate = ({
     if (parsedData.status === status) return
     const listChange = ENABLED_CHANGE_STATUS[parsedData.status]
     if (listChange.includes(status)) {
-      setCandidateSelected(parsedData.candidate)
+      setCandidateSelected({...parsedData.candidate, status: parsedData.status})
       handleOpenChangeStatus(parsedData.id, parsedData)
     } else {
       toast.error(

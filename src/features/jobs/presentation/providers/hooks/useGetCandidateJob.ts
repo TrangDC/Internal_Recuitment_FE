@@ -1,9 +1,10 @@
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
-import { cloneDeep, unionBy } from 'lodash'
+import _, { cloneDeep, unionBy } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import GraphQLClientService from 'services/refactor/graphql-service'
+import { TYPE_CANDIDATE_STATUS } from 'shared/class/candidate'
 import { BaseRecord } from 'shared/interfaces'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { removeNonExistInObj } from 'shared/utils/utils'
@@ -215,15 +216,24 @@ type CandidatesByStatus = {
   hired: CandidateStatusItem[]
 }
 
-const INIT_PER_PAGE = 10;
+const INIT_PER_PAGE = 5
 
-type GetDataByStatus = {data: CandidateStatusItem[], setData: (data: any) => void}
+type GetDataByStatus = {
+  data: CandidateStatusItem[]
+  setData: (data: any) => void
+}
+
+type ParamGetCandidateJob = {
+  pageCurrent: number
+  filter: BaseRecord
+  freeWord: BaseRecord
+}
 
 const useCandidatesJob = () => {
   const [page, setPage] = useState<number>(1)
-  const [total, setTotal] = useState<number>(0);
-  const [filter, setFilter] = useState<BaseRecord>({});
-  const [freeWord, setFreeWord] = useState<BaseRecord>({});
+  const [total, setTotal] = useState<number>(0)
+  const [filter, setFilter] = useState<BaseRecord>({})
+  const [freeWord, setFreeWord] = useState<BaseRecord>({})
 
   const [applied, setApplied] = useState<CandidateStatusItem[]>([])
   const [interviewing, setInterviewing] = useState<CandidateStatusItem[]>([])
@@ -233,92 +243,97 @@ const useCandidatesJob = () => {
   const [offerLost, setOfferLost] = useState<CandidateStatusItem[]>([])
   const [exStaff, setExStaff] = useState<CandidateStatusItem[]>([])
 
-  const enabledShowMore = useMemo(() => {
-    // return page * INIT_PER_PAGE < total;
-    return false;
-  }, [page, total])
+  const total_current = useMemo(() => {
+    return _.concat(
+      applied,
+      interviewing,
+      offering,
+      hired,
+      kiv,
+      offerLost,
+      exStaff
+    ).length
+  }, [applied, interviewing, offering, hired, kiv, offerLost, exStaff])
 
-  const handleSeeMore = async () => {
-    setPage(page + 1)
-  }
+  const show_more = useMemo(() => {
+    return total_current < total
+  }, [total, total_current])
 
-  //hotfix
-  const handleCall = async () => {
-    const response = await getCandidateByJob(page, filter, freeWord)
-
-    for (let property in response) {
-      //@ts-ignore
-      handleSetValue(property, response[property])
-    }
-  }
-
-
-  const handleGetItemByStatus = (status: string) : GetDataByStatus => {
+  const handleGetItemByStatus = (status: string): GetDataByStatus => {
     let result: GetDataByStatus = {
       data: [],
-      setData: () => {}
-    };
+      setData: () => {},
+    }
 
     switch (status) {
       case 'applied':
         result = {
           data: applied,
-          setData: setApplied
+          setData: setApplied,
         }
         break
       case 'ex_staff':
         result = {
           data: exStaff,
-          setData: setExStaff
+          setData: setExStaff,
         }
         break
       case 'hired':
         result = {
           data: hired,
-          setData: setHired
+          setData: setHired,
         }
         break
       case 'interviewing':
         result = {
           data: interviewing,
-          setData: setInterviewing
+          setData: setInterviewing,
         }
         break
       case 'kiv':
         result = {
           data: kiv,
-          setData: setKiv
+          setData: setKiv,
         }
         break
       case 'offer_lost':
         result = {
           data: offerLost,
-          setData: setOfferLost
+          setData: setOfferLost,
         }
         break
       case 'offering':
         result = {
           data: offering,
-          setData: setOffering
+          setData: setOffering,
         }
         break
     }
 
-    return result;
+    return result
   }
 
-  const handleSetValue = (key: string, dataCandidate: CandidateStatusItem[]) => {
+  const handleSetValue = (
+    key: string,
+    dataCandidate: CandidateStatusItem[]
+  ) => {
     let nextCandidateJobList = cloneDeep(dataCandidate)
-    const candidateUtil = handleGetItemByStatus(key);
-    const { setData } = candidateUtil;
-    if(page === 1) {
-      setData(nextCandidateJobList);
-      return;
+    const candidateUtil = handleGetItemByStatus(key)
+    const { setData } = candidateUtil
+    if (page === 1) {
+      setData(nextCandidateJobList)
+      return
     }
-    setData((prev: CandidateStatusItem[]) => unionBy(prev, nextCandidateJobList, 'id'))
+    setData((prev: CandidateStatusItem[]) =>
+      unionBy(prev, nextCandidateJobList, 'id')
+    )
   }
 
-  const getCandidateByJob = async (pageCurrent: number, filter: BaseRecord, freeWord: BaseRecord): Promise<CandidatesByStatus> => {
+  const getCandidateByJob = async ({
+    pageCurrent,
+    filter,
+    freeWord,
+  }: ParamGetCandidateJob): Promise<CandidatesByStatus> => {
     const data = await GraphQLClientService.fetchGraphQL(
       getCandidatesByJob.query,
       {
@@ -326,13 +341,13 @@ const useCandidatesJob = () => {
           direction: 'DESC',
           field: 'created_at',
         },
-        // pagination: { page: pageCurrent, perPage: INIT_PER_PAGE },
+        pagination: { page: pageCurrent, perPage: INIT_PER_PAGE },
         filter: {
-          ...filter
+          ...filter,
         },
         freeWord: {
-          ...freeWord
-        }
+          ...freeWord,
+        },
       }
     )
 
@@ -353,9 +368,26 @@ const useCandidatesJob = () => {
     }
   }
 
+  const handleGetData = async ({
+    pageCurrent,
+    filter,
+    freeWord,
+  }: ParamGetCandidateJob) => {
+    const response = await getCandidateByJob({
+      pageCurrent: pageCurrent,
+      filter: filter,
+      freeWord: freeWord,
+    })
+
+    for (let property in response) {
+      //@ts-ignore
+      handleSetValue(property, response[property])
+    }
+  }
+
   const handleFilter = (record: BaseRecord) => {
-    setPage(1);
-    setFilter((prev) => removeNonExistInObj({...prev, ...record}))
+    setPage(1)
+    setFilter((prev) => removeNonExistInObj({ ...prev, ...record }))
   }
 
   const handleFreeWord = (freeWord: BaseRecord) => {
@@ -364,67 +396,79 @@ const useCandidatesJob = () => {
   }
 
   const handleRemoveCandidate = (status: string, id: string) => {
-    const { setData } = handleGetItemByStatus(status);
+    const { setData } = handleGetItemByStatus(status)
+    //delete one candidate_job
+    setTotal((prev) => prev - 1)
     setData((prev: CandidateStatusItem[]) => {
-      return prev.filter((item) => item.id !== id);
+      return prev.filter((item) => item.id !== id)
     })
   }
 
   const handleUpdateStatus = (data: onSuccessChangeStatus) => {
-    const { prevStatus, id, updateStatus } = data;
-    const dragCandidate = handleGetItemByStatus(prevStatus);
-    const dropCandidate = handleGetItemByStatus(updateStatus);
+    const { prevStatus, id, updateStatus } = data
+    const dragCandidate = handleGetItemByStatus(prevStatus)
+    const dropCandidate = handleGetItemByStatus(updateStatus)
 
     //get candidate move
-    let candidateMove = dragCandidate.data.find((item) => item.id === id);
-    if(candidateMove) {
-      //@ts-ignore
-      candidateMove = {...candidateMove, status: updateStatus, candidate: {...candidateMove.candidate, status: updateStatus}}
+    let candidateMove = dragCandidate.data.find((item) => item.id === id)
+    if (candidateMove) {
+      candidateMove = {
+        ...candidateMove,
+        status: updateStatus,
+        candidate: {
+          ...candidateMove.candidate,
+          status: updateStatus as TYPE_CANDIDATE_STATUS,
+        },
+      }
     }
 
-    // handleRemoveCandidate(prevStatus, id)
+    handleRemoveCandidate(prevStatus, id)
 
-    // dropCandidate.setData((prev: CandidateStatusItem[]) => {
-    //   return [...prev, candidateMove]
-    // })
-
-    handleCall()
+    dropCandidate.setData((prev: CandidateStatusItem[]) => {
+      return [...prev, candidateMove]
+    })
   }
 
   const handleAddCandidate = (data: CandidateJob) => {
-    const candidate_changed = handleGetItemByStatus(data.status);
-    // if(candidate_changed.data.length > INIT_PER_PAGE) return;
-    // candidate_changed.setData((prev: CandidateStatusItem[]) => [data, ...prev])
+    const candidate_changed = handleGetItemByStatus(data.status)
+    //add one candidate_job
+    setTotal((prev) => prev + 1)
+    // if (candidate_changed.data.length > INIT_PER_PAGE) return
+    candidate_changed.setData((prev: CandidateStatusItem[]) => [data, ...prev])
+  }
 
-    handleCall()
+  const handleFetchNextPage = () => {
+    setPage((prev) => prev + 1)
   }
 
   useEffect(() => {
-    ;(async () => {
-      const response = await getCandidateByJob(page, filter, freeWord)
-
-      for (let property in response) {
-        //@ts-ignore
-        handleSetValue(property, response[property])
-      }
-    })()
+    handleGetData({ pageCurrent: page, filter: filter, freeWord: freeWord })
   }, [page, filter, freeWord])
 
   return {
-    applied,
-    interviewing,
-    offering,
-    hired,
-    kiv,
-    offerLost,
-    exStaff,
-    handleSeeMore,
-    enabledShowMore,
-    handleFilter,
-    handleFreeWord,
-    handleUpdateStatus,
-    handleRemoveCandidate,
-    handleAddCandidate
+    total_data: {
+      total_current,
+      total: total,
+    },
+    show_more,
+    actions: {
+      handleFetchNextPage,
+      //static
+      handleFilter,
+      handleFreeWord,
+      handleUpdateStatus,
+      handleRemoveCandidate,
+      handleAddCandidate,
+    },
+    data: {
+      applied,
+      interviewing,
+      offering,
+      hired,
+      kiv,
+      offer_lost: offerLost,
+      ex_staff: exStaff,
+    },
   }
 }
 
