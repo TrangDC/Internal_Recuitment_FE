@@ -31,7 +31,7 @@ export const REC_SOURCE_LABEL = {
 const options: IOption[] = [
   {label: 'Linkedin', value: REC_STATE.LINKEDIN},
   {label: 'Facebook', value: REC_STATE.FACEBOOK},
-  {label: 'Instagram', value: REC_STATE.INSTAGRAM},
+  // {label: 'Instagram', value: REC_STATE.INSTAGRAM},
   {label: 'Theard', value: REC_STATE.THREAD},
   {label: 'Github', value: REC_STATE.GITHUB},
   {label: 'Others', value: REC_STATE.OTHERS},

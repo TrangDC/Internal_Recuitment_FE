@@ -187,9 +187,9 @@ function ApplyJobModal({
                         multiple: false,
                         maxSize: 20,
                         msgError: {
-                          is_valid: 'One PDF file only, file size up to 20MB',
-                          maxSize: 'One PDF file only, file size up to 20MB',
-                          maxFile: 'One PDF file only, file size up to 20MB',
+                          is_valid: 'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          maxSize: 'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          maxFile: 'One PDF,WORD,EXCEL file only, file size up to 20mb',
                         },
                         descriptionFile: () => {
                           return (

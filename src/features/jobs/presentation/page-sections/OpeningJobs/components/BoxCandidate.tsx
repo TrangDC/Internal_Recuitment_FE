@@ -28,7 +28,8 @@ import { Box } from '@mui/material'
 import ActionsButton from './ActionGroupButton'
 import useActionTable from 'features/candidatejob/presentation/providers/hooks/useActionTable'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
-import { TinyLink } from '../styles'
+import { SpanHiringStatus, TinyLink } from '../styles'
+import DotIcon from 'shared/components/icons/DotIcon'
 
 interface Props {
   title: string
@@ -108,7 +109,7 @@ const BoxCandidate = ({
           justifyContent={'space-between'}
         >
           <FlexBox alignItems={'center'} gap={'10px'}>
-            <Span>{title}</Span>
+            <SpanHiringStatus>{title}</SpanHiringStatus>
             <Tiny color={'#4D607A'}>{number_candidates}</Tiny>
           </FlexBox>
           {Note}
@@ -148,10 +149,16 @@ const BoxCandidate = ({
                       },
                     }}
                   />{' '}
+                  <FlexBox gap={0.75} alignItems={'center'}>
                   <TinyInfo>
-                    {item?.hiring_job?.team?.name} .{' '}
+                    {item?.hiring_job?.team?.name} 
+                  </TinyInfo>
+                  <DotIcon />
+                  <TinyInfo>
                     {LOCATION_LABEL[item?.hiring_job?.location]}
                   </TinyInfo>
+                  </FlexBox>
+               
                 </FlexBox>
 
                 <FlexBox alignItems={'center'} gap={'6px'}>

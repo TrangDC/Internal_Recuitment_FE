@@ -2,6 +2,7 @@ import { ListFiltersData } from '../interface'
 import { ISearchData } from './useSearchList'
 export type ModuleProject =
   | 'jobs'
+  | 'opening-job'
   | 'candidate'
   | 'candidate-black-list'
   | 'teams'
