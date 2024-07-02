@@ -24,7 +24,8 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
   const translation = useTextTranslation()
   const navigate = useNavigate()
 
-  const { handleRemoveCandidate } = useContextChangeStatus()
+  const { actions } = useContextChangeStatus()
+  const {handleRemoveCandidate} = actions;
 
   const {
     openDelete,

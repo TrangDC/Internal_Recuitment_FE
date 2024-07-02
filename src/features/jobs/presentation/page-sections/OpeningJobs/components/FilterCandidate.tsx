@@ -3,12 +3,7 @@ import {
   DivFilter,
   DivHeaderWrapper,
 } from 'features/candidates/presentation/providers/styles'
-import {
-  Fragment,
-  KeyboardEventHandler,
-  useEffect,
-  useState,
-} from 'react'
+import { Fragment, KeyboardEventHandler, useEffect, useState } from 'react'
 import { CustomTextField } from 'shared/components/form/styles'
 import SearchIcon from 'shared/components/icons/SearchIcon'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
@@ -40,8 +35,8 @@ const FilterCandidate = () => {
 
   const { openCreate, setOpenCreate, openCreateApply, setOpenCreateApply } =
     useActionTable()
-  const { handleFilter, handleFreeWord, handleAddCandidate } =
-    useContextChangeStatus()
+  const { actions } = useContextChangeStatus()
+  const { handleFilter, handleFreeWord, handleAddCandidate } = actions
 
   const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.keyCode === 13) {
@@ -165,50 +160,50 @@ const FilterCandidate = () => {
           )}
         />
 
-<ControllerFilter
-              control={controlFilter}
-              title="Location"
-              keyName={'location'}
-              Node={({ onFilter, value }) => (
-                <LocationAutoComplete
-                  multiple={false}
-                  value={value}
-                  onChange={(data) => onFilter(data)}
-                  open={true}
-                  disableCloseOnSelect={true}
-                  textFieldProps={{
-                    label: 'Location',
-                    autoFocus: true,
-                  }}
-                />
-              )}
+        <ControllerFilter
+          control={controlFilter}
+          title="Location"
+          keyName={'location'}
+          Node={({ onFilter, value }) => (
+            <LocationAutoComplete
+              multiple={false}
+              value={value}
+              onChange={(data) => onFilter(data)}
+              open={true}
+              disableCloseOnSelect={true}
+              textFieldProps={{
+                label: 'Location',
+                autoFocus: true,
+              }}
             />
-            <ControllerFilter
-              control={controlFilter}
-              title="Requester"
-              keyName={'created_by_ids'}
-              Node={({ onFilter, value }) => (
-                <InterViewerAutoComplete
-                  name="requester"
-                  multiple={true}
-                  value={value}
-                  onCustomChange={(data) =>
-                    onFilter(
-                      data.map((value) => ({
-                        label: value.name,
-                        value: value.id,
-                      }))
-                    )
-                  }
-                  open={true}
-                  disableCloseOnSelect={true}
-                  textFieldProps={{
-                    label: 'Requester',
-                    autoFocus: true,
-                  }}
-                />
-              )}
+          )}
+        />
+        <ControllerFilter
+          control={controlFilter}
+          title="Requester"
+          keyName={'created_by_ids'}
+          Node={({ onFilter, value }) => (
+            <InterViewerAutoComplete
+              name="requester"
+              multiple={true}
+              value={value}
+              onCustomChange={(data) =>
+                onFilter(
+                  data.map((value) => ({
+                    label: value.name,
+                    value: value.id,
+                  }))
+                )
+              }
+              open={true}
+              disableCloseOnSelect={true}
+              textFieldProps={{
+                label: 'Requester',
+                autoFocus: true,
+              }}
             />
+          )}
+        />
       </DivFilter>
 
       <DivHeaderWrapper>
