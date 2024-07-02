@@ -4,7 +4,7 @@ const customInterface = createSchemaFilter({
   team_ids: 'string[]',
   status: 'string',
   priority: 'string',
-  skill_id: 'string[]',
+  skill_ids: 'string[]',
   location: 'string',
   created_by_ids: 'string[]'
 })

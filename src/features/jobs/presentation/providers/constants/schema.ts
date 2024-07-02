@@ -112,7 +112,7 @@ export type FormDataSchemaChangeStatus = yup.InferType<typeof schemaChangeStatus
 
 export const schemaApplyJob = yup.object({
   team_id: yup.string().required(RULE_MESSAGES.MC1('team')),
-  candidate_id: yup.string().required(RULE_MESSAGES.MC1('candidate_id')),
+  candidate_id: yup.string().required(RULE_MESSAGES.MC1('candidate')),
   hiring_job_id: yup.string().required(RULE_MESSAGES.MC1('job name')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
   attachments: yup
