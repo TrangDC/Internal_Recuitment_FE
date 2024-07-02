@@ -1,11 +1,13 @@
-import { IconButton, InputAdornment } from '@mui/material'
 import {
   DivFilter,
   DivHeaderWrapper,
 } from 'features/candidates/presentation/providers/styles'
-import { Fragment, KeyboardEventHandler, useEffect, useState } from 'react'
-import { CustomTextField } from 'shared/components/form/styles'
-import SearchIcon from 'shared/components/icons/SearchIcon'
+import {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import _ from 'lodash'
@@ -27,23 +29,23 @@ import { BaseRecord } from 'shared/interfaces'
 import { removeEmptyInObject } from 'shared/utils/utils'
 import LocationAutoComplete from 'shared/components/autocomplete/location-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
+import SearchInput from 'shared/components/table/components/SearchInput'
 
 const FilterCandidate = () => {
   const translation = useTextTranslation()
-  const [searchField, setSearchField] = useState('')
   const [filter, setFilter] = useState<BaseRecord>({})
+
+  const searchRef = useRef<HTMLInputElement>(null)
 
   const { openCreate, setOpenCreate, openCreateApply, setOpenCreateApply } =
     useActionTable()
   const { actions } = useContextChangeStatus()
   const { handleFilter, handleFreeWord, handleAddCandidate } = actions
 
-  const handleFreeWorld: KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if (event.keyCode === 13) {
-      handleFreeWord({
-        job_title: searchField,
-      })
-    }
+  const handleSearchFreeWorld = (value: string) => {
+    handleFreeWord({
+      job_title: value,
+    })
   }
 
   const { useFilterReturn } = useFilterJobsOpening()
@@ -207,29 +209,14 @@ const FilterCandidate = () => {
       </DivFilter>
 
       <DivHeaderWrapper>
-        <CustomTextField
-          id="outlined-basic"
-          label={'Search by Job title'}
-          variant="outlined"
-          size="small"
-          sx={{ width: '400px', fontSize: '13px' }}
-          onKeyUp={handleFreeWorld}
-          onChange={(e) => setSearchField(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton>
-                  <SearchIcon
-                    sx={{ fontSize: '16px' }}
-                    onClick={() => {
-                      handleFreeWord({
-                        job_title: searchField,
-                      })
-                    }}
-                  />
-                </IconButton>
-              </InputAdornment>
-            ),
+        <SearchInput
+          ref={searchRef}
+          onEnter={(value) => {
+            handleSearchFreeWorld(value)
+          }}
+          placeholder="Search by Job title"
+          onSearch={() => {
+            handleSearchFreeWorld(searchRef.current?.value as string)
           }}
         />
         <FlexBox gap={1} alignItems={'center'}>

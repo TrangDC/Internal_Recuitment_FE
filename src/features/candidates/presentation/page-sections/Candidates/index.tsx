@@ -294,23 +294,23 @@ const Candidates = () => {
               )}
             />
 
-<ControllerFilter
+            <ControllerFilter
               control={controlFilter}
               title="Candidate source"
               keyName={'reference_type'}
               Node={({ onFilter, value }) => (
                 <CandidateSourceAutoComplete
-                multiple={false}
-                value={value}
-                onChange={(data) => {
-                  onFilter(data)
-                }}
-                open={true}
-                disableCloseOnSelect={true}
-                textFieldProps={{
-                  label: 'Candidate source',
-                  autoFocus: true,
-                }}
+                  multiple={false}
+                  value={value}
+                  onChange={(data) => {
+                    onFilter(data)
+                  }}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Candidate source',
+                    autoFocus: true,
+                  }}
                 />
               )}
             />

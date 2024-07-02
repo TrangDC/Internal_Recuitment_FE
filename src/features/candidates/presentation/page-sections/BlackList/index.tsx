@@ -114,7 +114,7 @@ const BlackList = () => {
     <DivContainerWrapper>
       <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
         <HeadingWrapper>
-          <FlexBox width={'100%'}>
+          <FlexBox width={'100%'} gap={1}>
             <ControllerFilter
               control={controlFilter}
               keyName="status"

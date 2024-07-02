@@ -24,7 +24,7 @@ function useFilterJobsOpening() {
         }
       },
     },
-    page: 'jobs',
+    page: 'opening-job',
     search: {
       searchKey: ['name'],
     },
