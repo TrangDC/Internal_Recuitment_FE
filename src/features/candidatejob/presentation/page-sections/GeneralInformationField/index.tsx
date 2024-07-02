@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import { H3, Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { DivField, DivWrapperField } from '../../providers/styles'
+import { DivField, DivWrapperField, SpanDivField } from '../../providers/styles'
 import { useParams } from 'react-router-dom'
 import { format } from 'date-fns'
 import useTextTranslation from 'shared/constants/text'
@@ -130,12 +130,12 @@ const GeneralInformationField = ({
                   )}
               </Tiny>
             </DivField>
-            <DivField>
-              <Span sx={{ fontSize: '12px' }}>Candidate skills</Span>
+            <Box>
+              <SpanDivField>Candidate skills</SpanDivField>
               <Box>
                 <ChipLimit chips={candidate_skills} limit={2} />
               </Box>
-            </DivField>
+            </Box>
           </FlexBox>
         </FlexBox>
         <FlexBox alignItems={'center'} gap={'8px'}>

@@ -26,6 +26,13 @@ import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import useFilterCandidates from '../../providers/hooks/useFilterCandidates'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import SearchInput from 'shared/components/table/components/SearchInput'
+import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
+import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
+import ControllerDateRange from 'shared/components/table/components/tooltip-filter/ControllerDateRange'
+import AppDateRangePicker from 'shared/components/input-fields/AppDateRangePicker'
+import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
+import dayjs from 'dayjs'
+import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 
 const BlackList = () => {
   const {
@@ -44,7 +51,6 @@ const BlackList = () => {
   } = useActionTable<Candidate>()
   const is_black_list = true
   const navigate = useNavigate()
-  const [status, setStatus] = useState<string>('')
   const { useFilterReturn, useSearchListReturn } = useFilterCandidates({
     is_black_list,
   })
@@ -52,10 +58,10 @@ const BlackList = () => {
   const { handleSearch, search, searchRef } = useSearchListReturn
   const showFailedReason = useMemo(() => {
     return (
-      status === STATUS_CANDIDATE.KIV ||
-      status === STATUS_CANDIDATE.OFFERED_LOST
+      dataFilterWithValue.status === STATUS_CANDIDATE.KIV ||
+      dataFilterWithValue.status === STATUS_CANDIDATE.OFFERED_LOST
     )
-  }, [status])
+  }, [dataFilterWithValue])
 
   const { useTableReturn } = useCandidateTable({
     filters: {
@@ -119,7 +125,6 @@ const BlackList = () => {
                   value={value}
                   onChange={(data) => {
                     onFilter(data)
-                    setStatus(data?.value ?? '')
                   }}
                   open={true}
                   disableCloseOnSelect={true}
@@ -152,6 +157,132 @@ const BlackList = () => {
                 )}
               />
             )}
+
+            <ControllerFilter
+              control={controlFilter}
+              keyName="reference_uid"
+              title="By recruiter"
+              Node={({ onFilter, value }) => (
+                <InterViewerAutoComplete
+                  multiple={true}
+                  value={value}
+                  name="reference_uid"
+                  onCustomChange={(data) => {
+                    onFilter(
+                      data.map((item) => ({
+                        label: item.name,
+                        value: item.id,
+                      }))
+                    )
+                  }}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'By recruiter',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+            <ControllerDateRange
+              control={controlFilter}
+              keyNameFrom="recruit_time_from_date"
+              keyNameTo="recruit_time_to_date"
+              title="Recruit time"
+              Node={({ onFilterFrom, onFilterTo, fromValue, toValue }) => (
+                <AppDateRangePicker
+                  setFromDate={(date) =>
+                    onFilterFrom({
+                      label: date?.format('DD/MM/YYYY') ?? '',
+                      value: date?.toISOString() ?? '',
+                    })
+                  }
+                  setToDate={(date) =>
+                    onFilterTo({
+                      label: date?.format('DD/MM/YYYY') ?? '',
+                      value: date?.toISOString() ?? '',
+                    })
+                  }
+                  fromDate={fromValue ? dayjs(fromValue) : null}
+                  toDate={toValue ? dayjs(toValue) : null}
+                />
+              )}
+            />
+
+            <ControllerFilter
+              control={controlFilter}
+              title="Skill type"
+              keyName={'skill_type_ids'}
+              Node={({ onFilter, value }) => (
+                <SkillTypeAutoComplete
+                  name="skill_type"
+                  multiple={true}
+                  value={value}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Skill type',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+
+            <ControllerFilter
+              control={controlFilter}
+              title="Skill"
+              keyName={'skill_ids'}
+              Node={({ onFilter, value }) => (
+                <SkillAutoComplete
+                  name="skill"
+                  multiple={true}
+                  value={value}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Skill',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+
+            <ControllerFilter
+              control={controlFilter}
+              title="Candidate source"
+              keyName={'reference_type'}
+              Node={({ onFilter, value }) => (
+                <CandidateSourceAutoComplete
+                  multiple={false}
+                  value={value}
+                  onChange={(data) => {
+                    onFilter(data)
+                  }}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Candidate source',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
           </FlexBox>
           <DivHeaderWrapper>
             <SearchInput
