@@ -125,7 +125,8 @@ const JobDetail = () => {
                     if (disabledBtn) return
                     handleOpenStatus(jobDetail?.id)
                   }}
-                  className={disabledBtn ? 'disabled' : ''}
+                  // className={disabledBtn ? 'disabled' : ''}
+                  className='disabled'
                 >
                   <Span>
                     {jobDetail.status === STATUS_STATE.OPENED

@@ -49,7 +49,7 @@ function ApplyJobModal({
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title={translation.MODULE_CANDIDATE_JOB.apply_to_a_job}
+        title={"Apply candidate to a job"}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -181,8 +181,8 @@ function ApplyJobModal({
                     <InputFileComponent
                       field={field}
                       inputFileProps={{
-                        accept: '.pdf',
-                        regexString: '\\.pdf$',
+                        accept: ".pdf, .doc, .docx, .xls, .xlsx",
+                        regexString: '\\.(pdf|doc|docx|xls|xlsx)$',
                         maxFile: 1,
                         multiple: false,
                         maxSize: 20,
@@ -196,10 +196,10 @@ function ApplyJobModal({
                             <Box>
                               <Span sx={{ color: '#2A2E37 !important' }}>
                                 {' '}
-                                Attach CV{' '}
+                                Attach CV <Span sx={{color: '#DB6C56 !important'}}>*</Span>
                               </Span>
                               <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                One PDF file only, file size up to 20MB
+                              One PDF,WORD,EXCEL file only, file size up to 20MB
                               </Tiny>
                             </Box>
                           )

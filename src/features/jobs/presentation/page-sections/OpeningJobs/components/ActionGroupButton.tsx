@@ -55,9 +55,9 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
             },
             title: translation.COMMON.edit,
             Icon: <EditIcon />,
-            disabled: (rowData) => {
-              return rowData.hiring_job.status === STATUS_STATE.CLOSED
-            },
+            // disabled: (rowData) => {
+            //   return rowData.hiring_job.status === STATUS_STATE.CLOSED
+            // },
           },
           {
             id: 'delete',

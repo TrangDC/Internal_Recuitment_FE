@@ -58,7 +58,10 @@ export const BtnPrimary = styled(FlexBox)(({ theme }) => ({
     cursor: 'not-allowed',
     backgroundColor: '#babfc5',
     border: `1px solid #BABFC5`,
-    color: '#ffffff',
+  },
+
+  '&.disabled span': {
+    color: '#ffffff !important',
   },
 }))
 

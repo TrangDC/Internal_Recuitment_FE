@@ -332,6 +332,183 @@ const useGraphql = () => {
             updated_at
           }
         }
+
+        hired {
+          interview {
+            id
+            title
+            description
+            candidate_job_id
+            interview_date
+            start_from
+            end_at
+            interviewer {
+              id
+              name
+              work_email
+            }
+            owner {
+              id
+              name
+              work_email
+            }
+            edit_able
+            edited
+            created_at
+            updated_at
+          }
+          feedback {
+            id
+            created_by
+            owner {
+              id
+              name
+              work_email
+            }
+            feedback
+            attachments {
+              id
+              document_name
+              document_id
+            }
+            edited
+            created_at
+            updated_at
+          }
+        }
+
+        kiv {
+          interview {
+            id
+            title
+            description
+            candidate_job_id
+            interview_date
+            start_from
+            end_at
+            interviewer {
+              id
+              name
+              work_email
+            }
+            owner {
+              id
+              name
+              work_email
+            }
+            edit_able
+            edited
+            created_at
+            updated_at
+          }
+          feedback {
+            id
+            created_by
+            owner {
+              id
+              name
+              work_email
+            }
+            feedback
+            attachments {
+              id
+              document_name
+              document_id
+            }
+            edited
+            created_at
+            updated_at
+          }
+        }
+
+        offer_lost {
+          interview {
+            id
+            title
+            description
+            candidate_job_id
+            interview_date
+            start_from
+            end_at
+            interviewer {
+              id
+              name
+              work_email
+            }
+            owner {
+              id
+              name
+              work_email
+            }
+            edit_able
+            edited
+            created_at
+            updated_at
+          }
+          feedback {
+            id
+            created_by
+            owner {
+              id
+              name
+              work_email
+            }
+            feedback
+            attachments {
+              id
+              document_name
+              document_id
+            }
+            edited
+            created_at
+            updated_at
+          }
+        }
+
+        ex_staff {
+          interview {
+            id
+            title
+            description
+            candidate_job_id
+            interview_date
+            start_from
+            end_at
+            interviewer {
+              id
+              name
+              work_email
+            }
+            owner {
+              id
+              name
+              work_email
+            }
+            edit_able
+            edited
+            created_at
+            updated_at
+          }
+          feedback {
+            id
+            created_by
+            owner {
+              id
+              name
+              work_email
+            }
+            feedback
+            attachments {
+              id
+              document_name
+              document_id
+            }
+            edited
+            created_at
+            updated_at
+          }
+        }
+        
       }
     `,
     params: {

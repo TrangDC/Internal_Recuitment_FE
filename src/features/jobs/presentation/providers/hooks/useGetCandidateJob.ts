@@ -25,7 +25,6 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
                 id
                 name,
                 phone,
-                status,
             }
             hiring_job {
               id
@@ -51,7 +50,6 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
                 id
                 name,
                 phone,
-                status,
             }
             hiring_job {
               id
@@ -77,7 +75,6 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
                 id
                 name,
                 phone,
-                status,
             }
             hiring_job {
               id
@@ -103,7 +100,6 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
                 id
                 name,
                 phone,
-                status,
             }
             hiring_job {
               id
@@ -129,7 +125,6 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
                 id
                 name,
                 phone,
-                status,
             }
             hiring_job {
               id
@@ -155,7 +150,6 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
                 id
                 name,
                 phone,
-                status,
             }
             hiring_job {
               id
@@ -181,7 +175,6 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
                 id
                 name,
                 phone,
-                status,
             }
             hiring_job {
               id
@@ -248,6 +241,17 @@ const useCandidatesJob = () => {
   const handleSeeMore = async () => {
     setPage(page + 1)
   }
+
+  //hotfix
+  const handleCall = async () => {
+    const response = await getCandidateByJob(page, filter, freeWord)
+
+    for (let property in response) {
+      //@ts-ignore
+      handleSetValue(property, response[property])
+    }
+  }
+
 
   const handleGetItemByStatus = (status: string) : GetDataByStatus => {
     let result: GetDataByStatus = {
@@ -378,17 +382,21 @@ const useCandidatesJob = () => {
       candidateMove = {...candidateMove, status: updateStatus, candidate: {...candidateMove.candidate, status: updateStatus}}
     }
 
-    handleRemoveCandidate(prevStatus, id)
+    // handleRemoveCandidate(prevStatus, id)
 
-    dropCandidate.setData((prev: CandidateStatusItem[]) => {
-      return [...prev, candidateMove]
-    })
+    // dropCandidate.setData((prev: CandidateStatusItem[]) => {
+    //   return [...prev, candidateMove]
+    // })
+
+    handleCall()
   }
 
   const handleAddCandidate = (data: CandidateJob) => {
     const candidate_changed = handleGetItemByStatus(data.status);
     // if(candidate_changed.data.length > INIT_PER_PAGE) return;
-    candidate_changed.setData((prev: CandidateStatusItem[]) => [...prev, data])
+    // candidate_changed.setData((prev: CandidateStatusItem[]) => [data, ...prev])
+
+    handleCall()
   }
 
   useEffect(() => {

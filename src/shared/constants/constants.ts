@@ -51,6 +51,7 @@ export const LOCATION_LABEL = {
   da_nang: 'Đà Nẵng',
   ho_chi_minh: 'Hồ Chí Minh',
   japan: 'Japan',
+  singapore: 'Singapore',
 }
 
 export const STATUS_CANDIDATE = {

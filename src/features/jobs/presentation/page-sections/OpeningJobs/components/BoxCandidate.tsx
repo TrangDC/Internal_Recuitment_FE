@@ -117,7 +117,7 @@ const BoxCandidate = ({
         {list_candidates?.map((item) => {
           return (
             <BoxFieldInfo
-              key={item.id}
+              key={item?.id}
               onClick={() => {
                 navigate(`/dashboard/job-application-detail/${item.id}`)
               }}
