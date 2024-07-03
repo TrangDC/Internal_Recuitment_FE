@@ -124,7 +124,7 @@
       "reference_value": "Recruit channel",
       "validation": {
         "email_exist": "This email belongs to an existing candidate.",
-        "candidate_job_exist": "This candidate is in a hiring process already"
+        "candidate_job_exist": "This candidate is in a hiring process with another job already"
       }
     },
     "teams": {
@@ -170,7 +170,8 @@
         "candidate_job_status_ended": "This job is closed",
         "start_from_end_at_invalid": "The end time must be after the start time",
         "schedule_exist": "Candidate is not available",
-        "title_exist": "Title has already existed"
+        "title_exist": "Title has already existed",
+        "candidate_job_not_found": "Cannot create an interview for this candidate anymore"
       }
     },
     "skills": {

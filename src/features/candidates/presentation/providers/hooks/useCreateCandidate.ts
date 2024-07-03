@@ -32,7 +32,8 @@ function useCreateCandidate(props: createCandidateProps) {
       dob: null,
       reference_uid: '',
       description: '',
-      entity_skill_records: {}
+      entity_skill_records: {},
+      country: "Vietnam"
     },
     resolver: yupResolver(schema),
     onSuccess: callbackSuccess,
