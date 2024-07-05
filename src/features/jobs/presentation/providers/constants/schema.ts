@@ -1,5 +1,5 @@
 import { SALARY_STATE } from 'shared/constants/constants'
-import { RULE_MESSAGES } from 'shared/constants/vaildate'
+import { RULE_MESSAGES } from 'shared/constants/validate'
 import { convertCurrencyToNumber } from 'shared/utils/utils'
 import * as yup from 'yup'
 

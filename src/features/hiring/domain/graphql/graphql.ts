@@ -18,6 +18,7 @@ const useGraphql = () => {
             id
             name
           }
+         
         }
       }
       pagination {
@@ -29,7 +30,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'UserFilter',
-      orderBy: 'UserOrder', 
+      orderBy: 'UserOrder',
       freeWord: 'UserFreeWord',
     },
   })
@@ -47,7 +48,7 @@ const useGraphql = () => {
     params: {
       id: 'ID!',
       input: 'UpdateUserInput!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 
@@ -64,7 +65,7 @@ const useGraphql = () => {
     params: {
       id: 'ID!',
       input: 'UpdateUserStatusInput!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 
@@ -82,6 +83,15 @@ const useGraphql = () => {
           team {
             id
             name
+          }
+          entity_permissions {
+            id
+            for_owner
+            for_team
+            for_all
+            permission {
+              id
+            }
           }
         }
     `,

@@ -1,34 +1,32 @@
 import { useEffect } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import {
-  TREC_ACCESS_TOKEN,
-  TREC_REFRESH_TOKEN,
-} from 'shared/constants/constants'
-import useLocalStorage from 'shared/hooks/useLocalStorage'
+import { useLocation, useNavigate } from 'react-router-dom'
+import useAuth from '../providers/hooks/useAuth'
+import Token from 'shared/class/token'
 
 const AuthCallback = () => {
-  const [searchParams] = useSearchParams()
-  const accessToken = useLocalStorage(
-    TREC_ACCESS_TOKEN,
-    searchParams.get(TREC_ACCESS_TOKEN)
-  )
-  const refreshToken = useLocalStorage(
-    TREC_REFRESH_TOKEN,
-    searchParams.get(TREC_REFRESH_TOKEN)
-  )
-
+  const location = useLocation()
   const navigate = useNavigate()
+  const { setSession } = useAuth()
 
   useEffect(() => {
-    if (!accessToken.data || !refreshToken.data) return;
+    const searchParams = new URLSearchParams(location.search)
+    const accessToken = searchParams.get('accessToken')
+    const refreshToken = searchParams.get('refreshToken')
+    const expiresAt = searchParams.get('expiresAt')
+    if (accessToken && refreshToken && expiresAt) {
+      const token = new Token({
+        accessToken,
+        expiresAt: new Date(Number(expiresAt) * 1000),
+        refreshToken,
+      })
+      setSession(token)
+    } else {
+      navigate('/auth/login')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search])
 
-    accessToken.storeData(accessToken.data)
-    refreshToken.storeData(refreshToken.data)
-
-    navigate('/dashboard/teams')
-  }, [accessToken.data, refreshToken.data])
-
-  return <div>AuthCallback</div>
+  return null
 }
 
 export default AuthCallback

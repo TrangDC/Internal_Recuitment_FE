@@ -7,9 +7,9 @@ import { Span } from '../Typography'
 interface TinyProps extends IAllProps {
   label?: string
   initProps?: object
-  defaultValue?: string,
-  callbackChange?: (value: string) => void;
-  required?: boolean,
+  defaultValue?: string
+  callbackChange?: (value: string) => void
+  required?: boolean
 }
 
 const StyleEditorBox = styled(Box)(({ theme }) => ({
@@ -29,7 +29,7 @@ const StyleEditorBox = styled(Box)(({ theme }) => ({
   },
 
   '& .tox-statusbar': {
-    display: 'none !important'
+    display: 'none !important',
   },
 
   '& .tox-edit-area': {
@@ -74,7 +74,7 @@ export default function EditorBox({
 }: TinyProps) {
   const [focused, setFocused] = useState<Boolean>(false)
   const editorRef = useRef(null)
-  const [valueBox, setValueBox] = useState<string>('');
+  const [valueBox, setValueBox] = useState<string>('')
 
   useEffect(() => {
     defaultValue && setValueBox(defaultValue)
@@ -86,7 +86,9 @@ export default function EditorBox({
         <StyleBoxLabel
           className={`${focused && 'activeBox'} ${valueBox && 'existValue'}`}
         >
-          <label>{label} {required && <Span sx={{color: 'red'}}>*</Span>}</label>
+          <label>
+            {label} {required && <Span sx={{ color: 'red' }}>*</Span>}
+          </label>
         </StyleBoxLabel>
       )}
       <Editor
@@ -99,7 +101,7 @@ export default function EditorBox({
         }}
         value={valueBox}
         onEditorChange={(value) => {
-          setValueBox(value);
+          setValueBox(value)
           callbackChange && callbackChange(value)
         }}
         //@ts-ignore

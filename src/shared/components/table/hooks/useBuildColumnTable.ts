@@ -11,7 +11,7 @@ const useBuildColumnTable = <T extends object>({
   columns,
 }: IuseBuildColumnTable<T>) => {
   return {
-    colummTable: columns(actions),
+    columnTable: columns(actions),
   }
 }
 

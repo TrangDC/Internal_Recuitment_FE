@@ -1,5 +1,5 @@
 import { CANDIDATE_SOURCE_STATE } from 'shared/components/autocomplete/candidate-source-auto-complete'
-import { RULE_MESSAGES } from 'shared/constants/vaildate'
+import { RULE_MESSAGES } from 'shared/constants/validate'
 import { FormDataSchemaNote, schemaNote } from 'shared/schema'
 import * as yup from 'yup'
 

@@ -1,16 +1,26 @@
-import { Box, useTheme } from '@mui/material';
-import FlexBox from 'shared/components/flexbox/FlexBox';
-import { H1, Paragraph } from 'shared/components/Typography';
-import { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Box, useTheme } from '@mui/material'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import { H1, Paragraph } from 'shared/components/Typography'
+import { FC } from 'react'
+import { NavLink } from 'react-router-dom'
 
 const ErrorPage: FC = () => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
-    <FlexBox p={4} height="100%" alignItems="center" flexDirection="column" justifyContent="center">
+    <FlexBox
+      p={4}
+      height="100%"
+      alignItems="center"
+      flexDirection="column"
+      justifyContent="center"
+    >
       <Box maxWidth={350}>
-        <img src="/static/illustration/error-page.svg" width="100%" alt="Error 404" />
+        <img
+          src="/static/illustration/error-page.svg"
+          width="100%"
+          alt="Error 404"
+        />
       </Box>
       <H1 fontSize={64} fontWeight={700} color="primary.main" mt={3}>
         Ooops... 404!
@@ -20,7 +30,7 @@ const ErrorPage: FC = () => {
       </Paragraph>
 
       <NavLink
-        to="dashboard/teams"
+        to="/dashboard/teams"
         style={{
           display: 'block',
           marginTop: '1.5rem',
@@ -32,7 +42,7 @@ const ErrorPage: FC = () => {
         Back to Dashboard
       </NavLink>
     </FlexBox>
-  );
-};
+  )
+}
 
-export default ErrorPage;
+export default ErrorPage

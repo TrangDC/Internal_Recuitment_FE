@@ -30,6 +30,7 @@ import {
   UpdateFeedbackModal,
 } from '../index'
 import { downloadOneFile } from '../../providers/helper'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 interface Props {
   listFeedback: FeedBack[]
@@ -69,9 +70,17 @@ const ListFeedBack = ({ listFeedback }: Props) => {
           <Span>Feedbacks</Span>
         </BoxTitle>
         <BoxButton>
-          <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
-            Add feedback
-          </Button>
+          <Cant
+            module="CANDIDATE_JOB_FEEDBACKS"
+            checkBy={{
+              compare: 'hasAny',
+              permissions: ['CREATE.everything'],
+            }}
+          >
+            <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
+              Add feedback
+            </Button>
+          </Cant>
         </BoxButton>
       </DivActionHeader>
 
@@ -86,16 +95,37 @@ const ListFeedBack = ({ listFeedback }: Props) => {
                     {feedback.edited && <BoxTextSquare content="Edited" />}
                   </FlexBox>
                   <FlexBox gap={'15px'} onClick={(e) => e.stopPropagation()}>
-                    <EditIcon
-                      onClick={(e) => {
-                        handleOpenEdit(feedback.id, feedback)
+                    <Cant
+                      module="CANDIDATE_JOB_FEEDBACKS"
+                      checkBy={{
+                        compare: 'hasAny',
+                        permissions: ['CREATE.everything'],
                       }}
-                    />
-                    <DeleteIcon
-                      onClick={(e) => {
-                        handleOpenDelete(feedback.id)
+                    >
+                      <EditIcon
+                        onClick={(e) => {
+                          handleOpenEdit(feedback.id, feedback)
+                        }}
+                      />
+                    </Cant>
+
+                    <Cant
+                      module="CANDIDATE_JOB_FEEDBACKS"
+                      checkBy={{
+                        compare: 'hasAny',
+                        permissions: [
+                          'DELETE.everything',
+                          'DELETE.ownedOnly',
+                          'DELETE.teamOnly',
+                        ],
                       }}
-                    />
+                    >
+                      <DeleteIcon
+                        onClick={(e) => {
+                          handleOpenDelete(feedback.id)
+                        }}
+                      />
+                    </Cant>
                   </FlexBox>
                 </FlexBox>
 

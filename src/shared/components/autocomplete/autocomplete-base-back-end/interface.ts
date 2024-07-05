@@ -28,6 +28,10 @@ export interface AutocompleteValueBackEndCommonProps<
   disableCloseOnSelect?: boolean
   open?: boolean
 }
+interface ISorting {
+  direction: 'ASC' | 'DESC'
+  field: string
+}
 
 export interface IAutocompleteBackEndProps<
   T,
@@ -44,6 +48,7 @@ export interface IAutocompleteBackEndProps<
   queryString: IBuildQueryReturn
   onCustomChange?: (value: CustomAutocompleteValueBackEnd<T, Multiple>) => void
   filter?: BaseRecord
+  orderBy?: ISorting
   disabled?: boolean
   getOptionLabel?: (option: T) => ReactNode
   disableCloseOnSelect?: boolean

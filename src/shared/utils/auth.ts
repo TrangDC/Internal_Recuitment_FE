@@ -1,36 +1,12 @@
-import {
-  TREC_ACCESS_TOKEN,
-  TREC_REFRESH_TOKEN,
-} from 'shared/constants/constants'
-import { handleLocalStorage } from './utils'
 import { handleRefreshToken } from 'services/authUtil'
+import handleAuthLocalStorage from 'services/auth-local-storage-service'
+import Token from 'shared/class/token'
 
-export function getAccessToken() {
-  const { getStatusByKey } = handleLocalStorage()
-  return getStatusByKey(TREC_ACCESS_TOKEN)
-}
+const { getToken, removeToken, saveToken } = handleAuthLocalStorage()
 
-export function getRefreshToken() {
-  const { getStatusByKey } = handleLocalStorage()
-  return getStatusByKey(TREC_REFRESH_TOKEN)
-}
-
-export function removeToken() {
-  const { deleteLocalStorge } = handleLocalStorage()
-  deleteLocalStorge(TREC_ACCESS_TOKEN);
-  deleteLocalStorge(TREC_REFRESH_TOKEN);
-
-  window.location.href = '/login'
-}
-
-export function updateToken(accessToken: string, refreshToken: string) {
-  const { updateStorage } = handleLocalStorage()
-  updateStorage(TREC_ACCESS_TOKEN, accessToken)
-  updateStorage(TREC_REFRESH_TOKEN, refreshToken)
-}
-
-export function handleLogOut() {
+function handleRemoveToken() {
   removeToken()
+  window.location.href = '/auth/login'
 }
 
 function handleRefreshTokenMiddleWare() {
@@ -41,13 +17,18 @@ function handleRefreshTokenMiddleWare() {
       refreshTokenCalled = true
 
       try {
-        const responseRefreshToken = await handleRefreshToken(getRefreshToken())
-        updateToken(
-          responseRefreshToken.accessToken,
-          responseRefreshToken.refreshToken
-        )
+        const refreshToken = getToken()?.refreshToken
+        if (refreshToken) {
+          const response = await handleRefreshToken(refreshToken)
+          const token = new Token({
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken,
+            expiresAt: new Date(response.expiresAt),
+          })
+          saveToken(token)
+        }
       } catch (error) {
-        removeToken()
+        handleRemoveToken()
       }
 
       refreshTokenCalled = false

@@ -2,8 +2,14 @@ import { alpha, Box, ButtonBase, styled } from '@mui/material'
 import { Paragraph, Span } from 'shared/components/Typography'
 import { FC } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { navigations } from '../layout-parts/navigation'
+import {
+  ILabelSideBar,
+  IMenuSideBar,
+  INavigation,
+  navigation,
+} from '../layout-parts/navigation'
 import SidebarAccordion from './SidebarAccordion'
+import { usePermissionSidebar } from 'features/authorization/hooks/usePermissionSidebar'
 
 type Active = { active: any }
 type Compact = { compact: number }
@@ -68,17 +74,6 @@ const BulletIcon = styled('div')<Active>(({ theme, active }) => ({
   boxShadow: active ? `0px 0px 0px 3px ${theme.palette.primary[200]}` : 'none',
 }))
 
-const BadgeValue = styled(Box)<Compact>(({ compact, theme }) => ({
-  color: 'white',
-  fontSize: '12px',
-  fontWeight: 500,
-  padding: '1px 6px',
-  overflow: 'hidden',
-  borderRadius: '300px',
-  backgroundColor: theme.palette.primary.main,
-  display: compact ? 'none' : 'unset',
-}))
-
 // Common icon style
 const iconStyle = (active: any) => ({
   fontSize: 20,
@@ -93,7 +88,9 @@ type MultiLevelMenuProps = { sidebarCompact: boolean }
 const MultiLevelMenu: FC<MultiLevelMenuProps> = ({ sidebarCompact }) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-
+  const menuItems = usePermissionSidebar({
+    navigation: navigation,
+  })
   // handle active current page
   const activeRoute = (path: string) => (pathname === path ? 1 : 0)
   // handle navigate to another route or page
@@ -103,76 +100,78 @@ const MultiLevelMenu: FC<MultiLevelMenuProps> = ({ sidebarCompact }) => {
   const COMPACT = sidebarCompact ? 1 : 0
 
   //   RECURSIVE FUNCTION TO RENDER MULTI LEVEL MENU
-  const renderLevels = (data: any) => {
-    return data.map((item: any, index: any) => {
+  const renderLevels = (data: IMenuSideBar[] | ILabelSideBar[]) => {
+    return data.map((item: INavigation, index: number) => {
       if (item.type === 'label')
         return (
           <ListLabel key={index} compact={COMPACT}>
-            {item.label} 
+            {item.label}
           </ListLabel>
         )
 
-      if (item.children) {
-        return (
-          <SidebarAccordion key={index} item={item} sidebarCompact={COMPACT}>
-            {renderLevels(item.children)}
-          </SidebarAccordion>
-        )
-      } else if (item.type === 'extLink') {
+      if ((item as IMenuSideBar).children) {
+        const menuSideBar = item as IMenuSideBar
+        if (menuSideBar.children && menuSideBar.children.length > 0) {
+          return (
+            <SidebarAccordion key={index} item={item} sidebarCompact={COMPACT}>
+              {renderLevels(menuSideBar.children)}
+            </SidebarAccordion>
+          )
+        }
+      } else if ((item as IMenuSideBar).type === 'extLink') {
+        const menuSideBar = item as IMenuSideBar
         return (
           <ExternalLink
             key={index}
-            href={item.path}
+            href={menuSideBar.path}
             rel="noopener noreferrer"
             target="_blank"
           >
-            <NavItemButton key={item.name} name="child" active={0}>
-              {(() => {
-                if (item.icon) {
-                  return <item.icon sx={iconStyle(0)} />
-                } else {
-                  return (
-                    <span className="item-icon icon-text">{item.iconText}</span>
-                  )
-                }
-              })()}
-
-              <StyledText compact={COMPACT} active={activeRoute(item.path)}>
-                {item.name}
+            <NavItemButton key={menuSideBar.name} name="child" active={0}>
+              {menuSideBar.icon ? (
+                <menuSideBar.icon sx={iconStyle(0)} />
+              ) : (
+                <span className="item-icon icon-text">
+                  {menuSideBar.iconText}
+                </span>
+              )}
+              <StyledText
+                compact={COMPACT}
+                active={activeRoute(menuSideBar.path)}
+              >
+                {menuSideBar.name}
               </StyledText>
 
               <Box mx="auto" />
-
-              {item.badge && (
-                <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
-              )}
             </NavItemButton>
           </ExternalLink>
         )
       } else {
+        const menuSideBar = item as IMenuSideBar
         return (
           <Box key={index}>
             <NavItemButton
-              key={item.name}
+              key={menuSideBar.name}
               className="navItem"
-              active={activeRoute(item.path)}
-              onClick={() => handleNavigation(item.path)}
+              active={activeRoute(menuSideBar.path)}
+              onClick={() => handleNavigation(menuSideBar.path)}
             >
-              {item?.icon ? (
-                <item.icon sx={iconStyle(activeRoute(item.path))} />
+              {menuSideBar?.icon ? (
+                <menuSideBar.icon
+                  sx={iconStyle(activeRoute(menuSideBar.path))}
+                />
               ) : (
-                <BulletIcon active={activeRoute(item.path)} />
+                <BulletIcon active={activeRoute(menuSideBar.path)} />
               )}
 
-              <StyledText compact={COMPACT} active={activeRoute(item.path)}>
-                {item.name}
+              <StyledText
+                compact={COMPACT}
+                active={activeRoute(menuSideBar.path)}
+              >
+                {menuSideBar.name}
               </StyledText>
 
               <Box mx="auto" />
-
-              {item.badge && (
-                <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
-              )}
             </NavItemButton>
           </Box>
         )
@@ -180,7 +179,7 @@ const MultiLevelMenu: FC<MultiLevelMenuProps> = ({ sidebarCompact }) => {
     })
   }
 
-  return <>{renderLevels(navigations)}</>
+  return <>{renderLevels(menuItems as IMenuSideBar[] | ILabelSideBar[])}</>
 }
 
 export default MultiLevelMenu

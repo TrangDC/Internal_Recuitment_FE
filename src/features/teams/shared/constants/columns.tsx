@@ -17,7 +17,11 @@ export const columns = (
 ): ColumnDef<Team, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <LinkText to={`/dashboard/team-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
+    cell: (info) => (
+      <LinkText to={`/dashboard/team-detail/${info.row.original.id}`}>
+        {info.getValue()}
+      </LinkText>
+    ),
     header: () => <span>{t('name')}</span>,
     size: 300,
   }),
@@ -28,11 +32,14 @@ export const columns = (
       return (
         <FlexBox gap={'10px'} flexWrap={'wrap'}>
           {info.getValue().map((member: Member, idx: number) => (
-            <ChipField key={idx} label={member.name} sx={{
-              background:' #F1F9FF',
-              color: '#121625'
-
-            }}/>
+            <ChipField
+              key={idx}
+              label={member.name}
+              sx={{
+                background: ' #F1F9FF',
+                color: '#121625',
+              }}
+            />
           ))}
         </FlexBox>
       )

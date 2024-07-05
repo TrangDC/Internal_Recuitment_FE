@@ -10,6 +10,7 @@ import EditIcon from 'shared/components/icons/EditIcon'
 import EditTeamModal from '../EditTeamModal'
 import useTeamDetail from 'features/teams/hooks/useTeamDetail'
 import useActionTable from 'features/teams/hooks/useActionTable'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 const GeneralInformation = () => {
   const { id } = useParams()
@@ -50,18 +51,30 @@ const GeneralInformation = () => {
           </Box>
         </FlexBox>
         <Box>
-          <ButtonAdd
-            Icon={EditIcon}
-            textLable={'Edit'}
-            icon_style={{
-              '& path': {
-                fill: 'white',
-              },
+          <Cant
+            module="TEAMS"
+            checkBy={{
+              compare: 'hasAny',
+              permissions: [
+                'EDIT.everything',
+                'EDIT.ownedOnly',
+                'EDIT.teamOnly',
+              ],
             }}
-            onClick={() => {
-              handleOpenEdit(id as string)
-            }}
-          />
+          >
+            <ButtonAdd
+              Icon={EditIcon}
+              textLable={'Edit'}
+              icon_style={{
+                '& path': {
+                  fill: 'white',
+                },
+              }}
+              onClick={() => {
+                handleOpenEdit(id as string)
+              }}
+            />
+          </Cant>
         </Box>
       </FlexBox>
       {openEdit && (

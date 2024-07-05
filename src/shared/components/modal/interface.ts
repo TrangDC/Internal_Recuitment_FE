@@ -47,3 +47,14 @@ export interface IReasonModal extends IModal {
   subTitle?: string
   handlesubmit: (reason: string) => void
 }
+
+export interface ICreateModal {
+  open: boolean
+  setOpen: (value: boolean) => void
+}
+
+export interface IEditModal {
+  id: string
+  open: boolean
+  setOpen: (value: boolean) => void
+}

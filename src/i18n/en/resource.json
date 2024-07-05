@@ -178,6 +178,102 @@
       "validation": {
         "name_exist": "Name has already existed"
       }
+    },
+    "permisson_groups": {
+      "teams": {
+        "model_name": "Teams"
+      },
+      "hiring_jobs": {
+        "model_name": "Jobs"
+      },
+      "candidates": {
+        "model_name": "Canndidate"
+      },
+      "candidate_jobs": {
+        "model_name": "Candidate Job Application"
+      },
+      "candidate_job_feedbacks": {
+        "model_name": "Feedback"
+      },
+      "candidate_interviews": {
+        "model_name": "Interview"
+      },
+      "roles": {
+        "model_name": "Role template setting"
+      },
+      "users": {
+        "model_name": "Hiring team"
+      },
+      "skills": {
+        "model_name": "Skill management"
+      },
+      "skill_types": {
+        "model_name": "Skill type management"
+      }
+    },
+    "permissions": {
+      "teams": {
+        "view": "View",
+        "create": "Create",
+        "update": "Edit",
+        "delete": "Delete"
+      },
+      "hiring_jobs": {
+        "view": "View",
+        "create": "Create",
+        "edit": "Edit",
+        "delete": "Delete",
+        "close_job": "Close job"
+      },
+      "candidates": {
+        "view": "View",
+        "create": "Create",
+        "edit": "Edit",
+        "delete": "Delete",
+        "update_blacklist": "Add/ remove candidate to/ from blacklist"
+      },
+      "candidate_jobs": {
+        "view": "View",
+        "change_status": "Change status of an application",
+        "edit": "Edit",
+        "delete": "Delete",
+        "apply": "Apply candidate to a job"
+      },
+      "candidate_job_feedbacks": {
+        "view": "View",
+        "create": "Write feedback",
+        "delete": "Delete"
+      },
+      "candidate_interviews": {
+        "view": "View",
+        "interviewer": "Interviewing",
+        "create": "Create",
+        "edit": "Edit",
+        "change_status": "Change interview status",
+        "delete": "Delete"
+      },
+      "roles": {
+        "view": "View",
+        "create": "Create",
+        "update": "Edit",
+        "delete": "Delete"
+      },
+      "users": {
+        "view": "View",
+        "update": "Edit"
+      },
+      "skills": {
+        "view": "View",
+        "update": "Edit",
+        "create": "Create",
+        "delete": "Delete"
+      },
+      "skill_types": {
+        "view": "View",
+        "update": "Edit",
+        "create": "Create",
+        "delete": "Delete"
+      }
     }
   },
   "excel": {

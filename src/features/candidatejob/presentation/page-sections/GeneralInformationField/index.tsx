@@ -16,6 +16,7 @@ import { BtnPrimary } from 'shared/styles'
 import CandidateInformationModal from '../CandidateInformationModal'
 import { useMemo } from 'react'
 import { ChipLimit } from 'shared/components/chip-stack'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 const GeneralInformationField = ({
   candidateDetail,
@@ -139,21 +140,45 @@ const GeneralInformationField = ({
           </FlexBox>
         </FlexBox>
         <FlexBox alignItems={'center'} gap={'8px'}>
-          <BtnPrimary onClick={() => handleOpenDetail(id as string)}>
-            <Span>View profile</Span>
-          </BtnPrimary>
-          <ButtonAdd
-            Icon={EditIcon}
-            textLable={'Edit'}
-            icon_style={{
-              '& path': {
-                fill: 'white',
-              },
+          <Cant
+            module="CANDIDATES"
+            checkBy={{
+              compare: 'hasAny',
+              permissions: [
+                'VIEW.everything',
+                'VIEW.ownedOnly',
+                'VIEW.teamOnly',
+              ],
             }}
-            onClick={() => {
-              handleOpenEdit(id as string)
+          >
+            <BtnPrimary onClick={() => handleOpenDetail(id as string)}>
+              <Span>View profile</Span>
+            </BtnPrimary>
+          </Cant>
+          <Cant
+            module="CANDIDATES"
+            checkBy={{
+              compare: 'hasAny',
+              permissions: [
+                'EDIT.everything',
+                'EDIT.teamOnly',
+                'EDIT.ownedOnly',
+              ],
             }}
-          />
+          >
+            <ButtonAdd
+              Icon={EditIcon}
+              textLable={'Edit'}
+              icon_style={{
+                '& path': {
+                  fill: 'white',
+                },
+              }}
+              onClick={() => {
+                handleOpenEdit(id as string)
+              }}
+            />
+          </Cant>
         </FlexBox>
       </FlexBox>
       {openEdit && (

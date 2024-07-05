@@ -1,0 +1,33 @@
+import GraphQLClientService from 'services/refactor/graphql-service'
+
+const useGraphql = () => {
+  const queryKey = 'hiring'
+  const getMe = GraphQLClientService.buildQuery({
+    operation: 'GetMe',
+    options: {
+      type: 'query',
+    },
+    node: `
+        data {
+          id
+          entity_permissions {
+            id
+            for_owner
+            for_team
+            for_all
+            permission {
+              id
+              operation_name
+            }
+          }
+        }
+    `,
+  })
+
+  return {
+    queryKey,
+    getMe,
+  }
+}
+
+export default useGraphql

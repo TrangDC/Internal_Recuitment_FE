@@ -9,6 +9,7 @@ import { FeedBack } from 'features/feedback/domain/interfaces'
 import { Interview } from 'features/interviews/domain/interfaces'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { ListInterview } from 'features/interviews/presentation/page-sections'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 const JobDetailAction = ({
   jobApplicationDetail,
@@ -16,33 +17,58 @@ const JobDetailAction = ({
   jobApplicationDetail: CandidateJob
 }) => {
   const { id } = useParams()
-  const [statusSelected, setStatusSelected] = useState<string>();
+  const [statusSelected, setStatusSelected] = useState<string>()
   const { candidateJobInterview } = useGetCandidateJobInterview(id as string)
 
-  const listEnabled: {feedback: FeedBack[], interview: Interview[]} = useMemo(() => {
-    //@ts-ignore
-    return candidateJobInterview?.[statusSelected]
-  }, [statusSelected, candidateJobInterview])
+  const listEnabled: { feedback: FeedBack[]; interview: Interview[] } =
+    useMemo(() => {
+      //@ts-ignore
+      return candidateJobInterview?.[statusSelected]
+    }, [statusSelected, candidateJobInterview])
 
   useEffect(() => {
-    jobApplicationDetail?.status && setStatusSelected(jobApplicationDetail?.status)
+    jobApplicationDetail?.status &&
+      setStatusSelected(jobApplicationDetail?.status)
   }, [jobApplicationDetail?.status])
 
   return (
     <DivActionWrapper>
       <DivAction>
-        <StepInterview steps={jobApplicationDetail?.steps} onChange={setStatusSelected} defaultValue={jobApplicationDetail?.status}/>
+        <StepInterview
+          steps={jobApplicationDetail?.steps}
+          onChange={setStatusSelected}
+          defaultValue={jobApplicationDetail?.status}
+        />
       </DivAction>
       <Divider />
-        <Fragment>
+      <Fragment>
+        <Cant
+          module="INTERVIEWS"
+          checkBy={{
+            compare: 'hasAny',
+            permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
+          }}
+        >
           <DivAction>
-            <ListInterview jobApplicationDetail={jobApplicationDetail} listInterview={listEnabled?.interview}/>
+            <ListInterview
+              jobApplicationDetail={jobApplicationDetail}
+              listInterview={listEnabled?.interview}
+            />
           </DivAction>
-          <Divider />
-        </Fragment>
+        </Cant>
+        <Divider />
+      </Fragment>
 
       <DivAction>
-        <ListFeedBack listFeedback={listEnabled?.feedback} />
+        <Cant
+          module="CANDIDATE_JOB_FEEDBACKS"
+          checkBy={{
+            compare: 'hasAny',
+            permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
+          }}
+        >
+          <ListFeedBack listFeedback={listEnabled?.feedback} />
+        </Cant>
       </DivAction>
     </DivActionWrapper>
   )

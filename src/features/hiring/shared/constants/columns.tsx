@@ -23,13 +23,27 @@ export const columns = (
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>Name</span>,
-    size: 500,
+    size: 250,
   }),
   columnHelper.accessor('work_email', {
     header: () => <span>Email</span>,
     enableSorting: false,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-    size: 500,
+    size: 300,
+  }),
+  columnHelper.accessor((row) => row.team?.name, {
+    id: 'team',
+    header: () => <span>Team</span>,
+    enableSorting: false,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    size: 400,
+  }),
+  columnHelper.accessor((row) => row.entity_permissions, {
+    id: 'status',
+    header: () => <span>Role</span>,
+    enableSorting: false,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    size: 800,
   }),
   columnHelper.accessor('created_at', {
     header: () => (
@@ -45,11 +59,11 @@ export const columns = (
 
       return (
         <>
-            <ActionGroupButtons<Hiring>
-              rowId={id}
-              actions={actions}
-              rowData={info.row.original}
-            />
+          <ActionGroupButtons<Hiring>
+            rowId={id}
+            actions={actions}
+            rowData={info.row.original}
+          />
         </>
       )
     },

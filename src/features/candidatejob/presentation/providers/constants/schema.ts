@@ -1,4 +1,4 @@
-import { RULE_MESSAGES } from 'shared/constants/vaildate'
+import { RULE_MESSAGES } from 'shared/constants/validate'
 import * as yup from 'yup'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { isEmpty } from 'lodash'

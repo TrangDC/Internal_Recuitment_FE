@@ -10,7 +10,9 @@ export interface IuseGetResource<Response, FormData> {
   id: string
   queryKey: string[]
   oneBuildQuery: IBuildQueryReturn
-  formatDefaultValues: (data: Response | undefined) => FormData
+  formatDefaultValues: (
+    data: Response | undefined
+  ) => Promise<FormData> | FormData
   resolver?: Resolver<FormData & FieldValues, any> | undefined
 }
 function useGetResource<Response, FormData extends FieldValues>({
@@ -45,7 +47,12 @@ function useGetResource<Response, FormData extends FieldValues>({
     defaultValues: async () => {
       const data = await getDataById()
       setFormData(data)
-      return formatDefaultValues(data)
+      const defaultValues = formatDefaultValues(data)
+      if (defaultValues instanceof Promise) {
+        return await defaultValues
+      } else {
+        return defaultValues
+      }
     },
     resolver,
   })

@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify'
 import { checkMaxSize, regexFile } from 'shared/components/input-fields/utils'
-import { RULE_MESSAGES } from 'shared/constants/vaildate'
+import { RULE_MESSAGES } from 'shared/constants/validate'
 
 export const handleImportFile = async (
   file: File,

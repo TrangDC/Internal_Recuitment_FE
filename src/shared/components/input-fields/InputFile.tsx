@@ -18,7 +18,7 @@ import useGetUrlGetAttachment, {
 import { v4 as uuidv4 } from 'uuid'
 import { checkMaxFile, checkMaxSize, regexFile, wrapperValidate } from './utils'
 import { toast } from 'react-toastify'
-import { RULE_MESSAGES } from 'shared/constants/vaildate'
+import { RULE_MESSAGES } from 'shared/constants/validate'
 import { isEmpty } from 'lodash'
 import UploadFileComponent from './UploadFileComponent'
 import { ParamUploadFile, UploadStatus } from 'shared/interfaces'

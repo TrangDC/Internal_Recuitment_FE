@@ -2,9 +2,10 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import axios from 'axios'
-import { getAccessToken } from 'shared/utils/auth'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import handleAuthLocalStorage from 'services/auth-local-storage-service'
+const { getToken } = handleAuthLocalStorage()
 
 interface IErrorData {
   field: string
@@ -17,15 +18,14 @@ export const useImportFile = () => {
   const queryClient = useQueryClient()
 
   const submit = async (file: Blob) => {
-    const token = await getAccessToken()
-
+    const token = await getToken()
     setIsloading(true)
     const config = {
       headers: {
         'Content-Type':
           'multipart/form-data; boundary=<calculated when request is sent>',
         Accept: '*/*',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token?.accessToken}`,
       },
     }
     const operation = {

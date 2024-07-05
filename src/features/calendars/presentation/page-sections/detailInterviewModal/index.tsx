@@ -17,6 +17,7 @@ import EditOutline from 'shared/components/icons/EditOutline'
 import { Fragment } from 'react/jsx-runtime'
 import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 import useGetInterview from 'features/calendars/hooks/useGetInterview'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 interface IDetailIntefviewModal {
   open: boolean
@@ -61,28 +62,52 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
               <FlexBox gap={1}>
                 {start_from && isPast(start_from) && (
                   <Fragment>
-                    <EditOutline
-                      style={{
-                        height: '24px',
-                        width: '24px',
-                        color: 'red',
-                        cursor: 'pointer',
+                    <Cant
+                      module="INTERVIEWS"
+                      checkBy={{
+                        compare: 'hasAny',
+                        permissions: [
+                          'EDIT.everything',
+                          'EDIT.ownedOnly',
+                          'EDIT.teamOnly',
+                        ],
                       }}
-                      onClick={() => {
-                        handleEditEvent(id)
+                    >
+                      <EditOutline
+                        style={{
+                          height: '24px',
+                          width: '24px',
+                          color: 'red',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => {
+                          handleEditEvent(id)
+                        }}
+                      />
+                    </Cant>
+                    <Cant
+                      module="INTERVIEWS"
+                      checkBy={{
+                        compare: 'hasAny',
+                        permissions: [
+                          'DELETE.everything',
+                          'DELETE.ownedOnly',
+                          'DELETE.teamOnly',
+                        ],
                       }}
-                    />
-                    <DeleteOutline
-                      style={{
-                        height: '24px',
-                        width: '24px',
-                        color: 'grey.300',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        handleDeleteEvent(id)
-                      }}
-                    />
+                    >
+                      <DeleteOutline
+                        style={{
+                          height: '24px',
+                          width: '24px',
+                          color: 'grey.300',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => {
+                          handleDeleteEvent(id)
+                        }}
+                      />
+                    </Cant>
                   </Fragment>
                 )}
 

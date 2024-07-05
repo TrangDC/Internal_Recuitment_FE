@@ -236,6 +236,23 @@ export const Text13md: React.FC<BoxProps & Props> = (props) => {
   )
 }
 
+export const Text15md: React.FC<BoxProps & Props> = (props) => {
+  const { ellipsis, children, className, ...others } = props
+  return (
+    <StyledBox
+      component="p"
+      fontSize={15}
+      fontWeight={500}
+      lineHeight={'21px'}
+      ellipsis={ellipsis ? 1 : 0}
+      className={clsx({ [className || '']: true })}
+      {...others}
+    >
+      {children}
+    </StyledBox>
+  )
+}
+
 export const Text15sb: React.FC<BoxProps & Props> = (props) => {
   const { ellipsis, children, className, ...others } = props
   return (

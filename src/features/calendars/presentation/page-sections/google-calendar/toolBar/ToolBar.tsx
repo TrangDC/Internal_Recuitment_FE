@@ -9,6 +9,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { buttonToolBarList } from '../constant'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 function ToolBar(props: ToolbarProps) {
   const { view, onView, onNavigate, date } = props
@@ -75,12 +76,20 @@ function ToolBar(props: ToolbarProps) {
             </ToolBarButton>
           ))}
         </FlexBox>
-        <AddNewButton
-          sx={{ height: '40px' }}
-          onClick={handleOpenCreateInterview}
+        <Cant
+          module="INTERVIEWS"
+          checkBy={{
+            compare: 'hasAny',
+            permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+          }}
         >
-          Add new Interview
-        </AddNewButton>
+          <AddNewButton
+            sx={{ height: '40px' }}
+            onClick={handleOpenCreateInterview}
+          >
+            Add new Interview
+          </AddNewButton>
+        </Cant>
       </FlexBox>
     </FlexBox>
   )

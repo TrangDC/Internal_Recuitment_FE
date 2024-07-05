@@ -12,6 +12,7 @@ import EditHiringModal from '../screen-sections/EditHiringModal'
 import useHiringTable from 'features/hiring/hooks/useHiringTable'
 import { Hiring } from 'features/hiring/domain/interfaces'
 import { columns } from 'features/hiring/shared/constants/columns'
+import useHiringTeamPermissionActionTable from 'features/hiring/permission/useHiringTeamPermissionActionTable'
 
 const HiringList = () => {
   const { handleOpenEdit, openEdit, rowId, rowData, setOpenEdit } =
@@ -21,17 +22,11 @@ const HiringList = () => {
   const { useTableReturn } = useHiringTable({
     search,
   })
-  const { colummTable } = useBuildColumnTable<Hiring>({
-    actions: [
-      {
-        id: 'edit',
-        onClick: (id, rowData) => {
-          handleOpenEdit(id, rowData)
-        },
-        title: 'Edit',
-        Icon: <EditIcon />,
-      },
-    ],
+  const { actions } = useHiringTeamPermissionActionTable({
+    handleOpenEdit,
+  })
+  const { columnTable } = useBuildColumnTable<Hiring>({
+    actions: actions,
     columns,
   })
   return (
@@ -51,7 +46,7 @@ const HiringList = () => {
         <Box>
           {useTableReturn && (
             <CustomTable
-              columns={colummTable}
+              columns={columnTable}
               useTableReturn={useTableReturn}
             />
           )}

@@ -1,8 +1,7 @@
 import { ButtonBase, styled } from '@mui/material'
 import AuthenticationLayout from 'features/authentication/presentation/page-sections/AuthenticationLayout'
 import { FC } from 'react'
-import { handleSignIn } from 'services/authUtil'
-import IsLogin from 'shared/hoc/IsLogin'
+import useAuthen from '../providers/hooks/useAuth'
 
 const StyledButton = styled(ButtonBase)(({ theme }) => ({
   width: '100%',
@@ -15,11 +14,12 @@ const StyledButton = styled(ButtonBase)(({ theme }) => ({
 }))
 
 const Login: FC = () => {
+  const { login } = useAuthen()
   return (
     <AuthenticationLayout title="Sign in to TREX">
-      <StyledButton onClick={handleSignIn}>Signin with Azure</StyledButton>
+      <StyledButton onClick={login}>Signin with Azure</StyledButton>
     </AuthenticationLayout>
   )
 }
 
-export default IsLogin(Login)
+export default Login
