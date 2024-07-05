@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
@@ -9,6 +9,8 @@ import 'nprogress/nprogress.css'
 import 'simplebar-react/dist/simplebar.min.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PopupProvider } from 'contexts/popupProvider'
+import AuthorizationProvider from 'features/authorization/shared/contexts/Authorization'
+import LoadingSpinner from 'pages/LoadingSpiner'
 
 let ReactQueryDevtoolsProduction = null
 if (process.env.NODE_ENV !== 'production') {
@@ -30,13 +32,17 @@ root.render(
         <JWTAuthProvider>
           <PopupProvider>
             <QueryClientProvider client={queryClient}>
-              <App />
-              {ReactQueryDevtoolsProduction && (
-                <ReactQueryDevtoolsProduction
-                  initialIsOpen={false}
-                  buttonPosition="bottom-right"
-                />
-              )}
+              <Suspense fallback={<LoadingSpinner />}>
+                <AuthorizationProvider>
+                  <App />
+                  {ReactQueryDevtoolsProduction && (
+                    <ReactQueryDevtoolsProduction
+                      initialIsOpen={false}
+                      buttonPosition="bottom-right"
+                    />
+                  )}
+                </AuthorizationProvider>
+              </Suspense>
             </QueryClientProvider>
           </PopupProvider>
         </JWTAuthProvider>

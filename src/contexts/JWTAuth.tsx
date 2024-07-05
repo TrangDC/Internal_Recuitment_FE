@@ -1,11 +1,15 @@
 import { createContext, ReactNode, useEffect, useReducer } from 'react'
 import LoadingScreen from 'shared/components/LoadingScreen'
-import axios from '../shared/utils/axios'
-import { getAccessToken } from 'shared/utils/auth'
-import { jwtDecode } from 'jwt-decode'
-
+import Token from 'shared/class/token'
+import { redirect } from 'react-router-dom'
+import handleAuthLocalStorage from 'services/auth-local-storage-service'
+import restApi from 'configs/api/restApi'
 // --------------------------------------------------------
-type AuthUser = null | Record<string, any>
+export type AuthUser = {
+  name: string
+  email: string
+  oid: string
+} | null
 
 type InitialAuthState = {
   isAuthenticated: boolean
@@ -38,9 +42,6 @@ const reducer = (state: InitialAuthState, action: any) => {
     case 'LOGOUT': {
       return { ...state, user: null, isAuthenticated: false }
     }
-    case 'REGISTER': {
-      return { ...state, isAuthenticated: true, user: action.payload.user }
-    }
     default: {
       return state
     }
@@ -51,52 +52,68 @@ const AuthContext = createContext({
   ...initialState,
   method: 'JWT',
   logout: () => {},
-  login: (email: string, password: string) => Promise.resolve(),
-  register: (email: string, password: string, username: string) =>
-    Promise.resolve(),
+  login: () => {},
+  setSession: (token: Token) => {},
 })
 
 export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
+  const { removeToken, getToken, getMe, saveToken } = handleAuthLocalStorage()
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const login = async (email: string, password: string) => {
-    const { data } = await axios.post('/api/auth/login', { email, password })
-    dispatch({ type: 'LOGIN', payload: { user: data.user } })
-  }
-
-  const register = async (
-    email: string,
-    username: string,
-    password: string
-  ) => {
-    const { data } = await axios.post('/api/auth/register', {
-      email,
-      username,
-      password,
-    })
-    // setSession(data.accessToken);
-    dispatch({ type: 'REGISTER', payload: { user: data.user } })
+  const login = () => {
+    window.location.href = restApi.login
+    dispatch({ type: 'LOGIN' })
   }
 
   const logout = () => {
+    removeToken()
     dispatch({ type: 'LOGOUT' })
+    redirect('/dashboard')
+  }
+
+  const setSession = (token: Token) => {
+    saveToken(token)
+    dispatch({
+      type: 'INIT',
+      payload: { user: getMe(), isAuthenticated: true },
+    })
   }
 
   useEffect(() => {
-    const accessToken = getAccessToken()
-    if (accessToken) {
-      dispatch({
-        type: 'INIT',
-        payload: { user: jwtDecode(accessToken), isAuthenticated: true },
-      })
-    }
+    ;(async () => {
+      try {
+        const token = getToken()
+        if (
+          token &&
+          token?.accessToken &&
+          Token.isValidToken(token.accessToken)
+        ) {
+          dispatch({
+            type: 'INIT',
+            payload: { user: getMe(), isAuthenticated: true },
+          })
+        } else {
+          dispatch({
+            type: 'INIT',
+            payload: { user: null, isAuthenticated: false },
+          })
+        }
+      } catch (err) {
+        dispatch({
+          type: 'INIT',
+          payload: { user: null, isAuthenticated: false },
+        })
+      }
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // show loading until not initialized
   if (!state.isInitialized) <LoadingScreen />
 
   return (
     <AuthContext.Provider
-      value={{ ...state, method: 'JWT', login, register, logout }}
+      value={{ ...state, method: 'JWT', login, logout, setSession }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,4 +1,4 @@
-import appConfig from 'configs/appConfig'
+import graphqlUrl from 'configs/api/graphql'
 import { GraphQLClient } from 'graphql-request'
 import {
   requestMiddleware,
@@ -31,10 +31,10 @@ export const buildQuery = (props: IbuildQuery): IBuildQueryReturn => {
     })
   }
 
-  if(node) {
+  if (node) {
     nodeQuery = `{${node}}`
   }
-  
+
   const query = `
       ${options.type} ${operation}(
         ${paramsQuery}
@@ -44,14 +44,14 @@ export const buildQuery = (props: IbuildQuery): IBuildQueryReturn => {
         ) ${nodeQuery}
       }
     `
-   
+
   return {
     query,
     operation,
   }
 }
 
-export const graphQLClient = new GraphQLClient(appConfig.endpoint_api, {
+export const graphQLClient = new GraphQLClient(graphqlUrl, {
   requestMiddleware,
   responseMiddleware,
 })

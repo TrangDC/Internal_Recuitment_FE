@@ -10,12 +10,16 @@ import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { t } from 'i18next'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
+type AsyncDefaultValues<TFieldValues> = (
+  payload?: unknown
+) => Promise<TFieldValues>
+
 interface IUseCreateResource<P> {
   mutationKey: string[]
   queryString: IBuildQueryReturn
   onError?: (error: ErrorException | Error) => void
   onSuccess?: (data: BaseRecord) => void
-  defaultValues?: DefaultValues<P>
+  defaultValues?: DefaultValues<P> | AsyncDefaultValues<P>
   resolver: Resolver<P & FieldValues, any> | undefined
 }
 

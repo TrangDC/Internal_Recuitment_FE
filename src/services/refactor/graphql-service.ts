@@ -1,4 +1,4 @@
-import appConfig from 'configs/appConfig'
+import graphqlUrl from 'configs/api/graphql'
 import { GraphQLClient } from 'graphql-request'
 import {
   requestMiddleware,
@@ -62,14 +62,14 @@ class GraphQLClientService {
     try {
       const response: BaseRecord = await graphQLClient.request(query, variables)
       return makeRight(response)
-    } catch ({ response }: any) {    
+    } catch ({ response }: any) {
       const error = ErrorException.fromJson(response)
       return makeLeft(error)
     }
   }
 }
 
-const graphQLClient = new GraphQLClient(appConfig.endpoint_api, {
+const graphQLClient = new GraphQLClient(graphqlUrl, {
   requestMiddleware,
   responseMiddleware,
 })

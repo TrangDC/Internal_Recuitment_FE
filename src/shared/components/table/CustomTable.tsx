@@ -31,6 +31,7 @@ interface ICustomTable<T> {
 }
 
 declare module '@tanstack/react-table' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> {
     style?: CSSProperties
     isPinned?: 'left' | 'right' | false
@@ -168,7 +169,6 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
                     <TableRow key={row.id}>
                       {row.getVisibleCells().map((cell) => {
                         const styleColumn = setStyleColumn<T>(cell.column)
-
                         return (
                           <BodyTableCell
                             component="td"

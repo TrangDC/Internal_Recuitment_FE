@@ -53,7 +53,7 @@ const Header = ({
     <FlexBox
       justifyContent={'space-between'}
       alignItems={'center'}
-      padding={'16px 32px'}
+      padding={'16px'}
       borderBottom={'1px solid #E3E6EB'}
     >
       <FlexBox>
@@ -155,7 +155,7 @@ const ContentMain = ({
   sxContentMain?: SxProps
 }) => {
   return (
-    <Box padding={'20px 32px'} sx={{ ...sxContentMain }}>
+    <Box padding={'16px'} sx={{ ...sxContentMain }}>
       <Scrollbar sx={{ maxHeight: maxHeight }}>{children}</Scrollbar>
     </Box>
   )

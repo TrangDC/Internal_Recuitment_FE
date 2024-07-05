@@ -1,11 +1,14 @@
 import { RequestMiddleware, ResponseMiddleware } from 'graphql-request'
-import { callRefreshToken, getAccessToken } from 'shared/utils/auth'
+import handleAuthLocalStorage from 'services/auth-local-storage-service'
+import { callRefreshToken } from 'shared/utils/auth'
+
+const { getToken } = handleAuthLocalStorage()
 
 export const requestMiddleware: RequestMiddleware = async (request) => {
-  const token = await getAccessToken()
+  const token = await getToken()
 
   const headers = {
-    Authorization: `Bearer ${token}`, // Set your token in the Authorization header
+    Authorization: `Bearer ${token?.accessToken}`, // Set your token in the Authorization header
   }
   return {
     ...request,
@@ -19,14 +22,14 @@ export const responseMiddleware: ResponseMiddleware = async (
   /**
    * @response typeof ResponseMiddleware
    */
-   //@ts-ignore
+  //@ts-ignore
   const { response } = responseMiddle
 
-  switch(response?.status) {
+  switch (response?.status) {
     //handle case refreshToken
     case 401:
       callRefreshToken()
-    break;
+      break
   }
 
   //handle common errors

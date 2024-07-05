@@ -4,14 +4,8 @@ import useCandidateTable from '../../providers/hooks/useCandidateTable'
 import useActionTable from '../../providers/hooks/useActionTable'
 import { DivContainerWrapper, DivHeaderWrapper } from '../../providers/styles'
 import { Candidate } from 'features/candidates/domain/interfaces'
-import EditIcon from 'shared/components/icons/EditIcon'
-import { useNavigate } from 'react-router-dom'
-import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
-import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import { useMemo, useState } from 'react'
-import useTextTranslation from 'shared/constants/text'
+import { useMemo } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
-import RemoveBlackListIcon from 'shared/components/icons/RemoveBlackListIcon'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
@@ -26,13 +20,14 @@ import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import useFilterCandidates from '../../providers/hooks/useFilterCandidates'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import SearchInput from 'shared/components/table/components/SearchInput'
-import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
+import useCandidateBackListPermissionActionTable from 'features/candidates/permission/hooks/useCandidateBackListPermissionActionTable'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import ControllerDateRange from 'shared/components/table/components/tooltip-filter/ControllerDateRange'
 import AppDateRangePicker from 'shared/components/input-fields/AppDateRangePicker'
-import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
 import dayjs from 'dayjs'
+import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
+import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
 
 const BlackList = () => {
   const {
@@ -50,7 +45,6 @@ const BlackList = () => {
     setOpenBlackList,
   } = useActionTable<Candidate>()
   const is_black_list = true
-  const navigate = useNavigate()
   const { useFilterReturn, useSearchListReturn } = useFilterCandidates({
     is_black_list,
   })
@@ -70,43 +64,14 @@ const BlackList = () => {
     },
     search,
   })
-  const translation = useTextTranslation()
 
-  const { colummTable } = useBuildColumnTable({
-    actions: [
-      {
-        id: 'detail',
-        onClick: (id) => {
-          navigate(`/dashboard/candidate-detail/${id}`)
-        },
-        title: translation.COMMON.detail,
-        Icon: <SearchIconSmall />,
-      },
-      {
-        id: 'edit',
-        onClick: (id) => {
-          handleOpenEdit(id)
-        },
-        title: translation.COMMON.edit,
-        Icon: <EditIcon />,
-      },
-      {
-        id: 'edit',
-        onClick: (id) => {
-          handleOpenBlackList(id)
-        },
-        title: 'Remove from blacklist',
-        Icon: <RemoveBlackListIcon />,
-      },
-      {
-        id: 'delete',
-        onClick: (id) => {
-          handleOpenDelete(id)
-        },
-        title: translation.COMMON.delete,
-        Icon: <DeleteIcon />,
-      },
-    ],
+  const { actions } = useCandidateBackListPermissionActionTable({
+    handleOpenBlackList,
+    handleOpenDelete,
+    handleOpenEdit,
+  })
+  const { columnTable } = useBuildColumnTable({
+    actions: actions,
     columns,
   })
 
@@ -296,7 +261,7 @@ const BlackList = () => {
         <Box>
           {useTableReturn && (
             <CustomTable
-              columns={colummTable}
+              columns={columnTable}
               useTableReturn={useTableReturn}
             />
           )}

@@ -53,12 +53,12 @@ const BoxCandidate = ({
   list_candidates = [],
   Note,
   status,
-}: Props) => {  
+}: Props) => {
   const navigate = useNavigate()
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()
 
   const { actions } = useContextChangeStatus()
-  const { handleUpdateStatus } = actions;
+  const { handleUpdateStatus } = actions
 
   const {
     handleOpenChangeStatus,
@@ -81,7 +81,10 @@ const BoxCandidate = ({
     if (parsedData.status === status) return
     const listChange = ENABLED_CHANGE_STATUS[parsedData.status]
     if (listChange.includes(status)) {
-      setCandidateSelected({...parsedData.candidate, status: parsedData.status})
+      setCandidateSelected({
+        ...parsedData.candidate,
+        status: parsedData.status,
+      })
       handleOpenChangeStatus(parsedData.id, parsedData)
     } else {
       toast.error(
@@ -150,15 +153,12 @@ const BoxCandidate = ({
                     }}
                   />{' '}
                   <FlexBox gap={0.75} alignItems={'center'}>
-                  <TinyInfo>
-                    {item?.hiring_job?.team?.name} 
-                  </TinyInfo>
-                  <DotIcon />
-                  <TinyInfo>
-                    {LOCATION_LABEL[item?.hiring_job?.location]}
-                  </TinyInfo>
+                    <TinyInfo>{item?.hiring_job?.team?.name}</TinyInfo>
+                    <DotIcon />
+                    <TinyInfo>
+                      {LOCATION_LABEL[item?.hiring_job?.location]}
+                    </TinyInfo>
                   </FlexBox>
-               
                 </FlexBox>
 
                 <FlexBox alignItems={'center'} gap={'6px'}>

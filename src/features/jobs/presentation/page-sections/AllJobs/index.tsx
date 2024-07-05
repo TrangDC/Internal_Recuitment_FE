@@ -1,16 +1,10 @@
 import { Box } from '@mui/system'
 import { columns } from '../../providers/constants/columns'
 import Add from 'shared/components/icons/Add'
-import EditIcon from 'shared/components/icons/EditIcon'
 import { useNavigate } from 'react-router-dom'
-import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
-import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import useTextTranslation from 'shared/constants/text'
-import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
-import CloseIcon from 'shared/components/icons/CloseIcon'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
-import { JobStatus } from 'shared/class/job-status'
 import useActionTable from '../../providers/hooks/useActionTable'
 import useJobTable from '../../providers/hooks/useJobTable'
 import { DivHeaderWrapper } from '../../providers/styles'
@@ -29,8 +23,9 @@ import { Fragment } from 'react/jsx-runtime'
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 import LocationAutoComplete from 'shared/components/autocomplete/location-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
-
-const { STATUS_STATE } = JobStatus
+import Cant from 'features/authorization/presentation/components/Cant'
+import useAllJobsPermissionActionTable from 'features/jobs/permission/hooks/useAllJobsPermissionActionTable'
+import ButtonAdd from 'shared/components/utils/buttonAdd'
 
 const AllJob = () => {
   const {
@@ -48,7 +43,6 @@ const AllJob = () => {
     setOpenEdit,
   } = useActionTable()
 
-  const navigate = useNavigate()
   const { useFilterReturn, useSearchListReturn } = useFilterJobs()
   const { dataFilterWithValue, controlFilter } = useFilterReturn
   const { search, searchRef, handleSearch } = useSearchListReturn
@@ -59,57 +53,14 @@ const AllJob = () => {
 
   const translation = useTextTranslation()
 
-  const { colummTable } = useBuildColumnTable({
-    actions: [
-      {
-        id: 'detail',
-        onClick: (id) => {
-          navigate(`/dashboard/job-detail/${id}`)
-        },
-        title: translation.COMMON.detail,
-        Icon: <SearchIconSmall />,
-      },
-      {
-        id: 'Close job',
-        onClick: (id) => {
-          handleOpenStatus(id)
-        },
-        title: (rowData) => {
-          return rowData.status === STATUS_STATE.OPENED
-            ? 'Close job'
-            : 'Reopen Job'
-        },
-        disabled: (rowData) => {
-          if (rowData?.status !== STATUS_STATE.OPENED) return false
-          if (
-            rowData?.is_able_to_close &&
-            rowData.status === STATUS_STATE.OPENED
-          )
-            return false
-          return true
-        },
-        Icon: <CloseIcon />,
-      },
-      {
-        id: 'edit',
-        onClick: (id, rowData) => {
-          handleOpenEdit(id)
-        },
-        title: translation.COMMON.edit,
-        Icon: <EditIcon />,
-        disabled: (rowData) => {
-          return rowData.status === STATUS_STATE.CLOSED
-        },
-      },
-      {
-        id: 'delete',
-        onClick: (id) => {
-          handleOpenDelete(id)
-        },
-        title: translation.COMMON.delete,
-        Icon: <DeleteIcon />,
-      },
-    ],
+  const { actions } = useAllJobsPermissionActionTable({
+    handleOpenDelete,
+    handleOpenEdit,
+    handleOpenStatus,
+  })
+
+  const { columnTable } = useBuildColumnTable({
+    actions,
     columns,
   })
 
@@ -259,17 +210,25 @@ const AllJob = () => {
               placeholder="Search by Job title"
               onSearch={handleSearch}
             />
-            <ButtonAdd
-              Icon={Add}
-              textLable={translation.MODLUE_JOBS.add_a_new_job}
-              onClick={() => setOpenCreate(true)}
-            />
+            <Cant
+              checkBy={{
+                compare: 'hasAny',
+                permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+              }}
+              module="JOBS"
+            >
+              <ButtonAdd
+                Icon={Add}
+                textLable={translation.MODLUE_JOBS.add_a_new_job}
+                onClick={() => setOpenCreate(true)}
+              />
+            </Cant>
           </DivHeaderWrapper>
         </HeadingWrapper>
         <Box>
           {useTableReturn && (
             <CustomTable
-              columns={colummTable}
+              columns={columnTable}
               useTableReturn={useTableReturn}
             />
           )}

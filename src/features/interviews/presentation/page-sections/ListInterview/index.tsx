@@ -34,6 +34,7 @@ import {
   DeleteInterviewModal,
   EditInterviewModal,
 } from '../index'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 interface Props {
   jobApplicationDetail: CandidateJob
@@ -77,13 +78,21 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
         <BoxTitle>
           <Span>Interviews</Span>
         </BoxTitle>
-        {showInterview && (
-          <BoxButton>
-            <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
-              Add new interview
-            </Button>
-          </BoxButton>
-        )}
+        <Cant
+          checkBy={{
+            compare: 'hasAny',
+            permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+          }}
+          module="INTERVIEWS"
+        >
+          {showInterview && (
+            <BoxButton>
+              <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
+                Add new interview
+              </Button>
+            </BoxButton>
+          )}
+        </Cant>
       </DivActionHeader>
       {!isEmpty(listInterview) &&
         listInterview.map((interview, idx) => {
@@ -117,22 +126,47 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                         {interview.start_from &&
                           isPast(dayjs(interview.start_from).toDate()) && (
                             <Fragment>
-                              <EditIcon
-                                onClick={(e) => {
-                                  handleOpenEdit(interview.id)
+                              <Cant
+                                checkBy={{
+                                  compare: 'hasAny',
+                                  permissions: [
+                                    'EDIT.everything',
+                                    'EDIT.ownedOnly',
+                                    'EDIT.teamOnly',
+                                  ],
                                 }}
-                                sx={{
-                                  fontSize: '20px',
+                                module="INTERVIEWS"
+                              >
+                                <EditIcon
+                                  onClick={(e) => {
+                                    handleOpenEdit(interview.id)
+                                  }}
+                                  sx={{
+                                    fontSize: '20px',
+                                  }}
+                                />
+                              </Cant>
+
+                              <Cant
+                                checkBy={{
+                                  compare: 'hasAny',
+                                  permissions: [
+                                    'DELETE.everything',
+                                    'DELETE.ownedOnly',
+                                    'DELETE.teamOnly',
+                                  ],
                                 }}
-                              />
-                              <DeleteIcon
-                                onClick={(e) => {
-                                  handleOpenDelete(interview.id)
-                                }}
-                                sx={{
-                                  fontSize: '20px',
-                                }}
-                              />
+                                module="INTERVIEWS"
+                              >
+                                <DeleteIcon
+                                  onClick={(e) => {
+                                    handleOpenDelete(interview.id)
+                                  }}
+                                  sx={{
+                                    fontSize: '20px',
+                                  }}
+                                />
+                              </Cant>
                             </Fragment>
                           )}
                       </FlexBox>

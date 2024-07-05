@@ -1,6 +1,7 @@
 import { Job } from 'features/jobs/domain/interfaces'
 import { useRef, useState } from 'react'
 
+
 const useActionTable = () => {
   const rowId = useRef('')
   const rowData = useRef<Job>()

@@ -1,11 +1,7 @@
 import { Box } from '@mui/system'
 import Add from 'shared/components/icons/Add'
 import { columns } from '../../shared/constants/columns'
-import DeleteIcon from 'shared/components/icons/DeleteIcon'
-import EditIcon from 'shared/components/icons/EditIcon'
-import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import useTextTranslation from 'shared/constants/text'
-import { useNavigate } from 'react-router-dom'
 import TeamIcon from 'shared/components/icons/Team'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import IconScreen from 'shared/components/utils/IconScreen'
@@ -20,20 +16,20 @@ import SearchInput from 'shared/components/table/components/SearchInput'
 import useFilterTeams from 'features/teams/hooks/useFilterTeams'
 import useActionTable from 'features/teams/hooks/useActionTable'
 import useTeamTable from 'features/teams/hooks/useTeamTable'
+import Cant from 'features/authorization/presentation/components/Cant'
+import useTeamsPermissionActionTable from 'features/teams/permission/actions-table/useTeamsPermissionActionTable'
 
 const TeamList = () => {
+  const useActionTableReturn = useActionTable()
   const {
     openCreate,
     openDelete,
     setOpenCreate,
-    handleOpenEdit,
-    handleOpenDelete,
     openEdit,
     rowId,
     setOpenEdit,
     setOpenDelete,
-  } = useActionTable()
-
+  } = useActionTableReturn
   const { useSearchListReturn } = useFilterTeams()
   const { search, handleSearch, searchRef } = useSearchListReturn
 
@@ -42,35 +38,10 @@ const TeamList = () => {
     search,
   })
   const translation = useTextTranslation()
-  const navigate = useNavigate()
+  const { actions } = useTeamsPermissionActionTable(useActionTableReturn)
 
-  const { colummTable } = useBuildColumnTable({
-    actions: [
-      {
-        id: 'detail',
-        onClick: (id) => {
-          navigate(`/dashboard/team-detail/${id}`)
-        },
-        title: translation.COMMON.detail,
-        Icon: <SearchIconSmall />,
-      },
-      {
-        id: 'edit',
-        onClick: (id) => {
-          handleOpenEdit(id)
-        },
-        title: translation.COMMON.edit,
-        Icon: <EditIcon />,
-      },
-      {
-        id: 'delete',
-        onClick: (id) => {
-          handleOpenDelete(id)
-        },
-        title: translation.COMMON.delete,
-        Icon: <DeleteIcon />,
-      },
-    ],
+  const { columnTable } = useBuildColumnTable({
+    actions: actions,
     columns,
   })
 
@@ -90,14 +61,26 @@ const TeamList = () => {
             placeholder="Search by Team's name"
             onSearch={handleSearch}
           />
-          <ButtonAdd
-            Icon={Add}
-            textLable={translation.MODLUE_TEAMS.add_a_new_team}
-            onClick={() => setOpenCreate(true)}
-          />
+          <Cant
+            module={'TEAMS'}
+            checkBy={{
+              compare: 'hasAny',
+              permissions: [
+                'CREATE.everything',
+                'CREATE.ownedOnly',
+                'CREATE.teamOnly',
+              ],
+            }}
+          >
+            <ButtonAdd
+              Icon={Add}
+              textLable={translation.MODLUE_TEAMS.add_a_new_team}
+              onClick={() => setOpenCreate(true)}
+            />
+          </Cant>
         </HeadingWrapper>
         <Box>
-          <CustomTable columns={colummTable} useTableReturn={useTableReturn} />
+          <CustomTable columns={columnTable} useTableReturn={useTableReturn} />
         </Box>
       </BoxWrapperOuterContainer>
 

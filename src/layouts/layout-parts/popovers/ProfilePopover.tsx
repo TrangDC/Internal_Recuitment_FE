@@ -10,12 +10,11 @@ import {
 import AppAvatar from 'shared/components/avatars/AppAvatar'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { H6, Small, Tiny } from 'shared/components/Typography'
-import useAuth from 'shared/hooks/useAuth'
 import { FC, Fragment, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import PopoverLayout from './PopoverLayout'
-import { handleLogOut } from 'shared/utils/auth'
+import useAuth from 'features/authentication/presentation/providers/hooks/useAuth'
 
 // styled components
 const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({
@@ -36,13 +35,18 @@ const StyledSmall = styled(Small)(({ theme }) => ({
 const ProfilePopover: FC = () => {
   const anchorRef = useRef(null)
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const [open, setOpen] = useState(false)
   const upSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
 
   const handleMenuItem = (path: string) => {
     navigate(path)
     setOpen(false)
+  }
+
+  const handleLogout = () => {
+    logout()
+    toast.success('You Logout Successfully')
   }
 
   return (
@@ -78,7 +82,7 @@ const ProfilePopover: FC = () => {
             </Small>
           )}
           <AppAvatar
-            src={user?.avatar || '/static/avatar/001-man.svg'}
+            src={'/static/avatar/001-man.svg'}
             sx={{ width: 28, height: 28 }}
           />
         </Badge>
@@ -94,12 +98,12 @@ const ProfilePopover: FC = () => {
         title={
           <FlexBox alignItems="center" gap={1}>
             <AppAvatar
-              src={user?.avatar || '/static/avatar/001-man.svg'}
+              src={'/static/avatar/001-man.svg'}
               sx={{ width: 35, height: 35 }}
             />
 
             <Box width={'calc(100% - 40px)'}>
-              <H6 width={'100%'}>{user?.name ?? ''}</H6>
+              <H6 width={'100%'}>{user?.email ?? ''}</H6>
               <Tiny
                 sx={{
                   wordBreak: 'break-all',
@@ -109,7 +113,7 @@ const ProfilePopover: FC = () => {
                 fontWeight={500}
                 color="text.disabled"
               >
-                {user?.preferred_username}
+                {user?.name}
               </Tiny>
             </Box>
           </FlexBox>
@@ -133,14 +137,8 @@ const ProfilePopover: FC = () => {
           </StyledSmall>
 
           <Divider sx={{ my: 1 }} /> */}
-          <StyledSmall
-            onClick={() => {
-              handleLogOut()
-              toast.success('You Logout Successfully')
-            }}
-          >
-            Sign Out
-          </StyledSmall>
+          <Divider sx={{ my: 1 }} />
+          <StyledSmall onClick={handleLogout}>Sign Out</StyledSmall>
         </Box>
       </PopoverLayout>
     </Fragment>

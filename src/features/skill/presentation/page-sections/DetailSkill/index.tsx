@@ -7,16 +7,22 @@ import { Text13md, Tiny12md } from 'shared/components/Typography'
 import { innerHTMLTextArea } from 'shared/components/genarateInnerHTML'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from 'shared/components/icons/EditIcon'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 interface IDetailSkillModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  handleOpenEdit: (value: string) => void,
+  handleOpenEdit: (value: string) => void
 }
 
-function DetailSkillModal({ open, setOpen, id, handleOpenEdit }: IDetailSkillModal) {
-  const { formData  } = useGetSkill({
+function DetailSkillModal({
+  open,
+  setOpen,
+  id,
+  handleOpenEdit,
+}: IDetailSkillModal) {
+  const { formData } = useGetSkill({
     id: id,
   })
 
@@ -28,17 +34,25 @@ function DetailSkillModal({ open, setOpen, id, handleOpenEdit }: IDetailSkillMod
           setOpen={setOpen}
           EndHeader={
             <FlexBox gap={1}>
-              <EditIcon
-                sx={{
-                  height: '24px',
-                  width: '24px',
-                  color: '#82868C',
-                  cursor: 'pointer',
+              <Cant
+                module="SKILLS"
+                checkBy={{
+                  compare: 'hasAny',
+                  permissions: ['CREATE.everything'],
                 }}
-                onClick={() => {
-                  handleOpenEdit(id)
-                }}
-              />
+              >
+                <EditIcon
+                  sx={{
+                    height: '24px',
+                    width: '24px',
+                    color: '#82868C',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    handleOpenEdit(id)
+                  }}
+                />
+              </Cant>
 
               <CloseIcon
                 sx={{

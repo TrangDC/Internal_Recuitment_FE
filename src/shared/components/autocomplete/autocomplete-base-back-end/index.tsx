@@ -33,13 +33,14 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
     disabled,
     getOptionLabel,
     disableCloseOnSelect,
+    orderBy,
   } = props
 
   const { options } = useAutoCompleteBackEnd<T>({
     queryKey: queryKey.concat([JSON.stringify(filter)]),
     queryString: queryString,
     variables: {
-      orderBy: {
+      orderBy: orderBy ?? {
         direction: 'ASC',
         field: 'created_at',
       },

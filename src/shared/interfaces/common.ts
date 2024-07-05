@@ -27,4 +27,6 @@ export enum MODLUE_QUERY_KEY {
   SKILL_TYPE = 'skill_type',
   GROUP_CANDIDATE_STATUS = 'group_candidate_status',
   GROUP_HIRING = 'group_hiring',
+  ROLE_TEMPLATE = 'role_template',
+  ALL_PERMISSON_GROUPS = 'all_permisson_groups',
 }

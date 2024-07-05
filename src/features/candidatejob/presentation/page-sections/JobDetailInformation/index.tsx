@@ -20,6 +20,7 @@ import AppButton from 'shared/components/buttons/AppButton'
 import EditCandidateJobModal from '../EditCandidateJobModal'
 import CopyIcon from 'shared/components/icons/CopyIcon'
 import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
+import Cant from 'features/authorization/presentation/components/Cant'
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }
@@ -132,45 +133,63 @@ const JobDetailInformation = ({
       >
         <DivItemInformation>
           <FlexBox flexDirection={'column'} gap={1}>
-            <AppButton
-              onClick={() => {
-                setOpenEditCandidateJob(true)
+            <Cant
+              module="CANDIDATE_JOBS"
+              checkBy={{
+                compare: 'hasAny',
+                permissions: ['EDIT.everything'],
               }}
-              variant="outlined"
-              startIcon={
-                <EditIcon
-                  sx={{
-                    ' path': {
-                      fill: '#1F84EB',
-                    },
-                  }}
-                />
-              }
             >
-              Edit application
-            </AppButton>
-            {hiddenChangStatus && (
-              <ButtonStatus
+              {' '}
+              <AppButton
                 onClick={() => {
-                  handleOpenChangeStatus(
-                    jobApplicationDetail.id,
-                    jobApplicationDetail
-                  )
+                  setOpenEditCandidateJob(true)
                 }}
-                variant="contained"
+                variant="outlined"
                 startIcon={
                   <EditIcon
                     sx={{
                       ' path': {
-                        fill: 'white',
+                        fill: '#1F84EB',
                       },
                     }}
                   />
                 }
               >
-                Change status
-              </ButtonStatus>
-            )}
+                Edit application
+              </AppButton>
+            </Cant>
+
+            <Cant
+              module="CANDIDATE_JOBS"
+              checkBy={{
+                compare: 'hasAny',
+                permissions: ['CHANGE_STATUS.everything'],
+              }}
+            >
+              {hiddenChangStatus && (
+                <ButtonStatus
+                  onClick={() => {
+                    handleOpenChangeStatus(
+                      jobApplicationDetail.id,
+                      jobApplicationDetail
+                    )
+                  }}
+                  variant="contained"
+                  startIcon={
+                    <EditIcon
+                      sx={{
+                        ' path': {
+                          fill: 'white',
+                        },
+                      }}
+                    />
+                  }
+                >
+                  Change status
+                </ButtonStatus>
+              )}
+            </Cant>
           </FlexBox>
         </DivItemInformation>
       </FlexBox>

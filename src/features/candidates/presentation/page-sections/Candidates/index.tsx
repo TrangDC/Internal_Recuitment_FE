@@ -6,11 +6,7 @@ import useCandidateTable from '../../providers/hooks/useCandidateTable'
 import useActionTable from '../../providers/hooks/useActionTable'
 import { DivContainerWrapper, DivHeaderWrapper } from '../../providers/styles'
 import { Candidate } from 'features/candidates/domain/interfaces'
-import EditIcon from 'shared/components/icons/EditIcon'
 import { useNavigate } from 'react-router-dom'
-import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
-import BlackListIcon from 'shared/components/icons/BlackListIcon'
-import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import { Fragment, useMemo, useRef } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
@@ -19,11 +15,7 @@ import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reas
 import CandidateStatusAutoComplete, {
   options_status_new,
 } from 'shared/components/autocomplete/candidate-status-auto-complete'
-import {
-  downloadBase64File,
-  getDomain,
-  handleCopyClipBoard,
-} from 'shared/utils/utils'
+import { downloadBase64File } from 'shared/utils/utils'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useImportFile } from 'shared/hooks/graphql/useUpload'
 import { ArrowDownward } from '@mui/icons-material'
@@ -45,10 +37,11 @@ import useTextTranslation from 'shared/constants/text'
 import ControllerDateRange from 'shared/components/table/components/tooltip-filter/ControllerDateRange'
 import dayjs from 'dayjs'
 import AppDateRangePicker from 'shared/components/input-fields/AppDateRangePicker'
-import LinkIcon from 'shared/components/icons/Link'
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
 import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
+import useAllCandidatePermissionActionTable from 'features/candidates/permission/hooks/useCandidatePermissionActionTable'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 const Candidates = () => {
   const {
@@ -87,54 +80,13 @@ const Candidates = () => {
       dataFilterWithValue.status === STATUS_CANDIDATE.OFFERED_LOST
     )
   }, [dataFilterWithValue])
-
-  const { colummTable } = useBuildColumnTable({
-    actions: [
-      {
-        id: 'detail',
-        onClick: (id) => {
-          navigate(`/dashboard/candidate-detail/${id}`)
-        },
-        title: translation.COMMON.detail,
-        Icon: <SearchIconSmall />,
-      },
-      {
-        id: 'copy-link-to-profile',
-        onClick: (id, rowData) => {
-          const url = `${getDomain()}/dashboard/candidate-detail/${id}`
-          handleCopyClipBoard(
-            url,
-            `[PROFILE] ${rowData.name}${rowData.dob ? '_' + dayjs(rowData.dob).format('DDMMYYYY') : ''}`
-          )
-        },
-        title: 'Copy application link',
-        Icon: <LinkIcon />,
-      },
-      {
-        id: 'edit',
-        onClick: (id) => {
-          handleOpenEdit(id)
-        },
-        title: translation.COMMON.edit,
-        Icon: <EditIcon />,
-      },
-      {
-        id: 'black_list',
-        onClick: (id) => {
-          handleOpenBlackList(id)
-        },
-        title: translation.COMMON.add_to_blackList,
-        Icon: <BlackListIcon />,
-      },
-      {
-        id: 'delete',
-        onClick: (id, rowData) => {
-          handleOpenDelete(id)
-        },
-        title: translation.COMMON.delete,
-        Icon: <DeleteIcon />,
-      },
-    ],
+  const { actions } = useAllCandidatePermissionActionTable({
+    handleOpenBlackList,
+    handleOpenDelete,
+    handleOpenEdit,
+  })
+  const { columnTable } = useBuildColumnTable({
+    actions: actions,
     columns,
   })
   const { base64Example } = useExportSample()
@@ -323,77 +275,87 @@ const Candidates = () => {
               onSearch={handleSearch}
             />
             <FlexBox gap={'10px'}>
-              <Fragment>
-                <MenuItemComponent
-                  actions={[
-                    {
-                      Icon: <DownloadIcon />,
-                      title: 'Download Template',
-                      id: 'download',
-                      onClick: () => {
-                        downloadBase64File(
-                          base64Example,
-                          'candidate_example.xlsx',
-                          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                        )
-                      },
-                    },
-                    {
-                      Icon: (
-                        <DownloadIcon
-                          sx={{ transform: 'rotate(-90deg)', fontSize: '16px' }}
-                        />
-                      ),
-                      title: 'Import',
-                      id: 'import',
-                      onClick: () => {
-                        console.log('import file', refInput.current?.click())
-                      },
-                    },
-                  ]}
-                  Button={
-                    <ButtonAdd
-                      Icon={ArrowDownward}
-                      textLable={'Import'}
-                      position_icon="end"
-                    />
-                  }
-                />
-                <input
-                  ref={refInput}
-                  type="file"
-                  id="fileImport"
-                  name="file"
-                  accept=".xls,.xlsx,.csv"
-                  hidden
-                  onChange={(event) => {
-                    const fileEvent = event.target.files
-                    fileEvent &&
-                      handleImportFile(
-                        fileEvent[0],
-                        {
-                          regexString: '^.*\\.(xls|xlsx|csv)$',
-                          maxSize: 20,
+              <Cant
+                module="CANDIDATES"
+                checkBy={{
+                  compare: 'hasAny',
+                  permissions: ['CREATE.everything'],
+                }}
+              >
+                <Fragment>
+                  <MenuItemComponent
+                    actions={[
+                      {
+                        Icon: <DownloadIcon />,
+                        title: 'Download Template',
+                        id: 'download',
+                        onClick: () => {
+                          downloadBase64File(
+                            base64Example,
+                            'candidate_example.xlsx',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                          )
                         },
-                        submit
-                      )
-                    event.target.value = ''
-                  }}
+                      },
+                      {
+                        Icon: (
+                          <DownloadIcon
+                            sx={{
+                              transform: 'rotate(-90deg)',
+                              fontSize: '16px',
+                            }}
+                          />
+                        ),
+                        title: 'Import',
+                        id: 'import',
+                        onClick: () => {
+                          console.log('import file', refInput.current?.click())
+                        },
+                      },
+                    ]}
+                    Button={
+                      <ButtonAdd
+                        Icon={ArrowDownward}
+                        textLable={'Import'}
+                        position_icon="end"
+                      />
+                    }
+                  />
+                  <input
+                    ref={refInput}
+                    type="file"
+                    id="fileImport"
+                    name="file"
+                    accept=".xls,.xlsx,.csv"
+                    hidden
+                    onChange={(event) => {
+                      const fileEvent = event.target.files
+                      fileEvent &&
+                        handleImportFile(
+                          fileEvent[0],
+                          {
+                            regexString: '^.*\\.(xls|xlsx|csv)$',
+                            maxSize: 20,
+                          },
+                          submit
+                        )
+                      event.target.value = ''
+                    }}
+                  />
+                </Fragment>
+                <ButtonAdd
+                  Icon={Add}
+                  textLable={translation.MODLUE_CANDIDATES.add_new_candidate}
+                  onClick={() => setOpenCreate(true)}
                 />
-              </Fragment>
-
-              <ButtonAdd
-                Icon={Add}
-                textLable={translation.MODLUE_CANDIDATES.add_new_candidate}
-                onClick={() => setOpenCreate(true)}
-              />
+              </Cant>
             </FlexBox>
           </DivHeaderWrapper>
         </HeadingWrapper>
         <Box>
           {useTableReturn && (
             <CustomTable
-              columns={colummTable}
+              columns={columnTable}
               useTableReturn={useTableReturn}
             />
           )}

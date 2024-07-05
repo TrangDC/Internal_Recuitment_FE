@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { RULE_MESSAGES } from 'shared/constants/vaildate'
+import { RULE_MESSAGES } from 'shared/constants/validate'
 import { isPast } from 'shared/utils/date'
 import * as yup from 'yup'
 

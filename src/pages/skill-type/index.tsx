@@ -1,10 +1,10 @@
-import SkillType from 'features/skillType/presentation/page-sections/SkillType'
+import SkillTypeList from 'features/skillType/presentation/screens'
 import HelmetComponent from 'shared/components/helmet'
 
 function SkillTypePage() {
   return (
     <HelmetComponent title="[TREC] Skill type">
-      <SkillType />
+      <SkillTypeList />
     </HelmetComponent>
   )
 }

@@ -2,12 +2,7 @@ import {
   DivFilter,
   DivHeaderWrapper,
 } from 'features/candidates/presentation/providers/styles'
-import {
-  Fragment,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import _ from 'lodash'
@@ -30,6 +25,7 @@ import { removeEmptyInObject } from 'shared/utils/utils'
 import LocationAutoComplete from 'shared/components/autocomplete/location-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import SearchInput from 'shared/components/table/components/SearchInput'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 const FilterCandidate = () => {
   const translation = useTextTranslation()
@@ -220,14 +216,31 @@ const FilterCandidate = () => {
           }}
         />
         <FlexBox gap={1} alignItems={'center'}>
-          <BtnPrimary onClick={() => setOpenCreateApply(true)}>
-            <Span>Apply candidate to a job</Span>
-          </BtnPrimary>
-          <ButtonAdd
-            Icon={Add}
-            textLable={translation.MODLUE_JOBS.add_a_new_job}
-            onClick={() => setOpenCreate(true)}
-          />
+          <Cant
+            checkBy={{
+              compare: 'hasAny',
+              permissions: ['CREATE.everything'],
+            }}
+            module="CANDIDATE_JOBS"
+          >
+            <BtnPrimary onClick={() => setOpenCreateApply(true)}>
+              <Span>Apply candidate to a job</Span>
+            </BtnPrimary>
+          </Cant>
+
+          <Cant
+            checkBy={{
+              compare: 'hasAny',
+              permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+            }}
+            module="JOBS"
+          >
+            <ButtonAdd
+              Icon={Add}
+              textLable={translation.MODLUE_JOBS.add_a_new_job}
+              onClick={() => setOpenCreate(true)}
+            />
+          </Cant>
         </FlexBox>
       </DivHeaderWrapper>
 

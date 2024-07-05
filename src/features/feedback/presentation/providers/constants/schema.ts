@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { RULE_MESSAGES } from 'shared/constants/vaildate'
+import { RULE_MESSAGES } from 'shared/constants/validate'
 
 export const schema = yup.object({
   candidate_job_id: yup.string().required(RULE_MESSAGES.MC1('candidate_job_id')),
