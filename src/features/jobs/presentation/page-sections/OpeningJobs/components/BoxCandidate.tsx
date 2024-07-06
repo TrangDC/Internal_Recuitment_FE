@@ -30,6 +30,8 @@ import useActionTable from 'features/candidatejob/presentation/providers/hooks/u
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import { SpanHiringStatus, TinyLink } from '../styles'
 import DotIcon from 'shared/components/icons/DotIcon'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import checkDragDropCandidateJob from 'features/jobs/permission/utils/checkDragDropCandidateJob'
 
 interface Props {
   title: string
@@ -55,11 +57,10 @@ const BoxCandidate = ({
   status,
 }: Props) => {
   const navigate = useNavigate()
+  const { role, user } = useAuthorization()
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()
-
   const { actions } = useContextChangeStatus()
   const { handleUpdateStatus } = actions
-
   const {
     handleOpenChangeStatus,
     openChangeStatus,
@@ -68,7 +69,8 @@ const BoxCandidate = ({
     rowId,
   } = useActionTable<CandidateJob>()
 
-  const handleDragStart = (item: CandidateStatusItem) => {
+  const handleDragStart = (item: CandidateStatusItem, cantDrag: boolean) => {
+    if (!cantDrag) return
     return (event: React.DragEvent<HTMLDivElement>) => {
       event.dataTransfer.setData('candidate', JSON.stringify(item))
     }
@@ -120,6 +122,12 @@ const BoxCandidate = ({
       </BoxCandidateTitle>
       <BoxField>
         {list_candidates?.map((item) => {
+          const candidateJobOfTeamId = item?.hiring_job?.team?.id ?? ''
+          const cantDrag = checkDragDropCandidateJob({
+            me: user,
+            role,
+            candidateJobOfTeamId,
+          })
           return (
             <BoxFieldInfo
               key={item?.id}
@@ -127,7 +135,7 @@ const BoxCandidate = ({
                 navigate(`/dashboard/job-application-detail/${item.id}`)
               }}
               draggable={true}
-              onDragStart={handleDragStart(item)}
+              onDragStart={handleDragStart(item, cantDrag)}
             >
               <SpanInfo>{item?.candidate?.name}</SpanInfo>
               <FlexBox flexDirection={'column'} gap={'10px'}>

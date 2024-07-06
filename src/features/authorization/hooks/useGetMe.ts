@@ -18,7 +18,7 @@ function useGetMe() {
     queryFn: async () => GraphQLClientService.fetchGraphQL(getMe.query),
     enabled: isAuthenticated && !!getToken(),
   })
-
+  console.log('getMe')
   const { myPermission, me } = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
@@ -30,7 +30,7 @@ function useGetMe() {
         email: me?.work_email ?? '',
         name: me?.name ?? '',
         id: me?.id ?? '',
-        teamId: me?.team.id ?? '',
+        teamId: me?.team?.id ?? '',
       }
       return {
         myPermission,

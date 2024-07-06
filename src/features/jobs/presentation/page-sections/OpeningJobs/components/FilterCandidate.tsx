@@ -205,7 +205,7 @@ const FilterCandidate = () => {
           <Cant
             checkBy={{
               compare: 'hasAny',
-              permissions: ['CREATE.everything'],
+              permissions: ['CREATE.everything', 'CREATE.teamOnly'],
             }}
             module="CANDIDATE_JOBS"
           >

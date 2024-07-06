@@ -19,6 +19,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
+import checkDragDropCandidateJob from 'features/jobs/permission/utils/checkDragDropCandidateJob'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 
 interface Props {
   title: string
@@ -45,7 +47,7 @@ const BoxStatusCandidates = ({
 }: Props) => {
   const navigate = useNavigate()
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()
-
+  const { role, user } = useAuthorization()
   const queryClient = useQueryClient()
   const handleRefreshList = () => {
     queryClient.invalidateQueries({
@@ -67,7 +69,8 @@ const BoxStatusCandidates = ({
     rowId,
   } = useActionTable<CandidateJob>()
 
-  const handleDragStart = (item: CandidateStatusItem) => {
+  const handleDragStart = (item: CandidateStatusItem, cantDrag: boolean) => {
+    if (!cantDrag) return
     return (event: React.DragEvent<HTMLDivElement>) => {
       event.dataTransfer.setData('candidate', JSON.stringify(item))
     }
@@ -109,6 +112,12 @@ const BoxStatusCandidates = ({
       </BoxTitle>
       <BoxField>
         {list_candidates?.map((item) => {
+          const candidateJobOfTeamId = item?.hiring_job?.team?.id ?? ''
+          const cantDrag = checkDragDropCandidateJob({
+            me: user,
+            role,
+            candidateJobOfTeamId,
+          })
           return (
             <BoxFieldContainer
               key={item.id}
@@ -116,7 +125,7 @@ const BoxStatusCandidates = ({
                 navigate(`/dashboard/job-application-detail/${item.id}`)
               }}
               draggable={true}
-              onDragStart={handleDragStart(item)}
+              onDragStart={handleDragStart(item, cantDrag)}
             >
               <Span>{item.candidate.name}</Span>
               <FlexBox alignItems={'center'} gap={'6px'}>

@@ -28,6 +28,10 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
+              team {
+                id
+                name
+              }
             }
             created_at
         }
@@ -46,6 +50,10 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
+              team {
+                id
+                name
+              }
             }
             created_at
         }
@@ -64,6 +72,10 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
+              team {
+                id
+                name
+              }
             }
             created_at
         }
@@ -82,6 +94,10 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
+              team {
+                id
+                name
+              }
             }
             created_at
         }
@@ -100,6 +116,10 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
+              team {
+                id
+                name
+              }
             }
             created_at
         }
@@ -118,6 +138,10 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
+              team {
+                id
+                name
+              }
             }
             created_at
         }
@@ -136,6 +160,10 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
+              team {
+                id
+                name
+              }
             }
             created_at
         }
@@ -145,7 +173,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
     filter: 'CandidateJobGroupByStatusFilter',
     orderBy: 'CandidateJobByOrder',
     freeWord: 'CandidateJobGroupByStatusFreeWord',
-    pagination: 'PaginationInput'
+    pagination: 'PaginationInput',
   },
 })
 

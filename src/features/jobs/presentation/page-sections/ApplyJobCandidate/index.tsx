@@ -7,7 +7,6 @@ import { useMemo } from 'react'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useTextTranslation from 'shared/constants/text'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
-import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
@@ -16,6 +15,7 @@ import { isEmpty } from 'lodash'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto-complete'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
+import SelectionTeamForCreateCDDJPermission from 'features/candidatejob/permission/components/SelectionTeamForCreateCDDJPermission'
 
 interface IApplyJobModal {
   open: boolean
@@ -23,11 +23,7 @@ interface IApplyJobModal {
   onSuccess?: (data: CandidateJob) => void
 }
 
-function ApplyJobModal({
-  open,
-  setOpen,
-  onSuccess,
-}: IApplyJobModal) {
+function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
   const { onSubmit, control, isPending, isValid, resetField, watch } =
     useApplyToJob({
       callbackSuccess: (data) => {
@@ -49,7 +45,7 @@ function ApplyJobModal({
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title={"Apply candidate to a job"}
+        title={'Apply candidate to a job'}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">
@@ -61,17 +57,12 @@ function ApplyJobModal({
                 name="team_id"
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
-                    <TeamsAutoComplete
+                    <SelectionTeamForCreateCDDJPermission
                       name={field.name}
                       value={field.value || ''}
                       onChange={(value) => {
                         field.onChange(value)
                         resetField('hiring_job_id')
-                      }}
-                      multiple={false}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Team',
                       }}
                     />
                     <HelperTextForm
@@ -181,25 +172,32 @@ function ApplyJobModal({
                     <InputFileComponent
                       field={field}
                       inputFileProps={{
-                        accept: ".pdf, .doc, .docx, .xls, .xlsx",
+                        accept: '.pdf, .doc, .docx, .xls, .xlsx',
                         regexString: '\\.(pdf|doc|docx|xls|xlsx)$',
                         maxFile: 1,
                         multiple: false,
                         maxSize: 20,
                         msgError: {
-                          is_valid: 'One PDF,WORD,EXCEL file only, file size up to 20mb',
-                          maxSize: 'One PDF,WORD,EXCEL file only, file size up to 20mb',
-                          maxFile: 'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          is_valid:
+                            'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          maxSize:
+                            'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          maxFile:
+                            'One PDF,WORD,EXCEL file only, file size up to 20mb',
                         },
                         descriptionFile: () => {
                           return (
                             <Box>
                               <Span sx={{ color: '#2A2E37 !important' }}>
                                 {' '}
-                                Attach CV <Span sx={{color: '#DB6C56 !important'}}>*</Span>
+                                Attach CV{' '}
+                                <Span sx={{ color: '#DB6C56 !important' }}>
+                                  *
+                                </Span>
                               </Span>
                               <Tiny sx={{ color: '#2A2E37 !important' }}>
-                              One PDF,WORD,EXCEL file only, file size up to 20MB
+                                One PDF,WORD,EXCEL file only, file size up to
+                                20MB
                               </Tiny>
                             </Box>
                           )
