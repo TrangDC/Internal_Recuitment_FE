@@ -23,7 +23,6 @@ function useGetAllPermissionGroups() {
           (item: any) => item?.node
         ) ?? []
 
-      console.log('sortData', sortData)
       setIsGetting(false)
       return sortData
     }

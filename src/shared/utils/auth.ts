@@ -1,7 +1,6 @@
 import { handleRefreshToken } from 'services/authUtil'
 import handleAuthLocalStorage from 'services/auth-local-storage-service'
 import Token from 'shared/class/token'
-import { queryClient } from 'index'
 
 const { getToken, removeToken, saveToken } = handleAuthLocalStorage()
 

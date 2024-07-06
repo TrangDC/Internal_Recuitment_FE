@@ -1,8 +1,9 @@
-import { Backdrop, CircularProgress } from '@mui/material'
+import { Backdrop } from '@mui/material'
 import React from 'react'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 
 const LoadingSpinner: React.FC = () => {
+  console.log('LoadingSpinner')
   return (
     <Backdrop
       sx={{

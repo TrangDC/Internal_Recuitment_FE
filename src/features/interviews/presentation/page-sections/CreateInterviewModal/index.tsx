@@ -101,6 +101,9 @@ function CreateInterviewModal({
                         onChange={field.onChange}
                         multiple={true}
                         name={field.name}
+                        filter={{
+                          is_able_to_interviewer: true,
+                        }}
                         textFieldProps={{
                           label: `Interviewer`,
                           required: true,

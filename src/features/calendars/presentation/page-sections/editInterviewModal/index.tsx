@@ -149,6 +149,9 @@ function EditInterviewModal(props: IEditInterviewModal) {
                         onChange={field.onChange}
                         multiple={true}
                         name={field.name}
+                        filter={{
+                          is_able_to_interviewer: true,
+                        }}
                         textFieldProps={{
                           required: true,
                           label: 'Interviewer',

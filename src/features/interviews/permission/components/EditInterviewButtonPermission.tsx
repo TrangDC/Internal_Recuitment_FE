@@ -15,16 +15,10 @@ function EditInterviewButtonPermission({
   interviewers,
 }: EditInterviewButtonPermissionProps) {
   const { role, user } = useAuthorization()
-  console.log('user?.teamId', user?.teamId)
-  console.log('candidateJobOfTeamId', candidateJobOfTeamId)
-
   const inTeam = user?.teamId === candidateJobOfTeamId
-  console.log('interviewers', interviewers)
   const isInterviewer = !!interviewers.find(
     (interviewer) => interviewer.id === user?.id
   )
-
-  console.log('isInterviewer', isInterviewer)
   const editEverything = checkPermissions({
     role,
     checkBy: {

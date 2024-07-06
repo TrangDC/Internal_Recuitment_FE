@@ -195,6 +195,10 @@ const useGraphql = () => {
               hiring_job {
                 id
                 name
+                team {
+                  id
+                  name
+                }
               }
               created_at
           }

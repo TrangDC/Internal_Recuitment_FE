@@ -31,6 +31,7 @@ import {
 } from '../index'
 import { downloadOneFile } from '../../providers/helper'
 import Cant from 'features/authorization/presentation/components/Cant'
+import DeleteFeedbackButtonPermission from 'features/feedback/permission/components/DeleteFeedbackButtonPermission'
 
 interface Props {
   listFeedback: FeedBack[]
@@ -120,8 +121,9 @@ const ListFeedBack = ({ listFeedback }: Props) => {
                         ],
                       }}
                     >
-                      <DeleteIcon
-                        onClick={(e) => {
+                      <DeleteFeedbackButtonPermission
+                        ownerId={feedback?.owner?.id ?? ''}
+                        onClick={() => {
                           handleOpenDelete(feedback.id)
                         }}
                       />

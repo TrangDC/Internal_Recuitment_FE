@@ -4,7 +4,6 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Controller } from 'react-hook-form'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
-import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto-complete'
@@ -141,6 +140,9 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         onChange={field.onChange}
                         multiple={true}
                         name={field.name}
+                        filter={{
+                          is_able_to_interviewer: true,
+                        }}
                         disableCloseOnSelect
                         textFieldProps={{
                           required: true,

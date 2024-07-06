@@ -123,17 +123,15 @@ export const removeEmptyInObject = (obj: Record<string, any>) => {
   let newObj: Record<string, any> = {}
 
   Object.keys(obj).forEach((item) => {
-    if((Array.isArray(obj[item]) && isEmpty(obj[item]))) {
+    if (Array.isArray(obj[item]) && isEmpty(obj[item])) {
       newObj[item] = undefined
-      return;
+      return
     }
     newObj[item] = obj[item]
   })
 
   return newObj
 }
-
-
 
 export const getBase64 = (file: Blob): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -251,7 +249,6 @@ export async function previewFile(files: string) {
   const response = await fetch(files)
   if (response.ok) {
     const blob = await response.blob()
-    console.log('blob', blob)
     const fileType = blob.type
     const fileUrl = URL.createObjectURL(blob)
     let viewerUrl
@@ -263,37 +260,46 @@ export async function previewFile(files: string) {
 }
 
 export const updateRecordSkill = (data: SELECTED_SKILL) => {
-  const cloneData = cloneDeep(data);
+  const cloneData = cloneDeep(data)
 
   _.forOwn(cloneData, (value, key) => {
     if (_.isArray(value) && _.isEmpty(value)) {
-      delete cloneData[key];
+      delete cloneData[key]
     }
-  });
+  })
 
   const transform = Object.keys(cloneData).flatMap((key, idx) => {
-    const value = cloneData[key];
+    const value = cloneData[key]
 
     return value.map((item, index) => {
       return {
         id: item.id,
         skill_id: item.skill_id,
-        orderId: ((idx + 1) * 1000) + (index + 1),
+        orderId: (idx + 1) * 1000 + (index + 1),
       }
     })
+  })
 
-  });
-
-  return transform;
+  return transform
 }
 
-export const formatRecordSkill = (entity_skill_types: entity_skill_type[] | undefined) => {
-  if(!entity_skill_types) return {};
+export const formatRecordSkill = (
+  entity_skill_types: entity_skill_type[] | undefined
+) => {
+  if (!entity_skill_types) return {}
 
-  const entity_skill_records = entity_skill_types.reduce((current: SELECTED_SKILL, next: entity_skill_type) => {
-    current[next.id] = next.entity_skills.map((skill) => ({ id: skill.id, skill_id: skill.skill_id, parent_id: next.id, skill_name: skill.name }))
-    return current
-  }, {})
+  const entity_skill_records = entity_skill_types.reduce(
+    (current: SELECTED_SKILL, next: entity_skill_type) => {
+      current[next.id] = next.entity_skills.map((skill) => ({
+        id: skill.id,
+        skill_id: skill.skill_id,
+        parent_id: next.id,
+        skill_name: skill.name,
+      }))
+      return current
+    },
+    {}
+  )
 
-  return entity_skill_records;
+  return entity_skill_records
 }

@@ -7,6 +7,8 @@ import { DeleteCandidateJobModal } from 'features/candidatejob/presentation/page
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import EditCandidateJobModal from 'features/candidatejob/presentation/page-sections/EditCandidateJobModal'
 import useBuildActionsKanbanJobs from 'features/jobs/presentation/providers/hooks/table/useBuildActionsKanbanJobs'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import checkPermissionActionKanBan from 'features/jobs/permission/utils/checkPermissionActionKanBan'
 
 interface IActionGroupButtons {
   rowId: string
@@ -24,17 +26,22 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
     setOpenEdit,
     handleOpenEdit,
   } = useActionTable<CandidateJob>()
-
+  const { role, user } = useAuthorization()
   const { actions: actionsColumns } = useBuildActionsKanbanJobs({
     handleOpenDelete,
     handleOpenEdit,
   })
-
+  const newActions = checkPermissionActionKanBan({
+    role,
+    me: user,
+    actions: actionsColumns,
+    rowData,
+  })
   return (
     <Fragment>
       <ActionGroupButtons<CandidateStatusItem>
         rowId={rowId}
-        actions={actionsColumns}
+        actions={newActions}
         rowData={rowData}
       />
 

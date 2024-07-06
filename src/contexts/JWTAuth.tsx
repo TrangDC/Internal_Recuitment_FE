@@ -99,6 +99,7 @@ export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  console.log('Auth')
   // show loading until not initialized
   if (!state.isInitialized) <LoadingScreen />
 
