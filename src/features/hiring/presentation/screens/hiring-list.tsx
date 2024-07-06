@@ -12,7 +12,7 @@ import EditHiringModal from '../screen-sections/EditHiringModal'
 import useHiringTable from 'features/hiring/hooks/useHiringTable'
 import { Hiring } from 'features/hiring/domain/interfaces'
 import { columns } from 'features/hiring/shared/constants/columns'
-import useHiringTeamPermissionActionTable from 'features/hiring/permission/useHiringTeamPermissionActionTable'
+import useBuildActionsTableHiringTeam from 'features/hiring/hooks/useBuildActionsTableHiringTeam'
 
 const HiringList = () => {
   const { handleOpenEdit, openEdit, rowId, rowData, setOpenEdit } =
@@ -22,7 +22,7 @@ const HiringList = () => {
   const { useTableReturn } = useHiringTable({
     search,
   })
-  const { actions } = useHiringTeamPermissionActionTable({
+  const { actions } = useBuildActionsTableHiringTeam({
     handleOpenEdit,
   })
   const { columnTable } = useBuildColumnTable<Hiring>({

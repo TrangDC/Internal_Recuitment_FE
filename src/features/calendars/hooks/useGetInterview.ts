@@ -45,6 +45,7 @@ function useGetInterview({ id }: IUseGetInterview) {
         job: data?.candidate_job.hiring_job.name ?? '',
         hiring_job_id: data?.candidate_job.hiring_job_id ?? '',
         candidate_id: data?.candidate_job.candidate_id ?? '',
+        candidateJobOfTeamId: data?.candidate_job?.hiring_job?.team?.id ?? '',
       }
     },
   })

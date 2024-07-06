@@ -7,19 +7,16 @@ import {
   ListInterviewContainer,
 } from '../../providers/styles'
 import { Span } from 'shared/components/Typography'
-import { Add } from '@mui/icons-material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import useActionTable from '../../providers/hooks/useActionTable'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
-import EditIcon from 'shared/components/icons/EditIcon'
-import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import { Interview } from 'features/interviews/domain/interfaces'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
@@ -35,6 +32,9 @@ import {
   EditInterviewModal,
 } from '../index'
 import Cant from 'features/authorization/presentation/components/Cant'
+import AddNewInterviewButtonPermission from 'features/interviews/permission/components/AddNewInterviewButtonPermission'
+import EditInterviewButtonPermission from 'features/interviews/permission/components/EditInterviewButtonPermission'
+import DeleteInterviewButtonPermission from 'features/interviews/permission/components/DeleteInterviewButtonPermission'
 
 interface Props {
   jobApplicationDetail: CandidateJob
@@ -72,6 +72,7 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
     })
   }
 
+  const candidateJobOfTeamId = jobApplicationDetail?.hiring_job?.team?.id ?? ''
   return (
     <ListInterviewContainer>
       <DivActionHeader>
@@ -87,9 +88,10 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
         >
           {showInterview && (
             <BoxButton>
-              <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
-                Add new interview
-              </Button>
+              <AddNewInterviewButtonPermission
+                candidateJobOfTeamId={candidateJobOfTeamId}
+                onClick={() => setOpenCreate(true)}
+              />
             </BoxButton>
           )}
         </Cant>
@@ -126,47 +128,21 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                         {interview.start_from &&
                           isPast(dayjs(interview.start_from).toDate()) && (
                             <Fragment>
-                              <Cant
-                                checkBy={{
-                                  compare: 'hasAny',
-                                  permissions: [
-                                    'EDIT.everything',
-                                    'EDIT.ownedOnly',
-                                    'EDIT.teamOnly',
-                                  ],
+                              <EditInterviewButtonPermission
+                                candidateJobOfTeamId={candidateJobOfTeamId}
+                                interviewers={interview.interviewer ?? []}
+                                onClick={() => {
+                                  handleOpenEdit(interview.id)
                                 }}
-                                module="INTERVIEWS"
-                              >
-                                <EditIcon
-                                  onClick={(e) => {
-                                    handleOpenEdit(interview.id)
-                                  }}
-                                  sx={{
-                                    fontSize: '20px',
-                                  }}
-                                />
-                              </Cant>
+                              />
 
-                              <Cant
-                                checkBy={{
-                                  compare: 'hasAny',
-                                  permissions: [
-                                    'DELETE.everything',
-                                    'DELETE.ownedOnly',
-                                    'DELETE.teamOnly',
-                                  ],
+                              <DeleteInterviewButtonPermission
+                                candidateJobOfTeamId={candidateJobOfTeamId}
+                                interviewers={interview.interviewer ?? []}
+                                onClick={() => {
+                                  handleOpenDelete(interview.id)
                                 }}
-                                module="INTERVIEWS"
-                              >
-                                <DeleteIcon
-                                  onClick={(e) => {
-                                    handleOpenDelete(interview.id)
-                                  }}
-                                  sx={{
-                                    fontSize: '20px',
-                                  }}
-                                />
-                              </Cant>
+                              />
                             </Fragment>
                           )}
                       </FlexBox>

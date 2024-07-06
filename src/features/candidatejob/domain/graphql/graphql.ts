@@ -162,6 +162,15 @@ const useGraphql = () => {
         hiring_job_id
         status
         created_at
+        owner {
+          id
+          name
+        }
+        hiring_job {
+          team {
+            id
+          }
+        }
         steps {
           id
           candidate_job_id
@@ -234,6 +243,9 @@ const useGraphql = () => {
               id
               name
               work_email
+              team {
+                id
+              }
             }
             feedback
             attachments {
@@ -277,6 +289,9 @@ const useGraphql = () => {
               id
               name
               work_email
+               team {
+                id
+              }
             }
             feedback
             attachments {
@@ -320,6 +335,9 @@ const useGraphql = () => {
               id
               name
               work_email
+               team {
+                id
+              }
             }
             feedback
             attachments {
@@ -364,6 +382,9 @@ const useGraphql = () => {
               id
               name
               work_email
+               team {
+                id
+              }
             }
             feedback
             attachments {
@@ -408,6 +429,9 @@ const useGraphql = () => {
               id
               name
               work_email
+              team {
+                id
+              }
             }
             feedback
             attachments {
@@ -452,6 +476,9 @@ const useGraphql = () => {
               id
               name
               work_email
+              team {
+                id
+              }
             }
             feedback
             attachments {
@@ -496,6 +523,9 @@ const useGraphql = () => {
               id
               name
               work_email
+              team {
+                id
+              }
             }
             feedback
             attachments {

@@ -1,6 +1,7 @@
 import { handleRefreshToken } from 'services/authUtil'
 import handleAuthLocalStorage from 'services/auth-local-storage-service'
 import Token from 'shared/class/token'
+import { queryClient } from 'index'
 
 const { getToken, removeToken, saveToken } = handleAuthLocalStorage()
 
@@ -26,6 +27,7 @@ function handleRefreshTokenMiddleWare() {
             expiresAt: new Date(response.expiresAt),
           })
           saveToken(token)
+          window.location.reload()
         }
       } catch (error) {
         handleRemoveToken()

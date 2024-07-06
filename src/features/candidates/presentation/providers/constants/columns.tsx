@@ -10,13 +10,15 @@ import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
 import dayjs from 'dayjs'
 import { CANDIDATE_SOURCE_LABEL } from 'shared/components/autocomplete/candidate-source-auto-complete'
 import { renderReferenceValueByType } from 'features/auditTrails/presentation/providers/helper'
-import { ChipComponent } from 'shared/components/chip-stack/chip-field/style'
 import { ChipLimit } from 'shared/components/chip-stack'
+import checkPermissionActionTable from 'features/candidates/permission/utils/checkPermissonActionTable'
+import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 
 const columnHelper = createColumnHelper<Candidate>()
 
 export const columns = (
-  actions: TOptionItem<Candidate>[]
+  actions: TOptionItem<Candidate>[],
+  { me, role }: ParamsColumn
 ): ColumnDef<Candidate, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
@@ -115,9 +117,11 @@ export const columns = (
     size: 200,
     cell: (info) => {
       const skill_types = info.row.original.entity_skill_types
-      const label_list = skill_types ? skill_types.flatMap((type) => {
-        return  type.entity_skills.map((skill) => skill.name)
-      }) : []
+      const label_list = skill_types
+        ? skill_types.flatMap((type) => {
+            return type.entity_skills.map((skill) => skill.name)
+          })
+        : []
 
       return (
         <StyleTinyText>
@@ -132,15 +136,20 @@ export const columns = (
     size: 100,
     enableSorting: false,
     id: 'action',
-    cell: (info) => {
-      const id = info.row.original.id
-
+    cell: (rowData) => {
+      const id = rowData.row.original.id
+      const newActions = checkPermissionActionTable({
+        actions,
+        me,
+        role,
+        rowData,
+      })
       return (
         <>
           <ActionGroupButtons<Candidate>
             rowId={id}
-            actions={actions}
-            rowData={info.row.original}
+            actions={newActions}
+            rowData={rowData.row.original}
           />
         </>
       )

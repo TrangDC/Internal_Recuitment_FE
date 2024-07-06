@@ -29,8 +29,8 @@ class Token {
   }
 
   static isValidToken = (accessToken: string): boolean => {
-    if (!accessToken) return false
     try {
+      if (!accessToken) return false
       jwtDecode(accessToken)
       return true
     } catch (error) {

@@ -14,8 +14,8 @@ import DeleteRoleTemplateModal from '../screen-sections/deleteRoleTemplateModal'
 import useFilterRoleTemplate from 'features/role-template/hooks/useFilterRoleTemplate'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import DetailRoleTemplateModal from '../screen-sections/detailRoleTemplateModal'
-import useRoleTemplatePermissionActionsTable from 'features/role-template/permission/hooks/useRoleTemplatePermissionActionsTable'
 import Cant from 'features/authorization/presentation/components/Cant'
+import useBuildActionsTableRoleTemplate from 'features/role-template/hooks/useBuildActionsTableRoleTemplate'
 
 const RoleTemplateList = () => {
   const {
@@ -37,7 +37,7 @@ const RoleTemplateList = () => {
   const { useTableReturn } = useRoleTemplateTable({
     search,
   })
-  const { actions } = useRoleTemplatePermissionActionsTable({
+  const { actions } = useBuildActionsTableRoleTemplate({
     handleOpenDelete,
     handleOpenDetail,
     handleOpenEdit,

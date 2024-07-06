@@ -10,10 +10,15 @@ import { LinkText, StyleTinyText } from 'shared/styles'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import { ChipLimit } from 'shared/components/chip-stack'
+import checkPermissionActionTable from 'features/jobs/permission/utils/checkPermissonActionTable'
+import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 
 const columnHelper = createColumnHelper<Job>()
 
-export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
+export const columns = (
+  actions: TOptionItem<Job>[],
+  { me, role }: ParamsColumn
+): ColumnDef<Job, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => (
@@ -37,7 +42,7 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     size: 150,
     header: () => <span>Priority</span>,
     cell: (info) => {
-      return <ChipPriority status={info.row.original.priority}/>
+      return <ChipPriority status={info.row.original.priority} />
     },
   }),
   columnHelper.accessor((row) => row.team.name, {
@@ -81,9 +86,11 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     size: 200,
     cell: (info) => {
       const skill_types = info.row.original.entity_skill_types
-      const label_list = skill_types ? skill_types.flatMap((type) => {
-        return  type.entity_skills.map((skill) => skill.name)
-      }) : []
+      const label_list = skill_types
+        ? skill_types.flatMap((type) => {
+            return type.entity_skills.map((skill) => skill.name)
+          })
+        : []
 
       return (
         <StyleTinyText>
@@ -98,17 +105,21 @@ export const columns = (actions: TOptionItem<Job>[]): ColumnDef<Job, any>[] => [
     size: 100,
     enableSorting: false,
     id: 'action',
-    cell: (info) => {
-      const id = info.row.original.id
-
+    cell: (rowData) => {
+      const row = rowData.row.original
+      const id = row.id
+      const newActions = checkPermissionActionTable({
+        actions,
+        me,
+        role,
+        rowData,
+      })
       return (
-        <>
-          <ActionGroupButtons<Job>
-            rowId={id}
-            actions={actions}
-            rowData={info.row.original}
-          />
-        </>
+        <ActionGroupButtons<Job>
+          rowId={id}
+          actions={newActions}
+          rowData={rowData.row.original}
+        />
       )
     },
   }),

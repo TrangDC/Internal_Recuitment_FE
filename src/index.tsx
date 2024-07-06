@@ -24,16 +24,17 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient({})
+
 root.render(
   <React.StrictMode>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <SettingsProvider>
         <JWTAuthProvider>
-          <PopupProvider>
-            <QueryClientProvider client={queryClient}>
-              <Suspense fallback={<LoadingSpinner />}>
-                <AuthorizationProvider>
+          <QueryClientProvider client={queryClient}>
+            <Suspense fallback={<LoadingSpinner />}>
+              <AuthorizationProvider>
+                <PopupProvider>
                   <App />
                   {ReactQueryDevtoolsProduction && (
                     <ReactQueryDevtoolsProduction
@@ -41,10 +42,10 @@ root.render(
                       buttonPosition="bottom-right"
                     />
                   )}
-                </AuthorizationProvider>
-              </Suspense>
-            </QueryClientProvider>
-          </PopupProvider>
+                </PopupProvider>
+              </AuthorizationProvider>
+            </Suspense>
+          </QueryClientProvider>
         </JWTAuthProvider>
       </SettingsProvider>
     </LocalizationProvider>

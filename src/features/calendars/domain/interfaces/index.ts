@@ -17,7 +17,7 @@ export type UpdateCandidateInterviewInput = {
   start_from: string
   end_at: string
   interviewer: string[]
-  note: string,
+  note: string
 }
 
 export type FilterCalendar = {
@@ -51,7 +51,7 @@ export type CandidateInterview = {
   updated_at: string
 }
 
-type User = {
+export type User = {
   id: string
   name: string
   work_email: string

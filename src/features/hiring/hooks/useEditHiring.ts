@@ -38,7 +38,7 @@ function useEditHiring(props: UseChangeStatusProps) {
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: updateUser,
     oneBuildQuery: getUser,
-    queryKey: [queryKey, id],
+    queryKey: [queryKey],
     id,
     onSuccess,
     formatDefaultValues: async (data) => {

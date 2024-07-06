@@ -20,7 +20,6 @@ import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import useFilterCandidates from '../../providers/hooks/useFilterCandidates'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import SearchInput from 'shared/components/table/components/SearchInput'
-import useCandidateBackListPermissionActionTable from 'features/candidates/permission/hooks/useCandidateBackListPermissionActionTable'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import ControllerDateRange from 'shared/components/table/components/tooltip-filter/ControllerDateRange'
 import AppDateRangePicker from 'shared/components/input-fields/AppDateRangePicker'
@@ -28,6 +27,7 @@ import dayjs from 'dayjs'
 import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
+import useBuildActionTableCandidate from '../../providers/hooks/useBuildActionTableCandidateBL'
 
 const BlackList = () => {
   const {
@@ -65,7 +65,7 @@ const BlackList = () => {
     search,
   })
 
-  const { actions } = useCandidateBackListPermissionActionTable({
+  const { actions } = useBuildActionTableCandidate({
     handleOpenBlackList,
     handleOpenDelete,
     handleOpenEdit,

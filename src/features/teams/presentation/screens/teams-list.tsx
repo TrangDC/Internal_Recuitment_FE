@@ -17,7 +17,7 @@ import useFilterTeams from 'features/teams/hooks/useFilterTeams'
 import useActionTable from 'features/teams/hooks/useActionTable'
 import useTeamTable from 'features/teams/hooks/useTeamTable'
 import Cant from 'features/authorization/presentation/components/Cant'
-import useTeamsPermissionActionTable from 'features/teams/permission/actions-table/useTeamsPermissionActionTable'
+import useBuildActionsTableTeam from 'features/teams/hooks/useBuildActionsTableTeam'
 
 const TeamList = () => {
   const useActionTableReturn = useActionTable()
@@ -38,11 +38,10 @@ const TeamList = () => {
     search,
   })
   const translation = useTextTranslation()
-  const { actions } = useTeamsPermissionActionTable(useActionTableReturn)
-
+  const { actions } = useBuildActionsTableTeam(useActionTableReturn)
   const { columnTable } = useBuildColumnTable({
-    actions: actions,
     columns,
+    actions: actions,
   })
 
   return (

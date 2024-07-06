@@ -14,10 +14,10 @@ import { columns } from '../providers/constants/columns'
 import useFilterSkillType from '../providers/hooks/useFilterSkillType'
 import useSkillTypeTable from '../providers/hooks/useSkillTypeTable'
 import { DivContainerWrapper, DivHeaderWrapper } from '../providers/styles'
-import useSkillTypeListPermissionActionTable from 'features/skillType/permission/useSkillTypeListPermissionActionTable'
 import useActionTable from '../providers/hooks/useActionTable'
 import { SkillType } from 'features/skillType/domain/interfaces'
 import Cant from 'features/authorization/presentation/components/Cant'
+import useBuildActionsTableSkillType from '../providers/hooks/useBuildActionsTableSkillType'
 
 const SkillTypeList = () => {
   const {
@@ -38,7 +38,8 @@ const SkillTypeList = () => {
   const { useTableReturn } = useSkillTypeTable({
     search,
   })
-  const { actions } = useSkillTypeListPermissionActionTable({
+
+  const { actions } = useBuildActionsTableSkillType({
     handleOpenDelete,
     handleOpenEdit,
   })

@@ -15,6 +15,7 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import PopoverLayout from './PopoverLayout'
 import useAuth from 'features/authentication/presentation/providers/hooks/useAuth'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 
 // styled components
 const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({
@@ -35,7 +36,8 @@ const StyledSmall = styled(Small)(({ theme }) => ({
 const ProfilePopover: FC = () => {
   const anchorRef = useRef(null)
   const navigate = useNavigate()
-  const { user, logout } = useAuth()
+  const { user } = useAuthorization()
+  const { logout } = useAuth()
   const [open, setOpen] = useState(false)
   const upSm = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'))
 

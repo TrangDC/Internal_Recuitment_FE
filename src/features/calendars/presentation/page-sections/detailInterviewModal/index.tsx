@@ -18,6 +18,8 @@ import { Fragment } from 'react/jsx-runtime'
 import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 import useGetInterview from 'features/calendars/hooks/useGetInterview'
 import Cant from 'features/authorization/presentation/components/Cant'
+import DeleteInterviewButtonPermission from 'features/calendars/permission/components/DeleteInterviewButtonPermission'
+import EditInterviewButtonPermission from 'features/calendars/permission/components/EditInterviewButtonPermission'
 
 interface IDetailIntefviewModal {
   open: boolean
@@ -33,7 +35,7 @@ const labelStyle = {
   },
 }
 
-function DetailIntefviewModal(props: IDetailIntefviewModal) {
+function DetailInterviewModal(props: IDetailIntefviewModal) {
   const { open, setOpen, id } = props
   const { handleEditEvent, handleDeleteEvent } = useContextCalendar()
   const { useFormReturn, navigateToCandidate, navigateToCandidateJob } =
@@ -43,6 +45,7 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
 
   const { getValues, watch } = useFormReturn
   const start_from = watch('start_from')
+  const candidateJobOfTeamId = getValues('candidateJobOfTeamId')
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <Box>
@@ -62,55 +65,22 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
               <FlexBox gap={1}>
                 {start_from && isPast(start_from) && (
                   <Fragment>
-                    <Cant
-                      module="INTERVIEWS"
-                      checkBy={{
-                        compare: 'hasAny',
-                        permissions: [
-                          'EDIT.everything',
-                          'EDIT.ownedOnly',
-                          'EDIT.teamOnly',
-                        ],
+                    <EditInterviewButtonPermission
+                      candidateJobOfTeamId={candidateJobOfTeamId}
+                      interviewers={getValues('interviewer')}
+                      onClick={() => {
+                        handleEditEvent(id)
                       }}
-                    >
-                      <EditOutline
-                        style={{
-                          height: '24px',
-                          width: '24px',
-                          color: 'red',
-                          cursor: 'pointer',
-                        }}
-                        onClick={() => {
-                          handleEditEvent(id)
-                        }}
-                      />
-                    </Cant>
-                    <Cant
-                      module="INTERVIEWS"
-                      checkBy={{
-                        compare: 'hasAny',
-                        permissions: [
-                          'DELETE.everything',
-                          'DELETE.ownedOnly',
-                          'DELETE.teamOnly',
-                        ],
+                    />
+                    <DeleteInterviewButtonPermission
+                      onClick={() => {
+                        handleDeleteEvent(id)
                       }}
-                    >
-                      <DeleteOutline
-                        style={{
-                          height: '24px',
-                          width: '24px',
-                          color: 'grey.300',
-                          cursor: 'pointer',
-                        }}
-                        onClick={() => {
-                          handleDeleteEvent(id)
-                        }}
-                      />
-                    </Cant>
+                      candidateJobOfTeamId={candidateJobOfTeamId}
+                      interviewers={getValues('interviewer')}
+                    />
                   </Fragment>
                 )}
-
                 <CloseIcon
                   sx={{
                     height: '24px',
@@ -191,4 +161,4 @@ function DetailIntefviewModal(props: IDetailIntefviewModal) {
   )
 }
 
-export default DetailIntefviewModal
+export default DetailInterviewModal

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import { User } from 'features/calendars/domain/interfaces'
 import { RULE_MESSAGES } from 'shared/constants/validate'
 import { isPast } from 'shared/utils/date'
 import * as yup from 'yup'
@@ -114,7 +115,6 @@ export const getOneInterviewSchema = yup.object().shape({
   interview_date: yup.date(),
   start_from: yup.date(),
   end_at: yup.date(),
-  interviewer: yup.array().of(InterviewerSchema).default([]),
   candidateName: yup.string().default(''),
   candidateEmail: yup.string().default(''),
   phone: yup.string().default(''),
@@ -122,6 +122,8 @@ export const getOneInterviewSchema = yup.object().shape({
   job: yup.string().default(''),
   hiring_job_id: yup.string().default(''),
   candidate_id: yup.string().default(''),
+  candidateJobOfTeamId: yup.string().default(''),
+  interviewer: yup.array<any, User>().default([]),
 })
 
 export type CreateInterviewFrom = yup.InferType<typeof CreateInterviewSchema>

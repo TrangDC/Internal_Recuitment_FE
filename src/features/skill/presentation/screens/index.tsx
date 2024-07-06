@@ -12,7 +12,7 @@ import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import useFilterSkills from '../providers/hooks/useFilterSkills'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import Cant from 'features/authorization/presentation/components/Cant'
-import useSkillListPermissionActionTable from 'features/skill/permission/useSkillListPermissionActionTable'
+import useActionsTableSkill from 'features/skill/presentation/providers/constants/actionsTable'
 import { Skill } from 'features/skill/domain/interfaces'
 import DetailSkillModal from '../page-sections/DetailSkill'
 
@@ -36,7 +36,7 @@ const SkillList = () => {
   const { useTableReturn } = useSkillTypeTable({
     search,
   })
-  const { actions } = useSkillListPermissionActionTable({
+  const { actions } = useActionsTableSkill({
     handleOpenDelete,
     handleOpenDetail,
     handleOpenEdit,

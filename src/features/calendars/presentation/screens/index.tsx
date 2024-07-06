@@ -7,7 +7,7 @@ import {
   EventInteractionArgs,
 } from 'react-big-calendar/lib/addons/dragAndDrop'
 import { CalendarEvent } from '../page-sections/google-calendar/interface'
-import DetailIntefviewModal from '../page-sections/detailInterviewModal'
+import DetailInterviewModal from '../page-sections/detailInterviewModal'
 import EditInterviewModal from '../page-sections/editInterviewModal'
 import { convertToUTC } from 'shared/utils/date'
 import { isDate } from 'lodash'
@@ -152,7 +152,7 @@ function CalendarsScreen() {
             />
           )}
           {openDetailInterView && (
-            <DetailIntefviewModal
+            <DetailInterviewModal
               open={openDetailInterView}
               setOpen={setOpenDetailInterView}
               id={eventId.current}
