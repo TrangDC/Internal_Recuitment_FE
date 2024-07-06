@@ -58,7 +58,10 @@ export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     removeToken()
-    dispatch({ type: 'LOGOUT', token: null })
+    dispatch({
+      type: 'LOGOUT',
+      token: null,
+    })
     redirect('/dashboard')
   }
 
