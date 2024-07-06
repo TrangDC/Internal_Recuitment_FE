@@ -13,12 +13,18 @@ function useGetMe() {
   const { getMe, queryKey } = useGraphql()
   const { isAuthenticated } = useAuth()
   const { getToken } = handleAuthLocalStorage()
-  const { data, isFetching, refetch } = useQuery({
+  const { data, isFetching, refetch , isLoading } = useQuery({
     queryKey: [queryKey, 'me'],
     queryFn: async () => GraphQLClientService.fetchGraphQL(getMe.query),
     enabled: isAuthenticated && !!getToken(),
   })
+  
+  console.log('isAuthenticated', isAuthenticated)
   console.log('getMe')
+  console.log('isFetching', isFetching)
+  console.log('isLoading', isLoading)
+
+
   const { myPermission, me } = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
@@ -49,6 +55,7 @@ function useGetMe() {
     isFetching,
     refetch,
     data,
+    isAuthenticated
   }
 }
 

@@ -81,7 +81,6 @@ function PermissionGroups(props: PermissionSectionProps) {
               <CollapseGroup.CollapseBodyColumn width={'40%'}>
                 <FlexBox flexDirection={'column'}>
                   <Text13md>{t(permission.title)}</Text13md>
-                  <Text13md>{permission.id}</Text13md>
                   <Text13md color={'#4D607A'}>{description}</Text13md>
                 </FlexBox>
               </CollapseGroup.CollapseBodyColumn>

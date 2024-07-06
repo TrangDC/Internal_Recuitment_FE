@@ -42,7 +42,6 @@ function useEditHiring(props: UseChangeStatusProps) {
     id,
     onSuccess,
     formatDefaultValues: async (data) => {
-      console.log('data', data)
       const entityPermissions = data?.entity_permissions ?? []
       const permissionGroups = await getAllPermission()
       let entity_permissions: PermissionFormData
