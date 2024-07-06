@@ -1,12 +1,14 @@
 import { styled } from '@mui/material'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { Hiring } from 'features/hiring/domain/interfaces'
+import checkPermissionActionTable from 'features/hiring/permission/utils/checkPermissonActionTable'
 import {
   ActionGroupButtons,
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { TinyText } from 'shared/components/form/styles'
+import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 import { Span } from 'shared/components/Typography'
 
 export const StyleTinyText = styled(TinyText)(({ theme }) => ({
@@ -17,7 +19,8 @@ export const StyleTinyText = styled(TinyText)(({ theme }) => ({
 const columnHelper = createColumnHelper<Hiring>()
 
 export const columns = (
-  actions: TOptionItem<Hiring>[]
+  actions: TOptionItem<Hiring>[],
+  { me, role }: ParamsColumn
 ): ColumnDef<Hiring, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
@@ -56,15 +59,18 @@ export const columns = (
     id: 'action',
     cell: (info) => {
       const id = info.row.original.id
-
+      const newAction = checkPermissionActionTable({
+        actions,
+        me,
+        role,
+        rowData: info,
+      })
       return (
-        <>
-          <ActionGroupButtons<Hiring>
-            rowId={id}
-            actions={actions}
-            rowData={info.row.original}
-          />
-        </>
+        <ActionGroupButtons<Hiring>
+          rowId={id}
+          actions={newAction}
+          rowData={info.row.original}
+        />
       )
     },
   }),

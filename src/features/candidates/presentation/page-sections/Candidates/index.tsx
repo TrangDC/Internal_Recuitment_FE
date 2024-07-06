@@ -40,8 +40,8 @@ import AppDateRangePicker from 'shared/components/input-fields/AppDateRangePicke
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
 import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
-import useAllCandidatePermissionActionTable from 'features/candidates/permission/hooks/useCandidatePermissionActionTable'
 import Cant from 'features/authorization/presentation/components/Cant'
+import useBuildActionTableCandidate from '../../providers/hooks/useBuildActionTableCandidate'
 
 const Candidates = () => {
   const {
@@ -80,7 +80,8 @@ const Candidates = () => {
       dataFilterWithValue.status === STATUS_CANDIDATE.OFFERED_LOST
     )
   }, [dataFilterWithValue])
-  const { actions } = useAllCandidatePermissionActionTable({
+
+  const { actions } = useBuildActionTableCandidate({
     handleOpenBlackList,
     handleOpenDelete,
     handleOpenEdit,

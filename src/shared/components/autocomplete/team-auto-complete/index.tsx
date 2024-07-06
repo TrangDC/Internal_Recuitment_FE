@@ -2,7 +2,7 @@ import { AutocompleteBaseBackEnd } from '../autocomplete-base-back-end'
 import { AutocompleteValueBackEndCommonProps } from '../autocomplete-base-back-end/interface'
 import useGraphql from './useGraphql'
 
-interface Teams {
+export interface TeamsAutoCompleteData {
   name: string
   id: string
 }
@@ -16,10 +16,10 @@ function TeamsAutoComplete<Multiple extends boolean>({
   name,
   filter,
   ...other
-}: AutocompleteValueBackEndCommonProps<Teams, Multiple>) {
+}: AutocompleteValueBackEndCommonProps<TeamsAutoCompleteData, Multiple>) {
   const { getAllTeams, queryKey } = useGraphql()
   return (
-    <AutocompleteBaseBackEnd<Teams, Multiple>
+    <AutocompleteBaseBackEnd<TeamsAutoCompleteData, Multiple>
       onChange={onChange}
       queryKey={[queryKey]}
       queryString={getAllTeams}

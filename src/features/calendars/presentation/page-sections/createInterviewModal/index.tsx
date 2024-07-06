@@ -17,6 +17,7 @@ import dayjs from 'dayjs'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
 import useCreateInterview from 'features/calendars/hooks/useCreateInterview'
+import SelectionTeamPermission from 'features/calendars/permission/components/SelectionTeamPermission'
 
 interface IAddInterviewModal {
   open: boolean
@@ -80,17 +81,12 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                   name="teamId"
                   render={({ field, fieldState }) => (
                     <Fragment>
-                      <TeamsAutoComplete
+                      <SelectionTeamPermission
                         name={field.name}
                         value={field.value}
                         onChange={(value) => {
                           field.onChange(value)
                           resetField('jobId')
-                        }}
-                        multiple={false}
-                        textFieldProps={{
-                          required: true,
-                          label: 'Team',
                         }}
                       />
                       <HelperTextForm

@@ -30,4 +30,3 @@ export type UpdateTeamInput = {
   note: string
 }
 
-export type IActionTeams = 'delete' | 'edit' | 'create'

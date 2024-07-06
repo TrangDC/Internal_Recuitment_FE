@@ -8,11 +8,14 @@ import { StyleTinyText } from 'shared/styles'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Span } from 'shared/components/Typography'
 import { RoleTemplate } from 'features/role-template/domain/interfaces'
+import checkPermissionActionTable from 'features/role-template/permission/utils/checkPermissonActionTable'
+import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 
 const columnHelper = createColumnHelper<RoleTemplate>()
 
 export const columns = (
-  actions: TOptionItem<RoleTemplate>[]
+  actions: TOptionItem<RoleTemplate>[],
+  { me, role }: ParamsColumn
 ): ColumnDef<RoleTemplate, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
@@ -36,16 +39,20 @@ export const columns = (
     ),
     size: 100,
     enableSorting: false,
-    cell: (info) => {
-      const id = info.row.original.id
+    cell: (rowData) => {
+      const id = rowData.row.original.id
+      const newActions = checkPermissionActionTable({
+        actions,
+        me,
+        role,
+        rowData: rowData,
+      })
       return (
-        <>
-          <ActionGroupButtons<RoleTemplate>
-            rowId={id}
-            actions={actions}
-            rowData={info.row.original}
-          />
-        </>
+        <ActionGroupButtons<RoleTemplate>
+          rowId={id}
+          actions={newActions}
+          rowData={rowData.row.original}
+        />
       )
     },
   }),

@@ -23,6 +23,7 @@ import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTree from 'shared/components/tree/skill-tree'
+import SelectionTeamPermission from 'features/jobs/permission/components/SelectionTeamPermission'
 
 interface IEditJobModal {
   open: boolean
@@ -107,17 +108,12 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                   name="team_id"
                   render={({ field, fieldState }) => (
                     <Fragment>
-                      <TeamsAutoComplete
+                      <SelectionTeamPermission
                         name={field.name}
                         value={field.value}
                         onChange={(value) => {
                           field.onChange(value)
                           handleChangeManager(value as string)
-                        }}
-                        multiple={false}
-                        textFieldProps={{
-                          required: true,
-                          label: 'Team',
                         }}
                       />
                       <HelperTextForm
@@ -176,22 +172,30 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                 />
               </FormControl>
             </FlexBox>
-            <FlexBox justifyContent={'center'} alignItems={'flex-start'} gap={2}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="entity_skill_records"
-                render={({ field, fieldState }) => (
-                  <Fragment>
-                    <SkillTree value={field.value} onChange={field.onChange} textFieldProps={{label: "Skill"}}/>
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </Fragment>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
+            <FlexBox
+              justifyContent={'center'}
+              alignItems={'flex-start'}
+              gap={2}
+            >
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="entity_skill_records"
+                  render={({ field, fieldState }) => (
+                    <Fragment>
+                      <SkillTree
+                        value={field.value}
+                        onChange={field.onChange}
+                        textFieldProps={{ label: 'Skill' }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </Fragment>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
             <FlexBox
               justifyContent={'center'}
               alignItems={'flex-start'}

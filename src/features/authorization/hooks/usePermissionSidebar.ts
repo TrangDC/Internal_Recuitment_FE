@@ -14,8 +14,18 @@ export function usePermissionSidebar(props: ICheckPermissions): INavigation[] {
       return true
     }
     const module = (item as IMenuSideBar).module
-
     if (module && role[module]) {
+      if (module === 'SKILLS') {
+        const skill =
+          role['SKILLS'].VIEW.everything ||
+          role['SKILLS'].VIEW.ownedOnly ||
+          role['SKILLS'].VIEW.teamOnly
+        const skillType =
+          role['SKILL_TYPES'].VIEW.everything ||
+          role['SKILL_TYPES'].VIEW.ownedOnly ||
+          role['SKILL_TYPES'].VIEW.teamOnly
+        return skill || skillType
+      }
       return (
         role[module].VIEW.everything ||
         role[module].VIEW.ownedOnly ||

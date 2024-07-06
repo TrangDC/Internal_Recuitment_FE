@@ -20,7 +20,7 @@ import {
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import EditCandidateJobModal from '../EditCandidateJobModal'
 import Cant from 'features/authorization/presentation/components/Cant'
-import useCandidateJobPermissionActionTable from 'features/candidatejob/permission/hooks/useCandidateJobPermissionActionTable'
+import useBuildActionTableCandidateJobs from '../../providers/hooks/table/useBuildActionTableCandidateJobs'
 
 const JobApplicationHistory = ({
   candidateDetail,
@@ -48,7 +48,7 @@ const JobApplicationHistory = ({
     filters: { candidate_id: id },
   })
 
-  const { actions } = useCandidateJobPermissionActionTable({
+  const { actions } = useBuildActionTableCandidateJobs({
     handleOpenChangeStatus,
     handleOpenDelete,
     handleOpenEdit,

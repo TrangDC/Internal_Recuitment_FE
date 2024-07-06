@@ -10,6 +10,11 @@ const useGraphql = () => {
     node: `
         data {
           id
+          work_email
+          name
+          team {
+            id
+          }
           entity_permissions {
             id
             for_owner

@@ -28,7 +28,7 @@ function useGetResource<Response, FormData extends FieldValues>({
   async function getDataById(): Promise<Response | undefined> {
     setIsGetting(true)
     const data = await queryClient.fetchQuery({
-      queryKey,
+      queryKey: [...queryKey, id],
       queryFn: async () =>
         GraphQLClientService.fetchGraphQL(oneBuildQuery.query, {
           id: id,

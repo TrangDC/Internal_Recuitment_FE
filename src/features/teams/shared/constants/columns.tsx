@@ -9,11 +9,14 @@ import { Span } from 'shared/components/Typography'
 import { t } from 'i18next'
 import ChipField from 'shared/components/input-fields/ChipField'
 import { LinkText, StyleTinyText } from 'shared/styles'
+import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
+import checkPermissionActionTable from 'features/teams/permission/utils/checkPermissonActionTable'
 
 const columnHelper = createColumnHelper<Team>()
 
 export const columns = (
-  actions: TOptionItem<Team>[]
+  actions: TOptionItem<Team>[],
+  { me, role }: ParamsColumn
 ): ColumnDef<Team, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
@@ -63,15 +66,18 @@ export const columns = (
     id: 'action',
     cell: (info) => {
       const id = info.row.original.id
-
+      const newActions = checkPermissionActionTable({
+        actions,
+        role,
+        rowData: info,
+        me,
+      })
       return (
-        <>
-          <ActionGroupButtons<Team>
-            rowId={id}
-            actions={actions}
-            rowData={info.row.original}
-          />
-        </>
+        <ActionGroupButtons<Team>
+          rowId={id}
+          actions={newActions}
+          rowData={info.row.original}
+        />
       )
     },
   }),

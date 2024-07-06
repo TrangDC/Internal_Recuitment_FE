@@ -1,4 +1,4 @@
-import { usePermissionActionTable } from 'features/authorization/hooks/usePermissionActionTable'
+import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { downloadFileAttachment } from 'features/candidatejob/presentation/providers/helper'
 import { useNavigate } from 'react-router-dom'
@@ -9,41 +9,39 @@ import LinkIcon from 'shared/components/icons/Link'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import ViewIcon from 'shared/components/icons/View'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
-import useTextTranslation from 'shared/constants/text'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { openPDFInNewTab } from 'shared/utils/upload-file'
 import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
 
-type IActionCandidateJobs =
-  | 'detail'
-  | 'edit-cv'
-  | 'delete'
-  | 'change_status'
-  | 'copy-application-link'
-  | 'view-cv'
-  | 'download'
-
-type UseCandidateJobPermissionActionTableProps = {
+enum ActionCandidateJobsTabLe {
+  DETAIL = 'detail',
+  EDIT_CV = 'edit_cv',
+  DELETE = 'delete',
+  CHANGE_STATUS = 'change_status',
+  COPY_APPLICATION_LINK = 'copy_application_link',
+  VIEW_CV = 'view_cv',
+  DOWNLOAD = 'download',
+}
+type UseBuildActionTableCandidateJobsProps = {
   handleOpenEdit: (id: string, rowData: CandidateJob) => void
   handleOpenDelete: (id: string) => void
   handleOpenChangeStatus: (id: string, rowData: CandidateJob) => void
 }
 
-function useCandidateJobPermissionActionTable({
+function useBuildActionTableCandidateJobs({
   handleOpenEdit,
   handleOpenDelete,
   handleOpenChangeStatus,
-}: UseCandidateJobPermissionActionTableProps) {
-  const translation = useTextTranslation()
+}: UseBuildActionTableCandidateJobsProps) {
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
   const navigate = useNavigate()
-  const { actions } = usePermissionActionTable<
-    IActionCandidateJobs,
+  const { actions } = useBuildActionsTable<
+    ActionCandidateJobsTabLe,
     CandidateJob
   >({
     actions: {
       detail: {
-        id: 'detail',
+        id: ActionCandidateJobsTabLe.DETAIL,
         onClick: (id) => {
           navigate(`/dashboard/job-application-detail/${id}`)
         },
@@ -51,7 +49,7 @@ function useCandidateJobPermissionActionTable({
         Icon: <SearchIconSmall />,
       },
       change_status: {
-        id: 'change_status',
+        id: ActionCandidateJobsTabLe.CHANGE_STATUS,
         onClick: (id, rowData) => {
           handleOpenChangeStatus(id, rowData)
         },
@@ -67,16 +65,16 @@ function useCandidateJobPermissionActionTable({
           return disabledStatuses.includes(rowData?.status)
         },
       },
-      'edit-cv': {
-        id: 'edit-cv',
+      edit_cv: {
+        id: ActionCandidateJobsTabLe.EDIT_CV,
         onClick: (id, rowData) => {
           handleOpenEdit(id, rowData)
         },
         title: 'Edit CV',
         Icon: <EditIcon />,
       },
-      'copy-application-link': {
-        id: 'copy-application-link',
+      copy_application_link: {
+        id: ActionCandidateJobsTabLe.COPY_APPLICATION_LINK,
         onClick: (id, rowData) => {
           const url = `${getDomain()}/dashboard/job-application-detail/${id}`
           handleCopyClipBoard(
@@ -87,8 +85,8 @@ function useCandidateJobPermissionActionTable({
         title: 'Copy application link',
         Icon: <LinkIcon />,
       },
-      'view-cv': {
-        id: 'view-cv',
+      view_cv: {
+        id: ActionCandidateJobsTabLe.VIEW_CV,
         onClick: (_, rowData) => {
           const attachments = rowData.attachments
           if (attachments?.length > 0) {
@@ -107,7 +105,7 @@ function useCandidateJobPermissionActionTable({
         Icon: <ViewIcon />,
       },
       download: {
-        id: 'download',
+        id: ActionCandidateJobsTabLe.DOWNLOAD,
         onClick: (id, rowData) => {
           const { attachments } = rowData
           downloadFileAttachment(attachments, handleGetUrlDownload)
@@ -116,7 +114,7 @@ function useCandidateJobPermissionActionTable({
         Icon: <DownloadIcon />,
       },
       delete: {
-        id: 'delete',
+        id: ActionCandidateJobsTabLe.DELETE,
         onClick: (id) => {
           handleOpenDelete(id)
         },
@@ -124,60 +122,10 @@ function useCandidateJobPermissionActionTable({
         Icon: <DeleteIcon />,
       },
     },
-    permissionActions: ({ actions, role }, utils) => {
-      let newActions = [...actions]
-      const cantView = utils.checkPermissions({
-        checkBy: {
-          compare: 'hasAny',
-          permissions: ['VIEW.everything'],
-        },
-        module: 'CANDIDATE_JOBS',
-        role: role,
-      })
-
-      const cantChangeStatus = utils.checkPermissions({
-        checkBy: {
-          compare: 'hasAny',
-          permissions: ['CHANGE_STATUS.everything'],
-        },
-        module: 'CANDIDATE_JOBS',
-        role: role,
-      })
-
-      const cantEdit = utils.checkPermissions({
-        checkBy: {
-          compare: 'hasAny',
-          permissions: ['EDIT.everything'],
-        },
-        module: 'CANDIDATE_JOBS',
-        role: role,
-      })
-
-      const cantDelete = utils.checkPermissions({
-        checkBy: {
-          compare: 'hasAny',
-          permissions: ['DELETE.everything'],
-        },
-        module: 'CANDIDATE_JOBS',
-        role: role,
-      })
-      if (!cantView)
-        newActions = utils.removeAction(newActions, [
-          'detail',
-          'download',
-          'view-cv',
-          'copy-application-link',
-        ])
-      if (!cantEdit) newActions = utils.removeAction(newActions, ['edit-cv'])
-      if (!cantDelete) newActions = utils.removeAction(newActions, ['delete'])
-      if (!cantChangeStatus)
-        newActions = utils.removeAction(newActions, ['change_status'])
-      return newActions
-    },
   })
   return {
     actions,
   }
 }
 
-export default useCandidateJobPermissionActionTable
+export default useBuildActionTableCandidateJobs

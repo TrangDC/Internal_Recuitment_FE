@@ -1,4 +1,3 @@
-import { usePermissionActionTable } from 'features/authorization/hooks/usePermissionActionTable'
 import { Job } from 'features/jobs/domain/interfaces'
 import { useNavigate } from 'react-router-dom'
 import { JobStatus } from 'shared/class/job-status'
@@ -6,29 +5,35 @@ import CloseIcon from 'shared/components/icons/CloseIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
+import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
 import useTextTranslation from 'shared/constants/text'
 
-type IActionJobsOpen = 'detail' | 'edit' | 'delete' | 'close_job'
+export enum ActionAllJobsTable {
+  DETAIL = 'detail',
+  EDIT = 'edit',
+  DELETE = 'delete',
+  CLOSE_JOB = 'close_job',
+}
 
 const { STATUS_STATE } = JobStatus
 
-type UseAllJobsPermissionActionTableProps = {
+type UseBuildAllJobsActionsTableProps = {
   handleOpenEdit: (id: string) => void
   handleOpenDelete: (id: string) => void
   handleOpenStatus: (id: string) => void
 }
 
-function useAllJobsPermissionActionTable({
+function useBuildAllJobsActionsTable({
   handleOpenEdit,
   handleOpenDelete,
   handleOpenStatus,
-}: UseAllJobsPermissionActionTableProps) {
+}: UseBuildAllJobsActionsTableProps) {
   const translation = useTextTranslation()
   const navigate = useNavigate()
-  const { actions } = usePermissionActionTable<IActionJobsOpen, Job>({
+  const { actions } = useBuildActionsTable<ActionAllJobsTable, Job>({
     actions: {
       detail: {
-        id: 'detail',
+        id: ActionAllJobsTable.DETAIL,
         onClick: (id) => {
           navigate(`/dashboard/job-detail/${id}`)
         },
@@ -36,7 +41,7 @@ function useAllJobsPermissionActionTable({
         Icon: <SearchIconSmall />,
       },
       close_job: {
-        id: 'close_job',
+        id: ActionAllJobsTable.CLOSE_JOB,
         onClick: (id) => {
           handleOpenStatus(id)
         },
@@ -57,7 +62,7 @@ function useAllJobsPermissionActionTable({
         Icon: <CloseIcon />,
       },
       edit: {
-        id: 'edit',
+        id: ActionAllJobsTable.EDIT,
         onClick: (id, rowData) => {
           handleOpenEdit(id)
         },
@@ -68,7 +73,7 @@ function useAllJobsPermissionActionTable({
         },
       },
       delete: {
-        id: 'delete',
+        id: ActionAllJobsTable.DELETE,
         onClick: (id) => {
           handleOpenDelete(id)
         },
@@ -76,54 +81,10 @@ function useAllJobsPermissionActionTable({
         Icon: <DeleteIcon />,
       },
     },
-    permissionActions: ({ actions, role }, utils) => {
-      let newActions = [...actions]
-      const cantView = utils.checkPermissions({
-        checkBy: {
-          compare: 'hasAny',
-          permissions: ['VIEW.everything', 'VIEW.teamOnly'],
-        },
-        module: 'JOBS',
-        role: role,
-      })
-
-      const cantCloseJob = utils.checkPermissions({
-        checkBy: {
-          compare: 'hasAny',
-          permissions: ['CLOSE_JOB.everything', 'CLOSE_JOB.teamOnly'],
-        },
-        module: 'JOBS',
-        role: role,
-      })
-
-      const cantEdit = utils.checkPermissions({
-        checkBy: {
-          compare: 'hasAny',
-          permissions: ['EDIT.everything', 'EDIT.teamOnly'],
-        },
-        module: 'JOBS',
-        role: role,
-      })
-
-      const cantDelete = utils.checkPermissions({
-        checkBy: {
-          compare: 'hasAny',
-          permissions: ['DELETE.everything', 'DELETE.teamOnly'],
-        },
-        module: 'JOBS',
-        role: role,
-      })
-      if (!cantView) newActions = utils.removeAction(newActions, ['detail'])
-      if (!cantEdit) newActions = utils.removeAction(newActions, ['edit'])
-      if (!cantDelete) newActions = utils.removeAction(newActions, ['delete'])
-      if (!cantCloseJob)
-        newActions = utils.removeAction(newActions, ['close_job'])
-      return newActions
-    },
   })
   return {
     actions,
   }
 }
 
-export default useAllJobsPermissionActionTable
+export default useBuildAllJobsActionsTable

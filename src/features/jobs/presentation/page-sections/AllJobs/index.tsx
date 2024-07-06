@@ -24,8 +24,9 @@ import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete
 import LocationAutoComplete from 'shared/components/autocomplete/location-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import Cant from 'features/authorization/presentation/components/Cant'
-import useAllJobsPermissionActionTable from 'features/jobs/permission/hooks/useAllJobsPermissionActionTable'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
+import useBuildAllJobsActionsTable from '../../providers/hooks/table/useAllJobsPermissionActionTable'
+import TeamsFilterPermission from 'features/jobs/permission/filters/TeamsFilterPermission'
 
 const AllJob = () => {
   const {
@@ -53,7 +54,7 @@ const AllJob = () => {
 
   const translation = useTextTranslation()
 
-  const { actions } = useAllJobsPermissionActionTable({
+  const { actions } = useBuildAllJobsActionsTable({
     handleOpenDelete,
     handleOpenEdit,
     handleOpenStatus,
@@ -75,9 +76,7 @@ const AllJob = () => {
               title="Team"
               keyName={'team_ids'}
               Node={({ onFilter, value }) => (
-                <TeamsAutoComplete
-                  name="team"
-                  multiple={true}
+                <TeamsFilterPermission
                   value={value}
                   onCustomChange={(data) =>
                     onFilter(
@@ -87,12 +86,6 @@ const AllJob = () => {
                       }))
                     )
                   }
-                  open={true}
-                  disableCloseOnSelect={true}
-                  textFieldProps={{
-                    label: 'Team',
-                    autoFocus: true,
-                  }}
                 />
               )}
             />

@@ -38,6 +38,9 @@ const useGraphql = () => {
           team {
               id
               name
+              members {
+                id
+              }
           }
           user {
             id
@@ -139,6 +142,9 @@ const useGraphql = () => {
         team {
             id
             name
+            members {
+                id
+            }
         }
         user {
           id
@@ -302,7 +308,6 @@ const useGraphql = () => {
     },
   })
 
- 
   const createCandidateJob = GraphQLClientService.buildQuery({
     operation: 'CreateCandidateJob',
     options: {
@@ -349,7 +354,7 @@ const useGraphql = () => {
     deleteJob,
     changeStatusJob,
     getCandidatesByJob,
-    createCandidateJob
+    createCandidateJob,
   }
 }
 

@@ -5,16 +5,10 @@ import { redirect } from 'react-router-dom'
 import handleAuthLocalStorage from 'services/auth-local-storage-service'
 import restApi from 'configs/api/restApi'
 // --------------------------------------------------------
-export type AuthUser = {
-  name: string
-  email: string
-  oid: string
-} | null
 
 type InitialAuthState = {
   isAuthenticated: boolean
   isInitialized: boolean
-  user: AuthUser
 }
 
 // props type
@@ -24,7 +18,6 @@ type AuthProviderProps = { children: ReactNode }
 const initialState: InitialAuthState = {
   isAuthenticated: false,
   isInitialized: false,
-  user: null,
 }
 
 const reducer = (state: InitialAuthState, action: any) => {
@@ -32,15 +25,14 @@ const reducer = (state: InitialAuthState, action: any) => {
     case 'INIT': {
       return {
         isInitialized: true,
-        user: action.payload.user,
         isAuthenticated: action.payload.isAuthenticated,
       }
     }
     case 'LOGIN': {
-      return { ...state, isAuthenticated: true, user: action.payload.user }
+      return { ...state, isAuthenticated: true }
     }
     case 'LOGOUT': {
-      return { ...state, user: null, isAuthenticated: false }
+      return { ...state, isAuthenticated: false }
     }
     default: {
       return state
@@ -57,25 +49,24 @@ const AuthContext = createContext({
 })
 
 export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
-  const { removeToken, getToken, getMe, saveToken } = handleAuthLocalStorage()
+  const { removeToken, getToken, saveToken } = handleAuthLocalStorage()
   const [state, dispatch] = useReducer(reducer, initialState)
-
   const login = () => {
     window.location.href = restApi.login
-    dispatch({ type: 'LOGIN' })
+    dispatch({ type: 'LOGIN', token: null })
   }
 
   const logout = () => {
     removeToken()
-    dispatch({ type: 'LOGOUT' })
+    dispatch({ type: 'LOGOUT', token: null })
     redirect('/dashboard')
   }
 
-  const setSession = (token: Token) => {
+  const setSession = async (token: Token) => {
     saveToken(token)
     dispatch({
       type: 'INIT',
-      payload: { user: getMe(), isAuthenticated: true },
+      payload: { isAuthenticated: true },
     })
   }
 
@@ -90,18 +81,18 @@ export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
         ) {
           dispatch({
             type: 'INIT',
-            payload: { user: getMe(), isAuthenticated: true },
+            payload: { isAuthenticated: true },
           })
         } else {
           dispatch({
             type: 'INIT',
-            payload: { user: null, isAuthenticated: false },
+            payload: { isAuthenticated: false },
           })
         }
       } catch (err) {
         dispatch({
           type: 'INIT',
-          payload: { user: null, isAuthenticated: false },
+          payload: { isAuthenticated: false },
         })
       }
     })()
@@ -113,7 +104,13 @@ export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ ...state, method: 'JWT', login, logout, setSession }}
+      value={{
+        ...state,
+        method: 'JWT',
+        login,
+        logout,
+        setSession,
+      }}
     >
       {children}
     </AuthContext.Provider>

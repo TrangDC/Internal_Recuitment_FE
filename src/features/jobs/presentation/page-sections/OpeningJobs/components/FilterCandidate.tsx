@@ -26,6 +26,8 @@ import LocationAutoComplete from 'shared/components/autocomplete/location-auto-c
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import Cant from 'features/authorization/presentation/components/Cant'
+import TeamsFilterPermission from 'features/jobs/permission/filters/TeamsFilterPermission'
+import JobsFilterPermission from 'features/jobs/permission/filters/JobsFilterPermission'
 
 const FilterCandidate = () => {
   const translation = useTextTranslation()
@@ -64,9 +66,7 @@ const FilterCandidate = () => {
           title="Job"
           keyName={'hiring_job_id'}
           Node={({ onFilter, value }) => (
-            <JobsAutoComplete
-              name="job"
-              multiple={true}
+            <JobsFilterPermission
               value={value}
               onCustomChange={(data) =>
                 onFilter(
@@ -76,12 +76,6 @@ const FilterCandidate = () => {
                   }))
                 )
               }
-              open={true}
-              disableCloseOnSelect={true}
-              textFieldProps={{
-                label: 'Job',
-                autoFocus: true,
-              }}
             />
           )}
         />
@@ -91,9 +85,7 @@ const FilterCandidate = () => {
           title="Team"
           keyName={'team_id'}
           Node={({ onFilter, value }) => (
-            <TeamsAutoComplete
-              name="team"
-              multiple={true}
+            <TeamsFilterPermission
               value={value}
               onCustomChange={(data) =>
                 onFilter(
@@ -103,12 +95,6 @@ const FilterCandidate = () => {
                   }))
                 )
               }
-              open={true}
-              disableCloseOnSelect={true}
-              textFieldProps={{
-                label: 'Team',
-                autoFocus: true,
-              }}
             />
           )}
         />

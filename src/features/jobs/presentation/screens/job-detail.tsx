@@ -23,7 +23,7 @@ import { JobStatus } from 'shared/class/job-status'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import { ChipLimit } from 'shared/components/chip-stack'
-import Cant from 'features/authorization/presentation/components/Cant'
+import CloseJobButtonPermission from 'features/jobs/permission/components/CloseJobButtonPermission'
 
 const { STATUS_STATE } = JobStatus
 
@@ -121,38 +121,15 @@ const JobDetail = () => {
                 </FlexBox>
               </FlexBox>
               <FlexBox gap={1}>
-                <Cant
-                  checkBy={{
-                    compare: 'hasAny',
-                    permissions: ['CLOSE_JOB.everything', 'CLOSE_JOB.teamOnly'],
-                  }}
-                  module="JOBS"
-                >
-                  <BtnPrimary
-                    onClick={() => {
-                      if (disabledBtn) return
-                      handleOpenStatus(jobDetail?.id)
-                    }}
-                    className={disabledBtn ? 'disabled' : ''}
-                  >
-                    <Span>
-                      {jobDetail.status === STATUS_STATE.OPENED
-                        ? 'Close Job'
-                        : 'Reopen Job'}
-                    </Span>
-                  </BtnPrimary>
-                </Cant>
-                <Cant
-                  checkBy={{
-                    compare: 'hasAny',
-                    permissions: ['VIEW.everything', 'VIEW.teamOnly'],
-                  }}
-                  module="JOBS"
-                >
-                  <BtnPrimary onClick={() => setOpenTab(true)}>
-                    <Span>View Details</Span>
-                  </BtnPrimary>
-                </Cant>
+                <CloseJobButtonPermission
+                  disabledBtn={disabledBtn}
+                  handleOpenStatus={handleOpenStatus}
+                  jobDetail={jobDetail}
+                  opened={STATUS_STATE.OPENED}
+                />
+                <BtnPrimary onClick={() => setOpenTab(true)}>
+                  <Span>View Details</Span>
+                </BtnPrimary>
               </FlexBox>
             </FlexBox>
           </HeadingWrapper>
