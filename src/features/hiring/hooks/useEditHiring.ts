@@ -56,7 +56,6 @@ function useEditHiring(props: UseChangeStatusProps) {
             entityPermissions
           )
       }
-      console.log('rolesTemplateId', rolesTemplateId)
       return {
         status: data?.status ?? '',
         name: data?.name ?? '',

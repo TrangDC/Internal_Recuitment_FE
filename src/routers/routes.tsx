@@ -10,6 +10,7 @@ import LoadingScreen from 'shared/components/LoadingScreen'
 import PublicLayout from 'features/authentication/presentation/page-sections/PublicLayout'
 import ProtectedLayout from 'features/authentication/presentation/page-sections/ProtectedLayout'
 import { PermissionLayout } from 'features/authorization/presentation/screen-sections/PermissionLayout'
+import DashboardLayout from 'layouts/layout/DashboardLayout'
 
 const Loadable = (Component: LazyExoticComponent<FC>) => (props: any) => {
   return (
@@ -228,18 +229,7 @@ export const AppRoutes = () => {
           <Route path="role-template" element={<RoleTemplatePage />} /> */}
           <Route
             path="skill"
-            element={PermissionLayout({
-              module: 'SKILLS',
-              children: <SkillList />,
-              checkBy: {
-                compare: 'hasAny',
-                permissions: [
-                  'VIEW.everything',
-                  'VIEW.teamOnly',
-                  'VIEW.ownedOnly',
-                ],
-              },
-            })}
+            element={<DashboardLayout>{<SkillList />}</DashboardLayout>}
           />
         </Route>
         <Route

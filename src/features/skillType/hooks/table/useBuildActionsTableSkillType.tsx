@@ -4,7 +4,7 @@ import useTextTranslation from 'shared/constants/text'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
 import { SkillType } from 'features/skillType/domain/interfaces'
 
-enum ActionSkill {
+export enum ActionSkillType {
   EDIT = 'edit',
   DELETE = 'delete',
 }
@@ -19,10 +19,10 @@ function useBuildActionsTableSkillType({
   handleOpenDelete,
 }: UseBuildActionsTableSkillTypeProps) {
   const translation = useTextTranslation()
-  const { actions } = useBuildActionsTable<ActionSkill, SkillType>({
+  const { actions } = useBuildActionsTable<ActionSkillType, SkillType>({
     actions: {
       edit: {
-        id: ActionSkill.EDIT,
+        id: ActionSkillType.EDIT,
         onClick: (id, rowData) => {
           handleOpenEdit(id, rowData)
         },
@@ -30,7 +30,7 @@ function useBuildActionsTableSkillType({
         Icon: <EditIcon />,
       },
       delete: {
-        id: ActionSkill.DELETE,
+        id: ActionSkillType.DELETE,
         onClick: (id) => {
           handleOpenDelete(id)
         },

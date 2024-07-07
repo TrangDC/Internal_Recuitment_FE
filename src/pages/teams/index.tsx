@@ -3,8 +3,8 @@ import HelmetComponent from 'shared/components/helmet'
 
 function TeamsPage() {
   return (
-    <HelmetComponent title='[TREC] Teams'>
-       <TeamList />
+    <HelmetComponent title="[TREC] Teams">
+      <TeamList />
     </HelmetComponent>
   )
 }
