@@ -2,7 +2,7 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useCreateCandidate from '../../providers/hooks/useCreateCandidate'
+import useCreateCandidate from '../../../hooks/crud/useCreateCandidate'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -265,21 +265,23 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
             </FlexBox>
 
             <FlexBox gap={2}>
-              
               <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="entity_skill_records"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <SkillTree value={field.value} onChange={field.onChange}/>
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+                <Controller
+                  control={control}
+                  name="entity_skill_records"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <SkillTree
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
             </FlexBox>
 
             <FlexBox gap={2}>

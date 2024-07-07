@@ -1,7 +1,7 @@
 import BaseModal from 'shared/components/modal'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useDeleteInterview from '../../providers/hooks/useDeleteInterview'
+import useDeleteInterview from '../../../hooks/crud/useDeleteInterview'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
@@ -12,10 +12,15 @@ interface IDeleteInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  onSuccess?: () => void,
+  onSuccess?: () => void
 }
 
-function DeleteInterviewModal({ open, setOpen, id, onSuccess}: IDeleteInterviewModal) {
+function DeleteInterviewModal({
+  open,
+  setOpen,
+  id,
+  onSuccess,
+}: IDeleteInterviewModal) {
   const [note, setNote] = useState('')
   const { onDelete, isPending } = useDeleteInterview({
     id: id,
@@ -42,7 +47,7 @@ function DeleteInterviewModal({ open, setOpen, id, onSuccess}: IDeleteInterviewM
               marginTop={1}
             >
               <FormControl fullWidth>
-              <AppTextField
+                <AppTextField
                   label={'Description'}
                   size="small"
                   fullWidth

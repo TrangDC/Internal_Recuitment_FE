@@ -1,19 +1,14 @@
 import { format } from 'date-fns'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import EditIcon from 'shared/components/icons/EditIcon'
-import useActionTable from '../../providers/hooks/useActionTable'
+import useActionTable from '../../../hooks/table/useActionTable'
 import ChangeStatusModal from '../ChangeStatusModal'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useEffect, useMemo, useState } from 'react'
-import PreviewCV from '../../providers/components/previewCV'
+import PreviewCV from '../../components/previewCV'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
-import {
-  ButtonStatus,
-  DivInformation,
-  DivItemInformation,
-} from '../../providers/styles'
+import { DivInformation, DivItemInformation } from '../../../shared/styles'
 import { LinkText } from 'shared/components/Typography'
 import { useNavigate, useParams } from 'react-router-dom'
 import EditCandidateJobModal from '../EditCandidateJobModal'

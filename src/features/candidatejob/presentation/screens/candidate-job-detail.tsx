@@ -1,11 +1,11 @@
-import { DivWrapperContainer } from '../providers/styles'
+import { DivWrapperContainer } from '../../shared/styles'
 import { Box, Grid } from '@mui/material'
 import JobDetailInformation from '../page-sections/JobDetailInformation'
 import JobDetailAction from '../page-sections/JobDetailAction'
 import IconScreen from 'shared/components/utils/IconScreen'
 import CandidateIcon from 'shared/components/icons/Candidates'
 import { useParams } from 'react-router-dom'
-import useCandidateJobDetail from '../providers/hooks/useCandidateJobDetail'
+import useCandidateJobDetail from '../../hooks/crud/useCandidateJobDetail'
 
 const CandidateJobDetail = () => {
   const { id } = useParams()

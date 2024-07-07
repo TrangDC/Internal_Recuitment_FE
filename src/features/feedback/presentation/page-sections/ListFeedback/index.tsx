@@ -4,19 +4,18 @@ import {
   BoxTitle,
   DivActionHeader,
   ListFeedbackContainer,
-} from '../../providers/styles'
+} from '../../../shared/styles'
 import { Span } from 'shared/components/Typography'
 import { Add } from '@mui/icons-material'
 import { Box, Button } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import useActionTable from '../../providers/hooks/useActionTable'
+import useActionTable from '../../../hooks/table/useActionTable'
 import { useParams } from 'react-router-dom'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import EditIcon from 'shared/components/icons/EditIcon'
-import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import { FeedBack } from 'features/feedback/domain/interfaces'
 import ShowFile from 'shared/components/input-fields/ItemFile'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
@@ -29,7 +28,7 @@ import {
   DeleteFeedbackModal,
   UpdateFeedbackModal,
 } from '../index'
-import { downloadOneFile } from '../../providers/helper'
+import { downloadOneFile } from '../../../shared/helper'
 import Cant from 'features/authorization/presentation/components/Cant'
 import DeleteFeedbackButtonPermission from 'features/feedback/permission/components/DeleteFeedbackButtonPermission'
 

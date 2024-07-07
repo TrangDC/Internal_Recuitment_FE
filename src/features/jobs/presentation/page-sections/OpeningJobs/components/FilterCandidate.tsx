@@ -1,20 +1,17 @@
-import {
-  DivFilter,
-  DivHeaderWrapper,
-} from 'features/candidates/presentation/providers/styles'
+import { DivFilter, DivHeaderWrapper } from 'features/candidates/shared/styles'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import _ from 'lodash'
 import useTextTranslation from 'shared/constants/text'
 import { Add } from '@mui/icons-material'
-import useActionTable from '../../../providers/hooks/useActionTable'
+import useActionTable from '../../../../hooks/table/useActionTable'
 import CreateJobModal from '../../CreateJobModal'
 import { BtnPrimary } from 'shared/styles'
 import { Span } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import ApplyJobModal from '../../ApplyJobCandidate'
-import useFilterJobsOpening from 'features/jobs/presentation/providers/hooks/useFilterJobsOpening'
+import useFilterJobsOpening from 'features/jobs/hooks/table/useFilterJobsOpening'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'

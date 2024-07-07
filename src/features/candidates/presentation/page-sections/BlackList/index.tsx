@@ -1,8 +1,8 @@
 import { Box } from '@mui/system'
-import { columns } from '../../providers/constants/columns'
-import useCandidateTable from '../../providers/hooks/useCandidateTable'
-import useActionTable from '../../providers/hooks/useActionTable'
-import { DivContainerWrapper, DivHeaderWrapper } from '../../providers/styles'
+import { columns } from '../../../shared/constants/columns'
+import useCandidateTable from '../../../hooks/table/useCandidateTable'
+import useActionTable from '../../../hooks/table/useActionTable'
+import { DivContainerWrapper, DivHeaderWrapper } from '../../../shared/styles'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import { useMemo } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
@@ -17,7 +17,7 @@ import {
   EditCandidateModal,
 } from '../index'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
-import useFilterCandidates from '../../providers/hooks/useFilterCandidates'
+import useFilterCandidates from '../../../hooks/table/useFilterCandidates'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
@@ -27,7 +27,7 @@ import dayjs from 'dayjs'
 import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
-import useBuildActionTableCandidate from '../../providers/hooks/useBuildActionTableCandidateBL'
+import useBuildActionTableCandidate from '../../../hooks/table/useBuildActionTableCandidateBL'
 
 const BlackList = () => {
   const {

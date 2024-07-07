@@ -1,7 +1,7 @@
 import BaseModal from 'shared/components/modal'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useDeleteJob from '../../providers/hooks/useDeleteJob'
+import useDeleteJob from '../../../hooks/crud/useDeleteJob'
 import useTextTranslation from 'shared/constants/text'
 import { Fragment, useState } from 'react'
 import AppTextField from 'shared/components/input-fields/AppTextField'

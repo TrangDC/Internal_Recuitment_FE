@@ -1,6 +1,6 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
-import { ButtonStatus } from 'features/candidatejob/presentation/providers/styles'
+import { ButtonStatus } from 'features/candidatejob/shared/styles'
 import EditIcon from 'shared/components/icons/EditIcon'
 
 type ChangeStatusCDDJButtonPermissionProps = {

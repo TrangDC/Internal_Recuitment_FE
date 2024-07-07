@@ -2,7 +2,7 @@ import BaseModal from 'shared/components/modal'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useTextTranslation from 'shared/constants/text'
-import useDeleteSkillType from '../../providers/hooks/useDeleteSkillType'
+import useDeleteSkillType from '../../../hooks/crud/useDeleteSkillType'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
@@ -27,7 +27,7 @@ function DeleteSkillModal({ open, setOpen, id }: IDeleteSkillModal) {
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <BaseModal.Header
-        title={"Do you want to delete skill type"}
+        title={'Do you want to delete skill type'}
         setOpen={setOpen}
       ></BaseModal.Header>
       <BaseModal.ContentMain maxHeight="500px">

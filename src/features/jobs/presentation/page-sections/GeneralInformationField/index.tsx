@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material'
-import useJobDetail from '../../providers/hooks/useJobDetail'
+import useJobDetail from '../../../hooks/crud/useJobDetail'
 import { useParams } from 'react-router-dom'
 import { getInfoData } from 'shared/utils/utils'
 import { SalaryFactory } from 'shared/class/salary'
@@ -84,14 +84,14 @@ const GeneralInformationField = () => {
             <DivField>
               <SpanText>{translation.COMMON.status}</SpanText>
               <TinyText>
-                <ChipJob status={jobDetail?.status}/>
+                <ChipJob status={jobDetail?.status} />
               </TinyText>
             </DivField>
 
             <DivField>
               <SpanText>Priority</SpanText>
               <TinyText>
-                <ChipPriority status={jobDetail?.priority}/>
+                <ChipPriority status={jobDetail?.priority} />
               </TinyText>
             </DivField>
 
@@ -131,14 +131,12 @@ const GeneralInformationField = () => {
             <DivField>
               <SpanText>Skills</SpanText>
               <TinyText>
-              <ChipLimit chips={job_skills} />
+                <ChipLimit chips={job_skills} />
               </TinyText>
             </DivField>
 
-            <DivField>
-            </DivField>
+            <DivField></DivField>
           </FlexBox>
-
         </FlexBox>
       </DivWrapperField>
 

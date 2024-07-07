@@ -6,9 +6,9 @@ import { CustomTextField } from 'shared/components/form/styles'
 import {
   CANDIDATE_STATUS,
   list_status_disabled,
-} from '../../providers/constants'
+} from '../../../shared/constants'
 import InputFileComponent from 'shared/components/form/inputFileComponent'
-import useChangeStatus from '../../providers/hooks/useChangeStatus'
+import useChangeStatus from '../../../hooks/crud/useChangeStatus'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -46,11 +46,7 @@ interface IChangeStatusModal {
     | 'ex_staff'
     | 'new'
   defaultStatus?: string
-  onSuccess?: ({
-    prevStatus,
-    id,
-    updateStatus,
-  }: onSuccessChangeStatus) => void
+  onSuccess?: ({ prevStatus, id, updateStatus }: onSuccessChangeStatus) => void
 }
 
 function ChangeStatusModal({
@@ -60,21 +56,26 @@ function ChangeStatusModal({
   statusCurrent,
   defaultStatus = '',
   onSuccess,
-}: IChangeStatusModal) { 
+}: IChangeStatusModal) {
   const { handleWarning, handleReset } = usePopup()
-  const { onSubmit, control, isPending, isValid, watch, formState } = useChangeStatus({
-    id: rowData?.id as string,
-    callbackSuccess: (data) => {
-      setOpen(false)
-      onSuccess?.({id: data?.id, prevStatus: statusCurrent, updateStatus: data?.status})
-    },
-    defaultValues: {
-      feedback: '',
-      attachments: [],
-      failed_reason: [],
-      status: defaultStatus,
-    },
-  })
+  const { onSubmit, control, isPending, isValid, watch, formState } =
+    useChangeStatus({
+      id: rowData?.id as string,
+      callbackSuccess: (data) => {
+        setOpen(false)
+        onSuccess?.({
+          id: data?.id,
+          prevStatus: statusCurrent,
+          updateStatus: data?.status,
+        })
+      },
+      defaultValues: {
+        feedback: '',
+        attachments: [],
+        failed_reason: [],
+        status: defaultStatus,
+      },
+    })
 
   const statusDisabledList = useMemo(() => {
     return list_status_disabled[statusCurrent]

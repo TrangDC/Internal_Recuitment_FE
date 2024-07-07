@@ -10,11 +10,11 @@ import {
   HeadingWrapper,
 } from 'shared/styles'
 import { useParams } from 'react-router-dom'
-import useJobDetail from '../providers/hooks/useJobDetail'
+import useJobDetail from '../../hooks/crud/useJobDetail'
 import { SpanText, TinyText } from 'shared/components/form/styles'
 import { useMemo, useState } from 'react'
 import GenaralInformationHiring from '../page-sections/GeneralInformationHiring'
-import useActionTable from '../providers/hooks/useActionTable'
+import useActionTable from '../../hooks/table/useActionTable'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import { format } from 'date-fns'
 import { CloseJobModal, TabJobDetail } from '../page-sections'

@@ -1,7 +1,7 @@
 import { ButtonBase, styled } from '@mui/material'
 import AuthenticationLayout from 'features/authentication/presentation/page-sections/AuthenticationLayout'
 import { FC } from 'react'
-import useAuthen from '../providers/hooks/useAuth'
+import useAuthen from '../../hooks/useAuth'
 
 const StyledButton = styled(ButtonBase)(({ theme }) => ({
   width: '100%',

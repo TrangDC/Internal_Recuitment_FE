@@ -10,14 +10,14 @@ import {
   EditSkillType,
   DeleteSkillType,
 } from '../page-sections'
-import { columns } from '../providers/constants/columns'
-import useFilterSkillType from '../providers/hooks/useFilterSkillType'
-import useSkillTypeTable from '../providers/hooks/useSkillTypeTable'
-import { DivContainerWrapper, DivHeaderWrapper } from '../providers/styles'
-import useActionTable from '../providers/hooks/useActionTable'
+import { columns } from '../../shared/constants/columns'
+import useFilterSkillType from '../../hooks/table/useFilterSkillType'
+import useSkillTypeTable from '../../hooks/table/useSkillTypeTable'
+import { DivContainerWrapper, DivHeaderWrapper } from '../../shared/styles'
+import useActionTable from '../../hooks/table/useActionTable'
 import { SkillType } from 'features/skillType/domain/interfaces'
 import Cant from 'features/authorization/presentation/components/Cant'
-import useBuildActionsTableSkillType from '../providers/hooks/useBuildActionsTableSkillType'
+import useBuildActionsTableSkillType from '../../hooks/table/useBuildActionsTableSkillType'
 
 const SkillTypeList = () => {
   const {

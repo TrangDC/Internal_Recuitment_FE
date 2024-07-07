@@ -8,7 +8,7 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import useChangeStatusJob from '../../providers/hooks/useChangeStatusJob'
+import useChangeStatusJob from '../../../hooks/crud/useChangeStatusJob'
 
 interface IChangeStatusJobModal {
   open: boolean
@@ -24,7 +24,7 @@ function ChangeStatusJobModal({ open, setOpen, id }: IChangeStatusJobModal) {
     },
   })
 
-  const { onSubmit, renderTitle } = action;
+  const { onSubmit, renderTitle } = action
   const translation = useTextTranslation()
 
   return (

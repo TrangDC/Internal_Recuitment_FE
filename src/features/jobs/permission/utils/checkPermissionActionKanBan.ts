@@ -1,9 +1,8 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
-import { CandidateStatusItem, Job } from 'features/jobs/domain/interfaces'
-import { ActionAllJobsTable } from 'features/jobs/presentation/providers/hooks/table/useAllJobsPermissionActionTable'
-import { ActionJobsKanbanTable } from 'features/jobs/presentation/providers/hooks/table/useBuildActionsKanbanJobs'
+import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
+import { ActionJobsKanbanTable } from 'features/jobs/hooks/table/useBuildActionsKanbanJobs'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
 
 interface ActionProps {

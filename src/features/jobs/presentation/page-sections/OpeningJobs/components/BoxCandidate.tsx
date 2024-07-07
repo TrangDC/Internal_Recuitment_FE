@@ -11,7 +11,7 @@ import {
   LOCATION_LABEL,
   STATUS_CANDIDATE_TEXT,
 } from 'shared/constants/constants'
-import { ENABLED_CHANGE_STATUS } from 'features/jobs/presentation/providers/constants'
+import { ENABLED_CHANGE_STATUS } from 'features/jobs/shared/constants'
 import {
   BoxCandidateTitle,
   BoxContainerCandidate,
@@ -19,14 +19,14 @@ import {
   BoxFieldInfo,
   SpanInfo,
   TinyInfo,
-} from '../../../providers/styles/index'
+} from '../../../../shared/styles/index'
 import TeamIcon from 'shared/components/icons/Team'
 import Jobs from 'shared/components/icons/Jobs'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import { Box } from '@mui/material'
 import ActionsButton from './ActionGroupButton'
-import useActionTable from 'features/candidatejob/presentation/providers/hooks/useActionTable'
+import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import { SpanHiringStatus, TinyLink } from '../styles'
 import DotIcon from 'shared/components/icons/DotIcon'

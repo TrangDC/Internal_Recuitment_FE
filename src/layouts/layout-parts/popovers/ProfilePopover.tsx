@@ -14,7 +14,7 @@ import { FC, Fragment, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import PopoverLayout from './PopoverLayout'
-import useAuth from 'features/authentication/presentation/providers/hooks/useAuth'
+import useAuth from 'features/authentication/hooks/useAuth'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 
 // styled components
