@@ -11,19 +11,18 @@ import handleAuthLocalStorage from 'services/auth-local-storage-service'
 
 function useGetMe() {
   const { getMe, queryKey } = useGraphql()
-  const { isAuthenticated } = useAuth()
+  const { authState } = useAuth()
   const { getToken } = handleAuthLocalStorage()
-  const { data, isFetching, refetch , isLoading } = useQuery({
+  const { data, isFetching, refetch, isLoading } = useQuery({
     queryKey: [queryKey, 'me'],
     queryFn: async () => GraphQLClientService.fetchGraphQL(getMe.query),
-    enabled: isAuthenticated && !!getToken(),
+    enabled: authState === 'IS_AUTHENTICATED' && !!getToken(),
   })
-  
-  console.log('isAuthenticated', isAuthenticated)
+
+  console.log('isAuthenticated', authState)
   console.log('getMe')
   console.log('isFetching', isFetching)
   console.log('isLoading', isLoading)
-
 
   const { myPermission, me } = useMemo(() => {
     if (data && isRight(data)) {
@@ -55,7 +54,6 @@ function useGetMe() {
     isFetching,
     refetch,
     data,
-    isAuthenticated
   }
 }
 

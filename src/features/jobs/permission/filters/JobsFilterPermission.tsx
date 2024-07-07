@@ -23,6 +23,7 @@ function JobsFilterPermission({
     },
   })
   const filter = teamOnly ? { for_team: true } : undefined
+
   return (
     <JobsAutoComplete
       name="job"

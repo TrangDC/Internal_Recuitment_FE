@@ -9,9 +9,9 @@ interface ProtectedLayoutProps {
 }
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
-  const auth = useAuth()
+  const { authState } = useAuth()
   let location = useLocation()
-  if (!auth.isAuthenticated && auth.isInitialized) {
+  if (authState === 'IS_NOT_AUTHENTICATED') {
     return <Navigate to="/auth/login" state={{ from: location }} replace />
   }
   return <Fragment>{children}</Fragment>

@@ -1,76 +1,38 @@
-import { createContext, ReactNode, useEffect, useReducer } from 'react'
+import { createContext, ReactNode, useEffect, useState } from 'react'
 import LoadingScreen from 'shared/components/LoadingScreen'
 import Token from 'shared/class/token'
-import { redirect } from 'react-router-dom'
 import handleAuthLocalStorage from 'services/auth-local-storage-service'
 import restApi from 'configs/api/restApi'
 // --------------------------------------------------------
-
-type InitialAuthState = {
-  isAuthenticated: boolean
-  isInitialized: boolean
-}
 
 // props type
 type AuthProviderProps = { children: ReactNode }
 // --------------------------------------------------------
 
-const initialState: InitialAuthState = {
-  isAuthenticated: false,
-  isInitialized: false,
+interface IAuthContext {
+  authState: AuthState
+  login: () => void
+  logout: () => void
 }
 
-const reducer = (state: InitialAuthState, action: any) => {
-  switch (action.type) {
-    case 'INIT': {
-      return {
-        isInitialized: true,
-        isAuthenticated: action.payload.isAuthenticated,
-      }
-    }
-    case 'LOGIN': {
-      return { ...state, isAuthenticated: true }
-    }
-    case 'LOGOUT': {
-      return { ...state, isAuthenticated: false }
-    }
-    default: {
-      return state
-    }
-  }
-}
-
-const AuthContext = createContext({
-  ...initialState,
-  method: 'JWT',
+const AuthContext = createContext<IAuthContext>({
+  authState: 'INIT',
   logout: () => {},
   login: () => {},
-  setSession: (token: Token) => {},
 })
 
+type AuthState = 'INIT' | 'IS_AUTHENTICATED' | 'IS_NOT_AUTHENTICATED'
+
 export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
-  const { removeToken, getToken, saveToken } = handleAuthLocalStorage()
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const { removeToken, getToken } = handleAuthLocalStorage()
+  const [authState, setAuthState] = useState<AuthState>('INIT')
   const login = () => {
     window.location.href = restApi.login
-    dispatch({ type: 'LOGIN', token: null })
   }
 
   const logout = () => {
     removeToken()
-    dispatch({
-      type: 'LOGOUT',
-      token: null,
-    })
-    redirect('/dashboard')
-  }
-
-  const setSession = async (token: Token) => {
-    saveToken(token)
-    dispatch({
-      type: 'INIT',
-      payload: { isAuthenticated: true },
-    })
+    window.location.href = '/auth/login'
   }
 
   useEffect(() => {
@@ -82,38 +44,23 @@ export const JWTAuthProvider = ({ children }: AuthProviderProps) => {
           token?.accessToken &&
           Token.isValidToken(token.accessToken)
         ) {
-          dispatch({
-            type: 'INIT',
-            payload: { isAuthenticated: true },
-          })
+          setAuthState('IS_AUTHENTICATED')
         } else {
-          dispatch({
-            type: 'INIT',
-            payload: { isAuthenticated: false },
-          })
+          setAuthState('IS_NOT_AUTHENTICATED')
         }
       } catch (err) {
-        dispatch({
-          type: 'INIT',
-          payload: { isAuthenticated: false },
-        })
+        setAuthState('IS_NOT_AUTHENTICATED')
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  console.log('Auth')
-  // show loading until not initialized
-  if (!state.isInitialized) <LoadingScreen />
-
+  if (authState === 'INIT') return <LoadingScreen />
   return (
     <AuthContext.Provider
       value={{
-        ...state,
-        method: 'JWT',
+        authState,
         login,
         logout,
-        setSession,
       }}
     >
       {children}
