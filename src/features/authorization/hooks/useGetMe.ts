@@ -19,11 +19,6 @@ function useGetMe() {
     enabled: authState === 'IS_AUTHENTICATED' && !!getToken(),
   })
 
-  console.log('isAuthenticated', authState)
-  console.log('getMe')
-  console.log('isFetching', isFetching)
-  console.log('isLoading', isLoading)
-
   const { myPermission, me } = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)

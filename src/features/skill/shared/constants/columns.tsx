@@ -6,28 +6,25 @@ import {
 import { t } from 'i18next'
 import { StyleTinyText } from 'shared/styles'
 import { Skill } from 'features/skill/domain/interfaces'
+import checkPermissionActionTable from 'features/skill/permission/utils/checkPermissonActionTable'
+import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 
 const columnHelper = createColumnHelper<Skill>()
 
 export const columns = (
-  actions: TOptionItem<Skill>[]
+  actions: TOptionItem<Skill>[],
+  { me, role }: ParamsColumn
 ): ColumnDef<Skill, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => (
-      <StyleTinyText>
-        {info.getValue()}
-      </StyleTinyText>
-    ),
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>{t('name')}</span>,
     size: 300,
   }),
   columnHelper.accessor((row) => row.skill_type, {
     id: 'skill_type',
     cell: (info) => (
-      <StyleTinyText>
-        {info.row.original.skill_type.name}
-      </StyleTinyText>
+      <StyleTinyText>{info.row.original.skill_type.name}</StyleTinyText>
     ),
     header: () => <span>Skill type</span>,
     size: 300,
@@ -45,15 +42,20 @@ export const columns = (
     size: 100,
     enableSorting: false,
     id: 'action',
-    cell: (info) => {
-      const id = info.row.original.id
-
+    cell: (rowData) => {
+      const id = rowData.row.original.id
+      const newActions = checkPermissionActionTable({
+        actions,
+        me,
+        role,
+        rowData,
+      })
       return (
         <>
           <ActionGroupButtons<Skill>
             rowId={id}
-            actions={actions}
-            rowData={info.row.original}
+            actions={newActions}
+            rowData={rowData.row.original}
           />
         </>
       )

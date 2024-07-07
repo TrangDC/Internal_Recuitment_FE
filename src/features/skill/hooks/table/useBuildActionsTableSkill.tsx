@@ -5,7 +5,7 @@ import useTextTranslation from 'shared/constants/text'
 import { Skill } from '../../domain/interfaces'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
 
-enum ActionSkill {
+export enum ActionSkill {
   EDIT = 'edit',
   DELETE = 'delete',
   DETAIL = 'detail',
@@ -17,7 +17,7 @@ type UseSkillListPermissionActionTableProps = {
   handleOpenDetail: (id: string) => void
 }
 
-function useActionsTableSkill({
+function useBuildActionsTableSkill({
   handleOpenEdit,
   handleOpenDelete,
   handleOpenDetail,
@@ -56,4 +56,4 @@ function useActionsTableSkill({
   }
 }
 
-export default useActionsTableSkill
+export default useBuildActionsTableSkill
