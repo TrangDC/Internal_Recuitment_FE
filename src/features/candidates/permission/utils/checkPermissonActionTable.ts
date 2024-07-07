@@ -68,7 +68,9 @@ function addAndRemoveBlackList({ newActions, role }: ActionProps) {
 
   if (!everything)
     return newActions.filter(
-      (action) => action.id !== ActionCandidateTableBL.REMOVE_BLACK_LIST
+      (action) =>
+        action.id !== ActionCandidateTableBL.REMOVE_BLACK_LIST &&
+        action.id !== ActionCandidateTable.BLACK_LIST
     )
   return newActions
 }
