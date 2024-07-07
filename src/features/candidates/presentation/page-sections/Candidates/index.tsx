@@ -59,7 +59,6 @@ const Candidates = () => {
     setOpenBlackList,
   } = useActionTable<Candidate>()
   const is_black_list = false
-  const navigate = useNavigate()
   const translation = useTextTranslation()
   const { useFilterReturn, useSearchListReturn } = useFilterCandidates({
     is_black_list,

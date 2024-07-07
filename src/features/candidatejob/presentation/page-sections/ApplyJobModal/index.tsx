@@ -15,6 +15,7 @@ import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import SelectionTeamForCreateCDDJPermission from 'features/candidatejob/permission/components/SelectionTeamForCreateCDDJPermission'
 
 interface IApplyJobModal {
   open: boolean
@@ -73,17 +74,12 @@ function ApplyJobModal({
                   name="team_id"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <TeamsAutoComplete
+                      <SelectionTeamForCreateCDDJPermission
                         name={field.name}
                         value={field.value || ''}
                         onChange={(value) => {
                           field.onChange(value)
                           resetField('hiring_job_id')
-                        }}
-                        multiple={false}
-                        textFieldProps={{
-                          required: true,
-                          label: 'Team',
                         }}
                       />
                       <HelperTextForm

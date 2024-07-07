@@ -9,6 +9,14 @@ export type Hiring = {
   created_at: string
   updated_at: string
   entity_permissions: EntityPermission[]
+  roles: Role[]
+}
+
+export type Role = {
+  id: string
+  name: string
+  description: string
+  entity_permissions: EntityPermission[]
 }
 
 export type EntityPermission = {
@@ -41,15 +49,15 @@ export type HiringInput = {
   work_email: string
   note: string
   status: string
-  team_id:string
+  team_id: string
   entity_permissions: NewEntityPermissionInput[]
+  role_id: string[]
 }
 
 export type ChangeStatusUser = {
   note: string
   status: 'active' | 'inactive'
 }
-
 
 export type EntityPermissions = {
   [key: string]: RoleTemplateEntityPermission

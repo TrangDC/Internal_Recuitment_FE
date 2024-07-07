@@ -1,13 +1,27 @@
-import { AutocompleteBaseBackEnd } from '../autocomplete-base-back-end'
-import { AutocompleteValueBackEndCommonProps } from '../autocomplete-base-back-end/interface'
+import { AutocompleteValueBackEndCommonProps } from 'shared/components/autocomplete/autocomplete-base-back-end/interface'
 import useGraphql from './useGraphql'
+import { AutocompleteBaseBackEnd } from 'shared/components/autocomplete/autocomplete-base-back-end'
 
 export interface Role {
   id: string
   name: string
+  description: string
+  entity_permissions: EntityPermission[]
 }
 
-function RoleTemplateAutoComplete<Multiple extends boolean>({
+type EntityPermission = {
+  id: string
+  for_owner: boolean
+  for_team: boolean
+  for_all: boolean
+  permission: Permission
+}
+
+type Permission = {
+  id: string
+}
+
+function RoleTemplateSelection<Multiple extends boolean>({
   onChange,
   value,
   multiple,
@@ -38,4 +52,4 @@ function RoleTemplateAutoComplete<Multiple extends boolean>({
   )
 }
 
-export default RoleTemplateAutoComplete
+export default RoleTemplateSelection

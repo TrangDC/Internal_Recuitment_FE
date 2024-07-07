@@ -77,7 +77,7 @@ const JobApplicationHistory = ({
           module="CANDIDATE_JOBS"
           checkBy={{
             compare: 'hasAny',
-            permissions: ['CREATE.everything'],
+            permissions: ['CREATE.everything', 'CREATE.teamOnly'],
           }}
         >
           <ButtonAdd
