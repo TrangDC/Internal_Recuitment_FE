@@ -1,16 +1,16 @@
 import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Add from 'shared/components/icons/Add'
-import { columns } from '../../providers/constants/columns'
-import useCandidateTable from '../../providers/hooks/useCandidateTable'
-import useActionTable from '../../providers/hooks/useActionTable'
-import { DivContainerWrapper, DivHeaderWrapper } from '../../providers/styles'
+import { columns } from '../../../shared/constants/columns'
+import useCandidateTable from '../../../hooks/table/useCandidateTable'
+import useActionTable from '../../../hooks/table/useActionTable'
+import { DivContainerWrapper, DivHeaderWrapper } from '../../../shared/styles'
 import { Candidate } from 'features/candidates/domain/interfaces'
 import { useNavigate } from 'react-router-dom'
 import { Fragment, useMemo, useRef } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
-import { handleImportFile } from '../../providers/utils'
+import { handleImportFile } from '../../../shared/utils'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
 import CandidateStatusAutoComplete, {
   options_status_new,
@@ -21,7 +21,7 @@ import { useImportFile } from 'shared/hooks/graphql/useUpload'
 import { ArrowDownward } from '@mui/icons-material'
 import { MenuItemComponent } from 'shared/components/menuItemComponent'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
-import useExportSample from '../../providers/hooks/useExportSample'
+import useExportSample from '../../../hooks/useExportSample'
 import {
   BlackListCandidateModal,
   CreateCandidateModal,
@@ -30,7 +30,7 @@ import {
 } from '../index'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
-import useFilterCandidates from '../../providers/hooks/useFilterCandidates'
+import useFilterCandidates from '../../../hooks/table/useFilterCandidates'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import useTextTranslation from 'shared/constants/text'
@@ -41,7 +41,7 @@ import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete
 import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
 import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
 import Cant from 'features/authorization/presentation/components/Cant'
-import useBuildActionTableCandidate from '../../providers/hooks/useBuildActionTableCandidate'
+import useBuildActionTableCandidate from '../../../hooks/table/useBuildActionTableCandidate'
 
 const Candidates = () => {
   const {

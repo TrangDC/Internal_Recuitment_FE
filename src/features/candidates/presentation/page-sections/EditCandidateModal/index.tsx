@@ -2,7 +2,7 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useUpdateCandidate from '../../providers/hooks/useUpdateCandidate'
+import useUpdateCandidate from '../../../hooks/crud/useUpdateCandidate'
 import useTextTranslation from 'shared/constants/text'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -28,7 +28,7 @@ interface IEditCandidateModal {
   setOpen: (value: boolean) => void
   id: string
   rowData?: Candidate
-  onSuccess?: (data: Candidate) => void;
+  onSuccess?: (data: Candidate) => void
 }
 
 function EditCandidateModal({
@@ -287,7 +287,10 @@ function EditCandidateModal({
                   name="entity_skill_records"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <SkillTree value={field.value} onChange={field.onChange}/>
+                      <SkillTree
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                       <HelperTextForm
                         message={fieldState.error?.message}
                       ></HelperTextForm>

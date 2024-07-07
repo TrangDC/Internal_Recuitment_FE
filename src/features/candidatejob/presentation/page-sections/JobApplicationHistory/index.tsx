@@ -1,11 +1,11 @@
 import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { DivWrapperProcess, SpanGenaration } from '../../providers/styles'
-import { columns } from '../../providers/constants/columns'
+import { DivWrapperProcess, SpanGenaration } from '../../../shared/styles'
+import { columns } from '../../../shared/constants/columns'
 import { Candidate } from 'features/candidates/domain/interfaces'
-import useActionTable from '../../providers/hooks/useActionTable'
+import useActionTable from '../../../hooks/table/useActionTable'
 import { useParams } from 'react-router-dom'
-import useApplyJobTable from '../../providers/hooks/useApplyJobTable'
+import useApplyJobTable from '../../../hooks/table/useApplyJobTable'
 import useTextTranslation from 'shared/constants/text'
 import Add from 'shared/components/icons/Add'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
@@ -20,7 +20,7 @@ import {
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import EditCandidateJobModal from '../EditCandidateJobModal'
 import Cant from 'features/authorization/presentation/components/Cant'
-import useBuildActionTableCandidateJobs from '../../providers/hooks/table/useBuildActionTableCandidateJobs'
+import useBuildActionTableCandidateJobs from '../../../hooks/table/useBuildActionTableCandidateJobs'
 
 const JobApplicationHistory = ({
   candidateDetail,

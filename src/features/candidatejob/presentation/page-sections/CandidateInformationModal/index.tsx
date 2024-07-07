@@ -1,17 +1,17 @@
 import BaseModal from 'shared/components/modal'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useGetCandidateDetail from '../../providers/hooks/useCandidateDetail'
+import useGetCandidateDetail from '../../../hooks/crud/useCandidateDetail'
 import Scrollbar from 'shared/components/ScrollBar'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from 'shared/components/icons/EditIcon'
-import { TextLabel, TextValue } from '../../providers/styles'
+import { TextLabel, TextValue } from '../../../shared/styles'
 import dayjs from 'dayjs'
 import { CANDIDATE_SOURCE_LABEL } from 'shared/components/autocomplete/candidate-source-auto-complete'
 import { renderReferenceValueByType } from 'features/auditTrails/presentation/providers/helper'
 import ShowFile from 'shared/components/input-fields/ItemFile'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
-import { downloadOneFile } from '../../providers/helper'
+import { downloadOneFile } from '../../../shared/helper'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { useMemo } from 'react'
 import { ChipLimit } from 'shared/components/chip-stack'
@@ -188,7 +188,10 @@ function CandidateInformationModal({
                       marginTop={1}
                     >
                       <TextValue fontWeight={600}>
-                        {renderReferenceValueByType(candidateDetail.reference_type, candidateDetail.reference_value)}
+                        {renderReferenceValueByType(
+                          candidateDetail.reference_type,
+                          candidateDetail.reference_value
+                        )}
                       </TextValue>
                     </FlexBox>
                   </Box>
@@ -220,7 +223,9 @@ function CandidateInformationModal({
                       marginTop={1}
                     >
                       <TextValue fontWeight={600}>
-                        {dayjs(candidateDetail.recruit_time).format('DD/MM/YYYY')}
+                        {dayjs(candidateDetail.recruit_time).format(
+                          'DD/MM/YYYY'
+                        )}
                       </TextValue>
                     </FlexBox>
                   </Box>
@@ -237,7 +242,7 @@ function CandidateInformationModal({
                       marginTop={1}
                     >
                       <TextValue fontWeight={600}>
-                      <ChipLimit chips={candidate_skills} />
+                        <ChipLimit chips={candidate_skills} />
                       </TextValue>
                     </FlexBox>
                   </Box>
@@ -262,24 +267,24 @@ function CandidateInformationModal({
               </FlexBox>
               <FlexBox gap={2}>
                 <FormControl fullWidth>
-                <FlexBox flexWrap={'wrap'} gap={'10px'}>
-                  {candidateDetail.attachments.map((item, idx) => {
-                    return (
-                      <Box sx={{ minWidth: '183px' }} key={idx}>
-                        <ShowFile
-                          name={item.document_name}
-                          IconEnd={
-                            <DownloadIcon
-                              onClick={() => {
-                                downloadOneFile(item, handleGetUrlDownload)
-                              }}
-                            />
-                          }
-                        />
-                      </Box>
-                    )
-                  })}
-                </FlexBox>
+                  <FlexBox flexWrap={'wrap'} gap={'10px'}>
+                    {candidateDetail.attachments.map((item, idx) => {
+                      return (
+                        <Box sx={{ minWidth: '183px' }} key={idx}>
+                          <ShowFile
+                            name={item.document_name}
+                            IconEnd={
+                              <DownloadIcon
+                                onClick={() => {
+                                  downloadOneFile(item, handleGetUrlDownload)
+                                }}
+                              />
+                            }
+                          />
+                        </Box>
+                      )
+                    })}
+                  </FlexBox>
                 </FormControl>
               </FlexBox>
             </FlexBox>

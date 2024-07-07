@@ -2,7 +2,7 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useCreateSkill from '../../providers/hooks/useCreateSkill'
+import useCreateSkill from '../../../hooks/crud/useCreateSkill'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -57,30 +57,30 @@ function CreateSkill({ open, setOpen }: ICreateSkill) {
                 />
               </FormControl>
               <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="skill_type_id"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                     <SkillTypeAutoComplete
-                      name={field.name}
-                      value={field.value}
-                      onChange={(value) => {
-                        field.onChange(value)
-                      }}
-                      multiple={false}
-                      textFieldProps={{
-                        required: true,
-                        label: 'Type',
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+                <Controller
+                  control={control}
+                  name="skill_type_id"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <SkillTypeAutoComplete
+                        name={field.name}
+                        value={field.value}
+                        onChange={(value) => {
+                          field.onChange(value)
+                        }}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Type',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
             </FlexBox>
             <FlexBox gap={2}>
               <FormControl fullWidth>

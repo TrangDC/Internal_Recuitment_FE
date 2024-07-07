@@ -1,7 +1,7 @@
 import BaseModal from 'shared/components/modal'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useDeleteFeedback from '../../providers/hooks/useDeleteFeedback'
+import useDeleteFeedback from '../../../hooks/crud/useDeleteFeedback'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'

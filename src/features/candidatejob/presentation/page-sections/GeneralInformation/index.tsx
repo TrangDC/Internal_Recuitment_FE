@@ -1,7 +1,7 @@
 import GeneralInformationField from '../GeneralInformationField'
-import { DivContainerWrapper } from '../../providers/styles'
+import { DivContainerWrapper } from '../../../shared/styles'
 import JobApplicationHistory from '../JobApplicationHistory'
-import useCandidateDetail from '../../providers/hooks/useCandidateDetail'
+import useCandidateDetail from '../../../hooks/crud/useCandidateDetail'
 import { useParams } from 'react-router-dom'
 
 const GeneralInformation = () => {
@@ -10,8 +10,8 @@ const GeneralInformation = () => {
 
   return (
     <DivContainerWrapper>
-      <GeneralInformationField candidateDetail={candidateDetail}/>
-      <JobApplicationHistory candidateDetail={candidateDetail}/>
+      <GeneralInformationField candidateDetail={candidateDetail} />
+      <JobApplicationHistory candidateDetail={candidateDetail} />
     </DivContainerWrapper>
   )
 }

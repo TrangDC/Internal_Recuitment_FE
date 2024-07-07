@@ -1,7 +1,7 @@
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
-import useCandidatesJob from 'features/jobs/presentation/providers/hooks/useGetCandidateJob'
+import useCandidatesJob from 'features/jobs/hooks/crud/useGetCandidateJob'
 import { ReactNode, createContext, useContext } from 'react'
 import { BaseRecord } from 'shared/interfaces'
 
@@ -62,12 +62,7 @@ const ChangeStatusContext = createContext<InitialState>({
 function ChangeStatusProvider(props: ChangeStatusProps) {
   const { children } = props
 
-  const {
-    data,
-    total_data,
-    show_more,
-    actions,
-  } = useCandidatesJob()
+  const { data, total_data, show_more, actions } = useCandidatesJob()
 
   return (
     <ChangeStatusContext.Provider

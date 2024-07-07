@@ -2,8 +2,8 @@ import { checkPermissions } from 'features/authorization/domain/functions/functi
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
 import { Candidate } from 'features/candidates/domain/interfaces'
-import { ActionCandidateTable } from 'features/candidates/presentation/providers/hooks/useBuildActionTableCandidate'
-import { ActionCandidateTableBL } from 'features/candidates/presentation/providers/hooks/useBuildActionTableCandidateBL'
+import { ActionCandidateTable } from 'features/candidates/hooks/table/useBuildActionTableCandidate'
+import { ActionCandidateTableBL } from 'features/candidates/hooks/table/useBuildActionTableCandidateBL'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
 
 interface ActionProps {
@@ -32,7 +32,10 @@ function editAction({ newActions, role }: ActionProps) {
     module: 'CANDIDATES',
   })
 
-  if (!everything) return newActions.filter((action) => action.id !== ActionCandidateTable.EDIT)
+  if (!everything)
+    return newActions.filter(
+      (action) => action.id !== ActionCandidateTable.EDIT
+    )
   return newActions
 }
 
@@ -46,7 +49,10 @@ function deleteAction({ newActions, role }: ActionProps) {
     module: 'CANDIDATES',
   })
 
-  if (!everything) return newActions.filter((action) => action.id !== ActionCandidateTable.DELETE)
+  if (!everything)
+    return newActions.filter(
+      (action) => action.id !== ActionCandidateTable.DELETE
+    )
   return newActions
 }
 
@@ -61,7 +67,9 @@ function addAndRemoveBlackList({ newActions, role }: ActionProps) {
   })
 
   if (!everything)
-    return newActions.filter((action) => action.id !== ActionCandidateTableBL.REMOVE_BLACK_LIST)
+    return newActions.filter(
+      (action) => action.id !== ActionCandidateTableBL.REMOVE_BLACK_LIST
+    )
   return newActions
 }
 

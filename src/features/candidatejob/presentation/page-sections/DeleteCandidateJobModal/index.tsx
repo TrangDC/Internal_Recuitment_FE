@@ -1,26 +1,25 @@
 import BaseModal from 'shared/components/modal'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useDeleteCandidateJob from '../../providers/hooks/useDeleteCandidateJob'
+import useDeleteCandidateJob from '../../../hooks/crud/useDeleteCandidateJob'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 
 interface IDeleteCandidateJobModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  onSuccess?: (id: string) => void;
+  onSuccess?: (id: string) => void
 }
 
 function DeleteCandidateJobModal({
   open,
   setOpen,
   id,
-  onSuccess
+  onSuccess,
 }: IDeleteCandidateJobModal) {
   const [note, setNote] = useState('')
   const { onDelete, isPending } = useDeleteCandidateJob({

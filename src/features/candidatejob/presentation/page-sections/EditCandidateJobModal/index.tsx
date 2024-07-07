@@ -7,7 +7,7 @@ import useTextTranslation from 'shared/constants/text'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import { Span, Tiny } from 'shared/components/Typography'
-import useEditJobApplication from '../../providers/hooks/useEditJobApplication'
+import useEditJobApplication from '../../../hooks/crud/useEditJobApplication'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 

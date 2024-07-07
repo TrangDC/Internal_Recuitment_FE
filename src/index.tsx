@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { JWTAuthProvider } from 'contexts/JWTAuth'
+import { AuthenticationProvider } from './features/authentication/shared/contexts/Authentication'
 import SettingsProvider from 'contexts/settingsContext'
 import App from './App'
 import 'nprogress/nprogress.css'
@@ -30,7 +30,7 @@ root.render(
   <React.StrictMode>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <SettingsProvider>
-        <JWTAuthProvider>
+        <AuthenticationProvider>
           <QueryClientProvider client={queryClient}>
             <Suspense fallback={<LoadingSpinner />}>
               <AuthorizationProvider>
@@ -46,7 +46,7 @@ root.render(
               </AuthorizationProvider>
             </Suspense>
           </QueryClientProvider>
-        </JWTAuthProvider>
+        </AuthenticationProvider>
       </SettingsProvider>
     </LocalizationProvider>
   </React.StrictMode>

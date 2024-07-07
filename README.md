@@ -47,25 +47,25 @@ src
 ├── contexts
 ├──  features
 │ ├──  teams
-│ │ ├──  domain
-│ │ │ ├──  graphql
-│ │ │ │ └── teams_graphql.ts
-│ │ │ └── interfaces
-│ │ │   └── index.ts
-│ │ └── presentation
-│ │   ├──  providers
-│ │   │ ├── components
-│ │   │ ├── hooks
-│ │   │ │ ├──  useActionTable.ts
-│ │   │ │ └──  useTeamTable.ts
-│ │   │ ├── constants
-│ │   │ │ └──  columns.tsx
-│ │   ├── page-sections
-│ │   │ ├──  CreateTeamModal.tsx
-│ │   │ ├──  DetailTeamModal.tsx
-│ │   │ └──  EditTeamModal.tsx
-│ │   ├──  pages
-│ │   │ └── teams-list.tsx
+│ │ ├── domain
+│ │ │   ├── graphql
+│ │ │   |   └── teams_graphql.ts
+│ │ │   └── interfaces
+│ │ │       └── index.ts
+│ │ ├── hooks
+│ │ │   ├──  useActionTable.ts
+│ │ │   └──  useTeamTable.ts
+│ │ ├── presentation
+│ │ |   ├── components
+│ │ |   ├── page-sections
+│ │ |   │   ├──  CreateTeamModal.tsx
+│ │ |   │   ├──  DetailTeamModal.tsx
+│ │ |   │   └──  EditTeamModal.tsx
+│ │ |   └── pages
+│ │ |       └── teams-list.tsx
+│ │ └── shared
+│ │         └── constants
+│ │             └──  columns.tsx
 │ ├──  dashboard
 ├── i18n
 │ ├── en

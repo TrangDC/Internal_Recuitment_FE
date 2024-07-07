@@ -2,7 +2,7 @@ import { checkPermissions } from 'features/authorization/domain/functions/functi
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
 import { Job } from 'features/jobs/domain/interfaces'
-import { ActionAllJobsTable } from 'features/jobs/presentation/providers/hooks/table/useAllJobsPermissionActionTable'
+import { ActionAllJobsTable } from 'features/jobs/hooks/table/useAllJobsPermissionActionTable'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
 
 interface ActionProps {

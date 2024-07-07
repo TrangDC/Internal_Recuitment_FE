@@ -1,18 +1,18 @@
 import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Add from 'shared/components/icons/Add'
-import { columns } from '../providers/constants/columns'
-import useSkillTypeTable from '../providers/hooks/useSkillTable'
-import useActionTable from '../providers/hooks/useActionTable'
-import { DivContainerWrapper, DivHeaderWrapper } from '../providers/styles'
+import { columns } from '../../shared/constants/columns'
+import useSkillTable from '../../hooks/table/useSkillTable'
+import useActionTable from '../../hooks/table/useActionTable'
+import { DivContainerWrapper, DivHeaderWrapper } from '../../shared/styles'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { CreateSkill, DeleteSkill, EditSkill } from '../page-sections'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
-import useFilterSkills from '../providers/hooks/useFilterSkills'
+import useFilterSkills from '../../hooks/table/useFilterSkills'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import Cant from 'features/authorization/presentation/components/Cant'
-import useActionsTableSkill from 'features/skill/presentation/providers/constants/actionsTable'
+import useActionsTableSkill from 'features/skill/shared/constants/actionsTable'
 import { Skill } from 'features/skill/domain/interfaces'
 import DetailSkillModal from '../page-sections/DetailSkill'
 
@@ -33,7 +33,7 @@ const SkillList = () => {
   } = useActionTable<Skill>()
   const { useSearchListReturn } = useFilterSkills()
   const { handleSearch, search, searchRef } = useSearchListReturn
-  const { useTableReturn } = useSkillTypeTable({
+  const { useTableReturn } = useSkillTable({
     search,
   })
   const { actions } = useActionsTableSkill({

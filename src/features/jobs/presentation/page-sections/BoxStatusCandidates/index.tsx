@@ -3,15 +3,15 @@ import {
   BoxFieldContainer,
   BoxTitle,
   DivField,
-} from '../../providers/styles'
+} from '../../../shared/styles'
 import { Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import PhoneIcon from 'shared/components/icons/PhoneIcon'
 import { DragEventHandler, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ENABLED_CHANGE_STATUS } from '../../providers/constants'
+import { ENABLED_CHANGE_STATUS } from '../../../shared/constants'
 import { toast } from 'react-toastify'
-import useActionTable from 'features/candidatejob/presentation/providers/hooks/useActionTable'
+import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import ChangeStatusModal from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
 import { Candidate } from 'features/candidates/domain/interfaces'

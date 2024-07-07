@@ -1,12 +1,12 @@
 import { Box } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import useTextTranslation from 'shared/constants/text'
-import useCandidatesByJob from '../../providers/hooks/useCandidatesByJob'
+import useCandidatesByJob from '../../../hooks/crud/useCandidatesByJob'
 import {
   BoxHiringProcess,
   DivWrapperProcess,
   SpanHiring,
-} from '../../providers/styles'
+} from '../../../shared/styles'
 import BoxStatusCandidates from '../BoxStatusCandidates'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import { ENUM_STATUS_CANDIDATE } from 'shared/constants/constants'

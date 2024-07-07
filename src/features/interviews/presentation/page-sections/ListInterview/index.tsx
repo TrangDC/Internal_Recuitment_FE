@@ -5,7 +5,7 @@ import {
   ChipItem,
   DivActionHeader,
   ListInterviewContainer,
-} from '../../providers/styles'
+} from '../../../shared/styles'
 import { Span } from 'shared/components/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Accordion from '@mui/material/Accordion'
@@ -14,7 +14,7 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import useActionTable from '../../providers/hooks/useActionTable'
+import useActionTable from '../../../hooks/table/useActionTable'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
 import { Interview } from 'features/interviews/domain/interfaces'

@@ -1,7 +1,7 @@
 import BaseModal from 'shared/components/modal'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import useGetSkill from '../../providers/hooks/useGetSkill'
+import useGetSkill from '../../../hooks/crud/useGetSkill'
 import Scrollbar from 'shared/components/ScrollBar'
 import { Text13md, Tiny12md } from 'shared/components/Typography'
 import { innerHTMLTextArea } from 'shared/components/genarateInnerHTML'
