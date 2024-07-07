@@ -7,7 +7,6 @@ import { FormDataSchemaUpdate, schemaUpdate } from '../shared/constants/schema'
 import { useState } from 'react'
 import useGetAllPermissionGroups from 'shared/hooks/permissions/useGetAllPermissionGroups'
 import { isEmpty } from 'lodash'
-import { Role } from 'shared/components/autocomplete/role-template-autocomplete'
 import _ from 'lodash'
 import { PermissionGroup } from 'shared/hooks/permissions/interface/response'
 import {
@@ -18,6 +17,7 @@ import {
   mergePermissions,
 } from 'shared/hooks/permissions/utils/functions'
 import { PermissionFormData } from 'shared/hooks/permissions/interface'
+import Role from 'shared/schema/database/role'
 
 type UseChangeStatusProps = {
   id: string

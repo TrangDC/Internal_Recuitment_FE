@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import { BaseRecord } from 'shared/interfaces/common'
-import { Role } from 'shared/components/autocomplete/role-template-autocomplete'
 import {
   PermissionFormData,
   EntityPermissionsFormData,
@@ -9,6 +8,7 @@ import {
 } from '../interface'
 import { EntityPermission, PermissionGroup } from '../interface/response'
 import { NewEntityPermissionInput } from 'features/role-template/domain/interfaces'
+import Role from 'shared/schema/database/role'
 
 export function formatDefaultFormDataPermission(
   data: PermissionGroup[]
