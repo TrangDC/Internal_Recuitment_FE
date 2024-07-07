@@ -13,7 +13,7 @@ import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { openPDFInNewTab } from 'shared/utils/upload-file'
 import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
 
-enum ActionCandidateJobsTabLe {
+export enum ActionCandidateJobsTabLe {
   DETAIL = 'detail',
   EDIT_CV = 'edit_cv',
   DELETE = 'delete',

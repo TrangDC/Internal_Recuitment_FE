@@ -2,21 +2,30 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import {
   ActionGroupButtons,
   TOptionItem,
-} from 'shared/components/ActionGroupButtons' 
+} from 'shared/components/ActionGroupButtons'
 import { t } from 'i18next'
 import { format } from 'date-fns'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { LinkText, StyleTinyText } from 'shared/styles'
 import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
+import checkPermissionActionTable from 'features/candidatejob/permission/utils/checkPermissonActionTable'
+import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 
 const columnHelper = createColumnHelper<CandidateJob>()
 
 export const columns = (
-  actions: TOptionItem<CandidateJob>[]
+  actions: TOptionItem<CandidateJob>[],
+  { me, role }: ParamsColumn
 ): ColumnDef<CandidateJob, any>[] => [
   columnHelper.accessor((row) => row.hiring_job.name, {
     id: 'job_name',
-    cell: (info) => <LinkText to={`/dashboard/job-application-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
+    cell: (info) => (
+      <LinkText
+        to={`/dashboard/job-application-detail/${info.row.original.id}`}
+      >
+        {info.getValue()}
+      </LinkText>
+    ),
     header: () => <span>{t('job_name')}</span>,
     size: 400,
     enableSorting: false,
@@ -43,23 +52,26 @@ export const columns = (
     header: () => <span>{t('status')}</span>,
     enableSorting: false,
     size: 200,
-    cell: (info) => (
-      <ChipCandidate status={info.row.original.status}/>
-    ),
+    cell: (info) => <ChipCandidate status={info.row.original.status} />,
   }),
   columnHelper.accessor('created_at', {
     header: () => <span>{t('action')}</span>,
     size: 100,
     id: 'action',
-    cell: (info) => {
-      const id = info.row.original.id
-
+    cell: (rowData) => {
+      const id = rowData.row.original.id
+      const newActions = checkPermissionActionTable({
+        actions,
+        me,
+        role,
+        rowData,
+      })
       return (
         <>
           <ActionGroupButtons<CandidateJob>
             rowId={id}
-            actions={actions}
-            rowData={info.row.original}
+            actions={newActions}
+            rowData={rowData.row.original}
           />
         </>
       )
