@@ -14,6 +14,7 @@ function TeamsFilterPermission({
   onCustomChange,
   value,
 }: TeamsFilterPermissionProps) {
+  let filter = {}
   const { role } = useAuthorization()
   const teamOnly = checkPermissions({
     role,
@@ -23,7 +24,17 @@ function TeamsFilterPermission({
       permissions: ['VIEW.teamOnly'],
     },
   })
-  const filter = teamOnly ? { for_team: true } : undefined
+
+  const teamOwner = checkPermissions({
+    role,
+    module: 'TEAMS',
+    checkBy: {
+      compare: 'hasAny',
+      permissions: ['VIEW.ownedOnly'],
+    },
+  })
+  if (teamOnly) filter = { for_team: true }
+  if (teamOwner) filter = { for_owner: true }
   return (
     <TeamsAutoComplete
       name="team"

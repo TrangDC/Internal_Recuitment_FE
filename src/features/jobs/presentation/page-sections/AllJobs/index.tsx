@@ -70,25 +70,36 @@ const AllJob = () => {
       <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
         <HeadingWrapper>
           <FlexBox>
-            {' '}
-            <ControllerFilter
-              control={controlFilter}
-              title="Team"
-              keyName={'team_ids'}
-              Node={({ onFilter, value }) => (
-                <TeamsFilterPermission
-                  value={value}
-                  onCustomChange={(data) =>
-                    onFilter(
-                      data.map((value) => ({
-                        label: value.name,
-                        value: value.id,
-                      }))
-                    )
-                  }
-                />
-              )}
-            />
+            <Cant
+              module="TEAMS"
+              checkBy={{
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              }}
+            >
+              <ControllerFilter
+                control={controlFilter}
+                title="Team"
+                keyName={'team_ids'}
+                Node={({ onFilter, value }) => (
+                  <TeamsFilterPermission
+                    value={value}
+                    onCustomChange={(data) =>
+                      onFilter(
+                        data.map((value) => ({
+                          label: value.name,
+                          value: value.id,
+                        }))
+                      )
+                    }
+                  />
+                )}
+              />
+            </Cant>
             <ControllerFilter
               control={controlFilter}
               title="Status"

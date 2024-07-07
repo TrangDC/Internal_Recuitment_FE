@@ -16,8 +16,6 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import ApplyJobModal from '../../ApplyJobCandidate'
 import useFilterJobsOpening from 'features/jobs/presentation/providers/hooks/useFilterJobsOpening'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
-import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
-import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 import { BaseRecord } from 'shared/interfaces'
@@ -79,26 +77,32 @@ const FilterCandidate = () => {
             />
           )}
         />
-
-        <ControllerFilter
-          control={controlFilter}
-          title="Team"
-          keyName={'team_id'}
-          Node={({ onFilter, value }) => (
-            <TeamsFilterPermission
-              value={value}
-              onCustomChange={(data) =>
-                onFilter(
-                  data.map((value) => ({
-                    label: value.name,
-                    value: value.id,
-                  }))
-                )
-              }
-            />
-          )}
-        />
-
+        <Cant
+          module="TEAMS"
+          checkBy={{
+            compare: 'hasAny',
+            permissions: ['VIEW.everything', 'VIEW.teamOnly', 'VIEW.ownedOnly'],
+          }}
+        >
+          <ControllerFilter
+            control={controlFilter}
+            title="Team"
+            keyName={'team_id'}
+            Node={({ onFilter, value }) => (
+              <TeamsFilterPermission
+                value={value}
+                onCustomChange={(data) =>
+                  onFilter(
+                    data.map((value) => ({
+                      label: value.name,
+                      value: value.id,
+                    }))
+                  )
+                }
+              />
+            )}
+          />
+        </Cant>
         <ControllerFilter
           control={controlFilter}
           title="Priority"
