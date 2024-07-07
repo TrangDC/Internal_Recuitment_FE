@@ -7,9 +7,9 @@ interface PublicLayoutProps {
   children: ReactNode
 }
 const PublicLayout = ({ children }: PublicLayoutProps) => {
-  const auth = useAuth()
+  const { authState } = useAuth()
   let location = useLocation()
-  if (auth.isAuthenticated && auth.isInitialized) {
+  if (authState === 'IS_AUTHENTICATED') {
     return <Navigate to="/" state={{ from: location }} replace />
   }
   return <Fragment>{children}</Fragment>
