@@ -18,7 +18,10 @@ const useGraphql = () => {
             id
             name
           }
-         
+          roles {
+            name
+            id
+          }
         }
       }
       pagination {
@@ -83,6 +86,9 @@ const useGraphql = () => {
           team {
             id
             name
+          }
+          roles {
+            id
           }
           entity_permissions {
             id

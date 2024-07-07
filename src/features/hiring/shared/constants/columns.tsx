@@ -1,11 +1,12 @@
 import { styled } from '@mui/material'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import { Hiring } from 'features/hiring/domain/interfaces'
+import { Hiring, Role } from 'features/hiring/domain/interfaces'
 import checkPermissionActionTable from 'features/hiring/permission/utils/checkPermissonActionTable'
 import {
   ActionGroupButtons,
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
+import ChipField from 'shared/components/chip-stack/chip-field'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { TinyText } from 'shared/components/form/styles'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
@@ -22,7 +23,7 @@ export const columns = (
   actions: TOptionItem<Hiring>[],
   { me, role }: ParamsColumn
 ): ColumnDef<Hiring, any>[] => [
-  columnHelper.accessor((row) => row.name, {
+  columnHelper.accessor('name', {
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     header: () => <span>Name</span>,
@@ -34,19 +35,38 @@ export const columns = (
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     size: 300,
   }),
-  columnHelper.accessor((row) => row.team?.name, {
+  columnHelper.accessor('team.name', {
     id: 'team',
     header: () => <span>Team</span>,
     enableSorting: false,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-    size: 400,
+    cell: (info) => {
+      if (!info.getValue()) return ''
+      return <StyleTinyText>{info.getValue()}</StyleTinyText>
+    },
+    size: 200,
   }),
-  columnHelper.accessor((row) => row.entity_permissions, {
-    id: 'status',
+  columnHelper.accessor('roles', {
+    id: 'roles',
     header: () => <span>Role</span>,
     enableSorting: false,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-    size: 800,
+    cell: (info) => {
+      const roles: Role[] = info.getValue() ?? []
+      return (
+        <FlexBox gap={'10px'} flexWrap={'wrap'}>
+          {roles.map((member: Role, idx: number) => (
+            <ChipField
+              key={idx}
+              label={member.name}
+              sx={{
+                background: ' #F1F9FF',
+                color: '#121625',
+              }}
+            />
+          ))}
+        </FlexBox>
+      )
+    },
+    size: 500,
   }),
   columnHelper.accessor('created_at', {
     header: () => (

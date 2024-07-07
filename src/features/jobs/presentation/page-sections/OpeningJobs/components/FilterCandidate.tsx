@@ -21,8 +21,8 @@ import LocationAutoComplete from 'shared/components/autocomplete/location-auto-c
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import Cant from 'features/authorization/presentation/components/Cant'
-import TeamsFilterPermission from 'features/jobs/permission/filters/TeamsFilterPermission'
-import JobsFilterPermission from 'features/jobs/permission/filters/JobsFilterPermission'
+import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
+import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 
 const FilterCandidate = () => {
   const translation = useTextTranslation()
@@ -61,8 +61,12 @@ const FilterCandidate = () => {
           title="Job"
           keyName={'hiring_job_id'}
           Node={({ onFilter, value }) => (
-            <JobsFilterPermission
+            <JobsAutoComplete
               value={value}
+              name="job"
+              multiple={true}
+              open={true}
+              disableCloseOnSelect={true}
               onCustomChange={(data) =>
                 onFilter(
                   data.map((value) => ({
@@ -71,35 +75,39 @@ const FilterCandidate = () => {
                   }))
                 )
               }
+              textFieldProps={{
+                label: 'Job',
+                autoFocus: true,
+              }}
             />
           )}
         />
-        <Cant
-          module="TEAMS"
-          checkBy={{
-            compare: 'hasAny',
-            permissions: ['VIEW.everything', 'VIEW.teamOnly', 'VIEW.ownedOnly'],
-          }}
-        >
-          <ControllerFilter
-            control={controlFilter}
-            title="Team"
-            keyName={'team_id'}
-            Node={({ onFilter, value }) => (
-              <TeamsFilterPermission
-                value={value}
-                onCustomChange={(data) =>
-                  onFilter(
-                    data.map((value) => ({
-                      label: value.name,
-                      value: value.id,
-                    }))
-                  )
-                }
-              />
-            )}
-          />
-        </Cant>
+        <ControllerFilter
+          control={controlFilter}
+          title="Team"
+          keyName={'team_id'}
+          Node={({ onFilter, value }) => (
+            <TeamsAutoComplete
+              value={value}
+              name="team"
+              multiple={true}
+              open={true}
+              disableCloseOnSelect={true}
+              onCustomChange={(data) =>
+                onFilter(
+                  data.map((value) => ({
+                    label: value.name,
+                    value: value.id,
+                  }))
+                )
+              }
+              textFieldProps={{
+                label: 'Team',
+                autoFocus: true,
+              }}
+            />
+          )}
+        />
         <ControllerFilter
           control={controlFilter}
           title="Priority"

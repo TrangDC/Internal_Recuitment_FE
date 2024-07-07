@@ -10,10 +10,10 @@ import useEditHiring from 'features/hiring/hooks/useEditHiring'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import AvatarUser from '../../components/AvatarUser'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
-import RoleTemplateAutoComplete from 'shared/components/autocomplete/role-template-autocomplete'
 import PermissionSections from '../permissionSections'
 import LoadingField from 'shared/components/form/loadingField'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
+import RoleTemplateSelection from '../../components/role-template-selection'
 
 interface IEditHiringModal {
   open: boolean
@@ -144,7 +144,7 @@ function EditHiringModal({ open, setOpen, id }: IEditHiringModal) {
                         name="rolesTemplateId"
                         render={({ field, fieldState }) => (
                           <FlexBox flexDirection={'column'}>
-                            <RoleTemplateAutoComplete
+                            <RoleTemplateSelection
                               value={field.value}
                               onChange={(ids) => {
                                 field.onChange(ids)

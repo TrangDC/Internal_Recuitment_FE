@@ -13,6 +13,15 @@ const useGraphql = () => {
         node {
           id
           name
+          entity_permissions {
+            id
+            for_owner
+            for_team
+            for_all
+            permission {
+              id
+            }
+          }
         }
       }
       pagination {

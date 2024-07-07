@@ -24,7 +24,7 @@ import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-
 import Cant from 'features/authorization/presentation/components/Cant'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import useBuildAllJobsActionsTable from '../../../hooks/table/useAllJobsPermissionActionTable'
-import TeamsFilterPermission from 'features/jobs/permission/filters/TeamsFilterPermission'
+import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 
 const AllJob = () => {
   const {
@@ -68,36 +68,32 @@ const AllJob = () => {
       <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
         <HeadingWrapper>
           <FlexBox>
-            <Cant
-              module="TEAMS"
-              checkBy={{
-                compare: 'hasAny',
-                permissions: [
-                  'VIEW.everything',
-                  'VIEW.teamOnly',
-                  'VIEW.ownedOnly',
-                ],
-              }}
-            >
-              <ControllerFilter
-                control={controlFilter}
-                title="Team"
-                keyName={'team_ids'}
-                Node={({ onFilter, value }) => (
-                  <TeamsFilterPermission
-                    value={value}
-                    onCustomChange={(data) =>
-                      onFilter(
-                        data.map((value) => ({
-                          label: value.name,
-                          value: value.id,
-                        }))
-                      )
-                    }
-                  />
-                )}
-              />
-            </Cant>
+            <ControllerFilter
+              control={controlFilter}
+              title="Team"
+              keyName={'team_ids'}
+              Node={({ onFilter, value }) => (
+                <TeamsAutoComplete
+                  value={value}
+                  name="team"
+                  multiple={true}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
+                  textFieldProps={{
+                    label: 'Team',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
             <ControllerFilter
               control={controlFilter}
               title="Status"

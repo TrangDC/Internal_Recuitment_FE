@@ -44,6 +44,7 @@ function useEditHiring(props: UseChangeStatusProps) {
     formatDefaultValues: async (data) => {
       const entityPermissions = data?.entity_permissions ?? []
       const permissionGroups = await getAllPermission()
+      const rolesTemplateId = data?.roles?.map((role) => role.id) ?? []
       let entity_permissions: PermissionFormData
       setPermissionGroup(permissionGroups)
       if (isEmpty(entityPermissions)) {
@@ -55,12 +56,13 @@ function useEditHiring(props: UseChangeStatusProps) {
             entityPermissions
           )
       }
+      console.log('rolesTemplateId', rolesTemplateId)
       return {
         status: data?.status ?? '',
         name: data?.name ?? '',
         work_email: data?.work_email ?? '',
         teamId: data?.team?.id ?? '',
-        rolesTemplateId: [],
+        rolesTemplateId,
         entity_permissions: entity_permissions,
       }
     },
@@ -82,6 +84,7 @@ function useEditHiring(props: UseChangeStatusProps) {
         entity_permissions: formatChecksToBE(convertToArray),
         note: note,
         team_id: data.teamId,
+        role_id: data.rolesTemplateId,
       })
     })()
   }
