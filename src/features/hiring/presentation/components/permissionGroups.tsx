@@ -38,7 +38,7 @@ function PermissionGroups(props: PermissionSectionProps) {
         setValue(`${name}.teamOnly`, false)
       }
     }
-    setValue(`${name}.${role}`, check)
+    setValue(`${name}.${role}`, check, { shouldDirty: true })
   }
   const permissions = permissionGroup.permissions
   return (

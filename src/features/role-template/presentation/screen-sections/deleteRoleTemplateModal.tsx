@@ -39,6 +39,7 @@ function DeleteRoleTemplateModal({
         <BaseModal.Header
           title="Do you want to delete this role template?"
           setOpen={setOpen}
+          subTitle="Deleting this role will not affect the permissions of the users assigned to it"
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
           <FlexBox flexDirection={'column'} gap={2}>
