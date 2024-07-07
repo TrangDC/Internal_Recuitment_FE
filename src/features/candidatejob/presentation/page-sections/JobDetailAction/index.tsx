@@ -19,7 +19,7 @@ const JobDetailAction = ({
   const { id } = useParams()
   const [statusSelected, setStatusSelected] = useState<string>()
   const { candidateJobInterview } = useGetCandidateJobInterview(id as string)
-
+  const candidateJobOfTeamId = jobApplicationDetail?.hiring_job?.team?.id ?? ''
   const listEnabled: { feedback: FeedBack[]; interview: Interview[] } =
     useMemo(() => {
       //@ts-ignore
@@ -67,7 +67,10 @@ const JobDetailAction = ({
             permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
           }}
         >
-          <ListFeedBack listFeedback={listEnabled?.feedback} />
+          <ListFeedBack
+            listFeedback={listEnabled?.feedback}
+            candidateJobOfTeamId={candidateJobOfTeamId}
+          />
         </Cant>
       </DivAction>
     </DivActionWrapper>

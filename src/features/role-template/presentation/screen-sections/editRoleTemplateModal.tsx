@@ -11,6 +11,7 @@ import PermissionSections from './permissionSections'
 import useEditRoleTemplate from 'features/role-template/hooks/useEditRoleTemplate'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import { Text15md } from 'shared/components/Typography'
+import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 
 function EditRoleTemplateModal({ open, setOpen, id }: IEditModal) {
   const {
@@ -26,112 +27,114 @@ function EditRoleTemplateModal({ open, setOpen, id }: IEditModal) {
       setOpen(false)
     },
   })
-  const { control } = useFormReturn
+  const { control, formState } = useFormReturn
   const { onSubmit } = actions
   return (
-    <FormProvider {...useFormReturn}>
-      <BaseModal.Wrapper open={open} setOpen={setOpen}>
-        <BaseModal.Header
-          title="Edit role template"
-          setOpen={setOpen}
-        ></BaseModal.Header>
-        <BaseModal.ContentMain
-          maxHeight="500px"
-          sxContentMain={{
-            padding: '16px 0px',
-          }}
-        >
-          <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-            <FlexBox
-              flexDirection={'column'}
-              gap={2}
-              paddingX={'16px'}
-              borderBottom={'1px solid'}
-              borderColor={'grey.200'}
-              paddingBottom={'16px'}
-            >
-              <Text15md color={'primary.800'}>General information</Text15md>
-              <FlexBox justifyContent={'center'}>
-                <FormControl fullWidth>
-                  <Controller
-                    control={control}
-                    name="name"
-                    defaultValue=""
-                    render={({ field, fieldState }) => (
-                      <FlexBox flexDirection={'column'}>
-                        <LoadingField isloading={false}>
-                          <AppTextField
-                            label={'Role name'}
-                            required
-                            size="small"
-                            fullWidth
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                          <HelperTextForm
-                            message={fieldState.error?.message}
-                          ></HelperTextForm>
-                        </LoadingField>
-                      </FlexBox>
-                    )}
-                  />
-                </FormControl>
+    <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
+      <FormProvider {...useFormReturn}>
+        <BaseModal.Wrapper open={open} setOpen={setOpen}>
+          <BaseModal.Header
+            title="Edit role template"
+            setOpen={setOpen}
+          ></BaseModal.Header>
+          <BaseModal.ContentMain
+            maxHeight="500px"
+            sxContentMain={{
+              padding: '16px 0px',
+            }}
+          >
+            <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+              <FlexBox
+                flexDirection={'column'}
+                gap={2}
+                paddingX={'16px'}
+                borderBottom={'1px solid'}
+                borderColor={'grey.200'}
+                paddingBottom={'16px'}
+              >
+                <Text15md color={'primary.800'}>General information</Text15md>
+                <FlexBox justifyContent={'center'}>
+                  <FormControl fullWidth>
+                    <Controller
+                      control={control}
+                      name="name"
+                      defaultValue=""
+                      render={({ field, fieldState }) => (
+                        <FlexBox flexDirection={'column'}>
+                          <LoadingField isloading={false}>
+                            <AppTextField
+                              label={'Role name'}
+                              required
+                              size="small"
+                              fullWidth
+                              value={field.value}
+                              onChange={field.onChange}
+                            />
+                            <HelperTextForm
+                              message={fieldState.error?.message}
+                            ></HelperTextForm>
+                          </LoadingField>
+                        </FlexBox>
+                      )}
+                    />
+                  </FormControl>
+                </FlexBox>
+                <FlexBox justifyContent={'center'}>
+                  <FormControl fullWidth>
+                    <Controller
+                      control={control}
+                      name="description"
+                      defaultValue=""
+                      render={({ field, fieldState }) => (
+                        <FlexBox flexDirection={'column'}>
+                          <LoadingField isloading={false}>
+                            <AppTextField
+                              label={'Description'}
+                              fullWidth
+                              value={field.value}
+                              onChange={field.onChange}
+                              multiline
+                              rows={3}
+                            />
+                            <HelperTextForm
+                              message={fieldState.error?.message}
+                            ></HelperTextForm>
+                          </LoadingField>
+                        </FlexBox>
+                      )}
+                    />
+                  </FormControl>
+                </FlexBox>
               </FlexBox>
-              <FlexBox justifyContent={'center'}>
-                <FormControl fullWidth>
-                  <Controller
-                    control={control}
-                    name="description"
-                    defaultValue=""
-                    render={({ field, fieldState }) => (
-                      <FlexBox flexDirection={'column'}>
-                        <LoadingField isloading={false}>
-                          <AppTextField
-                            label={'Description'}
-                            fullWidth
-                            value={field.value}
-                            onChange={field.onChange}
-                            multiline
-                            rows={3}
-                          />
-                          <HelperTextForm
-                            message={fieldState.error?.message}
-                          ></HelperTextForm>
-                        </LoadingField>
-                      </FlexBox>
-                    )}
-                  />
-                </FormControl>
-              </FlexBox>
+              <PermissionSections
+                permissionGroup={permissionGroup}
+                isGetting={isGetting}
+              />
             </FlexBox>
-            <PermissionSections
-              permissionGroup={permissionGroup}
-              isGetting={isGetting}
-            />
-          </FlexBox>
-        </BaseModal.ContentMain>
-        <BaseModal.Footer>
-          <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
-            <AppButton
-              variant="outlined"
-              size="small"
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </AppButton>
-            <ButtonEdit
-              loading={isPending}
-              disabled={isValid}
-              data-testid="btn-submit"
-              handlesubmit={(note) => onSubmit(note)}
-              title={`Do you want to edit this role template?`}
-            >
-              Submit
-            </ButtonEdit>
-          </FlexBox>
-        </BaseModal.Footer>
-      </BaseModal.Wrapper>
-    </FormProvider>
+          </BaseModal.ContentMain>
+          <BaseModal.Footer>
+            <FlexBox gap={'10px'} justifyContent={'end'} width={'100%'}>
+              <AppButton
+                variant="outlined"
+                size="small"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </AppButton>
+              <ButtonEdit
+                loading={isPending}
+                disabled={isValid}
+                data-testid="btn-submit"
+                handlesubmit={(note) => onSubmit(note)}
+                title={`Do you want to edit this role template?`}
+              >
+                Submit
+              </ButtonEdit>
+            </FlexBox>
+          </BaseModal.Footer>
+        </BaseModal.Wrapper>
+      </FormProvider>
+    </ConfirmableModalProvider>
   )
 }
 

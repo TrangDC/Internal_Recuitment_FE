@@ -34,9 +34,10 @@ import DeleteFeedbackButtonPermission from 'features/feedback/permission/compone
 
 interface Props {
   listFeedback: FeedBack[]
+  candidateJobOfTeamId: string
 }
 
-const ListFeedBack = ({ listFeedback }: Props) => {
+const ListFeedBack = ({ listFeedback, candidateJobOfTeamId }: Props) => {
   const {
     openCreate,
     setOpenCreate,
@@ -122,6 +123,7 @@ const ListFeedBack = ({ listFeedback }: Props) => {
                     >
                       <DeleteFeedbackButtonPermission
                         ownerId={feedback?.owner?.id ?? ''}
+                        candidateJobOfTeamId={candidateJobOfTeamId}
                         onClick={() => {
                           handleOpenDelete(feedback.id)
                         }}

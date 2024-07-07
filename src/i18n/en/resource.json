@@ -179,6 +179,11 @@
         "name_exist": "Name has already existed"
       }
     },
+    "roles": {
+      "validation": {
+        "name_exist": "Name has already existed"
+      }
+    },
     "permisson_groups": {
       "teams": {
         "model_name": "Teams"
