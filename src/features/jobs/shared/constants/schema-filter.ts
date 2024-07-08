@@ -17,7 +17,8 @@ const customInterfaceJobOpening = createSchemaFilter({
   priority: 'string',
   skill_id: 'string[]',
   location: 'string',
-  created_by_ids: 'string[]'
+  created_by_ids: 'string[]',
+  page_job: 'string'
 })
 
 export type JobsFilterOpening = typeof customInterfaceJobOpening

@@ -217,7 +217,7 @@ function EditCandidateModal({
                         name={field.name}
                         onChange={field.onChange}
                         source={candidate_source as TypeCandidateSource}
-                        value={field.value}
+                        value={field.value ?? ''}
                         required={true}
                       />
                       <HelperTextForm

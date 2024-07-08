@@ -109,3 +109,8 @@ export const ENABLED_CHANGE_STATUS = {
   [STATUS_CANDIDATE.OFFERED_LOST]: [],
   [STATUS_CANDIDATE.EX_STAFTT]: [],
 }
+
+export const OPENING_PAGE_JOB = {
+  list_job: 'list_job',
+  candidate_job: 'candidate_job',
+}

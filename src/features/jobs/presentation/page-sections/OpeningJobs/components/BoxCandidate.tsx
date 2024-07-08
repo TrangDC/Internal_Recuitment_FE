@@ -1,4 +1,4 @@
-import { Span, Tiny } from 'shared/components/Typography'
+import { Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import PhoneIcon from 'shared/components/icons/PhoneIcon'
 import { DragEventHandler, useState } from 'react'
@@ -102,20 +102,16 @@ const BoxCandidate = ({
         event.preventDefault()
       }}
       onDrop={handleDropEvent}
-      sx={{
-        minWidth: '240px',
-        width: '240px',
-      }}
     >
       <BoxCandidateTitle>
         <FlexBox
-          gap={'10px'}
+          gap={1.25}
           alignItems={'center'}
           justifyContent={'space-between'}
         >
-          <FlexBox alignItems={'center'} gap={'10px'}>
+          <FlexBox alignItems={'center'} gap={1.25}>
             <SpanHiringStatus>{title}</SpanHiringStatus>
-            <Tiny color={'#4D607A'}>{number_candidates}</Tiny>
+            <Tiny color={'#4D607A'} lineHeight={'14.63px'}>{number_candidates}</Tiny>
           </FlexBox>
           {Note}
         </FlexBox>

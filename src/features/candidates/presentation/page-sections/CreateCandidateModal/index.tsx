@@ -175,6 +175,8 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                       <CandidateSourceAutoComplete
                         value={field.value}
                         onChange={(recruit) => {
+                          // console.log("🚀 ~ CreateCandidateModal ~ recruit:", recruit)
+                          // handleMsgErrorReference(recruit?.value)
                           resetSourceValue()
                           field.onChange(recruit?.value)
                         }}
@@ -201,7 +203,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                         name={field.name}
                         onChange={field.onChange}
                         source={candidate_source as TypeCandidateSource}
-                        value={field.value}
+                        value={field.value ?? ''}
                         required={true}
                       />
                       <HelperTextForm

@@ -37,6 +37,8 @@ export const BoxContainerCandidate = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.grey[200]}`,
   borderRadius: '4px',
   backgroundColor: '#F0F1F8',
+  minWidth: '240px',
+  width: '240px',
 }))
 
 export const BoxCandidateTitle = styled(Box)(({ theme }) => ({
