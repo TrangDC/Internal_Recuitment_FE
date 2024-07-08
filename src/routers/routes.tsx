@@ -1,4 +1,4 @@
-import { FC, lazy, LazyExoticComponent, Suspense } from 'react'
+import { FC, lazy, LazyExoticComponent, ReactElement, Suspense } from 'react'
 import {
   BrowserRouter,
   Outlet,
@@ -11,6 +11,9 @@ import PublicLayout from 'features/authentication/presentation/page-sections/Pub
 import ProtectedLayout from 'features/authentication/presentation/page-sections/ProtectedLayout'
 import { PermissionLayout } from 'features/authorization/presentation/screen-sections/PermissionLayout'
 import DashboardLayout from 'layouts/layout/DashboardLayout'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import { checkPermissions } from 'features/authorization/domain/functions/functions'
+import DoNotAllowPage from 'pages/403'
 
 const Loadable = (Component: LazyExoticComponent<FC>) => (props: any) => {
   return (
@@ -62,6 +65,29 @@ const RoleTemplatePage = Loadable(
 const Error = Loadable(lazy(() => import('../pages/404')))
 
 export const AppRoutes = () => {
+  const { role } = useAuthorization()
+  let skillPage: ReactElement | null = <DoNotAllowPage />
+  const skillView = checkPermissions({
+    role,
+    module: 'SKILLS',
+    checkBy: {
+      compare: 'hasAny',
+      permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
+    },
+  })
+
+  const skillTypeView = checkPermissions({
+    role,
+    module: 'SKILL_TYPES',
+    checkBy: {
+      compare: 'hasAny',
+      permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
+    },
+  })
+  if (skillTypeView || skillView) {
+    skillPage = <DashboardLayout>{<SkillList />}</DashboardLayout>
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -227,10 +253,7 @@ export const AppRoutes = () => {
           />
           {/* <Route path="hiring" element={<HiringList />} />
           <Route path="role-template" element={<RoleTemplatePage />} /> */}
-          <Route
-            path="skill"
-            element={<DashboardLayout>{<SkillList />}</DashboardLayout>}
-          />
+          <Route path="skill" element={skillPage} />
         </Route>
         <Route
           path="/auth"
