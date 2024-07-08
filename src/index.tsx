@@ -24,7 +24,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-export const queryClient = new QueryClient({})
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 root.render(
   <React.StrictMode>
