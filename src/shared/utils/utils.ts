@@ -218,16 +218,23 @@ export const removeStatusAttachment = (attachments: any[] | undefined) => {
 
 export const handleCopyClipBoard = (url: string, content: string) => {
   const htmlLink = `<a href="${url}">${content}</a>`
-  const type = 'text/html'
-  const tempTextArea = document.createElement('textarea')
-  tempTextArea.value = htmlLink
-  const blob = new Blob([htmlLink], { type })
-  const data = [new ClipboardItem({ [type]: blob })]
+  const textLink = url
+  const typeHtml = 'text/html'
+  const typeText = 'text/plain'
+
+  const blobHtml = new Blob([htmlLink], { type: typeHtml })
+  const blobText = new Blob([textLink], { type: typeText })
+
+  const data = [
+    new ClipboardItem({ [typeHtml]: blobHtml, [typeText]: blobText }),
+  ]
+
   navigator.clipboard
     .write(data)
     .then(() => {
       ToastCopyClipBoard({
         type: 'success',
+        content: 'Copied to clipboard!',
       })
     })
     .catch(() => {
