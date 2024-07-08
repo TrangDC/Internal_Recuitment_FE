@@ -6,6 +6,8 @@ import { Box } from '@mui/material'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { CircularLoading } from '../styles'
+import { useEffect } from 'react'
+import { removeEmptyInObject } from 'shared/utils/utils'
 
 const ListCandidate = () => {
   const {
@@ -14,9 +16,34 @@ const ListCandidate = () => {
     total_data: { total_current },
     actions: { handleFetchNextPage },
   } = useContextChangeStatus()
-  
+
   const { applied, interviewing, offering, hired, kiv, offer_lost, ex_staff } =
     data
+
+  const { actions, action_filter } = useContextChangeStatus()
+  const { handleFilter, handleFreeWord } = actions
+  const { useFilterReturn, useSearchListReturn } = action_filter
+  const { search } = useSearchListReturn
+
+  const handleSearchFreeWorld = (value: string) => {
+    handleFreeWord({
+      job_title: value,
+    })
+  }
+
+  const { dataFilterWithValue } = useFilterReturn
+
+  useEffect(() => {
+    const { page_job, ...dataFilter } = dataFilterWithValue
+
+    handleFilter({
+      ...removeEmptyInObject(dataFilter),
+    })
+  }, [JSON.stringify(dataFilterWithValue)])
+
+  useEffect(() => {
+    handleSearchFreeWorld(search?.name)
+  }, [search])
 
   return (
     <Box sx={{ padding: 1.5 }}>

@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import useGetSkillType from './hook/useGetSkillType'
 import AccordionComponent from './components/AccordionComponent'
-import _, { cloneDeep, isEmpty } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 import { isExistKey, transformSkillRecord, updateListChild } from './utils'
 import { Fragment } from 'react/jsx-runtime'
 import PopperWrapper from './components/PoperComponent'

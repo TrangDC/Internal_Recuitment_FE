@@ -2,7 +2,10 @@ import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import useCandidatesJob from 'features/jobs/hooks/crud/useGetCandidateJob'
-import { ReactNode, createContext, useContext } from 'react'
+import useFilterJobsOpening from 'features/jobs/hooks/table/useFilterJobsOpening'
+import { MutableRefObject, ReactNode, createContext, useContext } from 'react'
+import { ISearchData } from 'shared/components/table/hooks/useSearchList'
+import { InterfaceGenerate, UseFilterReturn } from 'shared/components/table/interface'
 import { BaseRecord } from 'shared/interfaces'
 
 interface InitialState {
@@ -27,6 +30,24 @@ interface InitialState {
     handleUpdateStatus: (data: onSuccessChangeStatus) => void
     handleRemoveCandidate: (status: string, id: string) => void
     handleAddCandidate: (candidateJob: CandidateJob) => void
+  }
+  action_filter: {
+    useFilterReturn: UseFilterReturn<
+      InterfaceGenerate<{
+        hiring_job_id: 'string[]'
+        team_id: 'string[]'
+        priority: 'string'
+        skill_id: 'string[]'
+        location: 'string'
+        created_by_ids: 'string[]'
+        page_job: 'string'
+      }>
+    >
+    useSearchListReturn: {
+      search: ISearchData;
+      handleSearch: () => void;
+      searchRef: MutableRefObject<null>;
+    }
   }
 }
 
@@ -57,12 +78,19 @@ const ChangeStatusContext = createContext<InitialState>({
     handleRemoveCandidate: (status: string, id: string) => {},
     handleAddCandidate: (candidateJob: CandidateJob) => {},
   },
+  action_filter: {
+    //@ts-ignore
+    useFilterReturn: {},
+     //@ts-ignore
+    useSearchListReturn: {}
+  },
 })
 
 function ChangeStatusProvider(props: ChangeStatusProps) {
   const { children } = props
 
   const { data, total_data, show_more, actions } = useCandidatesJob()
+  const { useFilterReturn, useSearchListReturn } = useFilterJobsOpening()
 
   return (
     <ChangeStatusContext.Provider
@@ -71,6 +99,10 @@ function ChangeStatusProvider(props: ChangeStatusProps) {
         total_data,
         show_more,
         actions,
+        action_filter: {
+          useFilterReturn,
+          useSearchListReturn
+        },
       }}
     >
       {children}

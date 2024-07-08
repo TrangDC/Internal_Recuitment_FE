@@ -2,11 +2,12 @@ import {
   Fragment,
 } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
-import ListCandidate from './components/ListCandidate'
 import ChangeStatusProvider from './context/ChangeStatusContext'
 import FilterCandidate from './components/FilterCandidate'
+import RenderListByPage from './components/renderListByPaget'
 
 const OpeningJob = () => {
+
   return (
     <Fragment>
       <ChangeStatusProvider>
@@ -14,7 +15,7 @@ const OpeningJob = () => {
           <HeadingWrapper sx={{ borderBottom: 0 }}>
             <FilterCandidate />
           </HeadingWrapper>
-          <ListCandidate />
+          <RenderListByPage />
         </BoxWrapperOuterContainer>
       </ChangeStatusProvider>
     </Fragment>

@@ -81,7 +81,7 @@ export const columns = (
     size: 100,
   }),
   columnHelper.accessor((row) => row.entity_skill_types, {
-    id: 'entity_skill',
+    id: 'created_at',
     header: () => <span>Skill required</span>,
     size: 200,
     cell: (info) => {

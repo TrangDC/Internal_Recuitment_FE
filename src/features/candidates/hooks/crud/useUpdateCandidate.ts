@@ -60,7 +60,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
     },
   })
 
-  const { handleSubmit, control, formState, setValue, watch } = useFormReturn
+  const { handleSubmit, control, formState, setValue, watch, clearErrors } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useEditReturn
 
@@ -89,6 +89,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
 
   const resetSourceValue = () => {
     setValue('reference_value', '')
+    clearErrors('reference_value')
   }
 
   return {

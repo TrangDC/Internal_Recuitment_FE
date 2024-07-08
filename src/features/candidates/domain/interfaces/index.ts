@@ -1,5 +1,5 @@
 import { TYPE_REFERENCE_TYPE } from 'features/auditTrails/presentation/providers/helper'
-import { entity_skill_type, SkillType } from 'features/skillType/domain/interfaces'
+import { entity_skill_type } from 'features/skillType/domain/interfaces'
 import { Member } from 'features/teams/domain/interfaces'
 import { Attachments } from 'shared/interfaces'
 import { SchemaInputNote } from 'shared/schema'

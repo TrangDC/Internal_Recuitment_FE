@@ -39,7 +39,14 @@ function useCreateCandidate(props: createCandidateProps) {
     onSuccess: callbackSuccess,
   })
 
-  const { handleSubmit, control, formState, watch, setValue } = useFormReturn
+  const {
+    handleSubmit,
+    control,
+    formState,
+    watch,
+    setValue,
+    clearErrors,
+  } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
@@ -62,6 +69,7 @@ function useCreateCandidate(props: createCandidateProps) {
 
   const resetSourceValue = () => {
     setValue('reference_value', '')
+    clearErrors('reference_value')
   }
 
   return {

@@ -3,6 +3,30 @@ import { RULE_MESSAGES } from 'shared/constants/validate'
 import { FormDataSchemaNote, schemaNote } from 'shared/schema'
 import * as yup from 'yup'
 
+const renderLabelReference = (type: string) => {
+  let label = ''
+  switch (type) {
+    case 'eb':
+    case 'rec':
+      label = 'Recruit channel'
+      break
+    case 'hiring_platform':
+      label = 'Recruit platform'
+      break
+    case 'reference':
+      label = 'Referrer'
+      break
+    case 'headhunt':
+      label = 'Headhunter'
+      break
+    default:
+      label = 'candidate_source_value'
+      break
+  }
+
+  return label
+}
+
 export const schema = yup.object({
   name: yup
     .string()
@@ -21,22 +45,28 @@ export const schema = yup.object({
     .max(64, RULE_MESSAGES.MC4('email', 64)),
   dob: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
   note: yup.string(),
-
   //add
   country: yup.string(),
-  reference_type: yup.string().required(RULE_MESSAGES.MC1('candidate_source')),
+  reference_type: yup.string().required(RULE_MESSAGES.MC1('candidate source')),
   reference_value: yup
     .string()
-    .required(RULE_MESSAGES.MC1('candidate_source_value')),
+    .when(['reference_type'], ([reference_type], schema) => {
+      return schema.required(
+        RULE_MESSAGES.MC1(renderLabelReference(reference_type))
+      )
+    }),
   reference_uid: yup
     .string()
-    .when(['candidate_source'], ([candidate_source], schema) => {
-      const isRequired = CANDIDATE_SOURCE_STATE.REC === candidate_source
+    .when(['reference_type'], ([reference_type], schema) => {
+      const isRequired = CANDIDATE_SOURCE_STATE.REC === reference_type
       return isRequired
         ? schema.required(RULE_MESSAGES.MC1('recruiter'))
         : schema.notRequired()
     }),
-  recruit_time: yup.date().typeError(RULE_MESSAGES.MC5('recruit time')).nullable(),
+  recruit_time: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('recruit time'))
+    .nullable(),
   entity_skill_records: yup.mixed(),
   description: yup.string(),
   attachments: yup.array(),
@@ -62,22 +92,28 @@ export const schemaUpdate = yup.object({
     .max(64, RULE_MESSAGES.MC4('email', 64)),
   dob: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
   note: yup.string(),
-
   //add
   country: yup.string(),
-  reference_type: yup.string().required(RULE_MESSAGES.MC1('candidate_source')),
+  reference_type: yup.string().required(RULE_MESSAGES.MC1('candidate source')),
   reference_value: yup
     .string()
-    .required(RULE_MESSAGES.MC1('candidate_source_value')),
+    .when(['reference_type'], ([reference_type], schema) => {
+      return schema.required(
+        RULE_MESSAGES.MC1(renderLabelReference(reference_type))
+      )
+    }),
   reference_uid: yup
     .string()
-    .when(['candidate_source'], ([candidate_source], schema) => {
-      const isRequired = CANDIDATE_SOURCE_STATE.REC === candidate_source
+    .when(['reference_type'], ([reference_type], schema) => {
+      const isRequired = CANDIDATE_SOURCE_STATE.REC === reference_type
       return isRequired
         ? schema.required(RULE_MESSAGES.MC1('recruiter'))
         : schema.notRequired()
     }),
-  recruit_time: yup.date().typeError(RULE_MESSAGES.MC5('recruit time')).nullable(),
+  recruit_time: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('recruit time'))
+    .nullable(),
   entity_skill_records: yup.mixed(),
   description: yup.string(),
   attachments: yup.array(),

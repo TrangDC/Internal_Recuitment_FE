@@ -1,4 +1,4 @@
-import { CircularProgress, styled } from '@mui/material'
+import { CircularProgress, SxProps, styled } from '@mui/material'
 import { Span, Tiny12md } from 'shared/components/Typography'
 
 export const TinyLink = styled(Tiny12md)(({ theme }) => ({
@@ -18,3 +18,16 @@ export const SpanHiringStatus = styled(Span)(({ theme }) => ({
   color: '#2A2E37 !important',
   lineHeight: '14.63px',
 }))
+
+export const sxIconSelected = (selected: boolean): SxProps => {
+  return selected
+    ? {
+        '& rect': {
+          stroke: '#4D607A',
+        },
+        '& path': {
+          fill: '#4D607A',
+        },
+      }
+    : {}
+}
