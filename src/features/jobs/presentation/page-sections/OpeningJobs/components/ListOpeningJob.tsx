@@ -6,7 +6,7 @@ import CreateJobModal from '../../CreateJobModal'
 import EditJobModal from '../../EditJobModal'
 import DeleteJobModal from '../../DeleteJobModal'
 import { CloseJobModal } from '../..'
-import { columns } from 'features/jobs/shared/constants/columns'
+import { columns_opening } from 'features/jobs/shared/constants/columns'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import { useMemo } from 'react'
 import useActionTable from 'features/jobs/hooks/table/useActionTable'
@@ -58,7 +58,7 @@ const AllJobOpening = () => {
 
   const { columnTable } = useBuildColumnTable({
     actions,
-    columns,
+    columns: columns_opening,
   })
 
   return (
