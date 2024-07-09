@@ -1,5 +1,5 @@
+import { PermissionFormData } from 'shared/components/role-template-permission/interfaces/permissionStructure'
 import { RULE_MESSAGES } from 'shared/constants/validate'
-import { PermissionFormData } from 'shared/hooks/permissions/interface'
 import * as yup from 'yup'
 export const CreateRoleTemplateSchema = yup.object().shape({
   name: yup
@@ -28,7 +28,6 @@ export const DetailRoleTemplateSchema = yup.object().shape({
   description: yup.string().default(''),
   entity_permissions: yup.mixed<PermissionFormData>().default({}),
 })
-
 export type CreateRoleTemplateForm = yup.InferType<
   typeof CreateRoleTemplateSchema
 >

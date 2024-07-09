@@ -7,10 +7,10 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import { ICreateModal } from 'shared/components/modal/interface'
 import LoadingField from 'shared/components/form/loadingField'
-import useCreateRoleTemplate from 'features/role-template/hooks/useCreateRoleTemplate'
 import { Text15md } from 'shared/components/Typography'
-import PermissionSections from './permissionSections'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import useCreateRoleTemplate from 'features/role-template/hooks/useCreateRoleTemplate'
+import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
 
 function CreateRoleTemplateModal({ open, setOpen }: ICreateModal) {
   const { useFormReturn, onSubmit, isValid, permissionGroup, isGetting } =
@@ -95,10 +95,12 @@ function CreateRoleTemplateModal({ open, setOpen }: ICreateModal) {
                   </FormControl>
                 </FlexBox>
               </FlexBox>
-              <PermissionSections
-                permissionGroup={permissionGroup}
-                isGetting={isGetting}
-              />
+              {permissionGroup && (
+                <PermissionSections
+                  roleTemplate={permissionGroup}
+                  isGetting={isGetting}
+                />
+              )}
             </FlexBox>
           </BaseModal.ContentMain>
           <BaseModal.Footer>

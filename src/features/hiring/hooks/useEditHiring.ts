@@ -7,17 +7,12 @@ import { FormDataSchemaUpdate, schemaUpdate } from '../shared/constants/schema'
 import { useState } from 'react'
 import useGetAllPermissionGroups from 'shared/hooks/permissions/useGetAllPermissionGroups'
 import { isEmpty } from 'lodash'
-import _ from 'lodash'
-import { PermissionGroup } from 'shared/hooks/permissions/interface/response'
-import {
-  createNewEntityPermissionInput,
-  formatChecksToBE,
-  formatDefaultFormDataPermission,
-  mergeCurrentPermissionWithDefaultFormDataPermission,
-  mergePermissions,
-} from 'shared/hooks/permissions/utils/functions'
-import { PermissionFormData } from 'shared/hooks/permissions/interface'
 import Role from 'shared/schema/database/role'
+import RoleTemplateStructure, { PermissionFormData } from 'shared/components/role-template-permission/interfaces/permissionStructure'
+import {
+  getKeyName,
+  mergePermissions,
+} from 'shared/components/role-template-permission/utils/utils'
 
 type UseChangeStatusProps = {
   id: string
@@ -27,7 +22,8 @@ type UseChangeStatusProps = {
 function useEditHiring(props: UseChangeStatusProps) {
   const { id, onSuccess } = props
   const { updateUser, getUser, queryKey } = useGraphql()
-  const [permissionGroup, setPermissionGroup] = useState<PermissionGroup[]>([])
+  const [permissionGroup, setPermissionGroup] =
+    useState<RoleTemplateStructure>()
   const { getAllPermission, isGetting: isGetAllPermissionGroups } =
     useGetAllPermissionGroups()
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
@@ -42,27 +38,28 @@ function useEditHiring(props: UseChangeStatusProps) {
     id,
     onSuccess,
     formatDefaultValues: async (data) => {
-      const entityPermissions = data?.entity_permissions ?? []
-      const permissionGroups = await getAllPermission()
+      let entity_permissions_default: PermissionFormData
+      const permissionGroup = await getAllPermission()
       const rolesTemplateId = data?.roles?.map((role) => role.id) ?? []
-      let entity_permissions: PermissionFormData
-      setPermissionGroup(permissionGroups)
+      const roleTemplate = RoleTemplateStructure.fromJson(permissionGroup)
+      const entityPermissions = data?.entity_permissions ?? []
       if (isEmpty(entityPermissions)) {
-        entity_permissions = formatDefaultFormDataPermission(permissionGroups)
+        entity_permissions_default =
+          RoleTemplateStructure.formatDefault(permissionGroup)
       } else {
-        entity_permissions =
-          mergeCurrentPermissionWithDefaultFormDataPermission(
-            permissionGroups,
-            entityPermissions
-          )
+        entity_permissions_default = RoleTemplateStructure.formatEditDefault(
+          permissionGroup,
+          entityPermissions
+        )
       }
+      setPermissionGroup(roleTemplate)
       return {
         status: data?.status ?? '',
         name: data?.name ?? '',
         work_email: data?.work_email ?? '',
         teamId: data?.team?.id ?? '',
         rolesTemplateId,
-        entity_permissions: entity_permissions,
+        entity_permissions: entity_permissions_default,
       }
     },
   })
@@ -75,16 +72,18 @@ function useEditHiring(props: UseChangeStatusProps) {
   function onSubmit(note: string) {
     handleSubmit((data) => {
       const entity_permissions = data.entity_permissions
-      const convertToArray = createNewEntityPermissionInput(entity_permissions)
-      mutate({
-        name: data.name,
-        status: data.status,
-        work_email: data.work_email ?? '',
-        entity_permissions: formatChecksToBE(convertToArray),
-        note: note,
-        team_id: data.teamId,
-        role_id: data.rolesTemplateId,
-      })
+      if (entity_permissions) {
+        mutate({
+          name: data.name,
+          status: data.status,
+          work_email: data.work_email ?? '',
+          entity_permissions:
+            RoleTemplateStructure.formatEditCreateValue(entity_permissions),
+          note: note,
+          team_id: data.teamId,
+          role_id: data.rolesTemplateId,
+        })
+      }
     })()
   }
 
@@ -92,9 +91,9 @@ function useEditHiring(props: UseChangeStatusProps) {
     if (role.length === 0) resetField('entity_permissions')
     const data = mergePermissions(role)
     Object.keys(data).forEach((key) => {
-      setValue(`entity_permissions.${key}.ownedOnly`, data[key].ownedOnly)
-      setValue(`entity_permissions.${key}.teamOnly`, data[key].teamOnly)
-      setValue(`entity_permissions.${key}.everything`, data[key].everything)
+      const newValue = data[key]
+      const keyName = getKeyName(key) as any
+      setValue(keyName, newValue)
     })
   }
 

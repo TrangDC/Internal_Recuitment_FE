@@ -3,7 +3,7 @@ import { TinyText } from '../form/styles'
 import { get, isEmpty } from 'lodash'
 import FlexBox from '../flexbox/FlexBox'
 import CheckIcon from '../icons/CheckIcon'
-import {  STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
+import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
 import { StepType } from 'features/candidatejob/domain/interfaces'
 
 const StepperContainer = styled(FlexBox)(({ theme }) => ({
@@ -76,44 +76,44 @@ const StepperComponent = ({
   inputStepConnector = {},
   onChange,
 }: StepProps) => {
-
   return (
     <StepperContainer>
-      {!isEmpty(steps) && steps.map((step, idx) => {
-        return (
-          <FlexBox
-            alignItems={'center'}
-            gap={'16px'}
-            key={step.id}
-            className={
-              step.candidate_job_status === value ? 'completed' : 'active'
-            }
-          >
-            <BoxStep
-              className="box-step"
-              onClick={() => {
-                onChange?.({ data: step, value: step.candidate_job_status })
-              }}
+      {!isEmpty(steps) &&
+        steps.map((step, idx) => {
+          return (
+            <FlexBox
+              alignItems={'center'}
+              gap={'16px'}
+              key={step.id}
+              className={
+                step.candidate_job_status === value ? 'completed' : 'active'
+              }
             >
-              <CheckIcon />
-            </BoxStep>
-            <TinyText>
-              {/* @ts-ignore */}
-              {STATUS_CANDIDATE_TEXT?.[get(step, 'candidate_job_status')]}
-            </TinyText>
-
-            {steps.length - idx > 1 ? (
-              <StepConnecterStyle
-                sx={{
-                  width: '60px',
-                  maxWidth: '100%',
+              <BoxStep
+                className="box-step"
+                onClick={() => {
+                  onChange?.({ data: step, value: step.candidate_job_status })
                 }}
-                {...inputStepConnector}
-              />
-            ) : null}
-          </FlexBox>
-        )
-      })}
+              >
+                <CheckIcon />
+              </BoxStep>
+              <TinyText>
+                {/* @ts-ignore */}
+                {STATUS_CANDIDATE_TEXT?.[get(step, 'candidate_job_status')]}
+              </TinyText>
+
+              {steps.length - idx > 1 ? (
+                <StepConnecterStyle
+                  sx={{
+                    width: '60px',
+                    maxWidth: '100%',
+                  }}
+                  {...inputStepConnector}
+                />
+              ) : null}
+            </FlexBox>
+          )
+        })}
     </StepperContainer>
   )
 }

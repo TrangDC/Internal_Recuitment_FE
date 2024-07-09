@@ -7,11 +7,11 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import { IEditModal } from 'shared/components/modal/interface'
 import LoadingField from 'shared/components/form/loadingField'
-import PermissionSections from './permissionSections'
-import useEditRoleTemplate from 'features/role-template/hooks/useEditRoleTemplate'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import { Text15md } from 'shared/components/Typography'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import useEditRoleTemplate from 'features/role-template/hooks/useEditRoleTemplate'
+import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
 
 function EditRoleTemplateModal({ open, setOpen, id }: IEditModal) {
   const {
@@ -106,10 +106,12 @@ function EditRoleTemplateModal({ open, setOpen, id }: IEditModal) {
                   </FormControl>
                 </FlexBox>
               </FlexBox>
-              <PermissionSections
-                permissionGroup={permissionGroup}
-                isGetting={isGetting}
-              />
+              {permissionGroup && (
+                <PermissionSections
+                  roleTemplate={permissionGroup}
+                  isGetting={isGetting}
+                />
+              )}
             </FlexBox>
           </BaseModal.ContentMain>
           <BaseModal.Footer>
