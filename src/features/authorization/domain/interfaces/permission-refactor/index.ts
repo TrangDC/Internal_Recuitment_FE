@@ -41,7 +41,7 @@ export interface PermissionStructure {
   ROLES_TEMPLATE: RoleTemplatePermissions
 }
 
-const moduleActions: GenerateModuleActions<PermissionStructure> = {
+export const moduleActions: GenerateModuleActions<PermissionStructure> = {
   JOBS: JOBS_ACTIONS,
   CANDIDATE_JOB_FEEDBACKS: CANDIDATE_JOB_FEEDBACKS_ACTIONS,
   CANDIDATES: CANDIDATE_ACTIONS,
@@ -86,29 +86,19 @@ class PermissionStructureImpl implements PermissionStructure {
       JOBS: {} as JobsPermissions,
       CANDIDATE_JOB_FEEDBACKS: {} as CandidateJobFeedbacksPermissions,
     }
-    entityPermission.forEach((entity) => {
-      const { operation_name } = entity.permission
-      const { for_owner, for_team, for_all } = entity
-      const permissionRole: PermissionRole = {
-        ownedOnly: for_owner,
-        teamOnly: for_team,
-        everything: for_all,
-      }
-
-      for (const [moduleKey, actions] of Object.entries(moduleActions)) {
-        if (Object.values(actions).includes(operation_name)) {
-          const key = Object.keys(actions).find(
-            (k) => actions[k as keyof typeof actions] === operation_name
-          ) as keyof typeof actions
-
-          if (key && permissions) {
-            _.set(permissions, `${moduleKey}.${key}`, permissionRole)
-          }
-          break
+    for (const [moduleKey, actions] of Object.entries(moduleActions)) {
+      for (const [actionKey, operationName] of Object.entries(actions)) {
+        const entity = entityPermission.find(
+          (e) => operationName === e.permission.operation_name
+        )
+        const permissionRole: PermissionRole = {
+          ownedOnly: entity?.for_owner || false,
+          teamOnly: entity?.for_team || false,
+          everything: entity?.for_all || false,
         }
+        _.set(permissions, `${moduleKey}.${actionKey}`, permissionRole)
       }
-    })
-
+    }
     return new PermissionStructureImpl(permissions as PermissionStructure)
   }
 }
@@ -126,7 +116,7 @@ export type PermissionName<M extends keyof PermissionStructureImpl> = Leaves<
 >
 
 export type CheckActions<M extends keyof PermissionStructureImpl> = {
-  compare: 'hasAny' |'hasAll'
+  compare: 'hasAny' | 'hasAll'
   permissions: PermissionName<M>[]
 }
 

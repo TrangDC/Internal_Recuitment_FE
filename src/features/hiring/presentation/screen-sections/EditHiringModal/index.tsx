@@ -10,10 +10,10 @@ import useEditHiring from 'features/hiring/hooks/useEditHiring'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import AvatarUser from '../../components/AvatarUser'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
-import PermissionSections from '../permissionSections'
 import LoadingField from 'shared/components/form/loadingField'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import RoleTemplateSelection from '../../components/role-template-selection'
+import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
 
 interface IEditHiringModal {
   open: boolean
@@ -169,7 +169,7 @@ function EditHiringModal({ open, setOpen, id }: IEditHiringModal) {
                 </FlexBox>
               </FlexBox>
               <PermissionSections
-                permissionGroup={permissionGroup}
+                roleTemplate={permissionGroup}
                 isGetting={isGetting}
               />
             </FlexBox>

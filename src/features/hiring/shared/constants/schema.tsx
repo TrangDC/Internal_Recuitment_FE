@@ -1,5 +1,5 @@
+import { PermissionFormData } from 'shared/components/role-template-permission/interfaces/permissionStructure'
 import { RULE_MESSAGES } from 'shared/constants/validate'
-import { PermissionFormData } from 'shared/hooks/permissions/interface'
 import * as yup from 'yup'
 
 export const schema = yup.object({

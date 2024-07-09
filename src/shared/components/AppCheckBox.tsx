@@ -8,6 +8,9 @@ const AppCheckBox: FC<CheckboxProps> = (props) => {
       sx={{
         mr: 1,
         color: 'grey.300',
+        '&.Mui-disabled .MuiSvgIcon-root': {
+          fill: '#E3E6EB',
+        },
       }}
       {...props}
     />
