@@ -162,6 +162,7 @@ const useGraphql = () => {
         hiring_job_id
         status
         created_at
+        interview_feature
         owner {
           id
           name

@@ -20,7 +20,7 @@ export const columns = (
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
-    header: () => <span>Name</span>,
+    header: () => <span>Role Name</span>,
     size: 500,
   }),
   columnHelper.accessor((row) => row.description, {

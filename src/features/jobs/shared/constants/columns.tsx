@@ -19,15 +19,6 @@ export const columns = (
   actions: TOptionItem<Job>[],
   { me, role }: ParamsColumn
 ): ColumnDef<Job, any>[] => [
-  columnHelper.accessor((row) => row.name, {
-    id: 'name',
-    cell: (info) => (
-      <LinkText to={`/dashboard/job-detail/${info.row.original.id}`}>
-        {info.getValue()}
-      </LinkText>
-    ),
-    header: () => <span>Job name</span>,
-  }),
   columnHelper.accessor((row) => row.status, {
     id: 'status',
     size: 150,
@@ -44,6 +35,15 @@ export const columns = (
     cell: (info) => {
       return <ChipPriority status={info.row.original.priority} />
     },
+  }),
+  columnHelper.accessor((row) => row.name, {
+    id: 'name',
+    cell: (info) => (
+      <LinkText to={`/dashboard/job-detail/${info.row.original.id}`}>
+        {info.getValue()}
+      </LinkText>
+    ),
+    header: () => <span>Job name</span>,
   }),
   columnHelper.accessor((row) => row.team.name, {
     id: 'team',
@@ -129,6 +129,14 @@ export const columns_opening = (
   actions: TOptionItem<Job>[],
   { me, role }: ParamsColumn
 ): ColumnDef<Job, any>[] => [
+  columnHelper.accessor((row) => row.priority, {
+    id: 'priority',
+    size: 150,
+    header: () => <span>Priority</span>,
+    cell: (info) => {
+      return <ChipPriority status={info.row.original.priority} />
+    },
+  }),
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => (
@@ -137,14 +145,6 @@ export const columns_opening = (
       </LinkText>
     ),
     header: () => <span>Job name</span>,
-  }),
-  columnHelper.accessor((row) => row.priority, {
-    id: 'priority',
-    size: 150,
-    header: () => <span>Priority</span>,
-    cell: (info) => {
-      return <ChipPriority status={info.row.original.priority} />
-    },
   }),
   columnHelper.accessor((row) => row.team.name, {
     id: 'team',

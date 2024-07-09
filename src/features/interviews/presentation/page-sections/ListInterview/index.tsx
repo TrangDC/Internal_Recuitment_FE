@@ -70,6 +70,11 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
         MODLUE_QUERY_KEY.FEEDBACK,
       ],
     })
+    queryClient.invalidateQueries({
+      queryKey: [
+        MODLUE_QUERY_KEY.CANDIDATE_JOB,
+      ],
+    })
   }
 
   const candidateJobOfTeamId = jobApplicationDetail?.hiring_job?.team?.id ?? ''
