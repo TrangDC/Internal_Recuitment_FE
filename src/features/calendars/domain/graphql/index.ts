@@ -14,6 +14,16 @@ const useGraphql = () => {
           interview_date
           start_from
           end_at
+          interviewer {
+            id
+          }
+          candidate_job {
+            hiring_job {
+              team {
+                id
+              }
+            }
+          }
         }
       }
       pagination {

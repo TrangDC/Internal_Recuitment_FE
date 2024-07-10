@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import useGraphql from 'features/calendars/domain/graphql'
 import {
-  CandidateInterview,
   FilterCalendar,
 } from 'features/calendars/domain/interfaces'
 import { useMemo, useState } from 'react'
@@ -17,6 +16,7 @@ import {
 import randomColor, {
   convertToRootDate,
 } from '../presentation/page-sections/google-calendar/functions'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
 
 function useGetAllInterview() {
   const { getAllCandidateInterview4Calendar, queryKey } = useGraphql()
@@ -49,18 +49,21 @@ function useGetAllInterview() {
         const from = convertFromUTC(new Date(o.start_from)).toDate()
         const to = convertFromUTC(new Date(o.end_at)).toDate()
         const { newEnd, newStart } = convertToRootDate(from, to, interview_date)
-
-        return {
+        
+        const event:CalendarEvent ={
           resource: {
             id: o.id,
             styles: {
               colorId: randomColor(),
             },
+            teamId:o?.candidate_job?.hiring_job?.team?.id ?? '',
+            interviewer:o?.interviewer ?? []
           },
           title: o.title,
           start: newStart,
           end: newEnd,
         }
+        return event
       })
     }
     return []

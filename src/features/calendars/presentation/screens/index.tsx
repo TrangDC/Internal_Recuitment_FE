@@ -24,6 +24,7 @@ import DeleteInterviewModal from '../page-sections/deleteInterviewModal'
 import useGetAllInterview from 'features/calendars/hooks/useGetAllInterview'
 import useDragDropInterview from 'features/calendars/hooks/useDragDropInterview'
 import CalendarProvider from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
+import useCheckEditInterviewPermission from 'features/calendars/permission/hooks/useCheckEditInterviewPermission'
 
 function CalendarsScreen() {
   const [openCreateInterView, setOpenCreateInterView] = useState(false)
@@ -32,6 +33,7 @@ function CalendarsScreen() {
   const [openDeleteInterView, setOpenDeleteInterView] = useState(false)
   const eventId = useRef<string>('')
   const dragItemOutside = useRef<CalendarEvent>()
+  const { handleCheckPermission } = useCheckEditInterviewPermission()
   const { myEvents, isLoading, handlePagination } = useGetAllInterview()
   const { onDragDropInterview } = useDragDropInterview({})
   const translation = useTextTranslation()
@@ -48,6 +50,14 @@ function CalendarsScreen() {
       isAllDay: droppedOnAllDaySlot = false,
     }: EventInteractionArgs<CalendarEvent>) => {
       const { allDay } = event
+      const cantEdit = handleCheckPermission({
+        candidateJobOfTeamId: event.resource?.teamId ?? '',
+        interviewers: event.resource?.interviewer ?? [],
+      })
+      console.log('teamId', event.resource?.teamId)
+      console.log('interviewers', event.resource?.interviewer)
+      console.log('cantEdit', cantEdit)
+      if (!cantEdit) return
       if (isDate(start) && isDate(end) && event.start) {
         ruleDragDropCalendar(event.start, start, end, () => {
           if (!allDay && droppedOnAllDaySlot) {
