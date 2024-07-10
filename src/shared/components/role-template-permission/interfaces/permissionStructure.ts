@@ -157,6 +157,32 @@ class RoleTemplateStructure implements RoleTemplate {
     return roleTemplate
   }
 
+  static formatDefaultEntityPermissions(
+    params: PermissionGroup[],
+    getEditValue: EntityPermission[]
+  ): PermissionFormData {
+    const roleTemplate: PermissionFormData = {}
+    params.forEach((permissionGroups) => {
+      permissionGroups.permissions.forEach((permission) => {
+        const getValue = getEditValue.find(
+          (value) => value.permission.id === permission.id
+        )
+        const permissionId = permission.id
+        const permissionRole: ValuePermission = {
+          id: getValue?.id ?? '',
+          value: {
+            for_all: false,
+            for_owner: false,
+            for_team: false,
+          },
+          permissionId: permissionId,
+        }
+        _.set(roleTemplate, permissionId, permissionRole)
+      })
+    })
+    return roleTemplate
+  }
+
   static formatEditCreateValue(
     permissionFormData: PermissionFormData
   ): NewEntityPermissionInput[] {
