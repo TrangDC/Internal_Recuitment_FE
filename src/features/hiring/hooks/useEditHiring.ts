@@ -8,7 +8,9 @@ import { useState } from 'react'
 import useGetAllPermissionGroups from 'shared/hooks/permissions/useGetAllPermissionGroups'
 import { isEmpty } from 'lodash'
 import Role from 'shared/schema/database/role'
-import RoleTemplateStructure, { PermissionFormData } from 'shared/components/role-template-permission/interfaces/permissionStructure'
+import RoleTemplateStructure, {
+  PermissionFormData,
+} from 'shared/components/role-template-permission/interfaces/permissionStructure'
 import {
   getKeyName,
   mergePermissions,
@@ -22,6 +24,8 @@ type UseChangeStatusProps = {
 function useEditHiring(props: UseChangeStatusProps) {
   const { id, onSuccess } = props
   const { updateUser, getUser, queryKey } = useGraphql()
+  const [defaultEntityPermissions, setDefaultEntityPermissions] =
+    useState<PermissionFormData>({})
   const [permissionGroup, setPermissionGroup] =
     useState<RoleTemplateStructure>()
   const { getAllPermission, isGetting: isGetAllPermissionGroups } =
@@ -43,6 +47,11 @@ function useEditHiring(props: UseChangeStatusProps) {
       const rolesTemplateId = data?.roles?.map((role) => role.id) ?? []
       const roleTemplate = RoleTemplateStructure.fromJson(permissionGroup)
       const entityPermissions = data?.entity_permissions ?? []
+      const defaultEP = RoleTemplateStructure.formatDefaultEntityPermissions(
+        permissionGroup,
+        entityPermissions
+      )
+      setDefaultEntityPermissions(defaultEP)
       if (isEmpty(entityPermissions)) {
         entity_permissions_default =
           RoleTemplateStructure.formatDefault(permissionGroup)
@@ -57,15 +66,14 @@ function useEditHiring(props: UseChangeStatusProps) {
         status: data?.status ?? '',
         name: data?.name ?? '',
         work_email: data?.work_email ?? '',
-        teamId: data?.team?.id ?? '',
+        teamId: data?.member_of_teams?.id ?? '',
         rolesTemplateId,
         entity_permissions: entity_permissions_default,
       }
     },
   })
 
-  const { handleSubmit, control, formState, setValue, resetField } =
-    useFormReturn
+  const { handleSubmit, control, formState, setValue } = useFormReturn
   const isValid = !formState.isValid
   const { mutate, isPending } = useEditReturn
 
@@ -88,7 +96,10 @@ function useEditHiring(props: UseChangeStatusProps) {
   }
 
   const selectedRoleTemplate = (role: Role[]) => {
-    if (role.length === 0) resetField('entity_permissions')
+    setValue('entity_permissions', defaultEntityPermissions, {
+      shouldValidate: true,
+      shouldTouch: true,
+    })
     const data = mergePermissions(role)
     Object.keys(data).forEach((key) => {
       const newValue = data[key]
@@ -96,7 +107,6 @@ function useEditHiring(props: UseChangeStatusProps) {
       setValue(keyName, newValue)
     })
   }
-
   return {
     control,
     isValid,

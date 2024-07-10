@@ -9,6 +9,7 @@ export type Hiring = {
   created_at: string
   updated_at: string
   entity_permissions: EntityPermission[]
+  member_of_teams: Team
   roles: Role[]
 }
 

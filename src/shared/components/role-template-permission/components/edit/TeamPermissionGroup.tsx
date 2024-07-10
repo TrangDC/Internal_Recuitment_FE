@@ -19,6 +19,7 @@ function TeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
     viewData.for_owner ||
     viewData.for_team
   )
+  console.log('disabled', disabled)
   useEffect(() => {
     if (disabled) {
       const data = {
@@ -26,6 +27,7 @@ function TeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
         for_owner: false,
         for_team: false,
       }
+      setValue(getKeyName(viewAction.id), data)
       setValue(getKeyName(createAction.id), data)
       setValue(getKeyName(editAction.id), data)
       setValue(getKeyName(deleteAction.id), data)

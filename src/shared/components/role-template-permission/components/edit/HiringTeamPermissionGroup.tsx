@@ -24,6 +24,7 @@ function HiringTeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
         for_owner: false,
         for_team: false,
       }
+      setValue(getKeyName(viewAction.id), data)
       setValue(getKeyName(editAction.id), data)
     }
   }, [disabled])

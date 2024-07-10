@@ -1,7 +1,10 @@
 import { PermissionData } from 'features/role-template/domain/interfaces'
 import { Role } from '../interfaces'
 import { BaseRecord } from 'shared/interfaces'
-import { ActionPermission } from '../interfaces/permissionStructure'
+import {
+  ActionPermission,
+  MergePermissionValue,
+} from '../interfaces/permissionStructure'
 
 export function getCheck(
   key: 'for_all' | 'for_team' | 'for_owner',
@@ -79,10 +82,10 @@ export function getKeyName(id: string) {
   return `entity_permissions.${id}.value`
 }
 
-export function mergePermissions(permissionGroups: Role[]): PermissionData {
-  const permissions: { [key: string]: BaseRecord } = {}
-
-  // Aggregate permissions
+export function mergePermissions(
+  permissionGroups: Role[]
+): MergePermissionValue {
+  const permissions: MergePermissionValue = {}
   permissionGroups.forEach((role) => {
     role.entity_permissions.forEach((entity) => {
       const permissionId = entity.permission.id
@@ -93,27 +96,25 @@ export function mergePermissions(permissionGroups: Role[]): PermissionData {
           for_team: entity.for_team,
         }
       } else {
-        permissions[permissionId].for_all =
-          permissions[permissionId].for_all || entity.for_all
-        permissions[permissionId].for_owner =
-          permissions[permissionId].for_owner || entity.for_owner
-        permissions[permissionId].for_team =
-          permissions[permissionId].for_team || entity.for_team
+        if (entity.for_all) {
+          permissions[permissionId].for_all = true
+          permissions[permissionId].for_team = false
+          permissions[permissionId].for_owner = false
+        } else if (entity.for_team) {
+          permissions[permissionId].for_team = true
+          permissions[permissionId].for_owner = false
+          permissions[permissionId].for_all = false
+        } else if (entity.for_team) {
+          permissions[permissionId].for_team = false
+          permissions[permissionId].for_owner = true
+          permissions[permissionId].for_all = false
+        } else {
+          permissions[permissionId].for_team = false
+          permissions[permissionId].for_owner = false
+          permissions[permissionId].for_all = false
+        }
       }
     })
   })
-
-  // Transform the permissions into the required format
-  const newPermissions: PermissionData = {}
-  Object.keys(permissions).forEach((permissionId) => {
-    const permission = permissions[permissionId]
-    newPermissions[permissionId] = {
-      ownedOnly:
-        permission.for_all || permission.for_team || permission.for_owner,
-      teamOnly: permission.for_all || permission.for_team,
-      everything: permission.for_all,
-    }
-  })
-
-  return newPermissions
+  return permissions
 }

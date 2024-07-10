@@ -27,6 +27,7 @@ function SkillPermissionGroup({ roleTemplate }: PermissionGroupProps) {
         for_owner: false,
         for_team: false,
       }
+      setValue(getKeyName(viewAction.id), data)
       setValue(getKeyName(createAction.id), data)
       setValue(getKeyName(editAction.id), data)
       setValue(getKeyName(deleteAction.id), data)
