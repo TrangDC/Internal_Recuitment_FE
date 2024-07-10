@@ -1,5 +1,10 @@
 import { createContext, ReactNode, useReducer } from 'react'
-import { handleFailed, handleReset, handleSuccess, handleWarning } from './actions'
+import {
+  handleFailed,
+  handleReset,
+  handleSuccess,
+  handleWarning,
+} from './actions'
 
 export type InitialPopupState = {
   open: boolean
@@ -62,7 +67,7 @@ const PopupContext = createContext({
   handleWarning: (
     payload: Pick<InitialPopupState, 'title' | 'content' | 'onSubmit'>
   ) => {},
-  handleReset: () => {}
+  handleReset: () => {},
 })
 
 export const PopupProvider = ({ children }: PopupProviderProps) => {
