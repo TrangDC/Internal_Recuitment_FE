@@ -14,10 +14,6 @@ const useGraphql = () => {
           name
           work_email
           status
-          member_of_teams {
-            id
-            name
-          }
           roles {
             name
             id
@@ -83,8 +79,9 @@ const useGraphql = () => {
           name
           work_email
           status
-          member_of_teams {
+          team {
             id
+            name
           }
           roles {
             id
