@@ -39,8 +39,8 @@ root.render(
         <AuthenticationProvider>
           <QueryClientProvider client={queryClient}>
             <Suspense fallback={<LoadingSpinner />}>
-              <AuthorizationProvider>
-                <PopupProvider>
+              <PopupProvider>
+                <AuthorizationProvider>
                   <App />
                   {ReactQueryDevtoolsProduction && (
                     <ReactQueryDevtoolsProduction
@@ -48,8 +48,8 @@ root.render(
                       buttonPosition="bottom-right"
                     />
                   )}
-                </PopupProvider>
-              </AuthorizationProvider>
+                </AuthorizationProvider>
+              </PopupProvider>
             </Suspense>
           </QueryClientProvider>
         </AuthenticationProvider>

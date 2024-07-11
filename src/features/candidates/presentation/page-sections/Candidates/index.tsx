@@ -63,7 +63,7 @@ const Candidates = () => {
   const { useFilterReturn, useSearchListReturn } = useFilterCandidates({
     is_black_list,
   })
-  const { controlFilter, dataFilterWithValue } = useFilterReturn
+  const { controlFilter, dataFilterWithValue } = useFilterReturn  
   const { handleSearch, search, searchRef } = useSearchListReturn
   const refInput = useRef<HTMLInputElement>(null)
   const { useTableReturn } = useCandidateTable({
@@ -174,12 +174,12 @@ const Candidates = () => {
               title="Recruit time"
               Node={({ onFilterFrom, onFilterTo, fromValue, toValue }) => (
                 <AppDateRangePicker
-                  setFromDate={(date) =>
+                  setFromDate={(date) => {
                     onFilterFrom({
                       label: date?.format('DD/MM/YYYY') ?? '',
                       value: date?.toISOString() ?? '',
                     })
-                  }
+                  }}
                   setToDate={(date) =>
                     onFilterTo({
                       label: date?.format('DD/MM/YYYY') ?? '',
