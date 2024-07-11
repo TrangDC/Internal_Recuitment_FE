@@ -18,6 +18,10 @@ const useGraphql = () => {
             name
             id
           }
+          team {
+            id
+            name
+          }
         }
       }
       pagination {
