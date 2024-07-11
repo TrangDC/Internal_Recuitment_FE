@@ -50,7 +50,7 @@ const HistoryLogAuditTrails = ({ module }: Props) => {
 
   useEffect(() => {
     const start_form = fromDate ? fromDate : dayjs('2023-01-01').toDate()
-    const end_date = toDate ? toDate : dayjs().toDate()
+    const end_date = toDate ?  dayjs(toDate).endOf('date').toDate() : dayjs().endOf('date').toDate()
 
     handleChangeDate({
       fromDate: convertDateToISOString(start_form),

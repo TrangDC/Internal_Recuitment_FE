@@ -86,8 +86,8 @@ export function renderLocation(text: string) {
   return LOCATION_LABEL[location_data as TYPE_LOCATION]
 }
 
-export function renderDate(text: string) {
-  return dayjs(text).format('DD/MM/YYYY')
+export function renderDate(date: string) {
+  return date && dayjs(date).format('DD/MM/YYYY')
 }
 
 export function renderDateTime(text: string) {
