@@ -66,7 +66,7 @@ function useEditHiring(props: UseChangeStatusProps) {
         status: data?.status ?? '',
         name: data?.name ?? '',
         work_email: data?.work_email ?? '',
-        teamId: data?.team?.id ?? '',
+        teamId: data?.member_of_teams?.id ?? '',
         rolesTemplateId,
         entity_permissions: entity_permissions_default,
       }
