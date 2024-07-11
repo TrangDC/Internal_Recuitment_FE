@@ -35,7 +35,7 @@ export const columns = (
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     size: 300,
   }),
-  columnHelper.accessor('team.name', {
+  columnHelper.accessor('member_of_teams.name', {
     id: 'team',
     header: () => <span>Team</span>,
     enableSorting: false,
