@@ -76,7 +76,7 @@ export const navigation: INavigation[] = [
     path: '/dashboard/email-notification',
     icon: duotone.Email,
     type: 'link',
-    module: 'ROLES_TEMPLATE',
+    module: 'EMAIL_TEMPLATE',
   },
   // {
   //   name: 'Settings',

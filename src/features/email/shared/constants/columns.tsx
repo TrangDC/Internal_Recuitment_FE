@@ -99,7 +99,7 @@ export const columns = (
         <>
           <ActionGroupButtons<EmailTemplate>
             rowId={id}
-            actions={actions}
+            actions={newActions}
             rowData={info.row.original}
           />
         </>

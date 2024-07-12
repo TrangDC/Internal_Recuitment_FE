@@ -279,6 +279,12 @@
         "update": "Edit",
         "create": "Create",
         "delete": "Delete"
+      },
+      "email_templates": {
+        "view": "View",
+        "create": "Create",
+        "update": "Edit",
+        "delete": "Delete"
       }
     }
   },

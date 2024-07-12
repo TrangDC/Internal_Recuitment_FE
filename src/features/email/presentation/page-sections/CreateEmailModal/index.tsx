@@ -218,6 +218,7 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                 variant="outlined"
                 size="small"
                 onClick={() => {
+                  //@ts-ignore
                   handleOpenPreview(form_values)
                 }}
               >

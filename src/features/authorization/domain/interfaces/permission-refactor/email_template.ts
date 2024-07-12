@@ -1,10 +1,10 @@
 import { GenerateAction } from '.'
 
 export const EMAIL_TEMPLATE_ACTIONS = {
-  VIEW: 'GetEmail,GetAllEmail',
-  CREATE: 'CreateEmail',
-  DELETE: 'DeleteEmail',
-  EDIT: 'UpdateEmail',
+  VIEW: 'GetEmailTemplate,GetAllEmailTemplates',
+  CREATE: 'CreateEmailTemplate',
+  DELETE: 'DeleteEmailTemplate',
+  EDIT: 'UpdateEmailTemplate,UpdateEmailTemplateStatus',
 }
 export interface EmailTemplatePermissions
   extends GenerateAction<keyof typeof EMAIL_TEMPLATE_ACTIONS> {}
