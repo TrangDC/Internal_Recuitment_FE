@@ -1,7 +1,6 @@
 import { Box, styled } from '@mui/material'
 
-export const StyleEditorBox = styled(Box)(({ theme }) => ({
-  marginTop: '10px',
+export const EditorBoxWrapper = styled(Box)(({ theme }) => ({
   border: '1px solid #dadce0',
   padding: '5px',
   position: 'relative',
@@ -28,7 +27,7 @@ export const StyleEditorBox = styled(Box)(({ theme }) => ({
   },
 }))
 
-export const StyleBoxLabel = styled(Box)(({ theme }) => ({
+export const LabelEditor = styled(Box)(({ theme }) => ({
   position: 'absolute',
   zIndex: 10,
   top: '65px',

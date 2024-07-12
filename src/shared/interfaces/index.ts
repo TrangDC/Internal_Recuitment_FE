@@ -34,3 +34,25 @@ export type Attachments = {
   document_name: string
   document_id: string
 }
+
+export interface ICreateModal {
+  open: boolean
+  setOpen: (open: boolean) => void
+  onSuccess?: (data: any) => void,
+  onError?: (data: any) => void,
+}
+
+export interface IEditModal extends ICreateModal {
+  id: string
+}
+
+export interface IDeleteModal extends ICreateModal {
+  id: string
+}
+
+export interface IDetailModal<T> extends ICreateModal {
+  id: string,
+  rowData?: T
+}
+
+export type DATA_KEYWORD_TEMPLATE = { key: string; value: string }

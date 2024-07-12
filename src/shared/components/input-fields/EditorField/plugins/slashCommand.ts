@@ -1,63 +1,23 @@
 import { Editor as TinyMCEEditor } from 'tinymce'
 import { PLUGINS_NAME } from '../constant'
+import { handleFilterData } from '../utils'
+import { options_slash } from '../hooks/useGetSlashCommand'
+import { generateAttributes } from '../actions/attributes'
+import { generateLink } from '../actions/link'
 
-const insertActions = (editor: TinyMCEEditor) => {
-  return [
-    {
-      type: 'separator',
-      text: 'General',
-    },
-    {
-      text: 'Heading 1',
-      icon: 'h1',
-      action: () => {
-        editor.execCommand('mceInsertContent', false, '<h1>Heading 1</h1>')
-        editor.selection.select(editor.selection.getNode())
-      },
-    },
-    {
-      text: 'Heading 2',
-      icon: 'h2',
-      action: () => {
-        editor.execCommand('mceInsertContent', false, '<h2>Heading 2</h2>')
-        editor.selection.select(editor.selection.getNode())
-      },
-    },
-    {
-      text: 'Heading 3',
-      icon: 'h3',
-      action: () => {
-        editor.execCommand('mceInsertContent', false, '<h3>Heading 3</h3>')
-        editor.selection.select(editor.selection.getNode())
-      },
-    },
-    {
-      type: 'separator',
-    },
-    {
-      text: 'Bulleted list',
-      icon: 'unordered-list',
-      action: () => {
-        editor.execCommand('InsertUnorderedList', false)
-      },
-    },
-    {
-      text: 'Numbered list',
-      icon: 'ordered-list',
-      action: () => {
-        editor.execCommand('InsertOrderedList', false)
-      },
-    },
-  ]
-}
-
-const pluginSlashCommand = (editor: TinyMCEEditor) => {
+const pluginSlashCommand = (editor: TinyMCEEditor, options_slash: options_slash) => {
   editor.ui.registry.addAutocompleter(PLUGINS_NAME.SLASH_COMMANDS, {
     minChars: 0,
     columns: 1,
     trigger: '/',
     fetch: (pattern) => {
-      const actions = insertActions(editor)
+      const attribute_data = handleFilterData(generateAttributes(editor, options_slash.attribute), pattern)
+      const link_data = handleFilterData(generateLink(editor, options_slash.link), pattern)
+
+      const actions = [
+        ...attribute_data,
+        ...link_data,
+      ]
 
       return new Promise((resolve) => {
         const results = actions.map((action) => ({

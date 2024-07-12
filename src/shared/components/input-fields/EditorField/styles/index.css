@@ -1,4 +1,6 @@
-/* .tox-menu-nav__js.tox-collection__item--active {
-    background-color: #cce2fa !important;
-    color: #222f3e !important;
-} */
+.tox-tinymce.tox-fullscreen {
+    inset: 0 !important;
+    height: 100% !important;
+    width: 100%;
+    z-index: 2000 !important;
+}

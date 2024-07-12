@@ -18,7 +18,6 @@ function useDeleteTeam(props: UseDeleteTeamProps) {
     onSuccess,
     onError,
     queryString: deleteTeam,
-    showErrorMsg: false,
   })
 
   const { mutate, isPending } = useDeleteReturn

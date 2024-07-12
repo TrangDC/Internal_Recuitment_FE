@@ -71,4 +71,16 @@ export const navigation: INavigation[] = [
     type: 'link',
     module: 'SKILLS',
   },
-]
+  {
+    name: 'Email notification setting',
+    path: '/dashboard/email-notification',
+    icon: duotone.Email,
+    type: 'link',
+    module: 'ROLES_TEMPLATE',
+  },
+  // {
+  //   name: 'Settings',
+  //   path: '/dashboard/settings',
+  //   icon: duotone.Settings,
+  // },
+];

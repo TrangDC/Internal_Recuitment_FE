@@ -14,6 +14,7 @@ import DashboardLayout from 'layouts/layout/DashboardLayout'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import DoNotAllowPage from 'pages/403'
+import EmailList from 'features/email/presentation/screens/email-list'
 
 const Loadable = (Component: LazyExoticComponent<FC>) => (props: any) => {
   return (
@@ -241,6 +242,21 @@ export const AppRoutes = () => {
             element={PermissionLayout({
               module: 'ROLES_TEMPLATE',
               children: <RoleTemplatePage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+          <Route
+            path="email-notification"
+            element={PermissionLayout({
+              module: 'ROLES_TEMPLATE',
+              children: <EmailList />,
               checkBy: {
                 compare: 'hasAny',
                 permissions: [

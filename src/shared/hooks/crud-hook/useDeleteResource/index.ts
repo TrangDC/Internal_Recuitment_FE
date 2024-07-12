@@ -15,7 +15,6 @@ interface IuseDeleteResource {
   queryString: IBuildQueryReturn
   onError?: (error: ErrorException | Error) => void
   onSuccess?: (data: BaseRecord) => void
-  showErrorMsg?: boolean
   id: string
 }
 
@@ -25,7 +24,6 @@ function useDeleteResource({
   onError,
   onSuccess,
   id,
-  showErrorMsg = true,
 }: IuseDeleteResource) {
   const { handleSuccess, handleFailed } = usePopup()
 

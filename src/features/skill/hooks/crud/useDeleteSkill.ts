@@ -18,7 +18,6 @@ function useDeleteSkill(props: UseDeleteJobProps) {
     onSuccess,
     onError,
     queryString: deleteSkill,
-    showErrorMsg: false,
   })
 
   const { mutate, isPending } = useDeleteReturn

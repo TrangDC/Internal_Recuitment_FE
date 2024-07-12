@@ -4,7 +4,7 @@ import _, { cloneDeep, isEmpty } from 'lodash'
 import { FormState } from 'react-hook-form'
 import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
 import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
-import { BaseRecord } from 'shared/interfaces'
+import { BaseRecord, DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
 
 export const searchByName = (listData: any[], searchValue: string) => {
   if (searchValue.length > 0) {
@@ -309,4 +309,19 @@ export const formatRecordSkill = (
   )
 
   return entity_skill_records
+}
+
+export function RegexEmail(email: string) {
+  const pattern = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/
+  return pattern.test(email)
+}
+
+export const replaceTemplate = (
+  template: string,
+  data: DATA_KEYWORD_TEMPLATE[]
+): string => {
+  return template.replace(/{{(.*?)}}/g, (_, key) => {
+    const found = data.find((item) => item.key === key)
+    return found ? found.value : `{{${key}}}`
+  })
 }
