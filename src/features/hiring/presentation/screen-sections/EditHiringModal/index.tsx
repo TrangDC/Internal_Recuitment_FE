@@ -181,7 +181,7 @@ function EditHiringModal({ open, setOpen, id }: IEditHiringModal) {
                 size="small"
                 onClick={() => setOpen(false)}
               >
-                Cancel
+                Cancel 
               </AppButton>
               <ButtonEdit
                 loading={isPending}

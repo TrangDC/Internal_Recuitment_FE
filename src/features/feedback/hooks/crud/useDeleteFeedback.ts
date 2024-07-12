@@ -18,7 +18,6 @@ function useDeleteFeedback(props: UseDeleteTeamProps) {
     onSuccess,
     onError,
     queryString: deleteCandidateJobFeedback,
-    showErrorMsg: false,
   })
 
   const { mutate, isPending } = useDeleteReturn

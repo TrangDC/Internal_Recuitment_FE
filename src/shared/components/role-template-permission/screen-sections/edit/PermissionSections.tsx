@@ -16,6 +16,7 @@ import { useFormContext } from 'react-hook-form'
 import useResetValue from '../../hooks/useDisableAction'
 import { getKeyName } from '../../utils/utils'
 import RoleTemplateStructure from '../../interfaces/permissionStructure'
+import EmailTemplatePermissionGroup from '../../components/edit/EmailTemplatePermissionGroup'
 
 type PermissionSectionsProps = {
   roleTemplate: RoleTemplateStructure | undefined
@@ -89,6 +90,7 @@ function PermissionSections({ roleTemplate }: PermissionSectionsProps) {
         <HiringTeamPermissionGroup roleTemplate={roleTemplate} />
         <SkillPermissionGroup roleTemplate={roleTemplate} />
         <SkillTypePermissionGroup roleTemplate={roleTemplate} />
+        <EmailTemplatePermissionGroup roleTemplate={roleTemplate} />
       </FlexBox>
     </AppCollapse>
   )

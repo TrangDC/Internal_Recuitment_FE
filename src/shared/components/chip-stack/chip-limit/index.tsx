@@ -4,10 +4,13 @@ import { Stack, Tooltip } from '@mui/material'
 interface Props {
   chips: string[]
   limit?: number
+  show_tooltip?: boolean
 }
 
-const ChipsWithLimit = ({ chips, limit = chips.length }: Props) => {
+const ChipsWithLimit = ({ chips, limit = chips.length, show_tooltip = true }: Props) => {
   const label_chip = useMemo(() => {
+    if(!show_tooltip) return '';
+    
     return chips.join(', ')
   }, [chips])
 

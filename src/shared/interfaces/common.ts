@@ -29,4 +29,6 @@ export enum MODLUE_QUERY_KEY {
   GROUP_HIRING = 'group_hiring',
   ROLE_TEMPLATE = 'role_template',
   ALL_PERMISSON_GROUPS = 'all_permisson_groups',
+  EMAIL_TEMPLATE = 'email_template',
+  SLASH_COMMAND = 'slash_command'
 }

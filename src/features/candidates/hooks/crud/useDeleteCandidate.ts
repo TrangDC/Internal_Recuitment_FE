@@ -18,7 +18,6 @@ function useDeleteCandidate(props: UseDeleteJobProps) {
     onSuccess,
     onError,
     queryString: deleteCandidate,
-    showErrorMsg: false,
   })
 
   const { mutate, isPending } = useDeleteReturn

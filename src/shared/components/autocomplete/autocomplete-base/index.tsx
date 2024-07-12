@@ -69,6 +69,16 @@ export const AutocompleteBase = <Multiple extends boolean = false>(
       )}
       sx={{
         backgroundColor: 'white',
+
+        '& .MuiButtonBase-root.MuiChip-root': {
+          backgroundColor: '#F1F9FF'
+        },
+        '& .MuiButtonBase-root.MuiChip-root span': {
+          fontSize: '14px',
+          color: '#121625',
+          fontWeight: 500,
+          lineHeight: '21px'
+        }
       }}
     />
   )

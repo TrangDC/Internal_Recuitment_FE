@@ -18,7 +18,6 @@ function useDeleteInterview(props: UseDeleteInterviewProps) {
     onSuccess,
     onError,
     queryString: deleteCandidateInterview,
-    showErrorMsg: false,
   })
 
   const { mutate, isPending } = useDeleteReturn
