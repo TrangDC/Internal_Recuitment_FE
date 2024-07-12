@@ -33,7 +33,7 @@ export const DivField = styled(Box)(({ theme }) => ({
 }))
 
 export const SpanDivField = styled(Span)(({ theme }) => ({
-    width: '12px',
+    fontSize: '12px',
     fontWeight: 500,
     color: theme.palette.grey[500],
     lineHeight: '14.63px',

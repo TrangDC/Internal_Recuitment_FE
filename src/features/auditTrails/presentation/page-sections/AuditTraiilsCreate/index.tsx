@@ -22,7 +22,6 @@ interface Props {
 }
 
 const AuditTrailsCreate = ({ data, type, module }: Props) => {
-
   const { t } = useTranslation()
 
   return (
@@ -43,7 +42,7 @@ const AuditTrailsCreate = ({ data, type, module }: Props) => {
               }}>
                 <TinyText >{t(item.field)}: </TinyText>
                 <DateFieldDivison>
-                  <ArrowForwardIcon />
+                  <ArrowForwardIcon sx={{ color: '#2499EF !important' }}/>
                   <TinyText>{record_value}</TinyText>
                 </DateFieldDivison>
               </FieldRecord>

@@ -94,6 +94,10 @@ export function renderDateTime(text: string) {
   return dayjs(text).format('DD/MM/YYYY HH:mm')
 }
 
+export function renderListUser(text: string) {
+  return Array.from(text).join(', ');
+}
+
 export function renderYesNo(text: string) {
   const boolean = getLastString(text)
   return boolean.charAt(0).toUpperCase() + boolean.slice(1)

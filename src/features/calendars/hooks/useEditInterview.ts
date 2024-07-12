@@ -27,7 +27,7 @@ function useEditInterview(props: UseEditInterviewProps) {
   const { id, onSuccess } = props
   const { updateCandidateInterview, getCandidateInterview, queryKey } =
     useGraphql()
-  const { useEditReturn, useFormReturn } = useEditResource<
+  const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     CandidateInterview,
     EditInterviewFrom,
     UpdateCandidateInterviewInput
@@ -140,6 +140,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     control,
     isValid,
     isPending,
+    isGetting,
     actions: {
       onSubmit,
       onSelectedInterviewDate,

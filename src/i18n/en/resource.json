@@ -122,6 +122,7 @@
       "document": "Candidate attachments",
       "reference_type": "Candidate source",
       "reference_value": "Recruit channel",
+      "skills": "Candidate skill",
       "validation": {
         "email_exist": "This email belongs to an existing candidate.",
         "candidate_job_exist": "This candidate is in a hiring process with another job already"

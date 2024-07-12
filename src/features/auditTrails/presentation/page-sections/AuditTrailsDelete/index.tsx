@@ -48,8 +48,8 @@ const AuditTrailsCreate = ({ data, type, module }: Props) => {
               >
                 <TinyText>{t(item.field)}: </TinyText>
                 <DateFieldDivison>
-                  <ArrowForwardIcon />
                   <TinyText>{record_value}</TinyText>
+                  <ArrowForwardIcon sx={{ color: '#2499EF !important' }}/>
                 </DateFieldDivison>
               </FieldRecord>
             )
