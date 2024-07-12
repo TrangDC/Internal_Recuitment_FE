@@ -6,6 +6,7 @@ import {
   renderDate,
   renderDateTime,
   renderDescription,
+  renderListUser,
   renderLocation,
   renderPriority,
   renderReferenceType,
@@ -94,6 +95,9 @@ function renderFieldCandidateInterview(field: string): renderValueReturn {
     case 'end_at':
       renderValue = renderDateTime
       break
+    case 'members':
+      renderValue = renderListUser
+    break;
     default: {
       renderValue = renderText
     }

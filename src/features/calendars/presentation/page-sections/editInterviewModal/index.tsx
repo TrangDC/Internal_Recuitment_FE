@@ -27,7 +27,7 @@ interface IEditInterviewModal {
 
 function EditInterviewModal(props: IEditInterviewModal) {
   const { open, setOpen, id } = props
-  const { actions, control, isValid, isPending, watch, resetField, formState } =
+  const { actions, control, isValid, isPending, watch, resetField, formState, isGetting } =
     useEditInterview({
       id: id,
       onSuccess: () => {
@@ -71,6 +71,7 @@ function EditInterviewModal(props: IEditInterviewModal) {
                         value={field.value}
                         onChange={field.onChange}
                         disabled
+                        loading={isGetting}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
