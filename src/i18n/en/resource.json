@@ -64,6 +64,17 @@
   "from_date": "From date",
   "to_date": "To date",
   "update_record": "Update record",
+  "poor_professionalism": "Poor Professionalism",
+  "poor_fit_and_engagement": "Poor Fit and Engagement",
+  "over_expectations": "Over expectations",
+  "over_qualification": "Over qualification",
+  "language_deficiency": "Language deficiency",
+  "weak_technical_skills": "Weak technical skills",
+  "poor_interpersonal_skills": "Poor interpersonal skills",
+  "poor_problem_solving_skills": "Poor problem-solving skills",
+  "poor_management_skills": "Poor management skills",
+  "candidate_withdrawal": "Candidate withdrawal",
+  "others": "Others",
   "sub_title_update_record": "What information or note have you updated the record?",
   "model": {
     "skill_types": {

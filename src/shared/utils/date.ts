@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 
@@ -100,3 +100,17 @@ export const getLocalTimeOffset = () => {
   const offsetInMinutes = dayjs().tz(localTimezone).utcOffset()
   return offsetInMinutes / 60 // đổi phút sang giờ
 }
+
+export const setTimeToStartOfDay = (date: Dayjs): Dayjs => {
+  return date.hour(0).minute(0).second(0).millisecond(0)
+}
+
+export const setTimeToEndOfDay = (date: Dayjs) => {
+  return date.hour(23).minute(59).second(59).millisecond(999)
+}
+
+
+export const getQuarter = (date:string) => {
+  const month = dayjs(date).month();
+  return Math.floor(month / 3) + 1;
+};

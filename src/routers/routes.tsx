@@ -15,6 +15,7 @@ import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import DoNotAllowPage from 'pages/403'
 import EmailList from 'features/email/presentation/screens/email-list'
+import ReportPage from 'pages/report'
 
 const Loadable = (Component: LazyExoticComponent<FC>) => (props: any) => {
   return (
@@ -270,6 +271,10 @@ export const AppRoutes = () => {
           {/* <Route path="hiring" element={<HiringList />} />
           <Route path="role-template" element={<RoleTemplatePage />} /> */}
           <Route path="skill" element={skillPage} />
+          <Route
+            path="reports"
+            element={<DashboardLayout>{<ReportPage />}</DashboardLayout>}
+          />
         </Route>
         <Route
           path="/auth"
