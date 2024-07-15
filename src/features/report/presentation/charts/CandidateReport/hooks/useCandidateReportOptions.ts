@@ -17,7 +17,8 @@ function useCandidateReportOptions(labels: string[]): ApexOptions {
       fontSize: '12px',
       fontWeight: 500,
       markers: {
-        width: 0,
+        // width: 0,
+        strokeWidth: 0,
       },
       formatter(legendName, opts) {
         const seriesIndex = opts.seriesIndex
