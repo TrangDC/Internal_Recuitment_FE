@@ -19,7 +19,7 @@ function TeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
     viewData.for_owner ||
     viewData.for_team
   )
-  console.log('disabled', disabled)
+
   useEffect(() => {
     if (disabled) {
       const data = {

@@ -136,4 +136,17 @@ export const roleTemplateInformation:RoleTemplateInformation = {
   'model.permissions.skill_types.delete': {
     description: 'Permission to delete skill type',
   },
+//
+  'model.permissions.email_templates.create': {
+    description: 'Permission to create email template',
+  },
+  'model.permissions.email_templates.delete': {
+    description: 'Permission to delete email template',
+  },
+  'model.permissions.email_templates.view': {
+    description: 'Permission to view email template',
+  },
+  'model.permissions.email_templates.update': {
+    description: 'Permission to update email template',
+  },
 }

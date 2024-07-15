@@ -1,15 +1,11 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
-import { Team } from 'features/teams/domain/interfaces'
 import { ActionsTableEmail } from 'features/email/hooks/useBuildActionsTableEmail'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
 import EmailTemplate from 'shared/schema/database/email_template'
-
 interface ActionProps {
   newActions: TOptionItem<EmailTemplate>[]
-  // isOwner: boolean
-  // inTeam: boolean
   role: PermissionStructureImpl | null
 }
 
@@ -21,9 +17,8 @@ function checkPermissionActionTable({
 }: CheckPermissionActionTableProps<EmailTemplate>): TOptionItem<EmailTemplate>[] {
   let newActions = [...actions]
  
-  const inTeam = me?.teamId === rowData.row.original.id
-  // newActions = editAction({ newActions, role })
-  // newActions = deleteAction({ newActions, role })
+  newActions = editAction({ newActions, role })
+  newActions = deleteAction({ newActions, role })
 
   return newActions
 }

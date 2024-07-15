@@ -8,7 +8,7 @@ import {
   CreateEmailModal,
   DeleteEmailModal,
   EditTeamModal,
-  DetailEmailModal
+  DetailEmailModal,
 } from '../page-sections'
 import { useBuildColumnTable, CustomTable } from 'shared/components/table'
 import SearchInput from 'shared/components/table/components/SearchInput'
@@ -17,6 +17,7 @@ import useActionTable from 'features/email/hooks/useActionTable'
 import useEmailTable from 'features/email/hooks/useEmailTable'
 import Mail from 'shared/components/icons/Mail'
 import useBuildActionsTableEmail from 'features/email/hooks/useBuildActionsTableEmail'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 const EmailList = () => {
   const useActionTableReturn = useActionTable()
@@ -60,11 +61,23 @@ const EmailList = () => {
             placeholder="Search by Event, Email Subject"
             onSearch={handleSearch}
           />
-          <ButtonAdd
-            Icon={Add}
-            textLable={'Add a new email'}
-            onClick={() => setOpenCreate(true)}
-          />
+          <Cant
+            module={'EMAIL_TEMPLATE'}
+            checkBy={{
+              compare: 'hasAny',
+              permissions: [
+                'CREATE.everything',
+                'CREATE.ownedOnly',
+                'CREATE.teamOnly',
+              ],
+            }}
+          >
+            <ButtonAdd
+              Icon={Add}
+              textLable={'Add a new email'}
+              onClick={() => setOpenCreate(true)}
+            />
+          </Cant>
         </HeadingWrapper>
         <Box>
           <CustomTable columns={columnTable} useTableReturn={useTableReturn} />

@@ -232,6 +232,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                 variant="outlined"
                 size="small"
                 onClick={() => {
+                  //@ts-ignore
                   handleOpenPreview(form_values)
                 }}
               >

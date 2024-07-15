@@ -256,7 +256,7 @@ export const AppRoutes = () => {
           <Route
             path="email-notification"
             element={PermissionLayout({
-              module: 'ROLES_TEMPLATE',
+              module: 'EMAIL_TEMPLATE',
               children: <EmailList />,
               checkBy: {
                 compare: 'hasAny',

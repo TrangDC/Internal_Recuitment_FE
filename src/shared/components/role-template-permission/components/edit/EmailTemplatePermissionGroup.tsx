@@ -9,12 +9,13 @@ import ListCheckBox from './ListCheckBox'
 function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
   const { control, watch, setValue } = useFormContext()
   const [open, setOpen] = useState(true)
-  const createAction = roleTemplate?.SKILL_TYPES?.CREATE
-  const editAction = roleTemplate?.SKILL_TYPES?.EDIT
-  const deleteAction = roleTemplate?.SKILL_TYPES?.DELETE
-  const viewAction = roleTemplate?.SKILL_TYPES?.VIEW
-  console.log("🚀 ~ EmailTemplatePermissionGroup ~ viewAction:", viewAction)
+  const createAction = roleTemplate?.EMAIL_TEMPLATE?.CREATE
+  const editAction = roleTemplate?.EMAIL_TEMPLATE?.EDIT
+  const deleteAction = roleTemplate?.EMAIL_TEMPLATE?.DELETE
+  const viewAction = roleTemplate?.EMAIL_TEMPLATE?.VIEW
+
   const viewData = watch(getKeyName(viewAction.id))
+
   const disabled = !(
     viewData.for_all ||
     viewData.for_owner ||
@@ -43,7 +44,7 @@ function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
         sx={{ borderBottom: '1px solid', borderColor: 'grey.200' }}
       >
         <CollapseGroup.CollapseHeaderColumn>
-          Name
+          Name {viewAction?.id}
         </CollapseGroup.CollapseHeaderColumn>
         <CollapseGroup.CollapseHeaderColumn align="left">
           Owned Only
