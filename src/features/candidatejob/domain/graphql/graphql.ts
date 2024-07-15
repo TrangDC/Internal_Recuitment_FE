@@ -119,12 +119,7 @@ const useGraphql = () => {
     options: {
       type: 'mutation',
     },
-    node: `
-      data {
-        id
-        status
-      }
-    `,
+    node: ``,
     params: {
       id: 'ID!',
       input: 'UpdateCandidateJobStatus!',
