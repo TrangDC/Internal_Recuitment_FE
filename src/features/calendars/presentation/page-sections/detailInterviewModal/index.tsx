@@ -67,6 +67,7 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
                       interviewers={getValues('interviewer')}
                       onClick={() => {
                         handleEditEvent(id)
+                        setOpen(false)
                       }}
                     />
                     <DeleteInterviewButtonPermission

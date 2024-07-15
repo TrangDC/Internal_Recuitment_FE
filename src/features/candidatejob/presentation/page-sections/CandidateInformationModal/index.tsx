@@ -60,6 +60,7 @@ function CandidateInformationModal({
                 }}
                 onClick={() => {
                   handleOpenEdit(id)
+                  setOpen(false)
                 }}
               />
 
