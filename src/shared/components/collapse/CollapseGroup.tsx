@@ -11,7 +11,6 @@ import {
   TableRow,
   styled,
 } from '@mui/material'
-import { Text13md } from '../Typography'
 import ChevronUp from '../icons/ChevronUpIcon'
 import ChevronDown from '../icons/ChevronDownIcon'
 import { ReactNode } from 'react'

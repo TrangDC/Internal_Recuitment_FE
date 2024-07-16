@@ -1,5 +1,5 @@
 import { Box, Portal } from '@mui/material'
-import { ReactNode, useRef } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 
 interface Props {
   children: ReactNode
@@ -8,18 +8,21 @@ interface Props {
 
 const PortalComponent = ({ children, is_portal }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [container, setContainer] = useState<HTMLElement | null>(null)
+
+  useEffect(() => {
+    setContainer(containerRef.current)
+  }, [])
 
   return (
     <Box ref={containerRef}>
-      {/* <Portal
+      <Portal
         container={() => {
-          return is_portal
-            ? document.querySelector('body')
-            : containerRef.current!
+          return is_portal ? document.body : container
         }}
-      > */}
+      >
         {children}
-      {/* </Portal> */}
+      </Portal>
     </Box>
   )
 }

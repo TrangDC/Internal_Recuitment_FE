@@ -256,7 +256,6 @@ export async function previewFile(files: string) {
   const response = await fetch(files)
   if (response.ok) {
     const blob = await response.blob()
-    const fileType = blob.type
     const fileUrl = URL.createObjectURL(blob)
     let viewerUrl
 

@@ -1,6 +1,5 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
-import Cant from 'features/authorization/presentation/components/Cant'
 import { Job } from 'features/jobs/domain/interfaces'
 import { Span } from 'shared/components/Typography'
 import { BtnPrimary } from 'shared/styles'

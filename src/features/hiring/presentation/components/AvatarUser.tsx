@@ -2,7 +2,6 @@ import { Avatar, Badge, Button, Skeleton, Tooltip } from '@mui/material'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { v4 as uuidv4 } from 'uuid'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 
 interface IAvatarEmployee {

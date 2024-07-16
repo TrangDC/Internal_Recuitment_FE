@@ -1,5 +1,4 @@
 import { Box } from '@mui/system'
-import EditIcon from 'shared/components/icons/EditIcon'
 import IconScreen from 'shared/components/utils/IconScreen'
 import HiringTeam from 'shared/components/icons/HiringTeams'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'

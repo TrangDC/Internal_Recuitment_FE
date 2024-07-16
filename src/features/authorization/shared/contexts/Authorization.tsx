@@ -1,7 +1,6 @@
 import { MyBasicInformation } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
 import useGetMe from 'features/authorization/hooks/useGetMe'
-import LoadingSpinner from 'pages/LoadingSpiner'
 import { ReactNode, createContext } from 'react'
 import LoadingScreen from 'shared/components/LoadingScreen'
 import { isLeft } from 'shared/utils/handleEither'
