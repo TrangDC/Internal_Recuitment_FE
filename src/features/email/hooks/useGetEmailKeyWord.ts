@@ -3,6 +3,7 @@ import GraphQLClientService from 'services/refactor/graphql-service'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../domain/graphql/graphql'
+import { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
 
 export type slash_command_record = {
   key: string
@@ -29,13 +30,19 @@ const INIT_VALUE = {
   team: [],
 }
 
-const useGetEmailKeyWord = () => {
+interface Props {
+  filter?: {
+    event: EVENT_EMAIL_ENUM
+  }
+}
+
+const useGetEmailKeyWord = ({filter = {event: 'updating_interview'}}: Props) => {
   const { getAllEmailTemplateKeywords, queryKey_keyword } = useGraphql()
 
   const { data } = useQuery({
-    queryKey: [queryKey_keyword],
+    queryKey: [queryKey_keyword, filter],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords.query),
+      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords.query, {filter: filter}),
   })
 
   const slash_command: slash_command = useMemo(() => {

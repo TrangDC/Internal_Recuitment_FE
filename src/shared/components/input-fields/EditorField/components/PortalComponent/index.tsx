@@ -11,15 +11,15 @@ const PortalComponent = ({ children, is_portal }: Props) => {
 
   return (
     <Box ref={containerRef}>
-      <Portal
+      {/* <Portal
         container={() => {
           return is_portal
             ? document.querySelector('body')
-            : containerRef.current
+            : containerRef.current!
         }}
-      >
+      > */}
         {children}
-      </Portal>
+      {/* </Portal> */}
     </Box>
   )
 }

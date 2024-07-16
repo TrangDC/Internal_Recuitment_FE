@@ -10,6 +10,7 @@ import PortalComponent from './components/PortalComponent'
 import useGetSlashCommand, {
   SLASH_COMMAND_TYPE,
 } from './hooks/useGetSlashCommand'
+import { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
 
 interface TinyProps extends IAllProps {
   label?: string
@@ -22,6 +23,7 @@ interface TinyProps extends IAllProps {
   pluginCustomize?: PluginName[]
   slash_command?: Array<'attribute' | 'link'>
   attribute_command?: SLASH_COMMAND_TYPE
+  event_filter?: EVENT_EMAIL_ENUM
 }
 
 export default function EditorBoxField({
@@ -35,6 +37,7 @@ export default function EditorBoxField({
   pluginCustomize = [],
   slash_command = ['attribute', 'link'],
   attribute_command = [],
+  event_filter = 'updating_interview',
   ...props
 }: TinyProps) {
   const [isFullScreen, setIsFullScreen] = useState(false)
@@ -44,6 +47,9 @@ export default function EditorBoxField({
   const { options_slash } = useGetSlashCommand({
     type: slash_command,
     attribute_command: attribute_command,
+    filter: {
+      event: event_filter ? event_filter : 'updating_interview',
+    }
   })
 
   return loading ? (

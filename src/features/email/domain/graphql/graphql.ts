@@ -149,6 +149,9 @@ const useGraphql = () => {
         }
       }
     `,
+    params: {
+      filter: 'EmailTemplateKeywordFilter!'
+    }
   })
 
   const updateEmailTemplateStatus = GraphQLClientService.buildQuery({

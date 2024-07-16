@@ -19,6 +19,8 @@ export const EVENT_EMAIL = {
   cancel_interview: {value: 'cancel_interview', label: 'Cancel an interview'},
 }
 
+export type EVENT_EMAIL_ENUM = keyof typeof EVENT_EMAIL;
+
 const options: IOption[] = [
   {
     label: EVENT_EMAIL.candidate_applied_to_kiv.label,

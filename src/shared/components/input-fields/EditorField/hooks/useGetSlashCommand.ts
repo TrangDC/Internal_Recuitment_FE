@@ -3,7 +3,7 @@ import GraphQLClientService from 'services/refactor/graphql-service'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
-import { BaseRecord } from 'shared/interfaces'
+import { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
 
 export type slash_command_record = {
   key: string
@@ -40,18 +40,20 @@ export type SLASH_COMMAND_TYPE = Array<keyof typeof INIT_VALUE>;
 interface Props {
   type: Array<'attribute' | 'link'>
   attribute_command?: SLASH_COMMAND_TYPE
+  filter?: {
+    event: EVENT_EMAIL_ENUM
+  }
 }
 
 type slash_type = 'attribute' | 'link'
 
-const useGetSlashCommand = ({ type, attribute_command = [] }: Props) => {
-  // console.log("🚀 ~ useGetSlashCommand ~ attribute_command:", attribute_command)
+const useGetSlashCommand = ({ type, attribute_command = [], filter = {event: 'updating_interview'} }: Props) => {
   const { getAllEmailTemplateKeywords, queryKey } = useGraphql()
 
-  const { data, isLoading } = useQuery({
-    queryKey: [queryKey],
+  const { data } = useQuery({
+    queryKey: [queryKey, filter],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords.query),
+      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords.query, {filter: filter}),
   })
 
   const slash_command: slash_command = useMemo(() => {
@@ -64,18 +66,10 @@ const useGetSlashCommand = ({ type, attribute_command = [] }: Props) => {
 
     return INIT_VALUE
   }, [data])
-// console.log("slash_command", slash_command)
+
   const options_slash: options_slash = useMemo(() => {
     const { link, ...attribute } = slash_command
-
-    //filter option command attribute
-    const attribute_enabled = attribute_command.reduce((current: BaseRecord, next) => {
-      current[next] = slash_command[next]
-      return current
-    }, {})
-    //filter option command link
-
-    const attribute_slash = Object.values(attribute_enabled).flat()
+    const attribute_slash = Object.values(attribute).flat()
    
     const result: options_slash = {
       link: link,
