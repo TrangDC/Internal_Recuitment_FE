@@ -1,5 +1,5 @@
 import Calendars from '../page-sections/google-calendar'
-import { SyntheticEvent, useCallback, useRef, useState } from 'react'
+import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { SlotInfo } from 'react-big-calendar'
 import CreateInterviewModal from '../page-sections/createInterviewModal'
 import {
@@ -25,6 +25,7 @@ import useGetAllInterview from 'features/calendars/hooks/useGetAllInterview'
 import useDragDropInterview from 'features/calendars/hooks/useDragDropInterview'
 import CalendarProvider from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 import useCheckEditInterviewPermission from 'features/calendars/permission/hooks/useCheckEditInterviewPermission'
+import { useLocation } from 'react-router-dom'
 
 function CalendarsScreen() {
   const [openCreateInterView, setOpenCreateInterView] = useState(false)
@@ -37,6 +38,8 @@ function CalendarsScreen() {
   const { myEvents, isLoading, handlePagination } = useGetAllInterview()
   const { onDragDropInterview } = useDragDropInterview({})
   const translation = useTextTranslation()
+
+  const location = useLocation();
 
   const handleSelectSlot = useCallback(({ start, end }: SlotInfo) => {
     // setOpenCreateInterView(true)
@@ -131,6 +134,18 @@ function CalendarsScreen() {
       })
     }
   }
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const interview_id = queryParams.get('interview_id');
+    const is_open_detail = queryParams.get('is_open_detail');
+
+    if(interview_id && is_open_detail && JSON.parse(is_open_detail)) {
+      eventId.current = interview_id
+      setOpenDetailInterView(true)
+    }
+  }, [])
+
   return (
     <Box pt={2} pb={4}>
       <Box>
