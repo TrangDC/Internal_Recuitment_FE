@@ -18,6 +18,11 @@ import useEmailTable from 'features/email/hooks/useEmailTable'
 import Mail from 'shared/components/icons/Mail'
 import useBuildActionsTableEmail from 'features/email/hooks/useBuildActionsTableEmail'
 import Cant from 'features/authorization/presentation/components/Cant'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
+import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
+import EventEmailAutocomplete from 'shared/components/autocomplete/event-email-autocomplete'
+import { DivHeaderWrapper } from 'features/candidates/shared/styles'
 
 const EmailList = () => {
   const useActionTableReturn = useActionTable()
@@ -34,12 +39,14 @@ const EmailList = () => {
     setOpenDelete,
   } = useActionTableReturn
 
-  const { useSearchListReturn } = useFilterEmail()
+  const { useSearchListReturn, useFilterReturn } = useFilterEmail()
+  const { controlFilter, dataFilterWithValue } = useFilterReturn
   const { search, handleSearch, searchRef } = useSearchListReturn
 
   const { useTableReturn } = useEmailTable({
     orderBy: { field: 'created_at', direction: 'DESC' },
     search,
+    filters: dataFilterWithValue,
   })
 
   const { actions } = useBuildActionsTableEmail(useActionTableReturn)
@@ -55,29 +62,53 @@ const EmailList = () => {
       </Box>
       <BoxWrapperOuterContainer>
         <HeadingWrapper>
-          <SearchInput
-            ref={searchRef}
-            onEnter={handleSearch}
-            placeholder="Search by Event, Email Subject"
-            onSearch={handleSearch}
-          />
-          <Cant
-            module={'EMAIL_TEMPLATE'}
-            checkBy={{
-              compare: 'hasAny',
-              permissions: [
-                'CREATE.everything',
-                'CREATE.ownedOnly',
-                'CREATE.teamOnly',
-              ],
-            }}
-          >
-            <ButtonAdd
-              Icon={Add}
-              textLable={'Add a new email'}
-              onClick={() => setOpenCreate(true)}
+          <FlexBox>
+            <ControllerFilter
+              control={controlFilter}
+              title="Event"
+              keyName={'event'}
+              Node={({ onFilter, value }) => (
+                <EventEmailAutocomplete
+                  multiple={false}
+                  value={value}
+                  onChange={(data) => {
+                    onFilter(data)
+                  }}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  textFieldProps={{
+                    label: 'Event',
+                    autoFocus: true,
+                  }}
+                />
+              )}
             />
-          </Cant>
+          </FlexBox>
+          <DivHeaderWrapper>
+            <SearchInput
+              ref={searchRef}
+              onEnter={handleSearch}
+              placeholder="Search by Email Subject"
+              onSearch={handleSearch}
+            />
+            <Cant
+              module={'EMAIL_TEMPLATE'}
+              checkBy={{
+                compare: 'hasAny',
+                permissions: [
+                  'CREATE.everything',
+                  'CREATE.ownedOnly',
+                  'CREATE.teamOnly',
+                ],
+              }}
+            >
+              <ButtonAdd
+                Icon={Add}
+                textLable={'Add a new email'}
+                onClick={() => setOpenCreate(true)}
+              />
+            </Cant>
+          </DivHeaderWrapper>
         </HeadingWrapper>
         <Box>
           <CustomTable columns={columnTable} useTableReturn={useTableReturn} />
