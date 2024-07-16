@@ -25,8 +25,6 @@ const useEmailDetail = (id: string) => {
     return response
   }, [formData])
 
-  console.log("formData", formData)
-
   return {
     formData,
     email_detail,

@@ -5,12 +5,10 @@ import Scrollbar from 'shared/components/ScrollBar'
 import { Text13md, Tiny12md } from 'shared/components/Typography'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from 'shared/components/icons/EditIcon'
-import { DATA_KEYWORD_TEMPLATE, IDetailModal } from 'shared/interfaces'
+import { IDetailModal } from 'shared/interfaces'
 import { Email } from 'features/email/domain/interfaces'
 import useEmailDetail from 'features/email/hooks/useEmailDetail'
 import { ChipLimit } from 'shared/components/chip-stack'
-import useGetEmailKeyWord from 'features/email/hooks/useGetEmailKeyWord'
-import { replaceTemplate } from 'shared/utils/utils'
 import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
 interface IDetailEmailModal extends IDetailModal<Email> {
   handleOpenEdit: (value: string) => void
@@ -23,16 +21,6 @@ function DetailEmailModal({
   handleOpenEdit,
 }: IDetailEmailModal) {
   const { email_detail } = useEmailDetail(id)
-
-  const { options_keyWord } = useGetEmailKeyWord()
-
-  const previewData = (content: string, data: DATA_KEYWORD_TEMPLATE[]) => {
-    const stringHTML = replaceTemplate(content ?? '', data)
-
-    return GenerateInnerHTML({
-      innerHTML: stringHTML,
-    })
-  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -110,7 +98,7 @@ function DetailEmailModal({
                   <FlexBox gap={0.25} flexDirection={'column'}>
                     <Tiny12md color={'grey.500'}>Email subject</Tiny12md>
                     <Text13md color={'grey.900'} fontWeight={600}>
-                      {previewData(email_detail?.subject as string, options_keyWord)}
+                      {GenerateInnerHTML({innerHTML: email_detail?.subject})}
                     </Text13md>
                   </FlexBox>
                 </FormControl>
@@ -121,7 +109,7 @@ function DetailEmailModal({
                   <FlexBox flexDirection={'column'} gap={0.25}>
                     <Tiny12md color={'grey.500'}>Email content</Tiny12md>
                     <Text13md color={'grey.900'} fontWeight={600}>
-                      {previewData(email_detail?.content as string, options_keyWord)}
+                      {GenerateInnerHTML({innerHTML: email_detail?.content})}
                     </Text13md>
                   </FlexBox>
                 </FormControl>
@@ -132,7 +120,7 @@ function DetailEmailModal({
                   <FlexBox flexDirection={'column'} gap={0.25}>
                     <Tiny12md color={'grey.500'}>Email signature</Tiny12md>
                     <Text13md color={'grey.900'} fontWeight={600}>
-                      {previewData(email_detail?.signature as string, options_keyWord)}
+                      {GenerateInnerHTML({innerHTML: email_detail?.signature})}
                     </Text13md>
                   </FlexBox>
                 </FormControl>

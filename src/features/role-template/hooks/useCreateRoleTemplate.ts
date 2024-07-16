@@ -1,8 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useCreateResource } from 'shared/hooks/crud-hook'
-
 import { useState } from 'react'
-import _ from 'lodash'
 import useGetAllPermissionGroups from 'shared/hooks/permissions/useGetAllPermissionGroups'
 import { NewRoleTemplateInput } from 'features/role-template/domain/interfaces'
 import useGraphql from 'features/role-template/domain/graphql/graphql'

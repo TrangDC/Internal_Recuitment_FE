@@ -41,6 +41,9 @@ const useGraphql = () => {
         }
       }
     `,
+    params: {
+      filter: 'EmailTemplateKeywordFilter!'
+    }
   })
 
   return {

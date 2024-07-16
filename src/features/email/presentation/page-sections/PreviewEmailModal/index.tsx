@@ -14,8 +14,7 @@ function PreviewEmailModal({
   setOpen,
   rowData,
 }: IDetailModal<Partial<Email>>) {
-  const { options_keyWord } = useGetEmailKeyWord()
-
+  const { options_keyWord } = useGetEmailKeyWord({})
   const previewData = (content: string, data: DATA_KEYWORD_TEMPLATE[]) => {
     const stringHTML = replaceTemplate(content, data)
 

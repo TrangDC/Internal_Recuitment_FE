@@ -1,6 +1,5 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
-import _ from 'lodash'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 
 interface SelectionTeamPermissionProps {

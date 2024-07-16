@@ -14,7 +14,7 @@ import { BoxWrapperEditor } from 'features/email/shared/constants/styles/style'
 import useActionTable from 'features/email/hooks/useActionTable'
 import { Fragment } from 'react/jsx-runtime'
 import PreviewEmailModal from '../PreviewEmailModal'
-import EventEmailAutocomplete from 'shared/components/autocomplete/event-email-autocomplete'
+import EventEmailAutocomplete, { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
 import AutoCompleteInput from 'features/email/shared/components/autocomplete-input'
 import SendToAutocomplete from 'shared/components/autocomplete/send-to-autocomplete'
 import { useMemo } from 'react'
@@ -170,6 +170,7 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                               content_style:
                                 'body{margin:0; padding:10px 10px 5px; height:25px; white-space: nowrap} p { margin:0; padding: 0 ; height:25px }',
                             }}
+                            event_filter={event_selected as EVENT_EMAIL_ENUM}
                             attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
                           />
                         </BoxWrapperEditor>
@@ -197,6 +198,7 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                           onEditorChange={field.onChange}
                           pluginCustomize={['slashcommands']}
                           attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
+                          event_filter={event_selected as EVENT_EMAIL_ENUM}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}
@@ -220,6 +222,7 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                           onEditorChange={field.onChange}
                           pluginCustomize={['slashcommands']}
                           attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
+                          event_filter={event_selected as EVENT_EMAIL_ENUM}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}
