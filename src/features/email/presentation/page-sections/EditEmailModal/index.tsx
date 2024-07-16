@@ -18,6 +18,9 @@ import PreviewEmailModal from '../PreviewEmailModal'
 import EventEmailAutocomplete from 'shared/components/autocomplete/event-email-autocomplete'
 import AutoCompleteInput from 'features/email/shared/components/autocomplete-input'
 import SendToAutocomplete from 'shared/components/autocomplete/send-to-autocomplete'
+import { useMemo } from 'react'
+import { SEND_TO_BY_EVENT, SLASH_COMMAND_BY_EVENT } from 'features/email/shared/constants'
+import { SLASH_COMMAND_TYPE } from 'shared/components/input-fields/EditorField/hooks/useGetSlashCommand'
 
 function EditEmailModal({ open, setOpen, id }: IEditModal) {
   const {
@@ -28,6 +31,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
     setValue,
     formState,
     form_values,
+    watch,
   } = useUpdateEmail({
     id: id,
     onSuccess: () => {
@@ -37,13 +41,22 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
 
   const { rowId, openPreview, setOpenPreview, handleOpenPreview, rowData } =
     useActionTable()
-  const { onSubmit, getValidCc } = actions
+  const { onSubmit, getValidCc, resetSendTo } = actions
 
   const translation = useTextTranslation()
   const callbackSubmit = (reason: string) => {
     setValue('note', reason)
     onSubmit()
   }
+
+  const event_selected = watch('event')
+  const include_sendTo = useMemo(() => {
+    return event_selected ? SEND_TO_BY_EVENT[event_selected] : []
+  }, [event_selected])
+
+  const include_slashCommand = useMemo(() => {
+    return event_selected ? SLASH_COMMAND_BY_EVENT[event_selected] : []
+  }, [event_selected])
 
   return (
     <Fragment>
@@ -74,6 +87,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                           value={field.value}
                           onChange={(data) => {
                             field.onChange(data?.value)
+                            resetSendTo()
                           }}
                           textFieldProps={{
                             label: 'Event',
@@ -99,10 +113,12 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                         <SendToAutocomplete
                           multiple={true}
                           value={field.value ?? []}
+                          disabled={!event_selected}
                           onChange={(data) => {
                             const ids = data.map((item) => item.value)
                             field.onChange(ids)
                           }}
+                          include={include_sendTo}
                           textFieldProps={{
                             label: 'Send to',
                             required: true,
@@ -155,6 +171,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                             onEditorChange={field.onChange}
                             pluginCustomize={['slashcommands']}
                             slash_command={['attribute']}
+                            attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
                             initProps={{
                               toolbar: false,
                               menubar: false,
@@ -186,6 +203,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                           value={field.value ?? ''}
                           onEditorChange={field.onChange}
                           pluginCustomize={['slashcommands']}
+                          attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}
@@ -208,6 +226,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                           value={field.value ?? ''}
                           onEditorChange={field.onChange}
                           pluginCustomize={['slashcommands']}
+                          attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}

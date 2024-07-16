@@ -3,6 +3,7 @@ import GraphQLClientService from 'services/refactor/graphql-service'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
+import { BaseRecord } from 'shared/interfaces'
 
 export type slash_command_record = {
   key: string
@@ -34,13 +35,17 @@ const INIT_VALUE = {
   team: [],
 }
 
+export type SLASH_COMMAND_TYPE = Array<keyof typeof INIT_VALUE>;
+
 interface Props {
   type: Array<'attribute' | 'link'>
+  attribute_command?: SLASH_COMMAND_TYPE
 }
 
 type slash_type = 'attribute' | 'link'
 
-const useGetSlashCommand = ({ type }: Props) => {
+const useGetSlashCommand = ({ type, attribute_command = [] }: Props) => {
+  // console.log("🚀 ~ useGetSlashCommand ~ attribute_command:", attribute_command)
   const { getAllEmailTemplateKeywords, queryKey } = useGraphql()
 
   const { data, isLoading } = useQuery({
@@ -59,11 +64,19 @@ const useGetSlashCommand = ({ type }: Props) => {
 
     return INIT_VALUE
   }, [data])
-
+// console.log("slash_command", slash_command)
   const options_slash: options_slash = useMemo(() => {
     const { link, ...attribute } = slash_command
-    const attribute_slash = Object.values(attribute).flat()
 
+    //filter option command attribute
+    const attribute_enabled = attribute_command.reduce((current: BaseRecord, next) => {
+      current[next] = slash_command[next]
+      return current
+    }, {})
+    //filter option command link
+
+    const attribute_slash = Object.values(attribute_enabled).flat()
+   
     const result: options_slash = {
       link: link,
       attribute: attribute_slash,
@@ -76,7 +89,7 @@ const useGetSlashCommand = ({ type }: Props) => {
     }
 
     return result
-  }, [slash_command])
+  }, [slash_command, attribute_command])
 
   return {
     slash_command,

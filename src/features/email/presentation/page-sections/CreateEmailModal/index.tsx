@@ -17,19 +17,39 @@ import PreviewEmailModal from '../PreviewEmailModal'
 import EventEmailAutocomplete from 'shared/components/autocomplete/event-email-autocomplete'
 import AutoCompleteInput from 'features/email/shared/components/autocomplete-input'
 import SendToAutocomplete from 'shared/components/autocomplete/send-to-autocomplete'
+import { useMemo } from 'react'
+import { SEND_TO_BY_EVENT, SLASH_COMMAND_BY_EVENT } from 'features/email/shared/constants'
+import { SLASH_COMMAND_TYPE } from 'shared/components/input-fields/EditorField/hooks/useGetSlashCommand'
 
 function CreateEmailModal({ open, setOpen }: ICreateModal) {
-  const { onSubmit, control, isPending, isValid, formState, form_values, actions } =
-    useCreateEmail({
-      callbackSuccess: () => {
-        setOpen(false)
-      },
-    })
-    const { getValidCc } = actions;
+  const {
+    onSubmit,
+    control,
+    isPending,
+    isValid,
+    formState,
+    form_values,
+    actions,
+    watch,
+  } = useCreateEmail({
+    callbackSuccess: () => {
+      setOpen(false)
+    },
+  })
+  const { getValidCc, resetSendTo } = actions
 
   const { rowId, openPreview, setOpenPreview, handleOpenPreview, rowData } =
     useActionTable()
   const translation = useTextTranslation()
+
+  const event_selected = watch('event')
+  const include_sendTo = useMemo(() => {
+    return event_selected ? SEND_TO_BY_EVENT[event_selected] : []
+  }, [event_selected])
+
+  const include_slashCommand = useMemo(() => {
+    return event_selected ? SLASH_COMMAND_BY_EVENT[event_selected] : []
+  }, [event_selected])
 
   return (
     <Fragment>
@@ -60,6 +80,7 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                           value={field.value}
                           onChange={(data) => {
                             field.onChange(data?.value)
+                            resetSendTo()
                           }}
                           textFieldProps={{
                             label: 'Event',
@@ -85,6 +106,8 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                         <SendToAutocomplete
                           multiple={true}
                           value={field.value}
+                          include={include_sendTo}
+                          disabled={!event_selected}
                           onChange={(data) => {
                             const ids = data.map((item) => item.value)
                             field.onChange(ids)
@@ -147,6 +170,7 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                               content_style:
                                 'body{margin:0; padding:10px 10px 5px; height:25px; white-space: nowrap} p { margin:0; padding: 0 ; height:25px }',
                             }}
+                            attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
                           />
                         </BoxWrapperEditor>
 
@@ -158,7 +182,7 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                   />
                 </FormControl>
               </FlexBox>
-              
+
               <FlexBox justifyContent={'center'} alignItems={'center'}>
                 <FormControl fullWidth>
                   <Controller
@@ -172,6 +196,7 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                           value={field.value ?? ''}
                           onEditorChange={field.onChange}
                           pluginCustomize={['slashcommands']}
+                          attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}
@@ -194,6 +219,7 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                           value={field.value ?? ''}
                           onEditorChange={field.onChange}
                           pluginCustomize={['slashcommands']}
+                          attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}

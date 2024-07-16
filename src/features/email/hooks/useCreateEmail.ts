@@ -3,7 +3,7 @@ import useGraphql from 'features/email/domain/graphql/graphql'
 import { NewEmailInput } from 'features/email/domain/interfaces'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { FormDataSchema, schema } from '../shared/constants/schema'
-import { RegexEmail } from 'shared/utils/utils'
+import { getContentStringHTML, RegexEmail } from 'shared/utils/utils'
 import {
   OPTIONS_VALUE_SEND_TO,
   SEND_TO_VALUE,
@@ -39,7 +39,7 @@ function useCreateEmail(props: createEmailProps = {}) {
     onSuccess: callbackSuccess,
   })
 
-  const { handleSubmit, control, formState, getValues, watch } = useFormReturn
+  const { handleSubmit, control, formState, getValues, watch, resetField } = useFormReturn
 
   //preview data
   const form_values = getValues()
@@ -65,6 +65,7 @@ function useCreateEmail(props: createEmailProps = {}) {
         ...valueClone,
         roleIds: role_ids,
         send_to: send_to,
+        subject: getContentStringHTML(value?.subject)
       })
     })()
   }
@@ -75,6 +76,11 @@ function useCreateEmail(props: createEmailProps = {}) {
     })
   }
 
+  function resetSendTo() {
+    resetField('send_to')
+    resetField('roleIds')
+  }
+
   return {
     onSubmit,
     control,
@@ -82,8 +88,10 @@ function useCreateEmail(props: createEmailProps = {}) {
     isPending,
     formState,
     form_values,
+    watch,
     actions: {
       getValidCc,
+      resetSendTo,
     },
   }
 }
