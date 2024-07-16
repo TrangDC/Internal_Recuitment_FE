@@ -325,3 +325,10 @@ export const replaceTemplate = (
     return found ? found.value : `{{${key}}}`
   })
 }
+
+export const getContentStringHTML = (content: string) => {
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = content;
+
+  return tempDiv.textContent || "";
+}

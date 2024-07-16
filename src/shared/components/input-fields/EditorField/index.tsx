@@ -7,7 +7,9 @@ import { EditorBoxWrapper } from './styles'
 import './styles/index.css'
 import LabelWrapper from './components/LabelComponent'
 import PortalComponent from './components/PortalComponent'
-import useGetSlashCommand from './hooks/useGetSlashCommand'
+import useGetSlashCommand, {
+  SLASH_COMMAND_TYPE,
+} from './hooks/useGetSlashCommand'
 
 interface TinyProps extends IAllProps {
   label?: string
@@ -19,6 +21,7 @@ interface TinyProps extends IAllProps {
   loading?: boolean
   pluginCustomize?: PluginName[]
   slash_command?: Array<'attribute' | 'link'>
+  attribute_command?: SLASH_COMMAND_TYPE
 }
 
 export default function EditorBoxField({
@@ -31,13 +34,17 @@ export default function EditorBoxField({
   loading,
   pluginCustomize = [],
   slash_command = ['attribute', 'link'],
+  attribute_command = [],
   ...props
 }: TinyProps) {
   const [isFullScreen, setIsFullScreen] = useState(false)
   const [focused, setFocused] = useState<boolean>(false)
   const editorRef = useRef<Editor>(null)
 
-  const { options_slash } = useGetSlashCommand({type: slash_command})
+  const { options_slash } = useGetSlashCommand({
+    type: slash_command,
+    attribute_command: attribute_command,
+  })
 
   return loading ? (
     <SkeletonField height={100} />
@@ -53,6 +60,7 @@ export default function EditorBoxField({
       />
       <PortalComponent is_portal={isFullScreen}>
         <Editor
+          key={JSON.stringify(options_slash)}
           apiKey={process.env.TINY_API_KEY}
           onFocus={() => {
             setFocused(true)

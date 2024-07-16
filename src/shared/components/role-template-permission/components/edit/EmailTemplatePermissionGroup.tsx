@@ -44,7 +44,7 @@ function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
         sx={{ borderBottom: '1px solid', borderColor: 'grey.200' }}
       >
         <CollapseGroup.CollapseHeaderColumn>
-          Name {viewAction?.id}
+          Name 
         </CollapseGroup.CollapseHeaderColumn>
         <CollapseGroup.CollapseHeaderColumn align="left">
           Owned Only

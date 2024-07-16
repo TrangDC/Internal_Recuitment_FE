@@ -4,7 +4,7 @@ import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import { FormDataSchemaUpdate, schemaUpdate } from '../shared/constants/schema'
 import { UpdateEmailInput } from '../domain/interfaces'
-import { RegexEmail } from 'shared/utils/utils'
+import { getContentStringHTML, RegexEmail } from 'shared/utils/utils'
 import EmailTemplate from 'shared/schema/database/email_template'
 import {
   OPTIONS_VALUE_SEND_TO,
@@ -78,6 +78,7 @@ function useUpdateEmail(props: UseEditTeamProps) {
         ...valueClone,
         roleIds: role_ids,
         send_to: send_to,
+        subject: getContentStringHTML(value?.subject)
       } as UpdateEmailInput)
     })()
   }
@@ -88,6 +89,11 @@ function useUpdateEmail(props: UseEditTeamProps) {
     })
   }
 
+  function resetSendTo() {
+    setValue('send_to', [])
+    setValue('roleIds', [])
+  }
+
   return {
     control,
     isValid,
@@ -95,11 +101,13 @@ function useUpdateEmail(props: UseEditTeamProps) {
     actions: {
       onSubmit,
       getValidCc,
+      resetSendTo
     },
     formState,
     setValue,
     isGetting,
     form_values,
+    watch
   }
 }
 

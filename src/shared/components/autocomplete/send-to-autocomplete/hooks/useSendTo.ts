@@ -72,10 +72,16 @@ const useSendTo = () => {
     return [...options_fixed, ...roles];
   }, [roles_data])
 
+  const options_role = useMemo(() => {
+    return roles_data.map((item) => ({label: item.name, value: item.id}))
+  }, [roles_data])
+
   return {
     ...otherValue,
     roles_data,
     options,
+    options_fixed,
+    options_role
   }
 }
 
