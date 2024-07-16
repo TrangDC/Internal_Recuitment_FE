@@ -3,7 +3,7 @@ import { AutocompleterItemSpec } from '../../types'
 import { slash_command_record } from '../../hooks/useGetSlashCommand'
 
 const renderLink = (key: string, value: string) => {
-  return `<a href="{{${key}}}">${value}</a>`
+  return `<a href="{{ ${key} }}">${value}</a>`
 }
 
 export const generateLink = (editor: TinyMCEEditor, option_slash: slash_command_record[]): AutocompleterItemSpec[] => {
