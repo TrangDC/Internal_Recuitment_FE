@@ -12,7 +12,7 @@ export const downloadPdf = async (pdfUrl: string) => {
     // Tạo một thẻ <a> và kích hoạt tải xuống
     const a = document.createElement('a')
     a.href = url
-    a.download = 'downloaded_file.pdf' // Tên tệp bạn muốn lưu
+    a.download = 'downloaded_file' // Tên tệp bạn muốn lưu
     document.body.appendChild(a)
     a.click()
 
@@ -39,7 +39,7 @@ export const downloadFile = async (urlDownload: string, name: string) => {
 
     const a = document.createElement('a')
     a.href = url
-    a.download = name 
+    a.download = name
     document.body.appendChild(a)
     a.click()
 

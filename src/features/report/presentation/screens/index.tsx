@@ -18,7 +18,15 @@ function ReportScreen() {
   return (
     <Box pt={2} pb={4}>
       <Box marginBottom={'20px'}>
-        <IconScreen Icon={ReportIcon} textLable={'Report'} />
+        <IconScreen
+          Icon={ReportIcon}
+          textLable={'Report'}
+          icon_style={{
+            '& path': {
+              fill: '#2499EF',
+            },
+          }}
+        />
       </Box>
       <Grid container spacing={2}>
         <Grid item xs={12}>

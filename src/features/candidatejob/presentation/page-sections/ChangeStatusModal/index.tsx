@@ -24,6 +24,7 @@ import { isEmpty } from 'lodash'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 export type onSuccessChangeStatus = {
   prevStatus: string
@@ -207,30 +208,38 @@ function ChangeStatusModal({
               </FlexBox>
             )}
 
-            <FlexBox gap={2}>
-              <FormControl fullWidth>
-                <Controller
-                  control={control}
-                  name="feedback"
-                  render={({ field, fieldState }) => (
-                    <FlexBox flexDirection={'column'}>
-                      <AppTextField
-                        label={'Feedback'}
-                        size="small"
-                        fullWidth
-                        value={field.value}
-                        onChange={field.onChange}
-                        minRows={4}
-                        multiline
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </FlexBox>
-                  )}
-                />
-              </FormControl>
-            </FlexBox>
+            <Cant
+              module="CANDIDATE_JOB_FEEDBACKS"
+              checkBy={{
+                permissions: ['CREATE.everything'],
+                compare: 'hasAny',
+              }}
+            >
+              <FlexBox gap={2}>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="feedback"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <AppTextField
+                          label={'Feedback'}
+                          size="small"
+                          fullWidth
+                          value={field.value}
+                          onChange={field.onChange}
+                          minRows={4}
+                          multiline
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+            </Cant>
             <FlexBox justifyContent={'center'} alignItems={'center'}>
               <FormControl fullWidth>
                 <Controller

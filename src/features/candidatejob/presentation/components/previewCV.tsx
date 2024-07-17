@@ -4,7 +4,11 @@ import AppButton from 'shared/components/buttons/AppButton'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import icons from 'shared/components/icons'
 import { pdfjs } from 'react-pdf'
-import { downloadPdf, openPDFInNewTab } from 'shared/utils/upload-file'
+import {
+  downloadFile,
+  downloadPdf,
+  openPDFInNewTab,
+} from 'shared/utils/upload-file'
 import DownloadWhiteIcon from 'shared/components/icons/DownloadWhiteIcon'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -55,7 +59,7 @@ function PreviewCV({ pdfUrl, pageNumber }: IPreviewCV) {
   }, [page])
 
   function onDownload() {
-    if (pdfUrl) downloadPdf(pdfUrl)
+    if (pdfUrl) downloadFile(pdfUrl, 'downloaded_file')
   }
 
   function onPreview() {

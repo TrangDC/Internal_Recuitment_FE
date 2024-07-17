@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import CollapseGroup from 'shared/components/collapse/CollapseGroup'
-import { Text13md } from 'shared/components/Typography'
+import { Text13md, Tiny12md } from 'shared/components/Typography'
 import { Controller, useFormContext } from 'react-hook-form'
 import { PermissionGroupProps } from '../../interfaces'
 import { getCheck, getKeyName } from '../../utils/utils'
 import ListCheckBox from './ListCheckBox'
+import FlexBox from 'shared/components/flexbox/FlexBox'
 
 interface InterviewPermissionGroupProps extends PermissionGroupProps {
   moduleDisabled: boolean
@@ -22,7 +23,22 @@ function InterviewPermissionGroup({
   const viewAction = roleTemplate?.INTERVIEWS?.VIEW
   const changeStatusAction = roleTemplate?.INTERVIEWS?.CHANGE_INTERVIEW
   const interviewAction = roleTemplate?.INTERVIEWS?.INTERVIEWING
+
   const viewData = watch(getKeyName(viewAction.id))
+  const editData = watch(getKeyName(editAction.id))
+  const createData = watch(getKeyName(createAction.id))
+  const deleteData = watch(getKeyName(deleteAction.id))
+  const changeStatusData = watch(getKeyName(changeStatusAction.id))
+  const interviewData = watch(getKeyName(interviewAction.id))
+
+  const state = [
+    createData,
+    viewData,
+    editData,
+    deleteData,
+    changeStatusData,
+    interviewData,
+  ]
 
   const disabled = !(
     viewData.for_all ||
@@ -44,11 +60,26 @@ function InterviewPermissionGroup({
       setValue(getKeyName(interviewAction.id), data)
     }
   }, [disabled])
+
+  const countChecked = useMemo(() => {
+    const count = state.reduce((a: number, c) => {
+      const number = c.for_all || c.for_owner || c.for_team ? 1 : 0
+      return number + a
+    }, 0)
+    return count
+  }, state)
   return (
     <CollapseGroup.CollapseContainer
       open={open}
       setOpen={setOpen}
-      title={<Text13md color={'grey.900'}>Interview</Text13md>}
+      title={
+        <FlexBox justifyContent={'center'} gap={1}>
+          <Text13md color={'grey.900'}>Interview</Text13md>
+          <Tiny12md color={'text.500'}>
+            {countChecked}/{state.length}
+          </Tiny12md>
+        </FlexBox>
+      }
     >
       <CollapseGroup.CollapseHeader
         sx={{ borderBottom: '1px solid', borderColor: 'grey.200' }}
