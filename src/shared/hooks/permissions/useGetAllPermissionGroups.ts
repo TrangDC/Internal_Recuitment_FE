@@ -1,9 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import { useState } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from './graphql'
 import { PermissionGroup } from './interface/response'
+import GraphQLClientService from 'services/graphql-service'
 
 function useGetAllPermissionGroups() {
   const { getAllPermissionGroups, queryKey } = useGraphql()

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import GraphQLClientService, {
   IBuildQueryReturn,
-} from 'services/refactor/graphql-service'
+} from 'services/graphql-service'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 export interface IuseGetDetail {

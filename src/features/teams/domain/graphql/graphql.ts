@@ -1,4 +1,4 @@
-import GraphQLClientService from 'services/refactor/graphql-service'
+import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
@@ -67,7 +67,7 @@ const useGraphql = () => {
     params: {
       input: 'UpdateTeamInput!',
       id: 'ID!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 
@@ -79,7 +79,7 @@ const useGraphql = () => {
     node: '',
     params: {
       id: 'ID!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 

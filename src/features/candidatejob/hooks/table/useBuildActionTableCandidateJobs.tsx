@@ -12,6 +12,7 @@ import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { openPDFInNewTab } from 'shared/utils/upload-file'
 import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 export enum ActionCandidateJobsTabLe {
   DETAIL = 'detail',
@@ -96,8 +97,11 @@ function useBuildActionTableCandidateJobs({
               folder: 'candidate',
               id: attachments[0]?.document_id ?? '',
             }).then(async (data) => {
-              const urlFile = data?.['CreateAttachmentSASURL']?.url ?? ''
-              openPDFInNewTab(urlFile)
+              if (isRight(data)) {
+                const urlFile =
+                  unwrapEither(data)?.['CreateAttachmentSASURL']?.url ?? ''
+                openPDFInNewTab(urlFile)
+              }
             })
           }
         },

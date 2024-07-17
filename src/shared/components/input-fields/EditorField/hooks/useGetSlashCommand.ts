@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
 import { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
+import GraphQLClientService from 'services/graphql-service'
 
 export type slash_command_record = {
   key: string
@@ -35,7 +35,7 @@ const INIT_VALUE = {
   team: [],
 }
 
-export type SLASH_COMMAND_TYPE = Array<keyof typeof INIT_VALUE>;
+export type SLASH_COMMAND_TYPE = Array<keyof typeof INIT_VALUE>
 
 interface Props {
   type: Array<'attribute' | 'link'>
@@ -47,13 +47,19 @@ interface Props {
 
 type slash_type = 'attribute' | 'link'
 
-const useGetSlashCommand = ({ type, attribute_command = [], filter = {event: 'updating_interview'} }: Props) => {
+const useGetSlashCommand = ({
+  type,
+  attribute_command = [],
+  filter = { event: 'updating_interview' },
+}: Props) => {
   const { getAllEmailTemplateKeywords, queryKey } = useGraphql()
 
   const { data } = useQuery({
     queryKey: [queryKey, filter],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords.query, {filter: filter}),
+      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords.query, {
+        filter: filter,
+      }),
   })
 
   const slash_command: slash_command = useMemo(() => {
@@ -70,7 +76,7 @@ const useGetSlashCommand = ({ type, attribute_command = [], filter = {event: 'up
   const options_slash: options_slash = useMemo(() => {
     const { link, ...attribute } = slash_command
     const attribute_slash = Object.values(attribute).flat()
-   
+
     const result: options_slash = {
       link: link,
       attribute: attribute_slash,

@@ -1,10 +1,9 @@
-import { buildQuery } from 'services/graphql-services'
+import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.SKILL
-
-  const getAllSkill = buildQuery({
+  const getAllSkill = GraphQLClientService.buildQuery({
     operation: 'SelectionSkills',
     options: {
       type: 'query',

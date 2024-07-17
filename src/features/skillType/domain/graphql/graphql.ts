@@ -1,4 +1,4 @@
-import GraphQLClientService from 'services/refactor/graphql-service'
+import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
@@ -26,7 +26,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'SkillTypeFilter',
-      orderBy: 'SkillTypeOrder', 
+      orderBy: 'SkillTypeOrder',
       freeWord: 'SkillTypeFreeWord',
     },
   })
@@ -42,7 +42,7 @@ const useGraphql = () => {
     `,
     params: {
       input: 'NewSkillTypeInput!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 
@@ -59,7 +59,7 @@ const useGraphql = () => {
     params: {
       input: 'UpdateSkillTypeInput!',
       id: 'ID!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 
@@ -71,7 +71,7 @@ const useGraphql = () => {
     node: ``,
     params: {
       id: 'ID!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 

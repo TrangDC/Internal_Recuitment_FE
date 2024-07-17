@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import { Member } from 'features/teams/domain/interfaces'
 import { cloneDeep } from 'lodash'
-import { useState } from 'react'
-import { buildQuery, fetchGraphQL } from 'services/graphql-services'
+import { useMemo, useState } from 'react'
+import GraphQLClientService from 'services/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const queryKey = 'audittrails'
-const GetAllAuditTrails = buildQuery({
+const GetAllAuditTrails = GraphQLClientService.buildQuery({
   operation: 'GetAllAuditTrails',
   options: {
     type: 'query',
@@ -58,7 +59,7 @@ const useAuditTrails = (recordId: string, module: string) => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey, filter, freeWord],
     queryFn: async () =>
-      fetchGraphQL<BaseRecord>(GetAllAuditTrails.query, {
+      GraphQLClientService.fetchGraphQL(GetAllAuditTrails.query, {
         filter: {
           recordId,
           module,
@@ -70,14 +71,26 @@ const useAuditTrails = (recordId: string, module: string) => {
       }),
   })
 
-  const auditrails_history: AuditTrailsJob =
-    data?.[GetAllAuditTrails.operation]?.edges?.map(
-      (item: any) => item?.node
-    ) ?? []
-
-  const totalPage = Math.ceil(
-    (data?.[GetAllAuditTrails.operation]?.pagination?.total ?? 0) / 10
-  )
+  const { auditTrails_history, totalPage } = useMemo(() => {
+    if (data && isRight(data)) {
+      const response = unwrapEither(data)
+      const totalPage = Math.ceil(
+        (response?.[GetAllAuditTrails.operation]?.pagination?.total ?? 0) / 10
+      )
+      const sortData: AuditTrailsJob =
+        response?.[GetAllAuditTrails.operation]?.edges?.map(
+          (item: any) => item?.node
+        ) ?? []
+      return {
+        totalPage,
+        auditTrails_history: sortData,
+      }
+    }
+    return {
+      auditTrails_history: [],
+      totalPage: 10,
+    }
+  }, [data, GetAllAuditTrails.operation])
 
   const handleFilter = (key: string, value: any) => {
     const cloneFilter = cloneDeep(filter)
@@ -93,16 +106,16 @@ const useAuditTrails = (recordId: string, module: string) => {
   }
 
   const handleMultipleFilter = (record: BaseRecord) => {
-    setFilter((prev) => ({...prev, ...record}))
+    setFilter((prev) => ({ ...prev, ...record }))
   }
 
   return {
     ...otherValue,
-    auditrails_history: auditrails_history,
+    auditrails_history: auditTrails_history,
     totalPage,
     handleFilter,
     handleFreeWord,
-    handleMultipleFilter
+    handleMultipleFilter,
   }
 }
 

@@ -1,4 +1,5 @@
-import GraphQLClientService from 'services/refactor/graphql-service'
+import GraphQLClientService from 'services/graphql-service'
+
 const useGraphql = () => {
   const queryKey = 'candidate_job_step_report_by_team'
   const getCandidateJobStepReportByTeam = GraphQLClientService.buildQuery({

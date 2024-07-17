@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { FieldValues, Resolver, useForm } from 'react-hook-form'
 import GraphQLClientService, {
   IBuildQueryReturn,
-} from 'services/refactor/graphql-service'
+} from 'services/graphql-service'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 export interface IuseGetResource<Response, FormData> {

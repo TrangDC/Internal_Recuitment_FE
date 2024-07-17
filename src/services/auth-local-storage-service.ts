@@ -20,22 +20,6 @@ function handleAuthLocalStorage() {
     localStorage.removeItem(KEY)
   }
 
-  // function getMe(): AuthUser {
-  //   const token = getToken()
-  //   const userName = token
-  //     ? jwtDecode<{ name: string }>(token?.accessToken)?.name
-  //     : ''
-  //   const email = token
-  //     ? jwtDecode<{ preferred_username: string }>(token?.accessToken)
-  //         ?.preferred_username
-  //     : ''
-  //   const oid = token ? jwtDecode<{ oid: string }>(token?.accessToken)?.oid : ''
-  //   return {
-  //     name: userName,
-  //     email: email,
-  //     oid: oid,
-  //   }
-  // }
   return { getToken, saveToken, isToken, removeToken }
 }
 

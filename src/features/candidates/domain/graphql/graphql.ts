@@ -1,4 +1,4 @@
-import GraphQLClientService from 'services/refactor/graphql-service'
+import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
@@ -46,7 +46,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'CandidateFilter',
-      orderBy: 'CandidateOrder', 
+      orderBy: 'CandidateOrder',
       freeWord: 'CandidateFreeWord',
     },
   })
@@ -62,7 +62,7 @@ const useGraphql = () => {
     `,
     params: {
       input: 'NewCandidateInput!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 
@@ -81,7 +81,7 @@ const useGraphql = () => {
     params: {
       input: 'UpdateCandidateInput!',
       id: 'ID!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 
@@ -93,7 +93,7 @@ const useGraphql = () => {
     node: ``,
     params: {
       id: 'ID!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 
@@ -106,7 +106,7 @@ const useGraphql = () => {
     params: {
       id: 'ID!',
       is_black_list: 'Boolean!',
-      note: 'String!'
+      note: 'String!',
     },
   })
 
@@ -173,7 +173,7 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'CandidateJobFilter!',
-      orderBy: 'CandidateJobOrder', 
+      orderBy: 'CandidateJobOrder',
       freeWord: 'CandidateJobFreeWord',
     },
   })
@@ -202,7 +202,7 @@ const useGraphql = () => {
     blackListCandidate,
     getCandidate,
     getAllCandidateJob,
-    createCandidateJob
+    createCandidateJob,
   }
 }
 

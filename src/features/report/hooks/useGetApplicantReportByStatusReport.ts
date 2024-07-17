@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import {
   CandidateJobReportByStatus,
   ReportFilter,
 } from 'shared/schema/chart/report'
 import useGraphql from '../domain/graphql/graphql'
+import GraphQLClientService from 'services/graphql-service'
 
 type UseGetApplicantReportByStatusReportProps = {
   filters: ReportFilter
@@ -34,15 +34,14 @@ function useGetApplicantReportByStatusReport({
     return []
   }, [data])
 
-  const processingData = applicantReportByStatus?.processing_candidate_job_data ?? []
+  const processingData =
+    applicantReportByStatus?.processing_candidate_job_data ?? []
   const kivData = applicantReportByStatus.kiv_candidate_job_data ?? []
-  const offerLostData = applicantReportByStatus.offer_lost_candidate_job_data ?? []
+  const offerLostData =
+    applicantReportByStatus.offer_lost_candidate_job_data ?? []
 
   const processingDataSorted = sortBy.map((keyword) => {
-    return (
-      processingData.find((item) => item.status === keyword)
-        ?.amount ?? 0
-    )
+    return processingData.find((item) => item.status === keyword)?.amount ?? 0
   })
 
   return {

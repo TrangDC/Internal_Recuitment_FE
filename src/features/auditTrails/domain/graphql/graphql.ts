@@ -1,9 +1,9 @@
-import { buildQuery } from 'services/graphql-services'
+import GraphQLClientService from 'services/graphql-service'
 
 const useGraphql = () => {
   const queryKey = 'candidateJob'
 
-  const getCandidate = buildQuery({
+  const getCandidate = GraphQLClientService.buildQuery({
     operation: 'GetCandidate',
     options: {
       type: 'query',
@@ -25,7 +25,7 @@ const useGraphql = () => {
     },
   })
 
-  const getAllCandidateJob = buildQuery({
+  const getAllCandidateJob = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidateJobs',
     options: {
       type: 'query',
@@ -54,7 +54,7 @@ const useGraphql = () => {
     },
   })
 
-  const createCandidateJob = buildQuery({
+  const createCandidateJob = GraphQLClientService.buildQuery({
     operation: 'CreateCandidateJob',
     options: {
       type: 'mutation',
@@ -73,7 +73,7 @@ const useGraphql = () => {
     queryKey,
     getCandidate,
     getAllCandidateJob,
-    createCandidateJob
+    createCandidateJob,
   }
 }
 

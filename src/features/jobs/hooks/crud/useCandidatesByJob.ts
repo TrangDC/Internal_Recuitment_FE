@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import { useMemo } from 'react'
-import GraphQLClientService from 'services/refactor/graphql-service'
+import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 

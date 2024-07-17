@@ -1,7 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import GraphQLClientService, {
-  IBuildQueryReturn,
-} from 'services/refactor/graphql-service'
 import NotificationService from 'services/notification-service'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { BaseRecord } from 'shared/interfaces/common'
@@ -9,6 +6,9 @@ import ErrorException from 'shared/interfaces/response'
 import { DefaultValues, FieldValues, Resolver, useForm } from 'react-hook-form'
 import { t } from 'i18next'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
+import GraphQLClientService, {
+  IBuildQueryReturn,
+} from 'services/graphql-service'
 
 interface IuseEditResource<FormData> {
   editBuildQuery: IBuildQueryReturn

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import GraphQLClientService, {
   IBuildQueryReturn,
-} from 'services/refactor/graphql-service'
+} from 'services/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
@@ -18,7 +18,7 @@ function useAutoCompleteBackEnd<T>({
 }: IUseAutoComplete) {
   const { data } = useQuery({
     queryKey: queryKey,
-    gcTime:0,
+    gcTime: 0,
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(queryString.query, variables),
   })

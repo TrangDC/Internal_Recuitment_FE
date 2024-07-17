@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
 import { IOption } from '../../autocomplete-base/interface'
 import Role from 'shared/schema/database/role'
+import GraphQLClientService from 'services/graphql-service'
 
 export const SEND_TO_VALUE = {
   interviewer: 'interviewer',
@@ -68,12 +68,15 @@ const useSendTo = () => {
   }, [data])
 
   const options = useMemo(() => {
-    const roles = roles_data.map((item) => ({label: item.name, value: item.id}))
-    return [...options_fixed, ...roles];
+    const roles = roles_data.map((item) => ({
+      label: item.name,
+      value: item.id,
+    }))
+    return [...options_fixed, ...roles]
   }, [roles_data])
 
   const options_role = useMemo(() => {
-    return roles_data.map((item) => ({label: item.name, value: item.id}))
+    return roles_data.map((item) => ({ label: item.name, value: item.id }))
   }, [roles_data])
 
   return {
@@ -81,7 +84,7 @@ const useSendTo = () => {
     roles_data,
     options,
     options_fixed,
-    options_role
+    options_role,
   }
 }
 
