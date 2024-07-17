@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import GraphQLClientService from 'services/graphql-service'
+import { CustomGraphQLResponse } from 'shared/interfaces/response'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const queryKey = 'attachments'
@@ -60,9 +61,9 @@ const useGetUrlGetAttachment = (props: createAttachmentProps = {}) => {
         input: otherValue,
       })
     },
-    onSuccess: async (data, params) => {
+    onSuccess: async (data: CustomGraphQLResponse, params) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })
-      if (isRight(data)) {
+      if (data && isRight(data)) {
         const newData = unwrapEither(data)
         callbackSuccess && callbackSuccess(newData, params)
         params.callback && params.callback({ data: newData, params })
@@ -77,8 +78,10 @@ const useGetUrlGetAttachment = (props: createAttachmentProps = {}) => {
     mutate({ ...value, callback })
   }
 
-  const handleGetUrlDownload = async (value: ParamCreateURLAttachment) => {
-    return await mutateAsync(value)
+  const handleGetUrlDownload = async (
+    value: ParamCreateURLAttachment
+  ): Promise<CustomGraphQLResponse> => {
+    return (await mutateAsync(value)) as CustomGraphQLResponse
   }
 
   return {
