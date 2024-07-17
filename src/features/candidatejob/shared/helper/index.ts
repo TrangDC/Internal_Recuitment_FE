@@ -50,7 +50,7 @@ export const downloadOneFile = (attachment: Attachments, callback: any) => {
     return
   }
 
-  new Promise((resolve, reject) => {
+  new Promise<CustomGraphQLResponse>((resolve, reject) => {
     const paramUpload: ParamCreateURLAttachment = {
       id: attachment.document_id,
       folder: 'candidate',
