@@ -2,7 +2,7 @@ import { checkPermissions } from 'features/authorization/domain/functions/functi
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
 import { Hiring } from 'features/hiring/domain/interfaces'
-import { ActionJobsOpen } from 'features/hiring/hooks/useBuildActionsTableHiringTeam'
+import { ActionJobsOpen } from 'features/hiring/hooks/table/useBuildActionsTableHiringTeam'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
 
 interface ActionProps {
@@ -29,7 +29,8 @@ function editAction({ newActions, role }: ActionProps) {
     module: 'HIRING_TEAMS',
   })
 
-  if (!everything) return newActions.filter((action) => action.id !== ActionJobsOpen.EDIT)
+  if (!everything)
+    return newActions.filter((action) => action.id !== ActionJobsOpen.EDIT)
   return newActions
 }
 

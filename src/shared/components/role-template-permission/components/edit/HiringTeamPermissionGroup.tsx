@@ -6,6 +6,7 @@ import { PermissionGroupProps } from '../../interfaces'
 import { getCheck, getKeyName } from '../../utils/utils'
 import ListCheckBox from './ListCheckBox'
 import FlexBox from 'shared/components/flexbox/FlexBox'
+import useGetCountChecked from '../../hooks/useGetCountChecked'
 
 function HiringTeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
   const { control, watch, setValue } = useFormContext()
@@ -35,13 +36,8 @@ function HiringTeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
     }
   }, [disabled])
 
-  const countChecked = useMemo(() => {
-    const count = state.reduce((a: number, c) => {
-      const number = c.for_all || c.for_owner || c.for_team ? 1 : 0
-      return number + a
-    }, 0)
-    return count
-  }, state)
+  const countChecked = useGetCountChecked(state)
+
   return (
     <CollapseGroup.CollapseContainer
       open={open}

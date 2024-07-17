@@ -89,6 +89,7 @@ const useGraphql = () => {
           }
           roles {
             id
+            name
           }
           entity_permissions {
             id
