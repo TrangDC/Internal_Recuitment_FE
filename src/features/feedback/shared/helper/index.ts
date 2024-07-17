@@ -2,6 +2,8 @@ import { isEmpty } from 'lodash'
 import { toast } from 'react-toastify'
 import { ParamCreateURLAttachment } from 'shared/hooks/graphql/useGetUrlAttachment'
 import { Attachments } from 'shared/interfaces'
+import { CustomGraphQLResponse } from 'shared/interfaces/response'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { downloadFile } from 'shared/utils/upload-file'
 
 export const downloadOneFile = (attachment: Attachments, callback: any) => {
@@ -10,7 +12,7 @@ export const downloadOneFile = (attachment: Attachments, callback: any) => {
     return
   }
 
-  new Promise((resolve, reject) => {
+  new Promise<CustomGraphQLResponse>((resolve, reject) => {
     const paramUpload: ParamCreateURLAttachment = {
       id: attachment.document_id,
       folder: 'candidate',
@@ -19,11 +21,13 @@ export const downloadOneFile = (attachment: Attachments, callback: any) => {
     }
     resolve(callback(paramUpload))
   })
-    .then((response: any) => {
-      downloadFile(
-        response.CreateAttachmentSASURL.url,
-        attachment.document_name
-      )
+    .then((response) => {
+      if (response && isRight(response)) {
+        downloadFile(
+          unwrapEither(response)?.CreateAttachmentSASURL?.url ?? '',
+          attachment.document_name
+        )
+      }
     })
     .catch((error) => {
       toast.error((error as Error).message)

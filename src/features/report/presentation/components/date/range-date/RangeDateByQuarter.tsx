@@ -25,6 +25,7 @@ const RangeDateByQuarterLabel = styled(Button)(() => ({
   padding: '4px 8px 4px 4px',
   border: '1px solid #E3E6EB',
   backgroundColor: '#FCFCFC !important',
+  color: '#0B0E1E',
 }))
 
 type RangeDateByCategoryProps = {

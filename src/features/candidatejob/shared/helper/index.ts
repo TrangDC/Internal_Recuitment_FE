@@ -2,6 +2,8 @@ import { isEmpty, reject } from 'lodash'
 import { toast } from 'react-toastify'
 import { ParamCreateURLAttachment } from 'shared/hooks/graphql/useGetUrlAttachment'
 import { Attachments } from 'shared/interfaces'
+import { CustomGraphQLResponse } from 'shared/interfaces/response'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { downloadFile, downloadPdf } from 'shared/utils/upload-file'
 
 export const downloadFileAttachment = (
@@ -57,8 +59,13 @@ export const downloadOneFile = (attachment: Attachments, callback: any) => {
     }
     resolve(callback(paramUpload))
   })
-    .then((response: any) => {
-      downloadFile(response.CreateAttachmentSASURL.url, attachment.document_name)
+    .then((response: CustomGraphQLResponse) => {
+      if (response && isRight(response)) {
+        downloadFile(
+          unwrapEither(response)?.CreateAttachmentSASURL.url,
+          attachment.document_name
+        )
+      }
     })
     .catch((error) => {
       toast.error((error as Error).message)

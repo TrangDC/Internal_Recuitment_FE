@@ -21,8 +21,10 @@ import { toast } from 'react-toastify'
 import { RULE_MESSAGES } from 'shared/constants/validate'
 import { isEmpty } from 'lodash'
 import UploadFileComponent from './UploadFileComponent'
-import { ParamUploadFile, UploadStatus } from 'shared/interfaces'
+import { BaseRecord, ParamUploadFile, UploadStatus } from 'shared/interfaces'
 import AzureStorageService from 'services/azure-storage-services'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
+import { CustomGraphQLResponse } from 'shared/interfaces/response'
 
 const InputFileContainer = styled(Box)(({ theme }) => ({
   border: '2px dashed #88CDFF',
@@ -228,13 +230,14 @@ const InputFile = ({
 
     //list promise get urls from azure
     const getUrlAzures = listFileUpload.map((fileUpload) => {
-      return new Promise((resolve, reject) => {
-        resolve(handleGetUrlDownload(fileUpload))
-      })
-        .then((response: any) => {
-          return {
-            url: response.CreateAttachmentSASURL.url,
-            file: fileUpload,
+      return handleGetUrlDownload(fileUpload)
+        .then((response) => {
+          if (response && isRight(response)) {
+            const url = unwrapEither(response)?.CreateAttachmentSASURL.url ?? ''
+            return {
+              url: url as string,
+              file: fileUpload,
+            }
           }
         })
         .catch((error) => {
@@ -249,12 +252,12 @@ const InputFile = ({
 
     //handle upload
     const newFiles: FileUploadAttachment[] = listUrlAzure.map((itemFile) => {
-      const { file, url } = itemFile
-
+      const file = itemFile?.file
+      const url = itemFile?.url ?? ''
       return {
-        document_id: file.id,
-        document_name: file.fileName,
-        file: file.file as File,
+        document_id: file?.id ?? '',
+        document_name: file?.fileName ?? '',
+        file: file?.file as File,
         url,
         status: 'init',
       }
