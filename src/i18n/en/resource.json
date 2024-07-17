@@ -193,7 +193,7 @@
     },
     "roles": {
       "validation": {
-        "name_exist": "Name has already existed"
+        "name_exist": "Role name has already existed"
       }
     },
     "permisson_groups": {

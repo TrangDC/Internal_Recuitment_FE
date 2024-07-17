@@ -8,10 +8,7 @@ const ReportIcon = (props: SvgIconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path
-        d="M17 13H21V21H17V13ZM3 9.5H7V21H3V9.5ZM10 3H14V21H10V3Z"
-        fill="#1F84EB"
-      />
+      <path d="M15 11H19V19H15V11ZM1 7.5H5V19H1V7.5ZM8 1H12V19H8V1Z" />
     </SvgIcon>
   )
 }
