@@ -50,6 +50,7 @@ function DetailSkillModal({
                   }}
                   onClick={() => {
                     handleOpenEdit(id)
+                    setOpen(false)
                   }}
                 />
               </Cant>

@@ -7,8 +7,6 @@ import HistoryLog from '../HistoryLog'
 import TabCustomize from 'shared/components/tab'
 import GeneralInformationField from '../GeneralInformationField'
 import CloseIcon from '@mui/icons-material/Close'
-import useActionTable from '../../../hooks/table/useActionTable'
-import EditJobModal from '../EditJobModal'
 import { JobStatus } from 'shared/class/job-status'
 import EditIconJobDetailPermission from 'features/jobs/permission/components/EditIconJobDetailPermission'
 
@@ -16,12 +14,14 @@ interface ITabJobDetail {
   open: boolean
   setOpen: (value: boolean) => void
   job_detail: Job
+  handleOpenModalEdit: (id: string) => void
 }
 
 export default function TabJobDetail({
   open,
   setOpen,
   job_detail,
+  handleOpenModalEdit
 }: ITabJobDetail) {
   const renderItem = [
     {
@@ -30,8 +30,6 @@ export default function TabJobDetail({
     },
     { label: 'History Log', Component: HistoryLog },
   ]
-
-  const { openEdit, setOpenEdit, handleOpenEdit, rowId } = useActionTable()
 
   const showEdit = useMemo(() => {
     return job_detail.status === JobStatus.STATUS_STATE.OPENED
@@ -49,7 +47,7 @@ export default function TabJobDetail({
                 <EditIconJobDetailPermission
                   job_detail={job_detail}
                   onClick={() => {
-                    handleOpenEdit(job_detail.id)
+                    handleOpenModalEdit(job_detail.id)
                   }}
                 />
               )}
@@ -76,14 +74,6 @@ export default function TabJobDetail({
           </Box>
         </BaseModal.ContentMain>
       </BaseModal.Wrapper>
-
-      {openEdit && (
-        <EditJobModal
-          open={openEdit}
-          setOpen={setOpenEdit}
-          id={rowId.current}
-        />
-      )}
     </Fragment>
   )
 }

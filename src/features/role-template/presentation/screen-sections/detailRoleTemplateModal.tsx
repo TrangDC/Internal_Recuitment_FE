@@ -51,6 +51,7 @@ function DetailRoleTemplateModal({
                     }}
                     onClick={() => {
                       handleOpenEdit(id)
+                      setOpen(false)
                     }}
                   />
                 </Cant>

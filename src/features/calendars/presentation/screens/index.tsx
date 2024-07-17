@@ -145,7 +145,7 @@ function CalendarsScreen() {
       setOpenDetailInterView(true)
     }
   }, [])
-
+  
   return (
     <Box pt={2} pb={4}>
       <Box>

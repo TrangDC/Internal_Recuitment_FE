@@ -17,7 +17,7 @@ import GenaralInformationHiring from '../page-sections/GeneralInformationHiring'
 import useActionTable from '../../hooks/table/useActionTable'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import { format } from 'date-fns'
-import { CloseJobModal, TabJobDetail } from '../page-sections'
+import { CloseJobModal, EditJobModal, TabJobDetail } from '../page-sections'
 import IconScreen from 'shared/components/utils/IconScreen'
 import { JobStatus } from 'shared/class/job-status'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
@@ -34,8 +34,15 @@ const JobDetail = () => {
   const { jobDetail } = useJobDetail(id as String)
   const translation = useTextTranslation()
 
-  const { openStatus, setOpenStatus, handleOpenStatus, rowId } =
-    useActionTable()
+  const {
+    openStatus,
+    setOpenStatus,
+    handleOpenStatus,
+    rowId,
+    openEdit,
+    setOpenEdit,
+    handleOpenEdit,
+  } = useActionTable()
 
   const disabledBtn = useMemo(() => {
     return (
@@ -53,6 +60,11 @@ const JobDetail = () => {
         })
       : []
   }, [jobDetail])
+
+  const handleOpenModalEdit = (id: string) => {
+    handleOpenEdit(id)
+    setOpenTab(false)
+  }
 
   return (
     <Box pt={2} pb={4}>
@@ -155,6 +167,15 @@ const JobDetail = () => {
           open={openTab}
           setOpen={setOpenTab}
           job_detail={jobDetail}
+          handleOpenModalEdit={handleOpenModalEdit}
+        />
+      )}
+
+      {openEdit && (
+        <EditJobModal
+          open={openEdit}
+          setOpen={setOpenEdit}
+          id={rowId.current}
         />
       )}
     </Box>
