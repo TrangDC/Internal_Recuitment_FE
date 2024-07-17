@@ -1,23 +1,39 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import CollapseGroup from 'shared/components/collapse/CollapseGroup'
-import { Text13md } from 'shared/components/Typography'
+import { Text13md, Tiny12md } from 'shared/components/Typography'
 import { Controller, useFormContext } from 'react-hook-form'
 import { PermissionGroupProps } from '../../interfaces'
 import { getKeyName } from '../../utils/utils'
 import ListCheckBoxDetail from './ListCheckBoxDetail'
+import useGetCountChecked from '../../hooks/useGetCountChecked'
+import FlexBox from 'shared/components/flexbox/FlexBox'
 
 function HiringTeamPermissionGroupDetail({
   roleTemplate,
 }: PermissionGroupProps) {
-  const { control } = useFormContext()
+  const { control, watch } = useFormContext()
   const [open, setOpen] = useState(true)
   const editAction = roleTemplate?.HIRING_TEAMS?.EDIT
   const viewAction = roleTemplate?.HIRING_TEAMS?.VIEW
+
+  const viewData = watch(getKeyName(viewAction.id))
+  const editData = watch(getKeyName(editAction.id))
+  const state = [editData, viewData]
+
+  const countChecked = useGetCountChecked(state)
+
   return (
     <CollapseGroup.CollapseContainer
       open={open}
       setOpen={setOpen}
-      title={<Text13md color={'grey.900'}>Hiring team</Text13md>}
+      title={
+        <FlexBox justifyContent={'center'} gap={1}>
+          <Text13md color={'grey.900'}>Hiring team</Text13md>
+          <Tiny12md color={'text.500'}>
+            {countChecked}/{state.length}
+          </Tiny12md>
+        </FlexBox>
+      }
     >
       <CollapseGroup.CollapseHeader
         sx={{ borderBottom: '1px solid', borderColor: 'grey.200' }}

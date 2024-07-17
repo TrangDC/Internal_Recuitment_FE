@@ -1,22 +1,38 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import CollapseGroup from 'shared/components/collapse/CollapseGroup'
-import { Text13md } from 'shared/components/Typography'
+import { Text13md, Tiny12md } from 'shared/components/Typography'
 import { Controller, useFormContext } from 'react-hook-form'
 import { PermissionGroupProps } from '../../interfaces'
 import { getKeyName } from '../../utils/utils'
 import ListCheckBoxDetail from './ListCheckBoxDetail'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import useGetCountChecked from '../../hooks/useGetCountChecked'
 
 function FeedbackPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
-  const { control } = useFormContext()
+  const { control, watch } = useFormContext()
   const [open, setOpen] = useState(true)
   const createAction = roleTemplate?.CANDIDATE_JOB_FEEDBACKS?.CREATE
   const deleteAction = roleTemplate?.CANDIDATE_JOB_FEEDBACKS?.DELETE
   const viewAction = roleTemplate?.CANDIDATE_JOB_FEEDBACKS?.VIEW
+
+  const viewData = watch(getKeyName(viewAction.id))
+  const createData = watch(getKeyName(createAction.id))
+  const deleteData = watch(getKeyName(deleteAction.id))
+  const state = [createData, deleteData, viewData]
+
+  const countChecked = useGetCountChecked(state)
   return (
     <CollapseGroup.CollapseContainer
       open={open}
       setOpen={setOpen}
-      title={<Text13md color={'grey.900'}>Feedback</Text13md>}
+      title={
+        <FlexBox justifyContent={'center'} gap={1}>
+          <Text13md color={'grey.900'}>Feedback</Text13md>
+          <Tiny12md color={'text.500'}>
+            {countChecked}/{state.length}
+          </Tiny12md>
+        </FlexBox>
+      }
     >
       <CollapseGroup.CollapseHeader
         sx={{ borderBottom: '1px solid', borderColor: 'grey.200' }}

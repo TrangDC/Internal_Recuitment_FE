@@ -6,7 +6,6 @@ import { Hiring } from 'features/hiring/domain/interfaces'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
-import useEditHiring from 'features/hiring/hooks/useEditHiring'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import AvatarUser from '../../components/AvatarUser'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
@@ -15,6 +14,7 @@ import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import RoleTemplateSelection from '../../components/role-template-selection'
 import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
 import { Text15md } from 'shared/components/Typography'
+import useEditHiring from 'features/hiring/hooks/crud/useEditHiring'
 
 interface IEditHiringModal {
   open: boolean

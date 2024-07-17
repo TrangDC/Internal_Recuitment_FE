@@ -1,25 +1,43 @@
 import { useState } from 'react'
 import CollapseGroup from 'shared/components/collapse/CollapseGroup'
-import { Text13md } from 'shared/components/Typography'
+import { Text13md, Tiny12md } from 'shared/components/Typography'
 import { Controller, useFormContext } from 'react-hook-form'
 import { PermissionGroupProps } from '../../interfaces'
 import { getKeyName } from '../../utils/utils'
 import ListCheckBoxDetail from './ListCheckBoxDetail'
+import useGetCountChecked from '../../hooks/useGetCountChecked'
+import FlexBox from 'shared/components/flexbox/FlexBox'
 
 function SkillTypePermissionGroupDetail({
   roleTemplate,
 }: PermissionGroupProps) {
-  const { control } = useFormContext()
+  const { control, watch } = useFormContext()
   const [open, setOpen] = useState(true)
   const createAction = roleTemplate?.SKILL_TYPES?.CREATE
   const editAction = roleTemplate?.SKILL_TYPES?.EDIT
   const deleteAction = roleTemplate?.SKILL_TYPES?.DELETE
   const viewAction = roleTemplate?.SKILL_TYPES?.VIEW
+
+  const viewData = watch(getKeyName(viewAction.id))
+  const editData = watch(getKeyName(editAction.id))
+  const createData = watch(getKeyName(createAction.id))
+  const deleteData = watch(getKeyName(deleteAction.id))
+  const state = [createData, viewData, editData, deleteData]
+
+  const countChecked = useGetCountChecked(state)
+
   return (
     <CollapseGroup.CollapseContainer
       open={open}
       setOpen={setOpen}
-      title={<Text13md color={'grey.900'}>Skill type management</Text13md>}
+      title={
+        <FlexBox justifyContent={'center'} gap={1}>
+          <Text13md color={'grey.900'}>Skill type management</Text13md>
+          <Tiny12md color={'text.500'}>
+            {countChecked}/{state.length}
+          </Tiny12md>
+        </FlexBox>
+      }
     >
       <CollapseGroup.CollapseHeader
         sx={{ borderBottom: '1px solid', borderColor: 'grey.200' }}

@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import CollapseGroup from 'shared/components/collapse/CollapseGroup'
-import { Text13md } from 'shared/components/Typography'
+import { Text13md, Tiny12md } from 'shared/components/Typography'
 import { Controller, useFormContext } from 'react-hook-form'
 import { PermissionGroupProps } from '../../interfaces'
 import { getKeyName } from '../../utils/utils'
 import ListCheckBoxDetail from './ListCheckBoxDetail'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import useGetCountChecked from '../../hooks/useGetCountChecked'
 
 function CandidatePermissionGroupDetail({
   roleTemplate,
@@ -16,7 +18,13 @@ function CandidatePermissionGroupDetail({
   const deleteAction = roleTemplate?.CANDIDATES?.DELETE
   const viewAction = roleTemplate?.CANDIDATES?.VIEW
   const addRemoveBlackAction = roleTemplate?.CANDIDATES?.ADD_REMOVE_BLACK_LIST
+
   const viewData = watch(getKeyName(viewAction.id))
+  const deleteData = watch(getKeyName(deleteAction.id))
+  const addRemoveBlackData = watch(getKeyName(addRemoveBlackAction.id))
+  const editData = watch(getKeyName(editAction.id))
+  const createData = watch(getKeyName(createAction.id))
+  const state = [createData, deleteData, viewData, editData, addRemoveBlackData]
 
   const disabled = !(
     viewData.for_all ||
@@ -37,11 +45,20 @@ function CandidatePermissionGroupDetail({
     }
   }, [disabled])
 
+  const countChecked = useGetCountChecked(state)
+
   return (
     <CollapseGroup.CollapseContainer
       open={open}
       setOpen={setOpen}
-      title={<Text13md color={'grey.900'}>Candidate</Text13md>}
+      title={
+        <FlexBox justifyContent={'center'} gap={1}>
+          <Text13md color={'grey.900'}>Candidate</Text13md>
+          <Tiny12md color={'text.500'}>
+            {countChecked}/{state.length}
+          </Tiny12md>
+        </FlexBox>
+      }
     >
       <CollapseGroup.CollapseHeader
         sx={{ borderBottom: '1px solid', borderColor: 'grey.200' }}

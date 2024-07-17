@@ -5,21 +5,30 @@ import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import { DivHeaderWrapper } from 'features/candidates/shared/styles'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import SearchInput from 'shared/components/table/components/SearchInput'
-import useActionTable from 'features/hiring/hooks/useActionTable'
 import EditHiringModal from '../screen-sections/EditHiringModal'
-import useHiringTable from 'features/hiring/hooks/useHiringTable'
 import { Hiring } from 'features/hiring/domain/interfaces'
 import { columns } from 'features/hiring/shared/constants/columns'
-import useBuildActionsTableHiringTeam from 'features/hiring/hooks/useBuildActionsTableHiringTeam'
 import useFilterHiringTeams from 'features/hiring/hooks/table/useFilterHiringTeams'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import RoleTemplateAutoComplete from 'shared/components/autocomplete/role-template-autocomplete'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
+import useActionTable from 'features/hiring/hooks/table/useActionTable'
+import useHiringTable from 'features/hiring/hooks/table/useHiringTable'
+import useBuildActionsTableHiringTeam from 'features/hiring/hooks/table/useBuildActionsTableHiringTeam'
+import DetailHiringModal from '../screen-sections/DetailHiringModal'
 
 const HiringList = () => {
-  const { handleOpenEdit, openEdit, rowId, rowData, setOpenEdit } =
-    useActionTable()
+  const {
+    handleOpenEdit,
+    openEdit,
+    rowId,
+    rowData,
+    setOpenEdit,
+    handleOpenDetail,
+    openDetail,
+    setOpenDetail,
+  } = useActionTable()
   const { useSearchListReturn, useFilterReturn } = useFilterHiringTeams()
   const { controlFilter, dataFilterWithValue } = useFilterReturn
   const { handleSearch, search, searchRef } = useSearchListReturn
@@ -29,6 +38,7 @@ const HiringList = () => {
   })
   const { actions } = useBuildActionsTableHiringTeam({
     handleOpenEdit,
+    handleOpenDetail,
   })
   const { columnTable } = useBuildColumnTable<Hiring>({
     actions: actions,
@@ -115,6 +125,14 @@ const HiringList = () => {
         <EditHiringModal
           open={openEdit}
           setOpen={setOpenEdit}
+          id={rowId.current}
+          rowData={rowData.current}
+        />
+      )}
+      {openDetail && (
+        <DetailHiringModal
+          open={openDetail}
+          setOpen={setOpenDetail}
           id={rowId.current}
           rowData={rowData.current}
         />
