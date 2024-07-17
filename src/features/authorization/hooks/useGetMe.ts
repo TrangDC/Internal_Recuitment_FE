@@ -1,5 +1,4 @@
 import useGraphql from '../domain/graphql/graphql'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { User } from '../domain/interfaces/role'
 import useAuth from 'features/authentication/hooks/useAuth'
@@ -8,6 +7,7 @@ import { useMemo } from 'react'
 import PermissionStructureImpl from '../domain/interfaces/permission-refactor'
 import { MyBasicInformation } from '../domain/interfaces'
 import handleAuthLocalStorage from 'services/auth-local-storage-service'
+import GraphQLClientService from 'services/graphql-service'
 
 function useGetMe() {
   const { getMe, queryKey } = useGraphql()

@@ -1,6 +1,6 @@
 import { TextFieldProps } from '@mui/material'
 import { ReactNode } from 'react'
-import { IBuildQueryReturn } from 'services/graphql-services'
+import { IBuildQueryReturn } from 'services/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
 
 export type CustomAutocompleteValueBackEnd<

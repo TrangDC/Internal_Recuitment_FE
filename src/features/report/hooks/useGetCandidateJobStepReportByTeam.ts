@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import {
   CandidateJobStepByTeam,
   ReportFilter,
@@ -10,6 +9,7 @@ import { getPercentage } from 'shared/utils/convert-string'
 import _ from 'lodash'
 import { ConversionDataType } from '../presentation/components/ConversionTable'
 import useGraphql from '../domain/graphql/CandidateJobStepReportByTeam.graphql'
+import GraphQLClientService from 'services/graphql-service'
 
 type UseGetCandidateJobStepReportByTeamProps = {
   filters: ReportFilter

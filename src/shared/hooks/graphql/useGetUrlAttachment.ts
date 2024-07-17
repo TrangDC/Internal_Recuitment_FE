@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { buildQuery, fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
+import GraphQLClientService from 'services/graphql-service'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const queryKey = 'attachments'
-const createUrlGetAttachment = buildQuery({
+const createUrlGetAttachment = GraphQLClientService.buildQuery({
   operation: 'CreateAttachmentSASURL',
   options: {
     type: 'mutation',
@@ -56,17 +56,16 @@ const useGetUrlGetAttachment = (props: createAttachmentProps = {}) => {
     mutationKey: [queryKey],
     mutationFn: (newAttachment: ParamCreateURLAttachment) => {
       const { file, callback, ...otherValue } = newAttachment
-      return fetchGraphQL<BaseRecord>(createUrlGetAttachment.query, {
+      return GraphQLClientService.fetchGraphQL(createUrlGetAttachment.query, {
         input: otherValue,
       })
     },
     onSuccess: async (data, params) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })
-      try {
-        callbackSuccess && callbackSuccess(data, params)
-        params.callback && params.callback({ data, params })
-      } catch (error) {
-        throw error
+      if (isRight(data)) {
+        const newData = unwrapEither(data)
+        callbackSuccess && callbackSuccess(newData, params)
+        params.callback && params.callback({ data: newData, params })
       }
     },
   })

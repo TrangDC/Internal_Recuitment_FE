@@ -17,6 +17,7 @@ import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
 import Cant from 'features/authorization/presentation/components/Cant'
 import EditApplicationButtonPermission from 'features/candidatejob/permission/components/EditApplicationButtonPermission'
 import ChangeStatusCDDJButtonPermission from 'features/candidatejob/permission/components/ChangeStatusCDDJButtonPermission'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }
@@ -64,8 +65,11 @@ const JobDetailInformation = ({
         folder: 'candidate',
         id: attachments[0]?.document_id ?? '',
       }).then((data) => {
-        const urlFile = data?.['CreateAttachmentSASURL']?.url ?? ''
-        setUrl(urlFile)
+        if (isRight(data)) {
+          const urlFile =
+            unwrapEither(data)?.['CreateAttachmentSASURL']?.url ?? ''
+          setUrl(urlFile)
+        }
       })
     }
   }, [attachments])

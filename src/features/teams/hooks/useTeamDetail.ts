@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import useGraphql from 'features/teams/domain/graphql/graphql'
 import { Team } from 'features/teams/domain/interfaces'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import { useMemo } from 'react'
+import GraphQLClientService from 'services/graphql-service'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const useTeamDetail = (id: String) => {

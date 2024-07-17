@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { IBuildQueryReturn, fetchGraphQL } from 'services/graphql-services'
 import { BaseRecord } from 'shared/interfaces'
 import { ISearchData } from './useSearchList'
+import GraphQLClientService, {
+  IBuildQueryReturn,
+} from 'services/graphql-service'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 interface IuseCustomTable {
   buildQuery: IBuildQueryReturn
   search?: ISearchData
@@ -73,7 +76,7 @@ const useCustomTable = ({
       search,
     ],
     queryFn: async () =>
-      fetchGraphQL<BaseRecord>(buildQuery.query, {
+      GraphQLClientService.fetchGraphQL(buildQuery.query, {
         orderBy: {
           ...sorting,
         },
@@ -85,11 +88,27 @@ const useCustomTable = ({
         },
       }),
   })
-  const sortData =
-    data?.[buildQuery.operation]?.edges?.map((item: any) => item?.node) ?? []
-  const totalPage = Math.ceil(
-    (data?.[buildQuery.operation]?.pagination?.total ?? 0) / 10
-  )
+
+  const { sortData, totalPage } = useMemo(() => {
+    if (data && isRight(data)) {
+      const response = unwrapEither(data)
+      const totalPage = Math.ceil(
+        (response?.[buildQuery.operation]?.pagination?.total ?? 0) / perPage
+      )
+      const sortData =
+        response?.[buildQuery.operation]?.edges?.map(
+          (item: any) => item?.node
+        ) ?? []
+      return {
+        totalPage,
+        sortData,
+      }
+    }
+    return {
+      sortData: [],
+      totalPage: perPage,
+    }
+  }, [data, buildQuery.operation, perPage])
 
   function handleChangePage(page: number) {
     navigate(`${location.pathname}?page=${page}&perPage=${10}`, {

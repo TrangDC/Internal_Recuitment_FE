@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import dayjs from 'dayjs'
 import _ from 'lodash'
 import { getPercentage } from 'shared/utils/convert-string'
 import { CandidateReport } from 'shared/schema/chart/report'
+import GraphQLClientService from 'services/graphql-service'
 
 const CandidateLabels = {
   eb: 'EB',

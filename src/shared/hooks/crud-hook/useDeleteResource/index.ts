@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import NotificationService from 'services/notification-service'
-import GraphQLClientService, {
-  IBuildQueryReturn,
-} from 'services/refactor/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
 import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { t } from 'i18next'
 import { payloadDelete } from '../interfaces'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
+import GraphQLClientService, {
+  IBuildQueryReturn,
+} from 'services/graphql-service'
 
 interface IuseDeleteResource {
   mutationKey: string[]

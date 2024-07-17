@@ -1,10 +1,10 @@
-import { buildQuery } from 'services/graphql-services'
+import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.FEEDBACK
-  
-  const getAllCandidateJobFeedbacks = buildQuery({
+
+  const getAllCandidateJobFeedbacks = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidateJobFeedbacks',
     options: {
       type: 'query',
@@ -39,12 +39,12 @@ const useGraphql = () => {
     params: {
       pagination: 'PaginationInput',
       filter: 'CandidateJobFeedbackFilter!',
-      orderBy: 'CandidateJobFeedbackOrder', 
+      orderBy: 'CandidateJobFeedbackOrder',
       freeWord: 'CandidateJobFeedbackFreeWord',
     },
   })
 
-  const createCandidateJobFeedback  = buildQuery({
+  const createCandidateJobFeedback = GraphQLClientService.buildQuery({
     operation: 'CreateCandidateJobFeedback',
     options: {
       type: 'mutation',
@@ -59,7 +59,7 @@ const useGraphql = () => {
     },
   })
 
-  const updateCandidateJobFeedback  = buildQuery({
+  const updateCandidateJobFeedback = GraphQLClientService.buildQuery({
     operation: 'UpdateCandidateJobFeedback',
     options: {
       type: 'mutation',
@@ -71,11 +71,11 @@ const useGraphql = () => {
     `,
     params: {
       input: 'UpdateCandidateJobFeedbackInput!',
-      id: 'ID!'
+      id: 'ID!',
     },
   })
 
-  const deleteCandidateJobFeedback  = buildQuery({
+  const deleteCandidateJobFeedback = GraphQLClientService.buildQuery({
     operation: 'DeleteCandidateJobFeedback',
     options: {
       type: 'mutation',
@@ -87,7 +87,7 @@ const useGraphql = () => {
     },
   })
 
-  const getFeedback = buildQuery({
+  const getFeedback = GraphQLClientService.buildQuery({
     operation: 'GetCandidateJobFeedback',
     options: {
       type: 'query',
@@ -123,7 +123,7 @@ const useGraphql = () => {
     createCandidateJobFeedback,
     updateCandidateJobFeedback,
     deleteCandidateJobFeedback,
-    getFeedback
+    getFeedback,
   }
 }
 

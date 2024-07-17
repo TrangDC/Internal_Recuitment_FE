@@ -1,7 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import GraphQLClientService, {
-  IBuildQueryReturn,
-} from 'services/refactor/graphql-service'
 import NotificationService from 'services/notification-service'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { BaseRecord } from 'shared/interfaces/common'
@@ -10,6 +7,9 @@ import { FieldValues, Resolver } from 'react-hook-form'
 import useGetResource, { IuseGetResource } from '../useGetResource'
 import { t } from 'i18next'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
+import GraphQLClientService, {
+  IBuildQueryReturn,
+} from 'services/graphql-service'
 
 interface IuseEditResource<Response, FormData>
   extends IuseGetResource<Response, FormData> {
@@ -21,11 +21,15 @@ interface IuseEditResource<Response, FormData>
   resolver: Resolver<FormData & FieldValues, any> | undefined
 }
 
-interface InputUpdate extends BaseRecord{
-  note: string,
+interface InputUpdate extends BaseRecord {
+  note: string
 }
 
-function useEditResource<Response, FormData extends FieldValues, Input extends InputUpdate>({
+function useEditResource<
+  Response,
+  FormData extends FieldValues,
+  Input extends InputUpdate,
+>({
   id,
   editBuildQuery,
   oneBuildQuery,
@@ -49,11 +53,11 @@ function useEditResource<Response, FormData extends FieldValues, Input extends I
   const useEditReturn = useMutation({
     mutationKey: queryKey,
     mutationFn: (payload: Input) => {
-      const { note, ...inputUpdate } = payload;
-      return  GraphQLClientService.fetchGraphQL(editBuildQuery.query, {
+      const { note, ...inputUpdate } = payload
+      return GraphQLClientService.fetchGraphQL(editBuildQuery.query, {
         id: id,
         input: inputUpdate,
-        note: note ?? ''
+        note: note ?? '',
       })
     },
     onSuccess: (data) => {

@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import _ from 'lodash'
 import { CandidateReport, ReportFilter } from 'shared/schema/chart/report'
 import { handleFormatLabel } from 'features/report/shared/utils/utils'
+import GraphQLClientService from 'services/graphql-service'
 
 const candidateLabels = {
   reference: 'Reference',

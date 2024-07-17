@@ -1,20 +1,20 @@
 import useGraphql from '../graphql'
 import { SkillType } from 'features/skillType/domain/interfaces'
 import { useQuery } from '@tanstack/react-query'
-import { fetchGraphQL } from 'services/graphql-services'
-import { BaseRecord } from 'shared/interfaces'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { cloneDeep, isEmpty } from 'lodash'
+import GraphQLClientService from 'services/graphql-service'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 function useGetSkillType() {
   const { getAllSkillTypes, queryKey } = useGraphql()
-  const [options, setOptions] = useState<SkillType[]>([]);
-  const searchRef = useRef<HTMLInputElement | null>(null);
+  const [options, setOptions] = useState<SkillType[]>([])
+  const searchRef = useRef<HTMLInputElement | null>(null)
 
   const { data } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      fetchGraphQL<BaseRecord>(getAllSkillTypes.query, {
+      GraphQLClientService.fetchGraphQL(getAllSkillTypes.query, {
         // filter: {
         //   candidate_job_id: id,
         // },
@@ -22,11 +22,17 @@ function useGetSkillType() {
   })
 
   const skill_types = useMemo(() => {
-    const data_skill: SkillType[] = data?.[getAllSkillTypes.operation]?.edges?.map((item: any) => item?.node) ?? []
+    if (data && isRight(data)) {
+      const data_skill: SkillType[] =
+        unwrapEither(data)?.[getAllSkillTypes.operation]?.edges?.map(
+          (item: any) => item?.node
+        ) ?? []
 
-    return data_skill.filter((skill_type) => {
-      return !isEmpty(skill_type.skills)
-    });
+      return data_skill.filter((skill_type) => {
+        return !isEmpty(skill_type.skills)
+      })
+    }
+    return []
   }, [data])
 
   useEffect(() => {
@@ -36,23 +42,28 @@ function useGetSkillType() {
   }, [skill_types])
 
   const handleSearch = () => {
-    if(!searchRef.current) return;
-    const search = searchRef.current?.value;
+    if (!searchRef.current) return
+    const search = searchRef.current?.value
 
-    const skill_filter = cloneDeep(skill_types).reduce((current: SkillType[], next: SkillType) => {
-      const filter_by_name = next.skills.filter((skill) => {
-        return skill.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-      })
-      next.skills = filter_by_name;
-      return !isEmpty(filter_by_name) ? [...current, next] : current;
-    }, [])
+    const skill_filter = cloneDeep(skill_types).reduce(
+      (current: SkillType[], next: SkillType) => {
+        const filter_by_name = next.skills.filter((skill) => {
+          return skill.name
+            .toLocaleLowerCase()
+            .includes(search.toLocaleLowerCase())
+        })
+        next.skills = filter_by_name
+        return !isEmpty(filter_by_name) ? [...current, next] : current
+      },
+      []
+    )
 
     setOptions(skill_filter)
   }
 
   const handleReset = () => {
-    if(searchRef.current) {
-      searchRef.current.value = '';
+    if (searchRef.current) {
+      searchRef.current.value = ''
       handleSearch()
     }
   }
@@ -63,7 +74,7 @@ function useGetSkillType() {
     actions: {
       handleSearch,
       handleReset,
-    }
+    },
   }
 }
 

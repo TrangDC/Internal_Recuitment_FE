@@ -1,4 +1,4 @@
-import GraphQLClientService from 'services/refactor/graphql-service'
+import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
@@ -32,7 +32,7 @@ const useGraphql = () => {
 
   return {
     getAllRole,
-    queryKey
+    queryKey,
   }
 }
 

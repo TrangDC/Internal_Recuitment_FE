@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
 import { Job } from 'features/jobs/domain/interfaces'
 import { useMemo } from 'react'
-import GraphQLClientService from 'services/refactor/graphql-service'
+import GraphQLClientService from 'services/graphql-service'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const useJobDetail = (id: String) => {

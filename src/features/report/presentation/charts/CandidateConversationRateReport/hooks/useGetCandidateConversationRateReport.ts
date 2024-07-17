@@ -2,10 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
-import GraphQLClientService from 'services/refactor/graphql-service'
 import { getPercentage } from 'shared/utils/convert-string'
 import { FunnelStep } from 'shared/components/chats/funnelChart'
-import { CandidateJobStepByCandidateJobStatus, ReportFilter } from 'shared/schema/chart/report'
+import {
+  CandidateJobStepByCandidateJobStatus,
+  ReportFilter,
+} from 'shared/schema/chart/report'
+import GraphQLClientService from 'services/graphql-service'
 
 function getInterviewingPercentage(applied: number, interviewing: number) {
   return getPercentage(interviewing, applied)
@@ -38,20 +41,27 @@ function useGetCandidateConversationRateReport({
       ),
   })
 
-  const candidateReport: CandidateJobStepByCandidateJobStatus[] = useMemo(() => {
-    if (data && isRight(data)) {
-      const response = unwrapEither(data)
-      return response?.[getCandidateConversionRateReport.operation]?.data
-    }
-    return []
-  }, [data])
+  const candidateReport: CandidateJobStepByCandidateJobStatus[] =
+    useMemo(() => {
+      if (data && isRight(data)) {
+        const response = unwrapEither(data)
+        return response?.[getCandidateConversionRateReport.operation]?.data
+      }
+      return []
+    }, [data])
 
-  const applied = candidateReport.find((item) => item.candidate_job_status === 'applied')
+  const applied = candidateReport.find(
+    (item) => item.candidate_job_status === 'applied'
+  )
   const interviewing = candidateReport.find(
     (item) => item.candidate_job_status === 'interviewing'
   )
-  const offering = candidateReport.find((item) => item.candidate_job_status === 'offering')
-  const hired = candidateReport.find((item) => item.candidate_job_status === 'hired')
+  const offering = candidateReport.find(
+    (item) => item.candidate_job_status === 'offering'
+  )
+  const hired = candidateReport.find(
+    (item) => item.candidate_job_status === 'hired'
+  )
   const interviewingPercentage = getInterviewingPercentage(
     applied?.amount ?? 0,
     interviewing?.amount ?? 0
