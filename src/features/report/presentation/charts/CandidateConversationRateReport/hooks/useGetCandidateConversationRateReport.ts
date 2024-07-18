@@ -5,7 +5,7 @@ import useGraphql from '../graphql/graphql'
 import { getPercentage } from 'shared/utils/convert-string'
 import { FunnelStep } from 'shared/components/chats/funnelChart'
 import {
-  CandidateJobStepByCandidateJobStatus,
+  CandidateConversionRateReport,
   ReportFilter,
 } from 'shared/schema/chart/report'
 import GraphQLClientService from 'services/graphql-service'
@@ -35,45 +35,35 @@ function useGetCandidateConversationRateReport({
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(
         getCandidateConversionRateReport.query,
-        {
-          filter: filters,
-        }
       ),
   })
 
-  const candidateReport: CandidateJobStepByCandidateJobStatus[] =
+  const candidateReport: CandidateConversionRateReport =
     useMemo(() => {
       if (data && isRight(data)) {
         const response = unwrapEither(data)
         return response?.[getCandidateConversionRateReport.operation]?.data
       }
-      return []
+      return null
     }, [data])
 
-  const applied = candidateReport.find(
-    (item) => item.candidate_job_status === 'applied'
-  )
-  const interviewing = candidateReport.find(
-    (item) => item.candidate_job_status === 'interviewing'
-  )
-  const offering = candidateReport.find(
-    (item) => item.candidate_job_status === 'offering'
-  )
-  const hired = candidateReport.find(
-    (item) => item.candidate_job_status === 'hired'
-  )
+  const applied = candidateReport?.applied ?? 0
+  const interviewing = candidateReport?.interviewing ?? 0
+  const hired = candidateReport?.hired ?? 0
+  const offering = candidateReport?.offering ?? 0
+
   const interviewingPercentage = getInterviewingPercentage(
-    applied?.amount ?? 0,
-    interviewing?.amount ?? 0
+    applied,
+    interviewing
   )
   const offeringPercentage = getOfferingPercentage(
-    interviewing?.amount ?? 0,
-    offering?.amount ?? 0
+    interviewing,
+    offering
   )
 
   const hiredPercentage = getHiredPercentage(
-    offering?.amount ?? 0,
-    hired?.amount ?? 0
+    offering,
+    hired
   )
 
   const seriesData: FunnelStep[] = [

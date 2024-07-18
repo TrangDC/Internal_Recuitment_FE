@@ -10,10 +10,10 @@ const useGraphql = () => {
     node: `
       data {
         total
-        blacklist
-        pie_chart_data {
-          reference_type
-          amount
+        blacklist_number
+        number_by_ref_type {
+          type
+          number
         }
       }
     `,

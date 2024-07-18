@@ -9,14 +9,18 @@ const useGraphql = () => {
     },
     node: `
       data {
-        column_chart_data {
-          total
-          column_data {
+        stats_by_time {
+          number_by_type {
+            type 
+            number
+          }
+          stats_per_time_period {
             from_date
             to_date
-            data {
-              reference_type
-              amount
+            total
+            number_by_type {
+              type 
+              number
             }
           }
         }

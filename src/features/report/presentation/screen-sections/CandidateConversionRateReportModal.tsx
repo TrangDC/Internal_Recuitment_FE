@@ -40,7 +40,7 @@ function CandidateConversionRateReportModal(
         >
           <TabCustomize renderItem={renderItem} />
           <Tiny12md color={'#4D607A'} position={'absolute'} top={30} right={16}>
-            {filters.period === 'all' ? 'All' : labelBy}
+            {filters.filter_period === 'all' ? 'All' : labelBy}
           </Tiny12md>
         </Box>
       </BaseModal.ContentMain>

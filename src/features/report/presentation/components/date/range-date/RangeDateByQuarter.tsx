@@ -12,7 +12,7 @@ import WeekDateRange from 'shared/components/date/date-range/WeekDateRange/WeekD
 import YearDateRange from 'shared/components/date/date-range/YearDateRange/YearDateRange'
 import { ValueRangeDate } from 'shared/interfaces/date'
 import { handleFormatLabelDate } from './utils'
-import { PeriodFilter } from 'shared/schema/chart/report'
+import { ReportFilterPeriod } from 'shared/schema/chart/report'
 
 dayjs.extend(isBetweenPlugin)
 dayjs.extend(utc)
@@ -29,7 +29,7 @@ const RangeDateByQuarterLabel = styled(Button)(() => ({
 }))
 
 type RangeDateByCategoryProps = {
-  filterType: PeriodFilter
+  filterType: ReportFilterPeriod
   onChange: (value: ValueRangeDate | null) => void
   value: ValueRangeDate | null
 }

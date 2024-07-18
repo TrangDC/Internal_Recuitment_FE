@@ -3,19 +3,23 @@ import GraphQLClientService from 'services/graphql-service'
 const useGraphql = () => {
   const queryKey = 'recruitment_application'
   const getRecruitmentReport = GraphQLClientService.buildQuery({
-    operation: 'GetCandidateJobReport',
+    operation: 'GetRecruitmentReport',
     options: {
       type: 'query',
     },
     node: `
       data {
-        total
-        column_data {
+        number_by_type {
+          type 
+          number
+        }
+        stats_per_time_period {
           from_date
           to_date
-          data {
-            status
-            amount
+          total
+          number_by_type {
+            type 
+            number
           }
         }
       }

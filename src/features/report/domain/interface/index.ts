@@ -1,9 +1,9 @@
 import { ValueRangeDate } from 'shared/interfaces/date'
-import { PeriodFilter } from 'shared/schema/chart/report'
+import { ReportFilterPeriod } from 'shared/schema/chart/report'
 
 export interface ChartFilters {
   value: ValueRangeDate | null
-  filterType: PeriodFilter
+  filterType: ReportFilterPeriod
 }
 
 

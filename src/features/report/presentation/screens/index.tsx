@@ -28,7 +28,7 @@ function ReportScreen() {
           }}
         />
       </Box>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} height={290}>
         <Grid item xs={12}>
           <Item>
             <FlexBox width={'100%'}>
@@ -40,12 +40,12 @@ function ReportScreen() {
             </FlexBox>
           </Item>
         </Grid>
-        <Grid item xs={8.8} height={325}>
+        <Grid item xs={8.8} height={280}>
           <Item>
             <RecruitmentApplication />
           </Item>
         </Grid>
-        <Grid item xs={3.2}>
+        <Grid item xs={3.2} height={280}>
           <Item
             sx={{
               display: 'flex',

@@ -39,22 +39,22 @@ function useGetRecruitmentTrends({ filters }: IUseGetRecruitmentTrendsProps) {
   }, [data])
 
   const statsPerTimePeriod =
-    candidateReport?.column_chart_data?.column_data ?? []
+    candidateReport?.stats_by_time?.stats_per_time_period ?? []
 
   const seriesData = Object.keys(candidateLabels).reduce((acc, key) => {
     return _.set(acc, key, [])
   }, {} as any)
 
   statsPerTimePeriod.forEach((period) => {
-    period?.data?.forEach((item) => {
-      seriesData[item.reference_type].push(item.amount)
+    period?.number_by_type?.forEach((item) => {
+      seriesData[item.type].push(item.number)
     })
   })
 
-  const categories = handleFormatLabel(filters.period, statsPerTimePeriod)
+  const categories = handleFormatLabel(filters.filter_period, statsPerTimePeriod)
 
   const totalCandidate = statsPerTimePeriod.reduce((acc: number, current) => {
-    const total = current.data.reduce((a, c) => a + c.amount, 0) ?? 0
+    const total = current.number_by_type.reduce((a, c) => a + c.number, 0) ?? 0
     return acc + total
   }, 0)
 

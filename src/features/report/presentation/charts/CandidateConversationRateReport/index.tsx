@@ -8,7 +8,7 @@ import { Box } from '@mui/material'
 import TinySelected from 'shared/components/selected/TinySelected'
 import { ValueRangeDate } from 'shared/interfaces/date'
 import dayjs from 'dayjs'
-import { PeriodFilter } from 'shared/schema/chart/report'
+import { ReportFilterPeriod } from 'shared/schema/chart/report'
 import { handleFormatFilters } from 'features/report/shared/utils/utils'
 import CandidateConversionRateReportModal from '../../screen-sections/CandidateConversionRateReportModal'
 import RangeDateByQuarter from '../../components/date/range-date/RangeDateByQuarter'
@@ -39,7 +39,7 @@ const selectItems = [
 
 export interface CandidateConversationFilters {
   value: ValueRangeDate | null
-  filterType: PeriodFilter
+  filterType: ReportFilterPeriod
 }
 
 function CandidateConversationRateReport() {
@@ -80,7 +80,7 @@ function CandidateConversationRateReport() {
     setOpen(true)
   }
 
-  function selectedType(value: PeriodFilter) {
+  function selectedType(value: ReportFilterPeriod) {
     setFilters((prev) => ({
       ...prev,
       filterType: value,
@@ -97,7 +97,7 @@ function CandidateConversationRateReport() {
     ? handleFormatLabelDate(filters.filterType, filters.value)
     : ''
   return (
-    <Box width={'100%'}>
+    <Box width={'100%'} height={290}>
       <FlexBox
         width={'100%'}
         justifyContent={'space-between'}
@@ -110,7 +110,7 @@ function CandidateConversationRateReport() {
           <TinyButton onClick={handleOpenModal}>See more</TinyButton>
         </FlexBox>
       </FlexBox>
-      <FlexBox gap={1}>
+      {/* <FlexBox gap={1}>
         <TinySelected
           onChange={selectedType}
           value={filters.filterType}
@@ -123,8 +123,10 @@ function CandidateConversationRateReport() {
             value={filters.value}
           />
         )}
-      </FlexBox>
-      <FunnelChart funnelStep={series} labels={labels} width={200} />
+      </FlexBox> */}
+      <Box marginTop={4}>
+        <FunnelChart funnelStep={series} labels={labels} width={200} />
+      </Box>
       {open && (
         <CandidateConversionRateReportModal
           open={open}

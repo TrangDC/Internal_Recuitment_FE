@@ -8,9 +8,8 @@ import {
 } from 'shared/utils/date'
 import {
   ReportFilter,
-  PeriodFilter,
-  CandidateJobReportColumn,
-  CandidateReportColumn
+  ReportFilterPeriod,
+  ReportStatsPerTimePeriod,
 } from 'shared/schema/chart/report'
 import { ChartFilters } from 'features/report/domain/interface'
 dayjs.extend(weekOfYear)
@@ -21,7 +20,7 @@ export const handleFormatFilters = (filters: ChartFilters): ReportFilter => {
     return {
       from_date: setTimeToStartOfDay(dayjs().startOf('month')).toISOString(),
       to_date: setTimeToEndOfDay(dayjs().endOf('month')).toISOString(),
-      period: filters.filterType,
+      filter_period: filters.filterType,
     }
   }
   switch (filters.filterType) {
@@ -50,7 +49,7 @@ const formatByMonth = (filters: ChartFilters): ReportFilter => {
   return {
     from_date: fromDate?.toISOString() ?? '',
     to_date: toDate?.toISOString() ?? '',
-    period: filters.filterType,
+    filter_period: filters.filterType,
   }
 }
 
@@ -64,7 +63,7 @@ const formatByYear = (filters: ChartFilters): ReportFilter => {
   return {
     from_date: fromDate?.toISOString() ?? '',
     to_date: toDate?.toISOString() ?? '',
-    period: filters.filterType,
+    filter_period: filters.filterType,
   }
 }
 
@@ -78,7 +77,7 @@ const formatByQuarter = (filters: ChartFilters): ReportFilter => {
   return {
     from_date: fromDate?.toISOString() ?? '',
     to_date: toDate?.toISOString() ?? '',
-    period: filters.filterType,
+    filter_period: filters.filterType,
   }
 }
 
@@ -92,7 +91,7 @@ const formatByWeek = (filters: ChartFilters): ReportFilter => {
   return {
     from_date: fromDate?.toISOString() ?? '',
     to_date: toDate?.toISOString() ?? '',
-    period: filters.filterType,
+    filter_period: filters.filterType,
   }
 }
 
@@ -100,13 +99,13 @@ const formatByAll = (filters: ChartFilters): ReportFilter => {
   return {
     from_date: '0001-01-01T00:00:00Z',
     to_date: '0001-01-01T00:00:00Z',
-    period: filters.filterType,
+    filter_period: filters.filterType,
   }
 }
 
 export const handleFormatLabel = (
-  filterType: PeriodFilter,
-  statsPerTimePeriod: (CandidateJobReportColumn | CandidateReportColumn)[]
+  filterType: ReportFilterPeriod,
+  statsPerTimePeriod: ReportStatsPerTimePeriod[]
 ): string[] => {
   switch (filterType) {
     case 'month':
@@ -123,7 +122,7 @@ export const handleFormatLabel = (
 }
 
 const formatLabelByMonth = (
-  statsPerTimePeriod:(CandidateJobReportColumn | CandidateReportColumn)[]
+  statsPerTimePeriod:ReportStatsPerTimePeriod[]
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const fromDate = dayjs(i.from_date).add(1, 'day')
@@ -133,7 +132,7 @@ const formatLabelByMonth = (
 }
 
 const formatLabelByYear = (
-  statsPerTimePeriod: (CandidateJobReportColumn | CandidateReportColumn)[]
+  statsPerTimePeriod: ReportStatsPerTimePeriod[]
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const fromDate = dayjs(i.from_date)
@@ -143,7 +142,7 @@ const formatLabelByYear = (
 }
 
 const formatLabelByQuarter = (
-  statsPerTimePeriod: (CandidateJobReportColumn | CandidateReportColumn)[]
+  statsPerTimePeriod: ReportStatsPerTimePeriod[]
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const quarter = getQuarter(dayjs(i.from_date).add(1, 'day').toISOString())
@@ -154,7 +153,7 @@ const formatLabelByQuarter = (
 }
 
 const formatLabelByWeek = (
-  statsPerTimePeriod: (CandidateJobReportColumn | CandidateReportColumn)[]
+  statsPerTimePeriod: ReportStatsPerTimePeriod[]
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const fromDate = dayjs(i.from_date)
