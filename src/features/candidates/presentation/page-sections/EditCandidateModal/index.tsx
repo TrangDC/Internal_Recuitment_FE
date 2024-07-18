@@ -244,8 +244,7 @@ function EditCandidateModal({
                         name={field.name}
                         textFieldProps={{
                           label: `Recruiter`,
-                          required:
-                            candidate_source === CANDIDATE_SOURCE_STATE.REC,
+                          required: true
                         }}
                       />
                       <HelperTextForm
@@ -269,6 +268,7 @@ function EditCandidateModal({
                         textFieldProps={{
                           fullWidth: true,
                           size: 'small',
+                          required: true
                         }}
                       />
                       <HelperTextForm
