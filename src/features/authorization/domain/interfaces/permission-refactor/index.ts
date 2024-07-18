@@ -14,7 +14,11 @@ import { CANDIDATE_ACTIONS, CandidatePermissions } from './candidate'
 import _ from 'lodash'
 import { TEAM_ACTIONS, TeamPermissions } from './team'
 import { ROLE_TEMPLATE_ACTIONS, RoleTemplatePermissions } from './role_template'
-import { EMAIL_TEMPLATE_ACTIONS,  EmailTemplatePermissions} from './email_template'
+import {
+  EMAIL_TEMPLATE_ACTIONS,
+  EmailTemplatePermissions,
+} from './email_template'
+import { REPORT_ACTIONS, ReportPermissions } from './report'
 
 export type GenerateAction<A extends string> = {
   [K in A]: PermissionRole
@@ -41,6 +45,7 @@ export interface PermissionStructure {
   TEAMS: TeamPermissions
   ROLES_TEMPLATE: RoleTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplatePermissions
+  REPORT: ReportPermissions
 }
 
 export const moduleActions: GenerateModuleActions<PermissionStructure> = {
@@ -54,7 +59,8 @@ export const moduleActions: GenerateModuleActions<PermissionStructure> = {
   SKILL_TYPES: SKILL_TYPE_ACTIONS,
   TEAMS: TEAM_ACTIONS,
   ROLES_TEMPLATE: ROLE_TEMPLATE_ACTIONS,
-  EMAIL_TEMPLATE: EMAIL_TEMPLATE_ACTIONS
+  EMAIL_TEMPLATE: EMAIL_TEMPLATE_ACTIONS,
+  REPORT: REPORT_ACTIONS,
 }
 
 class PermissionStructureImpl implements PermissionStructure {
@@ -69,6 +75,7 @@ class PermissionStructureImpl implements PermissionStructure {
   TEAMS: TeamPermissions
   ROLES_TEMPLATE: RoleTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplatePermissions
+  REPORT: ReportPermissions
 
   constructor(data: PermissionStructure) {
     this.JOBS = data.JOBS
@@ -82,6 +89,7 @@ class PermissionStructureImpl implements PermissionStructure {
     this.TEAMS = data.TEAMS
     this.ROLES_TEMPLATE = data.ROLES_TEMPLATE
     this.EMAIL_TEMPLATE = data.EMAIL_TEMPLATE
+    this.REPORT = data.REPORT
   }
 
   static fromJson(

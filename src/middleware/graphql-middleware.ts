@@ -10,6 +10,7 @@ export const requestMiddleware: RequestMiddleware = async (request) => {
   const headers = {
     Authorization: `Bearer ${token?.accessToken}`, // Set your token in the Authorization header
   }
+
   return {
     ...request,
     headers: { ...request.headers, ...headers },

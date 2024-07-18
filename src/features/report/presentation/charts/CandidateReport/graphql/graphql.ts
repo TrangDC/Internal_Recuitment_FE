@@ -3,23 +3,23 @@ import GraphQLClientService from 'services/graphql-service'
 const useGraphql = () => {
   const queryKey = 'candidate_report'
   const getCandidateReport = GraphQLClientService.buildQuery({
-    operation: 'GetCandidateReport',
+    operation: 'ReportCandidateLCC',
     options: {
       type: 'query',
     },
     node: `
       data {
         total
-        blacklist_number
-        number_by_ref_type {
-          type
-          number
+        non_black_list
+        recruitment {
+          eb
+          rec
+          hiring_platform
+          reference
+          headhunt
         }
       }
     `,
-    params: {
-      filter: ' ReportFilter!',
-    },
   })
   return {
     getCandidateReport,

@@ -4,7 +4,7 @@ type RoleTemplateInformation = {
   }
 }
 
-export const roleTemplateInformation:RoleTemplateInformation = {
+export const roleTemplateInformation: RoleTemplateInformation = {
   'model.permissions.teams.view': {
     description: 'Permission to view Team information',
   },
@@ -136,7 +136,7 @@ export const roleTemplateInformation:RoleTemplateInformation = {
   'model.permissions.skill_types.delete': {
     description: 'Permission to delete skill type',
   },
-//
+  //
   'model.permissions.email_templates.create': {
     description: 'Permission to create email template',
   },
@@ -148,5 +148,8 @@ export const roleTemplateInformation:RoleTemplateInformation = {
   },
   'model.permissions.email_templates.update': {
     description: 'Permission to update email template',
+  },
+  'model.permissions.report.view': {
+    description: 'View recruitment report',
   },
 }

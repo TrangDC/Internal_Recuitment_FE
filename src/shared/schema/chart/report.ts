@@ -25,6 +25,56 @@ export type CandidateJobStepReportByTeamResponse = {
   data: CandidateJobStepByTeam[]
 }
 
+export type ReportApplicationReportTableResponse = {
+  data: ApplicationReportTable
+}
+
+export type ReportCandidateLCCResponse = {
+  data: ReportCandidateLCC
+}
+
+export type ReportCandidateLCC = {
+  total: number
+  non_black_list: number
+  black_list: number
+  recruitment: ReportRecruitment
+}
+
+export type ReportRecruitment = {
+  eb: number
+  rec: number
+  hiring_platform: number
+  reference: number
+  headhunt: number
+}
+
+export type ApplicationReportTable = {
+  processing: ApplicationReportProcessing
+  kiv: ApplicationReportFailReason
+  offered_lost: ApplicationReportFailReason
+}
+
+export type ApplicationReportProcessing = {
+  invite_to_interview: number
+  interviewing: number
+  done: number
+  cancelled: number
+}
+
+export type ApplicationReportFailReason = {
+  poor_professionalism: number
+  poor_fit_and_engagement: number
+  over_expectations: number
+  over_qualification: number
+  language_deficiency: number
+  weak_technical_skills: number
+  poor_interpersonal_skills: number
+  poor_problem_solving_skills: number
+  poor_management_skills: number
+  candidate_withdrawal: number
+  others: number
+}
+
 export type ReportCandidateConversionRateTableResponse = {
   edges: CandidateConversionRateReportEdge[]
   pagination: Pagination
@@ -45,24 +95,8 @@ export type CandidateJobStepByTeam = {
   candidate_job_step_by_status: CandidateJobStepByCandidateJobStatus[]
 }
 
-export type CandidateJobReportByStatus = {
-  processing_candidate_job_data: CandidateInterviewByStatus[]
-  kiv_candidate_job_data: CandidateJobByFailedReason[]
-  offer_lost_candidate_job_data: CandidateJobByFailedReason[]
-}
-
-export type CandidateInterviewByStatus = {
-  status: string
-  amount: number
-}
-
 export type CandidateJobStepByCandidateJobStatus = {
   candidate_job_status: string
-  amount: number
-}
-
-export type CandidateJobByFailedReason = {
-  failed_reason: string
   amount: number
 }
 
