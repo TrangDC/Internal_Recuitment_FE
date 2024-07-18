@@ -76,6 +76,8 @@ function useCreateInterview(props: IUseCreateInterview) {
           end_at: formatEnd,
           title: value.title,
           job_id: value.jobId,
+          location: value.location,
+          meeting_link: value.meeting_link ?? '',
         }
         mutate(formData)
       }
@@ -117,6 +119,10 @@ function useCreateInterview(props: IUseCreateInterview) {
     }
   }
 
+  function resetMeetingLink () {
+    setValue('meeting_link', '')
+  }
+
   return {
     control,
     isValid,
@@ -126,6 +132,7 @@ function useCreateInterview(props: IUseCreateInterview) {
       onSelectedInterviewDate,
       onSelectedTo,
       onSelectedFrom,
+      resetMeetingLink
     },
     watch,
     resetField,

@@ -2,6 +2,7 @@ import { RULE_MESSAGES } from 'shared/constants/validate'
 import * as yup from 'yup'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { isEmpty } from 'lodash'
+import dayjs from 'dayjs'
 
 export const schema = yup.object({
   team_id: yup.string().required(RULE_MESSAGES.MC1('team')),
@@ -39,6 +40,40 @@ export const schemaChangeStatus = yup.object({
   attachments: yup.mixed(),
   feedback: yup.string(),
   note: yup.string(),
+  //new field
+  offer_expiration_date: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('Offer expiration date'))
+    .min(
+      dayjs().startOf('day').toDate(),
+      'Offer expiration date must be after or equal current date'
+    )
+    .test(
+      'is-before-to',
+      'Offer expiration date must be after Onboard date',
+      function (value) {
+        const { onboard_date } = this.parent
+        if (!onboard_date) return true
+        return dayjs(value).isBefore(dayjs(onboard_date))
+      }
+    )
+    .when(['status'], ([status], schema) => {
+      if(status !== STATUS_CANDIDATE.OFFERING) return schema;
+      return schema.required(RULE_MESSAGES.MC1('Offer expiration date'));
+    })
+    .nullable(),
+    onboard_date: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('Candidate onboard date'))
+    .min(
+      dayjs().startOf('day').toDate(),
+      'Onboard date must be after or equal current date'
+    )
+    .when(['status'], ([status], schema) => {
+      if(status !== STATUS_CANDIDATE.OFFERING) return schema;
+      return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'));
+    })
+    .nullable(),
 })
 
 export const schemaUpdateJobAttachment = yup.object({

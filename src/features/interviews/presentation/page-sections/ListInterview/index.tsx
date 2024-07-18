@@ -35,6 +35,11 @@ import Cant from 'features/authorization/presentation/components/Cant'
 import AddNewInterviewButtonPermission from 'features/interviews/permission/components/AddNewInterviewButtonPermission'
 import EditInterviewButtonPermission from 'features/interviews/permission/components/EditInterviewButtonPermission'
 import DeleteInterviewButtonPermission from 'features/interviews/permission/components/DeleteInterviewButtonPermission'
+import {
+  GetLocationName,
+  LOCATION_INTERVIEW_STATE,
+} from 'shared/components/autocomplete/location-interview-autocomplete'
+import { LinkText } from 'shared/styles'
 
 interface Props {
   jobApplicationDetail: CandidateJob
@@ -71,13 +76,12 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
       ],
     })
     queryClient.invalidateQueries({
-      queryKey: [
-        MODLUE_QUERY_KEY.CANDIDATE_JOB,
-      ],
+      queryKey: [MODLUE_QUERY_KEY.CANDIDATE_JOB],
     })
   }
 
   const candidateJobOfTeamId = jobApplicationDetail?.hiring_job?.team?.id ?? ''
+
   return (
     <ListInterviewContainer>
       <DivActionHeader>
@@ -103,6 +107,9 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
       </DivActionHeader>
       {!isEmpty(listInterview) &&
         listInterview.map((interview, idx) => {
+          const show_meeting_link =
+            interview.location === LOCATION_INTERVIEW_STATE.ONLINE
+
           return (
             <BoxText key={idx}>
               <Accordion>
@@ -196,6 +203,21 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                         ))}
                       </FlexBox>
                     </Box>
+                    <Box>
+                      <SpanText>Location</SpanText>
+                      <TinyText>{GetLocationName(interview.location)}</TinyText>
+                    </Box>
+                    {show_meeting_link && (
+                      <Box>
+                        <SpanText>Meeting link</SpanText>
+                        <TinyText>
+                          <LinkText to={interview.meeting_link} target="_blank">
+                            {interview.meeting_link}
+                          </LinkText>
+                        </TinyText>
+                      </Box>
+                    )}
+
                     <Box>
                       <SpanText>Description</SpanText>
                       <TinyText>{interview.description}</TinyText>

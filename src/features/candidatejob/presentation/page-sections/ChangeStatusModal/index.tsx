@@ -25,6 +25,7 @@ import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import Cant from 'features/authorization/presentation/components/Cant'
+import AppDateField from 'shared/components/input-fields/DateField'
 
 export type onSuccessChangeStatus = {
   prevStatus: string
@@ -59,7 +60,7 @@ function ChangeStatusModal({
   onSuccess,
 }: IChangeStatusModal) {
   const { handleWarning, handleReset } = usePopup()
-  const { onSubmit, control, isPending, isValid, watch, formState } =
+  const { actions, control, isPending, isValid, watch, formState, trigger } =
     useChangeStatus({
       id: rowData?.id as string,
       callbackSuccess: (data) => {
@@ -71,26 +72,29 @@ function ChangeStatusModal({
         })
       },
       defaultValues: {
-        feedback: '',
-        attachments: [],
-        failed_reason: [],
         status: defaultStatus,
       },
     })
+
+  const { onSubmit, resetOfferDate } = actions
 
   const statusDisabledList = useMemo(() => {
     return list_status_disabled[statusCurrent]
   }, [statusCurrent])
 
-  const translation = useTextTranslation()
-  const showFailedReason = useMemo(() => {
-    const watchFields = watch('status')
+  const new_status = watch('status')
 
+  const translation = useTextTranslation()
+  const show_failed_reason = useMemo(() => {
     return (
-      watchFields === STATUS_CANDIDATE.KIV ||
-      watchFields === STATUS_CANDIDATE.OFFERED_LOST
+      new_status === STATUS_CANDIDATE.KIV ||
+      new_status === STATUS_CANDIDATE.OFFERED_LOST
     )
-  }, [watch('status')])
+  }, [new_status])
+
+  const show_date_onboard = useMemo(() => {
+    return new_status === STATUS_CANDIDATE.OFFERING
+  }, [new_status])
 
   const attachments = watch('attachments')
   const isValidAttachments = useMemo(() => {
@@ -156,29 +160,93 @@ function ChangeStatusModal({
                   name="status"
                   shouldUnregister
                   control={control}
-                  render={({ field, fieldState }) => (
-                    <FlexBox flexDirection={'column'}>
-                      <CandidateStatusAutoComplete
-                        multiple={false}
-                        value={field.value}
-                        list_disabled={statusDisabledList}
-                        onChange={(data: any) => {
-                          field.onChange(data.value)
-                        }}
-                        textFieldProps={{
-                          label: 'New status',
-                          required: true,
-                        }}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </FlexBox>
-                  )}
+                  render={({ field, fieldState }) => {
+                    return (
+                      <FlexBox flexDirection={'column'}>
+                        <CandidateStatusAutoComplete
+                          multiple={false}
+                          value={field.value}
+                          list_disabled={statusDisabledList}
+                          onChange={(data: any) => {
+                            resetOfferDate()
+                            field.onChange(data?.value)
+                          }}
+                          textFieldProps={{
+                            label: 'New status',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )
+                  }}
                 />
               </FormControl>
             </FlexBox>
-            {showFailedReason && (
+
+            {show_date_onboard && (
+              <FlexBox gap={2}>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="offer_expiration_date"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <AppDateField
+                          label={'Offer expiration date'}
+                          value={field.value}
+                          format="dd/MM/yyyy"
+                          onChange={(value) => {
+                            field.onChange(value)
+                          }}
+                          minDate={new Date()}
+                          textFieldProps={{
+                            fullWidth: true,
+                            size: 'small',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="onboard_date"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <AppDateField
+                          label={'Candidate onboard date'}
+                          value={field.value}
+                          format="dd/MM/yyyy"
+                          onChange={(value) => {
+                            field.onChange(value)
+                            trigger('offer_expiration_date')
+                          }}
+                          minDate={new Date()}
+                          textFieldProps={{
+                            fullWidth: true,
+                            size: 'small',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+            )}
+
+            {show_failed_reason && (
               <FlexBox gap={2}>
                 <FormControl fullWidth>
                   <Controller

@@ -31,6 +31,8 @@ export type CandidateJob = {
   attachments: Attachments[]
   candidate: Candidate
   hiring_job: Job
+  offer_expiration_date: Date,
+  onboard_date: Date
 }
 
 export type NewCandidateJobInput = {
@@ -49,6 +51,8 @@ export type UpdateStatus = {
   status: string
   note: string
   failed_reason: string[]
+  offer_expiration_date: string
+  onboard_date: string
 }
 export type UpdateCandidateJobStatus = {
   status: string
@@ -56,6 +60,9 @@ export type UpdateCandidateJobStatus = {
   feedback: string
   failed_reason: string[]
   note: string
+  //new field
+  offer_expiration_date: Date
+  onboard_date: Date
 }
 
 export type UpdateCandidateAttachment = {

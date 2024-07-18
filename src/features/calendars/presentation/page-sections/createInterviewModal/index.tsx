@@ -9,7 +9,7 @@ import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-
 import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto-complete'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import AppButton from 'shared/components/buttons/AppButton'
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
@@ -17,6 +17,7 @@ import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
 import useCreateInterview from 'features/calendars/hooks/useCreateInterview'
 import SelectionTeamPermission from 'features/calendars/permission/components/SelectionTeamPermission'
+import LocationInterviewAutoComplete, { LOCATION_INTERVIEW_STATE } from 'shared/components/autocomplete/location-interview-autocomplete'
 
 interface IAddInterviewModal {
   open: boolean
@@ -31,11 +32,16 @@ function CreateInterviewModal(props: IAddInterviewModal) {
         setOpen(false)
       },
     })
-  const { onSubmit, onSelectedInterviewDate, onSelectedTo, onSelectedFrom } =
+  const { onSubmit, onSelectedInterviewDate, onSelectedTo, onSelectedFrom, resetMeetingLink } =
     actions
   const teamId = watch('teamId')
   const jobId = watch('jobId')
   const interviewDate = watch('date')
+
+  const location_interview = watch('location')
+  const show_meeting_link = useMemo(() => {
+    return LOCATION_INTERVIEW_STATE.ONLINE === location_interview
+  }, [location_interview])
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -285,6 +291,60 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 </FormControl>
               </FlexBox>
             </FlexBox>
+
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+              <Controller
+                  control={control}
+                  name="location"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <LocationInterviewAutoComplete
+                        multiple={false}
+                        value={field.value ?? ''}
+                        onChange={(location) => {
+                          resetMeetingLink()
+                          field.onChange(location?.value)
+                        }}
+                        disableCloseOnSelect={true}
+                        textFieldProps={{
+                          label: 'Location',
+                          required: true
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            {show_meeting_link && (
+              <FlexBox justifyContent={'center'} alignItems={'center'}>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="meeting_link"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <AppTextField
+                          label={'Meeting link'}
+                          size="small"
+                          fullWidth
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+            )}
+            
             <FlexBox justifyContent={'center'} alignItems={'center'}>
               <FormControl fullWidth>
                 <Controller

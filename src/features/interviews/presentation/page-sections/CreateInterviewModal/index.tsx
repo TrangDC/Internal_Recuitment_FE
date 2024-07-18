@@ -17,6 +17,9 @@ import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import { useMemo } from 'react'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import LocationInterviewAutoComplete, {
+  LOCATION_INTERVIEW_STATE,
+} from 'shared/components/autocomplete/location-interview-autocomplete'
 
 interface ICreateInterviewModal {
   open: boolean
@@ -32,7 +35,7 @@ function CreateInterviewModal({
   onSuccess,
 }: ICreateInterviewModal) {
   const { id } = useParams()
-  const { onSubmit, control, isPending, isValid, watch, trigger, formState } =
+  const { onSubmit, control, isPending, isValid, watch, trigger, formState, resetMeetingLink } =
     useCreateInterview({
       callbackSuccess: () => {
         setOpen(false)
@@ -45,10 +48,15 @@ function CreateInterviewModal({
     })
 
   const interview_date = watch('interview_date')
+  const location_interview = watch('location')
 
   const date_feature = useMemo(() => {
     return dayjs().isBefore(dayjs(interview_date))
   }, [interview_date])
+
+  const show_meeting_link = useMemo(() => {
+    return LOCATION_INTERVIEW_STATE.ONLINE === location_interview
+  }, [location_interview])
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -140,7 +148,7 @@ function CreateInterviewModal({
                         }}
                       />
                       <HelperTextForm
-                        message={fieldState.error?.message}
+                        message={fieldState.error?.message} 
                       ></HelperTextForm>
                     </FlexBox>
                   )}
@@ -158,7 +166,6 @@ function CreateInterviewModal({
                             label={'From'}
                             value={field.value ? dayjs(field.value) : null}
                             onChange={(value) => {
-                              // handleGenerateToDate(value)
                               field.onChange(value)
                             }}
                             views={['hours', 'minutes']}
@@ -214,6 +221,59 @@ function CreateInterviewModal({
                 </FlexBox>
               </FormControl>
             </FlexBox>
+
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="location"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <LocationInterviewAutoComplete
+                        multiple={false}
+                        value={field.value ?? ''}
+                        onChange={(location) => {
+                          resetMeetingLink()
+                          field.onChange(location?.value)
+                        }}
+                        disableCloseOnSelect={true}
+                        textFieldProps={{
+                          label: 'Location',
+                          required: true
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+            {show_meeting_link && (
+              <FlexBox justifyContent={'center'} alignItems={'center'}>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="meeting_link"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <AppTextField
+                          label={'Meeting link'}
+                          size="small"
+                          fullWidth
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+            )}
 
             <FlexBox justifyContent={'center'} alignItems={'center'}>
               <FormControl fullWidth>

@@ -17,7 +17,12 @@ import { useContextCalendar } from 'features/calendars/shared/contexts/calendarP
 import useGetInterview from 'features/calendars/hooks/useGetInterview'
 import DeleteInterviewButtonPermission from 'features/calendars/permission/components/DeleteInterviewButtonPermission'
 import EditInterviewButtonPermission from 'features/calendars/permission/components/EditInterviewButtonPermission'
-
+import {
+  GetLocationName,
+  LOCATION_INTERVIEW_STATE,
+} from 'shared/components/autocomplete/location-interview-autocomplete'
+import { LinkText as Link } from 'shared/styles'
+import { useMemo } from 'react'
 interface IDetailIntefviewModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -43,6 +48,10 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
   const { getValues, watch } = useFormReturn
   const start_from = watch('start_from')
   const candidateJobOfTeamId = getValues('candidateJobOfTeamId')
+
+  const show_meeting_link = useMemo(() => {
+    return getValues('location') === LOCATION_INTERVIEW_STATE.ONLINE
+  }, [getValues('location')])
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <Box>
@@ -145,6 +154,26 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
                   ))}
                 </FlexBox>
               </Box>
+              <Box marginTop={3}>
+                <Tiny12md color={'grey.500'}>Location</Tiny12md>
+                <Text13md color={'grey.900'}>
+                  {GetLocationName(getValues('location'))}
+                </Text13md>
+              </Box>
+
+              {show_meeting_link && (
+                <Box marginTop={3}>
+                  <Tiny12md color={'grey.500'}>Meeting link</Tiny12md>
+                  <Text13md color={'grey.900'}>
+                    <Link
+                      to={getValues('meeting_link') as string}
+                      target="_blank"
+                    >
+                      {getValues('meeting_link')}
+                    </Link>
+                  </Text13md>
+                </Box>
+              )}
               <Box marginTop={3}>
                 <Tiny12md color={'grey.500'}>Description</Tiny12md>
                 <Text13md color={'grey.900'}>

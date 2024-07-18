@@ -56,6 +56,8 @@ function useEditInterview(props: UseEditInterviewProps) {
         to: newEnd,
         interviewer: data?.interviewer.map((o) => o.id),
         candidate_job_id: data?.candidate_job_id ?? '',
+        location: data?.location ?? '',
+        meeting_link: data?.meeting_link ?? ''
       }
     },
   })
@@ -97,6 +99,8 @@ function useEditInterview(props: UseEditInterviewProps) {
           title: value.title,
           candidate_job_id: value.candidate_job_id,
           note: '',
+          location: value.location,
+          meeting_link: value.meeting_link ?? ''
         }
         mutate(formData)
       }
@@ -136,6 +140,10 @@ function useEditInterview(props: UseEditInterviewProps) {
     }
   }
 
+  function resetMeetingLink () {
+    setValue('meeting_link', '')
+  }
+
   return {
     control,
     isValid,
@@ -146,6 +154,7 @@ function useEditInterview(props: UseEditInterviewProps) {
       onSelectedInterviewDate,
       onSelectedTo,
       onSelectedFrom,
+      resetMeetingLink
     },
     watch,
     resetField,

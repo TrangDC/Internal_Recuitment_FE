@@ -97,6 +97,8 @@ const useGraphql = () => {
           interview_date
           candidate_job_id
           start_from
+          location
+          meeting_link
           interviewer {
             id
             name

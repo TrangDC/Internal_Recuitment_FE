@@ -51,6 +51,8 @@ function useEditInterview(props: UseEditInterviewProps) {
         interviewer: interviewers,
         start_from: start_form,
         end_at: end_at,
+        location: data?.location ?? '',
+        meeting_link: data?.meeting_link ?? '',
         note: '',
       }
     },
@@ -94,6 +96,10 @@ function useEditInterview(props: UseEditInterviewProps) {
     onSubmit()
   }
 
+  function resetMeetingLink () {
+    setValue('meeting_link', '')
+  }
+
   return {
     control,
     isValid,
@@ -101,6 +107,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     actions: {
       onSubmit,
       callbackSubmit,
+      resetMeetingLink
     },
     formState,
     setValue,

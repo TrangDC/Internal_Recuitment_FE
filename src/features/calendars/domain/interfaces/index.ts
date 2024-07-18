@@ -7,6 +7,8 @@ export type NewInterviewInput = {
   end_at: string
   description: string
   job_id: string
+  location: string
+  meeting_link: string
 }
 
 export type UpdateCandidateInterviewInput = {
@@ -17,6 +19,8 @@ export type UpdateCandidateInterviewInput = {
   start_from: string
   end_at: string
   interviewer: string[]
+  location: string
+  meeting_link: string
   note: string
 }
 
@@ -47,6 +51,8 @@ export type CandidateInterview = {
   interviewer: User[]
   candidate_job: CandidateJob
   edit_able: boolean
+  location: string
+  meeting_link: string
   created_at: string
   updated_at: string
 }
