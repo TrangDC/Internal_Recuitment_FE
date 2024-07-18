@@ -1,52 +1,90 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
 import { StyleTinyText } from 'shared/styles'
-import { ByHiringTeam } from 'features/report/domain/interface'
+import { HiringTeamTableData } from 'features/report/domain/interface'
+import { Box } from '@mui/material'
 
-const columnHelper = createColumnHelper<ByHiringTeam>()
+const columnHelper = createColumnHelper<HiringTeamTableData>()
 
-export const columns = (
-  actions: TOptionItem<ByHiringTeam>[]
-): ColumnDef<ByHiringTeam, any>[] => [
-  columnHelper.accessor((row) => row.team, {
+export const columnsByTeam = (
+  actions: TOptionItem<HiringTeamTableData>[]
+): ColumnDef<HiringTeamTableData, any>[] => [
+  columnHelper.accessor((row) => row.teamName, {
     id: 'Team',
-    cell: (info) => <StyleTinyText>Hiring team</StyleTinyText>,
+    cell: (info) => {
+      return <StyleTinyText>{info.getValue()}</StyleTinyText>
+    },
     header: () => <span>Hiring team</span>,
-    size: 500,
+    size: 200,
   }),
   columnHelper.accessor('indicator', {
     id: 'indicator',
     header: () => <span>Indicator</span>,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => {
+      return (
+        <Box>
+          <StyleTinyText>Candidate counts</StyleTinyText>
+          <StyleTinyText>Conversion rate</StyleTinyText>
+        </Box>
+      )
+    },
     enableSorting: false,
-    size: 500,
+    size: 200,
   }),
   columnHelper.accessor('applied', {
     id: 'applied',
     header: () => <span>Applied</span>,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => {
+      return (
+        <Box>
+          <StyleTinyText>{info.getValue()?.value}</StyleTinyText>
+          <StyleTinyText>{info.getValue()?.percentage}</StyleTinyText>
+        </Box>
+      )
+    },
     enableSorting: false,
-    size: 500,
+    size: 100,
   }),
   columnHelper.accessor('interviewing', {
     id: 'interviewing',
     header: () => <span>Interviewing</span>,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => {
+      return (
+        <Box>
+          <StyleTinyText>{info.getValue()?.value}</StyleTinyText>
+          <StyleTinyText>{info.getValue()?.percentage}</StyleTinyText>
+        </Box>
+      )
+    },
     enableSorting: false,
-    size: 500,
+    size: 100,
   }),
   columnHelper.accessor('offering', {
     id: 'offering',
     header: () => <span>Offering</span>,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => {
+      return (
+        <Box>
+          <StyleTinyText>{info.getValue()?.value}</StyleTinyText>
+          <StyleTinyText>{info.getValue()?.percentage}</StyleTinyText>
+        </Box>
+      )
+    },
     enableSorting: false,
-    size: 500,
+    size: 100,
   }),
   columnHelper.accessor('hired', {
     id: 'hired',
     header: () => <span>Hired</span>,
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => {
+      return (
+        <Box>
+          <StyleTinyText>{info.getValue()?.value}</StyleTinyText>
+          <StyleTinyText>{info.getValue()?.percentage}</StyleTinyText>
+        </Box>
+      )
+    },
     enableSorting: false,
-    size: 500,
+    size: 100,
   }),
 ]

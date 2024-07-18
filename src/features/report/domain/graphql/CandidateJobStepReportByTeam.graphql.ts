@@ -2,29 +2,35 @@ import GraphQLClientService from 'services/graphql-service'
 
 const useGraphql = () => {
   const queryKey = 'candidate_job_step_report_by_team'
-  const getCandidateJobStepReportByTeam = GraphQLClientService.buildQuery({
-    operation: 'GetCandidateJobStepReportByTeam',
+  const reportCandidateConversionRateTable = GraphQLClientService.buildQuery({
+    operation: 'ReportCandidateConversionRateTable',
     options: {
       type: 'query',
     },
     node: `
-      data {
-       team {
+      edges {
+        node {
           id
-          name
-       }
-       candidate_job_step_by_status {
-          candidate_job_status
-          amount
-       }
+          team_name
+          applied
+          interviewing
+          offering
+          hired
+        }
+      }
+      pagination {
+        page
+        perPage
+        total
       }
     `,
     params: {
-      filter: ' ReportFilter!',
+      pagination: 'PaginationInput',
+      orderBy: 'ReportOrderBy',
     },
   })
   return {
-    getCandidateJobStepReportByTeam,
+    reportCandidateConversionRateTable,
     queryKey,
   }
 }

@@ -40,17 +40,18 @@ function ReportScreen() {
             </FlexBox>
           </Item>
         </Grid>
-        <Grid item xs={8.8} height={280}>
+        <Grid item xs={8.8}>
           <Item>
             <RecruitmentApplication />
           </Item>
         </Grid>
-        <Grid item xs={3.2} height={280}>
+        <Grid item xs={3.2}>
           <Item
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              height: '100%',
             }}
           >
             <CandidateConversationRateReport />

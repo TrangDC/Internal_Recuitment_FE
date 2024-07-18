@@ -3,7 +3,6 @@ import BaseModal from 'shared/components/modal'
 import TabCustomize from 'shared/components/tab'
 import { Tiny12md } from 'shared/components/Typography'
 import ByHiringTeamTable from './ByHiringTeamTable'
-import useGetCandidateJobStepReportByTeam from 'features/report/hooks/useGetCandidateJobStepReportByTeam'
 import { ReportFilter } from 'shared/schema/chart/report'
 
 interface CandidateConversionRateReportModalProps {
@@ -17,13 +16,10 @@ function CandidateConversionRateReportModal(
   props: CandidateConversionRateReportModalProps
 ) {
   const { open, setOpen, filters, labelBy } = props
-  const { hiringTeam } = useGetCandidateJobStepReportByTeam({
-    filters,
-  })
   const renderItem = [
     {
       label: 'By Hiring team',
-      Component: () => <ByHiringTeamTable data={hiringTeam} />,
+      Component: () => <ByHiringTeamTable />,
     },
   ]
   return (
