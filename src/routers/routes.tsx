@@ -93,7 +93,10 @@ export const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard/teams" replace />} />
+        <Route
+          path="/"
+          element={<Navigate to="/dashboard/reports" replace />}
+        />
         <Route
           path="/dashboard"
           element={
@@ -102,7 +105,7 @@ export const AppRoutes = () => {
             </ProtectedLayout>
           }
         >
-          <Route index element={<Navigate to="/dashboard/teams" replace />} />
+          <Route index element={<Navigate to="/dashboard/reports" replace />} />
           <Route
             path="teams"
             element={PermissionLayout({
