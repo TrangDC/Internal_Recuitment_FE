@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
 import { ValueRangeDate } from 'shared/interfaces/date'
-import { PeriodFilter } from 'shared/schema/chart/report'
+import { ReportFilterPeriod } from 'shared/schema/chart/report'
 import { getQuarter } from 'shared/utils/date'
 
 export const handleFormatLabelDate = (
-  filterType: PeriodFilter,
+  filterType: ReportFilterPeriod,
   dateRange: ValueRangeDate
 ): string => {
   switch (filterType) {

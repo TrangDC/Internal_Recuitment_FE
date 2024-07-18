@@ -1,40 +1,35 @@
 import Team from "../database/team"
 
+export type ReportFilterPeriod = 'all' | 'year' | 'quarter' | 'month' | 'week'
+
 export type ReportFilter = {
-  period: PeriodFilter
+  filter_period: ReportFilterPeriod
   from_date: string
   to_date: string
 }
-export type PeriodFilter = 'all' | 'year' | 'quarter' | 'month' | 'week'
 
 export type CandidateReportResponse = {
   data: CandidateReport
 }
 
-export type CandidateJobReportResponse = {
-  data: CandidateJobReportColumnChart
+export type RecruitmentReportResponse = {
+  data: ReportStatsByTime
 }
 
-export type CandidateJobReportByStatusResponse = {
-  data: CandidateJobReportByStatus
-}
-export type CandidateJobStepReportResponse = {
-  data: CandidateJobStepByCandidateJobStatus[]
+export type ReportCandidateConversionRateChartResponse = {
+  data: CandidateConversionRateReport
 }
 
 export type CandidateJobStepReportByTeamResponse = {
   data: CandidateJobStepByTeam[]
 }
 
+
 export type CandidateJobStepByTeam = {
   team: Team
   candidate_job_step_by_status: CandidateJobStepByCandidateJobStatus[]
 }
 
-export type CandidateJobStepByCandidateJobStatus = {
-  candidate_job_status: string
-  amount: number
-}
 
 export type CandidateJobReportByStatus = {
   processing_candidate_job_data: CandidateInterviewByStatus[]
@@ -47,51 +42,47 @@ export type CandidateInterviewByStatus = {
   amount: number
 }
 
+
+export type CandidateJobStepByCandidateJobStatus = {
+  candidate_job_status: string
+  amount: number
+}
+
 export type CandidateJobByFailedReason = {
   failed_reason: string
   amount: number
 }
 
-export type CandidateJobReportColumnChart = {
-  total: number
-  column_data: CandidateJobReportColumn[]
-}
 
-export type CandidateJobReportColumn = {
-  from_date: string
-  to_date: string
-  data: CandidateJobByStatus[]
-}
-
-export type CandidateJobByStatus = {
-  status: string
-  amount: number
+export type CandidateConversionRateReport = {
+  applied: number
+  interviewing: number
+  offering: number
+  hired: number
 }
 
 export type CandidateReport = {
   total: number
-  blacklist: number
-  pie_chart_data: CandidateAmountByReferenceType[]
-  column_chart_data: CandidateReportColumnChart
+  active_number: number
+  blacklist_number: number
+  number_by_ref_type: ReportNumberByType[]
+  stats_by_time: ReportStatsByTime
 }
 
-export type CandidateReportColumnChart = {
+export type ReportNumberByType = {
+  type: string
+  number: number
+}
+
+export type ReportStatsByTime = {
   total: number
-  column_data: CandidateReportColumn[]
+  number_by_type: ReportNumberByType[]
+  stats_per_time_period: ReportStatsPerTimePeriod[]
 }
 
-export type CandidateReportColumn = {
+export type ReportStatsPerTimePeriod = {
   from_date: string
   to_date: string
-  data: CandidateAmountByReferenceType[]
-}
-
-export type CandidateAmountByReferenceType = {
-  reference_type: string
-  amount: number
-}
-
-export type CandidateReferenceType = {
-  reference_type: string
-  amount: number
+  total: string
+  number_by_type: ReportNumberByType[]
 }

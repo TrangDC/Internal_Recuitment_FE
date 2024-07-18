@@ -4,7 +4,7 @@ import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
 import _ from 'lodash'
 import {
-  CandidateJobReportColumnChart,
+  ReportStatsByTime,
   ReportFilter,
 } from 'shared/schema/chart/report'
 import { handleFormatLabel } from 'features/report/shared/utils/utils'
@@ -35,7 +35,7 @@ function useGetRecruitmentApplication({
       }),
   })
 
-  const candidateReport: CandidateJobReportColumnChart = useMemo(() => {
+  const candidateReport: ReportStatsByTime = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
       return response?.[getRecruitmentReport.operation]?.data
@@ -43,22 +43,22 @@ function useGetRecruitmentApplication({
     return {}
   }, [data])
 
-  const statsPerTimePeriod = candidateReport?.column_data ?? []
+  const statsPerTimePeriod = candidateReport?.stats_per_time_period ?? []
 
   const seriesData = Object.keys(candidateLabels).reduce((acc, key) => {
     return _.set(acc, key, [])
   }, {} as any)
 
   statsPerTimePeriod.forEach((period) => {
-    period?.data?.forEach((item) => {
-      seriesData[item.status].push(item.amount)
+    period?.number_by_type?.forEach((item) => {
+      seriesData[item.type].push(item.number)
     })
   })
 
-  const categories = handleFormatLabel(filters.period, statsPerTimePeriod)
+  const categories = handleFormatLabel(filters.filter_period, statsPerTimePeriod)
 
   const totalCandidate = statsPerTimePeriod.reduce((acc: number, current) => {
-    const total = current.data.reduce((a, c) => a + c.amount, 0) ?? 0
+    const total = current.number_by_type.reduce((a, c) => a + c.number, 0) ?? 0
     return acc + total
   }, 0)
 

@@ -3,19 +3,18 @@ import GraphQLClientService from 'services/graphql-service'
 const useGraphql = () => {
   const queryKey = 'candidate_conversation_rate_report'
   const getCandidateConversionRateReport = GraphQLClientService.buildQuery({
-    operation: 'GetCandidateJobStepReport',
+    operation: 'ReportCandidateConversionRateChart',
     options: {
       type: 'query',
     },
     node: `
       data {
-        candidate_job_status
-        amount
+        applied
+        interviewing
+        offering
+        hired
       }
     `,
-    params: {
-      filter: ' ReportFilter!',
-    },
   })
   return {
     getCandidateConversionRateReport,

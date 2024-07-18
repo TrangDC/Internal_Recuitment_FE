@@ -23,9 +23,9 @@ function useGetCandidateReport() {
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(getCandidateReport.query, {
         filter: {
-          period: 'week',
-          from_date: dayjs().toISOString(),
-          to_date: dayjs().toISOString(),
+          filter_period: 'all',
+          from_date: '0001-01-01T00:00:00Z',
+          to_date: '0001-01-01T00:00:00Z',
         },
       }),
   })
@@ -38,14 +38,14 @@ function useGetCandidateReport() {
     return {}
   }, [data])
 
-  const blacklist = candidateReport.blacklist
+  const blacklist = candidateReport.blacklist_number
   const active = candidateReport.total - blacklist
-  const number_by_ref_type = candidateReport?.pie_chart_data ?? []
+  const number_by_ref_type = candidateReport?.number_by_ref_type ?? []
 
   const series = Object.keys(CandidateLabels).map((key) => {
     const type = key
-    const item = number_by_ref_type.find((item) => item.reference_type === type)
-    return item ? item.amount : 0
+    const item = number_by_ref_type.find((item) => item.type === type)
+    return item ? item.number : 0
   })
 
   const labels = Object.keys(CandidateLabels).map((key: string) => {

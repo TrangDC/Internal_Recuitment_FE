@@ -12,7 +12,7 @@ import TinyButton from 'shared/components/buttons/TinyButton'
 import { handleFormatFilters } from 'features/report/shared/utils/utils'
 import RangeDateByQuarter from '../../components/date/range-date/RangeDateByQuarter'
 import ApplicationReportModal from '../../screen-sections/ApplicationReportModal'
-import { PeriodFilter } from 'shared/schema/chart/report'
+import { ReportFilterPeriod } from 'shared/schema/chart/report'
 import { handleFormatLabelDate } from '../../components/date/range-date/utils'
 
 const selectItems = [
@@ -36,7 +36,7 @@ const selectItems = [
 
 export interface RecruitmentTrendFilters {
   value: ValueRangeDate | null
-  filterType: PeriodFilter
+  filterType: ReportFilterPeriod
 }
 
 function RecruitmentApplication() {
@@ -60,7 +60,7 @@ function RecruitmentApplication() {
     categories,
   })
 
-  function selectedType(value: PeriodFilter) {
+  function selectedType(value: ReportFilterPeriod) {
     setFilters((prev) => ({
       ...prev,
       filterType: value,
@@ -78,7 +78,7 @@ function RecruitmentApplication() {
     ? handleFormatLabelDate(filters.filterType, filters.value)
     : ''
   return (
-    <Box position={'relative'} height={280}>
+    <Box position={'relative'}>
       <FlexBox width={'100%'} justifyContent={'space-between'}>
         <Text14sb color={'grey.900'} marginBottom={2}>
           Applicant report
@@ -100,7 +100,7 @@ function RecruitmentApplication() {
       {!isLoading && (
         <Chart type="bar" options={options} height={256} series={series} />
       )}
-      <FlexBox position={'absolute'} bottom={0} right={0} gap={'5px'}>
+      <FlexBox position={'absolute'} bottom={20} right={0} gap={'5px'}>
         <Tiny12md color={'#4D607A'}>Total applications</Tiny12md>
         <Tiny12 color={'#0B0E1E'}>{totalCandidate}</Tiny12>
       </FlexBox>
