@@ -45,7 +45,6 @@ export const schema = yup.object({
     .max(64, RULE_MESSAGES.MC4('email', 64)),
   dob: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
   note: yup.string(),
-  //add
   country: yup.string(),
   reference_type: yup.string().required(RULE_MESSAGES.MC1('candidate source')),
   reference_value: yup
@@ -57,16 +56,11 @@ export const schema = yup.object({
     }),
   reference_uid: yup
     .string()
-    .when(['reference_type'], ([reference_type], schema) => {
-      const isRequired = CANDIDATE_SOURCE_STATE.REC === reference_type
-      return isRequired
-        ? schema.required(RULE_MESSAGES.MC1('recruiter'))
-        : schema.notRequired()
-    }),
+    .required(RULE_MESSAGES.MC1('recruiter')),
   recruit_time: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('recruit time'))
-    .nullable(),
+    .required(RULE_MESSAGES.MC1('recruit time')),
   entity_skill_records: yup.mixed(),
   description: yup.string(),
   attachments: yup.array(),
@@ -102,18 +96,13 @@ export const schemaUpdate = yup.object({
         RULE_MESSAGES.MC1(renderLabelReference(reference_type))
       )
     }),
-  reference_uid: yup
+    reference_uid: yup
     .string()
-    .when(['reference_type'], ([reference_type], schema) => {
-      const isRequired = CANDIDATE_SOURCE_STATE.REC === reference_type
-      return isRequired
-        ? schema.required(RULE_MESSAGES.MC1('recruiter'))
-        : schema.notRequired()
-    }),
+    .required(RULE_MESSAGES.MC1('recruiter')),
   recruit_time: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('recruit time'))
-    .nullable(),
+    .required(RULE_MESSAGES.MC1('recruit time')),
   entity_skill_records: yup.mixed(),
   description: yup.string(),
   attachments: yup.array(),

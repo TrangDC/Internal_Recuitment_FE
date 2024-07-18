@@ -52,7 +52,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
         description: data?.description ?? '',
         recruit_time: data?.recruit_time
           ? new Date(data?.recruit_time)
-          : data?.recruit_time,
+          : new Date(),
         reference_uid: data?.reference_uid ?? '',
         attachments: [],
         entity_skill_records: entity_skill_records,
