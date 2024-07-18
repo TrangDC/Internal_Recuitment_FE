@@ -6,12 +6,16 @@ export interface ChartFilters {
   filterType: ReportFilterPeriod
 }
 
+export type HiringTeamTableValue = {
+  value: number
+  percentage: string
+}
 
-export type ByHiringTeam = {
-   team:string
-   indicator:string
-   applied:string
-   interviewing:string
-   offering:string
-   hired:string
+export type HiringTeamTableData = {
+  teamName: string
+  indicator: string
+  applied: HiringTeamTableValue
+  interviewing: HiringTeamTableValue
+  offering: HiringTeamTableValue
+  hired: HiringTeamTableValue
 }

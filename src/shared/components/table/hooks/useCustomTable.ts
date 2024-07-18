@@ -29,7 +29,7 @@ interface ISorting {
 export interface IuseCustomTableReturn {
   isLoading: boolean
   error: Error | null
-  sortData: []
+  sortData: any[]
   handleChangePage: (page: number) => void
   handleSorTable: (id: string) => void
   totalPage: number

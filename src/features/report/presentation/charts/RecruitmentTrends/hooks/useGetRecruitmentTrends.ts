@@ -51,10 +51,13 @@ function useGetRecruitmentTrends({ filters }: IUseGetRecruitmentTrendsProps) {
     })
   })
 
-  const categories = handleFormatLabel(filters.filter_period, statsPerTimePeriod)
+  const categories = handleFormatLabel(
+    filters.filter_period,
+    statsPerTimePeriod
+  )
 
   const totalCandidate = statsPerTimePeriod.reduce((acc: number, current) => {
-    const total = current.number_by_type.reduce((a, c) => a + c.number, 0) ?? 0
+    const total = current.total ?? 0
     return acc + total
   }, 0)
 
