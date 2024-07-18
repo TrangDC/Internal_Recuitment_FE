@@ -15,7 +15,10 @@ function useGetMe() {
   const { getToken } = handleAuthLocalStorage()
   const { data, isFetching, refetch, isLoading } = useQuery({
     queryKey: [queryKey, 'me'],
-    queryFn: async () => GraphQLClientService.fetchGraphQL(getMe.query),
+    queryFn: async () =>
+      GraphQLClientService.fetchGraphQL(getMe.query, {
+        filters: '1',
+      }),
     enabled: authState === 'IS_AUTHENTICATED' && !!getToken(),
   })
 

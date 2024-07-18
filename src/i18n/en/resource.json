@@ -296,6 +296,9 @@
         "create": "Create",
         "update": "Edit",
         "delete": "Delete"
+      },
+      "report": {
+        "view": "View"
       }
     }
   },

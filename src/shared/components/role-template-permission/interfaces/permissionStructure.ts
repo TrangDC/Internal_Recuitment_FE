@@ -14,6 +14,7 @@ import { moduleActions } from 'features/authorization/domain/interfaces/permissi
 import { EntityPermission } from '.'
 import { NewEntityPermissionInput } from 'features/hiring/domain/interfaces'
 import { EmailTemplateTemplatePermissions } from './role-template-permission/email_template'
+import ReportTemplatePermission from './role-template-permission/report'
 
 interface PermissionGroup {
   id: string
@@ -56,6 +57,7 @@ export interface RoleTemplate {
   TEAMS: TeamTemplatePermissions
   ROLES_TEMPLATE: RoleTemplateTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplateTemplatePermissions
+  REPORT: ReportTemplatePermission
 }
 
 class RoleTemplateStructure implements RoleTemplate {
@@ -70,6 +72,7 @@ class RoleTemplateStructure implements RoleTemplate {
   TEAMS: TeamTemplatePermissions
   ROLES_TEMPLATE: RoleTemplateTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplateTemplatePermissions
+  REPORT: ReportTemplatePermission
 
   constructor(data: RoleTemplateStructure) {
     this.CANDIDATE_JOB_FEEDBACKS = data.CANDIDATE_JOB_FEEDBACKS
@@ -83,16 +86,16 @@ class RoleTemplateStructure implements RoleTemplate {
     this.ROLES_TEMPLATE = data.ROLES_TEMPLATE
     this.TEAMS = data.TEAMS
     this.EMAIL_TEMPLATE = data.EMAIL_TEMPLATE
+    this.REPORT = data.REPORT
   }
 
   static fromJson(params: PermissionGroup[]): RoleTemplateStructure {
     const roleTemplate: RoleTemplateStructure = {} as RoleTemplateStructure
     params.forEach((permissionGroups) => {
-
       permissionGroups.permissions.forEach((permission) => {
         const operation_name = permission.operation_name
         const title = permission.title
-        
+
         for (const [moduleKey, actions] of Object.entries(moduleActions)) {
           if (Object.values(actions).includes(operation_name)) {
             const key = Object.keys(actions).find(

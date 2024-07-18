@@ -26,7 +26,7 @@ export const navigation: INavigation[] = [
     path: '/dashboard/reports',
     icon: duotone.ReportIcon,
     type: 'link',
-    module: 'TEAMS',
+    module: 'REPORT',
   },
   {
     name: 'Teams',
@@ -90,4 +90,4 @@ export const navigation: INavigation[] = [
   //   path: '/dashboard/settings',
   //   icon: duotone.Settings,
   // },
-];
+]

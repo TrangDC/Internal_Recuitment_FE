@@ -14,14 +14,14 @@ type ColumnsType = {
   name: string
 }
 
-type DataType = {
+export type FailedReasonDataTable = {
   name: string
   numberOfFailedReason: number
   percentage: string
 }
 
 type TableFailedReasonProps = {
-  data: DataType[]
+  data: FailedReasonDataTable[]
   columns: ColumnsType[]
 }
 

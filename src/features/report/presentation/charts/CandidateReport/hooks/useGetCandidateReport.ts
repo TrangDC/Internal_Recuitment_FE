@@ -5,7 +5,7 @@ import useGraphql from '../graphql/graphql'
 import dayjs from 'dayjs'
 import _ from 'lodash'
 import { getPercentage } from 'shared/utils/convert-string'
-import { CandidateReport } from 'shared/schema/chart/report'
+import { CandidateReport, ReportCandidateLCC } from 'shared/schema/chart/report'
 import GraphQLClientService from 'services/graphql-service'
 
 const CandidateLabels = {
@@ -30,7 +30,7 @@ function useGetCandidateReport() {
       }),
   })
 
-  const candidateReport: CandidateReport = useMemo(() => {
+  const candidateReport: ReportCandidateLCC = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
       return response?.[getCandidateReport.operation]?.data
@@ -38,14 +38,13 @@ function useGetCandidateReport() {
     return {}
   }, [data])
 
-  const blacklist = candidateReport.blacklist_number
+  const blacklist = candidateReport.black_list
   const active = candidateReport.total - blacklist
-  const number_by_ref_type = candidateReport?.number_by_ref_type ?? []
+  const recruitment = candidateReport?.recruitment ?? {}
 
   const series = Object.keys(CandidateLabels).map((key) => {
-    const type = key
-    const item = number_by_ref_type.find((item) => item.type === type)
-    return item ? item.number : 0
+    const count = _.get(recruitment, key, 0)
+    return count
   })
 
   const labels = Object.keys(CandidateLabels).map((key: string) => {

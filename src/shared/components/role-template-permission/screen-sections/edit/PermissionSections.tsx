@@ -17,6 +17,7 @@ import useResetValue from '../../hooks/useDisableAction'
 import { getKeyName } from '../../utils/utils'
 import RoleTemplateStructure from '../../interfaces/permissionStructure'
 import EmailTemplatePermissionGroup from '../../components/edit/EmailTemplatePermissionGroup'
+import ReportPermissionGroup from '../../components/edit/ReportPermissionGroup'
 
 type PermissionSectionsProps = {
   roleTemplate: RoleTemplateStructure | undefined
@@ -83,6 +84,7 @@ function PermissionSections({ roleTemplate }: PermissionSectionsProps) {
           roleTemplate={roleTemplate}
           moduleDisabled={!cantViewCandidate}
         />
+        <ReportPermissionGroup roleTemplate={roleTemplate} />
       </FlexBox>
       <FlexBox flexDirection={'column'} gap={2}>
         <Text13md fontWeight={700}>SYSTEM</Text13md>

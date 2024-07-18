@@ -276,7 +276,18 @@ export const AppRoutes = () => {
           <Route path="skill" element={skillPage} />
           <Route
             path="reports"
-            element={<DashboardLayout>{<ReportPage />}</DashboardLayout>}
+            element={PermissionLayout({
+              module: 'REPORT',
+              children: <ReportPage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
           />
         </Route>
         <Route
