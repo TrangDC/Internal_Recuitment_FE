@@ -30,7 +30,7 @@ const ErrorPage: FC = () => {
       </Paragraph>
 
       <NavLink
-        to="/dashboard/teams"
+        to="/dashboard/reports"
         style={{
           display: 'block',
           marginTop: '1.5rem',
