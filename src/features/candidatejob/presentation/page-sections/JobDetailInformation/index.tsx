@@ -125,6 +125,27 @@ const JobDetailInformation = ({
             />
           </FlexBox>
         </DivItemInformation>
+
+        <DivItemInformation>
+          <SpanText>Offer expiration date</SpanText>
+          <TinyText>
+            {jobApplicationDetail?.offer_expiration_date &&
+              format(
+                new Date(jobApplicationDetail.offer_expiration_date),
+                'dd/MM/yyyy'
+              )}
+          </TinyText>
+        </DivItemInformation>
+        <DivItemInformation>
+          <SpanText>Candidate onboard date</SpanText>
+          <TinyText>
+            {jobApplicationDetail?.onboard_date &&
+              format(
+                new Date(jobApplicationDetail.onboard_date),
+                'dd/MM/yyyy'
+              )}
+          </TinyText>
+        </DivItemInformation>
       </FlexBox>
       <FlexBox
         flexWrap={'wrap'}

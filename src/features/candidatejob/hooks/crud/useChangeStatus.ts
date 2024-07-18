@@ -7,9 +7,10 @@ import {
 } from '../../shared/constants/schema'
 import { cloneDeep } from 'lodash'
 import {
+  convertDateToISOString,
   getInfoData,
   removeInfoData,
-  transformListArray,
+  removeStatusAttachment,
 } from 'shared/utils/utils'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import {
@@ -70,7 +71,7 @@ function ChangeStatus(props: propsChangeStatus) {
   }
 }
 
-function CreateFeedbackprops(
+function CreateFeedBackProp(
   props: Pick<useChangeStatusProps, 'callbackSuccess'> = {}
 ) {
   const { callbackSuccess } = props
@@ -107,29 +108,36 @@ function useChangeStatus(props: useChangeStatusProps) {
   const [data, setData] = useState<UpdateCandidateJobStatus>()
 
   const { defaultValues, callbackSuccess, id } = props
-  const { mutateCreateFeedback } = CreateFeedbackprops({ callbackSuccess })
+  const { mutateCreateFeedback } = CreateFeedBackProp({ callbackSuccess })
 
   const { mutateChangeStatus, isPendingStatus } = ChangeStatus({
     id: id,
     callbackSuccess,
     mutationFeedback: () => {
-      if (data?.feedback) {
-        mutateCreateFeedback({
-          ...getInfoData({ field: ['feedback', 'attachments'], object: data }),
-          candidate_job_id: id,
-        })
-      } else {
+      if(!data?.feedback && !data?.attachments) {
         callbackSuccess?.({ ...data, id })
+        return;
       }
+
+      mutateCreateFeedback({
+        ...getInfoData({ field: ['feedback', 'attachments'], object: data }),
+        candidate_job_id: id,
+      })
     },
   })
 
-  const { handleSubmit, formState, control, watch } =
+  const { handleSubmit, formState, control, watch, trigger, setValue, clearErrors } =
     useForm<FormDataSchemaChangeStatus>({
       resolver: yupResolver(schemaChangeStatus),
+      mode: 'onChange',
       defaultValues: {
+        feedback: '',
+        attachments: [],
+        failed_reason: [],
+        onboard_date: null,
+        offer_expiration_date: null,
         note: '',
-        ...defaultValues,
+        ...defaultValues
       },
     })
 
@@ -137,40 +145,38 @@ function useChangeStatus(props: useChangeStatusProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      let attachments =
-        value?.attachments && Array.isArray(value?.attachments)
-          ? value.attachments
-          : []
+      let deepValue = cloneDeep(value);
+      deepValue.attachments = removeStatusAttachment(deepValue?.attachments)
 
-      attachments = transformListArray(attachments, [
-        'document_id',
-        'document_name',
-      ])
+      const offer_expiration_date = deepValue.offer_expiration_date ? convertDateToISOString(deepValue.offer_expiration_date) : deepValue.offer_expiration_date;
+      const onboard_date = deepValue.onboard_date ? convertDateToISOString(deepValue.onboard_date) : deepValue.onboard_date;
+      
+      //remove field team_id
+      const value_clone = removeInfoData({field: ['team_id'], object: {...deepValue, offer_expiration_date, onboard_date}});
+      const update_status = removeInfoData({field: ['feedback', 'attachments'],object: value_clone}) as UpdateStatus;
 
-      const valueClone = removeInfoData({
-        field: ['team_id'],
-        object: {
-          ...cloneDeep(value),
-          attachments,
-        },
-      })
-      setData(valueClone as UpdateCandidateJobStatus)
-      mutateChangeStatus(
-        removeInfoData({
-          field: ['feedback', 'attachments'],
-          object: valueClone,
-        }) as UpdateStatus
-      )
+      setData(value_clone as UpdateCandidateJobStatus)
+      mutateChangeStatus(update_status)
     })()
   }
 
+  const resetOfferDate = () => {
+    setValue('offer_expiration_date', null)
+    setValue('onboard_date', null)
+    clearErrors(['offer_expiration_date', 'onboard_date'])
+  }
+
   return {
-    onSubmit,
     control,
     isValid,
     isPending: isPendingStatus,
     watch,
     formState,
+    trigger,
+    actions: {
+      resetOfferDate,
+      onSubmit
+    }
   }
 }
 

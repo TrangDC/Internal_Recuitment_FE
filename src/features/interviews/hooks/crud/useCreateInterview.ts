@@ -28,6 +28,8 @@ function useCreateInterview(
     defaultValues: {
       title: '',
       description: '',
+      location: '',
+      meeting_link: '',
       ...defaultValues,
     },
     resolver: yupResolver(schema),
@@ -78,6 +80,10 @@ function useCreateInterview(
     }
   }
 
+  function resetMeetingLink () {
+    setValue('meeting_link', '')
+  }
+
   return {
     onSubmit,
     control,
@@ -88,6 +94,7 @@ function useCreateInterview(
     watch,
     trigger,
     formState,
+    resetMeetingLink,
   }
 }
 

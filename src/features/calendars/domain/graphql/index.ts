@@ -55,6 +55,8 @@ const useGraphql = () => {
         start_from
         end_at
         candidate_job_id
+        location
+        meeting_link
         interviewer {
           id
           name

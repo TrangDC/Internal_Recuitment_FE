@@ -158,6 +158,8 @@ const useGraphql = () => {
         status
         created_at
         interview_feature
+        onboard_date
+        offer_expiration_date
         owner {
           id
           name
@@ -217,6 +219,8 @@ const useGraphql = () => {
             interview_date
             start_from
             end_at
+            location
+            meeting_link
             interviewer {
               id
               name
@@ -263,6 +267,8 @@ const useGraphql = () => {
             interview_date
             start_from
             end_at
+            location
+            meeting_link
             interviewer {
               id
               name
@@ -309,6 +315,8 @@ const useGraphql = () => {
             interview_date
             start_from
             end_at
+            location
+            meeting_link
             interviewer {
               id
               name
@@ -356,6 +364,8 @@ const useGraphql = () => {
             interview_date
             start_from
             end_at
+            location
+            meeting_link
             interviewer {
               id
               name
@@ -403,6 +413,8 @@ const useGraphql = () => {
             interview_date
             start_from
             end_at
+            location
+            meeting_link
             interviewer {
               id
               name
@@ -450,6 +462,8 @@ const useGraphql = () => {
             interview_date
             start_from
             end_at
+            location
+            meeting_link
             interviewer {
               id
               name
@@ -497,6 +511,8 @@ const useGraphql = () => {
             interview_date
             start_from
             end_at
+            location
+            meeting_link
             interviewer {
               id
               name

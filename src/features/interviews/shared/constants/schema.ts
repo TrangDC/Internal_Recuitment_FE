@@ -77,6 +77,8 @@ export const schema = yup.object({
       return true
     }),
   description: yup.string(),
+  location: yup.string().required(RULE_MESSAGES.MC1('location')),
+  meeting_link: yup.string()
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -156,6 +158,8 @@ export const schemaUpdate = yup.object({
     }),
   description: yup.string(),
   note: yup.string(),
+  location: yup.string().required(RULE_MESSAGES.MC1('location')),
+  meeting_link: yup.string()
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>

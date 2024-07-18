@@ -1,7 +1,7 @@
-import { CandidateJob } from "features/candidatejob/domain/interfaces"
-import { FeedBack } from "features/feedback/domain/interfaces"
-import { Member } from "features/teams/domain/interfaces"
-import { SchemaInputNote } from "shared/schema"
+import { CandidateJob } from 'features/candidatejob/domain/interfaces'
+import { FeedBack } from 'features/feedback/domain/interfaces'
+import { Member } from 'features/teams/domain/interfaces'
+import { SchemaInputNote } from 'shared/schema'
 
 export type NewCandidateInterviewInput = {
   title: string
@@ -11,6 +11,8 @@ export type NewCandidateInterviewInput = {
   start_from: string
   end_at: string
   interviewer: string[]
+  location: string
+  meeting_link: string
 }
 
 export type Interview = {
@@ -27,7 +29,9 @@ export type Interview = {
   interviewer: Member[]
   candidate_job_id: string
   edited: boolean
-} 
+  location: string
+  meeting_link: string
+}
 
 export type UpdateCandidateInterviewInput = {
   title: string
@@ -37,23 +41,24 @@ export type UpdateCandidateInterviewInput = {
   start_from: Date
   end_at: Date
   interviewer: string[]
-  note: string,
+  note: string
+  location: string
+  meeting_link: string
 }
 
 export type DeleteInterviewInput = SchemaInputNote
 
-
 export type GroupStatusInterview = {
   applied: {
     interview: Interview
-    feedback: FeedBack,
-  },
+    feedback: FeedBack
+  }
   interviewing: {
     interview: Interview
-    feedback: FeedBack,
-  },
+    feedback: FeedBack
+  }
   offering: {
     interview: Interview
-    feedback: FeedBack,
-  },
+    feedback: FeedBack
+  }
 }

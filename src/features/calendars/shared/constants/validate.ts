@@ -51,6 +51,8 @@ export const CreateInterviewSchema = yup.object().shape({
       return false
     }),
   description: yup.string(),
+  location: yup.string().required(RULE_MESSAGES.MC1('location')),
+  meeting_link: yup.string()
 })
 
 export const EditInterviewSchema = yup.object().shape({
@@ -101,6 +103,8 @@ export const EditInterviewSchema = yup.object().shape({
       return false
     }),
   description: yup.string(),
+  location: yup.string().required(RULE_MESSAGES.MC1('location')),
+  meeting_link: yup.string()
 })
 
 export const InterviewerSchema = yup.object().shape({
@@ -124,6 +128,8 @@ export const getOneInterviewSchema = yup.object().shape({
   candidate_id: yup.string().default(''),
   candidateJobOfTeamId: yup.string().default(''),
   interviewer: yup.array<any, User>().default([]),
+  location: yup.string().required(RULE_MESSAGES.MC1('location')),
+  meeting_link: yup.string()
 })
 
 export type CreateInterviewFrom = yup.InferType<typeof CreateInterviewSchema>
