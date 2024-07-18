@@ -31,7 +31,6 @@ export const styleToString = (style: SxProps): string => {
 
 export const getPercentage = (value: number, total: number) => {
   const percentage = (value / total) * 100
-  const result =
-    percentage % 1 >= 0.5 ? _.ceil(percentage) : _.floor(percentage)
-  return isNaN(result) ? 0 : result
+  const roundedPercentage = parseFloat(percentage.toFixed(2))
+  return isNaN(roundedPercentage) ? 0 : roundedPercentage
 }
