@@ -37,8 +37,8 @@ function useGetCandidateReport() {
     return {}
   }, [data])
 
-  const blacklist = candidateReport.non_black_list
-  const active = candidateReport.total - blacklist
+  const active = candidateReport.non_black_list
+  const blacklist = candidateReport.total - active
   const recruitment = candidateReport?.recruitment ?? {}
 
   const series = Object.keys(CandidateLabels).map((key) => {
