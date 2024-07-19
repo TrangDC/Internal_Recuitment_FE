@@ -1,6 +1,4 @@
-import { PermissionData } from 'features/role-template/domain/interfaces'
 import { Role } from '../interfaces'
-import { BaseRecord } from 'shared/interfaces'
 import {
   ActionPermission,
   MergePermissionValue,

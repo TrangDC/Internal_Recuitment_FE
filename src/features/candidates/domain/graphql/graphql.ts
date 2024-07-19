@@ -130,6 +130,11 @@ const useGraphql = () => {
         recruit_time
         description
         country
+        attachments {
+          id
+          document_name
+          document_id
+        }
         entity_skill_types {
           id
           name

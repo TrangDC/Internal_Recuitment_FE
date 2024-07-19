@@ -10,7 +10,7 @@ import {
 } from '../../shared/constants/schema'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
-import { transformListArray } from 'shared/utils/utils'
+import { removeStatusAttachment } from 'shared/utils/utils'
 
 type UseEditFeedbackProps = {
   id: string
@@ -35,26 +35,19 @@ function useUpdateFeedback(props: UseEditFeedbackProps) {
       return {
         note: '',
         feedback: data?.feedback,
-        attachments: [],
+        attachments: data?.attachments ?? [],
       }
     },
   })
 
-  const { handleSubmit, control, formState, setValue, watch } = useFormReturn
+  const { handleSubmit, control, formState, setValue, watch, getValues } = useFormReturn
   const isValid = !formState.isValid
+  console.log("🚀 ~ useUpdateFeedback ~ isValid:", isValid)
   const { mutate, isPending } = useEditReturn
 
   function onSubmit() {
     handleSubmit((value) => {
-      let attachments =
-        value?.attachments && Array.isArray(value?.attachments)
-          ? value.attachments
-          : []
-
-      attachments = transformListArray(attachments, [
-        'document_id',
-        'document_name',
-      ])
+      const attachments = removeStatusAttachment(value?.attachments)
 
       mutate({
         ...value,
@@ -80,6 +73,7 @@ function useUpdateFeedback(props: UseEditFeedbackProps) {
     setValue,
     isGetting,
     watch,
+    getValues
   }
 }
 

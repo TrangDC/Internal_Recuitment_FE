@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/feedback/domain/graphql/graphql'
 import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import { schema, FormDataSchema } from '../../shared/constants/schema'
-import { transformListArray } from 'shared/utils/utils'
+import { removeStatusAttachment } from 'shared/utils/utils'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 
 interface createFeedbackProps {
@@ -28,21 +28,13 @@ function useCreateFeedback(props: createFeedbackProps = { defaultValues: {} }) {
     onSuccess: callbackSuccess,
   })
 
-  const { handleSubmit, control, formState, watch } = useFormReturn
+  const { handleSubmit, control, formState, watch, getValues } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
     handleSubmit((value) => {
-      let attachments =
-        value?.attachments && Array.isArray(value?.attachments)
-          ? value.attachments
-          : []
-
-      attachments = transformListArray(attachments, [
-        'document_id',
-        'document_name',
-      ])
+      const attachments = removeStatusAttachment(value?.attachments)
 
       mutate({
         ...value,
@@ -58,6 +50,7 @@ function useCreateFeedback(props: createFeedbackProps = { defaultValues: {} }) {
     isPending,
     formState,
     watch,
+    getValues
   }
 }
 

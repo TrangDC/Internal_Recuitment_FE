@@ -46,6 +46,7 @@ function useCreateCandidate(props: createCandidateProps) {
     watch,
     setValue,
     clearErrors,
+    getValues
   } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
@@ -79,6 +80,7 @@ function useCreateCandidate(props: createCandidateProps) {
     isPending,
     formState,
     watch,
+    getValues,
     actions: {
       resetSourceValue,
     },

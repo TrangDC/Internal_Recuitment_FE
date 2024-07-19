@@ -14,6 +14,56 @@ export const schema = yup.object({
     .required(RULE_MESSAGES.MC1('attachments'))
     .min(1, 'CV is missing'),
   note: yup.string(),
+  failed_reason: yup
+  .array()
+  .test(
+    'failed-reason',
+    RULE_MESSAGES.MC1('failed_reason'),
+    function (value) {
+      const { status, failed_reason } = this.parent
+      if (
+        status === STATUS_CANDIDATE.OFFERED_LOST ||
+        status === STATUS_CANDIDATE.KIV
+      ) {
+        return !isEmpty(failed_reason)
+      }
+
+      return true
+    }
+  ),
+  offer_expiration_date: yup
+  .date()
+  .typeError(RULE_MESSAGES.MC5('Offer expiration date'))
+  .min(
+    dayjs().startOf('day').toDate(),
+    'Offer expiration date must be after or equal current date'
+  )
+  .test(
+    'is-before-to',
+    'Offer expiration date must be after Onboard date',
+    function (value) {
+      const { onboard_date } = this.parent
+      if (!onboard_date) return true
+      return dayjs(value).isBefore(dayjs(onboard_date))
+    }
+  )
+  .when(['status'], ([status], schema) => {
+    if(status !== STATUS_CANDIDATE.OFFERING) return schema;
+    return schema.required(RULE_MESSAGES.MC1('Offer expiration date'));
+  })
+  .nullable(),
+  onboard_date: yup
+  .date()
+  .typeError(RULE_MESSAGES.MC5('Candidate onboard date'))
+  .min(
+    dayjs().startOf('day').toDate(),
+    'Onboard date must be after or equal current date'
+  )
+  .when(['status'], ([status], schema) => {
+    if(status !== STATUS_CANDIDATE.OFFERING) return schema;
+    return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'));
+  })
+  .nullable(),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>

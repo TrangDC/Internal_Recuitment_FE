@@ -3,7 +3,6 @@ import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useCreateFeedback from '../../../hooks/crud/useCreateFeedBack'
-import InputFileComponent from 'shared/components/form/inputFileComponent'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
@@ -12,6 +11,7 @@ import { Span, Tiny } from 'shared/components/Typography'
 import { useMemo } from 'react'
 import { isEmpty } from 'lodash'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import InputFileUpload from 'shared/components/form/inputFileUpload'
 
 interface ICreateFeedbackModal {
   open: boolean
@@ -26,7 +26,7 @@ function CreateFeedbackModal({
   candidate_job_id,
   onSuccess,
 }: ICreateFeedbackModal) {
-  const { onSubmit, control, isPending, isValid, watch, formState } =
+  const { onSubmit, control, isPending, isValid, watch, formState, getValues } =
     useCreateFeedback({
       callbackSuccess: () => {
         setOpen(false)
@@ -87,29 +87,29 @@ function CreateFeedbackModal({
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <InputFileComponent
-                        field={field}
-                        inputFileProps={{
-                          maxFile: 10,
-                          maxSize: 20,
-                          msgError: {
-                            maxFile: 'Up to 10 files and 20MB/file',
-                            maxSize: 'Up to 10 files and 20MB/file',
-                          },
-                          descriptionFile: () => {
-                            return (
-                              <Box>
-                                <Span sx={{ color: '#2A2E37 !important' }}>
-                                  {' '}
-                                  Attach file{' '}
-                                </Span>
-                                <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                  Up to 10 files and 20MB/file
-                                </Tiny>
-                              </Box>
-                            )
-                          },
+                      <InputFileUpload
+                        getValues={getValues}
+                        name={field.name}
+                        multiple={true}
+                        validator_files={{
+                          max_file: {max: 10, msg_error: 'Up to 10 files and 20MB/file'},
+                          max_size: {max: 20, msg_error: 'Up to 10 files and 20MB/file'},             
                         }}
+                        descriptionFile={() => {
+                          return (
+                            <Box>
+                              <Span sx={{ color: '#2A2E37 !important' }}>
+                                {' '}
+                                Attach file{' '}
+                              </Span>
+                              <Tiny sx={{ color: '#2A2E37 !important' }}>
+                              Up to 10 files and 20MB/file
+                              </Tiny>
+                            </Box>
+                          )
+                        }} 
+                        value={field.value}
+                        onChange={field.onChange}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

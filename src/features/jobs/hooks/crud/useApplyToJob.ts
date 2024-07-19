@@ -39,7 +39,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     },
   })
 
-  const { handleSubmit, control, formState, resetField, watch } = useFormReturn
+  const { handleSubmit, control, formState, resetField, watch, getValues } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
@@ -65,6 +65,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     isPending,
     resetField,
     watch,
+    getValues
   }
 }
 

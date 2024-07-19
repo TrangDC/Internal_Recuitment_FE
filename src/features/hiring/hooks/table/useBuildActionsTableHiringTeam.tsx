@@ -1,7 +1,6 @@
 import EditIcon from 'shared/components/icons/EditIcon'
 import useTextTranslation from 'shared/constants/text'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
-import ViewIcon from 'shared/components/icons/View'
 import { Hiring } from 'features/hiring/domain/interfaces'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 
