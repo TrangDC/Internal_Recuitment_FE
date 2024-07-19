@@ -2,7 +2,6 @@ import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useTextTranslation from 'shared/constants/text'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
@@ -10,6 +9,7 @@ import { Span, Tiny } from 'shared/components/Typography'
 import useEditJobApplication from '../../../hooks/crud/useEditJobApplication'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import InputFileUpload from 'shared/components/form/inputFileUpload'
 
 type EditCandidateJobModalProps = {
   open: boolean
@@ -24,7 +24,7 @@ function EditCandidateJobModal({
   candidateId,
   onSuccess,
 }: EditCandidateJobModalProps) {
-  const { onSubmit, isPending, isValid, control, formState } =
+  const { onSubmit, isPending, isValid, control, formState, getValues } =
     useEditJobApplication({
       id: candidateId,
       onSuccess(data) {
@@ -51,37 +51,32 @@ function EditCandidateJobModal({
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <InputFileComponent
-                        field={field}
-                        inputFileProps={{
-                          accept: '.pdf,.doc,.docx,.xlsx',
-                          regexString: '\\.(pdf|xlsx|docx|doc)',
-                          maxFile: 1,
-                          multiple: false,
-                          maxSize: 20,
-                          msgError: {
-                            is_valid:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
-                            maxSize:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
-                            maxFile:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
-                          },
-                          descriptionFile: () => {
-                            return (
-                              <Box>
-                                <Span sx={{ color: '#2A2E37 !important' }}>
-                                  {' '}
-                                  Attach CV{' '}
-                                </Span>
-                                <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                  One PDF,WORD,EXCEL file only, file size up to
-                                  20mb
-                                </Tiny>
-                              </Box>
-                            )
-                          },
+                      <InputFileUpload
+                        getValues={getValues}
+                        name={field.name}
+                        accept={'.pdf,.doc,.docx,.xlsx'}
+                        multiple={false}
+                        validator_files={{
+                          max_file: {max: 1, msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'},
+                          max_size: {max: 20, msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'},
+                          is_valid: {regex: '\\.(pdf|xlsx|docx|doc)', msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'}
                         }}
+                        descriptionFile={() => {
+                          return (
+                            <Box>
+                              <Span sx={{ color: '#2A2E37 !important' }}>
+                                {' '}
+                                Attach CV{' '}
+                              </Span>
+                              <Tiny sx={{ color: '#2A2E37 !important' }}>
+                                One PDF,WORD,EXCEL file only, file size up to
+                                20mb
+                              </Tiny>
+                            </Box>
+                          )
+                        }} 
+                        value={field.value}
+                        onChange={field.onChange}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

@@ -20,6 +20,6 @@ export const RULE_MESSAGES = {
       field1.toLowerCase()
     )} must be after ${field2.toLowerCase()}`,
   MC6: (field: string) => `${field} has already existed`,
-  MC8: (fieldSmall: string, fieldBig: string) =>
+  MC8: (fieldSmall: string | number, fieldBig: string | number) =>
     `The ${fieldSmall} must be after  ${fieldBig}`,
 }

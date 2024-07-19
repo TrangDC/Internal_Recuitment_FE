@@ -7,7 +7,6 @@ import {
   CANDIDATE_STATUS,
   list_status_disabled,
 } from '../../../shared/constants'
-import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useChangeStatus from '../../../hooks/crud/useChangeStatus'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -26,6 +25,7 @@ import usePopup from 'contexts/popupProvider/hooks/usePopup'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import Cant from 'features/authorization/presentation/components/Cant'
 import AppDateField from 'shared/components/input-fields/DateField'
+import InputFileUpload from 'shared/components/form/inputFileUpload'
 
 export type onSuccessChangeStatus = {
   prevStatus: string
@@ -60,7 +60,7 @@ function ChangeStatusModal({
   onSuccess,
 }: IChangeStatusModal) {
   const { handleWarning, handleReset } = usePopup()
-  const { actions, control, isPending, isValid, watch, formState, trigger } =
+  const { actions, control, isPending, isValid, watch, formState, trigger, getValues } =
     useChangeStatus({
       id: rowData?.id as string,
       callbackSuccess: (data) => {
@@ -316,30 +316,31 @@ function ChangeStatusModal({
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <InputFileComponent
-                        field={field}
-                        inputFileProps={{
-                          accept: '.pdf, .png, .jpg, .jpeg, .doc, .docx',
-                          regexString: '.(pdf|png|jpg|jpeg|doc|docx)$',
-                          maxFile: 10,
-                          maxSize: 20,
-                          msgError: {
-                            maxSize: 'Up to 10 files and 20MB/file',
-                          },
-                          descriptionFile: () => {
-                            return (
-                              <Box>
-                                <Span sx={{ color: '#2A2E37 !important' }}>
-                                  {' '}
-                                  Attach file{' '}
-                                </Span>
-                                <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                  Up to 10 files and 20MB/file
-                                </Tiny>
-                              </Box>
-                            )
-                          },
+                       <InputFileUpload
+                        getValues={getValues}
+                        name={field.name}
+                        accept={'.pdf, .png, .jpg, .jpeg, .doc, .docx'}
+                        multiple={true}
+                        validator_files={{
+                          max_file: {max: 10, msg_error: 'Up to 10 files and 20MB/file'},
+                          max_size: {max: 20, msg_error: 'Up to 10 files and 20MB/file'},
+                          is_valid: {regex: '.(pdf|png|jpg|jpeg|doc|docx)$', msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'}
                         }}
+                        descriptionFile={() => {
+                          return (
+                            <Box>
+                              <Span sx={{ color: '#2A2E37 !important' }}>
+                                {' '}
+                                Attach file{' '}
+                              </Span>
+                              <Tiny sx={{ color: '#2A2E37 !important' }}>
+                              Up to 10 files and 20MB/file
+                              </Tiny>
+                            </Box>
+                          )
+                        }} 
+                        value={field.value}
+                        onChange={field.onChange}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

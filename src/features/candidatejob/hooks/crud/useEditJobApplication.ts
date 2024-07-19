@@ -33,7 +33,7 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
     },
   })
 
-  const { handleSubmit, watch, control, formState } = useFormReturn
+  const { handleSubmit, watch, control, formState, getValues } = useFormReturn
   const { isPending, mutate } = useEditReturn
 
   function onSubmit(note: string) {
@@ -62,6 +62,7 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
     useFormReturn,
     control,
     formState,
+    getValues
   }
 }
 

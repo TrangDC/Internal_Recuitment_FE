@@ -4,7 +4,6 @@ import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useApplyToJob from '../../../hooks/crud/useApplyToJob'
 import { useMemo } from 'react'
-import InputFileComponent from 'shared/components/form/inputFileComponent'
 import useTextTranslation from 'shared/constants/text'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
@@ -15,7 +14,11 @@ import { isEmpty } from 'lodash'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SelectionTeamForCreateCDDJPermission from 'features/candidatejob/permission/components/SelectionTeamForCreateCDDJPermission'
-
+import InputFileUpload from 'shared/components/form/inputFileUpload'
+import { STATUS_CANDIDATE } from 'shared/class/candidate'
+import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
+import { transformListItem } from 'shared/utils/utils'
+import AppDateField from 'shared/components/input-fields/DateField'
 interface IApplyJobModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -37,6 +40,8 @@ function ApplyJobModal({
     resetField,
     watch,
     formState,
+    getValues,
+    trigger
   } = useApplyToJob({
     callbackSuccess: () => {
       setOpen(false)
@@ -50,12 +55,25 @@ function ApplyJobModal({
   const translation = useTextTranslation()
   const attachments = watch('attachments')
   const team_id = watch('team_id')
+  const new_status = watch('status')
+
+  const show_failed_reason = useMemo(() => {
+    return (
+      new_status === STATUS_CANDIDATE.KIV ||
+      new_status === STATUS_CANDIDATE.OFFERED_LOST
+    )
+  }, [new_status])
+
+  const show_date_onboard = useMemo(() => {
+    return new_status === STATUS_CANDIDATE.OFFERING
+  }, [new_status])
 
   const isValidAttachments = useMemo(() => {
     if (!Array.isArray(attachments) || isEmpty(attachments)) return true
 
     return attachments.every((file) => file.status === 'success')
   }, [attachments])
+
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -150,6 +168,96 @@ function ApplyJobModal({
               </FormControl>
             </FlexBox>
 
+            {show_date_onboard && (
+              <FlexBox gap={2}>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="offer_expiration_date"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <AppDateField
+                          label={'Offer expiration date'}
+                          value={field.value}
+                          format="dd/MM/yyyy"
+                          onChange={(value) => {
+                            field.onChange(value)
+                          }}
+                          minDate={new Date()}
+                          textFieldProps={{
+                            fullWidth: true,
+                            size: 'small',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="onboard_date"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <AppDateField
+                          label={'Candidate onboard date'}
+                          value={field.value}
+                          format="dd/MM/yyyy"
+                          onChange={(value) => {
+                            field.onChange(value)
+                            trigger('offer_expiration_date')
+                          }}
+                          minDate={new Date()}
+                          textFieldProps={{
+                            fullWidth: true,
+                            size: 'small',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+            )}
+
+            {show_failed_reason && (
+              <FlexBox gap={2}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="failed_reason"
+                    shouldUnregister
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <FailedReasonAutoComplete
+                          multiple={true}
+                          value={field.value || []}
+                          onChange={(data) => {
+                            field.onChange(transformListItem(data, 'value'))
+                          }}
+                          textFieldProps={{
+                            label: 'Failed reason',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+            )}
+
             <FlexBox justifyContent={'center'} alignItems={'center'}>
               <FormControl fullWidth>
                 <Controller
@@ -158,37 +266,32 @@ function ApplyJobModal({
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <InputFileComponent
-                        field={field}
-                        inputFileProps={{
-                          accept: '.pdf,.doc,.docx,.xlsx',
-                          regexString: '\\.(pdf|xlsx|docx|doc)',
-                          maxFile: 1,
-                          multiple: false,
-                          maxSize: 20,
-                          msgError: {
-                            is_valid:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
-                            maxSize:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
-                            maxFile:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
-                          },
-                          descriptionFile: () => {
-                            return (
-                              <Box>
-                                <Span sx={{ color: '#2A2E37 !important' }}>
-                                  {' '}
-                                  Attach CV{' '}
-                                </Span>
-                                <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                  One PDF,WORD,EXCEL file only, file size up to
-                                  20mb
-                                </Tiny>
-                              </Box>
-                            )
-                          },
+                      <InputFileUpload
+                        getValues={getValues}
+                        name={field.name}
+                        accept={'.pdf,.doc,.docx,.xlsx'}
+                        multiple={false}
+                        validator_files={{
+                          max_file: {max: 1, msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'},
+                          max_size: {max: 20, msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'},
+                          is_valid: {regex: '\\.(pdf|xlsx|docx|doc)', msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'}
                         }}
+                        descriptionFile={() => {
+                          return (
+                            <Box>
+                              <Span sx={{ color: '#2A2E37 !important' }}>
+                                {' '}
+                                Attach CV{' '}
+                              </Span>
+                              <Tiny sx={{ color: '#2A2E37 !important' }}>
+                                One PDF,WORD,EXCEL file only, file size up to
+                                20mb
+                              </Tiny>
+                            </Box>
+                          )
+                        }} 
+                        value={field.value}
+                        onChange={field.onChange}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

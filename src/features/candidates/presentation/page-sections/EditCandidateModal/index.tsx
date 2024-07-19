@@ -11,17 +11,16 @@ import AppDateField from 'shared/components/input-fields/DateField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import CandidateSourceAutoComplete, {
-  CANDIDATE_SOURCE_STATE,
   TypeCandidateSource,
 } from 'shared/components/autocomplete/candidate-source-auto-complete'
 import NationalityAutoComplete from 'shared/components/autocomplete/nationality-auto-complete'
 import CandidateBySource from '../CreateCandidateModal/components/CandidateBySource'
-import InputFileComponent from 'shared/components/form/inputFileComponent'
 import { Span, Tiny } from 'shared/components/Typography'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTree from 'shared/components/tree/skill-tree'
 import { Candidate } from 'features/candidates/domain/interfaces'
+import InputFileUpload from 'shared/components/form/inputFileUpload'
 
 interface IEditCandidateModal {
   open: boolean
@@ -38,7 +37,7 @@ function EditCandidateModal({
   onSuccess,
   id,
 }: IEditCandidateModal) {
-  const { actions, control, isPending, isValid, isGetting, watch, formState } =
+  const { actions, control, isPending, isValid, isGetting, watch, formState, getValues } =
     useUpdateCandidate({
       id: id,
       onSuccess: (data) => {
@@ -334,31 +333,36 @@ function EditCandidateModal({
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <InputFileComponent
-                        field={field}
-                        inputFileProps={{
-                          maxFile: 10,
-                          multiple: true,
-                          maxSize: 20,
-                          msgError: {
-                            is_valid: 'One PDF file only, file size up to 20MB',
-                            maxSize: 'One PDF file only, file size up to 20MB',
-                            maxFile: 'One PDF file only, file size up to 20MB',
+                      <InputFileUpload
+                        getValues={getValues}
+                        name={field.name}
+                        multiple={true}
+                        validator_files={{
+                          max_file: {
+                            max: 10,
+                            msg_error:
+                              'One PDF file only, file size up to 20MB',
                           },
-                          descriptionFile: () => {
-                            return (
-                              <Box>
-                                <Span sx={{ color: '#2A2E37 !important' }}>
-                                  {' '}
-                                  Candidate attachments{' '}
-                                </Span>
-                                <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                  Up to 10 files and 20mb/file
-                                </Tiny>
-                              </Box>
-                            )
+                          max_size: {
+                            max: 20,
+                            msg_error:
+                              'One PDF file only, file size up to 20MB',
                           },
                         }}
+                        descriptionFile={() => {
+                          return (
+                            <Box>
+                              <Span sx={{ color: '#2A2E37 !important' }}>
+                                Candidate attachments
+                              </Span>
+                              <Tiny sx={{ color: '#2A2E37 !important' }}>
+                                Up to 10 files and 20MB/file
+                              </Tiny>
+                            </Box>
+                          )
+                        }}
+                        value={field.value ?? []}
+                        onChange={field.onChange}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

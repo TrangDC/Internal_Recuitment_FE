@@ -6,7 +6,6 @@ import icons from 'shared/components/icons'
 import { pdfjs } from 'react-pdf'
 import {
   downloadFile,
-  downloadPdf,
   openPDFInNewTab,
 } from 'shared/utils/upload-file'
 import DownloadWhiteIcon from 'shared/components/icons/DownloadWhiteIcon'

@@ -54,13 +54,13 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
           ? new Date(data?.recruit_time)
           : new Date(),
         reference_uid: data?.reference_uid ?? '',
-        attachments: [],
+        attachments: data?.attachments ?? [],
         entity_skill_records: entity_skill_records,
       }
     },
   })
 
-  const { handleSubmit, control, formState, setValue, watch, clearErrors } = useFormReturn
+  const { handleSubmit, control, formState, setValue, watch, clearErrors, getValues } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useEditReturn
 
@@ -105,6 +105,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
     isGetting,
     formState,
     watch,
+    getValues
   }
 }
 

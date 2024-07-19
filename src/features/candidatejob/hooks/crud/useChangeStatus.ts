@@ -7,7 +7,6 @@ import {
 } from '../../shared/constants/schema'
 import { cloneDeep } from 'lodash'
 import {
-  convertDateToISOString,
   getInfoData,
   removeInfoData,
   removeStatusAttachment,
@@ -26,6 +25,7 @@ import {
   UpdateCandidateJobStatus,
   UpdateStatus,
 } from 'features/candidatejob/domain/interfaces'
+import { convertToUTC } from 'shared/utils/date'
 
 interface useChangeStatusProps {
   defaultValues?: Partial<FormDataSchemaChangeStatus>
@@ -126,7 +126,7 @@ function useChangeStatus(props: useChangeStatusProps) {
     },
   })
 
-  const { handleSubmit, formState, control, watch, trigger, setValue, clearErrors } =
+  const { handleSubmit, formState, control, watch, trigger, setValue, clearErrors, getValues } =
     useForm<FormDataSchemaChangeStatus>({
       resolver: yupResolver(schemaChangeStatus),
       mode: 'onChange',
@@ -148,8 +148,8 @@ function useChangeStatus(props: useChangeStatusProps) {
       let deepValue = cloneDeep(value);
       deepValue.attachments = removeStatusAttachment(deepValue?.attachments)
 
-      const offer_expiration_date = deepValue.offer_expiration_date ? convertDateToISOString(deepValue.offer_expiration_date) : deepValue.offer_expiration_date;
-      const onboard_date = deepValue.onboard_date ? convertDateToISOString(deepValue.onboard_date) : deepValue.onboard_date;
+      const offer_expiration_date = deepValue.offer_expiration_date ? convertToUTC(deepValue.offer_expiration_date) : deepValue.offer_expiration_date;
+      const onboard_date = deepValue.onboard_date ? convertToUTC(deepValue.onboard_date) : deepValue.onboard_date;
       
       //remove field team_id
       const value_clone = removeInfoData({field: ['team_id'], object: {...deepValue, offer_expiration_date, onboard_date}});
@@ -176,7 +176,8 @@ function useChangeStatus(props: useChangeStatusProps) {
     actions: {
       resetOfferDate,
       onSubmit
-    }
+    },
+    getValues
   }
 }
 

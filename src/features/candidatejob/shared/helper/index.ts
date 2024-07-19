@@ -26,7 +26,11 @@ export const downloadFileAttachment = (
       resolve(callback(paramUpload))
     })
       .then((response: any) => {
-        return response.CreateAttachmentSASURL.url
+        if (isRight(response)) {
+          //@ts-ignore
+          const urlFile = unwrapEither(response)?.['CreateAttachmentSASURL']?.url ?? ''
+          return urlFile
+        }
       })
       .catch((error) => {
         toast.error((error as Error).message)

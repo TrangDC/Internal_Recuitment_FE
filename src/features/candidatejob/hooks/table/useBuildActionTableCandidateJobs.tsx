@@ -112,6 +112,7 @@ function useBuildActionTableCandidateJobs({
         id: ActionCandidateJobsTabLe.DOWNLOAD,
         onClick: (id, rowData) => {
           const { attachments } = rowData
+          console.log("🚀 ~ attachments:", attachments)
           downloadFileAttachment(attachments, handleGetUrlDownload)
         },
         title: 'Download CV',

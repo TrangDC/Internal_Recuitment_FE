@@ -100,6 +100,11 @@ const useGraphql = () => {
           feedback
           created_at
           updated_at
+          attachments {
+            id
+            document_id
+            document_name
+          }
           owner {
             id
             name

@@ -1,10 +1,14 @@
 import { formatISO } from 'date-fns'
+import dayjs from 'dayjs'
 import { entity_skill_type } from 'features/skillType/domain/interfaces'
-import _, { cloneDeep, isEmpty } from 'lodash'
+import _, { cloneDeep, isEmpty, omit } from 'lodash'
 import { FormState } from 'react-hook-form'
 import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
 import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
 import { BaseRecord, DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
+import { convertToUTC, getLocalTimeOffset } from './date'
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(utc);
 
 export const searchByName = (listData: any[], searchValue: string) => {
   if (searchValue.length > 0) {
@@ -211,9 +215,12 @@ export function formatCurrency(
 }
 
 export const removeStatusAttachment = (attachments: any[] | undefined) => {
-  let result = attachments && Array.isArray(attachments) ? attachments : []
+  let result =
+    attachments && Array.isArray(attachments)
+      ? attachments.map((file) => ({ ...file, id: file?.id ?? '' }))
+      : []
 
-  return transformListArray(result, ['document_id', 'document_name'])
+  return transformListArray(result, ['document_id', 'document_name', 'id'])
 }
 
 export const handleCopyClipBoard = (url: string, content: string) => {
@@ -326,9 +333,8 @@ export const replaceTemplate = (
 }
 
 export const getContentStringHTML = (content: string) => {
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = content;
+  const tempDiv = document.createElement('div')
+  tempDiv.innerHTML = content
 
-  return tempDiv.textContent || "";
+  return tempDiv.textContent || ''
 }
-

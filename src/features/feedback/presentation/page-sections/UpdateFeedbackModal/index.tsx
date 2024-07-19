@@ -2,7 +2,6 @@ import BaseModal from 'shared/components/modal'
 import { Controller, useWatch } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import InputFileComponent from 'shared/components/form/inputFileComponent'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
@@ -14,6 +13,7 @@ import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import { useMemo } from 'react'
 import { isEmpty } from 'lodash'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
+import InputFileUpload from 'shared/components/form/inputFileUpload'
 
 interface IUpdateFeedbackModal {
   open: boolean
@@ -29,21 +29,28 @@ function UpdateFeedbackModal({
   id,
   onSuccess,
 }: IUpdateFeedbackModal) {
-  const { actions, control, isValid, isPending, isGetting, formState } =
-    useUpdateFeedback({
-      id: id,
-      onSuccess: () => {
-        setOpen(false)
-        onSuccess?.()
-      },
-    })
+  const {
+    actions,
+    control,
+    isValid,
+    isPending,
+    isGetting,
+    formState,
+    getValues,
+  } = useUpdateFeedback({
+    id: id,
+    onSuccess: () => {
+      setOpen(false)
+      onSuccess?.()
+    },
+  })
   const { callbackSubmit } = actions
   const attachments = useWatch({ control, name: 'attachments' })
 
   const isValidAttachments = useMemo(() => {
     if (!Array.isArray(attachments) || isEmpty(attachments)) return true
 
-    return attachments.every((file) => file.status === 'success')
+    return attachments.every((file) => file.status === 'success' || !file?.status)
   }, [attachments])
 
   return (
@@ -89,29 +96,35 @@ function UpdateFeedbackModal({
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <InputFileComponent
-                        field={field}
-                        inputFileProps={{
-                          maxFile: 10,
-                          maxSize: 20,
-                          msgError: {
-                            maxFile: 'Up to 10 files and 20MB/file',
-                            maxSize: 'Up to 10 files and 20MB/file',
+                      <InputFileUpload
+                        getValues={getValues}
+                        name={field.name}
+                        multiple={true}
+                        validator_files={{
+                          max_file: {
+                            max: 10,
+                            msg_error: 'Up to 10 files and 20MB/file',
                           },
-                          descriptionFile: () => {
-                            return (
-                              <Box>
-                                <Span sx={{ color: '#2A2E37 !important' }}>
-                                  {' '}
-                                  Attach file{' '}
-                                </Span>
-                                <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                  Up to 10 files and 20MB/file
-                                </Tiny>
-                              </Box>
-                            )
+                          max_size: {
+                            max: 20,
+                            msg_error: 'Up to 10 files and 20MB/file',
                           },
                         }}
+                        descriptionFile={() => {
+                          return (
+                            <Box>
+                              <Span sx={{ color: '#2A2E37 !important' }}>
+                                {' '}
+                                Attach file{' '}
+                              </Span>
+                              <Tiny sx={{ color: '#2A2E37 !important' }}>
+                                Up to 10 files and 20MB/file
+                              </Tiny>
+                            </Box>
+                          )
+                        }}
+                        value={field.value}
+                        onChange={field.onChange}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
