@@ -75,7 +75,15 @@ function useRecruitmentApplicationOptions(
           },
         },
       },
-      colors: ['#82868C', '#2CC5BD', '#A798FF', '#5CBAFE', '#FFAF46'],
+      colors: [
+        '#FF5084',
+        '#82868C',
+        '#FF9777',
+        '#A798FF',
+        '#2CC5BD',
+        '#5CBAFE',
+        '#FFAF46',
+      ],
       tooltip: {
         fillSeriesColor: false,
         theme: 'light',

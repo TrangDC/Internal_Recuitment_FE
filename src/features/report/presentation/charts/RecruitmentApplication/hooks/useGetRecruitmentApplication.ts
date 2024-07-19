@@ -8,9 +8,11 @@ import { handleFormatLabel } from 'features/report/shared/utils/utils'
 import GraphQLClientService from 'services/graphql-service'
 
 const candidateLabels = {
+  ex_staff: 'Ex-staff',
   offer_lost: 'Offered lost',
   kiv: 'KIV',
   hired: 'Hired',
+  offering: 'Offering',
   interviewing: 'Interviewing',
   applied: 'Applied',
 }
