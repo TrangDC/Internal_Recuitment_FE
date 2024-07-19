@@ -92,6 +92,15 @@ export default function WeekPicker(props: IWeekPicker) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateCalendar
         value={value}
+        sx={{
+          '& .MuiPickersCalendarHeader-label': {
+            fontSize: 12,
+            fontWeight: 700,
+            lineHeight: '16px',
+          },
+          border: '1px solid #E3E6EB',
+          borderRadius: '4px',
+        }}
         onChange={handleOnChange}
         showDaysOutsideCurrentMonth
         slots={{ day: Day }}

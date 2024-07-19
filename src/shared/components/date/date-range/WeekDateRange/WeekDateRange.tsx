@@ -1,5 +1,5 @@
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Tiny12 } from 'shared/components/Typography'
+import { Text15sb, Tiny12 } from 'shared/components/Typography'
 import { Box, Popover } from '@mui/material'
 import { Dayjs } from 'dayjs'
 import WeekPicker from '../../WeekPicker/WeekPicker'
@@ -47,21 +47,26 @@ function WeekDateRange(props: QuarterDateRangeProps) {
         vertical: 'bottom',
         horizontal: 'left',
       }}
+      sx={{
+        '& .MuiPaper-root': {
+          boxShadow: '0px 0px 20px 0px #28293D33',
+        },
+      }}
     >
       <FlexBox padding={'10px'} gap={'20px'}>
         <Box>
-          <Tiny12 fontWeight={700} marginBottom={1}>
+          <Text15sb fontWeight={700} marginBottom={1}>
             From
-          </Tiny12>
+          </Text15sb>
           <WeekPicker
             onChange={(dateValue) => handleChange('from', dateValue)}
             value={valueDate?.from_date}
           />
         </Box>
         <Box>
-          <Tiny12 fontWeight={700} marginBottom={1}>
+          <Text15sb fontWeight={700} marginBottom={1}>
             To
-          </Tiny12>
+          </Text15sb>
           <WeekPicker
             onChange={(dateValue) => handleChange('to', dateValue)}
             value={valueDate?.to_date}

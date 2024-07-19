@@ -11,8 +11,8 @@ export enum ActionJobsOpen {
 }
 
 type UseBuildActionsTableHiringTeamProps = {
-  handleOpenEdit: (id: string, row: Hiring) => void
-  handleOpenDetail: (id: string, row: Hiring) => void
+  handleOpenEdit: (id: string) => void
+  handleOpenDetail: (id: string) => void
 }
 
 function useBuildActionsTableHiringTeam({
@@ -24,16 +24,16 @@ function useBuildActionsTableHiringTeam({
     actions: {
       edit: {
         id: ActionJobsOpen.EDIT,
-        onClick: (id, rowData) => {
-          handleOpenEdit(id, rowData)
+        onClick: (id) => {
+          handleOpenEdit(id)
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
       },
       detail: {
         id: ActionJobsOpen.DETAIL,
-        onClick: (id, rowData) => {
-          handleOpenDetail(id, rowData)
+        onClick: (id) => {
+          handleOpenDetail(id)
         },
         title: translation.COMMON.detail,
         Icon: <SearchIconSmall />,

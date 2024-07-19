@@ -14,6 +14,10 @@ import { handleFormatFilters } from 'features/report/shared/utils/utils'
 
 const selectItems = [
   {
+    value: 'week',
+    title: 'Week',
+  },
+  {
     value: 'month',
     title: 'Month',
   },
@@ -21,10 +25,7 @@ const selectItems = [
     value: 'quarter',
     title: 'Quarter',
   },
-  {
-    value: 'week',
-    title: 'Week',
-  },
+
   {
     value: 'year',
     title: 'Year',

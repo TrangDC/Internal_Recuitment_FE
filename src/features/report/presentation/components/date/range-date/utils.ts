@@ -26,7 +26,7 @@ export const handleFormatLabelDate = (
 const formatLabelByMonth = (dateRange: ValueRangeDate): string => {
   const fromDate = dayjs(dateRange.from_date)
   const toDate = dayjs(dateRange.to_date)
-  const label = `${fromDate.format('MMM')} ${fromDate.format('YYYY')} - ${toDate.format('MMM')} ${toDate.format('YYYY')}`
+  const label = `${fromDate.format('MMM YYYY')} - ${toDate.format('MMM YYYY')}`
   return label
 }
 
@@ -48,8 +48,8 @@ const formatLabelByQuarter = (dateRange: ValueRangeDate): string => {
 }
 
 const formatLabelByWeek = (dateRange: ValueRangeDate): string => {
-  const fromDate = dayjs(dateRange.from_date)
-  const toDate = dayjs(dateRange.to_date)
-  const label = `${fromDate.format('DD')} ${fromDate.format('MMM')} - ${toDate.format('DD')} ${toDate.format('MMM')}`
+  const fromDate = dayjs(dateRange.from_date).startOf('week')
+  const toDate = dayjs(dateRange.to_date).endOf('week')
+  const label = `${fromDate.format('DD MMM, YYYY')} - ${toDate.format('DD MMM, YYYY')}`
   return label
 }

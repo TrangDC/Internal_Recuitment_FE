@@ -3,15 +3,12 @@ import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
 import _ from 'lodash'
-import {
-  ReportStatsByTime,
-  ReportFilter,
-} from 'shared/schema/chart/report'
+import { ReportStatsByTime, ReportFilter } from 'shared/schema/chart/report'
 import { handleFormatLabel } from 'features/report/shared/utils/utils'
 import GraphQLClientService from 'services/graphql-service'
 
 const candidateLabels = {
-  offer_lost: 'Offer lost',
+  offer_lost: 'Offered lost',
   kiv: 'KIV',
   hired: 'Hired',
   interviewing: 'Interviewing',
@@ -55,7 +52,10 @@ function useGetRecruitmentApplication({
     })
   })
 
-  const categories = handleFormatLabel(filters.filter_period, statsPerTimePeriod)
+  const categories = handleFormatLabel(
+    filters.filter_period,
+    statsPerTimePeriod
+  )
 
   const totalCandidate = statsPerTimePeriod.reduce((acc: number, current) => {
     const total = current.number_by_type.reduce((a, c) => a + c.number, 0) ?? 0

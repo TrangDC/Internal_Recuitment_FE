@@ -16,6 +16,15 @@ const YearPicker = (props: YearPickerProps) => {
         views={['year']}
         value={value}
         onChange={(value) => onChange(value)}
+        sx={{
+          '& .MuiPickersCalendarHeader-label': {
+            fontSize: 12,
+            fontWeight: 700,
+            lineHeight: '16px',
+          },
+          border: '1px solid #E3E6EB',
+          borderRadius: '4px',
+        }}
       />
     </LocalizationProvider>
   )

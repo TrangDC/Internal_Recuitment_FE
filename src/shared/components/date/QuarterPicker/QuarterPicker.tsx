@@ -14,6 +14,12 @@ const quarterSets = [
 
 const DateCalendarStyled = styled(DateCalendar)(() => ({
   border: '1px solid #E3E6EB',
+  '& .MuiPickersCalendarHeader-label': {
+    fontSize: 12,
+    fontWeight: 700,
+    lineHeight: '16px',
+  },
+  borderRadius: '4px',
   '& .MuiPickersMonth-monthButton': {
     '&.highlighted-quarter': {
       backgroundColor: '#2499EF !important',
