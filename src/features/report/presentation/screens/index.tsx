@@ -12,6 +12,8 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
   color: theme.palette.text.secondary,
+  borderRadius: '8px',
+  boxShadow: '0px 2px 4px 0px #60617029',
 }))
 
 function ReportScreen() {

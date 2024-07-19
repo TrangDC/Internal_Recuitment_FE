@@ -135,6 +135,7 @@ const HiringList = () => {
           setOpen={setOpenDetail}
           id={rowId.current}
           rowData={rowData.current}
+          handleOpenEdit={handleOpenEdit}
         />
       )}
     </Box>

@@ -20,7 +20,6 @@ import useBuildActionsTableEmail from 'features/email/hooks/useBuildActionsTable
 import Cant from 'features/authorization/presentation/components/Cant'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
-import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
 import EventEmailAutocomplete from 'shared/components/autocomplete/event-email-autocomplete'
 import { DivHeaderWrapper } from 'features/candidates/shared/styles'
 

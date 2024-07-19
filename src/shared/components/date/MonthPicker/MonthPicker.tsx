@@ -19,6 +19,15 @@ const MonthPicker = (props: MonthPickerProps) => {
         views={['year', 'month']}
         value={value}
         onChange={(value) => handleOnChange(value)}
+        sx={{
+          '& .MuiPickersCalendarHeader-label': {
+            fontSize: 12,
+            fontWeight: 700,
+            lineHeight: '16px',
+          },
+          border: '1px solid #E3E6EB',
+          borderRadius: '4px',
+        }}
       />
     </LocalizationProvider>
   )

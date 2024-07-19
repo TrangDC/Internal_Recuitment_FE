@@ -1,30 +1,31 @@
 import BaseModal from 'shared/components/modal'
 import { FormProvider } from 'react-hook-form'
-import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Hiring } from 'features/hiring/domain/interfaces'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import AvatarUser from '../../components/AvatarUser'
 import LoadingField from 'shared/components/form/loadingField'
-import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
-import {
-  Text13sb,
-  Text15md,
-  Tiny,
-  Tiny12md,
-} from 'shared/components/Typography'
+import { Text13sb, Text15md, Tiny12md } from 'shared/components/Typography'
 import useHiringTeamDetail from 'features/hiring/hooks/crud/useHiringTeamDetail'
 import ChipField from 'shared/components/input-fields/ChipField'
 import PermissionSectionsDetail from 'shared/components/role-template-permission/screen-sections/detail/PermissionSectionsDetail'
-
+import Cant from 'features/authorization/presentation/components/Cant'
+import CloseIcon from '@mui/icons-material/Close'
+import EditIcon from 'shared/components/icons/EditIcon'
 interface IEditHiringModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
   rowData?: Hiring
+  handleOpenEdit: (id: string) => void
 }
 
-function DetailHiringModal({ open, setOpen, id }: IEditHiringModal) {
+function DetailHiringModal({
+  open,
+  setOpen,
+  id,
+  handleOpenEdit,
+}: IEditHiringModal) {
   const { isGetting, formState, permissionGroup, useFormReturn, getValues } =
     useHiringTeamDetail({
       id: id,
@@ -43,6 +44,41 @@ function DetailHiringModal({ open, setOpen, id }: IEditHiringModal) {
           <BaseModal.Header
             title="Member details"
             setOpen={setOpen}
+            EndHeader={
+              <FlexBox gap={1}>
+                <Cant
+                  module="ROLES_TEMPLATE"
+                  checkBy={{
+                    compare: 'hasAny',
+                    permissions: ['EDIT.everything'],
+                  }}
+                >
+                  <EditIcon
+                    sx={{
+                      height: '24px',
+                      width: '24px',
+                      color: '#82868C',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      handleOpenEdit(id)
+                      setOpen(false)
+                    }}
+                  />
+                </Cant>
+                <CloseIcon
+                  sx={{
+                    height: '24px',
+                    width: '24px',
+                    color: '#82868C',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setOpen(false)
+                  }}
+                />
+              </FlexBox>
+            }
           ></BaseModal.Header>
           <BaseModal.ContentMain
             maxHeight="500px"
