@@ -2,10 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
-import dayjs from 'dayjs'
 import _ from 'lodash'
 import { getPercentage } from 'shared/utils/convert-string'
-import { CandidateReport, ReportCandidateLCC } from 'shared/schema/chart/report'
+import { ReportCandidateLCC } from 'shared/schema/chart/report'
 import GraphQLClientService from 'services/graphql-service'
 
 const CandidateLabels = {
@@ -38,7 +37,7 @@ function useGetCandidateReport() {
     return {}
   }, [data])
 
-  const blacklist = candidateReport.black_list
+  const blacklist = candidateReport.non_black_list
   const active = candidateReport.total - blacklist
   const recruitment = candidateReport?.recruitment ?? {}
 

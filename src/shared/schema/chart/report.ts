@@ -36,7 +36,6 @@ export type ReportCandidateLCCResponse = {
 export type ReportCandidateLCC = {
   total: number
   non_black_list: number
-  black_list: number
   recruitment: ReportRecruitment
 }
 

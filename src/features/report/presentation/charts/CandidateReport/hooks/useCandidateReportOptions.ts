@@ -8,7 +8,7 @@ function useCandidateReportOptions(labels: string[]): ApexOptions {
   const theme = useTheme()
   return {
     chart: { background: 'transparent', fontFamily: 'Montserrat' },
-    colors: ['#2CC5BD', '#A798FF', '#FFAF46', '#FF5084', '#5CBAFE'],
+    colors: ['#2CC5BD', '#5CBAFE', '#A798FF', '#FF5084', '#FFAF46'],
     dataLabels: { enabled: false },
     labels,
     legend: {
