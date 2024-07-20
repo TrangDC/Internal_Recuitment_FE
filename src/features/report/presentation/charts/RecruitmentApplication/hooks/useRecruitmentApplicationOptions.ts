@@ -4,6 +4,7 @@ import { getPercentage, styleToString } from 'shared/utils/convert-string'
 import { bStyle, spanStyle } from '../style'
 import { renderTooltip } from '../../CandidateReport/styles'
 import { calculateColumnTotal } from 'shared/utils/chart'
+import _ from 'lodash'
 
 interface UseRecruitmentApplicationOptionsProps {
   categories: string[]
@@ -107,8 +108,9 @@ function useRecruitmentApplicationOptions(
             percentage: ``,
             color: '#0B0E1E',
           }
+          const reverseRow = _.reverse(rows)
           return renderTooltip({
-            rows: [...rows, totalRows],
+            rows: [...reverseRow, totalRows],
           })
         },
       },
