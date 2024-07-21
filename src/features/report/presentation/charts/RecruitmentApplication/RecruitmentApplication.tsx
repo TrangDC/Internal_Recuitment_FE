@@ -44,7 +44,7 @@ function RecruitmentApplication() {
   const defaultFilters: RecruitmentTrendFilters = {
     filterType: 'month',
     value: {
-      from_date: dayjs().subtract(12, 'month'),
+      from_date: dayjs().subtract(11, 'month'),
       to_date: dayjs(),
     },
   }

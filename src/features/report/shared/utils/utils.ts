@@ -7,9 +7,9 @@ import {
   getQuarter,
 } from 'shared/utils/date'
 import {
+  RangeDateColumnBar,
   ReportFilter,
   ReportFilterPeriod,
-  ReportStatsPerTimePeriod,
 } from 'shared/schema/chart/report'
 import { ChartFilters } from 'features/report/domain/interface'
 dayjs.extend(weekOfYear)
@@ -42,7 +42,7 @@ export const handleFormatFilters = (filters: ChartFilters): ReportFilter => {
 const formatByMonth = (filters: ChartFilters): ReportFilter => {
   const fromDate =
     filters.value?.from_date &&
-    setTimeToStartOfDay(filters.value?.from_date).startOf('month')
+    setTimeToStartOfDay(filters.value?.from_date).startOf('month').add(1,'day')
   const toDate =
     filters.value?.to_date &&
     setTimeToEndOfDay(filters.value?.to_date).endOf('month')
@@ -56,7 +56,7 @@ const formatByMonth = (filters: ChartFilters): ReportFilter => {
 const formatByYear = (filters: ChartFilters): ReportFilter => {
   const fromDate =
     filters.value?.from_date &&
-    setTimeToStartOfDay(filters.value?.from_date).startOf('year')
+    setTimeToStartOfDay(filters.value?.from_date).startOf('year').add(1 ,'day')
   const toDate =
     filters.value?.to_date &&
     setTimeToEndOfDay(filters.value?.to_date).endOf('year')
@@ -70,7 +70,7 @@ const formatByYear = (filters: ChartFilters): ReportFilter => {
 const formatByQuarter = (filters: ChartFilters): ReportFilter => {
   const fromDate =
     filters.value?.from_date &&
-    setTimeToStartOfDay(filters.value?.from_date).startOf('quarter')
+    setTimeToStartOfDay(filters.value?.from_date).startOf('quarter').add(1 ,'day')
   const toDate =
     filters.value?.to_date &&
     setTimeToEndOfDay(filters.value?.to_date).endOf('quarter')
@@ -84,7 +84,7 @@ const formatByQuarter = (filters: ChartFilters): ReportFilter => {
 const formatByWeek = (filters: ChartFilters): ReportFilter => {
   const fromDate =
     filters.value?.from_date &&
-    setTimeToStartOfDay(filters.value?.from_date).startOf('week')
+    setTimeToStartOfDay(filters.value?.from_date).startOf('week').add(1 ,'day')
   const toDate =
     filters.value?.to_date &&
     setTimeToEndOfDay(filters.value?.to_date).endOf('week')
@@ -105,7 +105,7 @@ const formatByAll = (filters: ChartFilters): ReportFilter => {
 
 export const handleFormatLabel = (
   filterType: ReportFilterPeriod,
-  statsPerTimePeriod: ReportStatsPerTimePeriod[]
+  statsPerTimePeriod: RangeDateColumnBar[]
 ): string[] => {
   switch (filterType) {
     case 'month':
@@ -122,7 +122,7 @@ export const handleFormatLabel = (
 }
 
 const formatLabelByMonth = (
-  statsPerTimePeriod:ReportStatsPerTimePeriod[]
+  statsPerTimePeriod:RangeDateColumnBar[]
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const fromDate = dayjs(i.from_date).add(1, 'day')
@@ -132,7 +132,7 @@ const formatLabelByMonth = (
 }
 
 const formatLabelByYear = (
-  statsPerTimePeriod: ReportStatsPerTimePeriod[]
+  statsPerTimePeriod: RangeDateColumnBar[]
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const fromDate = dayjs(i.from_date)
@@ -142,7 +142,7 @@ const formatLabelByYear = (
 }
 
 const formatLabelByQuarter = (
-  statsPerTimePeriod: ReportStatsPerTimePeriod[]
+  statsPerTimePeriod: RangeDateColumnBar[]
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const quarter = getQuarter(dayjs(i.from_date).add(1, 'day').toISOString())
@@ -153,7 +153,7 @@ const formatLabelByQuarter = (
 }
 
 const formatLabelByWeek = (
-  statsPerTimePeriod: ReportStatsPerTimePeriod[]
+  statsPerTimePeriod: RangeDateColumnBar[]
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const fromDate = dayjs(i.from_date)

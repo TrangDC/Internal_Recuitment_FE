@@ -3,11 +3,12 @@ import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
 import _ from 'lodash'
-import { ReportStatsByTime, ReportFilter } from 'shared/schema/chart/report'
+import {  ReportFilter, RangeDateColumnBar } from 'shared/schema/chart/report'
 import { handleFormatLabel } from 'features/report/shared/utils/utils'
 import GraphQLClientService from 'services/graphql-service'
+import { ReportApplication } from 'shared/schema/chart/aplication_column_bar_chart'
 
-const candidateLabels = {
+const applicationLabels = {
   ex_staff: 'Ex-staff',
   offer_lost: 'Offered lost',
   kiv: 'KIV',
@@ -34,38 +35,53 @@ function useGetRecruitmentApplication({
       }),
   })
 
-  const candidateReport: ReportStatsByTime = useMemo(() => {
+  const applicationReport: ReportApplication[] = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
-      return response?.[getRecruitmentReport.operation]?.data
+      const sortData =
+      response?.[getRecruitmentReport.operation]?.edges?.node ?? []
+      return sortData
     }
-    return {}
+    return []
   }, [data])
 
-  const statsPerTimePeriod = candidateReport?.stats_per_time_period ?? []
 
-  const seriesData = Object.keys(candidateLabels).reduce((acc, key) => {
+  const seriesData = Object.keys(applicationLabels).reduce((acc, key) => {
     return _.set(acc, key, [])
   }, {} as any)
 
-  statsPerTimePeriod.forEach((period) => {
-    period?.number_by_type?.forEach((item) => {
-      seriesData[item.type].push(item.number)
-    })
+  applicationReport.forEach((node) => {
+    Object.keys(seriesData).forEach(key => {
+      const count = _.get(node , key, 0)
+      seriesData[key].push(count)
+      }
+    )
   })
+
+  const rangeDateColumnBar:RangeDateColumnBar[] = applicationReport.map((item) => ({
+    from_date:item.from_date,
+    to_date:item.to_date
+ }))
 
   const categories = handleFormatLabel(
     filters.filter_period,
-    statsPerTimePeriod
+    rangeDateColumnBar
   )
 
-  const totalCandidate = statsPerTimePeriod.reduce((acc: number, current) => {
-    const total = current.number_by_type.reduce((a, c) => a + c.number, 0) ?? 0
+  const totalCandidate = applicationReport.reduce((acc: number, current) => {
+    const applied = current?.applied ?? 0
+    const ex_staff = current?.ex_staff ?? 0
+    const hired = current?.hired ?? 0
+    const interviewing = current?.interviewing ?? 0
+    const kiv = current?.kiv ?? 0
+    const offer_lost = current?.offer_lost ?? 0
+    const offering = current?.offering ?? 0
+    const total = applied + ex_staff + hired + interviewing + kiv + offer_lost + offering
     return acc + total
   }, 0)
 
   const series = Object.keys(seriesData).map((key) => ({
-    name: _.get(candidateLabels, key),
+    name: _.get(applicationLabels, key),
     data: seriesData[key],
   }))
 

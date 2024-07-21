@@ -3,9 +3,10 @@ import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
 import _ from 'lodash'
-import { CandidateReport, ReportFilter } from 'shared/schema/chart/report'
+import {  RangeDateColumnBar, ReportFilter } from 'shared/schema/chart/report'
 import { handleFormatLabel } from 'features/report/shared/utils/utils'
 import GraphQLClientService from 'services/graphql-service'
+import { ReportRecruitment } from 'shared/schema/chart/candidate_column_bar_chart'
 
 const candidateLabels = {
   reference: 'Reference',
@@ -30,34 +31,40 @@ function useGetRecruitmentTrends({ filters }: IUseGetRecruitmentTrendsProps) {
       }),
   })
 
-  const candidateReport: CandidateReport = useMemo(() => {
+  const candidateReport: ReportRecruitment[] = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
-      return response?.[getCandidateReport.operation]?.data
+      const sortData =
+      response?.[getCandidateReport.operation]?.edges?.node ?? []
+      return sortData
     }
-    return {}
+    return []
   }, [data])
 
-  const statsPerTimePeriod =
-    candidateReport?.stats_by_time?.stats_per_time_period ?? []
-
+  const rangeDateColumnBar:RangeDateColumnBar[] = candidateReport.map((item) => ({
+     from_date:item.from_date,
+     to_date:item.to_date
+  }))
+  
   const seriesData = Object.keys(candidateLabels).reduce((acc, key) => {
     return _.set(acc, key, [])
   }, {} as any)
 
-  statsPerTimePeriod.forEach((period) => {
-    period?.number_by_type?.forEach((item) => {
-      seriesData[item.type].push(item.number)
-    })
+  candidateReport.forEach((node) => {
+    Object.keys(seriesData).forEach(key => {
+      const count = _.get(node , key, 0)
+      seriesData[key].push(count)
+      }
+    )
   })
 
-  const categories = handleFormatLabel(
-    filters.filter_period,
-    statsPerTimePeriod
-  )
-
-  const totalCandidate = statsPerTimePeriod.reduce((acc: number, current) => {
-    const total = current.total ?? 0
+  const totalCandidate = candidateReport.reduce((acc: number, current) => {
+    const eb = current?.eb ?? 0
+    const hiring_platform = current?.hiring_platform ?? 0
+    const headhunt = current?.headhunt ?? 0
+    const reference = current?.reference ?? 0
+    const rec = current?.rec ?? 0
+    const total = hiring_platform + headhunt + reference + rec + eb
     return acc + total
   }, 0)
 
@@ -65,6 +72,13 @@ function useGetRecruitmentTrends({ filters }: IUseGetRecruitmentTrendsProps) {
     name: _.get(candidateLabels, key),
     data: seriesData[key],
   }))
+
+  const categories = useMemo(() => {
+    return handleFormatLabel(
+      filters.filter_period,
+      rangeDateColumnBar
+    )
+  },[filters , rangeDateColumnBar])
 
   return {
     series,
