@@ -9,14 +9,6 @@ export type ReportFilter = {
   to_date: string
 }
 
-export type CandidateReportResponse = {
-  data: CandidateReport
-}
-
-export type RecruitmentReportResponse = {
-  data: ReportStatsByTime
-}
-
 export type ReportCandidateConversionRateChartResponse = {
   data: CandidateConversionRateReport
 }
@@ -27,24 +19,6 @@ export type CandidateJobStepReportByTeamResponse = {
 
 export type ReportApplicationReportTableResponse = {
   data: ApplicationReportTable
-}
-
-export type ReportCandidateLCCResponse = {
-  data: ReportCandidateLCC
-}
-
-export type ReportCandidateLCC = {
-  total: number
-  non_black_list: number
-  recruitment: ReportRecruitment
-}
-
-export type ReportRecruitment = {
-  eb: number
-  rec: number
-  hiring_platform: number
-  reference: number
-  headhunt: number
 }
 
 export type ApplicationReportTable = {
@@ -106,28 +80,12 @@ export type CandidateConversionRateReport = {
   hired: number
 }
 
-export type CandidateReport = {
-  total: number
-  active_number: number
-  blacklist_number: number
-  number_by_ref_type: ReportNumberByType[]
-  stats_by_time: ReportStatsByTime
-}
-
 export type ReportNumberByType = {
   type: string
   number: number
 }
 
-export type ReportStatsByTime = {
-  total: number
-  number_by_type: ReportNumberByType[]
-  stats_per_time_period: ReportStatsPerTimePeriod[]
-}
-
-export type ReportStatsPerTimePeriod = {
+export type RangeDateColumnBar = {
   from_date: string
   to_date: string
-  total: number
-  number_by_type: ReportNumberByType[]
 }

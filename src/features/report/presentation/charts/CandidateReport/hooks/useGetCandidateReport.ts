@@ -4,8 +4,8 @@ import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
 import _ from 'lodash'
 import { getPercentage } from 'shared/utils/convert-string'
-import { ReportCandidateLCC } from 'shared/schema/chart/report'
 import GraphQLClientService from 'services/graphql-service'
+import { ReportCandidateLCC } from 'shared/schema/chart/candidate_pie_chart'
 
 const CandidateLabels = {
   eb: 'EB',

@@ -1,7 +1,7 @@
 import { GenerateAction } from '.'
 
 export const REPORT_ACTIONS = {
-  VIEW: 'GetCandidateReport,GetRecruitmentReport,GetCandidateConversionRateReport,ReportCandidateConversionRateChart,ReportCandidateConversionRateTable,ReportApplicationReportTable',
+  VIEW: 'ReportCandidateLCC,ReportCandidateColumnChart,ReportApplication,ReportApplicationReportTable,ReportCandidateConversionRateChart,ReportCandidateConversionRateTable',
 }
 export interface ReportPermissions
   extends GenerateAction<keyof typeof REPORT_ACTIONS> {}

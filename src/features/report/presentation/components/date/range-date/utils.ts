@@ -38,11 +38,10 @@ const formatLabelByYear = (dateRange: ValueRangeDate): string => {
 }
 
 const formatLabelByQuarter = (dateRange: ValueRangeDate): string => {
-  const fromDate = dayjs(dateRange.from_date)
-  const toDate = dayjs(dateRange.to_date)
-
-  const quarterFrom = getQuarter(dateRange.from_date?.toString() ?? '')
-  const quarterTo = getQuarter(dateRange.to_date?.toString() ?? '')
+  const fromDate = dayjs(dateRange.from_date).startOf('quarter')
+  const toDate = dayjs(dateRange.to_date).endOf('quarter')
+  const quarterFrom = getQuarter(fromDate.toString())
+  const quarterTo = getQuarter(toDate.toString())
   const label = `Q${quarterFrom} ${fromDate.format('YYYY')} - Q${quarterTo} ${toDate.format('YYYY')}`
   return label
 }
