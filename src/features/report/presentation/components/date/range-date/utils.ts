@@ -1,4 +1,5 @@
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
+import { ValidateDate } from 'features/report/domain/interface'
 import { ValueRangeDate } from 'shared/interfaces/date'
 import { ReportFilterPeriod } from 'shared/schema/chart/report'
 import { getQuarter } from 'shared/utils/date'
@@ -51,4 +52,54 @@ const formatLabelByWeek = (dateRange: ValueRangeDate): string => {
   const toDate = dayjs(dateRange.to_date).endOf('week')
   const label = `${fromDate.format('DD MMM, YYYY')} - ${toDate.format('DD MMM, YYYY')}`
   return label
+}
+
+export const handleValidateFromDateRangeDate = (
+  filterType: ReportFilterPeriod,
+  dateRange: ValueRangeDate
+): ValidateDate => {
+  switch (filterType) {
+    case 'month':
+      return validateFromDateByMonth(dateRange)
+    case 'year':
+      return validateFromDateByYear(dateRange)
+    case 'quarter':
+      return validateFromDateByQuarter(dateRange)
+    case 'week':
+      return validateFromDateByWeek(dateRange)
+    default:
+      throw new Error('Invalid period type')
+  }
+}
+
+const validateFromDateByMonth = (dateRange: ValueRangeDate): ValidateDate => {
+  const fromDate = dayjs(dateRange.to_date)
+  return {
+    maxDate: dayjs(),
+    minDate: fromDate.subtract(11, 'month'),
+  }
+}
+
+const validateFromDateByYear = (dateRange: ValueRangeDate): ValidateDate => {
+  const fromDate = dayjs(dateRange.to_date)
+  return {
+    maxDate: dayjs(),
+    minDate: fromDate.subtract(11, 'year'),
+  }
+}
+
+const validateFromDateByQuarter = (dateRange: ValueRangeDate): ValidateDate => {
+  const fromDate = dayjs(dateRange.to_date)
+  return {
+    maxDate: dayjs().endOf('quarter'),
+    minDate: fromDate.subtract(11, 'quarter').startOf('quarter'),
+  }
+}
+
+const validateFromDateByWeek = (dateRange: ValueRangeDate): ValidateDate => {
+  const fromDate = dayjs(dateRange.to_date).endOf('week')
+  return {
+    maxDate: dayjs().endOf('week'),
+    minDate: fromDate.subtract(11, 'week').startOf('week'),
+  }
 }

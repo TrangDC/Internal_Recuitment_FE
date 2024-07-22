@@ -11,10 +11,27 @@ interface MonthDateRangeProps {
   anchor: HTMLButtonElement | null
   onChange: (value: ValueRangeDate | null) => void
   value: ValueRangeDate | null
+  fromDateProps?: {
+    maxDate?: Dayjs
+    minDate?: Dayjs
+    disableFuture?: boolean
+  }
+  toDateProps?: {
+    maxDate?: Dayjs
+    minDate?: Dayjs
+    disableFuture?: boolean
+  }
 }
 
 function MonthDateRange(props: MonthDateRangeProps) {
-  const { handleClose, anchor, value = null, onChange } = props
+  const {
+    handleClose,
+    anchor,
+    value = null,
+    onChange,
+    fromDateProps,
+    toDateProps,
+  } = props
   const defaultDateRange: ValueRangeDate = { from_date: null, to_date: null }
   const [valueDate, setValueDate] = useState<ValueRangeDate>(
     value ?? defaultDateRange
@@ -61,6 +78,7 @@ function MonthDateRange(props: MonthDateRangeProps) {
           <MonthPicker
             onChange={(dateValue) => handleChange('from', dateValue)}
             value={valueDate.from_date}
+            {...fromDateProps}
           />
         </Box>
         <Box>
@@ -70,6 +88,7 @@ function MonthDateRange(props: MonthDateRangeProps) {
           <MonthPicker
             onChange={(dateValue) => handleChange('to', dateValue)}
             value={valueDate.to_date}
+            {...toDateProps}
           />
         </Box>
       </FlexBox>

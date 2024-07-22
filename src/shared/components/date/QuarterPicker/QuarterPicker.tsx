@@ -2,7 +2,7 @@ import { Dayjs } from 'dayjs'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useEffect } from 'react'
-import { DateCalendar } from '@mui/x-date-pickers'
+import { DateCalendar, DateCalendarProps } from '@mui/x-date-pickers'
 import { styled } from '@mui/material'
 
 const quarterSets = [
@@ -47,10 +47,13 @@ interface QuarterPickerProps {
   className: string
   onChange: (value: Dayjs | null) => void
   value: Dayjs | null
+  maxDate?: Dayjs
+  minDate?: Dayjs
+  disableFuture?: boolean
 }
 
 const QuarterPicker = (props: QuarterPickerProps) => {
-  const { className, onChange, value } = props
+  const { className, onChange, value, ...other } = props
   const quarterClassName = `.${className} .MuiPickersMonth-root`
   const clearMonthsHighlight = () => {
     const months = document.querySelectorAll(quarterClassName)
@@ -94,6 +97,8 @@ const QuarterPicker = (props: QuarterPickerProps) => {
   function handleOnChange(value: Dayjs) {
     onChange(value)
   }
+
+  console.log('other', other)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateCalendarStyled
@@ -101,6 +106,7 @@ const QuarterPicker = (props: QuarterPickerProps) => {
         views={['year', 'month']}
         value={value}
         onChange={(value) => handleOnChange(value)}
+        {...other}
       />
     </LocalizationProvider>
   )

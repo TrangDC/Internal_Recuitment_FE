@@ -11,10 +11,21 @@ interface QuarterDateRangeProps {
   anchor: HTMLButtonElement | null
   onChange: (value: ValueRangeDate) => void
   value: ValueRangeDate | null
+  fromDateProps?: {
+    maxDate?: Dayjs
+    minDate?: Dayjs
+    disableFuture?: boolean
+  }
+  toDateProps?: {
+    maxDate?: Dayjs
+    minDate?: Dayjs
+    disableFuture?: boolean
+  }
 }
 
 function QuarterDateRange(props: QuarterDateRangeProps) {
-  const { handleClose, anchor, value, onChange } = props
+  const { handleClose, anchor, value, onChange, fromDateProps, toDateProps } =
+    props
   const defaultDateRange: ValueRangeDate = { from_date: null, to_date: null }
   const [valueDate, setValueDate] = useState<ValueRangeDate>(
     value ?? defaultDateRange
@@ -37,6 +48,7 @@ function QuarterDateRange(props: QuarterDateRangeProps) {
       return newDate
     })
   }
+
   return (
     <Popover
       id={id}
@@ -62,6 +74,7 @@ function QuarterDateRange(props: QuarterDateRangeProps) {
             className="from-quarter-picker"
             onChange={(dateValue) => handleChange('from', dateValue)}
             value={valueDate?.from_date}
+            {...fromDateProps}
           />
         </Box>
         <Box>
@@ -72,6 +85,7 @@ function QuarterDateRange(props: QuarterDateRangeProps) {
             className="to-quarter-picker"
             onChange={(dateValue) => handleChange('to', dateValue)}
             value={valueDate?.to_date}
+            {...toDateProps}
           />
         </Box>
       </FlexBox>

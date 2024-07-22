@@ -1,3 +1,4 @@
+import { Dayjs } from 'dayjs'
 import { ValueRangeDate } from 'shared/interfaces/date'
 import { ReportFilterPeriod } from 'shared/schema/chart/report'
 
@@ -18,4 +19,9 @@ export type HiringTeamTableData = {
   interviewing: HiringTeamTableValue
   offering: HiringTeamTableValue
   hired: HiringTeamTableValue
+}
+
+export type ValidateDate = {
+  minDate: Dayjs
+  maxDate: Dayjs
 }

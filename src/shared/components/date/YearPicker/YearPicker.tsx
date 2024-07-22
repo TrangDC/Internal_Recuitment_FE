@@ -6,10 +6,13 @@ import { DateCalendar } from '@mui/x-date-pickers'
 interface YearPickerProps {
   onChange: (value: Dayjs | null) => void
   value: Dayjs | null
+  maxDate?: Dayjs
+  minDate?: Dayjs
+  disableFuture?: boolean
 }
 
 const YearPicker = (props: YearPickerProps) => {
-  const { onChange, value = null } = props
+  const { onChange, value = null, ...other } = props
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateCalendar
@@ -25,6 +28,7 @@ const YearPicker = (props: YearPickerProps) => {
           border: '1px solid #E3E6EB',
           borderRadius: '4px',
         }}
+        {...other}
       />
     </LocalizationProvider>
   )
