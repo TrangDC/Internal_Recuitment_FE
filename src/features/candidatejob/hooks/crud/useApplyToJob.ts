@@ -5,10 +5,10 @@ import {
   removeInfoData,
   removeStatusAttachment,
 } from 'shared/utils/utils'
-import _, { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { NewCandidateJobInput } from 'features/candidatejob/domain/interfaces'
-import { convertToUTC } from 'shared/utils/date'
+import { convertToEndDateUTC } from 'shared/utils/date'
 
 interface useApplyToJobProps {
   defaultValues?: Partial<FormDataSchema>
@@ -28,7 +28,6 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     defaultValues: {
       note: '',
       attachments: [],
-      failed_reason: [],
       offer_expiration_date: null,
       onboard_date: null,
       ...defaultValues,
@@ -55,10 +54,10 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
       const attachments = removeStatusAttachment(deepValue?.attachments)
 
       const offer_expiration_date = deepValue.offer_expiration_date
-        ? convertToUTC(deepValue.offer_expiration_date)
+        ? convertToEndDateUTC(deepValue.offer_expiration_date)
         : deepValue.offer_expiration_date
       const onboard_date = deepValue.onboard_date
-        ? convertToUTC(deepValue.onboard_date)
+        ? convertToEndDateUTC(deepValue.onboard_date)
         : deepValue.onboard_date
 
       const valueClone = removeInfoData({
@@ -70,6 +69,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
           onboard_date,
         },
       })
+
       mutate(valueClone as NewCandidateJobInput)
     })()
   }

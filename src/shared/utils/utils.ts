@@ -1,12 +1,11 @@
 import { formatISO } from 'date-fns'
 import dayjs from 'dayjs'
 import { entity_skill_type } from 'features/skillType/domain/interfaces'
-import _, { cloneDeep, isEmpty, omit } from 'lodash'
+import _, { cloneDeep, isEmpty } from 'lodash'
 import { FormState } from 'react-hook-form'
 import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
 import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
 import { BaseRecord, DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
-import { convertToUTC, getLocalTimeOffset } from './date'
 import utc from 'dayjs/plugin/utc'
 dayjs.extend(utc);
 

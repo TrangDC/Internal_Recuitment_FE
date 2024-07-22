@@ -56,11 +56,10 @@ export type UpdateStatus = {
 }
 export type UpdateCandidateJobStatus = {
   status: string
-  attachments: Attachments
+  attachments: Attachments[]
   feedback: string
   failed_reason: string[]
   note: string
-  //new field
   offer_expiration_date: Date
   onboard_date: Date
 }

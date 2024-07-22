@@ -14,23 +14,6 @@ export const schema = yup.object({
     .required(RULE_MESSAGES.MC1('attachments'))
     .min(1, 'CV is missing'),
   note: yup.string(),
-  failed_reason: yup
-  .array()
-  .test(
-    'failed-reason',
-    RULE_MESSAGES.MC1('failed_reason'),
-    function (value) {
-      const { status, failed_reason } = this.parent
-      if (
-        status === STATUS_CANDIDATE.OFFERED_LOST ||
-        status === STATUS_CANDIDATE.KIV
-      ) {
-        return !isEmpty(failed_reason)
-      }
-
-      return true
-    }
-  ),
   offer_expiration_date: yup
   .date()
   .typeError(RULE_MESSAGES.MC5('Offer expiration date'))

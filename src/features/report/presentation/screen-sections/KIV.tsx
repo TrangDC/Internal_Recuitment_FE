@@ -1,9 +1,6 @@
 import TableFailedReason, {
   FailedReasonDataTable,
 } from '../components/TableFailedReason'
-import { useMemo } from 'react'
-import { getPercentage } from 'shared/utils/convert-string'
-import _ from 'lodash'
 
 const KIVColumns = [
   {

@@ -16,9 +16,8 @@ import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SelectionTeamForCreateCDDJPermission from 'features/candidatejob/permission/components/SelectionTeamForCreateCDDJPermission'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
 import { STATUS_CANDIDATE } from 'shared/class/candidate'
-import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
-import { transformListItem } from 'shared/utils/utils'
 import AppDateField from 'shared/components/input-fields/DateField'
+import { status_disabled_applied } from 'features/candidatejob/shared/constants'
 interface IApplyJobModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -56,13 +55,6 @@ function ApplyJobModal({
   const attachments = watch('attachments')
   const team_id = watch('team_id')
   const new_status = watch('status')
-
-  const show_failed_reason = useMemo(() => {
-    return (
-      new_status === STATUS_CANDIDATE.KIV ||
-      new_status === STATUS_CANDIDATE.OFFERED_LOST
-    )
-  }, [new_status])
 
   const show_date_onboard = useMemo(() => {
     return new_status === STATUS_CANDIDATE.OFFERING
@@ -154,6 +146,7 @@ function ApplyJobModal({
                         onChange={(data: any) => {
                           field.onChange(data.value)
                         }}
+                        list_disabled={status_disabled_applied}
                         textFieldProps={{
                           label: 'Status',
                           required: true,
@@ -215,36 +208,6 @@ function ApplyJobModal({
                           textFieldProps={{
                             fullWidth: true,
                             size: 'small',
-                            required: true,
-                          }}
-                        />
-                        <HelperTextForm
-                          message={fieldState.error?.message}
-                        ></HelperTextForm>
-                      </FlexBox>
-                    )}
-                  />
-                </FormControl>
-              </FlexBox>
-            )}
-
-            {show_failed_reason && (
-              <FlexBox gap={2}>
-                <FormControl fullWidth>
-                  <Controller
-                    name="failed_reason"
-                    shouldUnregister
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <FlexBox flexDirection={'column'}>
-                        <FailedReasonAutoComplete
-                          multiple={true}
-                          value={field.value || []}
-                          onChange={(data) => {
-                            field.onChange(transformListItem(data, 'value'))
-                          }}
-                          textFieldProps={{
-                            label: 'Failed reason',
                             required: true,
                           }}
                         />

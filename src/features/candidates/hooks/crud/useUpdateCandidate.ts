@@ -10,11 +10,11 @@ import {
 } from 'features/candidates/domain/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import {
-  convertDateToISOString,
   formatRecordSkill,
   removeStatusAttachment,
   updateRecordSkill,
 } from 'shared/utils/utils'
+import { convertToEndDateUTC } from 'shared/utils/date'
 
 type UseEditCandidateProps = {
   id: string
@@ -72,9 +72,9 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
       mutate({
         ...value,
         //@ts-ignore
-        dob: value.dob ? convertDateToISOString(value.dob) : value.dob,
+        dob: value.dob ? convertToEndDateUTC(value.dob) : value.dob,
         recruit_time: value.recruit_time
-          ? convertDateToISOString(value.recruit_time)
+          ? convertToEndDateUTC(value.recruit_time)
           : value.recruit_time,
         attachments: attachments,
         entity_skill_records: entity_skill,
