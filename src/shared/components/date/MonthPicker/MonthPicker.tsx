@@ -6,10 +6,13 @@ import { DateCalendar } from '@mui/x-date-pickers'
 interface MonthPickerProps {
   onChange: (value: Dayjs | null) => void
   value: Dayjs | null
+  maxDate?: Dayjs
+  minDate?: Dayjs
+  disableFuture?: boolean
 }
 
 const MonthPicker = (props: MonthPickerProps) => {
-  const { onChange, value = null } = props
+  const { onChange, value = null, ...other } = props
   function handleOnChange(value: Dayjs) {
     onChange(value)
   }
@@ -28,6 +31,7 @@ const MonthPicker = (props: MonthPickerProps) => {
           border: '1px solid #E3E6EB',
           borderRadius: '4px',
         }}
+        {...other}
       />
     </LocalizationProvider>
   )

@@ -5,13 +5,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import isBetweenPlugin from 'dayjs/plugin/isBetween'
 import utc from 'dayjs/plugin/utc'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import QuarterDateRange from 'shared/components/date/date-range/QuarterDateRange/QuarterDateRange'
 import MonthDateRange from 'shared/components/date/date-range/MonthDateRange/MonthDateRange'
 import WeekDateRange from 'shared/components/date/date-range/WeekDateRange/WeekDateRange'
 import YearDateRange from 'shared/components/date/date-range/YearDateRange/YearDateRange'
 import { ValueRangeDate } from 'shared/interfaces/date'
-import { handleFormatLabelDate } from './utils'
+import { handleFormatLabelDate, handleValidateFromDateRangeDate } from './utils'
 import { ReportFilterPeriod } from 'shared/schema/chart/report'
 
 dayjs.extend(isBetweenPlugin)
@@ -19,7 +19,7 @@ dayjs.extend(utc)
 
 const RangeDateByQuarterLabel = styled(Button)(() => ({
   height: '26px',
-  width: '190px',
+  minWidth: '190px',
   fontSize: 12,
   fontWeight: 500,
   padding: '4px 8px 4px 4px',
@@ -81,6 +81,16 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
     }
   }
 
+  const { maxDate, minDate } = useMemo(() => {
+    if (value) {
+      return handleValidateFromDateRangeDate(filterType, value)
+    }
+    return {
+      maxDate: undefined,
+      minDate: undefined,
+    }
+  }, [value, filterType])
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <RangeDateByQuarterLabel
@@ -96,6 +106,13 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
           anchor={anchorQuarter}
           value={value}
           onChange={onChange}
+          fromDateProps={{
+            minDate: minDate,
+            maxDate: maxDate,
+          }}
+          toDateProps={{
+            maxDate: maxDate,
+          }}
         />
       )}
       {filterType === 'month' && (
@@ -104,6 +121,13 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
           anchor={anchorMonth}
           value={value}
           onChange={onChange}
+          fromDateProps={{
+            minDate: minDate,
+            maxDate: maxDate,
+          }}
+          toDateProps={{
+            maxDate: maxDate,
+          }}
         />
       )}
       {filterType === 'week' && (
@@ -112,6 +136,13 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
           anchor={anchorWeek}
           value={value}
           onChange={onChange}
+          fromDateProps={{
+            minDate: minDate,
+            maxDate: maxDate,
+          }}
+          toDateProps={{
+            maxDate: maxDate,
+          }}
         />
       )}
       {filterType === 'year' && (
@@ -120,6 +151,13 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
           anchor={anchorYear}
           value={value}
           onChange={onChange}
+          fromDateProps={{
+            minDate: minDate,
+            maxDate: maxDate,
+          }}
+          toDateProps={{
+            maxDate: maxDate,
+          }}
         />
       )}
     </LocalizationProvider>

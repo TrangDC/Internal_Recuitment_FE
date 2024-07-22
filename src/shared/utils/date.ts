@@ -109,8 +109,12 @@ export const setTimeToEndOfDay = (date: Dayjs) => {
   return date.hour(23).minute(59).second(59).millisecond(999)
 }
 
+export const getQuarter = (date: string) => {
+  const month = dayjs(date).month()
+  return Math.floor(month / 3) + 1
+}
 
-export const getQuarter = (date:string) => {
-  const month = dayjs(date).month();
-  return Math.floor(month / 3) + 1;
-};
+export const formatLocalTime = (utcTime: Dayjs) => {
+  const localTime = dayjs.utc(utcTime).tz(dayjs.tz.guess())
+  return localTime
+}

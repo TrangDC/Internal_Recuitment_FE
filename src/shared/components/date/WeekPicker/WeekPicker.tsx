@@ -77,10 +77,13 @@ interface IWeekPicker {
   onChange: (value: Dayjs | null) => void
   value: Dayjs | null
   sx?: SxProps<Theme>
+  maxDate?: Dayjs
+  minDate?: Dayjs
+  disableFuture?: boolean
 }
 
 export default function WeekPicker(props: IWeekPicker) {
-  const { onChange, value } = props
+  const { onChange, value, ...other } = props
   const [hoveredDay, setHoveredDay] = React.useState<Dayjs | null>(
     value ?? dayjs()
   )
@@ -113,6 +116,7 @@ export default function WeekPicker(props: IWeekPicker) {
               onPointerLeave: () => setHoveredDay(null),
             }) as any,
         }}
+        {...other}
       />
     </LocalizationProvider>
   )

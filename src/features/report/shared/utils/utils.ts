@@ -5,6 +5,7 @@ import {
   setTimeToStartOfDay,
   setTimeToEndOfDay,
   getQuarter,
+  formatLocalTime,
 } from 'shared/utils/date'
 import {
   RangeDateColumnBar,
@@ -42,7 +43,7 @@ export const handleFormatFilters = (filters: ChartFilters): ReportFilter => {
 const formatByMonth = (filters: ChartFilters): ReportFilter => {
   const fromDate =
     filters.value?.from_date &&
-    setTimeToStartOfDay(filters.value?.from_date).startOf('month').add(1,'day')
+    setTimeToStartOfDay(filters.value?.from_date).startOf('month').add(1, 'day')
   const toDate =
     filters.value?.to_date &&
     setTimeToEndOfDay(filters.value?.to_date).endOf('month')
@@ -56,7 +57,7 @@ const formatByMonth = (filters: ChartFilters): ReportFilter => {
 const formatByYear = (filters: ChartFilters): ReportFilter => {
   const fromDate =
     filters.value?.from_date &&
-    setTimeToStartOfDay(filters.value?.from_date).startOf('year').add(1 ,'day')
+    setTimeToStartOfDay(filters.value?.from_date).startOf('year').add(1, 'day')
   const toDate =
     filters.value?.to_date &&
     setTimeToEndOfDay(filters.value?.to_date).endOf('year')
@@ -70,7 +71,9 @@ const formatByYear = (filters: ChartFilters): ReportFilter => {
 const formatByQuarter = (filters: ChartFilters): ReportFilter => {
   const fromDate =
     filters.value?.from_date &&
-    setTimeToStartOfDay(filters.value?.from_date).startOf('quarter').add(1 ,'day')
+    setTimeToStartOfDay(filters.value?.from_date)
+      .startOf('quarter')
+      .add(1, 'day')
   const toDate =
     filters.value?.to_date &&
     setTimeToEndOfDay(filters.value?.to_date).endOf('quarter')
@@ -84,7 +87,7 @@ const formatByQuarter = (filters: ChartFilters): ReportFilter => {
 const formatByWeek = (filters: ChartFilters): ReportFilter => {
   const fromDate =
     filters.value?.from_date &&
-    setTimeToStartOfDay(filters.value?.from_date).startOf('week').add(1 ,'day')
+    setTimeToStartOfDay(filters.value?.from_date).startOf('week').add(1, 'day')
   const toDate =
     filters.value?.to_date &&
     setTimeToEndOfDay(filters.value?.to_date).endOf('week')
@@ -122,7 +125,7 @@ export const handleFormatLabel = (
 }
 
 const formatLabelByMonth = (
-  statsPerTimePeriod:RangeDateColumnBar[]
+  statsPerTimePeriod: RangeDateColumnBar[]
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const fromDate = dayjs(i.from_date).add(1, 'day')
@@ -157,8 +160,48 @@ const formatLabelByWeek = (
 ): string[] => {
   return statsPerTimePeriod.map((i) => {
     const fromDate = dayjs(i.from_date)
-    const toDate = dayjs(i.to_date)
+    const toDate = dayjs.utc(i.to_date)
     const label = `${fromDate.format('MMM')} ${fromDate.format('DD')}-${toDate.format('DD')}`
     return label
   })
+}
+
+export function handleChangeFilterType(filters: ChartFilters): ChartFilters {
+  const to_date = filters.value?.to_date ?? dayjs()
+  switch (filters.filterType) {
+    case 'month':
+      return {
+        filterType: 'month',
+        value: {
+          from_date: to_date?.subtract(11, 'month'),
+          to_date: to_date,
+        },
+      }
+    case 'year':
+      return {
+        filterType: 'year',
+        value: {
+          from_date: to_date?.subtract(11, 'year'),
+          to_date: to_date,
+        },
+      }
+    case 'quarter':
+      return {
+        filterType: 'quarter',
+        value: {
+          from_date: to_date?.subtract(11, 'quarter'),
+          to_date: to_date,
+        },
+      }
+    case 'week':
+      return {
+        filterType: 'week',
+        value: {
+          from_date: to_date?.subtract(11, 'week'),
+          to_date: to_date,
+        },
+      }
+    default:
+      throw new Error('Invalid period type')
+  }
 }

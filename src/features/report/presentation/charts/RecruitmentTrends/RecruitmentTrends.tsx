@@ -8,9 +8,12 @@ import useGetRecruitmentTrends from './hooks/useGetRecruitmentTrends'
 import { useState } from 'react'
 import { ValueRangeDate } from 'shared/interfaces/date'
 import dayjs from 'dayjs'
-import RangeDateByQuarter from '../../components/date/range-date/RangeDateByQuarter'
+import RangeDateByCategory from '../../components/date/range-date/RangeDateByCategory'
 import { ReportFilterPeriod } from 'shared/schema/chart/report'
-import { handleFormatFilters } from 'features/report/shared/utils/utils'
+import {
+  handleChangeFilterType,
+  handleFormatFilters,
+} from 'features/report/shared/utils/utils'
 
 const selectItems = [
   {
@@ -58,10 +61,13 @@ function RecruitmentTrends() {
   })
 
   function selectedType(value: ReportFilterPeriod) {
-    setFilters((prev) => ({
-      ...prev,
-      filterType: value,
-    }))
+    setFilters((prev) => {
+      const data = handleChangeFilterType({
+        ...prev,
+        filterType: value,
+      })
+      return data
+    })
   }
 
   function onChange(value: ValueRangeDate | null) {
@@ -70,6 +76,7 @@ function RecruitmentTrends() {
       value: value,
     }))
   }
+
   return (
     <Box position={'relative'}>
       <FlexBox width={'100%'} justifyContent={'flex-end'}>
@@ -79,7 +86,7 @@ function RecruitmentTrends() {
             value={filters.filterType}
             selectItems={selectItems}
           />
-          <RangeDateByQuarter
+          <RangeDateByCategory
             filterType={filters.filterType}
             onChange={onChange}
             value={filters.value}
@@ -89,10 +96,12 @@ function RecruitmentTrends() {
       {!isLoading && (
         <Chart type="bar" options={options} height={256} series={series} />
       )}
-      <FlexBox position={'absolute'} bottom={20} right={0} gap={'5px'}>
-        <Tiny12md color={'#4D607A'}>Total candidate</Tiny12md>
-        <Tiny12 color={'#0B0E1E'}>{totalCandidate}</Tiny12>
-      </FlexBox>
+      {categories.length > 0 && (
+        <FlexBox position={'absolute'} bottom={20} right={0} gap={'5px'}>
+          <Tiny12md color={'#4D607A'}>Total candidate</Tiny12md>
+          <Tiny12 color={'#0B0E1E'}>{totalCandidate}</Tiny12>
+        </FlexBox>
+      )}
     </Box>
   )
 }

@@ -11,10 +11,27 @@ interface YearDateRangeProps {
   anchor: HTMLButtonElement | null
   onChange: (value: ValueRangeDate | null) => void
   value: ValueRangeDate | null
+  fromDateProps?: {
+    maxDate?: Dayjs
+    minDate?: Dayjs
+    disableFuture?: boolean
+  }
+  toDateProps?: {
+    maxDate?: Dayjs
+    minDate?: Dayjs
+    disableFuture?: boolean
+  }
 }
 
 function YearDateRange(props: YearDateRangeProps) {
-  const { handleClose, anchor, value = null, onChange } = props
+  const {
+    handleClose,
+    anchor,
+    value = null,
+    onChange,
+    fromDateProps,
+    toDateProps,
+  } = props
   const defaultDateRange: ValueRangeDate = { from_date: null, to_date: null }
   const [valueDate, setValueDate] = useState<ValueRangeDate>(
     value ?? defaultDateRange
@@ -61,6 +78,7 @@ function YearDateRange(props: YearDateRangeProps) {
           <YearPicker
             onChange={(value) => handleChange('from', value)}
             value={valueDate?.from_date}
+            {...fromDateProps}
           />
         </Box>
         <Box>
@@ -70,6 +88,7 @@ function YearDateRange(props: YearDateRangeProps) {
           <YearPicker
             onChange={(value) => handleChange('to', value)}
             value={valueDate?.to_date}
+            {...toDateProps}
           />
         </Box>
       </FlexBox>

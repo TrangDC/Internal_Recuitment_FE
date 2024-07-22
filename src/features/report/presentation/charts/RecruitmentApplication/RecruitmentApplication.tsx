@@ -9,13 +9,20 @@ import dayjs from 'dayjs'
 import useRecruitmentApplicationOptions from './hooks/useRecruitmentApplicationOptions'
 import useGetRecruitmentApplication from './hooks/useGetRecruitmentApplication'
 import TinyButton from 'shared/components/buttons/TinyButton'
-import { handleFormatFilters } from 'features/report/shared/utils/utils'
-import RangeDateByQuarter from '../../components/date/range-date/RangeDateByQuarter'
+import {
+  handleChangeFilterType,
+  handleFormatFilters,
+} from 'features/report/shared/utils/utils'
+import RangeDateByCategory from '../../components/date/range-date/RangeDateByCategory'
 import ApplicationReportModal from '../../screen-sections/ApplicationReportModal'
 import { ReportFilterPeriod } from 'shared/schema/chart/report'
 import { handleFormatLabelDate } from '../../components/date/range-date/utils'
 
 const selectItems = [
+  {
+    value: 'week',
+    title: 'Week',
+  },
   {
     value: 'month',
     title: 'Month',
@@ -24,10 +31,7 @@ const selectItems = [
     value: 'quarter',
     title: 'Quarter',
   },
-  {
-    value: 'week',
-    title: 'Week',
-  },
+
   {
     value: 'year',
     title: 'Year',
@@ -61,10 +65,13 @@ function RecruitmentApplication() {
   })
 
   function selectedType(value: ReportFilterPeriod) {
-    setFilters((prev) => ({
-      ...prev,
-      filterType: value,
-    }))
+    setFilters((prev) => {
+      const data = handleChangeFilterType({
+        ...prev,
+        filterType: value,
+      })
+      return data
+    })
   }
 
   function onChange(value: ValueRangeDate | null) {
@@ -77,6 +84,7 @@ function RecruitmentApplication() {
   const labelBy = filters.value
     ? handleFormatLabelDate(filters.filterType, filters.value)
     : ''
+
   return (
     <Box position={'relative'}>
       <FlexBox width={'100%'} justifyContent={'space-between'}>
@@ -89,7 +97,7 @@ function RecruitmentApplication() {
             value={filters.filterType}
             selectItems={selectItems}
           />
-          <RangeDateByQuarter
+          <RangeDateByCategory
             filterType={filters.filterType}
             onChange={onChange}
             value={filters.value}
@@ -100,10 +108,12 @@ function RecruitmentApplication() {
       {!isLoading && (
         <Chart type="bar" options={options} height={256} series={series} />
       )}
-      <FlexBox position={'absolute'} bottom={20} right={0} gap={'5px'}>
-        <Tiny12md color={'#4D607A'}>Total applications</Tiny12md>
-        <Tiny12 color={'#0B0E1E'}>{totalCandidate}</Tiny12>
-      </FlexBox>
+      {categories.length > 0 && (
+        <FlexBox position={'absolute'} bottom={20} right={0} gap={'5px'}>
+          <Tiny12md color={'#4D607A'}>Total applications</Tiny12md>
+          <Tiny12 color={'#0B0E1E'}>{totalCandidate}</Tiny12>
+        </FlexBox>
+      )}
       {open && (
         <ApplicationReportModal
           filters={filterReport}
