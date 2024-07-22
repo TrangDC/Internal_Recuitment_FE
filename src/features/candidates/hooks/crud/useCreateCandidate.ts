@@ -3,11 +3,11 @@ import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../../shared/constants/schema'
 import { NewCandidateInput } from 'features/candidates/domain/interfaces'
 import {
-  convertDateToISOString,
   removeStatusAttachment,
   updateRecordSkill,
 } from 'shared/utils/utils'
 import { useCreateResource } from 'shared/hooks/crud-hook'
+import { convertToEndDateUTC } from 'shared/utils/date'
 
 interface createCandidateProps {
   defaultValues?: Partial<FormDataSchema>
@@ -58,9 +58,9 @@ function useCreateCandidate(props: createCandidateProps) {
 
       mutate({
         ...value,
-        dob: value.dob ? convertDateToISOString(value.dob) : value.dob,
+        dob: value.dob ? convertToEndDateUTC(value.dob) : value.dob,
         recruit_time: value.recruit_time
-          ? convertDateToISOString(value.recruit_time)
+          ? convertToEndDateUTC(value.recruit_time)
           : value.recruit_time,
         attachments: attachments,
         entity_skill_records: entity_skill,

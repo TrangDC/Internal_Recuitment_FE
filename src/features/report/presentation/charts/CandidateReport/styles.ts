@@ -1,5 +1,4 @@
 import { SxProps } from '@mui/material'
-import zIndex from '@mui/material/styles/zIndex'
 import { styleToString } from 'shared/utils/convert-string'
 
 export const tooltipStyled: SxProps = {

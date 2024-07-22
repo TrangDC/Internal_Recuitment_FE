@@ -37,6 +37,10 @@ export function convertToUTC(clientDateTime: Date) {
   return dayjs(clientDateTime).tz(dayjs.tz.guess()).utc()
 }
 
+export function convertToEndDateUTC(date: Date) {
+  return dayjs(date).endOf('date').toISOString();
+}
+
 // Hàm chuyển đổi thời gian từ UTC về múi giờ của client
 export function convertFromUTC(utcDateTime: Date) {
   return dayjs.utc(utcDateTime).tz(dayjs.tz.guess())

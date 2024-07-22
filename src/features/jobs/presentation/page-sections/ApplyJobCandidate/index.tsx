@@ -16,6 +16,9 @@ import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import SelectionTeamForCreateCDDJPermission from 'features/candidatejob/permission/components/SelectionTeamForCreateCDDJPermission'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
+import { STATUS_CANDIDATE } from 'shared/class/candidate'
+import AppDateField from 'shared/components/input-fields/DateField'
+import { status_disabled_applied } from 'features/candidatejob/shared/constants'
 
 interface IApplyJobModal {
   open: boolean
@@ -24,7 +27,7 @@ interface IApplyJobModal {
 }
 
 function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
-  const { onSubmit, control, isPending, isValid, resetField, watch, getValues } =
+  const { onSubmit, control, isPending, isValid, resetField, watch, getValues, trigger } =
     useApplyToJob({
       callbackSuccess: (data) => {
         setOpen(false)
@@ -41,6 +44,12 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
 
     return attachments.every((file) => file.status === 'success')
   }, [attachments])
+
+  const new_status = watch('status')
+
+  const show_date_onboard = useMemo(() => {
+    return new_status === STATUS_CANDIDATE.OFFERING
+  }, [new_status])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -144,6 +153,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                     <CandidateStatusAutoComplete
                       multiple={false}
                       value={field.value}
+                      list_disabled={status_disabled_applied}
                       onChange={(data: any) => {
                         field.onChange(data?.value)
                       }}
@@ -160,6 +170,66 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
               />
             </FormControl>
           </FlexBox>
+
+          {show_date_onboard && (
+              <FlexBox gap={2}>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="offer_expiration_date"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <AppDateField
+                          label={'Offer expiration date'}
+                          value={field.value}
+                          format="dd/MM/yyyy"
+                          onChange={(value) => {
+                            field.onChange(value)
+                          }}
+                          minDate={new Date()}
+                          textFieldProps={{
+                            fullWidth: true,
+                            size: 'small',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="onboard_date"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <AppDateField
+                          label={'Candidate onboard date'}
+                          value={field.value}
+                          format="dd/MM/yyyy"
+                          onChange={(value) => {
+                            field.onChange(value)
+                            trigger('offer_expiration_date')
+                          }}
+                          minDate={new Date()}
+                          textFieldProps={{
+                            fullWidth: true,
+                            size: 'small',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </FlexBox>
+            )}
 
           <FlexBox justifyContent={'center'} alignItems={'center'}>
             <FormControl fullWidth>

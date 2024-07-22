@@ -38,5 +38,13 @@ export const list_status_disabled = {
   ],
 }
 
+export const status_disabled_applied = [
+  STATUS_CANDIDATE.HIRED,
+  STATUS_CANDIDATE.KIV,
+  STATUS_CANDIDATE.OFFERED_LOST,
+  STATUS_CANDIDATE.EX_STAFTT
+]
+
+
 
 

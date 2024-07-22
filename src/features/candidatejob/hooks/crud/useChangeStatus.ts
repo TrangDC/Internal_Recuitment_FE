@@ -5,7 +5,7 @@ import {
   schemaChangeStatus,
   FormDataSchemaChangeStatus,
 } from '../../shared/constants/schema'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 import {
   getInfoData,
   removeInfoData,
@@ -25,7 +25,7 @@ import {
   UpdateCandidateJobStatus,
   UpdateStatus,
 } from 'features/candidatejob/domain/interfaces'
-import { convertToUTC } from 'shared/utils/date'
+import { convertToEndDateUTC } from 'shared/utils/date'
 
 interface useChangeStatusProps {
   defaultValues?: Partial<FormDataSchemaChangeStatus>
@@ -114,13 +114,13 @@ function useChangeStatus(props: useChangeStatusProps) {
     id: id,
     callbackSuccess,
     mutationFeedback: () => {
-      if(!data?.feedback && !data?.attachments) {
+      if(!data?.feedback && isEmpty(data?.attachments)) {
         callbackSuccess?.({ ...data, id })
         return;
       }
 
       mutateCreateFeedback({
-        ...getInfoData({ field: ['feedback', 'attachments'], object: data }),
+        ...getInfoData({ field: ['feedback', 'attachments'], object: data as UpdateCandidateJobStatus}),
         candidate_job_id: id,
       })
     },
@@ -148,8 +148,8 @@ function useChangeStatus(props: useChangeStatusProps) {
       let deepValue = cloneDeep(value);
       deepValue.attachments = removeStatusAttachment(deepValue?.attachments)
 
-      const offer_expiration_date = deepValue.offer_expiration_date ? convertToUTC(deepValue.offer_expiration_date) : deepValue.offer_expiration_date;
-      const onboard_date = deepValue.onboard_date ? convertToUTC(deepValue.onboard_date) : deepValue.onboard_date;
+      const offer_expiration_date = deepValue.offer_expiration_date ? convertToEndDateUTC(deepValue.offer_expiration_date) : deepValue.offer_expiration_date;
+      const onboard_date = deepValue.onboard_date ? convertToEndDateUTC(deepValue.onboard_date) : deepValue.onboard_date;
       
       //remove field team_id
       const value_clone = removeInfoData({field: ['team_id'], object: {...deepValue, offer_expiration_date, onboard_date}});
