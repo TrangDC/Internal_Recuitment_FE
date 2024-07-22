@@ -6,7 +6,9 @@ import {
   renderDate,
   renderDateTime,
   renderDescription,
-  renderListUser,
+  renderFailedReason,
+  renderLink,
+  renderListItem,
   renderLocation,
   renderPriority,
   renderReferenceType,
@@ -96,7 +98,10 @@ function renderFieldCandidateInterview(field: string): renderValueReturn {
       renderValue = renderDateTime
       break
     case 'members':
-      renderValue = renderListUser
+      renderValue = renderListItem
+    break;
+    case 'meeting_link':
+      renderValue = renderLink
     break;
     default: {
       renderValue = renderText
@@ -132,6 +137,9 @@ function renderFieldHiringJob(field: string): renderValueReturn {
     case 'location':
       renderValue = renderLocation
       break
+    case 'skills':
+      renderValue = renderListItem
+    break;
     default: {
       renderValue = renderText
     }
@@ -150,6 +158,15 @@ function renderFieldCandidateJob(field: string): renderValueReturn {
     case 'document':
       renderValue = renderAttachment
       break
+    case 'onboard_date':
+      renderValue = renderDate
+    break;
+    case 'offer_expiration_date':
+      renderValue = renderDate
+    break;
+    case 'failed_reason':
+      renderValue = renderFailedReason
+    break;
     default: {
       renderValue = renderText
     }

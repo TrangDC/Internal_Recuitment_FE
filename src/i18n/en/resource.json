@@ -83,6 +83,7 @@
       }
     },
     "hiring_jobs": {
+      "skills": "Skill",
       "model_name": "Job",
       "name": "Job name",
       "description": "Job description",
@@ -118,7 +119,10 @@
       "model_name": "Candidate Job",
       "hiring_job": "Job name",
       "status": "Status",
-      "document": "Attach CV"
+      "document": "Attach CV",
+      "onboard_date": "Candidate onboard date",
+      "offer_expiration_date": "Offer expiration date",
+      "failed_reason": "Failed reason"
     },
     "candidates": {
       "model_name": "Candidate",
@@ -174,6 +178,8 @@
       "status": "Status",
       "members": "Interviewer",
       "description": "Description",
+      "location": "Location",
+      "meeting_link": "Meeting link",
       "validation": {
         "candidate_job_status_changed": "message_value",
         "candidate_not_found": "message_value",
