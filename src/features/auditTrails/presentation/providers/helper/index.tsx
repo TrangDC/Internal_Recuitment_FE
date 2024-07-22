@@ -15,6 +15,7 @@ import {
   CANDIDATE_SOURCE_LABEL,
   CANDIDATE_SOURCE_STATE,
 } from 'shared/components/autocomplete/candidate-source-auto-complete'
+import { failed_reason_data } from 'shared/components/autocomplete/failed-reason-auto-complete'
 import { HIRING_PLATFORM_LABEL } from 'shared/components/autocomplete/hiring-platform-auto-complete'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import {
@@ -22,6 +23,7 @@ import {
   LOCATION_LABEL,
   SALARY_TYPE_TEXT,
 } from 'shared/constants/constants'
+import { LinkText } from 'shared/styles'
 import {
   convertStringToArray,
   getLastString,
@@ -94,8 +96,8 @@ export function renderDateTime(text: string) {
   return dayjs(text).format('DD/MM/YYYY HH:mm')
 }
 
-export function renderListUser(text: string) {
-  return Array.from(text).join(', ');
+export function renderListItem(text: string) {
+  return Array.from(text).join(', ')
 }
 
 export function renderYesNo(text: string) {
@@ -121,7 +123,8 @@ export function renderReferenceREC(text: TYPE_REFERENCE_VALUE_REC) {
   return REC_SOURCE_LABEL[text]
 }
 
-export type TYPE_REFERENCE_VALUE_HIRING_PLATFORM = keyof typeof HIRING_PLATFORM_LABEL
+export type TYPE_REFERENCE_VALUE_HIRING_PLATFORM =
+  keyof typeof HIRING_PLATFORM_LABEL
 export function renderReferenceHiringPlatform(
   text: TYPE_REFERENCE_VALUE_HIRING_PLATFORM
 ) {
@@ -136,7 +139,10 @@ export function renderReferenceValue(text: string) {
   return renderReferenceValueByType(reference_type, reference_value)
 }
 
-export function renderReferenceValueByType(reference_type: string, reference_value: string) {
+export function renderReferenceValueByType(
+  reference_type: string,
+  reference_value: string
+) {
   switch (reference_type) {
     case CANDIDATE_SOURCE_STATE.EB:
       return renderReferenceEB(reference_value as TYPE_REFERENCE_VALUE_EB)
@@ -162,5 +168,22 @@ export const renderAttachment = (text: string) => {
         return <Box key={idx}>{item}</Box>
       })}
     </FlexBox>
+  )
+}
+
+type TYPE_FAILED_REASON = keyof typeof failed_reason_data
+export const renderFailedReason = (text: string) => {
+  const failed_reasons = Array.from(text).map((item) => {
+    return failed_reason_data[item as TYPE_FAILED_REASON]?.label
+  })
+
+  return failed_reasons.join(', ')
+}
+
+export const renderLink = (text: string) => {
+  return (
+    <LinkText to={text} target="_blank">
+      {text}
+    </LinkText>
   )
 }
