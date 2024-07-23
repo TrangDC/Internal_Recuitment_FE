@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import { useMemo, useState } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { BaseRecord } from 'shared/interfaces'
 import { ISearchData } from './useSearchList'
@@ -7,6 +7,7 @@ import GraphQLClientService, {
   IBuildQueryReturn,
 } from 'services/graphql-service'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
+import { isEmpty } from 'lodash'
 interface IuseCustomTable {
   buildQuery: IBuildQueryReturn
   search?: ISearchData
@@ -49,6 +50,7 @@ const useCustomTable = ({
   orderBy,
 }: IuseCustomTable): IuseCustomTableReturn => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const location = useLocation()
   const [params] = useSearchParams()
   const initialPage = params.get('page') ? Number(params.get('page')) : 1
@@ -65,16 +67,15 @@ const useCustomTable = ({
       field: 'created_at',
     }
   )
+  const customKey = {
+    pagination,
+    sorting,
+    filters,
+    search,
+  }
   const { isLoading, error, data, refetch } = useQuery({
-    // gcTime: 0,
-    queryKey: [
-      queryKey,
-      pagination.page,
-      pagination.perPage,
-      sorting,
-      filters,
-      search,
-    ],
+    gcTime: 0,
+    queryKey: [queryKey, customKey],
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(buildQuery.query, {
         orderBy: {
@@ -113,7 +114,6 @@ const useCustomTable = ({
   function handleChangePage(page: number) {
     navigate(`${location.pathname}?page=${page}&perPage=${10}`, {
       replace: true,
-      state: { current: initialPage },
     })
     setPagination((prev) => ({ ...prev, page: page }))
   }
@@ -149,6 +149,12 @@ const useCustomTable = ({
       }
     })
   }
+
+  useEffect(() => {
+    if (isEmpty(sortData) && pagination.page > 1 && !isLoading) {
+      handleChangePage(pagination.page - 1)
+    }
+  }, [sortData, pagination, isLoading])
 
   return {
     isLoading,

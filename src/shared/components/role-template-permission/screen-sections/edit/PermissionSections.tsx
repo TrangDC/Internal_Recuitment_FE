@@ -29,11 +29,20 @@ function PermissionSections({ roleTemplate }: PermissionSectionsProps) {
   const { watch } = useFormContext()
   const { resetValue } = useResetValue()
   const viewCandidateName = roleTemplate?.CANDIDATES.VIEW.id
+  const viewCandidateJobName = roleTemplate?.CANDIDATE_JOBS.VIEW.id
+
   const viewCandidate = watch(getKeyName(viewCandidateName ?? ''))
+  const viewCandidateJob = watch(getKeyName(viewCandidateJobName ?? ''))
+
   const cantViewCandidate =
     viewCandidate?.for_all ||
     viewCandidate?.for_owner ||
     viewCandidate?.for_team
+
+  const cantViewCandidateJob =
+    viewCandidateJob?.for_all ||
+    viewCandidateJob?.for_owner ||
+    viewCandidateJob?.for_team
 
   const candidateJobName = [
     roleTemplate?.CANDIDATE_JOBS.VIEW.id,
@@ -56,14 +65,14 @@ function PermissionSections({ roleTemplate }: PermissionSectionsProps) {
     roleTemplate?.INTERVIEWS.DELETE.id,
   ]
   useEffect(() => {
-    if (!cantViewCandidate) {
+    if (!cantViewCandidate || !cantViewCandidateJob) {
       resetValue([
         ...candidateJobName,
         ...candidateJobFeedbackName,
         ...interviewName,
       ])
     }
-  }, [cantViewCandidate])
+  }, [cantViewCandidate, cantViewCandidateJob])
   if (!roleTemplate) return null
   return (
     <AppCollapse open={open} setOpen={setOpen} title="Permission">
@@ -78,11 +87,11 @@ function PermissionSections({ roleTemplate }: PermissionSectionsProps) {
         />
         <FeedbackPermissionGroup
           roleTemplate={roleTemplate}
-          moduleDisabled={!cantViewCandidate}
+          moduleDisabled={!cantViewCandidate || !cantViewCandidateJob}
         />
         <InterviewPermissionGroup
           roleTemplate={roleTemplate}
-          moduleDisabled={!cantViewCandidate}
+          moduleDisabled={!cantViewCandidate || !cantViewCandidateJob}
         />
         <ReportPermissionGroup roleTemplate={roleTemplate} />
       </FlexBox>
