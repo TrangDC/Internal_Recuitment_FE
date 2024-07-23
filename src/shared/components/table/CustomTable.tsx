@@ -98,12 +98,6 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
     }
   }
 
-  useEffect(() => {
-    if (isEmpty(sortData) && pagination.page > 1 && !isLoading) {
-      handleChangePage(pagination.page - 1)
-    }
-  }, [sortData])
-
   return (
     <Box
       sx={{
