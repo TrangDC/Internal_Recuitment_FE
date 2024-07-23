@@ -21,6 +21,7 @@ interface IUseCreateResource<P> {
   onSuccess?: (data: BaseRecord) => void
   defaultValues?: DefaultValues<P> | AsyncDefaultValues<P>
   resolver: Resolver<P & FieldValues, any> | undefined
+  show_modal?: boolean
 }
 
 function useCreateResource<T, P extends FieldValues>({
@@ -30,6 +31,7 @@ function useCreateResource<T, P extends FieldValues>({
   resolver,
   onError,
   onSuccess,
+  show_modal = true,
 }: IUseCreateResource<P>) {
   const { handleSuccess, handleFailed } = usePopup()
 
@@ -59,9 +61,11 @@ function useCreateResource<T, P extends FieldValues>({
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
       onSuccess?.(unwrapEither(data))
-      return handleSuccess({
-        title: NotificationService.generateMessage('CREATE'),
-      })
+      if (show_modal) {
+        return handleSuccess({
+          title: NotificationService.generateMessage('CREATE'),
+        })
+      }
       // return NotificationService.showSuccess('CREATE')
     },
     onError(error) {
