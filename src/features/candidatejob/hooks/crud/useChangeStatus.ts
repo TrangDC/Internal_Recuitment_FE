@@ -86,6 +86,7 @@ function CreateFeedBackProp(
     defaultValues: {
       feedback: '',
     },
+    show_modal: false,
     resolver: yupResolver(schema),
     onSuccess: (data) => {
       const response =
