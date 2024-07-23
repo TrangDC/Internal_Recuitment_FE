@@ -4,7 +4,7 @@ include: "/.gitlab/.gitlab-ci.template.yml"
   variables:
     REACT_APP_ENDPOINT_API: https://trec-api.techvify.dev/graphql
     REACT_APP_ENDPOINT_BE: https://trec-api.techvify.dev
-    TINY_API_KEY: 3xhdihv2zjznmsha8ki7v4wa8uv7lgqgifbvnqzome2t9kkk
+    TINY_API_KEY: 7cp5et9axt0vggdyr98zpys32gj6tpdxqmh1pdouq0w41gjs
   rules:
     - if: $PIPELINE_NAME == "CD" && $ENVIRONMENT == "development"
     - when: never
