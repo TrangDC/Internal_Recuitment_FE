@@ -8,7 +8,7 @@ import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
 import { BaseRecord, DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
 import utc from 'dayjs/plugin/utc'
 import { getLastString } from './convert-string'
-dayjs.extend(utc);
+dayjs.extend(utc)
 
 export const searchByName = (listData: any[], searchValue: string) => {
   if (searchValue.length > 0) {
@@ -327,11 +327,15 @@ export const replaceTemplate = (
   data: DATA_KEYWORD_TEMPLATE[]
 ): string => {
   //@ts-ignore
-  return template.replace(/{{(.*?)}}/g, (_, key) => {
+  return template.replace(/{{ (.*?) }}/g, (_, key) => {
     const found = data.find((item) => item.key === key)
-    //@ts-ignore
-    const [type] = found?.key.split(":")
-    const value = type !== 'lk' ? found?.value : '#'
+
+    let value = found?.value ?? '';
+
+    if (found?.key) {
+      const [type] = found?.key.split(':')
+      value = type === 'lk' ? '#' : value;
+    }
 
     return found ? value : `{{${key}}}`
   })
