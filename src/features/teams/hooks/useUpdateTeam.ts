@@ -37,7 +37,7 @@ function useUpdateTeam(props: UseEditTeamProps) {
   })
 
   const { handleSubmit, control, formState, setValue } = useFormReturn
-  const isValid = !formState.isValid
+  const isValid = !formState.isValid || !formState.isDirty
   const { mutate, isPending } = useEditReturn
 
   function onSubmit() {

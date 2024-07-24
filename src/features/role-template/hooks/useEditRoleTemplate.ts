@@ -56,7 +56,7 @@ function useEditRoleTemplate(props: UseEditJobProps) {
   })
 
   const { handleSubmit, formState } = useFormReturn
-  const isValid = !formState.isValid
+  const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
   function onSubmit(note: string) {

@@ -61,7 +61,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
   })
 
   const { handleSubmit, control, formState, setValue, watch, clearErrors, getValues } = useFormReturn
-  const isValid = !formState.isValid
+  const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
   function onSubmit() {
