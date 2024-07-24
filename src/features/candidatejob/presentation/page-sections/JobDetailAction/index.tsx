@@ -18,6 +18,7 @@ const JobDetailAction = ({
 }) => {
   const { id } = useParams()
   const [statusSelected, setStatusSelected] = useState<string>()
+
   const { candidateJobInterview } = useGetCandidateJobInterview(id as string)
   const candidateJobOfTeamId = jobApplicationDetail?.hiring_job?.team?.id ?? ''
   const listEnabled: { feedback: FeedBack[]; interview: Interview[] } =
@@ -30,6 +31,11 @@ const JobDetailAction = ({
     jobApplicationDetail?.status &&
       setStatusSelected(jobApplicationDetail?.status)
   }, [jobApplicationDetail?.status])
+
+  const show_feedback = useMemo(() => {
+    const max_step = jobApplicationDetail?.steps?.[jobApplicationDetail?.steps?.length - 1];
+    return max_step?.candidate_job_status === statusSelected
+  }, [jobApplicationDetail, statusSelected])
 
   return (
     <DivActionWrapper>
@@ -70,6 +76,7 @@ const JobDetailAction = ({
           <ListFeedBack
             listFeedback={listEnabled?.feedback}
             candidateJobOfTeamId={candidateJobOfTeamId}
+            show_feedback={show_feedback}
           />
         </Cant>
       </DivAction>

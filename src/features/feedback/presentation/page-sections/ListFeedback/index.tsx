@@ -35,9 +35,14 @@ import DeleteFeedbackButtonPermission from 'features/feedback/permission/compone
 interface Props {
   listFeedback: FeedBack[]
   candidateJobOfTeamId: string
+  show_feedback?: boolean
 }
 
-const ListFeedBack = ({ listFeedback, candidateJobOfTeamId }: Props) => {
+const ListFeedBack = ({
+  listFeedback,
+  candidateJobOfTeamId,
+  show_feedback = true,
+}: Props) => {
   const {
     openCreate,
     setOpenCreate,
@@ -70,19 +75,21 @@ const ListFeedBack = ({ listFeedback, candidateJobOfTeamId }: Props) => {
         <BoxTitle>
           <Span>Feedbacks</Span>
         </BoxTitle>
-        <BoxButton>
-          <Cant
-            module="CANDIDATE_JOB_FEEDBACKS"
-            checkBy={{
-              compare: 'hasAny',
-              permissions: ['CREATE.everything'],
-            }}
-          >
-            <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
-              Add feedback
-            </Button>
-          </Cant>
-        </BoxButton>
+        {show_feedback && (
+          <BoxButton>
+            <Cant
+              module="CANDIDATE_JOB_FEEDBACKS"
+              checkBy={{
+                compare: 'hasAny',
+                permissions: ['CREATE.everything'],
+              }}
+            >
+              <Button startIcon={<Add />} onClick={() => setOpenCreate(true)}>
+                Add feedback
+              </Button>
+            </Cant>
+          </BoxButton>
+        )}
       </DivActionHeader>
 
       {!isEmpty(listFeedback) &&
