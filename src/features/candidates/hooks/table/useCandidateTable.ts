@@ -10,12 +10,12 @@ const useCandidateTable = (props: IUseCustomCommonTable) => {
 
   const recruit_time_from_date = useMemo(() => {
     const from_date = filters?.recruit_time_from_date;
-    return from_date ? convertDateToISOString(dayjs(from_date).toDate()) : undefined
+    return from_date ? convertDateToISOString(dayjs(from_date).toDate()) : convertDateToISOString(dayjs('1970-1-1').toDate())
   }, [filters?.recruit_time_from_date])
 
   const recruit_time_to_date = useMemo(() => {
     const to_date = filters?.recruit_time_to_date;
-    return to_date ? convertDateToISOString(dayjs(to_date).endOf('day').toDate()) : undefined
+    return to_date ? convertDateToISOString(dayjs(to_date).endOf('day').toDate()) : convertDateToISOString(dayjs('2050-1-1').toDate())
   }, [filters?.recruit_time_to_date])
 
   const { getAllCandidates, queryKey } = useGraphql()
