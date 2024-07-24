@@ -31,7 +31,7 @@ function useUpdateEmail(props: UseEditTeamProps) {
     queryKey: [queryKey],
     id,
     onSuccess,
-    formatDefaultValues(data) {
+    formatDefaultValues(data) {    
       const send_to =
         data?.send_to?.filter((option) => option !== SEND_TO_VALUE.role) ?? []
       const roles = data?.roles?.map((option) => option.id) ?? []
@@ -41,7 +41,7 @@ function useUpdateEmail(props: UseEditTeamProps) {
         send_to: [...send_to, ...roles],
         content: data?.content ?? '',
         signature: data?.signature ?? '',
-        subject: data?.subject ?? '',
+        subject: `<p>${data?.subject}</p>` ?? '',
         cc: data?.cc ?? [],
         bcc: [],
         note: '',
@@ -57,7 +57,7 @@ function useUpdateEmail(props: UseEditTeamProps) {
   const form_values = getValues()
   watch(['content', 'subject', 'signature'])
 
-  const isValid = !formState.isValid
+  const isValid = !formState.isValid || !formState.isDirty
   const { mutate, isPending } = useEditReturn
 
   function onSubmit() {

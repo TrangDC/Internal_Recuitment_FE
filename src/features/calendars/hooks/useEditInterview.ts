@@ -72,7 +72,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     trigger,
     setValue,
   } = useFormReturn
-  const isValid = !formState.isValid
+  const isValid = !formState.isValid || !formState.isDirty
   const { mutate, isPending } = useEditReturn
 
   function onSubmit() {

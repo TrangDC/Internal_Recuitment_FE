@@ -41,8 +41,7 @@ function useUpdateFeedback(props: UseEditFeedbackProps) {
   })
 
   const { handleSubmit, control, formState, setValue, watch, getValues } = useFormReturn
-  const isValid = !formState.isValid
-  console.log("🚀 ~ useUpdateFeedback ~ isValid:", isValid)
+  const isValid = !formState.isValid || !formState.isDirty
   const { mutate, isPending } = useEditReturn
 
   function onSubmit() {

@@ -38,7 +38,7 @@ function useUpdateSkill(props: UseEditCandidateProps) {
   })
 
   const { handleSubmit, control, formState, setValue } = useFormReturn
-  const isValid = !formState.isValid
+  const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
   function onSubmit() {
