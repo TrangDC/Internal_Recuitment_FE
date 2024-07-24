@@ -9,7 +9,7 @@ import { BaseRecord } from 'shared/interfaces'
 import { useUpdateResourceOther } from 'shared/hooks/crud-hook'
 import { JobStatus } from 'shared/class/job-status'
 
-const { STATUS_STATE } = JobStatus
+const { STATUS_HIRING_JOB } = JobStatus
 
 type UseChangeStatusProps = {
   id: string
@@ -35,9 +35,9 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
       return {
         note: '',
         status:
-          data?.status === STATUS_STATE.OPENED
-            ? STATUS_STATE.CLOSED
-            : STATUS_STATE.OPENED,
+          data?.status === STATUS_HIRING_JOB.OPENED
+            ? STATUS_HIRING_JOB.CLOSED
+            : STATUS_HIRING_JOB.OPENED,
       }
     },
   })
@@ -54,7 +54,7 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
 
   function renderTitle() {
     if (!formData?.status) return ''
-    return formData?.status === STATUS_STATE.OPENED
+    return formData?.status === STATUS_HIRING_JOB.OPENED
       ? 'Do you want to close this job?'
       : 'Do you want to reopen this job?'
   }

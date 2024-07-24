@@ -127,7 +127,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     const date = getValues('date')
     if (value) {
       const fromDate = convertToRootByTimeNow(value, date)
-      setValue('to', fromDate.toDate(), { shouldValidate: true })
+      setValue('to', fromDate.toDate(), { shouldValidate: true, shouldDirty: true })
       trigger('from')
     }
   }
@@ -136,7 +136,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     const date = getValues('date')
     if (value) {
       const fromDate = convertToRootByTimeNow(value, date)
-      setValue('from', fromDate.toDate(), { shouldValidate: true })
+      setValue('from', fromDate.toDate(), { shouldValidate: true, shouldDirty: true })
     }
   }
 

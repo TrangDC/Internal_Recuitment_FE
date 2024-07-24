@@ -1,21 +1,21 @@
-const STATUS_STATE = {
+const STATUS_HIRING_JOB = {
   DRAFT: 'draft',
   OPENED: 'opened',
   CLOSED: 'closed',
 }
 
 const STATUS_STYLE = {
-  [STATUS_STATE.DRAFT]: {
+  [STATUS_HIRING_JOB.DRAFT]: {
     backgroundColor: '#eff3f5',
     color: 'black',
     text: 'Draft',
   },
-  [STATUS_STATE.OPENED]: {
+  [STATUS_HIRING_JOB.OPENED]: {
     backgroundColor: '#20A4A9',
     color: 'white',
     text: 'Opening',
   },
-  [STATUS_STATE.CLOSED]: {
+  [STATUS_HIRING_JOB.CLOSED]: {
     backgroundColor: '#82868C',
     color: 'white',
     text: 'Closed',
@@ -25,7 +25,7 @@ const STATUS_STYLE = {
 export type TYPE_JOB_STATUS = 'draft' | 'opened' | 'closed'
 
 export class JobStatus {
-  static STATUS_STATE = STATUS_STATE
+  static STATUS_HIRING_JOB = STATUS_HIRING_JOB
   static STATUS_STYLE = STATUS_STYLE
 
   static getDataByStatus(status: TYPE_JOB_STATUS) {

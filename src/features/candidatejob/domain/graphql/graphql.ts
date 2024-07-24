@@ -73,6 +73,7 @@ const useGraphql = () => {
           hiring_job {
             id
             name
+            status
             team {
               id
               name
@@ -168,6 +169,7 @@ const useGraphql = () => {
           team {
             id
           }
+          status
         }
         steps {
           id

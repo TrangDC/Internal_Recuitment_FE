@@ -32,7 +32,7 @@ export default function TabJobDetail({
   ]
 
   const showEdit = useMemo(() => {
-    return job_detail.status === JobStatus.STATUS_STATE.OPENED
+    return job_detail.status === JobStatus.STATUS_HIRING_JOB.OPENED
   }, [job_detail?.status])
 
   return (

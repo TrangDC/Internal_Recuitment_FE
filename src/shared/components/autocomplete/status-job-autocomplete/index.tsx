@@ -11,11 +11,11 @@ function StatusJobAutoComplete<Multiple extends boolean>(
   return <AutocompleteBase<Multiple> {...props} options={options} />
 }
 
-const { STATUS_STATE } = JobStatus;
+const { STATUS_HIRING_JOB } = JobStatus;
 
 const options: IOption[] = [
-  { label: 'Opening', value: STATUS_STATE.OPENED },
-  { label: 'Closed', value: STATUS_STATE.CLOSED },
+  { label: 'Opening', value: STATUS_HIRING_JOB.OPENED },
+  { label: 'Closed', value: STATUS_HIRING_JOB.CLOSED },
 ]
 
 export default StatusJobAutoComplete
