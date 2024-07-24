@@ -25,7 +25,7 @@ import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import { ChipLimit } from 'shared/components/chip-stack'
 import CloseJobButtonPermission from 'features/jobs/permission/components/CloseJobButtonPermission'
 
-const { STATUS_STATE } = JobStatus
+const { STATUS_HIRING_JOB } = JobStatus
 
 const JobDetail = () => {
   const [openTab, setOpenTab] = useState(false)
@@ -46,7 +46,7 @@ const JobDetail = () => {
 
   const disabledBtn = useMemo(() => {
     return (
-      jobDetail.status === STATUS_STATE.OPENED && !jobDetail?.is_able_to_close
+      jobDetail.status === STATUS_HIRING_JOB.OPENED && !jobDetail?.is_able_to_close
     )
   }, [jobDetail])
 
@@ -137,7 +137,7 @@ const JobDetail = () => {
                   disabledBtn={disabledBtn}
                   handleOpenStatus={handleOpenStatus}
                   jobDetail={jobDetail}
-                  opened={STATUS_STATE.OPENED}
+                  opened={STATUS_HIRING_JOB.OPENED}
                 />
                 <BtnPrimary onClick={() => setOpenTab(true)}>
                   <Span>View Details</Span>

@@ -15,7 +15,7 @@ export enum ActionAllJobsTable {
   CLOSE_JOB = 'close_job',
 }
 
-const { STATUS_STATE } = JobStatus
+const { STATUS_HIRING_JOB } = JobStatus
 
 type UseBuildAllJobsActionsTableProps = {
   handleOpenEdit: (id: string) => void
@@ -46,15 +46,15 @@ function useBuildAllJobsActionsTable({
           handleOpenStatus(id)
         },
         title: (rowData) => {
-          return rowData.status === STATUS_STATE.OPENED
+          return rowData.status === STATUS_HIRING_JOB.OPENED
             ? 'Close job'
             : 'Reopen Job'
         },
         disabled: (rowData) => {
-          if (rowData?.status !== STATUS_STATE.OPENED) return false
+          if (rowData?.status !== STATUS_HIRING_JOB.OPENED) return false
           if (
             rowData?.is_able_to_close &&
-            rowData.status === STATUS_STATE.OPENED
+            rowData.status === STATUS_HIRING_JOB.OPENED
           )
             return false
           return true
@@ -69,7 +69,7 @@ function useBuildAllJobsActionsTable({
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
         disabled: (rowData) => {
-          return rowData.status === STATUS_STATE.CLOSED
+          return rowData.status === STATUS_HIRING_JOB.CLOSED
         },
       },
       delete: {

@@ -1,5 +1,6 @@
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import { useNavigate } from 'react-router-dom'
+import { JobStatus } from 'shared/class/job-status'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'

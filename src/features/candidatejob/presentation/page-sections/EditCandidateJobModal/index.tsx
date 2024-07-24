@@ -32,6 +32,7 @@ function EditCandidateJobModal({
         onSuccess?.()
       },
     })
+
   const translation = useTextTranslation()
 
   return (
@@ -57,9 +58,21 @@ function EditCandidateJobModal({
                         accept={'.pdf,.doc,.docx,.xlsx'}
                         multiple={false}
                         validator_files={{
-                          max_file: {max: 1, msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'},
-                          max_size: {max: 20, msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'},
-                          is_valid: {regex: '\\.(pdf|xlsx|docx|doc)', msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'}
+                          max_file: {
+                            max: 1,
+                            msg_error:
+                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          },
+                          max_size: {
+                            max: 20,
+                            msg_error:
+                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          },
+                          is_valid: {
+                            regex: '\\.(pdf|xlsx|docx|doc)',
+                            msg_error:
+                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          },
                         }}
                         descriptionFile={() => {
                           return (
@@ -74,7 +87,7 @@ function EditCandidateJobModal({
                               </Tiny>
                             </Box>
                           )
-                        }} 
+                        }}
                         value={field.value}
                         onChange={field.onChange}
                       />

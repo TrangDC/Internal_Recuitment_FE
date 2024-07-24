@@ -13,6 +13,7 @@ import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { openPDFInNewTab } from 'shared/utils/upload-file'
 import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
+import { JobStatus } from 'shared/class/job-status'
 
 export enum ActionCandidateJobsTabLe {
   DETAIL = 'detail',
@@ -62,8 +63,9 @@ function useBuildActionTableCandidateJobs({
             STATUS_CANDIDATE.OFFERED_LOST,
             STATUS_CANDIDATE.EX_STAFTT,
           ]
+          const is_job_closed =  rowData?.hiring_job?.status === JobStatus.STATUS_HIRING_JOB.CLOSED;
 
-          return disabledStatuses.includes(rowData?.status)
+          return  is_job_closed || disabledStatuses.includes(rowData?.status)
         },
       },
       edit_cv: {
@@ -73,6 +75,9 @@ function useBuildActionTableCandidateJobs({
         },
         title: 'Edit CV',
         Icon: <EditIcon />,
+        disabled: (rowData) => {
+          return  rowData?.hiring_job?.status === JobStatus.STATUS_HIRING_JOB.CLOSED;;
+        },
       },
       copy_application_link: {
         id: ActionCandidateJobsTabLe.COPY_APPLICATION_LINK,
