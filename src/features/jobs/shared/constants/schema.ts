@@ -131,7 +131,7 @@ export const schemaApplyJob = yup.object({
   )
   .test(
     'is-before-to',
-    'Offer expiration date must be after Onboard date',
+    'Onboard date must be after  Offer expiration date',
     function (value) {
       const { onboard_date } = this.parent
       if (!onboard_date) return true

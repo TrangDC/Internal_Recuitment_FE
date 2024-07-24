@@ -31,21 +31,21 @@ const INIT_VALUE = {
 }
 
 interface Props {
-  filter?: {
-    event: EVENT_EMAIL_ENUM
-  }
+  event?: EVENT_EMAIL_ENUM
 }
 
 const useGetEmailKeyWord = ({
-  filter = { event: 'updating_interview' },
+  event = 'created_interview',
 }: Props) => {
   const { getAllEmailTemplateKeywords, queryKey_keyword } = useGraphql()
 
   const { data } = useQuery({
-    queryKey: [queryKey_keyword, filter],
+    queryKey: [queryKey_keyword, event],
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords.query, {
-        filter: filter,
+        filter: {
+          event: event ? event : 'created_interview'
+        },
       }),
   })
 

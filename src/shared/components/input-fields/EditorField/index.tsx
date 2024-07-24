@@ -49,7 +49,7 @@ export default function EditorBoxField({
     attribute_command: attribute_command,
     filter: {
       event: event_filter ? event_filter : 'updating_interview',
-    }
+    },
   })
 
   return loading ? (

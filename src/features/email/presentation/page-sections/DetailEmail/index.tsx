@@ -10,6 +10,7 @@ import { Email } from 'features/email/domain/interfaces'
 import useEmailDetail from 'features/email/hooks/useEmailDetail'
 import { ChipLimit } from 'shared/components/chip-stack'
 import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
+import { replaceLink } from 'features/email/shared/utils'
 interface IDetailEmailModal extends IDetailModal<Email> {
   handleOpenEdit: (value: string) => void
 }
@@ -23,7 +24,7 @@ function DetailEmailModal({
   const { email_detail } = useEmailDetail(id)
 
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen}>
+    <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
       <Box>
         <BaseModal.Header
           title={'Email template details'}
@@ -109,7 +110,7 @@ function DetailEmailModal({
                   <FlexBox flexDirection={'column'} gap={0.25}>
                     <Tiny12md color={'grey.500'}>Email content</Tiny12md>
                     <Text13md color={'grey.900'} fontWeight={600}>
-                      {GenerateInnerHTML({innerHTML: email_detail?.content})}
+                      {GenerateInnerHTML({innerHTML: replaceLink(email_detail?.content ?? '')})}
                     </Text13md>
                   </FlexBox>
                 </FormControl>
@@ -120,7 +121,7 @@ function DetailEmailModal({
                   <FlexBox flexDirection={'column'} gap={0.25}>
                     <Tiny12md color={'grey.500'}>Email signature</Tiny12md>
                     <Text13md color={'grey.900'} fontWeight={600}>
-                      {GenerateInnerHTML({innerHTML: email_detail?.signature})}
+                      {GenerateInnerHTML({innerHTML: replaceLink(email_detail?.signature ?? '')})}
                     </Text13md>
                   </FlexBox>
                 </FormControl>

@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import { ValidateDate } from 'features/report/domain/interface'
 import { ValueRangeDate } from 'shared/interfaces/date'
 import { ReportFilterPeriod } from 'shared/schema/chart/report'

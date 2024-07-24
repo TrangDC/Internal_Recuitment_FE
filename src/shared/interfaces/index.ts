@@ -56,3 +56,4 @@ export interface IDetailModal<T> extends ICreateModal {
 }
 
 export type DATA_KEYWORD_TEMPLATE = { key: string; value: string }
+

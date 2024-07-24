@@ -20,6 +20,7 @@ import SendToAutocomplete from 'shared/components/autocomplete/send-to-autocompl
 import { useMemo } from 'react'
 import { SEND_TO_BY_EVENT, SLASH_COMMAND_BY_EVENT } from 'features/email/shared/constants'
 import { SLASH_COMMAND_TYPE } from 'shared/components/input-fields/EditorField/hooks/useGetSlashCommand'
+import { cleanDelTags } from 'features/email/shared/utils'
 
 function CreateEmailModal({ open, setOpen }: ICreateModal) {
   const {
@@ -36,13 +37,15 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
       setOpen(false)
     },
   })
-  const { getValidCc, resetSendTo } = actions
+  const { getValidCc, resetSendTo, onChangeEvent, handleChangeEmail } = actions
 
   const { rowId, openPreview, setOpenPreview, handleOpenPreview, rowData } =
     useActionTable()
   const translation = useTextTranslation()
 
+
   const event_selected = watch('event')
+
   const include_sendTo = useMemo(() => {
     return event_selected ? SEND_TO_BY_EVENT[event_selected] : []
   }, [event_selected])
@@ -80,6 +83,8 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                           value={field.value}
                           onChange={(data) => {
                             field.onChange(data?.value)
+                            //@ts-ignore
+                            onChangeEvent(data?.value)
                             resetSendTo()
                           }}
                           textFieldProps={{
@@ -161,7 +166,10 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                             label={'Email subject'}
                             required
                             value={field.value ?? ''}
-                            onEditorChange={field.onChange}
+                            onEditorChange={(value) => {
+                              const response = handleChangeEmail(cleanDelTags(value), 'subject');
+                              field.onChange(response)
+                            }}
                             pluginCustomize={['slashcommands']}
                             slash_command={['attribute']}
                             initProps={{
@@ -195,7 +203,10 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                           label={'Email content'}
                           required
                           value={field.value ?? ''}
-                          onEditorChange={field.onChange}
+                          onEditorChange={(value) => {
+                            const response = handleChangeEmail(cleanDelTags(value), 'content');
+                            field.onChange(response)
+                          }}
                           pluginCustomize={['slashcommands']}
                           attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
                           event_filter={event_selected as EVENT_EMAIL_ENUM}
@@ -217,9 +228,12 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                     render={({ field, fieldState }) => (
                       <FlexBox flexDirection={'column'}>
                         <EditorBoxField
-                          label={'Email signature'}
+                          label={'Email signature'} 
                           value={field.value ?? ''}
-                          onEditorChange={field.onChange}
+                          onEditorChange={(value) => {
+                            const response = handleChangeEmail(cleanDelTags(value), 'signature');
+                            field.onChange(response)
+                          }}
                           pluginCustomize={['slashcommands']}
                           attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
                           event_filter={event_selected as EVENT_EMAIL_ENUM}

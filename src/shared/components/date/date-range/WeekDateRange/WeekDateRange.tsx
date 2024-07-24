@@ -1,5 +1,5 @@
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Text15sb, Tiny12 } from 'shared/components/Typography'
+import { Text15sb } from 'shared/components/Typography'
 import { Box, Popover } from '@mui/material'
 import { Dayjs } from 'dayjs'
 import WeekPicker from '../../WeekPicker/WeekPicker'
