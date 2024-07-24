@@ -3,7 +3,7 @@ import { AutocompleterItemSpec } from '../../types'
 import { slash_command_record } from '../../hooks/useGetSlashCommand'
 
 const renderAttributes = (value: string) => {
-  return `{{ ${value} }}`
+  return `{{ ${value} }} `
 }
 
 export const generateAttributes = (editor: TinyMCEEditor, option_slash: slash_command_record[]): AutocompleterItemSpec[] => {

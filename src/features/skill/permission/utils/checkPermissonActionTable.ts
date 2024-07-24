@@ -16,7 +16,6 @@ function checkPermissionActionTable({
   rowData,
 }: CheckPermissionActionTableProps<Skill>): TOptionItem<Skill>[] {
   let newActions = [...actions]
-  const job = rowData.row.original
   newActions = editAction({ newActions, role })
   newActions = deleteAction({ newActions, role })
   return newActions

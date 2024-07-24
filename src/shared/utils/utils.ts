@@ -7,7 +7,7 @@ import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
 import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
 import { BaseRecord, DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
 import utc from 'dayjs/plugin/utc'
-import { getLastString } from './convert-string'
+
 dayjs.extend(utc)
 
 export const searchByName = (listData: any[], searchValue: string) => {
@@ -326,15 +326,14 @@ export const replaceTemplate = (
   template: string,
   data: DATA_KEYWORD_TEMPLATE[]
 ): string => {
-  //@ts-ignore
   return template.replace(/{{ (.*?) }}/g, (_, key) => {
     const found = data.find((item) => item.key === key)
 
-    let value = found?.value ?? '';
+    let value = found?.value ?? ''
 
     if (found?.key) {
       const [type] = found?.key.split(':')
-      value = type === 'lk' ? '#' : value;
+      value = type === 'lk' ? '#' : value
     }
 
     return found ? value : `{{${key}}}`
