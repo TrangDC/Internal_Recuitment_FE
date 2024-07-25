@@ -35,17 +35,25 @@ function CreateInterviewModal({
   onSuccess,
 }: ICreateInterviewModal) {
   const { id } = useParams()
-  const { onSubmit, control, isPending, isValid, watch, trigger, formState, resetMeetingLink } =
-    useCreateInterview({
-      callbackSuccess: () => {
-        setOpen(false)
-        onSuccess?.()
-      },
-      defaultValues: {
-        candidate_job_id: id,
-        interview_date: new Date(),
-      },
-    })
+  const {
+    onSubmit,
+    control,
+    isPending,
+    isValid,
+    watch,
+    formState,
+    setValue,
+    resetMeetingLink,
+  } = useCreateInterview({
+    callbackSuccess: () => {
+      setOpen(false)
+      onSuccess?.()
+    },
+    defaultValues: {
+      candidate_job_id: id,
+      interview_date: new Date(),
+    },
+  })
 
   const interview_date = watch('interview_date')
   const location_interview = watch('location')
@@ -137,8 +145,13 @@ function CreateInterviewModal({
                         format="dd/MM/yyyy"
                         value={dayjs(field.value)}
                         onChange={(value) => {
-                          trigger('start_from')
-                          field.onChange(value?.toDate())
+                          if (value) {
+                            field.onChange(value?.toDate())
+                          } else {
+                            setValue('interview_date', null, {
+                              shouldValidate: true,
+                            })
+                          }
                         }}
                         minDate={dayjs()}
                         textFieldProps={{
@@ -148,7 +161,7 @@ function CreateInterviewModal({
                         }}
                       />
                       <HelperTextForm
-                        message={fieldState.error?.message} 
+                        message={fieldState.error?.message}
                       ></HelperTextForm>
                     </FlexBox>
                   )}
@@ -239,7 +252,7 @@ function CreateInterviewModal({
                         disableCloseOnSelect={true}
                         textFieldProps={{
                           label: 'Location',
-                          required: true
+                          required: true,
                         }}
                       />
                       <HelperTextForm

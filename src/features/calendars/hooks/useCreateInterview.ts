@@ -55,7 +55,7 @@ function useCreateInterview(props: IUseCreateInterview) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      if (value.from && value.to) {
+      if (value.from && value.to && value.date) {
         const { newEnd, newStart } = convertToRootDate(
           value.from,
           value.to,
@@ -89,13 +89,13 @@ function useCreateInterview(props: IUseCreateInterview) {
     const to = getValues('to')
     const date = getValues('date')
 
-    if (from) {
+    if (from && date) {
       const fromDate = convertToRootByTimeNow(from, date)
       setValue('from', fromDate.toDate(), { shouldValidate: true })
       trigger(['from'])
     }
 
-    if (to) {
+    if (to && date) {
       const toDate = convertToRootByTimeNow(to, date)
       setValue('to', toDate.toDate(), { shouldValidate: true })
       trigger(['to'])
@@ -104,7 +104,7 @@ function useCreateInterview(props: IUseCreateInterview) {
 
   function onSelectedTo(value?: Date) {
     const date = getValues('date')
-    if (value) {
+    if (value && date) {
       const fromDate = convertToRootByTimeNow(value, date)
       setValue('to', fromDate.toDate(), { shouldValidate: true })
       trigger('from')
@@ -113,7 +113,7 @@ function useCreateInterview(props: IUseCreateInterview) {
 
   function onSelectedFrom(value?: Date) {
     const date = getValues('date')
-    if (value) {
+    if (value && date) {
       const fromDate = convertToRootByTimeNow(value, date)
       setValue('from', fromDate.toDate(), { shouldValidate: true })
     }
@@ -138,6 +138,7 @@ function useCreateInterview(props: IUseCreateInterview) {
     resetField,
     formState,
     trigger,
+    setValue
   }
 }
 export default useCreateInterview

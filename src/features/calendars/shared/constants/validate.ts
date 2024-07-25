@@ -14,10 +14,19 @@ export const CreateInterviewSchema = yup.object().shape({
   interviewer: yup.array().min(1, RULE_MESSAGES.MC1('interviewer')),
   candidateId: yup.string().required(RULE_MESSAGES.MC1('candidate')),
   date: yup
-    .date()
+    .date().nullable()
     .typeError(RULE_MESSAGES.MC5('Date'))
     .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
-    .required(RULE_MESSAGES.MC1('date')),
+    .test('is_null', function () {
+      const interview_date = this.parent?.date
+      if(!interview_date) {
+        return this.createError({
+          path: this.path,
+          message: RULE_MESSAGES.MC1('interview date')
+        })
+      }
+      return true
+    }),
   from: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
@@ -66,10 +75,19 @@ export const EditInterviewSchema = yup.object().shape({
   candidateId: yup.string().required(RULE_MESSAGES.MC1('candidate')),
   candidate_job_id: yup.string().default(''),
   date: yup
-    .date()
+    .date().nullable()
     .typeError(RULE_MESSAGES.MC5('Date'))
     .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
-    .required(RULE_MESSAGES.MC1('date')),
+    .test('is_null', function () {
+      const interview_date = this.parent?.date
+      if(!interview_date) {
+        return this.createError({
+          path: this.path,
+          message: RULE_MESSAGES.MC1('interview date')
+        })
+      }
+      return true
+    }),
   from: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Date'))
