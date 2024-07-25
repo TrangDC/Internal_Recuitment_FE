@@ -27,8 +27,9 @@ export const downloadFileAttachment = (
     })
       .then((response: any) => {
         if (isRight(response)) {
-          //@ts-ignore
-          const urlFile = unwrapEither(response)?.['CreateAttachmentSASURL']?.url ?? ''
+          const urlFile =
+            //@ts-ignore
+            unwrapEither(response)?.['CreateAttachmentSASURL']?.url ?? ''
           return urlFile
         }
       })

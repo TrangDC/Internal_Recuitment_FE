@@ -14,7 +14,6 @@ import { toast } from 'react-toastify'
 import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import ChangeStatusModal from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
@@ -46,7 +45,10 @@ const BoxStatusCandidates = ({
   status,
 }: Props) => {
   const navigate = useNavigate()
-  const [candidateSelected, setCandidateSelected] = useState<Candidate>()
+  const [candidateSelected, setCandidateSelected] = useState({
+    candidateId: '',
+    status: '',
+  })
   const { role, user } = useAuthorization()
   const queryClient = useQueryClient()
   const handleRefreshList = () => {
@@ -72,6 +74,7 @@ const BoxStatusCandidates = ({
   const handleDragStart = (item: CandidateStatusItem, cantDrag: boolean) => {
     if (!cantDrag) return
     return (event: React.DragEvent<HTMLDivElement>) => {
+      console.log('item', item)
       event.dataTransfer.setData('candidate', JSON.stringify(item))
     }
   }
@@ -83,7 +86,10 @@ const BoxStatusCandidates = ({
     if (parsedData.status === status) return
     const listChange = ENABLED_CHANGE_STATUS[parsedData.status]
     if (listChange.includes(status)) {
-      setCandidateSelected(parsedData.candidate)
+      setCandidateSelected({
+        candidateId: parsedData.candidate.id,
+        status: parsedData.status,
+      })
       handleOpenChangeStatus(parsedData.id, parsedData)
     } else {
       toast.error(
@@ -139,7 +145,7 @@ const BoxStatusCandidates = ({
         <ChangeStatusModal
           open={openChangeStatus}
           setOpen={setOpenChangeStatus}
-          candidateId={candidateSelected?.id as string}
+          candidateId={candidateSelected?.candidateId as string}
           id={rowId.current}
           rowData={rowData.current}
           //@ts-ignore
