@@ -1,39 +1,44 @@
 import { CSSProperties } from 'react'
-import { CURRENCY_STATE, LOCATION_STATE, SALARY_STATE, STATUS_CANDIDATE } from 'shared/constants/constants'
-import { t } from 'i18next';
+import {
+  CURRENCY_STATE,
+  LOCATION_STATE,
+  SALARY_STATE,
+  STATUS_CANDIDATE,
+} from 'shared/constants/constants'
+import { t } from 'i18next'
 
 export const SALARY_DATA = [
-  {name: 'Range', value: SALARY_STATE.RANGE},
-  {name: 'Up to', value: SALARY_STATE.UP_TO},
-  {name: 'Minimum', value: SALARY_STATE.MINIMUM},
-  {name: 'Negotitation', value: SALARY_STATE.NEGOTITATION},
+  { name: 'Range', value: SALARY_STATE.RANGE },
+  { name: 'Up to', value: SALARY_STATE.UP_TO },
+  { name: 'Minimum', value: SALARY_STATE.MINIMUM },
+  { name: 'Negotitation', value: SALARY_STATE.NEGOTITATION },
 ]
 
 export const CURRENCY_DATA = [
-  {name: 'VND', value: CURRENCY_STATE.VND},
-  {name: 'USD', value: CURRENCY_STATE.USD},
-  {name: 'JPY', value: CURRENCY_STATE.JPY},
+  { name: 'VND', value: CURRENCY_STATE.VND },
+  { name: 'USD', value: CURRENCY_STATE.USD },
+  { name: 'JPY', value: CURRENCY_STATE.JPY },
 ]
 
 export const LOCATION_DATA = [
-  {name: 'Hà Nội', value: LOCATION_STATE.HA_NOI},
-  {name: 'Đà Nẵng', value: LOCATION_STATE.DA_NANG},
-  {name: 'Hồ Chí Minh', value: LOCATION_STATE.HO_CHI_MINH},
-  {name: 'Japan', value: LOCATION_STATE.JAPAN},
-  {name: 'Singapore', value: LOCATION_STATE.SINGAPORE},
+  { name: 'Hà Nội', value: LOCATION_STATE.HA_NOI },
+  { name: 'Đà Nẵng', value: LOCATION_STATE.DA_NANG },
+  { name: 'Hồ Chí Minh', value: LOCATION_STATE.HO_CHI_MINH },
+  { name: 'Japan', value: LOCATION_STATE.JAPAN },
+  { name: 'Singapore', value: LOCATION_STATE.SINGAPORE },
 ]
 
 export type SALARY_RENDER_TYPE = {
-    name: string,
-    typeComponent: 'textField' | 'autoComplete',
-    accept: (string | undefined)[],
-    label?: string,
-    xs: number,
-    inputLabel?: string,
-    options?: {value: string, name: string}[],
-    type?: string,
-    style?: CSSProperties,
-    thousandSeparator?: boolean,
+  name: string
+  typeComponent: 'textField' | 'autoComplete'
+  accept: (string | undefined)[]
+  label?: string
+  xs: number
+  inputLabel?: string
+  options?: { value: string; name: string }[]
+  type?: string
+  style?: CSSProperties
+  thousandSeparator?: boolean
 }
 
 export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
@@ -77,7 +82,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     accept: [SALARY_STATE.NEGOTITATION],
     type: 'number',
     xs: 4,
-    style: {visibility: 'hidden'},
+    style: { visibility: 'hidden' },
     thousandSeparator: true,
   },
   {
@@ -86,7 +91,7 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
     accept: [undefined],
     type: 'number',
     xs: 4,
-    style: {visibility: 'hidden'},
+    style: { visibility: 'hidden' },
     thousandSeparator: true,
   },
   {
@@ -101,9 +106,15 @@ export const SALARY_RENDER: SALARY_RENDER_TYPE[] = [
 ]
 
 export const ENABLED_CHANGE_STATUS = {
-  [STATUS_CANDIDATE.APPLIED]: [STATUS_CANDIDATE.INTERVIEWING, STATUS_CANDIDATE.OFFERING, STATUS_CANDIDATE.HIRED, STATUS_CANDIDATE.KIV, STATUS_CANDIDATE.OFFERED_LOST],
-  [STATUS_CANDIDATE.INTERVIEWING]: [STATUS_CANDIDATE.OFFERING, STATUS_CANDIDATE.HIRED, STATUS_CANDIDATE.KIV, STATUS_CANDIDATE.OFFERED_LOST],
-  [STATUS_CANDIDATE.OFFERING]: [STATUS_CANDIDATE.HIRED, STATUS_CANDIDATE.OFFERED_LOST],
+  [STATUS_CANDIDATE.APPLIED]: [
+    STATUS_CANDIDATE.INTERVIEWING,
+    STATUS_CANDIDATE.OFFERING,
+  ],
+  [STATUS_CANDIDATE.INTERVIEWING]: [STATUS_CANDIDATE.OFFERING],
+  [STATUS_CANDIDATE.OFFERING]: [
+    STATUS_CANDIDATE.HIRED,
+    STATUS_CANDIDATE.OFFERED_LOST,
+  ],
   [STATUS_CANDIDATE.HIRED]: [STATUS_CANDIDATE.EX_STAFTT],
   [STATUS_CANDIDATE.KIV]: [],
   [STATUS_CANDIDATE.OFFERED_LOST]: [],
