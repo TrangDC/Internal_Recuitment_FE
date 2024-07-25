@@ -17,7 +17,9 @@ import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
 import useCreateInterview from 'features/calendars/hooks/useCreateInterview'
 import SelectionTeamPermission from 'features/calendars/permission/components/SelectionTeamPermission'
-import LocationInterviewAutoComplete, { LOCATION_INTERVIEW_STATE } from 'shared/components/autocomplete/location-interview-autocomplete'
+import LocationInterviewAutoComplete, {
+  LOCATION_INTERVIEW_STATE,
+} from 'shared/components/autocomplete/location-interview-autocomplete'
 
 interface IAddInterviewModal {
   open: boolean
@@ -26,14 +28,27 @@ interface IAddInterviewModal {
 
 function CreateInterviewModal(props: IAddInterviewModal) {
   const { open, setOpen } = props
-  const { actions, control, isValid, isPending, watch, resetField, formState } =
-    useCreateInterview({
-      onSuccess: () => {
-        setOpen(false)
-      },
-    })
-  const { onSubmit, onSelectedInterviewDate, onSelectedTo, onSelectedFrom, resetMeetingLink } =
-    actions
+  const {
+    actions,
+    control,
+    isValid,
+    isPending,
+    watch,
+    resetField,
+    formState,
+    setValue,
+  } = useCreateInterview({
+    onSuccess: () => {
+      setOpen(false)
+    },
+  })
+  const {
+    onSubmit,
+    onSelectedInterviewDate,
+    onSelectedTo,
+    onSelectedFrom,
+    resetMeetingLink,
+  } = actions
   const teamId = watch('teamId')
   const jobId = watch('jobId')
   const interviewDate = watch('date')
@@ -206,8 +221,12 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                           label={'Select date'}
                           value={field.value ? dayjs(field.value) : null}
                           onChange={(value) => {
-                            field.onChange(value?.toDate())
-                            onSelectedInterviewDate()
+                            if (value) {
+                              field.onChange(value?.toDate())
+                              onSelectedInterviewDate()
+                            } else {
+                              setValue('date', null, { shouldValidate: true })
+                            }
                           }}
                           textFieldProps={{
                             required: true,
@@ -240,6 +259,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                           ampm={false}
                           disabled={!interviewDate}
                           shouldDisableTime={(value, view) =>
+                            !!interviewDate &&
                             shouldDisableTime(interviewDate, value, view)
                           }
                           textFieldProps={{
@@ -273,6 +293,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                           ampm={false}
                           disabled={!interviewDate}
                           shouldDisableTime={(value, view) =>
+                            !!interviewDate &&
                             shouldDisableTime(interviewDate, value, view)
                           }
                           textFieldProps={{
@@ -294,7 +315,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
 
             <FlexBox justifyContent={'center'} alignItems={'center'}>
               <FormControl fullWidth>
-              <Controller
+                <Controller
                   control={control}
                   name="location"
                   render={({ field, fieldState }) => (
@@ -309,7 +330,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         disableCloseOnSelect={true}
                         textFieldProps={{
                           label: 'Location',
-                          required: true
+                          required: true,
                         }}
                       />
                       <HelperTextForm
@@ -344,7 +365,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                 </FormControl>
               </FlexBox>
             )}
-            
+
             <FlexBox justifyContent={'center'} alignItems={'center'}>
               <FormControl fullWidth>
                 <Controller

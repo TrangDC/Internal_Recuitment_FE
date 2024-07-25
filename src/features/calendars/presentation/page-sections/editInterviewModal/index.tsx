@@ -39,14 +39,20 @@ function EditInterviewModal(props: IEditInterviewModal) {
     resetField,
     formState,
     isGetting,
+    setValue,
   } = useEditInterview({
     id: id,
     onSuccess: () => {
       setOpen(false)
     },
   })
-  const { onSubmit, onSelectedFrom, onSelectedInterviewDate, onSelectedTo, resetMeetingLink } =
-    actions
+  const {
+    onSubmit,
+    onSelectedFrom,
+    onSelectedInterviewDate,
+    onSelectedTo,
+    resetMeetingLink,
+  } = actions
   const interviewDate = watch('date')
 
   const callbackSubmit = (reason: string) => {
@@ -220,8 +226,12 @@ function EditInterviewModal(props: IEditInterviewModal) {
                           label={'Select date'}
                           value={field.value ? dayjs(field.value) : null}
                           onChange={(value) => {
-                            field.onChange(value?.toDate())
-                            onSelectedInterviewDate()
+                            if (value) {
+                              field.onChange(value?.toDate())
+                              onSelectedInterviewDate()
+                            } else {
+                              setValue('date', null, { shouldValidate: true })
+                            }
                           }}
                           minDate={dayjs()}
                           textFieldProps={{
@@ -254,6 +264,7 @@ function EditInterviewModal(props: IEditInterviewModal) {
                           ampm={false}
                           disabled={!interviewDate}
                           shouldDisableTime={(value, view) =>
+                            !!interviewDate &&
                             shouldDisableTime(interviewDate, value, view)
                           }
                           textFieldProps={{
@@ -287,6 +298,7 @@ function EditInterviewModal(props: IEditInterviewModal) {
                           ampm={false}
                           disabled={!interviewDate}
                           shouldDisableTime={(value, view) =>
+                            !!interviewDate &&
                             shouldDisableTime(interviewDate, value, view)
                           }
                           textFieldProps={{

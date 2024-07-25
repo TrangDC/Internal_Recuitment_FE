@@ -18,8 +18,18 @@ export const schema = yup.object({
   interview_date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('interview date'))
-    .required(RULE_MESSAGES.MC1('interview date'))
-    .min(dayjs().startOf('day').toDate(), 'Cannot be past dates'),
+    .nullable()
+    .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
+    .test('is_null', function () {
+      const interview_date = this.parent?.interview_date
+      if(!interview_date) {
+        return this.createError({
+          path: this.path,
+          message: RULE_MESSAGES.MC1('interview date')
+        })
+      }
+      return true
+    }),
   start_from: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('start from'))
@@ -96,10 +106,19 @@ export const schemaUpdate = yup.object({
     .required(RULE_MESSAGES.MC1('interviewer'))
     .min(1, RULE_MESSAGES.MC1('interviewer')),
   interview_date: yup
-    .date()
+    .date().nullable()
     .typeError(RULE_MESSAGES.MC5('interview date'))
-    .required(RULE_MESSAGES.MC1('interview date'))
-    .min(dayjs().startOf('day').toDate(), 'Cannot be past dates'),
+    .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
+    .test('is_null', function () {
+      const interview_date = this.parent?.interview_date
+      if(!interview_date) {
+        return this.createError({
+          path: this.path,
+          message: RULE_MESSAGES.MC1('interview date')
+        })
+      }
+      return true
+    }),
   start_from: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('start from'))

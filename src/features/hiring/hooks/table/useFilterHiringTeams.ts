@@ -23,7 +23,7 @@ function useFilterHiringTeams() {
       },
       page: 'hiring-team',
       search: {
-        searchKey: ['name'],
+        searchKey: ['name','work_email'],
       },
       shouldCacheData: true,
     })

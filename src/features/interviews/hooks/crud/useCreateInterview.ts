@@ -43,6 +43,7 @@ function useCreateInterview(
 
   function onSubmit() {
     handleSubmit((value) => {
+      if(!value.interview_date) return
       let interview_date = dayjs(value.interview_date)
       const start_form = dayjs(value.start_from)
         .year(interview_date.year())

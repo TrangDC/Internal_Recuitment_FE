@@ -17,7 +17,9 @@ import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import { useMemo } from 'react'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import LocationInterviewAutoComplete, { LOCATION_INTERVIEW_STATE } from 'shared/components/autocomplete/location-interview-autocomplete'
+import LocationInterviewAutoComplete, {
+  LOCATION_INTERVIEW_STATE,
+} from 'shared/components/autocomplete/location-interview-autocomplete'
 
 interface IEditInterviewModal {
   open: boolean
@@ -41,7 +43,7 @@ function EditInterviewModal({
     isPending,
     isGetting,
     watch,
-    trigger,
+    setValue,
     formState,
   } = useEditInterview({
     id: id_interview,
@@ -145,10 +147,12 @@ function EditInterviewModal({
                         value={dayjs(field.value)}
                         onChange={(value) => {
                           if (value) {
-                            trigger('start_from')
+                            field.onChange(value?.toDate())
+                          } else {
+                            setValue('interview_date', null, {
+                              shouldValidate: true,
+                            })
                           }
-
-                          field.onChange(value?.toDate())
                         }}
                         minDate={dayjs()}
                         textFieldProps={{
@@ -248,7 +252,7 @@ function EditInterviewModal({
                         disableCloseOnSelect={true}
                         textFieldProps={{
                           label: 'Location',
-                          required: true
+                          required: true,
                         }}
                       />
                       <HelperTextForm

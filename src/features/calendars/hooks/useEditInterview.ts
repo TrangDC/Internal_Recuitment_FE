@@ -77,7 +77,7 @@ function useEditInterview(props: UseEditInterviewProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      if (value.from && value.to) {
+      if (value.from && value.to && value.date) {
         const { newEnd, newStart } = convertToRootDate(
           value.from,
           value.to,
@@ -111,12 +111,12 @@ function useEditInterview(props: UseEditInterviewProps) {
     const from = getValues('from')
     const to = getValues('to')
     const date = getValues('date')
-    if (from) {
+    if (from && date) {
       const fromDate = convertToRootByTimeNow(from, date)
       setValue('from', fromDate.toDate(), { shouldValidate: true })
     }
 
-    if (to) {
+    if (to && date) {
       const toDate = convertToRootByTimeNow(to, date)
       setValue('to', toDate.toDate(), { shouldValidate: true })
     }
@@ -125,7 +125,7 @@ function useEditInterview(props: UseEditInterviewProps) {
 
   function onSelectedTo(value?: Date) {
     const date = getValues('date')
-    if (value) {
+    if (value && date) {
       const fromDate = convertToRootByTimeNow(value, date)
       setValue('to', fromDate.toDate(), { shouldValidate: true, shouldDirty: true })
       trigger('from')
@@ -134,7 +134,7 @@ function useEditInterview(props: UseEditInterviewProps) {
 
   function onSelectedFrom(value?: Date) {
     const date = getValues('date')
-    if (value) {
+    if (value && date) {
       const fromDate = convertToRootByTimeNow(value, date)
       setValue('from', fromDate.toDate(), { shouldValidate: true, shouldDirty: true })
     }
@@ -159,6 +159,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     watch,
     resetField,
     formState,
+    setValue
   }
 }
 export default useEditInterview
