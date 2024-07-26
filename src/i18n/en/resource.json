@@ -79,7 +79,8 @@
   "model": {
     "skill_types": {
       "validation": {
-        "name_exist": "Name has already existed"
+        "name_exist": "Name has already existed",
+        "cannot_delete": "This skill type has related skills and cannot be removed"
       }
     },
     "hiring_jobs": {

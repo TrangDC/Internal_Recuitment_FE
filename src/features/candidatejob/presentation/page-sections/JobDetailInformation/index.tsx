@@ -31,6 +31,8 @@ const JobDetailInformation = ({
   const attachments = jobApplicationDetail?.attachments || []
   const candidateId = jobApplicationDetail?.candidate_id
   const candidateJobOfTeamId = jobApplicationDetail?.hiring_job?.team?.id ?? ''
+  const status = jobApplicationDetail?.hiring_job?.status
+  const isClosed = status === 'closed'
 
   const [url, setUrl] = useState('')
   const hiddenChangStatus = useMemo(() => {
@@ -140,10 +142,7 @@ const JobDetailInformation = ({
           <SpanText>Candidate onboard date</SpanText>
           <TinyText>
             {jobApplicationDetail?.onboard_date &&
-              format(
-                new Date(jobApplicationDetail.onboard_date),
-                'dd/MM/yyyy'
-              )}
+              format(new Date(jobApplicationDetail.onboard_date), 'dd/MM/yyyy')}
           </TinyText>
         </DivItemInformation>
       </FlexBox>
@@ -156,34 +155,38 @@ const JobDetailInformation = ({
       >
         <DivItemInformation>
           <FlexBox flexDirection={'column'} gap={1}>
-            <EditApplicationButtonPermission
-              candidateJobOfTeamId={candidateJobOfTeamId}
-              onClick={() => {
-                setOpenEditCandidateJob(true)
-              }}
-            />
-            <Cant
-              module="CANDIDATE_JOBS"
-              checkBy={{
-                compare: 'hasAny',
-                permissions: [
-                  'CHANGE_STATUS.everything',
-                  'CHANGE_STATUS.teamOnly',
-                ],
-              }}
-            >
-              {hiddenChangStatus && (
-                <ChangeStatusCDDJButtonPermission
-                  candidateJobOfTeamId={candidateJobOfTeamId}
-                  onClick={() => {
-                    handleOpenChangeStatus(
-                      jobApplicationDetail.id,
-                      jobApplicationDetail
-                    )
-                  }}
-                />
-              )}
-            </Cant>
+            {!isClosed && (
+              <EditApplicationButtonPermission
+                candidateJobOfTeamId={candidateJobOfTeamId}
+                onClick={() => {
+                  setOpenEditCandidateJob(true)
+                }}
+              />
+            )}
+            {!isClosed && (
+              <Cant
+                module="CANDIDATE_JOBS"
+                checkBy={{
+                  compare: 'hasAny',
+                  permissions: [
+                    'CHANGE_STATUS.everything',
+                    'CHANGE_STATUS.teamOnly',
+                  ],
+                }}
+              >
+                {hiddenChangStatus && (
+                  <ChangeStatusCDDJButtonPermission
+                    candidateJobOfTeamId={candidateJobOfTeamId}
+                    onClick={() => {
+                      handleOpenChangeStatus(
+                        jobApplicationDetail.id,
+                        jobApplicationDetail
+                      )
+                    }}
+                  />
+                )}
+              </Cant>
+            )}
           </FlexBox>
         </DivItemInformation>
       </FlexBox>
