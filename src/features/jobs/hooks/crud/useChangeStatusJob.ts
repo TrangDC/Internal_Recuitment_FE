@@ -8,6 +8,8 @@ import {
 import { BaseRecord } from 'shared/interfaces'
 import { useUpdateResourceOther } from 'shared/hooks/crud-hook'
 import { JobStatus } from 'shared/class/job-status'
+import { useQueryClient } from '@tanstack/react-query'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const { STATUS_HIRING_JOB } = JobStatus
 
@@ -18,7 +20,7 @@ type UseChangeStatusProps = {
 
 function useChangeStatusJob(props: UseChangeStatusProps) {
   const { id, onSuccess } = props
-
+  const queryClient = useQueryClient()
   const { changeStatusJob, queryKey, getJobDetail } = useGraphql()
   const { useEditReturn, useFormReturn, formData } = useUpdateResourceOther<
     Job,
@@ -30,7 +32,12 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
     oneBuildQuery: getJobDetail,
     queryKey: [queryKey],
     id,
-    onSuccess,
+    onSuccess: (data) => {
+      onSuccess?.(data)
+      queryClient.invalidateQueries({
+        queryKey: [MODLUE_QUERY_KEY.GROUP_CANDIDATE_STATUS],
+      })
+    },
     formatDefaultValues(data) {
       return {
         note: '',
