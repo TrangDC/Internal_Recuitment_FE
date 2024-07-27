@@ -4,12 +4,12 @@ import { Box, Popover } from '@mui/material'
 import { Dayjs } from 'dayjs'
 import WeekPicker from '../../WeekPicker/WeekPicker'
 import { ValueRangeDate } from 'shared/interfaces/date'
-import { useState } from 'react'
 
 interface QuarterDateRangeProps {
   handleClose: () => void
   anchor: HTMLButtonElement | null
-  onChange: (value: ValueRangeDate | null) => void
+  onFromChange: (value: Dayjs | null) => void
+  onToChange: (value: Dayjs | null) => void
   value: ValueRangeDate | null
   fromDateProps?: {
     maxDate?: Dayjs
@@ -22,38 +22,18 @@ interface QuarterDateRangeProps {
     disableFuture?: boolean
   }
 }
-
 function WeekDateRange(props: QuarterDateRangeProps) {
   const {
     handleClose,
     anchor,
     value = null,
-    onChange,
+    onFromChange,
+    onToChange,
     fromDateProps,
     toDateProps,
   } = props
   const open = Boolean(anchor)
-  const defaultDateRange: ValueRangeDate = { from_date: null, to_date: null }
   const id = open ? 'simple-popover' : undefined
-  const [valueDate, setValueDate] = useState<ValueRangeDate>(
-    value ?? defaultDateRange
-  )
-  function handleChange(type: 'from' | 'to', value: Dayjs | null) {
-    setValueDate((prev) => {
-      const newDate =
-        type === 'from'
-          ? {
-              ...prev,
-              from_date: value,
-            }
-          : {
-              ...prev,
-              to_date: value,
-            }
-      onChange(newDate)
-      return newDate
-    })
-  }
   return (
     <Popover
       id={id}
@@ -76,8 +56,8 @@ function WeekDateRange(props: QuarterDateRangeProps) {
             From
           </Text15sb>
           <WeekPicker
-            onChange={(dateValue) => handleChange('from', dateValue)}
-            value={valueDate?.from_date}
+            onChange={(dateValue) => onFromChange(dateValue)}
+            value={value?.from_date ?? null}
             {...fromDateProps}
           />
         </Box>
@@ -86,8 +66,8 @@ function WeekDateRange(props: QuarterDateRangeProps) {
             To
           </Text15sb>
           <WeekPicker
-            onChange={(dateValue) => handleChange('to', dateValue)}
-            value={valueDate?.to_date}
+            onChange={(dateValue) => onToChange(dateValue)}
+            value={value?.to_date ?? null}
             {...toDateProps}
           />
         </Box>

@@ -5,7 +5,7 @@ import TinySelected from 'shared/components/selected/TinySelected'
 import { Text14sb, Tiny12, Tiny12md } from 'shared/components/Typography'
 import { useState } from 'react'
 import { ValueRangeDate } from 'shared/interfaces/date'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import useRecruitmentApplicationOptions from './hooks/useRecruitmentApplicationOptions'
 import useGetRecruitmentApplication from './hooks/useGetRecruitmentApplication'
 import TinyButton from 'shared/components/buttons/TinyButton'
@@ -16,7 +16,10 @@ import {
 import RangeDateByCategory from '../../components/date/range-date/RangeDateByCategory'
 import ApplicationReportModal from '../../screen-sections/ApplicationReportModal'
 import { ReportFilterPeriod } from 'shared/schema/chart/report'
-import { handleFormatLabelDate } from '../../components/date/range-date/utils'
+import {
+  handleCheckDateChange,
+  handleFormatLabelDate,
+} from '../../components/date/range-date/utils'
 
 const selectItems = [
   {
@@ -74,13 +77,31 @@ function RecruitmentApplication() {
     })
   }
 
-  function onChange(value: ValueRangeDate | null) {
-    setFilters((prev) => ({
-      ...prev,
-      value: value,
-    }))
+  function handleToChange(value: Dayjs | null) {
+    setFilters((prev) => {
+      if (!value) return prev
+      const newValue = handleCheckDateChange(prev.filterType, {
+        from_date: prev.value?.from_date ?? null,
+        to_date: value,
+      })
+      return {
+        ...prev,
+        value: newValue,
+      }
+    })
   }
 
+  function handleFromChange(value: Dayjs | null) {
+    setFilters((prev) => {
+      return {
+        ...prev,
+        value: {
+          to_date: prev.value?.to_date ?? null,
+          from_date: value,
+        },
+      }
+    })
+  }
   const labelBy = filters.value
     ? handleFormatLabelDate(filters.filterType, filters.value)
     : ''
@@ -99,7 +120,8 @@ function RecruitmentApplication() {
           />
           <RangeDateByCategory
             filterType={filters.filterType}
-            onChange={onChange}
+            onFromChange={handleFromChange}
+            onToChange={handleToChange}
             value={filters.value}
           />
           <TinyButton onClick={() => setOpen(true)}>See More</TinyButton>

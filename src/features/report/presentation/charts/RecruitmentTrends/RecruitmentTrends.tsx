@@ -7,13 +7,14 @@ import useRecruitmentTrendsOptions from './hooks/useRecruitmentTrendsOptions'
 import useGetRecruitmentTrends from './hooks/useGetRecruitmentTrends'
 import { useState } from 'react'
 import { ValueRangeDate } from 'shared/interfaces/date'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import RangeDateByCategory from '../../components/date/range-date/RangeDateByCategory'
 import { ReportFilterPeriod } from 'shared/schema/chart/report'
 import {
   handleChangeFilterType,
   handleFormatFilters,
 } from 'features/report/shared/utils/utils'
+import { handleCheckDateChange } from '../../components/date/range-date/utils'
 
 const selectItems = [
   {
@@ -70,11 +71,30 @@ function RecruitmentTrends() {
     })
   }
 
-  function onChange(value: ValueRangeDate | null) {
-    setFilters((prev) => ({
-      ...prev,
-      value: value,
-    }))
+  function handleToChange(value: Dayjs | null) {
+    setFilters((prev) => {
+      if (!value) return prev
+      const newValue = handleCheckDateChange(prev.filterType, {
+        from_date: prev.value?.from_date ?? null,
+        to_date: value,
+      })
+      return {
+        ...prev,
+        value: newValue,
+      }
+    })
+  }
+
+  function handleFromChange(value: Dayjs | null) {
+    setFilters((prev) => {
+      return {
+        ...prev,
+        value: {
+          to_date: prev.value?.to_date ?? null,
+          from_date: value,
+        },
+      }
+    })
   }
 
   return (
@@ -88,7 +108,8 @@ function RecruitmentTrends() {
           />
           <RangeDateByCategory
             filterType={filters.filterType}
-            onChange={onChange}
+            onFromChange={handleFromChange}
+            onToChange={handleToChange}
             value={filters.value}
           />
         </FlexBox>
