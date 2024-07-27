@@ -22,6 +22,8 @@ export type HiringTeamTableData = {
 }
 
 export type ValidateDate = {
-  minDate: Dayjs
-  maxDate: Dayjs
+  minDateFrom: Dayjs
+  maxDateFrom: Dayjs
+  maxDateTo:Dayjs
 }
+

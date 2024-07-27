@@ -2,7 +2,7 @@ import { Button, styled } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import Vector from 'shared/components/icons/Vector'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import isBetweenPlugin from 'dayjs/plugin/isBetween'
 import utc from 'dayjs/plugin/utc'
 import { useMemo, useState } from 'react'
@@ -30,12 +30,13 @@ const RangeDateByQuarterLabel = styled(Button)(() => ({
 
 type RangeDateByCategoryProps = {
   filterType: ReportFilterPeriod
-  onChange: (value: ValueRangeDate | null) => void
+  onFromChange: (value: Dayjs | null) => void
+  onToChange: (value: Dayjs | null) => void
   value: ValueRangeDate | null
 }
 
 function RangeDateByCategory(props: RangeDateByCategoryProps) {
-  const { filterType, onChange, value } = props
+  const { filterType, onFromChange, value, onToChange } = props
   const [anchorQuarter, setAnchorQuarter] = useState<HTMLButtonElement | null>(
     null
   )
@@ -81,13 +82,14 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
     }
   }
 
-  const { maxDate, minDate } = useMemo(() => {
+  const { maxDateFrom, minDateFrom, maxDateTo } = useMemo(() => {
     if (value) {
       return handleValidateFromDateRangeDate(filterType, value)
     }
     return {
-      maxDate: undefined,
-      minDate: undefined,
+      maxDateFrom: undefined,
+      minDateFrom: undefined,
+      maxDateTo: undefined,
     }
   }, [value, filterType])
 
@@ -105,13 +107,14 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
           handleClose={handleClose}
           anchor={anchorQuarter}
           value={value}
-          onChange={onChange}
+          onFromChange={onFromChange}
+          onToChange={onToChange}
           fromDateProps={{
-            minDate: minDate,
-            maxDate: maxDate,
+            minDate: minDateFrom,
+            maxDate: maxDateFrom,
           }}
           toDateProps={{
-            maxDate: maxDate,
+            maxDate: maxDateTo,
           }}
         />
       )}
@@ -120,13 +123,14 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
           handleClose={handleClose}
           anchor={anchorMonth}
           value={value}
-          onChange={onChange}
+          onFromChange={onFromChange}
+          onToChange={onToChange}
           fromDateProps={{
-            minDate: minDate,
-            maxDate: maxDate,
+            minDate: minDateFrom,
+            maxDate: maxDateFrom,
           }}
           toDateProps={{
-            maxDate: maxDate,
+            maxDate: maxDateTo,
           }}
         />
       )}
@@ -135,13 +139,14 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
           handleClose={handleClose}
           anchor={anchorWeek}
           value={value}
-          onChange={onChange}
+          onFromChange={onFromChange}
+          onToChange={onToChange}
           fromDateProps={{
-            minDate: minDate,
-            maxDate: maxDate,
+            minDate: minDateFrom,
+            maxDate: maxDateFrom,
           }}
           toDateProps={{
-            maxDate: maxDate,
+            maxDate: maxDateTo,
           }}
         />
       )}
@@ -150,13 +155,14 @@ function RangeDateByCategory(props: RangeDateByCategoryProps) {
           handleClose={handleClose}
           anchor={anchorYear}
           value={value}
-          onChange={onChange}
+          onFromChange={onFromChange}
+          onToChange={onToChange}
           fromDateProps={{
-            minDate: minDate,
-            maxDate: maxDate,
+            maxDate: maxDateFrom,
+            minDate: minDateFrom,
           }}
           toDateProps={{
-            maxDate: maxDate,
+            maxDate: maxDateTo,
           }}
         />
       )}

@@ -9,7 +9,8 @@ import { useState } from 'react'
 interface YearDateRangeProps {
   handleClose: () => void
   anchor: HTMLButtonElement | null
-  onChange: (value: ValueRangeDate | null) => void
+  onFromChange: (value: Dayjs | null) => void
+  onToChange: (value: Dayjs | null) => void
   value: ValueRangeDate | null
   fromDateProps?: {
     maxDate?: Dayjs
@@ -28,32 +29,15 @@ function YearDateRange(props: YearDateRangeProps) {
     handleClose,
     anchor,
     value = null,
-    onChange,
+    onFromChange,
+    onToChange,
     fromDateProps,
     toDateProps,
   } = props
-  const defaultDateRange: ValueRangeDate = { from_date: null, to_date: null }
-  const [valueDate, setValueDate] = useState<ValueRangeDate>(
-    value ?? defaultDateRange
-  )
   const open = Boolean(anchor)
   const id = open ? 'simple-popover' : undefined
-  function handleChange(type: 'from' | 'to', value: Dayjs | null) {
-    setValueDate((prev) => {
-      const newDate =
-        type === 'from'
-          ? {
-              ...prev,
-              from_date: value,
-            }
-          : {
-              ...prev,
-              to_date: value,
-            }
-      onChange(newDate)
-      return newDate
-    })
-  }
+  const fromDate = value?.from_date ? value.from_date : null
+  const toDate = value?.to_date ? value.to_date : null
   return (
     <Popover
       id={id}
@@ -76,8 +60,8 @@ function YearDateRange(props: YearDateRangeProps) {
             From
           </Text15sb>
           <YearPicker
-            onChange={(value) => handleChange('from', value)}
-            value={valueDate?.from_date}
+            onChange={(value) => onFromChange(value)}
+            value={fromDate}
             {...fromDateProps}
           />
         </Box>
@@ -86,8 +70,8 @@ function YearDateRange(props: YearDateRangeProps) {
             To
           </Text15sb>
           <YearPicker
-            onChange={(value) => handleChange('to', value)}
-            value={valueDate?.to_date}
+            onChange={(value) => onToChange(value)}
+            value={toDate}
             {...toDateProps}
           />
         </Box>

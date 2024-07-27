@@ -98,7 +98,6 @@ const QuarterPicker = (props: QuarterPickerProps) => {
     onChange(value)
   }
 
-  console.log('other', other)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateCalendarStyled

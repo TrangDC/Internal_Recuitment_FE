@@ -4,12 +4,12 @@ import { Box, Popover } from '@mui/material'
 import { Dayjs } from 'dayjs'
 import MonthPicker from '../../MonthPicker/MonthPicker'
 import { ValueRangeDate } from 'shared/interfaces/date'
-import { useState } from 'react'
 
 interface MonthDateRangeProps {
   handleClose: () => void
   anchor: HTMLButtonElement | null
-  onChange: (value: ValueRangeDate | null) => void
+  onFromChange: (value: Dayjs | null) => void
+  onToChange: (value: Dayjs | null) => void
   value: ValueRangeDate | null
   fromDateProps?: {
     maxDate?: Dayjs
@@ -28,32 +28,13 @@ function MonthDateRange(props: MonthDateRangeProps) {
     handleClose,
     anchor,
     value = null,
-    onChange,
+    onFromChange,
+    onToChange,
     fromDateProps,
     toDateProps,
   } = props
-  const defaultDateRange: ValueRangeDate = { from_date: null, to_date: null }
-  const [valueDate, setValueDate] = useState<ValueRangeDate>(
-    value ?? defaultDateRange
-  )
   const open = Boolean(anchor)
   const id = open ? 'simple-popover' : undefined
-  function handleChange(type: 'from' | 'to', value: Dayjs | null) {
-    setValueDate((prev) => {
-      const newDate =
-        type === 'from'
-          ? {
-              ...prev,
-              from_date: value,
-            }
-          : {
-              ...prev,
-              to_date: value,
-            }
-      onChange(newDate)
-      return newDate
-    })
-  }
   return (
     <Popover
       id={id}
@@ -76,8 +57,8 @@ function MonthDateRange(props: MonthDateRangeProps) {
             From
           </Text15sb>
           <MonthPicker
-            onChange={(dateValue) => handleChange('from', dateValue)}
-            value={valueDate.from_date}
+            onChange={(dateValue) => onFromChange(dateValue)}
+            value={value?.from_date ?? null}
             {...fromDateProps}
           />
         </Box>
@@ -86,8 +67,8 @@ function MonthDateRange(props: MonthDateRangeProps) {
             To
           </Text15sb>
           <MonthPicker
-            onChange={(dateValue) => handleChange('to', dateValue)}
-            value={valueDate.to_date}
+            onChange={(dateValue) => onToChange(dateValue)}
+            value={value?.to_date ?? null}
             {...toDateProps}
           />
         </Box>
