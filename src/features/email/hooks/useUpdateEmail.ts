@@ -11,7 +11,7 @@ import {
   SEND_TO_VALUE,
 } from 'shared/components/autocomplete/send-to-autocomplete/hooks/useSendTo'
 import { cloneDeep, isEmpty } from 'lodash'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import getKeywordEmail from '../shared/services/getKeywordEmail'
 import { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
 import { replaceTemplateEmail } from '../shared/utils'
@@ -37,7 +37,7 @@ function useUpdateEmail(props: UseEditTeamProps) {
     queryKey: [queryKey],
     id,
     onSuccess,
-    formatDefaultValues(data) {    
+    formatDefaultValues(data) {
       const send_to =
         data?.send_to?.filter((option) => option !== SEND_TO_VALUE.role) ?? []
       const roles = data?.roles?.map((option) => option.id) ?? []
@@ -58,14 +58,26 @@ function useUpdateEmail(props: UseEditTeamProps) {
 
   const { handleSubmit, control, formState, setValue, getValues, watch } =
     useFormReturn
-    const [listKeyWord, setListKeyWord] = useState<DATA_KEYWORD_TEMPLATE[]>([]);
-  const [validTemplate, setValidTemplate] = useState<{subject: boolean, content: boolean, signature: boolean}>({subject: true, content: true, signature: true})
+  const [listKeyWord, setListKeyWord] = useState<DATA_KEYWORD_TEMPLATE[]>([])
+  const [validTemplate, setValidTemplate] = useState<{
+    subject: boolean
+    content: boolean
+    signature: boolean
+  }>({ subject: true, content: true, signature: true })
 
   //data preview
   const form_values = getValues()
-  watch(['content', 'subject', 'signature'])
+  const content = watch('content')
+  const subject = watch('subject')
+  const signature = watch('signature')
+  const event = watch('event')
 
-  const isValid = !formState.isValid || !formState.isDirty || !Object.keys(validTemplate).every((item) => !!validTemplate[item as valid_template]);
+  const isValid =
+    !formState.isValid ||
+    !formState.isDirty ||
+    !Object.keys(validTemplate).every(
+      (item) => !!validTemplate[item as valid_template]
+    )
   const { mutate, isPending } = useEditReturn
 
   function onSubmit() {
@@ -86,7 +98,7 @@ function useUpdateEmail(props: UseEditTeamProps) {
         ...valueClone,
         roleIds: role_ids,
         send_to: send_to,
-        subject: getContentStringHTML(value?.subject)
+        subject: getContentStringHTML(value?.subject),
       } as UpdateEmailInput)
     })()
   }
@@ -98,40 +110,41 @@ function useUpdateEmail(props: UseEditTeamProps) {
   }
 
   function resetSendTo() {
-    setValue('send_to', [], {shouldValidate: true})
-    setValue('roleIds', [], {shouldValidate: true})
+    setValue('send_to', [], { shouldValidate: true })
+    setValue('roleIds', [], { shouldValidate: true })
   }
+
+  useEffect(() => {
+    handleChangeTemplate(content ?? '', 'content')
+  }, [content, listKeyWord])
+
+  useEffect(() => {
+    handleChangeTemplate(subject ?? '', 'subject')
+  }, [subject, listKeyWord])
+
+  useEffect(() => {
+    handleChangeTemplate(signature ?? '', 'signature')
+  }, [signature, listKeyWord])
+
+  useEffect(() => {
+    onChangeEvent(event as EVENT_EMAIL_ENUM)
+  }, [event])
 
   async function onChangeEvent(event: EVENT_EMAIL_ENUM | '') {
-    const response = await getKeywordEmail(event);
+    const response = await getKeywordEmail(event)
     setListKeyWord(response)
-    
-    changeEmailByEvent('signature', response)
-    changeEmailByEvent('content', response)
-    changeEmailByEvent('subject', response)
   }
 
-  function changeEmailByEvent (name: string, response: DATA_KEYWORD_TEMPLATE[]) {
-    //@ts-ignore
-    const value = getValues(name)
-    const result = replaceTemplateEmail(value ?? '', response)
-    //@ts-ignore
-    setValue(name, result.result)
+  function handleChangeTemplate(
+    value: string,
+    type: 'signature' | 'content' | 'subject'
+  ) {
+    const response = replaceTemplateEmail(value, listKeyWord)
     setValidTemplate((prev) => ({
       ...prev,
-      [name]: result.is_valid
+      [type]: response.is_valid,
     }))
-  }
-
-  function handleChangeEmail (value: string, type: string) {
-    if(isEmpty(listKeyWord)) return value;
-
-    const result = replaceTemplateEmail(value, listKeyWord)
-    setValidTemplate((prev) => ({
-      ...prev,
-      [type]: result.is_valid
-    }))
-    return result.result;
+    setValue(type, response.result)
   }
 
   return {
@@ -142,14 +155,13 @@ function useUpdateEmail(props: UseEditTeamProps) {
       onSubmit,
       getValidCc,
       resetSendTo,
-      handleChangeEmail,
-      onChangeEvent
+      onChangeEvent,
     },
     formState,
     setValue,
     isGetting,
     form_values,
-    watch
+    watch,
   }
 }
 
