@@ -12,7 +12,7 @@ import { cloneDeep, isEmpty } from 'lodash'
 import { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
 import getKeywordEmail from '../shared/services/getKeywordEmail'
 import { replaceTemplateEmail } from '../shared/utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
 
 type valid_template = 'subject' | 'content' | 'signature'
@@ -52,8 +52,11 @@ function useCreateEmail(props: createEmailProps = {}) {
 
   //preview data
   const form_values = getValues()
-  watch(['content', 'subject', 'signature'])
-
+  const content = watch('content')
+  const subject = watch('subject')
+  const signature = watch('signature')
+  const event = watch('event')
+  
   const isValid = !formState.isValid || !Object.keys(validTemplate).every((item) => !!validTemplate[item as valid_template]);
   const { isPending, mutate } = useCreateReturn
 
@@ -90,38 +93,37 @@ function useCreateEmail(props: createEmailProps = {}) {
     resetField('roleIds')
   }
 
+  useEffect(() => {
+    handleChangeTemplate(content ?? '', 'content')
+  }, [content, listKeyWord])
+
+  useEffect(() => {
+    handleChangeTemplate(subject ?? '', 'subject')
+  }, [subject, listKeyWord])
+
+  useEffect(() => {
+    handleChangeTemplate(signature ?? '', 'signature')
+  }, [signature, listKeyWord])
+
+  useEffect(() => {
+    onChangeEvent(event as EVENT_EMAIL_ENUM)
+  }, [event])
+
   async function onChangeEvent(event: EVENT_EMAIL_ENUM | '') {
-    const response = await getKeywordEmail(event);
+    const response = await getKeywordEmail(event)
     setListKeyWord(response)
-    
-    changeEmailByEvent('signature', response)
-    changeEmailByEvent('content', response)
-    changeEmailByEvent('subject', response)
   }
 
-  function changeEmailByEvent (name: string, response: DATA_KEYWORD_TEMPLATE[]) {
-    //@ts-ignore
-    const value = getValues(name)
-    const result = replaceTemplateEmail(value ?? '', response)
- 
-    //@ts-ignore
-    setValue(name, result.result)
+  function handleChangeTemplate(
+    value: string,
+    type: 'signature' | 'content' | 'subject'
+  ) {
+    const response = replaceTemplateEmail(value, listKeyWord)
     setValidTemplate((prev) => ({
       ...prev,
-      [name]: result.is_valid
+      [type]: response.is_valid,
     }))
-  }
-
-  function handleChangeEmail (value: string, type: string) {
-    if(isEmpty(listKeyWord)) return value;
-
-    const result = replaceTemplateEmail(value, listKeyWord)
-    console.log("🚀 ~ onChange:", result)
-    setValidTemplate((prev) => ({
-      ...prev,
-      [type]: result.is_valid
-    }))
-    return result.result;
+    setValue(type, response.result)
   }
 
   return {
@@ -137,7 +139,6 @@ function useCreateEmail(props: createEmailProps = {}) {
       resetSendTo,
       setValue,
       onChangeEvent,
-      handleChangeEmail
     },
   }
 }

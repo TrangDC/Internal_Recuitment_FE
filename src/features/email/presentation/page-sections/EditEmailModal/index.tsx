@@ -21,7 +21,6 @@ import SendToAutocomplete from 'shared/components/autocomplete/send-to-autocompl
 import { useMemo } from 'react'
 import { SEND_TO_BY_EVENT, SLASH_COMMAND_BY_EVENT } from 'features/email/shared/constants'
 import { SLASH_COMMAND_TYPE } from 'shared/components/input-fields/EditorField/hooks/useGetSlashCommand'
-import { cleanDelTags } from 'features/email/shared/utils'
 
 function EditEmailModal({ open, setOpen, id }: IEditModal) {
   const {
@@ -42,7 +41,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
 
   const { rowId, openPreview, setOpenPreview, handleOpenPreview, rowData } =
     useActionTable()
-  const { onSubmit, getValidCc, resetSendTo, handleChangeEmail, onChangeEvent } = actions
+  const { onSubmit, getValidCc, resetSendTo } = actions
 
   const translation = useTextTranslation()
   const callbackSubmit = (reason: string) => {
@@ -88,8 +87,6 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                           value={field.value}
                           onChange={(data) => {
                             field.onChange(data?.value)
-                            //@ts-ignore
-                            onChangeEvent(data?.value)
                             resetSendTo()
                           }}
                           textFieldProps={{
@@ -172,8 +169,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                             required
                             value={field.value ?? ''}
                             onEditorChange={(value) => {
-                              const response = handleChangeEmail(cleanDelTags(value), 'subject');
-                              field.onChange(response)
+                              field.onChange(value)
                             }}
                             pluginCustomize={['slashcommands']}
                             slash_command={['attribute']}
@@ -209,8 +205,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                           required
                           value={field.value ?? ''}
                           onEditorChange={(value) => {
-                            const response = handleChangeEmail(cleanDelTags(value), 'content');
-                            field.onChange(response)
+                            field.onChange(value)
                           }}
                           pluginCustomize={['slashcommands']}
                           attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
@@ -236,8 +231,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                           label={'Email signature'}
                           value={field.value ?? ''}
                           onEditorChange={(value) => {
-                            const response = handleChangeEmail(cleanDelTags(value), 'signature');
-                            field.onChange(response)
+                            field.onChange(value)
                           }}
                           pluginCustomize={['slashcommands']}
                           attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
