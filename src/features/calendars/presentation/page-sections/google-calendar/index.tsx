@@ -13,7 +13,7 @@ import BackdropLoading from './BackdropLoading'
 import { getColorEvent } from './functions'
 import CustomHeaders from './Header'
 import Scrollbar from 'shared/components/ScrollBar'
-
+import CustomEvent from './event'
 const djLocalizer = dayjsLocalizer(dayjs)
 
 const DragAndDropCalendar = withDragAndDrop(Calendar)
@@ -98,7 +98,7 @@ function Calendars(props: ICalendars) {
         sx={{
           boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;',
           position: 'relative',
-          minWidth: '1200px'
+          minWidth: '1200px',
         }}
       >
         <DragAndDropCalendar
@@ -106,14 +106,15 @@ function Calendars(props: ICalendars) {
           defaultView="month"
           events={myEvents}
           view={currentView}
-          
           components={{
             toolbar: ToolBar,
             week: {
               header: CustomHeaders,
+              event: CustomEvent,
             },
             day: {
               header: CustomHeaders,
+              event: CustomEvent,
             },
           }}
           views={['month', 'day', 'week']}
@@ -144,7 +145,7 @@ function Calendars(props: ICalendars) {
         />
         <BackdropLoading isLoading={isLoading} />
       </Card>
-     </Scrollbar>
+    </Scrollbar>
   )
 }
 

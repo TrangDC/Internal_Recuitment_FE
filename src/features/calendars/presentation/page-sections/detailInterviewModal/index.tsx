@@ -39,7 +39,8 @@ const labelStyle = {
 
 function DetailInterviewModal(props: IDetailIntefviewModal) {
   const { open, setOpen, id } = props
-  const { handleEditEvent, handleDeleteEvent } = useContextCalendar()
+  const { useActionInterviewReturn } = useContextCalendar()
+  const { handleOpenEdit, handleOpenDelete } = useActionInterviewReturn
   const { useFormReturn, navigateToCandidate, navigateToCandidateJob } =
     useGetInterview({
       id: id,
@@ -75,13 +76,13 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
                       candidateJobOfTeamId={candidateJobOfTeamId}
                       interviewers={getValues('interviewer')}
                       onClick={() => {
-                        handleEditEvent(id)
+                        handleOpenEdit(id)
                         setOpen(false)
                       }}
                     />
                     <DeleteInterviewButtonPermission
                       onClick={() => {
-                        handleDeleteEvent(id)
+                        handleOpenDelete(id)
                       }}
                       candidateJobOfTeamId={candidateJobOfTeamId}
                       interviewers={getValues('interviewer')}

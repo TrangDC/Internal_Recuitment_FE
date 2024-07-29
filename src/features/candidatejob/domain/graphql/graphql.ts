@@ -223,6 +223,7 @@ const useGraphql = () => {
             end_at
             location
             meeting_link
+            status
             interviewer {
               id
               name
@@ -271,6 +272,7 @@ const useGraphql = () => {
             end_at
             location
             meeting_link
+            status
             interviewer {
               id
               name
@@ -318,6 +320,7 @@ const useGraphql = () => {
             start_from
             end_at
             location
+            status
             meeting_link
             interviewer {
               id
@@ -367,6 +370,7 @@ const useGraphql = () => {
             start_from
             end_at
             location
+            status
             meeting_link
             interviewer {
               id
@@ -416,6 +420,7 @@ const useGraphql = () => {
             start_from
             end_at
             location
+            status
             meeting_link
             interviewer {
               id
@@ -465,6 +470,7 @@ const useGraphql = () => {
             start_from
             end_at
             location
+            status
             meeting_link
             interviewer {
               id
@@ -514,6 +520,7 @@ const useGraphql = () => {
             start_from
             end_at
             location
+            status
             meeting_link
             interviewer {
               id

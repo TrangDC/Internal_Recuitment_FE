@@ -15,6 +15,7 @@ const useGraphql = () => {
           interview_date
           start_from
           end_at
+          status
           interviewer {
             id
           }
@@ -57,6 +58,7 @@ const useGraphql = () => {
         candidate_job_id
         location
         meeting_link
+        status
         interviewer {
           id
           name
@@ -98,6 +100,7 @@ const useGraphql = () => {
         start_from
         candidate_job_id
         end_at
+        status
         interviewer {
           id
         }
@@ -169,6 +172,16 @@ const useGraphql = () => {
     },
   })
 
+  const updateCandidateInterviewStatus = GraphQLClientService.buildQuery({
+    operation: 'UpdateCandidateInterviewStatus',
+    options: {
+      type: 'mutation',
+    },
+    params: {
+      id: 'ID!',
+      input: 'UpdateCandidateInterviewStatusInput!',
+    },
+  })
   return {
     getAllCandidateInterview4Calendar,
     queryKey,
@@ -178,6 +191,7 @@ const useGraphql = () => {
     getCandidateInterviewForEdit,
     deleteCandidateInterview,
     updateCandidateInterviewSchedule,
+    updateCandidateInterviewStatus,
   }
 }
 

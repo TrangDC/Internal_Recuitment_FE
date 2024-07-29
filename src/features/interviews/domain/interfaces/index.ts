@@ -31,6 +31,7 @@ export type Interview = {
   edited: boolean
   location: string
   meeting_link: string
+  status: string
 }
 
 export type UpdateCandidateInterviewInput = {

@@ -140,3 +140,6 @@
 .rbc-time-gutter.rbc-time-column .rbc-timeslot-group{
   border-bottom:none
 }
+.rbc-events-container .rbc-event-label{
+  display: none;
+}

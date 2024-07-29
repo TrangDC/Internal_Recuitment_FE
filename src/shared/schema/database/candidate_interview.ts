@@ -1,13 +1,13 @@
 import CandidateJob from './candidate_job'
 import User from './user'
 
-type CandidateInterviewStatus =
+export type CandidateInterviewStatus =
   | 'invited_to_interview'
   | 'interviewing'
   | 'done'
   | 'cancelled'
 
-interface CandidateInterview {
+export interface CandidateInterview {
   id: string
   title: string
   description: string

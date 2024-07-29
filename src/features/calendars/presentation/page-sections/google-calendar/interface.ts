@@ -1,5 +1,6 @@
 import { View } from 'react-big-calendar'
 import { Event } from 'react-big-calendar'
+import { CandidateInterviewStatus } from 'shared/schema/database/candidate_interview'
 import User from 'shared/schema/database/user'
 
 export interface IButtonToolBarList {
@@ -21,8 +22,9 @@ export type EventStyles = {
 interface CustomResource {
   id: string
   styles?: EventStyles
-  teamId:string
-  interviewer:User[]
+  teamId: string
+  interviewer: User[]
+  status?: CandidateInterviewStatus
 }
 export type RangeDate = {
   start: Date

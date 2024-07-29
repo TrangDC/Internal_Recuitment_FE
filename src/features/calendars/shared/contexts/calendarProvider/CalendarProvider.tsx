@@ -1,44 +1,26 @@
+import { UseActionInterviewReturn } from 'features/calendars/hooks/calendar/useActionInterview'
 import { ReactNode, createContext, useContext, useMemo } from 'react'
 
 interface InitialState {
-  setOpenCreateInterView: (open: boolean) => void
-  handleDeleteEvent: (id: string) => void
-  handleEditEvent: (id: string) => void
+  useActionInterviewReturn: UseActionInterviewReturn
 }
 
 interface CalendarProviderProps {
-  setOpenCreateInterView: (open: boolean) => void
-  handleDeleteEvent: (id: string) => void
-  handleEditEvent: (id: string) => void
+  useActionInterviewReturn: UseActionInterviewReturn
   children: ReactNode
 }
 
 const CalendarContext = createContext<InitialState>({
-  setOpenCreateInterView(open) {
-    console.log(open)
-  },
-  handleDeleteEvent(id) {
-    console.log(id)
-  },
-  handleEditEvent(id) {
-    console.log(id)
-  },
+  useActionInterviewReturn: {} as UseActionInterviewReturn,
 })
 
 function CalendarProvider(props: CalendarProviderProps) {
-  const {
-    setOpenCreateInterView,
-    children,
-    handleDeleteEvent,
-    handleEditEvent,
-  } = props
+  const { useActionInterviewReturn, children } = props
   const value = useMemo(
     () => ({
-      setOpenCreateInterView,
-      handleDeleteEvent,
-      handleEditEvent,
+      useActionInterviewReturn,
     }),
-    [setOpenCreateInterView, handleDeleteEvent]
+    [useActionInterviewReturn]
   )
   return (
     <CalendarContext.Provider value={value}>

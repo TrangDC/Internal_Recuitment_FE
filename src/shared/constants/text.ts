@@ -81,6 +81,7 @@ const useTextTranslation = () => {
       to_date: t('to_date'),
       update_record: t('update_record'),
       sub_title_update_record: t('sub_title_update_record'),
+      done: t('done'),
     },
   }
 }

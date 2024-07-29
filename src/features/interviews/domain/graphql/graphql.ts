@@ -118,6 +118,17 @@ const useGraphql = () => {
     },
   })
 
+  const updateCandidateInterviewStatus = GraphQLClientService.buildQuery({
+    operation: 'UpdateCandidateInterviewStatus',
+    options: {
+      type: 'mutation',
+    },
+    params: {
+      id: 'ID!',
+      input: 'UpdateCandidateInterviewStatusInput!',
+    },
+  })
+
   return {
     queryKey,
     updateCandidateInterview,
@@ -125,6 +136,7 @@ const useGraphql = () => {
     createCandidateInterview,
     deleteCandidateInterview,
     getInterview,
+    updateCandidateInterviewStatus,
   }
 }
 

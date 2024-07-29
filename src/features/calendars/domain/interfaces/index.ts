@@ -109,3 +109,7 @@ export type PayloadDragDropInput = {
   id: string
   input: UpdateCandidateInterviewScheduleInput
 }
+
+export type UpdateCandidateInterviewStatusInput = {
+  status: 'done' | 'cancelled'
+}

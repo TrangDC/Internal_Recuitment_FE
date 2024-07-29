@@ -4,12 +4,12 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
-  styled,
   SxProps,
   Theme,
+  styled,
 } from '@mui/material'
 import { MouseEvent, ReactNode, useState } from 'react'
-import { Span } from './Typography'
+import { Span } from 'shared/components/Typography'
 
 export const StyleListItemIcon = styled(ListItemIcon)(({ theme }) => ({
   minWidth: 'auto !important',
@@ -41,52 +41,50 @@ interface IActionGroupButtons<T> {
   actions: TOptionItem<T>[]
   rowId: string
   rowData: T
-  Button?: ReactNode
   iconButtonSx?: SxProps<Theme>
 }
 
-export const ActionGroupButtons = <T extends object>({
+export const ActionGroupButtonCalendar = <T extends object>({
   actions,
   rowId,
   rowData,
-  Button,
   iconButtonSx,
 }: IActionGroupButtons<T>) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const handleMoreOpen = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     setAnchorEl(event.currentTarget)
   }
-  const handleMoreClose = () => setAnchorEl(null)
+  const handleMoreClose = (event: MouseEvent<HTMLLIElement>) => {
+    event.stopPropagation()
+    setAnchorEl(null)
+  }
   if (actions.length === 0) return null
   return (
     <>
-      {Button ? (
-        <IconButton
-          onClick={handleMoreOpen}
-          sx={{ padding: '11px !important' }}
-        >
-          {Button}
-        </IconButton>
-      ) : (
-        <IconButton
-          onClick={handleMoreOpen}
-          sx={{ padding: '11px !important', ...iconButtonSx }}
-        >
-          <MoreHoriz sx={{ color: 'text.disabled' }} />
-        </IconButton>
-      )}
+      <IconButton
+        onClick={handleMoreOpen}
+        sx={{ padding: '11px !important', ...iconButtonSx }}
+      >
+        <MoreHoriz sx={{ color: 'text.disabled' }} />
+      </IconButton>
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMoreClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
       >
         {actions &&
           actions.map(({ Icon, title = '', disabled, onClick }, i) => (
             <StyleItemMenu
               key={i}
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation()
                 onClick?.(rowId, rowData)
-                handleMoreClose()
+                handleMoreClose(event)
               }}
               disabled={
                 typeof disabled === 'boolean' ? disabled : disabled?.(rowData)

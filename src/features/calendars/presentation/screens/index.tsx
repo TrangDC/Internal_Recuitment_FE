@@ -1,5 +1,5 @@
 import Calendars from '../page-sections/google-calendar'
-import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { SyntheticEvent, useCallback, useEffect, useRef } from 'react'
 import { SlotInfo } from 'react-big-calendar'
 import CreateInterviewModal from '../page-sections/createInterviewModal'
 import {
@@ -26,20 +26,33 @@ import useDragDropInterview from 'features/calendars/hooks/useDragDropInterview'
 import CalendarProvider from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 import useCheckEditInterviewPermission from 'features/calendars/permission/hooks/useCheckEditInterviewPermission'
 import { useLocation } from 'react-router-dom'
+import ChangeCandidateInterviewStatusModal from '../page-sections/changeCandidateInterviewStatusModal'
+import useActionInterview from 'features/calendars/hooks/calendar/useActionInterview'
 
 function CalendarsScreen() {
-  const [openCreateInterView, setOpenCreateInterView] = useState(false)
-  const [openDetailInterView, setOpenDetailInterView] = useState(false)
-  const [openEditInterView, setOpenEditInterView] = useState(false)
-  const [openDeleteInterView, setOpenDeleteInterView] = useState(false)
-  const eventId = useRef<string>('')
+  const useChangeInterviewStatusReturn = useActionInterview()
   const dragItemOutside = useRef<CalendarEvent>()
   const { handleCheckPermission } = useCheckEditInterviewPermission()
   const { myEvents, isLoading, handlePagination } = useGetAllInterview()
   const { onDragDropInterview } = useDragDropInterview({})
   const translation = useTextTranslation()
-
-  const location = useLocation();
+  const {
+    openCreate,
+    openDelete,
+    eventId,
+    openEdit,
+    openDetail,
+    setOpenCreate,
+    setOpenDetail,
+    setOpenDelete,
+    setOpenEdit,
+    handleOpenDetail,
+    openCancelCandidateInterviewModal,
+    openDoneCandidateInterviewModal,
+    setOpenCancelCandidateInterviewModal,
+    setOpenDoneCandidateInterviewModal,
+  } = useChangeInterviewStatusReturn
+  const location = useLocation()
 
   const handleSelectSlot = useCallback(({ start, end }: SlotInfo) => {
     // setOpenCreateInterView(true)
@@ -57,9 +70,6 @@ function CalendarsScreen() {
         candidateJobOfTeamId: event.resource?.teamId ?? '',
         interviewers: event.resource?.interviewer ?? [],
       })
-      console.log('teamId', event.resource?.teamId)
-      console.log('interviewers', event.resource?.interviewer)
-      console.log('cantEdit', cantEdit)
       if (!cantEdit) return
       if (isDate(start) && isDate(end) && event.start) {
         ruleDragDropCalendar(event.start, start, end, () => {
@@ -92,19 +102,8 @@ function CalendarsScreen() {
   ) {
     e.stopPropagation()
     if (event.resource?.id) {
-      eventId.current = event.resource?.id
-      setOpenDetailInterView(true)
+      handleOpenDetail(event.resource.id)
     }
-  }
-
-  function handleDeleteEvent(id: string) {
-    eventId.current = id
-    setOpenDeleteInterView(true)
-  }
-
-  function handleEditEvent(id: string) {
-    eventId.current = id
-    setOpenEditInterView(true)
   }
 
   function handleDragStart(event: CalendarEvent) {
@@ -136,16 +135,15 @@ function CalendarsScreen() {
   }
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const interview_id = queryParams.get('interview_id');
-    const is_open_detail = queryParams.get('is_open_detail');
+    const queryParams = new URLSearchParams(location.search)
+    const interview_id = queryParams.get('interview_id')
+    const is_open_detail = queryParams.get('is_open_detail')
 
-    if(interview_id && is_open_detail && JSON.parse(is_open_detail)) {
-      eventId.current = interview_id
-      setOpenDetailInterView(true)
+    if (interview_id && is_open_detail && JSON.parse(is_open_detail)) {
+      handleOpenDetail(interview_id)
     }
   }, [])
-  
+
   return (
     <Box pt={2} pb={4}>
       <Box>
@@ -156,9 +154,7 @@ function CalendarsScreen() {
       </Box>
       <BoxWrapperOuterContainer>
         <CalendarProvider
-          setOpenCreateInterView={setOpenCreateInterView}
-          handleDeleteEvent={handleDeleteEvent}
-          handleEditEvent={handleEditEvent}
+          useActionInterviewReturn={useChangeInterviewStatusReturn}
         >
           <Calendars
             onSelectSlot={handleSelectSlot}
@@ -170,34 +166,47 @@ function CalendarsScreen() {
             handleDragStart={handleDragStart}
             onDropFromOutside={onDropFromOutside}
           />
-          {openCreateInterView && (
-            <CreateInterviewModal
-              open={openCreateInterView}
-              setOpen={setOpenCreateInterView}
-            />
+          {openCreate && (
+            <CreateInterviewModal open={openCreate} setOpen={setOpenCreate} />
           )}
-          {openDetailInterView && (
+          {openDetail && (
             <DetailInterviewModal
-              open={openDetailInterView}
-              setOpen={setOpenDetailInterView}
+              open={openDetail}
+              setOpen={setOpenDetail}
               id={eventId.current}
             />
           )}
-          {openEditInterView && (
+          {openEdit && (
             <EditInterviewModal
-              open={openEditInterView}
+              open={openEdit}
               id={eventId.current}
-              setOpen={setOpenEditInterView}
+              setOpen={setOpenEdit}
             />
           )}
-          {openDeleteInterView && (
+          {openDelete && (
             <DeleteInterviewModal
-              open={openDeleteInterView}
+              open={openDelete}
               id={eventId.current}
-              setOpen={setOpenDeleteInterView}
+              setOpen={setOpenDelete}
               onSuccess={() => {
-                setOpenDetailInterView(false)
+                setOpenDetail(false)
               }}
+            />
+          )}
+          {openCancelCandidateInterviewModal && (
+            <ChangeCandidateInterviewStatusModal
+              id={eventId.current}
+              open={openCancelCandidateInterviewModal}
+              setOpen={setOpenCancelCandidateInterviewModal}
+              updateTo="cancelled"
+            />
+          )}
+          {openDoneCandidateInterviewModal && (
+            <ChangeCandidateInterviewStatusModal
+              id={eventId.current}
+              open={openDoneCandidateInterviewModal}
+              setOpen={setOpenDoneCandidateInterviewModal}
+              updateTo="done"
             />
           )}
         </CalendarProvider>
