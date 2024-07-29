@@ -13,13 +13,14 @@ import Cant from 'features/authorization/presentation/components/Cant'
 
 function ToolBar(props: ToolbarProps) {
   const { view, onView, onNavigate, date } = props
-  const { setOpenCreateInterView } = useContextCalendar()
+  const { useActionInterviewReturn } = useContextCalendar()
+  const { setOpenCreate } = useActionInterviewReturn
   function handleChangeDate(value: ChosenDateType) {
     if (value) onNavigate('DATE', value.toDate())
   }
 
   function handleOpenCreateInterview() {
-    setOpenCreateInterView(true)
+    setOpenCreate(true)
   }
   return (
     <FlexBox

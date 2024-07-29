@@ -14,13 +14,13 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import useActionTable from '../../../hooks/table/useActionTable'
+import useActionInterview from '../../../hooks/table/useActionInterview'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
 import { Interview } from 'features/interviews/domain/interfaces'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
-import { Fragment, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import BoxTextSquare from 'shared/components/utils/boxText'
@@ -33,31 +33,36 @@ import {
 } from '../index'
 import Cant from 'features/authorization/presentation/components/Cant'
 import AddNewInterviewButtonPermission from 'features/interviews/permission/components/AddNewInterviewButtonPermission'
-import EditInterviewButtonPermission from 'features/interviews/permission/components/EditInterviewButtonPermission'
-import DeleteInterviewButtonPermission from 'features/interviews/permission/components/DeleteInterviewButtonPermission'
 import {
   GetLocationName,
   LOCATION_INTERVIEW_STATE,
 } from 'shared/components/autocomplete/location-interview-autocomplete'
 import { LinkText } from 'shared/styles'
+import InterviewActions from '../../components/InterviewActions'
+import ChangeCandidateInterviewStatusModal from '../changeCandidateInterviewStatusModal'
+import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
 
 interface Props {
   jobApplicationDetail: CandidateJob
   listInterview: Interview[]
 }
 
-const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
+const ListInterview = ({ jobApplicationDetail, listInterview }: Props) => {
+  const useActionInterviewReturn = useActionInterview()
+
   const {
     openCreate,
     setOpenCreate,
     openEdit,
     setOpenEdit,
-    handleOpenEdit,
     openDelete,
-    handleOpenDelete,
     setOpenDelete,
     rowId,
-  } = useActionTable()
+    openCancelCandidateInterview,
+    openDoneCandidateInterview,
+    setOpenCancelCandidateInterview,
+    setOpenDoneCandidateInterview,
+  } = useActionInterviewReturn
 
   const showInterview = useMemo(() => {
     return (
@@ -139,23 +144,13 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                       >
                         {interview.start_from &&
                           isPast(dayjs(interview.start_from).toDate()) && (
-                            <Fragment>
-                              <EditInterviewButtonPermission
-                                candidateJobOfTeamId={candidateJobOfTeamId}
-                                interviewers={interview.interviewer ?? []}
-                                onClick={() => {
-                                  handleOpenEdit(interview.id)
-                                }}
-                              />
-
-                              <DeleteInterviewButtonPermission
-                                candidateJobOfTeamId={candidateJobOfTeamId}
-                                interviewers={interview.interviewer ?? []}
-                                onClick={() => {
-                                  handleOpenDelete(interview.id)
-                                }}
-                              />
-                            </Fragment>
+                            <InterviewActions
+                              interview={interview}
+                              useActionInterviewReturn={
+                                useActionInterviewReturn
+                              }
+                              candidateJobOfTeamId={candidateJobOfTeamId}
+                            />
                           )}
                       </FlexBox>
                     </FlexBox>
@@ -186,6 +181,12 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
                           )}
                         </TinyText>
                       </Box>
+                      <FlexBox flexDirection={'column'}>
+                        <SpanText>Status</SpanText>
+                        <ChipInterviewStatus
+                          status={interview.status}
+                        ></ChipInterviewStatus>
+                      </FlexBox>
                     </FlexBox>
                   </FlexBox>
                 </AccordionSummary>
@@ -256,8 +257,27 @@ const ListFeedback = ({ jobApplicationDetail, listInterview }: Props) => {
           onSuccess={handleRefreshList}
         />
       )}
+
+      {openCancelCandidateInterview && (
+        <ChangeCandidateInterviewStatusModal
+          id={rowId.current}
+          open={openCancelCandidateInterview}
+          setOpen={setOpenCancelCandidateInterview}
+          updateTo="cancelled"
+          onSuccess={handleRefreshList}
+        />
+      )}
+      {openDoneCandidateInterview && (
+        <ChangeCandidateInterviewStatusModal
+          id={rowId.current}
+          open={openDoneCandidateInterview}
+          setOpen={setOpenDoneCandidateInterview}
+          updateTo="done"
+          onSuccess={handleRefreshList}
+        />
+      )}
     </ListInterviewContainer>
   )
 }
 
-export default ListFeedback
+export default ListInterview

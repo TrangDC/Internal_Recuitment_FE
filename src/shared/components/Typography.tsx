@@ -185,6 +185,23 @@ export const Tiny: React.FC<BoxProps & Props> = (props) => {
   )
 }
 
+export const Tiny10md: React.FC<BoxProps & Props> = (props) => {
+  const { ellipsis, children, className, ...others } = props
+  return (
+    <StyledBox
+      component="p"
+      fontSize={10}
+      fontWeight={500}
+      lineHeight={'14.63px'}
+      ellipsis={ellipsis ? 1 : 0}
+      className={clsx({ [className || '']: true })}
+      {...others}
+    >
+      {children}
+    </StyledBox>
+  )
+}
+
 export const Tiny12: React.FC<BoxProps & Props> = (props) => {
   const { ellipsis, children, className, ...others } = props
   return (

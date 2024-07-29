@@ -75,6 +75,7 @@
   "poor_management_skills": "Poor management skills",
   "candidate_withdrawal": "Candidate withdrawal",
   "others": "Others",
+  "done": "Done",
   "sub_title_update_record": "What information or note have you updated the record?",
   "model": {
     "skill_types": {

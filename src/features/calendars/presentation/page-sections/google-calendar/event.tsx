@@ -1,57 +1,38 @@
-import { ComponentType, useCallback, useState } from 'react'
 import { EventProps } from 'react-big-calendar'
 import { CalendarEvent } from './interface'
+import { Box } from '@mui/material'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import { Tiny10md, Tiny12 } from 'shared/components/Typography'
+import dayjs from 'dayjs'
 import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
+import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
+import CalendarActions from '../../components/interviewActions'
 
-type ActionMenu = 'DELETE'
-
-const EventComponent: ComponentType<EventProps<CalendarEvent>> = (event) => {
-  const { handleDeleteEvent } = useContextCalendar()
-  const [anchorEl, setAnchorEl] = useState<null | Element>(null)
-  const open = Boolean(anchorEl)
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-  const handleRightClick = useCallback(
-    (e: React.MouseEvent<Element, MouseEvent>) => {
-      e.preventDefault()
-      setAnchorEl(e.currentTarget)
-    },
-    []
-  )
-
-  const handleMenuItemClick = (action: ActionMenu, e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (action === 'DELETE') {
-      handleDeleteEvent(event.event.resource?.id ?? '')
-    }
-  }
-
+const CustomEvent = (props: EventProps<CalendarEvent>) => {
+  const { useActionInterviewReturn } = useContextCalendar()
+  const { event } = props
   return (
-    <div>
-      <div onContextMenu={handleRightClick}>{event.title}</div>
-      {/* <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={(e) => handleMenuItemClick('DELETE', e)}>
-          <ListItemIcon>
-            <ContentCut fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
-        </MenuItem>
-      </Menu> */}
-    </div>
+    <FlexBox flexDirection={'column'} alignItems={'start'} height={'100%'}>
+      <FlexBox alignItems={'center'} gap={1}>
+        <ChipInterviewStatus
+          status={event.resource?.status ?? ''}
+          size="small"
+        />
+        <Tiny10md gap={1} display={'flex'}>
+          {`${dayjs(event?.start).format('HH:mm')} - ${dayjs(event?.end).format('HH:mm')}`}
+        </Tiny10md>
+      </FlexBox>
+      <Box flex={1}>
+        <Tiny12 marginTop={'5px'}>{event.title}</Tiny12>
+      </Box>
+      <FlexBox justifyContent={'end'} width={'100%'}>
+        <CalendarActions
+          useActionInterviewReturn={useActionInterviewReturn}
+          event={event}
+        />
+      </FlexBox>
+    </FlexBox>
   )
 }
 
-export default EventComponent
+export default CustomEvent

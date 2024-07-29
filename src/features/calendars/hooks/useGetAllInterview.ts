@@ -56,6 +56,7 @@ function useGetAllInterview() {
             },
             teamId: o?.candidate_job?.hiring_job?.team?.id ?? '',
             interviewer: o?.interviewer ?? [],
+            status: o?.status,
           },
           title: o.title,
           start: newStart,
