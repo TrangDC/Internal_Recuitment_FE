@@ -84,6 +84,17 @@
         "cannot_delete": "This skill type has related skills and cannot be removed"
       }
     },
+    "email_templates": {
+      "model_name": "Email template",
+      "event": "Event",
+      "cc": "Cc",
+      "bcc": "Bcc",
+      "subject": "Email subject",
+      "content": "Email content",
+      "signature": "Email signature",
+      "status": "Status",
+      "send_to": "Send to"
+    },
     "hiring_jobs": {
       "skills": "Skill",
       "model_name": "Job",

@@ -6,6 +6,7 @@ import {
   renderDate,
   renderDateTime,
   renderDescription,
+  renderEventEmailTemplate,
   renderFailedReason,
   renderLink,
   renderListItem,
@@ -14,7 +15,9 @@ import {
   renderReferenceType,
   renderReferenceValue,
   renderSalaryByType,
+  renderSendTo,
   renderStatusCandidateJob,
+  renderStatusEmail,
   renderStatusHiringJob,
   renderText,
   renderYesNo,
@@ -53,6 +56,9 @@ export const renderTextRecord = (
     case 'candidate_interviews':
       renderValue = renderFieldCandidateInterview(field)
       break
+    case 'email_templates':
+      renderValue = renderFieldEmailTemplate(field)
+    break;
     default:
       renderValue = renderText
       break
@@ -64,6 +70,31 @@ export const renderTextRecord = (
     renderValue,
     record_value,
   }
+}
+
+function renderFieldEmailTemplate(field: string): renderValueReturn {
+  let renderValue
+
+  switch (field) {
+    case 'event':
+      renderValue = renderEventEmailTemplate
+    break;
+    case 'content':
+    case 'signature':
+      renderValue = renderDescription
+      break
+    case 'status':
+      renderValue = renderStatusEmail
+      break
+    case 'send_to':
+      renderValue = renderSendTo
+    break;
+    default: {
+      renderValue = renderText
+    }
+  }
+
+  return renderValue
 }
 
 function renderFieldCandidateJobFeedback(field: string): renderValueReturn {

@@ -9,14 +9,17 @@ import {
   getPriorityByStatus,
 } from 'shared/class/priority'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
+import AntSwitch from 'shared/components/ant-switch'
 import { EB_SOURCE_LABEL } from 'shared/components/autocomplete/EB-auto-complete'
 import { REC_SOURCE_LABEL } from 'shared/components/autocomplete/REC-auto-complete'
 import {
   CANDIDATE_SOURCE_LABEL,
   CANDIDATE_SOURCE_STATE,
 } from 'shared/components/autocomplete/candidate-source-auto-complete'
+import { EVENT_EMAIL } from 'shared/components/autocomplete/event-email-autocomplete'
 import { failed_reason_data } from 'shared/components/autocomplete/failed-reason-auto-complete'
 import { HIRING_PLATFORM_LABEL } from 'shared/components/autocomplete/hiring-platform-auto-complete'
+import { SEND_TO_LABEL } from 'shared/components/autocomplete/send-to-autocomplete/hooks/useSendTo'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import {
   CURRENCY_TEXT_LABEL,
@@ -86,6 +89,27 @@ type TYPE_LOCATION = keyof typeof LOCATION_LABEL
 export function renderLocation(text: string) {
   const location_data = getLastString(text)
   return LOCATION_LABEL[location_data as TYPE_LOCATION]
+}
+
+type TYPE_EVENT_EMAIL = keyof typeof EVENT_EMAIL
+export const renderEventEmailTemplate = (text: string) => {
+  const event_data = getLastString(text)
+  return EVENT_EMAIL[event_data as TYPE_EVENT_EMAIL]?.label
+}
+
+export const renderStatusEmail = (text: string) => {
+  const status = getLastString(text)
+  return <AntSwitch checked={status === 'active'} />
+}
+
+type TYPE_SEND_TO = keyof typeof SEND_TO_LABEL
+export const renderSendTo = (text: string) => {
+  const list_send_to = Array.from(text).map((send_to) => {
+    const enum_send_to = send_to.includes('model.email_templates.send_to_enum');
+   return enum_send_to ? SEND_TO_LABEL[getLastString(send_to) as TYPE_SEND_TO] : send_to;
+  });
+
+  return list_send_to.join(', ');
 }
 
 export function renderDate(date: string) {
