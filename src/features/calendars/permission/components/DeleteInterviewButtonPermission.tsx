@@ -1,7 +1,7 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
-import { User } from 'features/calendars/domain/interfaces'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
+import User from 'shared/schema/database/user'
 
 type DeleteInterviewButtonPermissionProps = {
   onClick: () => void

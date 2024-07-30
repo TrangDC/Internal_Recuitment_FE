@@ -1,8 +1,8 @@
 import EditIcon from 'shared/components/icons/EditIcon'
 import useTextTranslation from 'shared/constants/text'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
-import { Hiring } from 'features/hiring/domain/interfaces'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
+import User from 'shared/schema/database/user'
 
 export enum ActionJobsOpen {
   EDIT = 'edit',
@@ -19,7 +19,7 @@ function useBuildActionsTableHiringTeam({
   handleOpenDetail,
 }: UseBuildActionsTableHiringTeamProps) {
   const translation = useTextTranslation()
-  const { actions } = useBuildActionsTable<ActionJobsOpen, Hiring>({
+  const { actions } = useBuildActionsTable<ActionJobsOpen, User>({
     actions: {
       edit: {
         id: ActionJobsOpen.EDIT,

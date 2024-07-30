@@ -46,7 +46,8 @@ const JobDetail = () => {
 
   const disabledBtn = useMemo(() => {
     return (
-      jobDetail.status === STATUS_HIRING_JOB.OPENED && !jobDetail?.is_able_to_close
+      jobDetail.status === STATUS_HIRING_JOB.OPENED &&
+      !jobDetail?.is_able_to_close
     )
   }, [jobDetail])
 
@@ -83,7 +84,7 @@ const JobDetail = () => {
               <FlexBox gap={7.5} flexWrap={'wrap'} rowGap={2}>
                 <FlexBox gap={0.75} alignItems={'center'}>
                   <SpanText>{translation.MODLUE_TEAMS.team}</SpanText>
-                  <TinyText>{jobDetail?.team?.name}</TinyText>
+                  <TinyText>{jobDetail?.hiring_team?.name}</TinyText>
                 </FlexBox>
 
                 <FlexBox gap={0.75} alignItems={'center'}>

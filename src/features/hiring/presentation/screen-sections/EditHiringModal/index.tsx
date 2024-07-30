@@ -2,7 +2,6 @@ import BaseModal from 'shared/components/modal'
 import { Controller, FormProvider } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Hiring } from 'features/hiring/domain/interfaces'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
@@ -15,12 +14,13 @@ import RoleTemplateSelection from '../../components/role-template-selection'
 import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
 import { Text15md } from 'shared/components/Typography'
 import useEditHiring from 'features/hiring/hooks/crud/useEditHiring'
+import User from 'shared/schema/database/user'
 
 interface IEditHiringModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  rowData?: Hiring
+  rowData?: User
 }
 
 function EditHiringModal({ open, setOpen, id }: IEditHiringModal) {
@@ -128,7 +128,7 @@ function EditHiringModal({ open, setOpen, id }: IEditHiringModal) {
                         <FormControl fullWidth>
                           <Controller
                             control={control}
-                            name="teamId"
+                            name="hiring_team_id"
                             defaultValue=""
                             render={({ field, fieldState }) => (
                               <FlexBox flexDirection={'column'}>

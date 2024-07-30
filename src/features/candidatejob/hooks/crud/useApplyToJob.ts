@@ -1,10 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../../shared/constants/schema'
-import {
-  removeInfoData,
-  removeStatusAttachment,
-} from 'shared/utils/utils'
+import { removeInfoData, removeStatusAttachment } from 'shared/utils/utils'
 import { cloneDeep } from 'lodash'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { NewCandidateJobInput } from 'features/candidatejob/domain/interfaces'
@@ -61,7 +58,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
         : deepValue.onboard_date
 
       const valueClone = removeInfoData({
-        field: ['team_id'],
+        field: ['hiring_team_id'],
         object: {
           ...deepValue,
           attachments: attachments,

@@ -1,13 +1,13 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
-import { Interview } from 'features/interviews/domain/interfaces'
 import { ActionInterview } from 'features/interviews/hooks/table/useBuildActionsTableInterview'
-import { Member } from 'features/teams/domain/interfaces'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
+import User from 'shared/schema/database/user'
 
 interface ActionProps {
-  newActions: TOptionItem<Interview>[]
+  newActions: TOptionItem<CandidateInterview>[]
   inTeam: boolean
   role: PermissionStructureImpl | null
   isInterviewer: boolean
@@ -19,10 +19,10 @@ function checkActionPermissionInterview({
   actions,
   candidateJobOfTeamId,
   interviewer,
-}: Omit<CheckPermissionActionTableProps<Interview>, 'rowData'> & {
-  interviewer: Member[]
+}: Omit<CheckPermissionActionTableProps<CandidateInterview>, 'rowData'> & {
+  interviewer: User[]
   candidateJobOfTeamId: string
-}): TOptionItem<Interview>[] {
+}): TOptionItem<CandidateInterview>[] {
   let newActions = [...actions]
   const inTeam = me?.teamId === candidateJobOfTeamId
   const interviewers = interviewer

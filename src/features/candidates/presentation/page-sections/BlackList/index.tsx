@@ -3,7 +3,6 @@ import { columns } from '../../../shared/constants/columns'
 import useCandidateTable from '../../../hooks/table/useCandidateTable'
 import useActionTable from '../../../hooks/table/useActionTable'
 import { DivContainerWrapper, DivHeaderWrapper } from '../../../shared/styles'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { useMemo } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import FlexBox from 'shared/components/flexbox/FlexBox'
@@ -28,6 +27,7 @@ import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-aut
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
 import useBuildActionTableCandidate from '../../../hooks/table/useBuildActionTableCandidateBL'
+import Candidate from 'shared/schema/database/candidate'
 
 const BlackList = () => {
   const {

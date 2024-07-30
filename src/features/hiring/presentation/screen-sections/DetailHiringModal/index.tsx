@@ -1,7 +1,6 @@
 import BaseModal from 'shared/components/modal'
 import { FormProvider } from 'react-hook-form'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Hiring } from 'features/hiring/domain/interfaces'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import AvatarUser from '../../components/AvatarUser'
 import LoadingField from 'shared/components/form/loadingField'
@@ -12,11 +11,12 @@ import PermissionSectionsDetail from 'shared/components/role-template-permission
 import Cant from 'features/authorization/presentation/components/Cant'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from 'shared/components/icons/EditIcon'
+import User from 'shared/schema/database/user'
 interface IEditHiringModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  rowData?: Hiring
+  rowData?: User
   handleOpenEdit: (id: string) => void
 }
 

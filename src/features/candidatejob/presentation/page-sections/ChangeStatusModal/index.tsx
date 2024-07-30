@@ -20,12 +20,12 @@ import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidat
 import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import Cant from 'features/authorization/presentation/components/Cant'
 import AppDateField from 'shared/components/input-fields/DateField'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
+import CandidateJob from 'shared/schema/database/candidate_job'
 
 export type onSuccessChangeStatus = {
   prevStatus: string
@@ -60,21 +60,29 @@ function ChangeStatusModal({
   onSuccess,
 }: IChangeStatusModal) {
   const { handleWarning, handleReset } = usePopup()
-  const { actions, control, isPending, isValid, watch, formState, trigger, getValues } =
-    useChangeStatus({
-      id: rowData?.id as string,
-      callbackSuccess: (data) => {
-        setOpen(false)
-        onSuccess?.({
-          id: data?.id,
-          prevStatus: statusCurrent,
-          updateStatus: data?.status,
-        })
-      },
-      defaultValues: {
-        status: defaultStatus,
-      },
-    })
+  const {
+    actions,
+    control,
+    isPending,
+    isValid,
+    watch,
+    formState,
+    trigger,
+    getValues,
+  } = useChangeStatus({
+    id: rowData?.id as string,
+    callbackSuccess: (data) => {
+      setOpen(false)
+      onSuccess?.({
+        id: data?.id,
+        prevStatus: statusCurrent,
+        updateStatus: data?.status,
+      })
+    },
+    defaultValues: {
+      status: defaultStatus,
+    },
+  })
 
   const { onSubmit, resetOfferDate } = actions
 
@@ -316,15 +324,25 @@ function ChangeStatusModal({
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                       <InputFileUpload
+                      <InputFileUpload
                         getValues={getValues}
                         name={field.name}
                         accept={'.pdf, .png, .jpg, .jpeg, .doc, .docx'}
                         multiple={true}
                         validator_files={{
-                          max_file: {max: 10, msg_error: 'Up to 10 files and 20MB/file'},
-                          max_size: {max: 20, msg_error: 'Up to 10 files and 20MB/file'},
-                          is_valid: {regex: '.(pdf|png|jpg|jpeg|doc|docx)$', msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'}
+                          max_file: {
+                            max: 10,
+                            msg_error: 'Up to 10 files and 20MB/file',
+                          },
+                          max_size: {
+                            max: 20,
+                            msg_error: 'Up to 10 files and 20MB/file',
+                          },
+                          is_valid: {
+                            regex: '.(pdf|png|jpg|jpeg|doc|docx)$',
+                            msg_error:
+                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          },
                         }}
                         descriptionFile={() => {
                           return (
@@ -334,11 +352,11 @@ function ChangeStatusModal({
                                 Attach file{' '}
                               </Span>
                               <Tiny sx={{ color: '#2A2E37 !important' }}>
-                              Up to 10 files and 20MB/file
+                                Up to 10 files and 20MB/file
                               </Tiny>
                             </Box>
                           )
-                        }} 
+                        }}
                         value={field.value}
                         onChange={field.onChange}
                       />

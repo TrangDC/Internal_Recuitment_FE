@@ -127,7 +127,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                         value={field.value}
                         disabled={!teamId}
                         filter={{
-                          team_ids: teamId ? [teamId] : undefined,
+                          hiring_team_ids: teamId ? [teamId] : undefined,
                           status: 'opened',
                         }}
                         multiple={false}

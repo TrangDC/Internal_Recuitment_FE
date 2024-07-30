@@ -23,16 +23,18 @@ interface CandidateJob {
   candidate_id: string
   hiring_job_id: string
   status: CandidateStatusEnum
-  attachments: Attachment
+  attachments: Attachment[]
   candidate: Candidate
   hiring_job: HiringJob
   owner: User
-  failed_reason: CandidateJobFailedReason
+  failed_reason: CandidateJobFailedReason[]
   is_able_to_delete: boolean
   interview_feature: number
-  steps: CandidateJobStep
+  steps: CandidateJobStep[]
   created_at: string
   updated_at: string
+  offer_expiration_date: string
+  onboard_date: string
 }
 
 export default CandidateJob

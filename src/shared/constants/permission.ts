@@ -5,16 +5,16 @@ type RoleTemplateInformation = {
 }
 
 export const roleTemplateInformation: RoleTemplateInformation = {
-  'model.permissions.teams.view': {
+  'model.permissions.hiring_teams.view': {
     description: 'Permission to view Team information',
   },
-  'model.permissions.teams.create': {
+  'model.permissions.hiring_teams.create': {
     description: 'Permission to create new team',
   },
-  'model.permissions.teams.update': {
+  'model.permissions.hiring_teams.update': {
     description: 'Permission to edit Team information',
   },
-  'model.permissions.teams.delete': {
+  'model.permissions.hiring_teams.delete': {
     description: 'Permission to delete team ',
   },
   'model.permissions.hiring_jobs.view': {

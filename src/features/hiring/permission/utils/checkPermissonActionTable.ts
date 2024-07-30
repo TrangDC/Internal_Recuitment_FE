@@ -1,19 +1,19 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
-import { Hiring } from 'features/hiring/domain/interfaces'
 import { ActionJobsOpen } from 'features/hiring/hooks/table/useBuildActionsTableHiringTeam'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
+import User from 'shared/schema/database/user'
 
 interface ActionProps {
-  newActions: TOptionItem<Hiring>[]
+  newActions: TOptionItem<User>[]
   role: PermissionStructureImpl | null
 }
 
 function checkPermissionActionTable({
   role,
   actions,
-}: CheckPermissionActionTableProps<Hiring>): TOptionItem<Hiring>[] {
+}: CheckPermissionActionTableProps<User>): TOptionItem<User>[] {
   let newActions = [...actions]
   newActions = editAction({ newActions, role })
   return newActions

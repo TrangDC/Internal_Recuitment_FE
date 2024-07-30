@@ -13,7 +13,7 @@ export type FormDataSchema = yup.InferType<typeof schema>
 export const schemaUpdate = yup.object({
   name: yup.string().required(RULE_MESSAGES.MC1('name')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
-  teamId: yup.string().required(RULE_MESSAGES.MC1('team')),
+  hiring_team_id: yup.string().required(RULE_MESSAGES.MC1('team')),
   work_email: yup
     .string()
     .email(RULE_MESSAGES.MC5('work email'))

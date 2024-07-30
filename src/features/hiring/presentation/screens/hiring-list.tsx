@@ -6,7 +6,6 @@ import { DivHeaderWrapper } from 'features/candidates/shared/styles'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import EditHiringModal from '../screen-sections/EditHiringModal'
-import { Hiring } from 'features/hiring/domain/interfaces'
 import { columns } from 'features/hiring/shared/constants/columns'
 import useFilterHiringTeams from 'features/hiring/hooks/table/useFilterHiringTeams'
 import FlexBox from 'shared/components/flexbox/FlexBox'
@@ -17,6 +16,7 @@ import useActionTable from 'features/hiring/hooks/table/useActionTable'
 import useHiringTable from 'features/hiring/hooks/table/useHiringTable'
 import useBuildActionsTableHiringTeam from 'features/hiring/hooks/table/useBuildActionsTableHiringTeam'
 import DetailHiringModal from '../screen-sections/DetailHiringModal'
+import User from 'shared/schema/database/user'
 
 const HiringList = () => {
   const {
@@ -40,7 +40,7 @@ const HiringList = () => {
     handleOpenEdit,
     handleOpenDetail,
   })
-  const { columnTable } = useBuildColumnTable<Hiring>({
+  const { columnTable } = useBuildColumnTable<User>({
     actions: actions,
     columns,
   })
@@ -53,7 +53,7 @@ const HiringList = () => {
             <ControllerFilter
               control={controlFilter}
               title="Team"
-              keyName={'team_id'}
+              keyName={'hiring_team_id'}
               Node={({ onFilter, value }) => (
                 <TeamsAutoComplete
                   value={value}

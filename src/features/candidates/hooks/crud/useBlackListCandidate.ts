@@ -1,15 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidates/domain/graphql/graphql'
-import {
-  BlackListCandidateInput,
-  Candidate,
-} from 'features/candidates/domain/interfaces'
+import { BlackListCandidateInput } from 'features/candidates/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import {
   schemaBlackList,
   FormDataSchemaBlackList,
 } from '../../shared/constants/schema'
 import { useUpdateResourceOther } from 'shared/hooks/crud-hook'
+import Candidate from 'shared/schema/database/candidate'
 
 type UseChangeStatusProps = {
   id: string

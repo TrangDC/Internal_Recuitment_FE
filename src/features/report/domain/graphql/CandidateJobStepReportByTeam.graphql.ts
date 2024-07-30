@@ -11,7 +11,7 @@ const useGraphql = () => {
       edges {
         node {
           id
-          team_name
+          hiring_team_name
           applied
           interviewing
           offering

@@ -1,6 +1,9 @@
-import { Candidate } from 'features/candidates/domain/interfaces'
-import { Job } from 'features/jobs/domain/interfaces'
 import { Attachments } from 'shared/interfaces'
+
+export type CreateCandidateJobArguments = {
+  input: NewCandidateJobInput
+  note: string
+}
 
 export type StepType = {
   id: string
@@ -10,36 +13,20 @@ export type StepType = {
   updated_at: string
 }
 
-export type CandidateJob = {
-  id: string
-  candidate_id: string
-  hiring_job_id: string
-  is_able_to_delete: boolean
-  interview_feature: number
-  status:
-    | 'applied'
-    | 'interviewing'
-    | 'offering'
-    | 'hired'
-    | 'kiv'
-    | 'offer_lost'
-    | 'ex_staff'
-    | 'new'
-  created_at: string
-  steps: StepType[]
-  updated_at: string
-  attachments: Attachments[]
-  candidate: Candidate
-  hiring_job: Job
-  offer_expiration_date: Date,
-  onboard_date: Date
-}
-
 export type NewCandidateJobInput = {
   candidate_id: string
   hiring_job_id: string
   status: string
-  attachments?: string
+  attachments?: NewAttachmentInput[]
+  onboard_date: string | null
+  offer_expiration_date: string | null
+  failed_reason: string[]
+}
+
+export type NewAttachmentInput = {
+  id: string
+  document_name: string
+  document_id: string
 }
 
 export type DeleteCandidateJobInput = {

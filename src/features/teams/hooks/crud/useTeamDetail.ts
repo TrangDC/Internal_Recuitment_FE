@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import useGraphql from 'features/teams/domain/graphql/graphql'
-import { Team } from 'features/teams/domain/interfaces'
 import { useMemo } from 'react'
 import GraphQLClientService from 'services/graphql-service'
+import HiringTeam from 'shared/schema/database/hiring_team'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const useTeamDetail = (id: String) => {
@@ -16,7 +16,7 @@ const useTeamDetail = (id: String) => {
       }),
   })
 
-  const teamDetail: Team = useMemo(() => {
+  const teamDetail: HiringTeam = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
       return response?.[getTeamDetail.operation]?.data

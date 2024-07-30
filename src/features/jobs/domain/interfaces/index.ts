@@ -1,67 +1,57 @@
-import { Candidate } from 'features/candidates/domain/interfaces'
-import { entity_skill_type } from 'features/skillType/domain/interfaces'
-import { Member, Team } from 'features/teams/domain/interfaces'
+import Candidate from 'shared/schema/database/candidate'
+import HiringJob from 'shared/schema/database/hiring_job'
 
-export type Job = {
-  id: string
-  name: string
-  description: string
-  amount: number
-  location: 'ha_noi' | 'ho_chi_minh' | 'da_nang' | 'japan'
-  salary_type: 'range' | 'up_to' | 'negotiate' | 'minimum'
-  salary_from: number
-  salary_to: number
-  currency: 'vnd' | 'usd' | 'jpy'
-  status: 'draft' | 'opened' | 'closed'
-  is_able_to_delete: boolean,
-  is_able_to_close: boolean,
-  slug: string
-  team: Team
-  user: Member
-  priority: 1 | 2 | 3 | 4
-  total_candidates_recruited: number,
-  skill: string[]
-  entity_skill_types: entity_skill_type[]
-  created_at: string
-  updated_at: string
-  deleted_at: string
+export type CreateHiringJobArguments = {
+  input: NewHiringJobInput
+  note: string
+}
+
+export type EditHiringJobArguments = {
+  input: UpdateHiringJobInput
+  note: string
 }
 
 export type NewHiringJobInput = {
-  status: 'draft' | 'opened' | 'closed',
-  name: string,
-  amount: number,
-  location: 'ha_noi' | 'ho_chi_minh' | 'da_nang' | 'japan',
-  salary_type: 'range' | 'up_to' | 'negotiate' | 'minimum',
-  salary_from: number,
-  salary_to: number,
-  team_id: string,
-  currency: 'vnd' | 'usd' | 'jpy',
-  created_by: string,
-  description: string,
-  note: string,
-  skill: string[]
+  status: string
+  name: string
+  amount: number
+  location: string
+  salary_type: string
+  salary_from: number
+  salary_to: number
+  hiring_team_id: string
+  currency: string
+  created_by: string
+  description: string
+  entity_skill_records: EntitySkillRecordInput[]
+  priority: number
+}
+
+export type EntitySkillRecordInput = {
+  id: string
+  skill_id: string
+  orderId: number
 }
 
 export type UpdateHiringJobInput = {
-  name: string,
-  amount: number,
-  location: 'ha_noi' | 'ho_chi_minh' | 'da_nang' | 'japan',
-  salary_type: 'range' | 'up_to' | 'negotiate' | 'minimum',
-  salary_from: number,
-  salary_to: number,
-  team_id: string,
-  currency: 'vnd' | 'usd' | 'jpy',
-  created_by: string,
-  description: string,
-  note: string,
-  // skill: string[]
+  name: string
+  amount: number
+  location: string
+  salary_type: string
+  salary_from: number
+  salary_to: number
+  hiring_team_id: string
+  currency: string
+  created_by: string
+  description: string
+  entity_skill_records: EntitySkillRecordInput[]
+  note: string
 }
 
-export type UpdateJobStatus = {
-  id: string,
-  status: 'draft' | 'opened' | 'closed',
-  note: string,
+export type UpdateHiringJobStatus = {
+  id: string
+  status: string
+  note: string
 }
 
 export type CandidateStatusItem = {
@@ -69,7 +59,7 @@ export type CandidateStatusItem = {
   candidate_id: string
   status: string
   hiring_job_id: string
-  hiring_job: Job
+  hiring_job: HiringJob
   attachments: {
     id: string
     document_name: string

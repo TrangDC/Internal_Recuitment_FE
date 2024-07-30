@@ -13,12 +13,16 @@ function HiringTeamPermissionGroupDetail({
 }: PermissionGroupProps) {
   const { control, watch } = useFormContext()
   const [open, setOpen] = useState(true)
+  const createAction = roleTemplate?.HIRING_TEAMS?.CREATE
   const editAction = roleTemplate?.HIRING_TEAMS?.EDIT
+  const deleteAction = roleTemplate?.HIRING_TEAMS?.DELETE
   const viewAction = roleTemplate?.HIRING_TEAMS?.VIEW
 
   const viewData = watch(getKeyName(viewAction.id))
   const editData = watch(getKeyName(editAction.id))
-  const state = [editData, viewData]
+  const createData = watch(getKeyName(createAction.id))
+  const deleteData = watch(getKeyName(deleteAction.id))
+  const state = [createData, viewData, editData, deleteData]
 
   const countChecked = useGetCountChecked(state)
 
@@ -28,7 +32,7 @@ function HiringTeamPermissionGroupDetail({
       setOpen={setOpen}
       title={
         <FlexBox justifyContent={'center'} gap={1}>
-          <Text13md color={'grey.900'}>Hiring team</Text13md>
+          <Text13md color={'grey.900'}>Teams</Text13md>
           <Tiny12md color={'text.500'}>
             {countChecked}/{state.length}
           </Tiny12md>
@@ -66,11 +70,31 @@ function HiringTeamPermissionGroupDetail({
         />
         <Controller
           control={control}
+          name={getKeyName(createAction.id)}
+          render={({ field }) => (
+            <ListCheckBoxDetail
+              customPermission={createAction}
+              value={field.value}
+            />
+          )}
+        />
+        <Controller
+          control={control}
           name={getKeyName(editAction.id)}
           render={({ field }) => (
             <ListCheckBoxDetail
-              hiddenBorder
               customPermission={editAction}
+              value={field.value}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name={getKeyName(deleteAction.id)}
+          render={({ field }) => (
+            <ListCheckBoxDetail
+              hiddenBorder
+              customPermission={deleteAction}
               value={field.value}
             />
           )}

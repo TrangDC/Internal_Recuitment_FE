@@ -40,64 +40,6 @@ export type EditIntefviewInput = {
   job_id: string
 }
 
-export type CandidateInterview = {
-  id: string
-  title: string
-  description: string
-  candidate_job_id: string
-  interview_date: string
-  start_from: string
-  end_at: string
-  interviewer: User[]
-  candidate_job: CandidateJob
-  edit_able: boolean
-  location: string
-  meeting_link: string
-  created_at: string
-  updated_at: string
-}
-
-export type User = {
-  id: string
-  name: string
-  work_email: string
-  status: string
-}
-
-type CandidateJob = {
-  id: string
-  candidate_id: string
-  hiring_job_id: string
-  status: string
-  candidate: Candidate
-  hiring_job: HiringJob
-}
-
-type Candidate = {
-  id: string
-  name: string
-  email: string
-  phone: string
-  dob: string
-  status: string
-  is_black_list: boolean
-  last_apply_date: string
-  created_at: string
-  updated_at: string
-  deleted_at: string
-}
-
-type HiringJob = {
-  id: string
-  name: string
-  team: Team
-}
-
-type Team = {
-  id: string
-  name: string
-}
-
 export type UpdateCandidateInterviewScheduleInput = {
   interview_date: string
   start_from: string

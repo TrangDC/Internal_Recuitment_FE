@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
-import { User } from 'features/calendars/domain/interfaces'
 import { RULE_MESSAGES } from 'shared/constants/validate'
+import User from 'shared/schema/database/user'
 import { isPast } from 'shared/utils/date'
 import * as yup from 'yup'
 
@@ -14,15 +14,16 @@ export const CreateInterviewSchema = yup.object().shape({
   interviewer: yup.array().min(1, RULE_MESSAGES.MC1('interviewer')),
   candidateId: yup.string().required(RULE_MESSAGES.MC1('candidate')),
   date: yup
-    .date().nullable()
+    .date()
+    .nullable()
     .typeError(RULE_MESSAGES.MC5('Date'))
     .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
     .test('is_null', function () {
       const interview_date = this.parent?.date
-      if(!interview_date) {
+      if (!interview_date) {
         return this.createError({
           path: this.path,
-          message: RULE_MESSAGES.MC1('interview date')
+          message: RULE_MESSAGES.MC1('interview date'),
         })
       }
       return true
@@ -61,7 +62,7 @@ export const CreateInterviewSchema = yup.object().shape({
     }),
   description: yup.string(),
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
-  meeting_link: yup.string()
+  meeting_link: yup.string(),
 })
 
 export const EditInterviewSchema = yup.object().shape({
@@ -75,15 +76,16 @@ export const EditInterviewSchema = yup.object().shape({
   candidateId: yup.string().required(RULE_MESSAGES.MC1('candidate')),
   candidate_job_id: yup.string().default(''),
   date: yup
-    .date().nullable()
+    .date()
+    .nullable()
     .typeError(RULE_MESSAGES.MC5('Date'))
     .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
     .test('is_null', function () {
       const interview_date = this.parent?.date
-      if(!interview_date) {
+      if (!interview_date) {
         return this.createError({
           path: this.path,
-          message: RULE_MESSAGES.MC1('interview date')
+          message: RULE_MESSAGES.MC1('interview date'),
         })
       }
       return true
@@ -122,7 +124,7 @@ export const EditInterviewSchema = yup.object().shape({
     }),
   description: yup.string(),
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
-  meeting_link: yup.string()
+  meeting_link: yup.string(),
 })
 
 export const InterviewerSchema = yup.object().shape({
@@ -147,7 +149,7 @@ export const getOneInterviewSchema = yup.object().shape({
   candidateJobOfTeamId: yup.string().default(''),
   interviewer: yup.array<any, User>().default([]),
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
-  meeting_link: yup.string()
+  meeting_link: yup.string(),
 })
 
 export type CreateInterviewFrom = yup.InferType<typeof CreateInterviewSchema>

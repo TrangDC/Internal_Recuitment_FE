@@ -1,12 +1,12 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
-import { Member } from 'features/teams/domain/interfaces'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
+import User from 'shared/schema/database/user'
 
 type DeleteInterviewButtonPermissionProps = {
   onClick: () => void
   candidateJobOfTeamId: string
-  interviewers: Member[]
+  interviewers: User[]
 }
 
 function DeleteInterviewButtonPermission({

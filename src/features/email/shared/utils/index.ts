@@ -3,14 +3,12 @@ import {
   SEND_TO_VALUE,
 } from 'shared/components/autocomplete/send-to-autocomplete/hooks/useSendTo'
 import { DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
-import {
-  ROLES_EMAIL,
-  SEND_TO_ENUM,
-} from 'shared/schema/database/email_template'
+import { SEND_TO_ENUM } from 'shared/schema/database/email_template'
+import Role from 'shared/schema/database/role'
 
 export const GroupSendToAndRole = (
   send_to_data: SEND_TO_ENUM[],
-  roles_data: ROLES_EMAIL[]
+  roles_data: Role[]
 ) => {
   const send_to =
     send_to_data?.reduce((current: string[], next) => {
@@ -62,8 +60,7 @@ export const replaceTemplateEmail = (
 }
 
 export const replaceLink = (content: string) => {
-
-  return content.replace(/href="[^"]*"/g, 'href="#"');
+  return content.replace(/href="[^"]*"/g, 'href="#"')
 }
 
 export function cleanDelTags(content: string) {

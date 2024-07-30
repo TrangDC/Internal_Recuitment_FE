@@ -1,11 +1,11 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
-import { Job } from 'features/jobs/domain/interfaces'
 import { Span } from 'shared/components/Typography'
+import HiringJob from 'shared/schema/database/hiring_job'
 import { BtnPrimary } from 'shared/styles'
 
 type CloseJobButtonPermissionProps = {
-  jobDetail: Job
+  jobDetail: HiringJob
   disabledBtn: boolean
   opened: string
   handleOpenStatus: (id: string) => void
@@ -18,7 +18,7 @@ function CloseJobButtonPermission({
   handleOpenStatus,
 }: CloseJobButtonPermissionProps) {
   const { role, user } = useAuthorization()
-  const inTeam = user?.teamId === jobDetail.team?.id
+  const inTeam = user?.teamId === jobDetail.hiring_team?.id
   const closeJobPermission = checkPermissions({
     role,
     checkBy: {

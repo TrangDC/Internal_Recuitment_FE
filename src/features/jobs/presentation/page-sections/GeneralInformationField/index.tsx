@@ -97,7 +97,7 @@ const GeneralInformationField = () => {
 
             <DivField>
               <SpanText>{translation.MODLUE_TEAMS.team}</SpanText>
-              <TinyText>{jobDetail?.team?.name}</TinyText>
+              <TinyText>{jobDetail?.hiring_team?.name}</TinyText>
             </DivField>
           </FlexBox>
 

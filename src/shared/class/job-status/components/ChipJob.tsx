@@ -1,6 +1,7 @@
 import { Chip, ChipProps, styled } from '@mui/material'
-import { JobStatus, TYPE_JOB_STATUS } from '..'
+import { JobStatus } from '..'
 import { useMemo } from 'react'
+import { HiringJobStatus } from 'shared/schema/database/hiring_job'
 
 const ChipStyled = styled(Chip)(({ theme }) => ({
   height: '20px',
@@ -13,7 +14,7 @@ const ChipStyled = styled(Chip)(({ theme }) => ({
 }))
 
 interface Props extends ChipProps {
-  status: TYPE_JOB_STATUS
+  status: HiringJobStatus
 }
 
 const ChipJob = ({ ...props }: Props) => {

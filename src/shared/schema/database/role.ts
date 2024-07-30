@@ -1,4 +1,4 @@
-import EntityPermission from './entityPermission'
+import EntityPermission from './entity_permission'
 
 interface Role {
   id: string

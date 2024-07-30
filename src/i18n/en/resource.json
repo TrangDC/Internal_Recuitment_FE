@@ -103,7 +103,7 @@
       "amount": "Staff required",
       "status": "Status",
       "created_by": "Requester",
-      "team": "Team",
+      "hiring_team": "Hiring team",
       "location": "Location",
       "salary_type": "Salary",
       "salary_from": "From",
@@ -115,8 +115,8 @@
         "name_exist": "Job name has already existed",
         "candidate_job_exist": "This job cannot be deleted as applications have already been received from candidates",
         "candidate_job_open_exist": "Candidate job has already existed",
-        "priority_ugent_exist": "Each team can only have one job with URGENT priority.",
-        "priority_high_exist": "Each team can only have one job with HIGH priority."
+        "priority_ugent_exist": "Each hiring team can only have one job with URGENT priority.",
+        "priority_high_exist": "Each hiring team can only have one job with HIGH priority."
       }
     },
     "candidate_job": {
@@ -156,13 +156,13 @@
         "candidate_job_exist": "This candidate is in a hiring process with another job already"
       }
     },
-    "teams": {
+    "hiring_teams": {
       "name": "Name",
       "model_name": "Team",
       "members": "Team’s manager",
       "validation": {
         "name_exist": "Name has already existed",
-        "user_in_another_team": "This manager already in another team",
+        "user_in_another_hiring_team": "This manager already in another team",
         "cannot_delete_team": "There are already jobs or interviewers for this team, can not delete this team."
       }
     },
@@ -216,8 +216,8 @@
       }
     },
     "permisson_groups": {
-      "teams": {
-        "model_name": "Teams"
+      "hiring_teams": {
+        "model_name": "Hiring team"
       },
       "hiring_jobs": {
         "model_name": "Jobs"
@@ -248,7 +248,7 @@
       }
     },
     "permissions": {
-      "teams": {
+      "hiring_teams": {
         "view": "View",
         "create": "Create",
         "update": "Edit",

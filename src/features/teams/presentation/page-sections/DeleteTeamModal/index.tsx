@@ -6,7 +6,7 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
-import useDeleteTeam from 'features/teams/hooks/useDeleteTeam'
+import useDeleteTeam from 'features/teams/hooks/crud/useDeleteTeam'
 
 interface IDeleteTeamModal {
   open: boolean

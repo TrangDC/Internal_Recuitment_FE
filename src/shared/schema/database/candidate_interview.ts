@@ -21,6 +21,8 @@ export interface CandidateInterview {
   owner: User
   status: CandidateInterviewStatus
   edited: boolean
+  location: string
+  meeting_link: string
   created_at: string
   updated_at: string
 }

@@ -3,7 +3,6 @@ import {
   ActionGroupButtons,
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { t } from 'i18next'
 import { LinkText, StyleTinyText } from 'shared/styles'
 import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
@@ -13,6 +12,7 @@ import { renderReferenceValueByType } from 'features/auditTrails/presentation/pr
 import { ChipLimit } from 'shared/components/chip-stack'
 import checkPermissionActionTable from 'features/candidates/permission/utils/checkPermissonActionTable'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
+import Candidate from 'shared/schema/database/candidate'
 
 const columnHelper = createColumnHelper<Candidate>()
 

@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom'
 import { ENABLED_CHANGE_STATUS } from '../../../shared/constants'
 import { toast } from 'react-toastify'
 import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import ChangeStatusModal from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
@@ -20,6 +19,7 @@ import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import checkDragDropCandidateJob from 'features/jobs/permission/utils/checkDragDropCandidateJob'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import CandidateJob from 'shared/schema/database/candidate_job'
 
 interface Props {
   title: string
@@ -118,7 +118,7 @@ const BoxStatusCandidates = ({
       </BoxTitle>
       <BoxField>
         {list_candidates?.map((item) => {
-          const candidateJobOfTeamId = item?.hiring_job?.team?.id ?? ''
+          const candidateJobOfTeamId = item?.hiring_job?.hiring_team?.id ?? ''
           const cantDrag = checkDragDropCandidateJob({
             me: user,
             role,

@@ -4,7 +4,7 @@ import {
   FormDataSchemaUpdate,
   schemaUpdate,
 } from '../../shared/constants/schema'
-import { Job, UpdateHiringJobInput } from 'features/jobs/domain/interfaces'
+import { UpdateHiringJobInput } from 'features/jobs/domain/interfaces'
 import _, { isEmpty } from 'lodash'
 import {
   convertCurrencyToNumber,
@@ -15,6 +15,7 @@ import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
+import HiringJob from 'shared/schema/database/hiring_job'
 
 type UseEditJobProps = {
   id: string
@@ -25,7 +26,7 @@ function useUpdateJob(props: UseEditJobProps) {
   const { id, onSuccess } = props
   const { updateJob, getJobDetail, queryKey } = useGraphql()
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
-    Job,
+    HiringJob,
     FormDataSchemaUpdate,
     UpdateHiringJobInput
   >({
@@ -41,7 +42,7 @@ function useUpdateJob(props: UseEditJobProps) {
       return {
         name: data?.name ?? '',
         priority: data?.priority.toString() ?? '',
-        team_id: data?.team.id ?? '',
+        hiring_team_id: data?.hiring_team?.id ?? '',
         location: data?.location ?? '',
         amount: data?.amount.toString() ?? '',
         salary_type: data?.salary_type ?? '',
@@ -92,18 +93,18 @@ function useUpdateJob(props: UseEditJobProps) {
     onSubmit()
   }
 
-  const handleChangeManager = async (team_id: string) => {
-    if (!team_id) {
+  const handleChangeManager = async (hiring_team_id: string) => {
+    if (!hiring_team_id) {
       setValue('created_by', '')
       return
     }
 
-    const { member_first } = await getMembersByTeam(team_id)
-    if (isEmpty(member_first)) {
+    const { managers_first } = await getMembersByTeam(hiring_team_id)
+    if (isEmpty(managers_first)) {
       setValue('created_by', '')
       return
     }
-    setValue('created_by', member_first?.id)
+    setValue('created_by', managers_first?.id)
   }
 
   return {

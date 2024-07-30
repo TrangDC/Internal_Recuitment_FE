@@ -5,7 +5,7 @@ const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.TEAM
 
   const getAllTeams = GraphQLClientService.buildQuery({
-    operation: 'SelectionTeams',
+    operation: 'SelectionHiringTeams',
     options: {
       type: 'query',
     },
@@ -24,9 +24,9 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'TeamFilter',
-      freeWord: 'TeamFreeWord',
-      orderBy: 'TeamOrderBy!',
+      filter: 'HiringTeamFilter',
+      freeWord: 'HiringTeamFreeWord',
+      orderBy: 'HiringTeamOrderBy!',
     },
   })
 

@@ -17,7 +17,6 @@ import { SpanText, TinyText } from 'shared/components/form/styles'
 import useActionInterview from '../../../hooks/table/useActionInterview'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
-import { Interview } from 'features/interviews/domain/interfaces'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useMemo } from 'react'
@@ -25,7 +24,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import { getTime, isPast } from 'shared/utils/date'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import {
   CreateInterviewModal,
   DeleteInterviewModal,
@@ -41,10 +39,12 @@ import { LinkText } from 'shared/styles'
 import InterviewActions from '../../components/InterviewActions'
 import ChangeCandidateInterviewStatusModal from '../changeCandidateInterviewStatusModal'
 import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
+import CandidateJob from 'shared/schema/database/candidate_job'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
 
 interface Props {
   jobApplicationDetail: CandidateJob
-  listInterview: Interview[]
+  listInterview: CandidateInterview[]
 }
 
 const ListInterview = ({ jobApplicationDetail, listInterview }: Props) => {
@@ -85,7 +85,8 @@ const ListInterview = ({ jobApplicationDetail, listInterview }: Props) => {
     })
   }
 
-  const candidateJobOfTeamId = jobApplicationDetail?.hiring_job?.team?.id ?? ''
+  const candidateJobOfTeamId =
+    jobApplicationDetail?.hiring_job?.hiring_team?.id ?? ''
 
   return (
     <ListInterviewContainer>

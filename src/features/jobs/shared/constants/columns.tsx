@@ -3,7 +3,6 @@ import {
   ActionGroupButtons,
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
-import { Job } from 'features/jobs/domain/interfaces'
 import { t } from 'i18next'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import { LinkText, StyleTinyText } from 'shared/styles'
@@ -12,13 +11,15 @@ import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import { ChipLimit } from 'shared/components/chip-stack'
 import checkPermissionActionTable from 'features/jobs/permission/utils/checkPermissonActionTable'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
+import _ from 'lodash'
+import HiringJob from 'shared/schema/database/hiring_job'
 
-const columnHelper = createColumnHelper<Job>()
+const columnHelper = createColumnHelper<HiringJob>()
 
 export const columns = (
-  actions: TOptionItem<Job>[],
+  actions: TOptionItem<HiringJob>[],
   { me, role }: ParamsColumn
-): ColumnDef<Job, any>[] => [
+): ColumnDef<HiringJob, any>[] => [
   columnHelper.accessor((row) => row.status, {
     id: 'status',
     size: 150,
@@ -45,7 +46,7 @@ export const columns = (
     ),
     header: () => <span>Job name</span>,
   }),
-  columnHelper.accessor((row) => row.team.name, {
+  columnHelper.accessor((row) => row.hiring_team.name, {
     id: 'team',
     header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
@@ -57,7 +58,7 @@ export const columns = (
     header: () => <span>{t('location')}</span>,
     cell: (info) => (
       <StyleTinyText>
-        {LOCATION_LABEL[info.row.original.location]}
+        {_.get(LOCATION_LABEL, info.row.original.location)}
       </StyleTinyText>
     ),
     enableSorting: false,
@@ -115,7 +116,7 @@ export const columns = (
         rowData,
       })
       return (
-        <ActionGroupButtons<Job>
+        <ActionGroupButtons<HiringJob>
           rowId={id}
           actions={newActions}
           rowData={rowData.row.original}
@@ -126,9 +127,9 @@ export const columns = (
 ]
 
 export const columns_opening = (
-  actions: TOptionItem<Job>[],
+  actions: TOptionItem<HiringJob>[],
   { me, role }: ParamsColumn
-): ColumnDef<Job, any>[] => [
+): ColumnDef<HiringJob, any>[] => [
   columnHelper.accessor((row) => row.priority, {
     id: 'priority',
     size: 150,
@@ -146,7 +147,7 @@ export const columns_opening = (
     ),
     header: () => <span>Job name</span>,
   }),
-  columnHelper.accessor((row) => row.team.name, {
+  columnHelper.accessor((row) => row.hiring_team.name, {
     id: 'team',
     header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
@@ -216,7 +217,7 @@ export const columns_opening = (
         rowData,
       })
       return (
-        <ActionGroupButtons<Job>
+        <ActionGroupButtons<HiringJob>
           rowId={id}
           actions={newActions}
           rowData={rowData.row.original}
@@ -225,4 +226,3 @@ export const columns_opening = (
     },
   }),
 ]
-

@@ -4,9 +4,7 @@ import PhoneIcon from 'shared/components/icons/PhoneIcon'
 import { DragEventHandler, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import ChangeStatusModal from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import {
   LOCATION_LABEL,
   STATUS_CANDIDATE_TEXT,
@@ -32,6 +30,8 @@ import { SpanHiringStatus, TinyLink } from '../styles'
 import DotIcon from 'shared/components/icons/DotIcon'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import checkDragDropCandidateJob from 'features/jobs/permission/utils/checkDragDropCandidateJob'
+import CandidateJob from 'shared/schema/database/candidate_job'
+import Candidate from 'shared/schema/database/candidate'
 
 interface Props {
   title: string
@@ -111,14 +111,16 @@ const BoxCandidate = ({
         >
           <FlexBox alignItems={'center'} gap={1.25}>
             <SpanHiringStatus>{title}</SpanHiringStatus>
-            <Tiny color={'#4D607A'} lineHeight={'14.63px'}>{number_candidates}</Tiny>
+            <Tiny color={'#4D607A'} lineHeight={'14.63px'}>
+              {number_candidates}
+            </Tiny>
           </FlexBox>
           {Note}
         </FlexBox>
       </BoxCandidateTitle>
       <BoxField>
         {list_candidates?.map((item) => {
-          const candidateJobOfTeamId = item?.hiring_job?.team?.id ?? ''
+          const candidateJobOfTeamId = item?.hiring_job?.hiring_team?.id ?? ''
           const cantDrag = checkDragDropCandidateJob({
             me: user,
             role,
@@ -157,7 +159,7 @@ const BoxCandidate = ({
                     }}
                   />{' '}
                   <FlexBox gap={0.75} alignItems={'center'}>
-                    <TinyInfo>{item?.hiring_job?.team?.name}</TinyInfo>
+                    <TinyInfo>{item?.hiring_job?.hiring_team?.name}</TinyInfo>
                     <DotIcon />
                     <TinyInfo>
                       {LOCATION_LABEL[item?.hiring_job?.location]}

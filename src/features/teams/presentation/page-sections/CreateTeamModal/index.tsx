@@ -10,7 +10,7 @@ import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complet
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import AppButton from 'shared/components/buttons/AppButton'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import useCreateTeam from 'features/teams/hooks/useCreateTeam'
+import useCreateTeam from 'features/teams/hooks/crud/useCreateTeam'
 
 interface ICreateTeamModal {
   open: boolean

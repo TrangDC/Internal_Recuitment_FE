@@ -8,9 +8,9 @@ import useTextTranslation from 'shared/constants/text'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import EditIcon from 'shared/components/icons/EditIcon'
 import EditTeamModal from '../EditTeamModal'
-import useTeamDetail from 'features/teams/hooks/useTeamDetail'
-import useActionTable from 'features/teams/hooks/useActionTable'
 import Cant from 'features/authorization/presentation/components/Cant'
+import useTeamDetail from 'features/teams/hooks/crud/useTeamDetail'
+import useActionTable from 'features/teams/hooks/table/useActionTable'
 
 const GeneralInformation = () => {
   const { id } = useParams()
@@ -32,7 +32,7 @@ const GeneralInformation = () => {
             <FlexBox flexDirection={'column'}>
               <SpanText>{translation.MODLUE_TEAMS.team_manager}</SpanText>
               <FlexBox gap={'10px'} flexWrap={'wrap'}>
-                {teamDetail?.members?.map((member, idx) => (
+                {teamDetail?.managers?.map((manager, idx) => (
                   <ChipField
                     sx={{
                       backgroundColor: '#F1F9FF',
@@ -43,7 +43,7 @@ const GeneralInformation = () => {
                       },
                     }}
                     key={idx}
-                    label={member.name}
+                    label={manager.name}
                   />
                 ))}
               </FlexBox>
@@ -52,7 +52,7 @@ const GeneralInformation = () => {
         </FlexBox>
         <Box>
           <Cant
-            module="TEAMS"
+            module="HIRING_TEAMS"
             checkBy={{
               compare: 'hasAny',
               permissions: [

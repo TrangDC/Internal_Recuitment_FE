@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import useGraphql from 'features/feedback/domain/graphql/graphql'
-import { FeedBack } from 'features/feedback/domain/interfaces'
 import GraphQLClientService from 'services/graphql-service'
 import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
+import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
 
 const useListFeedback = (id: String) => {
   const { getAllCandidateJobFeedbacks, queryKey } = useGraphql()
@@ -20,7 +20,7 @@ const useListFeedback = (id: String) => {
 
   const listFeedback = useMemo(() => {
     if (data && isRight(data)) {
-      const newData: FeedBack[] =
+      const newData: CandidateJobFeedback[] =
         unwrapEither(data)?.[getAllCandidateJobFeedbacks.operation]?.edges?.map(
           (item: any) => item?.node
         ) ?? []

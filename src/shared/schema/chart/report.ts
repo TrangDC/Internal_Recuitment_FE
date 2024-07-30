@@ -1,4 +1,3 @@
-import Team from '../database/team'
 import { Pagination } from '../pagination'
 
 export type ReportFilterPeriod = 'all' | 'year' | 'quarter' | 'month' | 'week'
@@ -11,10 +10,6 @@ export type ReportFilter = {
 
 export type ReportCandidateConversionRateChartResponse = {
   data: CandidateConversionRateReport
-}
-
-export type CandidateJobStepReportByTeamResponse = {
-  data: CandidateJobStepByTeam[]
 }
 
 export type ReportApplicationReportTableResponse = {
@@ -60,12 +55,7 @@ export type CandidateConversionRateReportEdge = {
 export interface CandidateConversionRateReport2
   extends CandidateConversionRateReport {
   id: string
-  team_name: string
-}
-
-export type CandidateJobStepByTeam = {
-  team: Team
-  candidate_job_step_by_status: CandidateJobStepByCandidateJobStatus[]
+  hiring_team_name: string
 }
 
 export type CandidateJobStepByCandidateJobStatus = {

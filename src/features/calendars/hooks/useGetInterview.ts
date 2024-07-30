@@ -1,5 +1,4 @@
 import useGraphql from 'features/calendars/domain/graphql'
-import { CandidateInterview } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { useGetResource } from 'shared/hooks/crud-hook'
@@ -8,6 +7,7 @@ import {
   getOneInterviewSchema,
 } from '../shared/constants/validate'
 import { formatStringToDate } from '../presentation/page-sections/google-calendar/functions'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
 
 export interface IUseGetInterview {
   id: string
@@ -41,13 +41,14 @@ function useGetInterview({ id }: IUseGetInterview) {
         interview_date: currentDate,
         end_at: newEnd,
         start_from: newStart,
-        team: data?.candidate_job.hiring_job.team.name ?? '',
+        team: data?.candidate_job.hiring_job.hiring_team.name ?? '',
         job: data?.candidate_job.hiring_job.name ?? '',
         hiring_job_id: data?.candidate_job.hiring_job_id ?? '',
         candidate_id: data?.candidate_job.candidate_id ?? '',
-        candidateJobOfTeamId: data?.candidate_job?.hiring_job?.team?.id ?? '',
+        candidateJobOfTeamId:
+          data?.candidate_job?.hiring_job?.hiring_team?.id ?? '',
         location: data?.location ?? '',
-        meeting_link: data?.meeting_link ?? ''
+        meeting_link: data?.meeting_link ?? '',
       }
     },
   })

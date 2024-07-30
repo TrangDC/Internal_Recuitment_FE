@@ -1,4 +1,3 @@
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import _, { cloneDeep, unionBy } from 'lodash'
@@ -6,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import GraphQLClientService from 'services/graphql-service'
 import { TYPE_CANDIDATE_STATUS } from 'shared/class/candidate'
 import { BaseRecord } from 'shared/interfaces'
+import CandidateJob from 'shared/schema/database/candidate_job'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { removeNonExistInObj } from 'shared/utils/utils'
 
@@ -34,7 +34,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
               priority
               location
               status
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -59,7 +59,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
               status
               priority
               location
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -84,7 +84,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
               status
               priority
               location
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -109,7 +109,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
               is_able_to_close
               priority
               location
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -134,7 +134,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
               is_able_to_close
               priority
               location
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -159,7 +159,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
               is_able_to_close
               priority
               location
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -184,7 +184,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
               priority
               is_able_to_close
               location
-              team {
+              hiring_team {
                 id
                 name
               }

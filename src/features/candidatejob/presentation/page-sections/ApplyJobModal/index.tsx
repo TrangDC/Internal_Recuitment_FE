@@ -40,7 +40,7 @@ function ApplyJobModal({
     watch,
     formState,
     getValues,
-    trigger
+    trigger,
   } = useApplyToJob({
     callbackSuccess: () => {
       setOpen(false)
@@ -53,7 +53,7 @@ function ApplyJobModal({
 
   const translation = useTextTranslation()
   const attachments = watch('attachments')
-  const team_id = watch('team_id')
+  const hiring_team_id = watch('hiring_team_id')
   const new_status = watch('status')
 
   const show_date_onboard = useMemo(() => {
@@ -65,7 +65,6 @@ function ApplyJobModal({
 
     return attachments.every((file) => file.status === 'success')
   }, [attachments])
-
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -80,7 +79,7 @@ function ApplyJobModal({
               <FormControl fullWidth>
                 <Controller
                   control={control}
-                  name="team_id"
+                  name="hiring_team_id"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <SelectionTeamForCreateCDDJPermission
@@ -111,9 +110,11 @@ function ApplyJobModal({
                       <JobsAutoComplete
                         name={field.name}
                         value={field.value}
-                        disabled={!team_id}
+                        disabled={!hiring_team_id}
                         filter={{
-                          team_ids: team_id ? [team_id] : undefined,
+                          hiring_team_ids: hiring_team_id
+                            ? [hiring_team_id]
+                            : undefined,
                           status: 'opened',
                         }}
                         multiple={false}
@@ -235,9 +236,21 @@ function ApplyJobModal({
                         accept={'.pdf,.doc,.docx,.xlsx'}
                         multiple={false}
                         validator_files={{
-                          max_file: {max: 1, msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'},
-                          max_size: {max: 20, msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'},
-                          is_valid: {regex: '\\.(pdf|xlsx|docx|doc)', msg_error: 'One PDF,WORD,EXCEL file only, file size up to 20mb'}
+                          max_file: {
+                            max: 1,
+                            msg_error:
+                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          },
+                          max_size: {
+                            max: 20,
+                            msg_error:
+                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          },
+                          is_valid: {
+                            regex: '\\.(pdf|xlsx|docx|doc)',
+                            msg_error:
+                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          },
                         }}
                         descriptionFile={() => {
                           return (
@@ -252,7 +265,7 @@ function ApplyJobModal({
                               </Tiny>
                             </Box>
                           )
-                        }} 
+                        }}
                         value={field.value}
                         onChange={field.onChange}
                       />

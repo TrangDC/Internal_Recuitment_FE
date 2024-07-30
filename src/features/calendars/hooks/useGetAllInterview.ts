@@ -54,7 +54,7 @@ function useGetAllInterview() {
             styles: {
               colorId: randomColor(),
             },
-            teamId: o?.candidate_job?.hiring_job?.team?.id ?? '',
+            teamId: o?.candidate_job?.hiring_job?.hiring_team?.id ?? '',
             interviewer: o?.interviewer ?? [],
             status: o?.status,
           },

@@ -16,7 +16,6 @@ import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import EditIcon from 'shared/components/icons/EditIcon'
-import { FeedBack } from 'features/feedback/domain/interfaces'
 import ShowFile from 'shared/components/input-fields/ItemFile'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
@@ -31,9 +30,10 @@ import {
 import { downloadOneFile } from '../../../shared/helper'
 import Cant from 'features/authorization/presentation/components/Cant'
 import DeleteFeedbackButtonPermission from 'features/feedback/permission/components/DeleteFeedbackButtonPermission'
+import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
 
 interface Props {
-  listFeedback: FeedBack[]
+  listFeedback: CandidateJobFeedback[]
   candidateJobOfTeamId: string
   show_feedback?: boolean
 }
@@ -186,12 +186,12 @@ const ListFeedBack = ({
         />
       )}
 
-      {openEdit && (
+      {openEdit && rowData.current && (
         <UpdateFeedbackModal
           open={openEdit}
           setOpen={setOpenEdit}
           id={rowId.current}
-          rowData={rowData.current as FeedBack}
+          rowData={rowData.current}
           onSuccess={handleRefreshList}
         />
       )}

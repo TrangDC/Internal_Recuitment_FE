@@ -8,19 +8,15 @@ import ListCheckBoxDetail from './ListCheckBoxDetail'
 import useGetCountChecked from '../../hooks/useGetCountChecked'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 
-function TeamPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
+function UserPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
   const { control, watch } = useFormContext()
   const [open, setOpen] = useState(true)
-  const createAction = roleTemplate?.TEAMS?.CREATE
-  const editAction = roleTemplate?.TEAMS?.EDIT
-  const deleteAction = roleTemplate?.TEAMS?.DELETE
-  const viewAction = roleTemplate?.TEAMS?.VIEW
+  const editAction = roleTemplate?.USER?.EDIT
+  const viewAction = roleTemplate?.USER?.VIEW
 
   const viewData = watch(getKeyName(viewAction.id))
   const editData = watch(getKeyName(editAction.id))
-  const createData = watch(getKeyName(createAction.id))
-  const deleteData = watch(getKeyName(deleteAction.id))
-  const state = [createData, viewData, editData, deleteData]
+  const state = [editData, viewData]
 
   const countChecked = useGetCountChecked(state)
 
@@ -30,7 +26,7 @@ function TeamPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
       setOpen={setOpen}
       title={
         <FlexBox justifyContent={'center'} gap={1}>
-          <Text13md color={'grey.900'}>Teams</Text13md>
+          <Text13md color={'grey.900'}>Hiring team</Text13md>
           <Tiny12md color={'text.500'}>
             {countChecked}/{state.length}
           </Tiny12md>
@@ -68,31 +64,11 @@ function TeamPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
         />
         <Controller
           control={control}
-          name={getKeyName(createAction.id)}
-          render={({ field }) => (
-            <ListCheckBoxDetail
-              customPermission={createAction}
-              value={field.value}
-            />
-          )}
-        />
-        <Controller
-          control={control}
           name={getKeyName(editAction.id)}
           render={({ field }) => (
             <ListCheckBoxDetail
-              customPermission={editAction}
-              value={field.value}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name={getKeyName(deleteAction.id)}
-          render={({ field }) => (
-            <ListCheckBoxDetail
               hiddenBorder
-              customPermission={deleteAction}
+              customPermission={editAction}
               value={field.value}
             />
           )}
@@ -102,4 +78,4 @@ function TeamPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
   )
 }
 
-export default TeamPermissionGroupDetail
+export default UserPermissionGroupDetail

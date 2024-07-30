@@ -1,10 +1,10 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { ActionCandidateTable } from 'features/candidates/hooks/table/useBuildActionTableCandidate'
 import { ActionCandidateTableBL } from 'features/candidates/hooks/table/useBuildActionTableCandidateBL'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
+import Candidate from 'shared/schema/database/candidate'
 
 interface ActionProps {
   newActions: TOptionItem<Candidate>[]

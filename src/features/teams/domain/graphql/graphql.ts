@@ -5,7 +5,7 @@ const useGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.TEAM
 
   const getAllTeam = GraphQLClientService.buildQuery({
-    operation: 'GetAllTeams',
+    operation: 'GetAllHiringTeams',
     options: {
       type: 'query',
     },
@@ -16,7 +16,7 @@ const useGraphql = () => {
           name
           created_at
           is_able_to_delete
-          members {
+          managers {
             id
             name
             work_email
@@ -32,14 +32,14 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'TeamFilter',
-      orderBy: 'TeamOrderBy!',
-      freeWord: 'TeamFreeWord',
+      filter: 'HiringTeamFilter',
+      orderBy: 'HiringTeamOrderBy!',
+      freeWord: 'HiringTeamFreeWord',
     },
   })
 
   const createTeam = GraphQLClientService.buildQuery({
-    operation: 'CreateTeam',
+    operation: 'CreateHiringTeam',
     options: {
       type: 'mutation',
     },
@@ -49,13 +49,13 @@ const useGraphql = () => {
       }
     `,
     params: {
-      input: 'NewTeamInput!',
+      input: 'NewHiringTeamInput!',
       note: 'String!',
     },
   })
 
   const updateTeam = GraphQLClientService.buildQuery({
-    operation: 'UpdateTeam',
+    operation: 'UpdateHiringTeam',
     options: {
       type: 'mutation',
     },
@@ -65,14 +65,14 @@ const useGraphql = () => {
       }
     `,
     params: {
-      input: 'UpdateTeamInput!',
+      input: 'UpdateHiringTeamInput!',
       id: 'ID!',
       note: 'String!',
     },
   })
 
   const deleteTeam = GraphQLClientService.buildQuery({
-    operation: 'DeleteTeam',
+    operation: 'DeleteHiringTeam',
     options: {
       type: 'mutation',
     },
@@ -84,7 +84,7 @@ const useGraphql = () => {
   })
 
   const getTeamDetail = GraphQLClientService.buildQuery({
-    operation: 'GetTeam',
+    operation: 'GetHiringTeam',
     options: {
       type: 'query',
     },
@@ -93,7 +93,7 @@ const useGraphql = () => {
         id
         name
         created_at
-        members {
+        managers {
           id
           name
           work_email

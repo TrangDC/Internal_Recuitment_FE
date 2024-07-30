@@ -2,18 +2,18 @@ import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Fragment, useMemo } from 'react'
 import BaseModal from 'shared/components/modal'
-import { Job } from 'features/jobs/domain/interfaces'
 import HistoryLog from '../HistoryLog'
 import TabCustomize from 'shared/components/tab'
 import GeneralInformationField from '../GeneralInformationField'
 import CloseIcon from '@mui/icons-material/Close'
 import { JobStatus } from 'shared/class/job-status'
 import EditIconJobDetailPermission from 'features/jobs/permission/components/EditIconJobDetailPermission'
+import HiringJob from 'shared/schema/database/hiring_job'
 
 interface ITabJobDetail {
   open: boolean
   setOpen: (value: boolean) => void
-  job_detail: Job
+  job_detail: HiringJob
   handleOpenModalEdit: (id: string) => void
 }
 
@@ -21,7 +21,7 @@ export default function TabJobDetail({
   open,
   setOpen,
   job_detail,
-  handleOpenModalEdit
+  handleOpenModalEdit,
 }: ITabJobDetail) {
   const renderItem = [
     {

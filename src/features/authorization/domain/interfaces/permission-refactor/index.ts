@@ -4,21 +4,21 @@ import {
   CANDIDATE_JOB_FEEDBACKS_ACTIONS,
   CandidateJobFeedbacksPermissions,
 } from './candidate_job_feedbacks'
-import { EntityPermission } from '../role'
 import { CANDIDATE_JOB_ACTIONS, CandidateJobPermissions } from './candidate_job'
-import { HIRING_TEAM_ACTIONS, HiringTeamPermissions } from './hiring_team'
 import { INTERVIEW_ACTIONS, InterviewPermissions } from './interview'
 import { SKILL_TYPE_ACTIONS, SkillTypePermissions } from './skill_type'
 import { SKILL_ACTIONS, SkillPermissions } from './skills'
 import { CANDIDATE_ACTIONS, CandidatePermissions } from './candidate'
 import _ from 'lodash'
-import { TEAM_ACTIONS, TeamPermissions } from './team'
 import { ROLE_TEMPLATE_ACTIONS, RoleTemplatePermissions } from './role_template'
 import {
   EMAIL_TEMPLATE_ACTIONS,
   EmailTemplatePermissions,
 } from './email_template'
 import { REPORT_ACTIONS, ReportPermissions } from './report'
+import { USER_ACTIONS, UserPermissions } from './user'
+import { HIRING_TEAM_ACTIONS, HiringTeamPermissions } from './hiring_team'
+import EntityPermission from 'shared/schema/database/entity_permission'
 
 export type GenerateAction<A extends string> = {
   [K in A]: PermissionRole
@@ -42,7 +42,7 @@ export interface PermissionStructure {
   INTERVIEWS: InterviewPermissions
   SKILL_TYPES: SkillTypePermissions
   SKILLS: SkillPermissions
-  TEAMS: TeamPermissions
+  USER: UserPermissions
   ROLES_TEMPLATE: RoleTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplatePermissions
   REPORT: ReportPermissions
@@ -57,7 +57,7 @@ export const moduleActions: GenerateModuleActions<PermissionStructure> = {
   INTERVIEWS: INTERVIEW_ACTIONS,
   SKILLS: SKILL_ACTIONS,
   SKILL_TYPES: SKILL_TYPE_ACTIONS,
-  TEAMS: TEAM_ACTIONS,
+  USER: USER_ACTIONS,
   ROLES_TEMPLATE: ROLE_TEMPLATE_ACTIONS,
   EMAIL_TEMPLATE: EMAIL_TEMPLATE_ACTIONS,
   REPORT: REPORT_ACTIONS,
@@ -72,7 +72,7 @@ class PermissionStructureImpl implements PermissionStructure {
   INTERVIEWS: InterviewPermissions
   SKILL_TYPES: SkillTypePermissions
   SKILLS: SkillPermissions
-  TEAMS: TeamPermissions
+  USER: UserPermissions
   ROLES_TEMPLATE: RoleTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplatePermissions
   REPORT: ReportPermissions
@@ -86,7 +86,7 @@ class PermissionStructureImpl implements PermissionStructure {
     this.INTERVIEWS = data.INTERVIEWS
     this.SKILL_TYPES = data.SKILL_TYPES
     this.SKILLS = data.SKILLS
-    this.TEAMS = data.TEAMS
+    this.USER = data.USER
     this.ROLES_TEMPLATE = data.ROLES_TEMPLATE
     this.EMAIL_TEMPLATE = data.EMAIL_TEMPLATE
     this.REPORT = data.REPORT

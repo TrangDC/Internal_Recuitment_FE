@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import useGraphql from 'features/interviews/domain/graphql/graphql'
-import { Interview } from 'features/interviews/domain/interfaces'
 import { useMemo } from 'react'
 import GraphQLClientService from 'services/graphql-service'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const useListInterview = (id: String) => {
@@ -18,7 +18,7 @@ const useListInterview = (id: String) => {
       }),
   })
 
-  const listInterview: Interview[] = useMemo(() => {
+  const listInterview: CandidateInterview[] = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
       return response?.[getAllCandidateInterview.operation]?.edges?.map(

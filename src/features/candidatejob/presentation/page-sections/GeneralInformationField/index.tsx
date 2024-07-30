@@ -7,7 +7,6 @@ import { format } from 'date-fns'
 import useTextTranslation from 'shared/constants/text'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import EditIcon from 'shared/components/icons/EditIcon'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import useActionTable from 'features/candidates/hooks/table/useActionTable'
 import EditCandidateModal from 'features/candidates/presentation/page-sections/EditCandidateModal'
 import CopyIcon from 'shared/components/icons/CopyIcon'
@@ -17,6 +16,7 @@ import CandidateInformationModal from '../CandidateInformationModal'
 import { useMemo } from 'react'
 import { ChipLimit } from 'shared/components/chip-stack'
 import Cant from 'features/authorization/presentation/components/Cant'
+import Candidate from 'shared/schema/database/candidate'
 
 const GeneralInformationField = ({
   candidateDetail,

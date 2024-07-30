@@ -103,7 +103,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
               <FormControl fullWidth>
                 <Controller
                   control={control}
-                  name="team_id"
+                  name="hiring_team_id"
                   render={({ field, fieldState }) => (
                     <Fragment>
                       <SelectionTeamPermission

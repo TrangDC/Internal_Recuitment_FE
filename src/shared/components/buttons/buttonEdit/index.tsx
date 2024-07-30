@@ -6,11 +6,12 @@ import BaseModal from 'shared/components/modal'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Tiny } from 'shared/components/Typography'
 import AppTextField from 'shared/components/input-fields/AppTextField'
+import useTextTranslation from 'shared/constants/text'
 
 type IProps = {
   handlesubmit: (note: string) => void
   children: ReactNode
-  title: string
+  title?: string
   loading: boolean
   Icon?: ReactNode
   subTitle?: string
@@ -99,10 +100,11 @@ const ModalConfirm = ({
 }
 
 const ButtonEdit = (props: IProps) => {
-  const { handlesubmit, children, disabled, title, loading, subTitle, Icon } =
-    props
+  const { handlesubmit, children, disabled, loading, Icon } = props
   const [open, setOpen] = useState(false)
-
+  const translation = useTextTranslation()
+  const title = props.title ?? translation.COMMON.update_record
+  const subTitle = props.subTitle ?? translation.COMMON.sub_title_update_record
   return (
     <>
       <AppButton

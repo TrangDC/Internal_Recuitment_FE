@@ -1,6 +1,7 @@
 import { Chip, ChipProps, styled } from '@mui/material'
-import { PRIORITY_STYLE, TYPE_PRIORITY_STATUS } from '../index'
+import { PRIORITY_STYLE } from '../index'
 import { useMemo } from 'react'
+import _ from 'lodash'
 
 const ChipStyled = styled(Chip)(({ theme }) => ({
   height: '20px',
@@ -13,13 +14,13 @@ const ChipStyled = styled(Chip)(({ theme }) => ({
 }))
 
 interface Props extends ChipProps {
-  status: TYPE_PRIORITY_STATUS
+  status: number
 }
 
 const ChipPriority = ({ ...props }: Props) => {
   const { status, ...chipProps } = props
   const field_status = useMemo(() => {
-    return PRIORITY_STYLE[status]
+    return _.get(PRIORITY_STYLE, status)
   }, [status])
 
   return (

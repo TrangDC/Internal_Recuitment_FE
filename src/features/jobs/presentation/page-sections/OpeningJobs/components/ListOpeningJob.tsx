@@ -40,7 +40,7 @@ const AllJobOpening = () => {
       location: dataFilterWithValue.location,
       priority: dataFilterWithValue.priority,
       skill_ids: dataFilterWithValue.skill_id,
-      team_ids: dataFilterWithValue.team_id,
+      hiring_team_id: dataFilterWithValue.hiring_team_id,
       status: 'opened',
     }
   }, [JSON.stringify(dataFilterWithValue)])

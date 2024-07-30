@@ -1,8 +1,5 @@
 import useGraphql from 'features/calendars/domain/graphql'
-import {
-  CandidateInterview,
-  UpdateCandidateInterviewInput,
-} from 'features/calendars/domain/interfaces'
+import { UpdateCandidateInterviewInput } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BaseRecord } from 'shared/interfaces/common'
 import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
@@ -17,6 +14,7 @@ import {
   convertToRootDate,
   formatStringToDate,
 } from '../presentation/page-sections/google-calendar/functions'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
 
 type UseEditInterviewProps = {
   id: string
@@ -51,13 +49,13 @@ function useEditInterview(props: UseEditInterviewProps) {
         date: currentDate,
         from: newStart,
         jobId: data?.candidate_job.hiring_job_id ?? '',
-        teamId: data?.candidate_job.hiring_job.team.id ?? '',
+        teamId: data?.candidate_job.hiring_job.hiring_team.id ?? '',
         title: data?.title ?? '',
         to: newEnd,
         interviewer: data?.interviewer.map((o) => o.id),
         candidate_job_id: data?.candidate_job_id ?? '',
         location: data?.location ?? '',
-        meeting_link: data?.meeting_link ?? ''
+        meeting_link: data?.meeting_link ?? '',
       }
     },
   })
@@ -100,7 +98,7 @@ function useEditInterview(props: UseEditInterviewProps) {
           candidate_job_id: value.candidate_job_id,
           note: '',
           location: value.location,
-          meeting_link: value.meeting_link ?? ''
+          meeting_link: value.meeting_link ?? '',
         }
         mutate(formData)
       }
@@ -127,7 +125,10 @@ function useEditInterview(props: UseEditInterviewProps) {
     const date = getValues('date')
     if (value && date) {
       const fromDate = convertToRootByTimeNow(value, date)
-      setValue('to', fromDate.toDate(), { shouldValidate: true, shouldDirty: true })
+      setValue('to', fromDate.toDate(), {
+        shouldValidate: true,
+        shouldDirty: true,
+      })
       trigger('from')
     }
   }
@@ -136,11 +137,14 @@ function useEditInterview(props: UseEditInterviewProps) {
     const date = getValues('date')
     if (value && date) {
       const fromDate = convertToRootByTimeNow(value, date)
-      setValue('from', fromDate.toDate(), { shouldValidate: true, shouldDirty: true })
+      setValue('from', fromDate.toDate(), {
+        shouldValidate: true,
+        shouldDirty: true,
+      })
     }
   }
 
-  function resetMeetingLink () {
+  function resetMeetingLink() {
     setValue('meeting_link', '')
   }
 
@@ -154,12 +158,12 @@ function useEditInterview(props: UseEditInterviewProps) {
       onSelectedInterviewDate,
       onSelectedTo,
       onSelectedFrom,
-      resetMeetingLink
+      resetMeetingLink,
     },
     watch,
     resetField,
     formState,
-    setValue
+    setValue,
   }
 }
 export default useEditInterview
