@@ -60,18 +60,18 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     })()
   }
 
-  const handleChangeManager = async (team_id: string) => {
-    if (!team_id) {
+  const handleChangeManager = async (hiring_team_id: string) => {
+    if (!hiring_team_id) {
       setValue('created_by', '')
       return
     }
 
-    const { member_first } = await getMembersByTeam(team_id)
-    if (isEmpty(member_first)) {
+    const { managers_first } = await getMembersByTeam(hiring_team_id)
+    if (isEmpty(managers_first)) {
       setValue('created_by', '')
       return
     }
-    setValue('created_by', member_first?.id)
+    setValue('created_by', managers_first?.id)
   }
 
   const resetSalary = () => {

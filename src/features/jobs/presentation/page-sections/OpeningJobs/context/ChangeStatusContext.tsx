@@ -1,12 +1,15 @@
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import useCandidatesJob from 'features/jobs/hooks/crud/useGetCandidateJob'
 import useFilterJobsOpening from 'features/jobs/hooks/table/useFilterJobsOpening'
 import { MutableRefObject, ReactNode, createContext, useContext } from 'react'
 import { ISearchData } from 'shared/components/table/hooks/useSearchList'
-import { InterfaceGenerate, UseFilterReturn } from 'shared/components/table/interface'
+import {
+  InterfaceGenerate,
+  UseFilterReturn,
+} from 'shared/components/table/interface'
 import { BaseRecord } from 'shared/interfaces'
+import CandidateJob from 'shared/schema/database/candidate_job'
 
 interface InitialState {
   data: {
@@ -35,7 +38,7 @@ interface InitialState {
     useFilterReturn: UseFilterReturn<
       InterfaceGenerate<{
         hiring_job_id: 'string[]'
-        team_id: 'string[]'
+        hiring_team_id: 'string[]'
         priority: 'string'
         skill_id: 'string[]'
         location: 'string'
@@ -44,9 +47,9 @@ interface InitialState {
       }>
     >
     useSearchListReturn: {
-      search: ISearchData;
-      handleSearch: () => void;
-      searchRef: MutableRefObject<null>;
+      search: ISearchData
+      handleSearch: () => void
+      searchRef: MutableRefObject<null>
     }
   }
 }
@@ -81,8 +84,8 @@ const ChangeStatusContext = createContext<InitialState>({
   action_filter: {
     //@ts-ignore
     useFilterReturn: {},
-     //@ts-ignore
-    useSearchListReturn: {}
+    //@ts-ignore
+    useSearchListReturn: {},
   },
 })
 
@@ -101,7 +104,7 @@ function ChangeStatusProvider(props: ChangeStatusProps) {
         actions,
         action_filter: {
           useFilterReturn,
-          useSearchListReturn
+          useSearchListReturn,
         },
       }}
     >

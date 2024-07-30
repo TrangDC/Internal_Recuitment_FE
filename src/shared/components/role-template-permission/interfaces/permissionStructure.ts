@@ -8,28 +8,20 @@ import HiringTeamTemplatePermission from './role-template-permission/hiring_team
 import { InterviewTemplatePermissions } from './role-template-permission/interview'
 import { SkillTypeTemplatePermissions } from './role-template-permission/skill_type'
 import { SkillTemplatePermissions } from './role-template-permission/skill'
-import { TeamTemplatePermissions } from './role-template-permission/teams'
 import { RoleTemplateTemplatePermissions } from './role-template-permission/role_template'
 import { moduleActions } from 'features/authorization/domain/interfaces/permission-refactor'
-import { EntityPermission } from '.'
 import { NewEntityPermissionInput } from 'features/hiring/domain/interfaces'
 import { EmailTemplateTemplatePermissions } from './role-template-permission/email_template'
 import ReportTemplatePermission from './role-template-permission/report'
+import { UserTemplatePermissions } from './role-template-permission/User'
+import EntityPermission from 'shared/schema/database/entity_permission'
+import Permission from 'shared/schema/database/permission'
 
 interface PermissionGroup {
   id: string
   title: string
   group_type: string
   permissions: Permission[]
-}
-
-interface Permission {
-  id: string
-  title: string
-  for_owner: boolean
-  for_team: boolean
-  for_all: boolean
-  operation_name: string
 }
 
 export interface CustomPermission {
@@ -54,7 +46,7 @@ export interface RoleTemplate {
   INTERVIEWS: InterviewTemplatePermissions
   SKILL_TYPES: SkillTypeTemplatePermissions
   SKILLS: SkillTemplatePermissions
-  TEAMS: TeamTemplatePermissions
+  USER: UserTemplatePermissions
   ROLES_TEMPLATE: RoleTemplateTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplateTemplatePermissions
   REPORT: ReportTemplatePermission
@@ -69,7 +61,7 @@ class RoleTemplateStructure implements RoleTemplate {
   INTERVIEWS: InterviewTemplatePermissions
   SKILL_TYPES: SkillTypeTemplatePermissions
   SKILLS: SkillTemplatePermissions
-  TEAMS: TeamTemplatePermissions
+  USER: UserTemplatePermissions
   ROLES_TEMPLATE: RoleTemplateTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplateTemplatePermissions
   REPORT: ReportTemplatePermission
@@ -84,7 +76,7 @@ class RoleTemplateStructure implements RoleTemplate {
     this.INTERVIEWS = data.INTERVIEWS
     this.SKILLS = data.SKILLS
     this.ROLES_TEMPLATE = data.ROLES_TEMPLATE
-    this.TEAMS = data.TEAMS
+    this.USER = data.USER
     this.EMAIL_TEMPLATE = data.EMAIL_TEMPLATE
     this.REPORT = data.REPORT
   }

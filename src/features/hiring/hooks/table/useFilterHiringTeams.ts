@@ -7,13 +7,13 @@ function useFilterHiringTeams() {
     useFilterTable<HiringTeamFilter>({
       filter: {
         defaultFilter: {
-          team_id: [],
+          hiring_team_id: [],
           role_id: [],
         },
         formatDataWithValue: (data) => {
           return {
-            team_id: !isEmpty(data?.team_id)
-              ? data?.team_id?.map((o) => o.value)
+            hiring_team_id: !isEmpty(data?.hiring_team_id)
+              ? data?.hiring_team_id?.map((o) => o.value)
               : undefined,
             role_id: !isEmpty(data?.role_id)
               ? data?.role_id?.map((o) => o.value)
@@ -23,7 +23,7 @@ function useFilterHiringTeams() {
       },
       page: 'hiring-team',
       search: {
-        searchKey: ['name','work_email'],
+        searchKey: ['name', 'work_email'],
       },
       shouldCacheData: true,
     })

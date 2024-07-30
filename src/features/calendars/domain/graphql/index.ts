@@ -21,7 +21,7 @@ const useGraphql = () => {
           }
           candidate_job {
             hiring_job {
-              team {
+              hiring_team {
                 id
               }
             }
@@ -68,7 +68,7 @@ const useGraphql = () => {
           candidate_id
           hiring_job {
             name
-            team {
+            hiring_team {
               name
               id
             }
@@ -108,7 +108,7 @@ const useGraphql = () => {
           hiring_job_id
           candidate_id
           hiring_job {
-            team {
+            hiring_team {
               id
             }
           }

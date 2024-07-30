@@ -1,12 +1,14 @@
 import { formatISO } from 'date-fns'
 import dayjs from 'dayjs'
-import { entity_skill_type } from 'features/skillType/domain/interfaces'
 import _, { cloneDeep, isEmpty } from 'lodash'
 import { FormState } from 'react-hook-form'
 import { ToastCopyClipBoard } from 'shared/components/toast/toastCopyClipBoard'
 import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
 import { BaseRecord, DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
 import utc from 'dayjs/plugin/utc'
+import EntitySkillType from 'shared/schema/database/entity_skill_type'
+import { EntitySkillRecordInput } from 'features/jobs/domain/interfaces'
+import { NewAttachmentInput } from 'features/candidatejob/domain/interfaces'
 
 dayjs.extend(utc)
 
@@ -214,13 +216,19 @@ export function formatCurrency(
   return number.toLocaleString(locale)
 }
 
-export const removeStatusAttachment = (attachments: any[] | undefined) => {
+export const removeStatusAttachment = (
+  attachments: any[] | undefined
+): NewAttachmentInput[] => {
   let result =
     attachments && Array.isArray(attachments)
       ? attachments.map((file) => ({ ...file, id: file?.id ?? '' }))
       : []
 
-  return transformListArray(result, ['document_id', 'document_name', 'id'])
+  return transformListArray(result, [
+    'document_id',
+    'document_name',
+    'id',
+  ]) as NewAttachmentInput[]
 }
 
 export const handleCopyClipBoard = (url: string, content: string) => {
@@ -272,7 +280,9 @@ export async function previewFile(files: string) {
   }
 }
 
-export const updateRecordSkill = (data: SELECTED_SKILL) => {
+export const updateRecordSkill = (
+  data: SELECTED_SKILL
+): EntitySkillRecordInput[] => {
   const cloneData = cloneDeep(data)
 
   _.forOwn(cloneData, (value, key) => {
@@ -297,12 +307,12 @@ export const updateRecordSkill = (data: SELECTED_SKILL) => {
 }
 
 export const formatRecordSkill = (
-  entity_skill_types: entity_skill_type[] | undefined
+  entity_skill_types: EntitySkillType[] | undefined
 ) => {
   if (!entity_skill_types) return {}
 
   const entity_skill_records = entity_skill_types.reduce(
-    (current: SELECTED_SKILL, next: entity_skill_type) => {
+    (current: SELECTED_SKILL, next: EntitySkillType) => {
       current[next.id] = next.entity_skills.map((skill) => ({
         id: skill.id,
         skill_id: skill.skill_id,

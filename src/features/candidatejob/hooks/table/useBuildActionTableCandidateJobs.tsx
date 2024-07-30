@@ -1,5 +1,4 @@
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { downloadFileAttachment } from 'features/candidatejob/shared/helper'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
@@ -14,6 +13,7 @@ import { openPDFInNewTab } from 'shared/utils/upload-file'
 import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { JobStatus } from 'shared/class/job-status'
+import CandidateJob from 'shared/schema/database/candidate_job'
 
 export enum ActionCandidateJobsTabLe {
   DETAIL = 'detail',
@@ -63,9 +63,10 @@ function useBuildActionTableCandidateJobs({
             STATUS_CANDIDATE.OFFERED_LOST,
             STATUS_CANDIDATE.EX_STAFTT,
           ]
-          const is_job_closed =  rowData?.hiring_job?.status === JobStatus.STATUS_HIRING_JOB.CLOSED;
+          const is_job_closed =
+            rowData?.hiring_job?.status === JobStatus.STATUS_HIRING_JOB.CLOSED
 
-          return  is_job_closed || disabledStatuses.includes(rowData?.status)
+          return is_job_closed || disabledStatuses.includes(rowData?.status)
         },
       },
       edit_cv: {
@@ -76,7 +77,9 @@ function useBuildActionTableCandidateJobs({
         title: 'Edit CV',
         Icon: <EditIcon />,
         disabled: (rowData) => {
-          return  rowData?.hiring_job?.status === JobStatus.STATUS_HIRING_JOB.CLOSED;;
+          return (
+            rowData?.hiring_job?.status === JobStatus.STATUS_HIRING_JOB.CLOSED
+          )
         },
       },
       copy_application_link: {
@@ -117,7 +120,7 @@ function useBuildActionTableCandidateJobs({
         id: ActionCandidateJobsTabLe.DOWNLOAD,
         onClick: (id, rowData) => {
           const { attachments } = rowData
-          console.log("🚀 ~ attachments:", attachments)
+          console.log('🚀 ~ attachments:', attachments)
           downloadFileAttachment(attachments, handleGetUrlDownload)
         },
         title: 'Download CV',

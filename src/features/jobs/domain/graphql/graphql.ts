@@ -35,10 +35,10 @@ const useGraphql = () => {
               name
             }
           }
-          team {
+          hiring_team {
               id
               name
-              members {
+              managers {
                 id
               }
           }
@@ -139,10 +139,10 @@ const useGraphql = () => {
           }
         }
         created_at
-        team {
+        hiring_team {
             id
             name
-            members {
+            managers {
                 id
             }
         }
@@ -195,7 +195,7 @@ const useGraphql = () => {
               hiring_job {
                 id
                 name
-                team {
+                hiring_team {
                   id
                   name
                 }
@@ -337,7 +337,7 @@ const useGraphql = () => {
           name
           priority
           status
-          team {
+          hiring_team {
             id
             name
           }

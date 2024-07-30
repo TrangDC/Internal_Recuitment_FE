@@ -13,11 +13,11 @@ import {
 } from '../page-sections'
 import { useBuildColumnTable, CustomTable } from 'shared/components/table'
 import SearchInput from 'shared/components/table/components/SearchInput'
-import useFilterTeams from 'features/teams/hooks/useFilterTeams'
-import useActionTable from 'features/teams/hooks/useActionTable'
-import useTeamTable from 'features/teams/hooks/useTeamTable'
 import Cant from 'features/authorization/presentation/components/Cant'
-import useBuildActionsTableTeam from 'features/teams/hooks/useBuildActionsTableTeam'
+import useActionTable from 'features/teams/hooks/table/useActionTable'
+import useFilterTeams from 'features/teams/hooks/table/useFilterTeams'
+import useTeamTable from 'features/teams/hooks/table/useTeamTable'
+import useBuildActionsTableTeam from 'features/teams/hooks/table/useBuildActionsTableTeam'
 
 const TeamList = () => {
   const useActionTableReturn = useActionTable()
@@ -34,7 +34,6 @@ const TeamList = () => {
   const { search, handleSearch, searchRef } = useSearchListReturn
 
   const { useTableReturn } = useTeamTable({
-    orderBy: { field: 'newest_applied', direction: 'DESC' },
     search,
   })
   const translation = useTextTranslation()
@@ -61,7 +60,7 @@ const TeamList = () => {
             onSearch={handleSearch}
           />
           <Cant
-            module={'TEAMS'}
+            module={'HIRING_TEAMS'}
             checkBy={{
               compare: 'hasAny',
               permissions: [

@@ -2,7 +2,6 @@ import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { DivWrapperProcess, SpanGenaration } from '../../../shared/styles'
 import { columns } from '../../../shared/constants/columns'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import useActionTable from '../../../hooks/table/useActionTable'
 import { useParams } from 'react-router-dom'
 import useApplyJobTable from '../../../hooks/table/useApplyJobTable'
@@ -11,7 +10,6 @@ import Add from 'shared/components/icons/Add'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import {
   ApplyJobModal,
   ChangeStatusModal,
@@ -21,6 +19,8 @@ import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import EditCandidateJobModal from '../EditCandidateJobModal'
 import Cant from 'features/authorization/presentation/components/Cant'
 import useBuildActionTableCandidateJobs from '../../../hooks/table/useBuildActionTableCandidateJobs'
+import CandidateJob from 'shared/schema/database/candidate_job'
+import Candidate from 'shared/schema/database/candidate'
 
 const JobApplicationHistory = ({
   candidateDetail,

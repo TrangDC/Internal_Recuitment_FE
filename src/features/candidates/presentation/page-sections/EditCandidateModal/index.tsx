@@ -19,8 +19,8 @@ import { Span, Tiny } from 'shared/components/Typography'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTree from 'shared/components/tree/skill-tree'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
+import Candidate from 'shared/schema/database/candidate'
 
 interface IEditCandidateModal {
   open: boolean
@@ -37,14 +37,22 @@ function EditCandidateModal({
   onSuccess,
   id,
 }: IEditCandidateModal) {
-  const { actions, control, isPending, isValid, isGetting, watch, formState, getValues } =
-    useUpdateCandidate({
-      id: id,
-      onSuccess: (data) => {
-        setOpen(false)
-        onSuccess?.(data)
-      },
-    })
+  const {
+    actions,
+    control,
+    isPending,
+    isValid,
+    isGetting,
+    watch,
+    formState,
+    getValues,
+  } = useUpdateCandidate({
+    id: id,
+    onSuccess: (data) => {
+      setOpen(false)
+      onSuccess?.(data)
+    },
+  })
 
   const { callbackSubmit, resetSourceValue } = actions
   const translation = useTextTranslation()
@@ -243,7 +251,7 @@ function EditCandidateModal({
                         name={field.name}
                         textFieldProps={{
                           label: `Recruiter`,
-                          required: true
+                          required: true,
                         }}
                       />
                       <HelperTextForm
@@ -267,7 +275,7 @@ function EditCandidateModal({
                         textFieldProps={{
                           fullWidth: true,
                           size: 'small',
-                          required: true
+                          required: true,
                         }}
                       />
                       <HelperTextForm

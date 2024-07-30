@@ -1,4 +1,4 @@
-import { Role } from '../interfaces'
+import Role from 'shared/schema/database/role'
 import {
   ActionPermission,
   MergePermissionValue,

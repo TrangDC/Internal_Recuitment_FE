@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/hiring/domain/graphql/graphql'
-import { Hiring, HiringInput } from 'features/hiring/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import { useState } from 'react'
@@ -13,6 +12,8 @@ import {
   FormDataSchemaDetail,
   schemaHiringDetail,
 } from 'features/hiring/shared/constants/schema'
+import User from 'shared/schema/database/user'
+import { NewUserInput } from 'features/hiring/domain/interfaces'
 
 type UseChangeStatusProps = {
   id: string
@@ -27,9 +28,9 @@ function useHiringTeamDetail(props: UseChangeStatusProps) {
   const { getAllPermission, isGetting: isGetAllPermissionGroups } =
     useGetAllPermissionGroups()
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
-    Hiring,
+    User,
     FormDataSchemaDetail,
-    HiringInput
+    NewUserInput
   >({
     resolver: yupResolver(schemaHiringDetail),
     editBuildQuery: updateUser,
@@ -57,7 +58,7 @@ function useHiringTeamDetail(props: UseChangeStatusProps) {
         status: data?.status ?? '',
         name: data?.name ?? '',
         work_email: data?.work_email ?? '',
-        teamName: data?.member_of_teams?.name ?? '',
+        teamName: data?.member_of_hiring_team?.name ?? '',
         rolesTemplateName: rolesTemplateName,
         entity_permissions: entity_permissions_default,
       }

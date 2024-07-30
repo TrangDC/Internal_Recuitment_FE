@@ -1,11 +1,11 @@
-import { Team } from 'features/teams/domain/interfaces'
-import { IuseTeamsActionTableReturn } from 'features/teams/hooks/useActionTable'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
 import useTextTranslation from 'shared/constants/text'
+import HiringTeam from 'shared/schema/database/hiring_team'
+import { IuseTeamsActionTableReturn } from './useActionTable'
 
 export enum ActionsTableTeams {
   DELETE = 'delete',
@@ -21,7 +21,7 @@ function useBuildActionsTableTeam({
   const navigate = useNavigate()
   const useBuildActionsTableReturn = useBuildActionsTable<
     ActionsTableTeams,
-    Team
+    HiringTeam
   >({
     actions: {
       create: {

@@ -11,7 +11,7 @@ function useReportByTeamTable() {
     queryKey,
     orderBy: {
       direction: 'ASC',
-      field: 'team_name',
+      field: 'hiring_team_name',
     },
   })
 
@@ -30,7 +30,7 @@ function useReportByTeamTable() {
     const offeringPercentage = getPercentage(offering, total)
 
     const data: HiringTeamTableData = {
-      teamName: item.team_name,
+      teamName: item.hiring_team_name,
       indicator: '',
       applied: {
         value: applied,

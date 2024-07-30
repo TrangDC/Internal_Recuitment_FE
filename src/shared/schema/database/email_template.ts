@@ -1,4 +1,4 @@
-import EntityPermission from './entityPermission'
+import Role from './role'
 
 export type SEND_TO_ENUM =
   | 'interviewer'
@@ -8,12 +8,6 @@ export type SEND_TO_ENUM =
   | 'role'
   | 'candidate'
 export type STATUS_EMAIL_ENUM = 'active' | 'inactive'
-export type ROLES_EMAIL = {
-  id: string
-  name: string
-  description: string
-  entity_permissions: EntityPermission[]
-}
 
 type EVENT_ENUM =
   | 'candidate_applied_to_kiv'
@@ -28,10 +22,10 @@ interface EmailTemplate {
   event: EVENT_ENUM
   subject: string
   content: string
-  send_to: Array<SEND_TO_ENUM>
+  send_to: SEND_TO_ENUM[]
   status: STATUS_EMAIL_ENUM
   signature: string
-  roles: ROLES_EMAIL[]
+  roles: Role[]
   cc: string[]
   bcc: string[]
   created_at: string

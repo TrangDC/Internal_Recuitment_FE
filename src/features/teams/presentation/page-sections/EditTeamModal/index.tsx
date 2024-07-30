@@ -11,7 +11,7 @@ import { Fragment } from 'react/jsx-runtime'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import useUpdateTeam from 'features/teams/hooks/useUpdateTeam'
+import useUpdateTeam from 'features/teams/hooks/crud/useUpdateTeam'
 
 interface IEditTeamModal {
   open: boolean

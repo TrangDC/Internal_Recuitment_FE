@@ -1,10 +1,9 @@
-import { Job } from 'features/jobs/domain/interfaces'
 import { useRef, useState } from 'react'
-
+import HiringJob from 'shared/schema/database/hiring_job'
 
 const useActionTable = () => {
   const rowId = useRef('')
-  const rowData = useRef<Job>()
+  const rowData = useRef<HiringJob>()
   const [openCreate, setOpenCreate] = useState(false)
   const [openCreateApply, setOpenCreateApply] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)

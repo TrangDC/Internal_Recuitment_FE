@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { useMemo } from 'react'
 import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import Candidate from 'shared/schema/database/candidate'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const useCandidateDetail = (id: String) => {

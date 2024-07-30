@@ -4,10 +4,7 @@ import {
   schemaUpdate,
   FormDataSchemaUpdate,
 } from '../../shared/constants/schema'
-import {
-  Candidate,
-  UpdateCandidateInput,
-} from 'features/candidates/domain/interfaces'
+import { UpdateCandidateInput } from 'features/candidates/domain/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import {
   formatRecordSkill,
@@ -15,6 +12,7 @@ import {
   updateRecordSkill,
 } from 'shared/utils/utils'
 import { convertToEndDateUTC } from 'shared/utils/date'
+import Candidate from 'shared/schema/database/candidate'
 
 type UseEditCandidateProps = {
   id: string
@@ -44,7 +42,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
         email: data?.email ?? '',
         name: data?.name ?? '',
         phone: data?.phone ?? '',
-        dob: data?.dob ? new Date(data?.dob) : data?.dob,
+        dob: data?.dob ? new Date(data?.dob) : null,
         note: '',
         country: data?.country ?? '',
         reference_type: data?.reference_type ?? '',
@@ -60,7 +58,15 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
     },
   })
 
-  const { handleSubmit, control, formState, setValue, watch, clearErrors, getValues } = useFormReturn
+  const {
+    handleSubmit,
+    control,
+    formState,
+    setValue,
+    watch,
+    clearErrors,
+    getValues,
+  } = useFormReturn
   const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
@@ -105,7 +111,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
     isGetting,
     formState,
     watch,
-    getValues
+    getValues,
   }
 }
 

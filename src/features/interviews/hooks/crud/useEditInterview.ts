@@ -1,9 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/interviews/domain/graphql/graphql'
-import {
-  Interview,
-  UpdateCandidateInterviewInput,
-} from 'features/interviews/domain/interfaces'
+import { UpdateCandidateInterviewInput } from 'features/interviews/domain/interfaces'
 import {
   schemaUpdate,
   FormDataSchemaUpdate,
@@ -14,6 +11,7 @@ import dayjs from 'dayjs'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import { transformListItem } from 'shared/utils/utils'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
 
 type UseEditInterviewProps = {
   id: string
@@ -24,7 +22,7 @@ function useEditInterview(props: UseEditInterviewProps) {
   const { id, onSuccess } = props
   const { updateCandidateInterview, getInterview, queryKey } = useGraphql()
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
-    Interview,
+    CandidateInterview,
     FormDataSchemaUpdate,
     UpdateCandidateInterviewInput
   >({
@@ -66,7 +64,7 @@ function useEditInterview(props: UseEditInterviewProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      if(!value.interview_date) return
+      if (!value.interview_date) return
       let interview_date = dayjs(value.interview_date)
       const start_form = dayjs(value.start_from)
         .year(interview_date.year())
@@ -97,7 +95,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     onSubmit()
   }
 
-  function resetMeetingLink () {
+  function resetMeetingLink() {
     setValue('meeting_link', '')
   }
 
@@ -108,7 +106,7 @@ function useEditInterview(props: UseEditInterviewProps) {
     actions: {
       onSubmit,
       callbackSubmit,
-      resetMeetingLink
+      resetMeetingLink,
     },
     formState,
     setValue,

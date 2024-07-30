@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
-import { Member } from 'features/teams/domain/interfaces'
 import { cloneDeep } from 'lodash'
 import { useMemo, useState } from 'react'
 import GraphQLClientService from 'services/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
+import User from 'shared/schema/database/user'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const queryKey = 'audittrails'
@@ -42,7 +42,7 @@ const GetAllAuditTrails = GraphQLClientService.buildQuery({
 type AuditTrailsJob = {
   id: string
   createdBy: string
-  createdInfo: Member
+  createdInfo: User
   recordId: string
   module: string
   actionType: string

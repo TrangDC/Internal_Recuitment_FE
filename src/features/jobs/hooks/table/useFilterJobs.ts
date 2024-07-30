@@ -6,7 +6,7 @@ function useFilterJobs() {
   const { useFilterReturn, useSearchListReturn } = useFilterTable<JobsFilter>({
     filter: {
       defaultFilter: {
-        team_ids: [],
+        hiring_team_ids: [],
         priority: '',
         status: '',
         skill_ids: [],
@@ -17,8 +17,8 @@ function useFilterJobs() {
         return {
           priority: Number(data?.priority?.value) || undefined,
           status: data?.status?.value,
-          team_ids: !isEmpty(data?.team_ids)
-            ? data?.team_ids?.map((o) => o.value)
+          hiring_team_ids: !isEmpty(data?.hiring_team_ids)
+            ? data?.hiring_team_ids?.map((o) => o.value)
             : undefined,
           skill_ids: !isEmpty(data?.skill_ids)
             ? data?.skill_ids?.map((o) => o.value)

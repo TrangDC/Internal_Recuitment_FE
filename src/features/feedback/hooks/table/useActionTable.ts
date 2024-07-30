@@ -1,16 +1,16 @@
 import { useRef, useState } from 'react'
+import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
 
-const useActionTable = <T extends object>() => {
+const useActionTable = () => {
   const rowId = useRef('')
-  const rowData = useRef<T>()
+  const rowData = useRef<CandidateJobFeedback>()
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openBlackList, setOpenBlackList] = useState(false)
   const [openChangeStatus, setOpenChangeStatus] = useState(false)
 
-
-  function handleOpenEdit(id: string, data: T) {
+  function handleOpenEdit(id: string, data: CandidateJobFeedback) {
     rowId.current = id
     rowData.current = data
     setOpenEdit(true)
@@ -26,7 +26,7 @@ const useActionTable = <T extends object>() => {
     setOpenBlackList(true)
   }
 
-  function handleOpenChangeStatus(id: string, data: T) {
+  function handleOpenChangeStatus(id: string, data: CandidateJobFeedback) {
     rowId.current = id
     rowData.current = data
     setOpenChangeStatus(true)

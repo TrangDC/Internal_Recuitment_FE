@@ -109,7 +109,7 @@ export const AppRoutes = () => {
           <Route
             path="teams"
             element={PermissionLayout({
-              module: 'TEAMS',
+              module: 'HIRING_TEAMS',
               children: <TeamList />,
               checkBy: {
                 compare: 'hasAny',
@@ -124,7 +124,7 @@ export const AppRoutes = () => {
           <Route
             path="team-detail/:id"
             element={PermissionLayout({
-              module: 'TEAMS',
+              module: 'HIRING_TEAMS',
               children: <TeamDetail />,
               checkBy: {
                 compare: 'hasAny',

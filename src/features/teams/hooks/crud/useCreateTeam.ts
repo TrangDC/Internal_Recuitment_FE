@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/teams/domain/graphql/graphql'
-import { NewTeamInput } from 'features/teams/domain/interfaces'
+import { NewHiringTeamInput } from 'features/teams/domain/interfaces'
+import { FormDataSchema, schema } from 'features/teams/shared/constants/schema'
 import { useCreateResource } from 'shared/hooks/crud-hook'
-import { FormDataSchema, schema } from '../shared/constants/schema'
 
 interface createTeamProps {
   callbackSuccess?: (value: any) => void
@@ -13,7 +13,7 @@ function useCreateTeam(props: createTeamProps = {}) {
 
   const { createTeam, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewTeamInput,
+    NewHiringTeamInput,
     FormDataSchema
   >({
     mutationKey: [queryKey],

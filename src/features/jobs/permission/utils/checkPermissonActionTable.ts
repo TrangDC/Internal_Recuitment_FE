@@ -1,12 +1,12 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
-import { Job } from 'features/jobs/domain/interfaces'
 import { ActionAllJobsTable } from 'features/jobs/hooks/table/useAllJobsPermissionActionTable'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
+import HiringJob from 'shared/schema/database/hiring_job'
 
 interface ActionProps {
-  newActions: TOptionItem<Job>[]
+  newActions: TOptionItem<HiringJob>[]
   inTeam: boolean
   role: PermissionStructureImpl | null
 }
@@ -16,10 +16,10 @@ function checkPermissionActionTable({
   me,
   actions,
   rowData,
-}: CheckPermissionActionTableProps<Job>): TOptionItem<Job>[] {
+}: CheckPermissionActionTableProps<HiringJob>): TOptionItem<HiringJob>[] {
   let newActions = [...actions]
   const job = rowData.row.original
-  const inTeam = me?.teamId === job.team.id
+  const inTeam = me?.teamId === job.hiring_team.id
   newActions = editAction({ newActions, inTeam, role })
   newActions = deleteAction({ newActions, inTeam, role })
   newActions = closeJobsAction({ newActions, inTeam, role })

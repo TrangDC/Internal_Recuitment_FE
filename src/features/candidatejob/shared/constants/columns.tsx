@@ -5,11 +5,11 @@ import {
 } from 'shared/components/ActionGroupButtons'
 import { t } from 'i18next'
 import { format } from 'date-fns'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { LinkText, StyleTinyText } from 'shared/styles'
 import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
 import checkPermissionActionTable from 'features/candidatejob/permission/utils/checkPermissonActionTable'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
+import CandidateJob from 'shared/schema/database/candidate_job'
 
 const columnHelper = createColumnHelper<CandidateJob>()
 
@@ -30,7 +30,7 @@ export const columns = (
     size: 400,
     enableSorting: false,
   }),
-  columnHelper.accessor((row) => row.hiring_job.team.name, {
+  columnHelper.accessor((row) => row.hiring_job.hiring_team.name, {
     id: 'team',
     header: () => <span>{t('team')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,

@@ -5,7 +5,6 @@ import { columns } from '../../../shared/constants/columns'
 import useCandidateTable from '../../../hooks/table/useCandidateTable'
 import useActionTable from '../../../hooks/table/useActionTable'
 import { DivContainerWrapper, DivHeaderWrapper } from '../../../shared/styles'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { Fragment, useMemo, useRef } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
@@ -41,6 +40,7 @@ import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-aut
 import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidate-source-auto-complete'
 import Cant from 'features/authorization/presentation/components/Cant'
 import useBuildActionTableCandidate from '../../../hooks/table/useBuildActionTableCandidate'
+import Candidate from 'shared/schema/database/candidate'
 
 const Candidates = () => {
   const {
@@ -62,7 +62,7 @@ const Candidates = () => {
   const { useFilterReturn, useSearchListReturn } = useFilterCandidates({
     is_black_list,
   })
-  const { controlFilter, dataFilterWithValue } = useFilterReturn  
+  const { controlFilter, dataFilterWithValue } = useFilterReturn
   const { handleSearch, search, searchRef } = useSearchListReturn
   const refInput = useRef<HTMLInputElement>(null)
   const { useTableReturn } = useCandidateTable({

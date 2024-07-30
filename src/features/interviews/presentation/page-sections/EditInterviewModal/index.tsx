@@ -3,7 +3,6 @@ import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import { Job } from 'features/jobs/domain/interfaces'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import { Fragment } from 'react/jsx-runtime'
@@ -20,11 +19,12 @@ import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import LocationInterviewAutoComplete, {
   LOCATION_INTERVIEW_STATE,
 } from 'shared/components/autocomplete/location-interview-autocomplete'
+import HiringJob from 'shared/schema/database/hiring_job'
 
 interface IEditInterviewModal {
   open: boolean
   setOpen: (value: boolean) => void
-  hiring_job: Job
+  hiring_job: HiringJob
   id_interview: string
   onSuccess?: () => void
 }

@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { useNavigate } from 'react-router-dom'
 import BlackListIcon from 'shared/components/icons/BlackListIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
@@ -8,6 +7,7 @@ import LinkIcon from 'shared/components/icons/Link'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
 import useTextTranslation from 'shared/constants/text'
+import Candidate from 'shared/schema/database/candidate'
 import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
 
 export enum ActionCandidateTable {

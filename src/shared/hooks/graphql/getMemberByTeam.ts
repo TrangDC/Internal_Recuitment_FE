@@ -1,9 +1,9 @@
-import { Member } from 'features/teams/domain/interfaces'
 import GraphQLClientService from 'services/graphql-service'
+import User from 'shared/schema/database/user'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const getAllUser = GraphQLClientService.buildQuery({
-  operation: 'GetTeam',
+  operation: 'GetHiringTeam',
   options: {
     type: 'query',
   },
@@ -11,7 +11,7 @@ const getAllUser = GraphQLClientService.buildQuery({
     data {
         id
         name
-        members {
+        managers {
             id
             name
             work_email
@@ -24,18 +24,18 @@ const getAllUser = GraphQLClientService.buildQuery({
 })
 
 type getMemberByTeam = {
-  members: Member[]
-  member_first: Member
+  managers: User[]
+  managers_first: User
 }
 
 const getMembersByTeam = async (id: string): Promise<getMemberByTeam> => {
   const data = await GraphQLClientService.fetchGraphQL(getAllUser.query, { id })
-  let members: Member[] = []
+  let managers: User[] = []
   if (data && isRight(data)) {
-    members = unwrapEither(data)?.[getAllUser.operation]?.data?.members ?? []
+    managers = unwrapEither(data)?.[getAllUser.operation]?.data?.members ?? []
   }
-  const member_first = members?.[0] ?? {}
-  return { members, member_first }
+  const managers_first = managers?.[0] ?? {}
+  return { managers, managers_first }
 }
 
 export default getMembersByTeam

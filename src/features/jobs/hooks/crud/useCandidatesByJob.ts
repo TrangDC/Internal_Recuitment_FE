@@ -28,7 +28,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -50,7 +50,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -72,7 +72,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -94,7 +94,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -116,7 +116,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -138,7 +138,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
-              team {
+              hiring_team {
                 id
                 name
               }
@@ -160,7 +160,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             hiring_job {
               id
               name
-              team {
+              hiring_team {
                 id
                 name
               }

@@ -6,7 +6,6 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import { FeedBack } from 'features/feedback/domain/interfaces'
 import useUpdateFeedback from '../../../hooks/crud/useUpdateFeedback'
 import { Span, Tiny } from 'shared/components/Typography'
 import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
@@ -14,12 +13,13 @@ import { useMemo } from 'react'
 import { isEmpty } from 'lodash'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
+import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
 
 interface IUpdateFeedbackModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  rowData: FeedBack
+  rowData: CandidateJobFeedback
   onSuccess?: () => void
 }
 
@@ -50,7 +50,9 @@ function UpdateFeedbackModal({
   const isValidAttachments = useMemo(() => {
     if (!Array.isArray(attachments) || isEmpty(attachments)) return true
 
-    return attachments.every((file) => file.status === 'success' || !file?.status)
+    return attachments.every(
+      (file) => file.status === 'success' || !file?.status
+    )
   }, [attachments])
 
   return (

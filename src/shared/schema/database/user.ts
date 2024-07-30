@@ -1,6 +1,6 @@
-import EntityPermission from './entityPermission'
+import EntityPermission from './entity_permission'
+import HiringTeam from './hiring_team'
 import Role from './role'
-import Team from './team'
 
 type UserStatus = 'active' | 'inactive'
 
@@ -9,9 +9,9 @@ interface User {
   name: string
   work_email: string
   status: UserStatus
-  team: Team
+  hiring_team: HiringTeam
   entity_permissions: EntityPermission[]
-  member_of_teams: Team
+  member_of_hiring_team: HiringTeam
   roles: Role[]
 }
 

@@ -2,7 +2,7 @@ import { AutocompleteBaseBackEnd } from '../autocomplete-base-back-end'
 import { AutocompleteValueBackEndCommonProps } from '../autocomplete-base-back-end/interface'
 import useGraphql from './useGraphql'
 
-type Member = {
+type User = {
   id: string
   name: string
   work_email: number
@@ -16,10 +16,10 @@ function MemberAutoComplete<Multiple extends boolean>({
   textFieldProps,
   name,
   ...other
-}: AutocompleteValueBackEndCommonProps<Member, Multiple>) {
+}: AutocompleteValueBackEndCommonProps<User, Multiple>) {
   const { getAllUser, queryKey } = useGraphql()
   return (
-    <AutocompleteBaseBackEnd<Member, Multiple>
+    <AutocompleteBaseBackEnd<User, Multiple>
       onChange={onChange}
       queryKey={[queryKey]}
       queryString={getAllUser}

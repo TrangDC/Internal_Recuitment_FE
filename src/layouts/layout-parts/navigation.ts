@@ -33,7 +33,7 @@ export const navigation: INavigation[] = [
     path: '/dashboard/teams',
     icon: duotone.Team,
     type: 'link',
-    module: 'TEAMS',
+    module: 'HIRING_TEAMS',
   },
   {
     name: 'Jobs',

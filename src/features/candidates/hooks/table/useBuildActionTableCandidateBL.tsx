@@ -1,11 +1,11 @@
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
-import { Candidate } from 'features/candidates/domain/interfaces'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import RemoveBlackListIcon from 'shared/components/icons/RemoveBlackListIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import useTextTranslation from 'shared/constants/text'
+import Candidate from 'shared/schema/database/candidate'
 
 export enum ActionCandidateTableBL {
   DETAIL = 'detail',

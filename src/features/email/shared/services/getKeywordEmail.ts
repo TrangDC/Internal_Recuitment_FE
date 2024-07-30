@@ -13,7 +13,7 @@ const getAllEmailTemplateKeywords = GraphQLClientService.buildQuery({
             key
             value
         }
-        team {
+        hiringTeam {
             key
             value
         }
@@ -44,7 +44,9 @@ const getAllEmailTemplateKeywords = GraphQLClientService.buildQuery({
   },
 })
 
-const getKeywordEmail = async (event: EVENT_EMAIL_ENUM | ''): Promise<{key: string, value: string}[]> => {
+const getKeywordEmail = async (
+  event: EVENT_EMAIL_ENUM | ''
+): Promise<{ key: string; value: string }[]> => {
   try {
     if (!event) return []
 

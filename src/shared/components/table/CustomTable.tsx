@@ -17,14 +17,13 @@ import {
   TableRow,
   styled,
 } from '@mui/material'
-import AppPagination from '../AppPagination'
-import { CSSProperties, useEffect, useMemo } from 'react'
+import { CSSProperties, useMemo } from 'react'
 import { IuseCustomTableReturn } from 'shared/components/table/hooks/useCustomTable'
 import { BodyTableCell, HeadTableCell } from './styles'
 import { v4 as uuidv4 } from 'uuid'
 import IconSortBy from './components/IconSortBy'
-import { isEmpty } from 'lodash'
 import Scrollbar from '../ScrollBar'
+import TablePagination from './components/TablePagination'
 interface ICustomTable<T> {
   columns: ColumnDef<T, any>[]
   useTableReturn: IuseCustomTableReturn
@@ -184,16 +183,10 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
           </Table>
         </Scrollbar>
       </TableContainer>
-
-      <AppPagination
-        sx={{
-          borderTop: '1px solid #e3e6eb',
-        }}
-        count={totalPage}
-        page={pagination.page}
-        onChange={(_, page) => onChange(page)}
-        defaultPage={1}
-        variant="outlined"
+      <TablePagination
+        totalPage={totalPage}
+        pagination={pagination}
+        onChange={onChange}
       />
     </Box>
   )

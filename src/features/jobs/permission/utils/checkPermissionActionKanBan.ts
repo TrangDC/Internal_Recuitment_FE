@@ -26,7 +26,7 @@ function checkPermissionActionKanBan({
   rowData,
 }: CheckPermissionActionKanBanProps): TOptionItem<CandidateStatusItem>[] {
   let newActions = [...actions]
-  const jobOfTeamId = rowData?.hiring_job?.team?.id ?? ''
+  const jobOfTeamId = rowData?.hiring_job?.hiring_team?.id ?? ''
   const inTeam = me?.teamId === jobOfTeamId
   newActions = editAction({ newActions, inTeam, role })
   newActions = deleteAction({ newActions, inTeam, role })

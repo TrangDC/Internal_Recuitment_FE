@@ -1,4 +1,3 @@
-import { Job } from 'features/jobs/domain/interfaces'
 import { useNavigate } from 'react-router-dom'
 import { JobStatus } from 'shared/class/job-status'
 import CloseIcon from 'shared/components/icons/CloseIcon'
@@ -7,6 +6,7 @@ import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
 import useTextTranslation from 'shared/constants/text'
+import HiringJob from 'shared/schema/database/hiring_job'
 
 export enum ActionAllJobsTable {
   DETAIL = 'detail',
@@ -30,7 +30,7 @@ function useBuildAllJobsActionsTable({
 }: UseBuildAllJobsActionsTableProps) {
   const translation = useTextTranslation()
   const navigate = useNavigate()
-  const { actions } = useBuildActionsTable<ActionAllJobsTable, Job>({
+  const { actions } = useBuildActionsTable<ActionAllJobsTable, HiringJob>({
     actions: {
       detail: {
         id: ActionAllJobsTable.DETAIL,

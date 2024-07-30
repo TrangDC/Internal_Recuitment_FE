@@ -1,11 +1,11 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
-import { Job } from 'features/jobs/domain/interfaces'
 import EditIcon from 'shared/components/icons/EditIcon'
+import HiringJob from 'shared/schema/database/hiring_job'
 
 type EditIconJobDetailPermissionProps = {
   onClick: () => void
-  job_detail: Job
+  job_detail: HiringJob
 }
 
 function EditIconJobDetailPermission({
@@ -13,7 +13,7 @@ function EditIconJobDetailPermission({
   job_detail,
 }: EditIconJobDetailPermissionProps) {
   const { role, user } = useAuthorization()
-  const inTeam = user?.teamId === job_detail.team?.id
+  const inTeam = user?.teamId === job_detail.hiring_team?.id
   const editPermission = checkPermissions({
     role,
     checkBy: {

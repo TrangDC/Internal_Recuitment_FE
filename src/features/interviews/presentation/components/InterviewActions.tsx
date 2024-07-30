@@ -1,13 +1,13 @@
-import { Interview } from 'features/interviews/domain/interfaces'
 import { ActionGroupButtons } from 'shared/components/ActionGroupButtons'
 import useBuildActionsTableInterview from 'features/interviews/hooks/table/useBuildActionsTableInterview'
 import { UseActionInterviewReturn } from 'features/interviews/hooks/table/useActionInterview'
 import checkActionPermissionInterview from 'features/interviews/permission/utils/checkActionPermissionCalendar'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
 
 type InterviewActionsProps = {
   useActionInterviewReturn: UseActionInterviewReturn
-  interview: Interview
+  interview: CandidateInterview
   candidateJobOfTeamId: string
 }
 
@@ -38,7 +38,7 @@ function InterviewActions(props: InterviewActionsProps) {
     candidateJobOfTeamId,
   })
   return (
-    <ActionGroupButtons<Interview>
+    <ActionGroupButtons<CandidateInterview>
       rowId={interview.id}
       actions={newActions}
       rowData={interview}

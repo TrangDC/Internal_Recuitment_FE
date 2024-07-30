@@ -1,6 +1,5 @@
 import { styled } from '@mui/material'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import { Hiring, Role } from 'features/hiring/domain/interfaces'
 import checkPermissionActionTable from 'features/hiring/permission/utils/checkPermissonActionTable'
 import {
   ActionGroupButtons,
@@ -11,18 +10,20 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { TinyText } from 'shared/components/form/styles'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 import { Span } from 'shared/components/Typography'
+import Role from 'shared/schema/database/role'
+import User from 'shared/schema/database/user'
 
 export const StyleTinyText = styled(TinyText)(({ theme }) => ({
   color: theme.palette.grey[500],
   fontWeight: 500,
 }))
 
-const columnHelper = createColumnHelper<Hiring>()
+const columnHelper = createColumnHelper<User>()
 
 export const columns = (
-  actions: TOptionItem<Hiring>[],
+  actions: TOptionItem<User>[],
   { me, role }: ParamsColumn
-): ColumnDef<Hiring, any>[] => [
+): ColumnDef<User, any>[] => [
   columnHelper.accessor('name', {
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
@@ -35,7 +36,7 @@ export const columns = (
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     size: 300,
   }),
-  columnHelper.accessor('member_of_teams.name', {
+  columnHelper.accessor('member_of_hiring_team.name', {
     id: 'team',
     header: () => <span>Team</span>,
     enableSorting: false,
@@ -68,7 +69,7 @@ export const columns = (
     },
     size: 500,
   }),
-  columnHelper.accessor('created_at', {
+  columnHelper.accessor('id', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>
         <Span>Action</Span>
@@ -86,7 +87,7 @@ export const columns = (
         rowData: info,
       })
       return (
-        <ActionGroupButtons<Hiring>
+        <ActionGroupButtons<User>
           rowId={id}
           actions={newAction}
           rowData={info.row.original}

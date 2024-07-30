@@ -1,5 +1,4 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import { Member, Team } from 'features/teams/domain/interfaces'
 import {
   ActionGroupButtons,
   TOptionItem,
@@ -11,13 +10,15 @@ import ChipField from 'shared/components/input-fields/ChipField'
 import { LinkText, StyleTinyText } from 'shared/styles'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 import checkPermissionActionTable from 'features/teams/permission/utils/checkPermissonActionTable'
+import HiringTeam from 'shared/schema/database/hiring_team'
+import User from 'shared/schema/database/user'
 
-const columnHelper = createColumnHelper<Team>()
+const columnHelper = createColumnHelper<HiringTeam>()
 
 export const columns = (
-  actions: TOptionItem<Team>[],
+  actions: TOptionItem<HiringTeam>[],
   { me, role }: ParamsColumn
-): ColumnDef<Team, any>[] => [
+): ColumnDef<HiringTeam, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => (
@@ -28,13 +29,13 @@ export const columns = (
     header: () => <span>{t('name')}</span>,
     size: 300,
   }),
-  columnHelper.accessor((row) => row.members, {
+  columnHelper.accessor((row) => row.managers, {
     id: 'members',
     size: 600,
     cell: (info) => {
       return (
         <FlexBox gap={'10px'} flexWrap={'wrap'}>
-          {info.getValue().map((member: Member, idx: number) => (
+          {info.getValue().map((member: User, idx: number) => (
             <ChipField
               key={idx}
               label={member.name}
@@ -55,7 +56,7 @@ export const columns = (
     size: 200,
     cell: (info) => <StyleTinyText>{info.renderValue()}</StyleTinyText>,
   }),
-  columnHelper.accessor('newest_applied', {
+  columnHelper.accessor('id', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>
         <Span>{t('action')}</Span>
@@ -73,7 +74,7 @@ export const columns = (
         me,
       })
       return (
-        <ActionGroupButtons<Team>
+        <ActionGroupButtons<HiringTeam>
           rowId={id}
           actions={newActions}
           rowData={info.row.original}

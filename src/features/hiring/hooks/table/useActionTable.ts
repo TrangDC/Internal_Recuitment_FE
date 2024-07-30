@@ -1,9 +1,9 @@
-import { Hiring } from 'features/hiring/domain/interfaces'
 import { useRef, useState } from 'react'
+import User from 'shared/schema/database/user'
 
 const useActionTable = () => {
   const rowId = useRef('')
-  const rowData = useRef<Hiring>()
+  const rowData = useRef<User>()
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)

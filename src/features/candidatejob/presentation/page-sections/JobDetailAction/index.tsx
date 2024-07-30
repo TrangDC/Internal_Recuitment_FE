@@ -5,11 +5,11 @@ import ListFeedBack from 'features/feedback/presentation/page-sections/ListFeedb
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import useGetCandidateJobInterview from '../../../hooks/crud/useGetCandidateJobInterview'
 import { useParams } from 'react-router-dom'
-import { FeedBack } from 'features/feedback/domain/interfaces'
-import { Interview } from 'features/interviews/domain/interfaces'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { ListInterview } from 'features/interviews/presentation/page-sections'
 import Cant from 'features/authorization/presentation/components/Cant'
+import CandidateJob from 'shared/schema/database/candidate_job'
+import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
 
 const JobDetailAction = ({
   jobApplicationDetail,
@@ -20,12 +20,15 @@ const JobDetailAction = ({
   const [statusSelected, setStatusSelected] = useState<string>()
 
   const { candidateJobInterview } = useGetCandidateJobInterview(id as string)
-  const candidateJobOfTeamId = jobApplicationDetail?.hiring_job?.team?.id ?? ''
-  const listEnabled: { feedback: FeedBack[]; interview: Interview[] } =
-    useMemo(() => {
-      //@ts-ignore
-      return candidateJobInterview?.[statusSelected]
-    }, [statusSelected, candidateJobInterview])
+  const candidateJobOfTeamId =
+    jobApplicationDetail?.hiring_job?.hiring_team?.id ?? ''
+  const listEnabled: {
+    feedback: CandidateJobFeedback[]
+    interview: CandidateInterview[]
+  } = useMemo(() => {
+    //@ts-ignore
+    return candidateJobInterview?.[statusSelected]
+  }, [statusSelected, candidateJobInterview])
 
   useEffect(() => {
     jobApplicationDetail?.status &&
@@ -33,7 +36,8 @@ const JobDetailAction = ({
   }, [jobApplicationDetail?.status])
 
   const show_feedback = useMemo(() => {
-    const max_step = jobApplicationDetail?.steps?.[jobApplicationDetail?.steps?.length - 1];
+    const stepsLength = jobApplicationDetail?.steps?.length - 1
+    const max_step = jobApplicationDetail?.steps?.[stepsLength]
     return max_step?.candidate_job_status === statusSelected
   }, [jobApplicationDetail, statusSelected])
 

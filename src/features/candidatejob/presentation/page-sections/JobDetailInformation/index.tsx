@@ -7,7 +7,6 @@ import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useEffect, useMemo, useState } from 'react'
 import PreviewCV from '../../components/previewCV'
-import { CandidateJob } from 'features/candidatejob/domain/interfaces'
 import { DivInformation, DivItemInformation } from '../../../shared/styles'
 import { LinkText } from 'shared/components/Typography'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -18,6 +17,7 @@ import Cant from 'features/authorization/presentation/components/Cant'
 import EditApplicationButtonPermission from 'features/candidatejob/permission/components/EditApplicationButtonPermission'
 import ChangeStatusCDDJButtonPermission from 'features/candidatejob/permission/components/ChangeStatusCDDJButtonPermission'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
+import CandidateJob from 'shared/schema/database/candidate_job'
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }
@@ -30,7 +30,8 @@ const JobDetailInformation = ({
   const [openEditCandidateJob, setOpenEditCandidateJob] = useState(false)
   const attachments = jobApplicationDetail?.attachments || []
   const candidateId = jobApplicationDetail?.candidate_id
-  const candidateJobOfTeamId = jobApplicationDetail?.hiring_job?.team?.id ?? ''
+  const candidateJobOfTeamId =
+    jobApplicationDetail?.hiring_job?.hiring_team?.id ?? ''
   const status = jobApplicationDetail?.hiring_job?.status
   const isClosed = status === 'closed'
 

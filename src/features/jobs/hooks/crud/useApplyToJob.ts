@@ -7,11 +7,9 @@ import {
 import { removeInfoData, removeStatusAttachment } from 'shared/utils/utils'
 import _, { cloneDeep } from 'lodash'
 import { useCreateResource } from 'shared/hooks/crud-hook'
-import {
-  CandidateJob,
-  NewCandidateJobInput,
-} from 'features/candidatejob/domain/interfaces'
+import { NewCandidateJobInput } from 'features/candidatejob/domain/interfaces'
 import { convertToEndDateUTC } from 'shared/utils/date'
+import CandidateJob from 'shared/schema/database/candidate_job'
 
 interface useApplyToJobProps {
   defaultValues?: Partial<FormDataSchemaApplyJob>
@@ -42,7 +40,15 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     },
   })
 
-  const { handleSubmit, control, formState, resetField, watch, getValues, trigger } = useFormReturn
+  const {
+    handleSubmit,
+    control,
+    formState,
+    resetField,
+    watch,
+    getValues,
+    trigger,
+  } = useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
@@ -59,7 +65,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
         : deepValue.onboard_date
 
       const valueClone = removeInfoData({
-        field: ['team_id'],
+        field: ['hiring_team_id'],
         object: {
           ..._.cloneDeep(value),
           offer_expiration_date,
@@ -79,7 +85,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     resetField,
     watch,
     getValues,
-    trigger
+    trigger,
   }
 }
 

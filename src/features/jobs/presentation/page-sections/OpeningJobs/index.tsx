@@ -1,13 +1,10 @@
-import {
-  Fragment,
-} from 'react'
+import { Fragment } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import ChangeStatusProvider from './context/ChangeStatusContext'
 import FilterCandidate from './components/FilterCandidate'
 import RenderListByPage from './components/renderListByPaget'
 
 const OpeningJob = () => {
-
   return (
     <Fragment>
       <ChangeStatusProvider>

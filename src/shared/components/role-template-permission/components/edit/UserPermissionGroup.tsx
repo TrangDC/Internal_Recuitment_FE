@@ -8,26 +8,22 @@ import ListCheckBox from './ListCheckBox'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useGetCountChecked from '../../hooks/useGetCountChecked'
 
-function TeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
+function UserPermissionGroup({ roleTemplate }: PermissionGroupProps) {
   const { control, watch, setValue } = useFormContext()
   const [open, setOpen] = useState(true)
-  const createAction = roleTemplate?.TEAMS?.CREATE
-  const editAction = roleTemplate?.TEAMS?.EDIT
-  const deleteAction = roleTemplate?.TEAMS?.DELETE
-  const viewAction = roleTemplate?.TEAMS?.VIEW
+  const editAction = roleTemplate?.HIRING_TEAMS?.EDIT
+  const viewAction = roleTemplate?.HIRING_TEAMS?.VIEW
 
   const viewData = watch(getKeyName(viewAction.id))
   const editData = watch(getKeyName(editAction.id))
-  const createData = watch(getKeyName(createAction.id))
-  const deleteData = watch(getKeyName(deleteAction.id))
-  const state = [createData, viewData, editData, deleteData]
+
+  const state = [editData, viewData]
 
   const disabled = !(
     viewData.for_all ||
     viewData.for_owner ||
     viewData.for_team
   )
-
   useEffect(() => {
     if (disabled) {
       const data = {
@@ -36,20 +32,19 @@ function TeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
         for_team: false,
       }
       setValue(getKeyName(viewAction.id), data)
-      setValue(getKeyName(createAction.id), data)
       setValue(getKeyName(editAction.id), data)
-      setValue(getKeyName(deleteAction.id), data)
     }
   }, [disabled])
 
   const countChecked = useGetCountChecked(state)
+
   return (
     <CollapseGroup.CollapseContainer
       open={open}
       setOpen={setOpen}
       title={
         <FlexBox justifyContent={'center'} gap={1}>
-          <Text13md color={'grey.900'}>Teams</Text13md>
+          <Text13md color={'grey.900'}>Hiring team</Text13md>
           <Tiny12md color={'text.500'}>
             {countChecked}/{state.length}
           </Tiny12md>
@@ -99,32 +94,10 @@ function TeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
         />
         <Controller
           control={control}
-          name={getKeyName(createAction.id)}
-          render={({ field }) => (
-            <ListCheckBox
-              disabled={disabled}
-              title={createAction?.title ?? ''}
-              description={createAction?.description ?? ''}
-              for_all={createAction?.for_all ?? false}
-              for_owner={createAction?.for_owner ?? false}
-              for_team={createAction?.for_team ?? false}
-              onCheck={(key) => {
-                const data = getCheck(key, field.value, {
-                  for_all: createAction.for_all,
-                  for_owner: createAction.for_owner,
-                  for_team: createAction.for_team,
-                })
-                field.onChange(data)
-              }}
-              value={field.value}
-            />
-          )}
-        />
-        <Controller
-          control={control}
           name={getKeyName(editAction.id)}
           render={({ field }) => (
             <ListCheckBox
+              hiddenBorder
               disabled={disabled}
               title={editAction?.title ?? ''}
               description={editAction?.description ?? ''}
@@ -143,33 +116,9 @@ function TeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
             />
           )}
         />
-        <Controller
-          control={control}
-          name={getKeyName(deleteAction.id)}
-          render={({ field }) => (
-            <ListCheckBox
-              hiddenBorder
-              disabled={disabled}
-              title={deleteAction?.title ?? ''}
-              description={deleteAction?.description ?? ''}
-              for_all={deleteAction?.for_all ?? false}
-              for_owner={deleteAction?.for_owner ?? false}
-              for_team={deleteAction?.for_team ?? false}
-              onCheck={(key) => {
-                const data = getCheck(key, field.value, {
-                  for_all: deleteAction.for_all,
-                  for_owner: deleteAction.for_owner,
-                  for_team: deleteAction.for_team,
-                })
-                field.onChange(data)
-              }}
-              value={field.value}
-            />
-          )}
-        />
       </CollapseGroup.CollapseBody>
     </CollapseGroup.CollapseContainer>
   )
 }
 
-export default TeamPermissionGroup
+export default UserPermissionGroup

@@ -9,8 +9,8 @@ interface CandidateJobFeedback {
   candidate_job: CandidateJob
   owner: User
   feedback: string
-  edited: string
-  attachments: Attachment
+  edited: boolean
+  attachments: Attachment[]
   created_at: string
   updated_at: string
 }

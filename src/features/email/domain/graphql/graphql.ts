@@ -123,7 +123,7 @@ const useGraphql = () => {
             key
             value
         }
-        team {
+        hiringTeam {
             key
             value
         }

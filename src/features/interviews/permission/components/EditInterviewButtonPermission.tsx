@@ -1,12 +1,12 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
-import { Member } from 'features/teams/domain/interfaces'
 import EditIcon from 'shared/components/icons/EditIcon'
+import User from 'shared/schema/database/user'
 
 type EditInterviewButtonPermissionProps = {
   onClick: () => void
   candidateJobOfTeamId: string
-  interviewers: Member[]
+  interviewers: User[]
 }
 
 function EditInterviewButtonPermission({

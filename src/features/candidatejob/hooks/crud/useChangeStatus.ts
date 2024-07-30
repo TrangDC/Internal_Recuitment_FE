@@ -21,11 +21,11 @@ import {
 import { useState } from 'react'
 import { useCreateResource, useEditResource } from 'shared/hooks/crud-hook'
 import {
-  CandidateJob,
   UpdateCandidateJobStatus,
   UpdateStatus,
 } from 'features/candidatejob/domain/interfaces'
 import { convertToEndDateUTC } from 'shared/utils/date'
+import CandidateJob from 'shared/schema/database/candidate_job'
 
 interface useChangeStatusProps {
   defaultValues?: Partial<FormDataSchemaChangeStatus>
@@ -115,46 +115,67 @@ function useChangeStatus(props: useChangeStatusProps) {
     id: id,
     callbackSuccess,
     mutationFeedback: () => {
-      if(!data?.feedback && isEmpty(data?.attachments)) {
+      if (!data?.feedback && isEmpty(data?.attachments)) {
         callbackSuccess?.({ ...data, id })
-        return;
+        return
       }
 
       mutateCreateFeedback({
-        ...getInfoData({ field: ['feedback', 'attachments'], object: data as UpdateCandidateJobStatus}),
+        ...getInfoData({
+          field: ['feedback', 'attachments'],
+          object: data as UpdateCandidateJobStatus,
+        }),
         candidate_job_id: id,
       })
     },
   })
 
-  const { handleSubmit, formState, control, watch, trigger, setValue, clearErrors, getValues } =
-    useForm<FormDataSchemaChangeStatus>({
-      resolver: yupResolver(schemaChangeStatus),
-      mode: 'onChange',
-      defaultValues: {
-        feedback: '',
-        attachments: [],
-        failed_reason: [],
-        onboard_date: null,
-        offer_expiration_date: null,
-        note: '',
-        ...defaultValues
-      },
-    })
+  const {
+    handleSubmit,
+    formState,
+    control,
+    watch,
+    trigger,
+    setValue,
+    clearErrors,
+    getValues,
+  } = useForm<FormDataSchemaChangeStatus>({
+    resolver: yupResolver(schemaChangeStatus),
+    mode: 'onChange',
+    defaultValues: {
+      feedback: '',
+      attachments: [],
+      failed_reason: [],
+      onboard_date: null,
+      offer_expiration_date: null,
+      note: '',
+      ...defaultValues,
+    },
+  })
 
   const isValid = !formState.isValid
 
   function onSubmit() {
     handleSubmit((value) => {
-      let deepValue = cloneDeep(value);
+      let deepValue = cloneDeep(value)
       deepValue.attachments = removeStatusAttachment(deepValue?.attachments)
 
-      const offer_expiration_date = deepValue.offer_expiration_date ? convertToEndDateUTC(deepValue.offer_expiration_date) : deepValue.offer_expiration_date;
-      const onboard_date = deepValue.onboard_date ? convertToEndDateUTC(deepValue.onboard_date) : deepValue.onboard_date;
-      
-      //remove field team_id
-      const value_clone = removeInfoData({field: ['team_id'], object: {...deepValue, offer_expiration_date, onboard_date}});
-      const update_status = removeInfoData({field: ['feedback', 'attachments'],object: value_clone}) as UpdateStatus;
+      const offer_expiration_date = deepValue.offer_expiration_date
+        ? convertToEndDateUTC(deepValue.offer_expiration_date)
+        : deepValue.offer_expiration_date
+      const onboard_date = deepValue.onboard_date
+        ? convertToEndDateUTC(deepValue.onboard_date)
+        : deepValue.onboard_date
+
+      //remove field hiring_team_id
+      const value_clone = removeInfoData({
+        field: ['hiring_team_id'],
+        object: { ...deepValue, offer_expiration_date, onboard_date },
+      })
+      const update_status = removeInfoData({
+        field: ['feedback', 'attachments'],
+        object: value_clone,
+      }) as UpdateStatus
 
       setData(value_clone as UpdateCandidateJobStatus)
       mutateChangeStatus(update_status)
@@ -176,9 +197,9 @@ function useChangeStatus(props: useChangeStatusProps) {
     trigger,
     actions: {
       resetOfferDate,
-      onSubmit
+      onSubmit,
     },
-    getValues
+    getValues,
   }
 }
 
