@@ -1,7 +1,9 @@
 import HistoryLogAuditTrails from 'features/auditTrails/presentation/page-sections/HistoryLog'
+import { useParams } from 'react-router-dom'
 
 const HistoryLog = () => {
-  return <HistoryLogAuditTrails module='hiring_jobs'/>
+  const { id } = useParams()
+  return <HistoryLogAuditTrails module='hiring_jobs' id={id as string}/>
 }
 
 export default HistoryLog

@@ -5,7 +5,6 @@ import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useParams } from 'react-router-dom'
 import { format } from 'date-fns'
 import AuditTrailsList from 'features/auditTrails/presentation/page-sections/AuditTrailsList'
 import { forwardRef, useImperativeHandle } from 'react'
@@ -20,10 +19,10 @@ import {
 
 interface Props {
   module: string
+  id: string
 }
 
-const LogsComponent = ({ module }: Props, ref: any) => {
-  const { id } = useParams()
+const LogsComponent = ({ module, id }: Props, ref: any) => {
   const { auditrails_history, handleMultipleFilter, handleFreeWord } = useAuditTrails(
     id as string,
     module

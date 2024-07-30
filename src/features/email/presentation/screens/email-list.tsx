@@ -8,7 +8,6 @@ import {
   CreateEmailModal,
   DeleteEmailModal,
   EditTeamModal,
-  DetailEmailModal,
 } from '../page-sections'
 import { useBuildColumnTable, CustomTable } from 'shared/components/table'
 import SearchInput from 'shared/components/table/components/SearchInput'
@@ -22,6 +21,7 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import EventEmailAutocomplete from 'shared/components/autocomplete/event-email-autocomplete'
 import { DivHeaderWrapper } from 'features/candidates/shared/styles'
+import TabEmailDetail from '../page-sections/TabDetail'
 
 const EmailList = () => {
   const useActionTableReturn = useActionTable()
@@ -124,12 +124,12 @@ const EmailList = () => {
           id={rowId.current}
         />
       )}
-      {openDetail && (
-        <DetailEmailModal
+        {openDetail && (
+        <TabEmailDetail
           open={openDetail}
           setOpen={setOpenDetail}
           id={rowId.current}
-          handleOpenEdit={handleOpenEdit}
+          handleOpenModalEdit={handleOpenEdit}
         />
       )}
       {openDelete && (
