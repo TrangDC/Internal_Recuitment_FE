@@ -1,20 +1,21 @@
 import useGraphql from 'features/calendars/domain/graphql'
-import { UpdateCandidateInterviewInput } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BaseRecord } from 'shared/interfaces/common'
 import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
 
 import { useEditResource } from 'shared/hooks/crud-hook'
+import CandidateInterview, {
+  UpdateCandidateInterviewArguments,
+} from 'shared/schema/database/candidate_interview'
 import {
   EditInterviewFrom,
   EditInterviewSchema,
-} from '../shared/constants/validate'
+} from 'features/calendars/shared/constants/validate'
 import {
   convertToRootByTimeNow,
   convertToRootDate,
   formatStringToDate,
-} from '../presentation/page-sections/google-calendar/functions'
-import CandidateInterview from 'shared/schema/database/candidate_interview'
+} from 'features/calendars/presentation/page-sections/google-calendar/functions'
 
 type UseEditInterviewProps = {
   id: string
@@ -28,7 +29,7 @@ function useEditInterview(props: UseEditInterviewProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     CandidateInterview,
     EditInterviewFrom,
-    UpdateCandidateInterviewInput
+    UpdateCandidateInterviewArguments
   >({
     resolver: yupResolver(EditInterviewSchema),
     editBuildQuery: updateCandidateInterview,
@@ -73,7 +74,7 @@ function useEditInterview(props: UseEditInterviewProps) {
   const isValid = !formState.isValid || !formState.isDirty
   const { mutate, isPending } = useEditReturn
 
-  function onSubmit() {
+  function onSubmit(note: string) {
     handleSubmit((value) => {
       if (value.from && value.to && value.date) {
         const { newEnd, newStart } = convertToRootDate(
@@ -88,19 +89,22 @@ function useEditInterview(props: UseEditInterviewProps) {
 
         const formatStart = convertToUTC(newStart).toISOString()
         const formatEnd = convertToUTC(newEnd).toISOString()
-        const formData: UpdateCandidateInterviewInput = {
-          description: value.description ?? '',
-          interviewer: value.interviewer ?? [],
-          interview_date: interview_date,
-          start_from: formatStart,
-          end_at: formatEnd,
-          title: value.title,
-          candidate_job_id: value.candidate_job_id,
-          note: '',
-          location: value.location,
-          meeting_link: value.meeting_link ?? '',
+        const payload: UpdateCandidateInterviewArguments = {
+          input: {
+            description: value.description ?? '',
+            interviewer: value.interviewer ?? [],
+            interview_date: interview_date,
+            start_from: formatStart,
+            end_at: formatEnd,
+            title: value.title,
+            candidate_job_id: value.candidate_job_id,
+            location: value.location,
+            meeting_link: value.meeting_link ?? '',
+          },
+          note: note,
+          id,
         }
-        mutate(formData)
+        mutate(payload)
       }
     })()
   }

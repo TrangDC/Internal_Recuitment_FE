@@ -1,20 +1,19 @@
 import useGraphql from 'features/jobs/domain/graphql/graphql'
 import { BaseRecord } from 'shared/interfaces'
 import { useDeleteResource } from 'shared/hooks/crud-hook'
-import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
+import { DeleteHiringJobArguments } from 'shared/schema/database/hiring_job'
 
 type UseDeleteJobProps = {
   id: string
   onSuccess: (data: BaseRecord) => void
-  onError?: (data: BaseRecord) => void;
+  onError?: (data: BaseRecord) => void
 }
 
 function useDeleteJob(props: UseDeleteJobProps) {
   const { id, onSuccess, onError } = props
   const { queryKey, deleteJob } = useGraphql()
-  const { useDeleteReturn } = useDeleteResource({
+  const { useDeleteReturn } = useDeleteResource<DeleteHiringJobArguments>({
     mutationKey: [queryKey],
-    id,
     onSuccess,
     onError,
     queryString: deleteJob,
@@ -22,8 +21,11 @@ function useDeleteJob(props: UseDeleteJobProps) {
 
   const { mutate, isPending } = useDeleteReturn
 
-  function onDelete(data: payloadDelete) {
-    mutate(data)
+  function onDelete(note: string) {
+    mutate({
+      id,
+      note,
+    })
   }
 
   return {

@@ -4,7 +4,6 @@ import { BaseRecord } from 'shared/interfaces'
 import ErrorException from 'shared/interfaces/response'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 import { t } from 'i18next'
-import { payloadDelete } from '../interfaces'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
 import GraphQLClientService, {
   IBuildQueryReturn,
@@ -15,27 +14,24 @@ interface IuseDeleteResource {
   queryString: IBuildQueryReturn
   onError?: (error: ErrorException | Error) => void
   onSuccess?: (data: BaseRecord) => void
-  id: string
 }
 
-function useDeleteResource({
+function useDeleteResource<Request>({
   mutationKey,
   queryString,
   onError,
   onSuccess,
-  id,
 }: IuseDeleteResource) {
   const { handleSuccess, handleFailed } = usePopup()
 
   const queryClient = useQueryClient()
   const useDeleteReturn = useMutation({
     mutationKey,
-    mutationFn: (payload: payloadDelete) => {
-      const { note } = payload
-      return GraphQLClientService.fetchGraphQL(queryString.query, {
-        id: id,
-        note: note ?? '',
-      })
+    mutationFn: (payload: Request) => {
+      return GraphQLClientService.fetchGraphQL(
+        queryString.query,
+        payload as BaseRecord
+      )
     },
     onSuccess: (data) => {
       if (isLeft(data)) {

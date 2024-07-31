@@ -1,7 +1,7 @@
+import useGraphql from 'features/role-template/domain/graphql/graphql'
 import { useDeleteResource } from 'shared/hooks/crud-hook'
-import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
 import { BaseRecord } from 'shared/interfaces/common'
-import useGraphql from '../domain/graphql/graphql'
+import { DeleteRoleArgument } from 'shared/schema/database/role'
 
 type UseDeleteInterviewProps = {
   id: string
@@ -11,17 +11,19 @@ type UseDeleteInterviewProps = {
 function useDeleteRoleTemplate(props: UseDeleteInterviewProps) {
   const { id, onSuccess } = props
   const { queryKey, deleteRole } = useGraphql()
-  const { useDeleteReturn } = useDeleteResource({
+  const { useDeleteReturn } = useDeleteResource<DeleteRoleArgument>({
     mutationKey: [queryKey],
-    id,
     onSuccess,
     queryString: deleteRole,
   })
 
   const { mutate, isPending } = useDeleteReturn
 
-  function onDelete(data: payloadDelete) {
-    mutate(data)
+  function onDelete(note: string) {
+    mutate({
+      id,
+      note,
+    })
   }
 
   return {

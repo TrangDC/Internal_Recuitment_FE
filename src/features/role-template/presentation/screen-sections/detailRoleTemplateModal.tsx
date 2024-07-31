@@ -4,10 +4,10 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Text13md, Text15md, Tiny12md } from 'shared/components/Typography'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from 'shared/components/icons/EditIcon'
-import useGetRoleTemplate from 'features/role-template/hooks/useGetRoleTemplate'
 import { FormProvider } from 'react-hook-form'
 import Cant from 'features/authorization/presentation/components/Cant'
 import PermissionSectionsDetail from 'shared/components/role-template-permission/screen-sections/detail/PermissionSectionsDetail'
+import useGetRoleTemplate from 'features/role-template/hooks/crud/useGetRoleTemplate'
 
 type DetailRoleTemplateModalProps = {
   open: boolean

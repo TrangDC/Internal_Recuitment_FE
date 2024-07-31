@@ -7,8 +7,8 @@ import { SELECTED_SKILL } from 'shared/components/tree/skill-tree'
 import { BaseRecord, DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
 import utc from 'dayjs/plugin/utc'
 import EntitySkillType from 'shared/schema/database/entity_skill_type'
-import { EntitySkillRecordInput } from 'features/jobs/domain/interfaces'
-import { NewAttachmentInput } from 'features/candidatejob/domain/interfaces'
+import { NewAttachmentInput } from 'shared/schema/database/candidate_job'
+import { EntitySkillRecordInput } from 'shared/schema/database/hiring_job'
 
 dayjs.extend(utc)
 

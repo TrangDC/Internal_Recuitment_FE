@@ -1,12 +1,11 @@
 import { ReactNode, useState } from 'react'
 import AppButton from '../AppButton'
-import { useTranslation } from 'react-i18next'
 import { LoadingButton } from '@mui/lab'
 import BaseModal from 'shared/components/modal'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Tiny } from 'shared/components/Typography'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import useTextTranslation from 'shared/constants/text'
+import { Box, Grid } from '@mui/material'
 
 type IProps = {
   handlesubmit: (note: string) => void
@@ -37,43 +36,43 @@ const ModalConfirm = ({
   subTitle,
   Icon,
 }: ModalConfirmpProps) => {
-  const { t } = useTranslation()
+  const translation = useTextTranslation()
   const [reason, setReason] = useState('')
   function handlesubmit() {
     onClick(reason)
   }
 
   return (
-    <BaseModal.Wrapper maxWidth={800} setOpen={setOpen} open={open}>
+    <BaseModal.Wrapper maxWidth={500} setOpen={setOpen} open={open}>
       <BaseModal.Header
         title={title}
         setOpen={setOpen}
         subTitle={subTitle}
         Icon={Icon}
       ></BaseModal.Header>
-      <BaseModal.ContentMain>
-        <FlexBox flexDirection={'row'} gap={4}>
-          <Tiny
-            fontSize={12}
-            color={'#4D607A'}
-            lineHeight={'14.63px'}
-            mt={1}
-            width={'45px'}
-          >
-            {t('Reason')}
-          </Tiny>
-          <AppTextField
-            rows={2}
-            multiline
-            fullWidth
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-          />
-        </FlexBox>
-      </BaseModal.ContentMain>
+      <Box maxHeight="500px" padding={'20px 30px'}>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <AppTextField
+              rows={2}
+              multiline
+              label={translation.COMMON.description}
+              fullWidth
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+            />
+          </Grid>
+        </Grid>
+      </Box>
       <BaseModal.Footer>
-        <AppButton variant="outlined" onClick={() => setOpen(false)}>
-          {t('Cancel')}
+        <AppButton
+          variant="outlined"
+          onClick={() => setOpen(false)}
+          sx={{
+            width: '50%',
+          }}
+        >
+          {translation.COMMON.cancel}
         </AppButton>
         {loading ? (
           <LoadingButton
@@ -82,6 +81,9 @@ const ModalConfirm = ({
             size="small"
             loading
             disabled
+            sx={{
+              width: '50%',
+            }}
           >
             Please wait...
           </LoadingButton>
@@ -90,8 +92,11 @@ const ModalConfirm = ({
             data-testid="btn-submit"
             variant="contained"
             onClick={handlesubmit}
+            sx={{
+              width: '50%',
+            }}
           >
-            {t('Confirm')}
+            {translation.COMMON.save}
           </AppButton>
         )}
       </BaseModal.Footer>

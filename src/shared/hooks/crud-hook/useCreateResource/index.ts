@@ -43,12 +43,8 @@ function useCreateResource<T, P extends FieldValues>({
   })
   const useCreateReturn = useMutation({
     mutationKey,
-    mutationFn: (payload: BaseRecord) => {
-      const { note, ...otherInput } = payload
-      return GraphQLClientService.fetchGraphQL(queryString.query, {
-        input: otherInput,
-        note,
-      })
+    mutationFn: (payload: T) => {
+      return GraphQLClientService.fetchGraphQL(queryString.query, payload as BaseRecord)
     },
     onSuccess: (data) => {
       if (isLeft(data)) {

@@ -1,7 +1,4 @@
-import { SkillType } from 'features/skillType/domain/interfaces'
-import {
-  Box,
-} from '@mui/material'
+import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Tiny } from 'shared/components/Typography'
 import Checkbox from '@mui/material/Checkbox'
@@ -15,8 +12,8 @@ import {
   FlexBoxBody,
 } from '../style'
 import DownIcon from 'shared/components/icons/DownIcon'
-import { Skill } from 'features/skill/domain/interfaces'
 import { isEmpty } from 'lodash'
+import { SkillTree, SkillTypeTree } from '../interface'
 
 type TYPE_LIST_SELECTED = {
   id: string
@@ -26,10 +23,10 @@ type TYPE_LIST_SELECTED = {
 }
 
 interface Props {
-  skill_type: SkillType
+  skill_type: SkillTypeTree
   onChange: (data: TYPE_LIST_SELECTED) => void
   selected: SELECTED_SKILL
-  handleChangeParent: ({ id }: { id: string, skills: Skill[] }) => void
+  handleChangeParent: ({ id }: { id: string; skills: SkillTree[] }) => void
 }
 
 const AccordionComponent = ({
@@ -47,7 +44,7 @@ const AccordionComponent = ({
   return (
     <AccordionWrapper>
       <AccordionHeader
-        expandIcon={<DownIcon id='down_icon'/>}
+        expandIcon={<DownIcon id="down_icon" />}
         aria-controls="panel1bh-content"
         id="panel1bh-header"
       >
@@ -55,7 +52,9 @@ const AccordionComponent = ({
           <Tiny>{skill_type.name}</Tiny>
           <Box onClick={(e) => e.stopPropagation()}>
             <Checkbox
-              indeterminate={(child_checked.length < skills.length) && !isEmpty(child_checked)}
+              indeterminate={
+                child_checked.length < skills.length && !isEmpty(child_checked)
+              }
               checked={isExistKey(id, selected)}
               onChange={() => {
                 handleChangeParent({

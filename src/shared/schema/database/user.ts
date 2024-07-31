@@ -15,4 +15,27 @@ interface User {
   roles: Role[]
 }
 
+export type UpdateUserArguments = {
+  id: string
+  input: UpdateUserInput
+  note: string
+}
+
+export type UpdateUserInput = {
+  name: string
+  work_email: string
+  status: string
+  hiring_team_id: string
+  entity_permissions: NewEntityPermissionInput[]
+  role_id: string[]
+}
+
+export type NewEntityPermissionInput = {
+  id: string
+  for_owner: boolean
+  for_team: boolean
+  for_all: boolean
+  permission_id: string
+}
+
 export default User

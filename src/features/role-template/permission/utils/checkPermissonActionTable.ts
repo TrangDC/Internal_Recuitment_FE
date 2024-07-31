@@ -1,19 +1,19 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
-import { RoleTemplate } from 'features/role-template/domain/interfaces'
-import { ActionRoleTemplates } from 'features/role-template/hooks/useBuildActionsTableRoleTemplate'
+import { ActionRoleTemplates } from 'features/role-template/hooks/table/useBuildActionsTableRoleTemplate'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
+import Role from 'shared/schema/database/role'
 
 interface ActionProps {
-  newActions: TOptionItem<RoleTemplate>[]
+  newActions: TOptionItem<Role>[]
   role: PermissionStructureImpl | null
 }
 
 function checkPermissionActionTable({
   role,
   actions,
-}: CheckPermissionActionTableProps<RoleTemplate>): TOptionItem<RoleTemplate>[] {
+}: CheckPermissionActionTableProps<Role>): TOptionItem<Role>[] {
   let newActions = [...actions]
   newActions = editAction({ newActions, role })
   newActions = deleteAction({ newActions, role })
@@ -30,7 +30,8 @@ function editAction({ newActions, role }: ActionProps) {
     module: 'ROLES_TEMPLATE',
   })
 
-  if (!everything) return newActions.filter((action) => action.id !== ActionRoleTemplates.EDIT)
+  if (!everything)
+    return newActions.filter((action) => action.id !== ActionRoleTemplates.EDIT)
   return newActions
 }
 
@@ -44,7 +45,10 @@ function deleteAction({ newActions, role }: ActionProps) {
     module: 'ROLES_TEMPLATE',
   })
 
-  if (!everything) return newActions.filter((action) => action.id !== ActionRoleTemplates.DELETE)
+  if (!everything)
+    return newActions.filter(
+      (action) => action.id !== ActionRoleTemplates.DELETE
+    )
   return newActions
 }
 

@@ -3,17 +3,17 @@ import { Box } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Scrollbar from 'shared/components/ScrollBar'
 import { DATA_KEYWORD_TEMPLATE, IDetailModal } from 'shared/interfaces'
-import { Email } from 'features/email/domain/interfaces'
 import GenerateInnerHTML from 'shared/components/genarateInnerHTML'
 import { TextWrapper } from 'features/email/shared/constants/styles/style'
 import useGetEmailKeyWord from 'features/email/hooks/useGetEmailKeyWord'
 import { replaceTemplate } from 'shared/utils/utils'
+import EmailTemplate from 'shared/schema/database/email_template'
 
 function PreviewEmailModal({
   open,
   setOpen,
   rowData,
-}: IDetailModal<Partial<Email>>) {
+}: IDetailModal<Partial<EmailTemplate>>) {
   const { options_keyWord } = useGetEmailKeyWord({})
   const previewData = (content: string, data: DATA_KEYWORD_TEMPLATE[]) => {
     const stringHTML = replaceTemplate(content, data)

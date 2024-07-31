@@ -3,9 +3,10 @@ import useGraphql from 'features/email/domain/graphql/graphql'
 import { BaseRecord, DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import { FormDataSchemaUpdate, schemaUpdate } from '../shared/constants/schema'
-import { UpdateEmailInput } from '../domain/interfaces'
 import { getContentStringHTML, RegexEmail } from 'shared/utils/utils'
-import EmailTemplate from 'shared/schema/database/email_template'
+import EmailTemplate, {
+  UpdateEmailTemplateArguments,
+} from 'shared/schema/database/email_template'
 import {
   OPTIONS_VALUE_SEND_TO,
   SEND_TO_VALUE,
@@ -29,7 +30,7 @@ function useUpdateEmail(props: UseEditTeamProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     EmailTemplate,
     FormDataSchemaUpdate,
-    UpdateEmailInput
+    UpdateEmailTemplateArguments
   >({
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: UpdateEmailTemplate,
@@ -80,12 +81,12 @@ function useUpdateEmail(props: UseEditTeamProps) {
     )
   const { mutate, isPending } = useEditReturn
 
-  function onSubmit() {
+  function onSubmit(note: string) {
     handleSubmit((value) => {
       const valueClone = cloneDeep(value)
       const send_to_default = valueClone.send_to
 
-      const role_ids = send_to_default.filter((option) => {
+      const role_ids: string[] = send_to_default.filter((option) => {
         return !OPTIONS_VALUE_SEND_TO.includes(option)
       })
       const send_to = send_to_default.filter((option) => {
@@ -93,13 +94,21 @@ function useUpdateEmail(props: UseEditTeamProps) {
       })
 
       if (!isEmpty(role_ids)) send_to.push(SEND_TO_VALUE.role)
-
-      mutate({
-        ...valueClone,
-        roleIds: role_ids,
-        send_to: send_to,
-        subject: getContentStringHTML(value?.subject),
-      } as UpdateEmailInput)
+      const payload: UpdateEmailTemplateArguments = {
+        id,
+        input: {
+          roleIds: role_ids,
+          send_to: send_to,
+          subject: getContentStringHTML(value?.subject),
+          bcc: [],
+          cc: value?.cc ?? [],
+          content: value?.content,
+          event: value?.event,
+          signature: value?.signature ?? '',
+        },
+        note,
+      }
+      mutate(payload)
     })()
   }
 

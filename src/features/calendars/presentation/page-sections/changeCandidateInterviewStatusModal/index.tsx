@@ -1,7 +1,6 @@
 import ConfirmModal from 'shared/components/modal/ConfirmModal'
-import { UpdateCandidateInterviewStatusInput } from 'features/calendars/domain/interfaces'
-import useChangeInterviewStatus from 'features/calendars/hooks/useChangeInterviewStatus'
 import useGraphql from 'features/calendars/domain/graphql'
+import useChangeInterviewStatus from 'features/calendars/hooks/crud/useChangeInterviewStatus'
 
 interface ICreateInterviewModal {
   id: string
@@ -19,16 +18,15 @@ function ChangeCandidateInterviewStatusModal({
   updateTo,
 }: ICreateInterviewModal) {
   const { updateCandidateInterviewStatus, queryKey } = useGraphql()
-  const { useEditReturn, handleChangeStatus } =
-    useChangeInterviewStatus<UpdateCandidateInterviewStatusInput>({
-      id: id,
-      editBuildQuery: updateCandidateInterviewStatus,
-      queryKey: [queryKey],
-      onSuccess: () => {
-        setOpen(false)
-        onSuccess?.()
-      },
-    })
+  const { useEditReturn, handleChangeStatus } = useChangeInterviewStatus({
+    id: id,
+    editBuildQuery: updateCandidateInterviewStatus,
+    queryKey: [queryKey],
+    onSuccess: () => {
+      setOpen(false)
+      onSuccess?.()
+    },
+  })
   const { isPending } = useEditReturn
 
   return (

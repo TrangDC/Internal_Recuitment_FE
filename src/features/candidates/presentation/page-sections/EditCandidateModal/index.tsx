@@ -18,9 +18,10 @@ import CandidateBySource from '../CreateCandidateModal/components/CandidateBySou
 import { Span, Tiny } from 'shared/components/Typography'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import SkillTree from 'shared/components/tree/skill-tree'
+import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
 import Candidate from 'shared/schema/database/candidate'
+import ButtonEdit from 'shared/components/buttons/buttonEdit'
 
 interface IEditCandidateModal {
   open: boolean
@@ -54,7 +55,7 @@ function EditCandidateModal({
     },
   })
 
-  const { callbackSubmit, resetSourceValue } = actions
+  const { onSubmit, resetSourceValue } = actions
   const translation = useTextTranslation()
 
   const candidate_source = watch('reference_type')
@@ -294,7 +295,7 @@ function EditCandidateModal({
                   name="entity_skill_records"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <SkillTree
+                      <SkillTreeSelection
                         value={field.value}
                         onChange={field.onChange}
                       />
@@ -391,17 +392,13 @@ function EditCandidateModal({
             >
               {translation.COMMON.cancel}
             </AppButton>
-            <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
-              <ButtonLoading
-                variant="contained"
-                size="small"
-                disabled={isValid}
-                handlesubmit={() => {}}
-                loading={isPending}
-              >
-                Submit
-              </ButtonLoading>
-            </UpdateRecord>
+            <ButtonEdit
+              disabled={isValid}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonEdit>
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>

@@ -14,7 +14,6 @@ import BaseModal from 'shared/components/modal'
 import { formatDateToString, getTime, isPast } from 'shared/utils/date'
 import { Fragment } from 'react/jsx-runtime'
 import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
-import useGetInterview from 'features/calendars/hooks/useGetInterview'
 import DeleteInterviewButtonPermission from 'features/calendars/permission/components/DeleteInterviewButtonPermission'
 import EditInterviewButtonPermission from 'features/calendars/permission/components/EditInterviewButtonPermission'
 import {
@@ -23,6 +22,7 @@ import {
 } from 'shared/components/autocomplete/location-interview-autocomplete'
 import { LinkText as Link } from 'shared/styles'
 import { useMemo } from 'react'
+import useGetInterview from 'features/calendars/hooks/crud/useGetInterview'
 interface IDetailIntefviewModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -53,6 +53,7 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
   const show_meeting_link = useMemo(() => {
     return getValues('location') === LOCATION_INTERVIEW_STATE.ONLINE
   }, [getValues('location')])
+
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <Box>

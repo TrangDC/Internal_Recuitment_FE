@@ -1,12 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/interviews/domain/graphql/graphql'
-import { NewCandidateInterviewInput } from 'features/interviews/domain/interfaces'
 import { schema, FormDataSchema } from '../../shared/constants/schema'
-import { cloneDeep } from 'lodash'
 import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
 import { ChosenDateType } from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
 import { useCreateResource } from 'shared/hooks/crud-hook'
+import { CreateCandidateInterviewArguments } from 'shared/schema/database/candidate_interview'
 
 interface createInterviewProps {
   defaultValues?: Partial<FormDataSchema>
@@ -20,7 +19,7 @@ function useCreateInterview(
 
   const { createCandidateInterview, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewCandidateInterviewInput,
+    CreateCandidateInterviewArguments,
     FormDataSchema
   >({
     mutationKey: [queryKey],
@@ -43,7 +42,7 @@ function useCreateInterview(
 
   function onSubmit() {
     handleSubmit((value) => {
-      if(!value.interview_date) return
+      if (!value.interview_date) return
       let interview_date = dayjs(value.interview_date)
       const start_form = dayjs(value.start_from)
         .year(interview_date.year())
@@ -59,14 +58,22 @@ function useCreateInterview(
         .subtract(getLocalTimeOffset(), 'hour')
         .toISOString()
 
-      const valueClone = {
-        ...cloneDeep(value),
-        interview_date: interview_date_apply,
-        start_from: convertToUTC(start_form.toDate()).toISOString(),
-        end_at: convertToUTC(end_at.toDate()).toISOString(),
+      const payload: CreateCandidateInterviewArguments = {
+        input: {
+          interview_date: interview_date_apply,
+          start_from: convertToUTC(start_form.toDate()).toISOString(),
+          end_at: convertToUTC(end_at.toDate()).toISOString(),
+          candidate_job_id: value?.candidate_job_id,
+          description: value?.description ?? '',
+          interviewer: value?.interviewer,
+          location: value?.location,
+          meeting_link: value?.meeting_link ?? '',
+          title: value?.title,
+        },
+        note: '',
       }
 
-      mutate(valueClone)
+      mutate(payload)
     })()
   }
 
@@ -81,7 +88,7 @@ function useCreateInterview(
     }
   }
 
-  function resetMeetingLink () {
+  function resetMeetingLink() {
     setValue('meeting_link', '')
   }
 

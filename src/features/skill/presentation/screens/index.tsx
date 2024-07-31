@@ -12,9 +12,9 @@ import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import useFilterSkills from '../../hooks/table/useFilterSkills'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import Cant from 'features/authorization/presentation/components/Cant'
-import { Skill } from 'features/skill/domain/interfaces'
 import DetailSkillModal from '../page-sections/DetailSkill'
 import useBuildActionsTableSkill from 'features/skill/hooks/table/useBuildActionsTableSkill'
+import Skill from 'shared/schema/database/skill'
 
 const SkillList = () => {
   const {

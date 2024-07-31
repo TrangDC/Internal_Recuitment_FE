@@ -1,31 +1,17 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
-import { useForm } from 'react-hook-form'
 import {
   schemaChangeStatus,
   FormDataSchemaChangeStatus,
 } from '../../shared/constants/schema'
-import { cloneDeep, isEmpty } from 'lodash'
-import {
-  getInfoData,
-  removeInfoData,
-  removeStatusAttachment,
-} from 'shared/utils/utils'
-import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
-import {
-  FormDataSchema,
-  FormDataSchemaUpdate,
-  schema,
-  schemaUpdate,
-} from 'features/feedback/shared/constants/schema'
-import { useState } from 'react'
-import { useCreateResource, useEditResource } from 'shared/hooks/crud-hook'
-import {
-  UpdateCandidateJobStatus,
-  UpdateStatus,
-} from 'features/candidatejob/domain/interfaces'
+import { removeStatusAttachment } from 'shared/utils/utils'
+import { useEditResource } from 'shared/hooks/crud-hook'
 import { convertToEndDateUTC } from 'shared/utils/date'
-import CandidateJob from 'shared/schema/database/candidate_job'
+import CandidateJob, {
+  UpdateCandidateJobStatusArguments,
+} from 'shared/schema/database/candidate_job'
+import useCreateFeedBack from './useCreateFeedback'
+import { isRight } from 'shared/utils/handleEither'
 
 interface useChangeStatusProps {
   defaultValues?: Partial<FormDataSchemaChangeStatus>
@@ -33,100 +19,31 @@ interface useChangeStatusProps {
   id: string
 }
 
-interface propsChangeStatus {
-  mutationFeedback: () => void
-  callbackSuccess?: (value: any) => void
-  id: string
-}
-
-function ChangeStatus(props: propsChangeStatus) {
-  const { mutationFeedback, id } = props
+function useChangeStatus(props: useChangeStatusProps) {
+  const { callbackSuccess, id, defaultValues } = props
   const { changeStatusCandidate, queryKey, getCandidateJob } = useGraphql()
+  const { mutateCreateFeedback, isCreateFeedback } = useCreateFeedBack()
+
   const { useEditReturn, useFormReturn } = useEditResource<
     CandidateJob,
-    Pick<FormDataSchemaUpdate, 'note'>,
-    UpdateStatus
+    FormDataSchemaChangeStatus,
+    UpdateCandidateJobStatusArguments
   >({
-    resolver: yupResolver(schemaUpdate),
+    resolver: yupResolver(schemaChangeStatus),
     editBuildQuery: changeStatusCandidate,
     oneBuildQuery: getCandidateJob,
     queryKey: [queryKey],
     id,
-    onSuccess: mutationFeedback,
     formatDefaultValues(data) {
       return {
-        note: '',
+        status: data?.status ?? '',
+        attachments: [],
+        failed_reason: [],
+        feedback: '',
+        offer_expiration_date: null,
+        onboard_date: null,
+        ...defaultValues,
       }
-    },
-  })
-
-  const { formState } = useFormReturn
-  const isValid = !formState.isValid
-  const { isPending, mutate } = useEditReturn
-
-  return {
-    mutateChangeStatus: mutate,
-    isPendingStatus: isPending,
-    isValidStatus: isValid,
-  }
-}
-
-function CreateFeedBackProp(
-  props: Pick<useChangeStatusProps, 'callbackSuccess'> = {}
-) {
-  const { callbackSuccess } = props
-
-  const { createCandidateJobFeedback, queryKey } = useGraphql()
-  const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewCandidateJobFeedbackInput,
-    FormDataSchema
-  >({
-    mutationKey: [queryKey],
-    queryString: createCandidateJobFeedback,
-    defaultValues: {
-      feedback: '',
-    },
-    show_modal: false,
-    resolver: yupResolver(schema),
-    onSuccess: (data) => {
-      const response =
-        data[createCandidateJobFeedback.operation]?.data?.candidate_job
-      callbackSuccess?.(response)
-    },
-  })
-
-  const { formState } = useFormReturn
-  const isValid = !formState.isValid
-  const { mutate } = useCreateReturn
-
-  return {
-    mutateCreateFeedback: mutate,
-    isValidFeedback: isValid,
-  }
-}
-
-function useChangeStatus(props: useChangeStatusProps) {
-  const [data, setData] = useState<UpdateCandidateJobStatus>()
-
-  const { defaultValues, callbackSuccess, id } = props
-  const { mutateCreateFeedback } = CreateFeedBackProp({ callbackSuccess })
-
-  const { mutateChangeStatus, isPendingStatus } = ChangeStatus({
-    id: id,
-    callbackSuccess,
-    mutationFeedback: () => {
-      if (!data?.feedback && isEmpty(data?.attachments)) {
-        callbackSuccess?.({ ...data, id })
-        return
-      }
-
-      mutateCreateFeedback({
-        ...getInfoData({
-          field: ['feedback', 'attachments'],
-          object: data as UpdateCandidateJobStatus,
-        }),
-        candidate_job_id: id,
-      })
     },
   })
 
@@ -139,46 +56,42 @@ function useChangeStatus(props: useChangeStatusProps) {
     setValue,
     clearErrors,
     getValues,
-  } = useForm<FormDataSchemaChangeStatus>({
-    resolver: yupResolver(schemaChangeStatus),
-    mode: 'onChange',
-    defaultValues: {
-      feedback: '',
-      attachments: [],
-      failed_reason: [],
-      onboard_date: null,
-      offer_expiration_date: null,
-      note: '',
-      ...defaultValues,
-    },
-  })
-
+  } = useFormReturn
+  const { mutateAsync, isPending } = useEditReturn
   const isValid = !formState.isValid
 
   function onSubmit() {
     handleSubmit((value) => {
-      let deepValue = cloneDeep(value)
-      deepValue.attachments = removeStatusAttachment(deepValue?.attachments)
+      const attachments = removeStatusAttachment(value?.attachments)
+      const offer_expiration_date = value.offer_expiration_date
+        ? convertToEndDateUTC(value.offer_expiration_date)
+        : value.offer_expiration_date
+      const onboard_date = value.onboard_date
+        ? convertToEndDateUTC(value.onboard_date)
+        : value.onboard_date
 
-      const offer_expiration_date = deepValue.offer_expiration_date
-        ? convertToEndDateUTC(deepValue.offer_expiration_date)
-        : deepValue.offer_expiration_date
-      const onboard_date = deepValue.onboard_date
-        ? convertToEndDateUTC(deepValue.onboard_date)
-        : deepValue.onboard_date
-
-      //remove field hiring_team_id
-      const value_clone = removeInfoData({
-        field: ['hiring_team_id'],
-        object: { ...deepValue, offer_expiration_date, onboard_date },
+      const payload: UpdateCandidateJobStatusArguments = {
+        id,
+        input: {
+          failed_reason: value?.failed_reason ?? [],
+          offer_expiration_date: offer_expiration_date ?? null,
+          onboard_date: onboard_date ?? null,
+          status: value?.status,
+        },
+        note: '',
+      }
+      mutateAsync(payload).then((data) => {
+        if (isRight(data)) {
+          mutateCreateFeedback({
+            input: {
+              attachments,
+              candidate_job_id: id,
+              feedback: value?.feedback ?? '',
+            },
+            note: '',
+          }).then(() => callbackSuccess?.(data))
+        }
       })
-      const update_status = removeInfoData({
-        field: ['feedback', 'attachments'],
-        object: value_clone,
-      }) as UpdateStatus
-
-      setData(value_clone as UpdateCandidateJobStatus)
-      mutateChangeStatus(update_status)
     })()
   }
 
@@ -191,7 +104,7 @@ function useChangeStatus(props: useChangeStatusProps) {
   return {
     control,
     isValid,
-    isPending: isPendingStatus,
+    isPending: isCreateFeedback || isPending,
     watch,
     formState,
     trigger,

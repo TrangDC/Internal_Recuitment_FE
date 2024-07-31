@@ -21,13 +21,13 @@ import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer } from 'shared/styles'
 import duotone from 'shared/components/icons'
 import DeleteInterviewModal from '../page-sections/deleteInterviewModal'
-import useGetAllInterview from 'features/calendars/hooks/useGetAllInterview'
-import useDragDropInterview from 'features/calendars/hooks/useDragDropInterview'
 import CalendarProvider from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 import useCheckEditInterviewPermission from 'features/calendars/permission/hooks/useCheckEditInterviewPermission'
 import { useLocation } from 'react-router-dom'
 import ChangeCandidateInterviewStatusModal from '../page-sections/changeCandidateInterviewStatusModal'
 import useActionInterview from 'features/calendars/hooks/calendar/useActionInterview'
+import useDragDropInterview from 'features/calendars/hooks/crud/useDragDropInterview'
+import useGetAllInterview from 'features/calendars/hooks/crud/useGetAllInterview'
 
 function CalendarsScreen() {
   const useChangeInterviewStatusReturn = useActionInterview()

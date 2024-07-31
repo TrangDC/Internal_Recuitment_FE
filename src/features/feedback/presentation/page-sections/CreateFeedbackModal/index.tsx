@@ -92,8 +92,14 @@ function CreateFeedbackModal({
                         name={field.name}
                         multiple={true}
                         validator_files={{
-                          max_file: {max: 10, msg_error: 'Up to 10 files and 20MB/file'},
-                          max_size: {max: 20, msg_error: 'Up to 10 files and 20MB/file'},             
+                          max_file: {
+                            max: 10,
+                            msg_error: 'Up to 10 files and 20MB/file',
+                          },
+                          max_size: {
+                            max: 20,
+                            msg_error: 'Up to 10 files and 20MB/file',
+                          },
                         }}
                         descriptionFile={() => {
                           return (
@@ -103,11 +109,11 @@ function CreateFeedbackModal({
                                 Attach file{' '}
                               </Span>
                               <Tiny sx={{ color: '#2A2E37 !important' }}>
-                              Up to 10 files and 20MB/file
+                                Up to 10 files and 20MB/file
                               </Tiny>
                             </Box>
                           )
-                        }} 
+                        }}
                         value={field.value}
                         onChange={field.onChange}
                       />

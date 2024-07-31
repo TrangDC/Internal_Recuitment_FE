@@ -1,10 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/teams/domain/graphql/graphql'
-import { UpdateHiringTeam } from 'features/teams/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import { transformListItem } from 'shared/utils/utils'
 import { useEditResource } from 'shared/hooks/crud-hook'
-import HiringTeam from 'shared/schema/database/hiring_team'
+import HiringTeam, { UpdateHiringTeamArguments } from 'shared/schema/database/hiring_team'
 import {
   FormDataSchemaUpdate,
   schemaUpdate,
@@ -21,7 +20,7 @@ function useUpdateTeam(props: UseEditTeamProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     HiringTeam,
     FormDataSchemaUpdate,
-    UpdateHiringTeam
+    UpdateHiringTeamArguments
   >({
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: updateTeam,
@@ -43,9 +42,17 @@ function useUpdateTeam(props: UseEditTeamProps) {
   const isValid = !formState.isValid || !formState.isDirty
   const { mutate, isPending } = useEditReturn
 
-  function onSubmit() {
+  function onSubmit(note:string) {
     handleSubmit((value) => {
-      mutate(value)
+      const payload: UpdateHiringTeamArguments = {
+        id,
+        input: {
+          members: value?.members ?? [],
+          name: value?.name,
+        },
+        note: note,
+      }
+      mutate(payload)
     })()
   }
 

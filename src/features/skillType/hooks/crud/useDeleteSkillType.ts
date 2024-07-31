@@ -1,20 +1,19 @@
 import useGraphql from 'features/skillType/domain/graphql/graphql'
 import { BaseRecord } from 'shared/interfaces'
 import { useDeleteResource } from 'shared/hooks/crud-hook'
-import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
+import { DeleteSkillTypeArguments } from 'shared/schema/database/skill_type'
 
 type UseDeleteJobProps = {
   id: string
   onSuccess: (data: BaseRecord) => void
-  onError?: (data: BaseRecord) => void;
+  onError?: (data: BaseRecord) => void
 }
 
 function useDeleteSkillType(props: UseDeleteJobProps) {
   const { id, onSuccess, onError } = props
   const { queryKey, deleteSkillType } = useGraphql()
-  const { useDeleteReturn } = useDeleteResource({
+  const { useDeleteReturn } = useDeleteResource<DeleteSkillTypeArguments>({
     mutationKey: [queryKey],
-    id,
     onSuccess,
     onError,
     queryString: deleteSkillType,
@@ -22,8 +21,11 @@ function useDeleteSkillType(props: UseDeleteJobProps) {
 
   const { mutate, isPending } = useDeleteReturn
 
-  function onDelete(data: payloadDelete) {
-    mutate(data)
+  function onDelete(note: string) {
+    mutate({
+      id,
+      note,
+    })
   }
 
   return {
@@ -32,4 +34,3 @@ function useDeleteSkillType(props: UseDeleteJobProps) {
   }
 }
 export default useDeleteSkillType
-

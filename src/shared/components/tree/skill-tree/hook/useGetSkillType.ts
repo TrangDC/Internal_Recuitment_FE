@@ -1,14 +1,14 @@
 import useGraphql from '../graphql'
-import { SkillType } from 'features/skillType/domain/interfaces'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { cloneDeep, isEmpty } from 'lodash'
 import GraphQLClientService from 'services/graphql-service'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
+import { SkillTypeTree } from '../interface'
 
 function useGetSkillType() {
   const { getAllSkillTypes, queryKey } = useGraphql()
-  const [options, setOptions] = useState<SkillType[]>([])
+  const [options, setOptions] = useState<SkillTypeTree[]>([])
   const searchRef = useRef<HTMLInputElement | null>(null)
 
   const { data } = useQuery({
@@ -23,7 +23,7 @@ function useGetSkillType() {
 
   const skill_types = useMemo(() => {
     if (data && isRight(data)) {
-      const data_skill: SkillType[] =
+      const data_skill: SkillTypeTree[] =
         unwrapEither(data)?.[getAllSkillTypes.operation]?.edges?.map(
           (item: any) => item?.node
         ) ?? []
@@ -46,7 +46,7 @@ function useGetSkillType() {
     const search = searchRef.current?.value
 
     const skill_filter = cloneDeep(skill_types).reduce(
-      (current: SkillType[], next: SkillType) => {
+      (current: SkillTypeTree[], next: SkillTypeTree) => {
         const filter_by_name = next.skills.filter((skill) => {
           return skill.name
             .toLocaleLowerCase()

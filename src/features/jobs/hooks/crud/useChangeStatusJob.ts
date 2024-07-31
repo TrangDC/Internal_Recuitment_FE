@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
-import { UpdateHiringJobStatus } from 'features/jobs/domain/interfaces'
 import {
   schemaChangeStatus,
   FormDataSchemaChangeStatus,
@@ -10,7 +9,10 @@ import { useUpdateResourceOther } from 'shared/hooks/crud-hook'
 import { JobStatus } from 'shared/class/job-status'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
-import HiringJob from 'shared/schema/database/hiring_job'
+import HiringJob, {
+  HiringJobStatus,
+  UpdateHiringJobStatusArguments,
+} from 'shared/schema/database/hiring_job'
 
 const { STATUS_HIRING_JOB } = JobStatus
 
@@ -26,7 +28,7 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
   const { useEditReturn, useFormReturn, formData } = useUpdateResourceOther<
     HiringJob,
     FormDataSchemaChangeStatus,
-    UpdateHiringJobStatus
+    UpdateHiringJobStatusArguments
   >({
     resolver: yupResolver(schemaChangeStatus),
     editBuildQuery: changeStatusJob,
@@ -56,11 +58,12 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      mutate({
+      const payload: UpdateHiringJobStatusArguments = {
+        id,
         note: value?.note ?? '',
-        status: value?.status,
-        id: id,
-      })
+        status: value?.status as HiringJobStatus,
+      }
+      mutate(payload)
     })()
   }
 

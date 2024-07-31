@@ -1,9 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/feedback/domain/graphql/graphql'
-import { NewCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import { schema, FormDataSchema } from '../../shared/constants/schema'
 import { removeStatusAttachment } from 'shared/utils/utils'
 import { useCreateResource } from 'shared/hooks/crud-hook'
+import { CreateCandidateJobFeedbackArguments } from 'shared/schema/database/candidate_job_feedback'
 
 interface createFeedbackProps {
   defaultValues?: Partial<FormDataSchema>
@@ -15,7 +15,7 @@ function useCreateFeedback(props: createFeedbackProps = { defaultValues: {} }) {
 
   const { createCandidateJobFeedback, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewCandidateJobFeedbackInput,
+    CreateCandidateJobFeedbackArguments,
     FormDataSchema
   >({
     mutationKey: [queryKey],
@@ -35,11 +35,15 @@ function useCreateFeedback(props: createFeedbackProps = { defaultValues: {} }) {
   function onSubmit() {
     handleSubmit((value) => {
       const attachments = removeStatusAttachment(value?.attachments)
-
-      mutate({
-        ...value,
-        attachments,
-      })
+      const payload: CreateCandidateJobFeedbackArguments = {
+        input: {
+          attachments,
+          candidate_job_id: value?.candidate_job_id,
+          feedback: value?.feedback ?? '',
+        },
+        note: '',
+      }
+      mutate(payload)
     })()
   }
 
@@ -50,7 +54,7 @@ function useCreateFeedback(props: createFeedbackProps = { defaultValues: {} }) {
     isPending,
     formState,
     watch,
-    getValues
+    getValues,
   }
 }
 

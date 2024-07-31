@@ -12,6 +12,7 @@ import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import useUpdateTeam from 'features/teams/hooks/crud/useUpdateTeam'
+import ButtonEdit from 'shared/components/buttons/buttonEdit'
 
 interface IEditTeamModal {
   open: boolean
@@ -37,11 +38,6 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
   const { onSubmit } = actions
 
   const translation = useTextTranslation()
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
-  }
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -118,17 +114,13 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
             >
               {translation.COMMON.cancel}
             </AppButton>
-            <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
-              <ButtonLoading
-                variant="contained"
-                size="small"
-                disabled={isValid}
-                handlesubmit={() => {}}
-                loading={isPending}
-              >
-                Submit
-              </ButtonLoading>
-            </UpdateRecord>
+            <ButtonEdit
+              disabled={isValid}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonEdit>
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>

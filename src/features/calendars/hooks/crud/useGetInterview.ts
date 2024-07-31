@@ -2,12 +2,12 @@ import useGraphql from 'features/calendars/domain/graphql'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { useGetResource } from 'shared/hooks/crud-hook'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
 import {
   GetInterviewFrom,
   getOneInterviewSchema,
-} from '../shared/constants/validate'
-import { formatStringToDate } from '../presentation/page-sections/google-calendar/functions'
-import CandidateInterview from 'shared/schema/database/candidate_interview'
+} from 'features/calendars/shared/constants/validate'
+import { formatStringToDate } from 'features/calendars/presentation/page-sections/google-calendar/functions'
 
 export interface IUseGetInterview {
   id: string

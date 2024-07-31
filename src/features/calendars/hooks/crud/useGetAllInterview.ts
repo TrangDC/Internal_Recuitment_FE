@@ -6,15 +6,15 @@ import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { isArray } from 'lodash'
 import dayjs from 'dayjs'
 import { convertFromUTC, convertToUTC } from 'shared/utils/date'
+import CandidateInterview from 'shared/schema/database/candidate_interview'
+import GraphQLClientService from 'services/graphql-service'
 import {
   CalendarEvent,
   RangeDate,
-} from '../presentation/page-sections/google-calendar/interface'
+} from 'features/calendars/presentation/page-sections/google-calendar/interface'
 import randomColor, {
   convertToRootDate,
-} from '../presentation/page-sections/google-calendar/functions'
-import CandidateInterview from 'shared/schema/database/candidate_interview'
-import GraphQLClientService from 'services/graphql-service'
+} from 'features/calendars/presentation/page-sections/google-calendar/functions'
 
 function useGetAllInterview() {
   const { getAllCandidateInterview4Calendar, queryKey } = useGraphql()

@@ -5,15 +5,14 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
-import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import useUpdateFeedback from '../../../hooks/crud/useUpdateFeedback'
 import { Span, Tiny } from 'shared/components/Typography'
-import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import { useMemo } from 'react'
 import { isEmpty } from 'lodash'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
 import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
+import ButtonEdit from 'shared/components/buttons/buttonEdit'
 
 interface IUpdateFeedbackModal {
   open: boolean
@@ -44,7 +43,7 @@ function UpdateFeedbackModal({
       onSuccess?.()
     },
   })
-  const { callbackSubmit } = actions
+  const { onSubmit } = actions
   const attachments = useWatch({ control, name: 'attachments' })
 
   const isValidAttachments = useMemo(() => {
@@ -147,20 +146,13 @@ function UpdateFeedbackModal({
             >
               Cancel
             </AppButton>
-            <UpdateRecord
+            <ButtonEdit
               disabled={isValid || !isValidAttachments}
-              callbackSubmit={callbackSubmit}
+              handlesubmit={(note) => onSubmit(note)}
+              loading={isPending}
             >
-              <ButtonLoading
-                variant="contained"
-                size="small"
-                disabled={isValid || !isValidAttachments}
-                handlesubmit={() => {}}
-                loading={isPending}
-              >
-                Submit
-              </ButtonLoading>
-            </UpdateRecord>
+              Submit
+            </ButtonEdit>
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>

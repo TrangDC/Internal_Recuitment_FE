@@ -12,4 +12,30 @@ interface HiringTeam {
   deleted_at: string
 }
 
+export type CreateHiringTeamArguments = {
+  input: NewHiringTeamInput
+  note: string
+}
+
+export type UpdateHiringTeamArguments = {
+  id: string
+  input: UpdateHiringTeam
+  note: string
+}
+
+export type DeleteHiringTeamArguments = {
+  id: string
+  note: string
+}
+
+type NewHiringTeamInput = {
+  name: string
+  members: string[]
+}
+
+type UpdateHiringTeam = {
+  name: string
+  members: string[]
+}
+
 export default HiringTeam

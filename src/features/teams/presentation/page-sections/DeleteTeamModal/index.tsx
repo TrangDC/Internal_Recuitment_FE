@@ -66,7 +66,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteTeamModal) {
               variant="contained"
               size="small"
               loading={isPending}
-              handlesubmit={() => onDelete({ note })}
+              handlesubmit={() => onDelete(note)}
             >
               Submit
             </ButtonLoading>

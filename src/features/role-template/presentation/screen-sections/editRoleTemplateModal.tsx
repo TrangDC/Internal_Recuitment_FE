@@ -10,8 +10,8 @@ import LoadingField from 'shared/components/form/loadingField'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import { Text15md } from 'shared/components/Typography'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import useEditRoleTemplate from 'features/role-template/hooks/useEditRoleTemplate'
 import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
+import useEditRoleTemplate from 'features/role-template/hooks/crud/useEditRoleTemplate'
 
 function EditRoleTemplateModal({ open, setOpen, id }: IEditModal) {
   const {
@@ -127,8 +127,7 @@ function EditRoleTemplateModal({ open, setOpen, id }: IEditModal) {
                 loading={isPending}
                 disabled={isValid}
                 data-testid="btn-submit"
-                handlesubmit={(note) => onSubmit(note)}
-                title={`Do you want to edit this role template?`}
+                handlesubmit={onSubmit}
               >
                 Submit
               </ButtonEdit>

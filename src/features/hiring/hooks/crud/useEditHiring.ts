@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/hiring/domain/graphql/graphql'
-import { NewUserInput } from 'features/hiring/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import { useState } from 'react'
@@ -18,7 +17,7 @@ import {
   FormDataSchemaUpdate,
   schemaUpdate,
 } from 'features/hiring/shared/constants/schema'
-import User from 'shared/schema/database/user'
+import User, { UpdateUserArguments } from 'shared/schema/database/user'
 
 type UseChangeStatusProps = {
   id: string
@@ -37,7 +36,7 @@ function useEditHiring(props: UseChangeStatusProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     User,
     FormDataSchemaUpdate,
-    NewUserInput
+    UpdateUserArguments
   >({
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: updateUser,
@@ -86,14 +85,17 @@ function useEditHiring(props: UseChangeStatusProps) {
       const entity_permissions = data.entity_permissions
       if (entity_permissions) {
         mutate({
-          name: data.name,
-          status: data.status,
-          work_email: data.work_email ?? '',
-          entity_permissions:
-            RoleTemplateStructure.formatEditCreateValue(entity_permissions),
-          note: note,
-          hiring_team_id: data.hiring_team_id,
-          role_id: data.rolesTemplateId,
+          id,
+          note,
+          input: {
+            name: data.name,
+            status: data.status,
+            work_email: data.work_email ?? '',
+            entity_permissions:
+              RoleTemplateStructure.formatEditCreateValue(entity_permissions),
+            hiring_team_id: data.hiring_team_id,
+            role_id: data.rolesTemplateId,
+          },
         })
       }
     })()

@@ -56,7 +56,6 @@ export const schema = yup.object({
   entity_skill_records: yup.mixed(),
   description: yup.string().required(RULE_MESSAGES.MC1('job description')),
   priority: yup.string().required(RULE_MESSAGES.MC1('priority')),
-  note: yup.string(),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -112,7 +111,6 @@ export const schemaUpdate = yup.object({
   entity_skill_records: yup.mixed(),
   description: yup.string().required(RULE_MESSAGES.MC1('job description')),
   priority: yup.string().required(RULE_MESSAGES.MC1('priority')),
-  note: yup.string(),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>
@@ -135,7 +133,6 @@ export const schemaApplyJob = yup.object({
     .array()
     .required(RULE_MESSAGES.MC1('attachments'))
     .min(1, 'CV is missing'),
-  note: yup.string(),
   offer_expiration_date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Offer expiration date'))

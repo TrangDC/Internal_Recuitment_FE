@@ -5,16 +5,22 @@ import HiringPlatformAutoComplete from 'shared/components/autocomplete/hiring-pl
 import AppTextField from 'shared/components/input-fields/AppTextField'
 
 interface Props {
-  source: 'EB' | 'REC' | 'hiring_platform' | 'reference' | 'headhunt' 
+  source: 'EB' | 'REC' | 'hiring_platform' | 'reference' | 'headhunt'
   name: string
   value: string
   onChange: (value: any) => void
   required?: boolean
 }
 
-const CandidateBySource = ({ source, name, value, onChange, required = false }: Props) => {
-  if(!source) {
-    return null;
+const CandidateBySource = ({
+  source,
+  name,
+  value,
+  onChange,
+  required = false,
+}: Props) => {
+  if (!source) {
+    return null
   }
 
   switch (source) {
@@ -28,7 +34,7 @@ const CandidateBySource = ({ source, name, value, onChange, required = false }: 
           multiple={false}
           textFieldProps={{
             label: `Recruit channel`,
-            required: required
+            required: required,
           }}
         />
       )
@@ -42,7 +48,7 @@ const CandidateBySource = ({ source, name, value, onChange, required = false }: 
           multiple={false}
           textFieldProps={{
             label: `Recruit channel`,
-            required: required
+            required: required,
           }}
         />
       )
@@ -56,7 +62,7 @@ const CandidateBySource = ({ source, name, value, onChange, required = false }: 
           multiple={false}
           textFieldProps={{
             label: `Recruit platform`,
-            required: required
+            required: required,
           }}
         />
       )

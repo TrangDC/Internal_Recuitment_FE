@@ -24,7 +24,7 @@ function DeleteEmailModal({ open, setOpen, id }: IDeleteModal) {
     <Fragment>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <BaseModal.Header
-          title={"Do you want to delete this email template?"}
+          title={'Do you want to delete this email template?'}
           setOpen={setOpen}
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
@@ -61,7 +61,7 @@ function DeleteEmailModal({ open, setOpen, id }: IDeleteModal) {
               variant="contained"
               size="small"
               loading={isPending}
-              handlesubmit={() => onDelete({ note })}
+              handlesubmit={() => onDelete(note)}
             >
               Submit
             </ButtonLoading>

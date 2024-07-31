@@ -6,8 +6,7 @@ export const schema = yup.object({
     .string()
     .required(RULE_MESSAGES.MC1('name'))
     .max(64, RULE_MESSAGES.MC4('name', 64)),
-  members: yup.array(),
-  note: yup.string(),
+  members: yup.array(yup.string().required()).default([]),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -18,8 +17,7 @@ export const schemaUpdate = yup.object({
     .required(RULE_MESSAGES.MC1('name'))
     .max(64, RULE_MESSAGES.MC4('name', 64))
     .default(''),
-  members: yup.array().default([]),
-  note: yup.string().default(''),
+  members: yup.array(yup.string().required()).default([]),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>

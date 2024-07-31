@@ -15,8 +15,16 @@ import dayjs from 'dayjs'
 import { BaseRecord } from 'shared/interfaces'
 
 interface Props {
-  module: 'teams' | 'hiring_jobs' | 'candidates' | 'skills' | 'email_templates' | 'users' | 'skill_types' | 'roles'
-  id: string,
+  module:
+    | 'hiring_teams'
+    | 'hiring_jobs'
+    | 'candidates'
+    | 'skills'
+    | 'email_templates'
+    | 'users'
+    | 'skill_types'
+    | 'roles'
+  id: string
 }
 
 const HistoryLogAuditTrails = ({ module, id }: Props) => {
@@ -125,7 +133,7 @@ const HistoryLogAuditTrails = ({ module, id }: Props) => {
         </FlexBox>
       </FormWrapper>
       <LogsWrapper>
-        <AuditLogComponent ref={refLog} module={module} id={id}/>
+        <AuditLogComponent ref={refLog} module={module} id={id} />
       </LogsWrapper>
     </HistoryWrapper>
   )

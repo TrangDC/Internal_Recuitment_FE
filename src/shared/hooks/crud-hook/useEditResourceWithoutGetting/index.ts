@@ -12,7 +12,6 @@ import GraphQLClientService, {
 
 interface IuseEditResource<FormData> {
   editBuildQuery: IBuildQueryReturn
-  id: string
   queryKey: string[]
   formatDefaultValues: DefaultValues<FormData>
   onSuccess?: (data: BaseRecord) => void
@@ -20,15 +19,7 @@ interface IuseEditResource<FormData> {
   resolver: Resolver<FormData & FieldValues, any> | undefined
 }
 
-interface InputUpdate extends BaseRecord {
-  note: string
-}
-
-function useEditResourceWithoutGetting<
-  FormData extends FieldValues,
-  Input extends InputUpdate,
->({
-  id,
+function useEditResourceWithoutGetting<FormData extends FieldValues, Request>({
   editBuildQuery,
   queryKey,
   onSuccess,
@@ -47,13 +38,11 @@ function useEditResourceWithoutGetting<
 
   const useEditReturn = useMutation({
     mutationKey: queryKey,
-    mutationFn: (payload: Input) => {
-      const { note, ...inputUpdate } = payload
-      return GraphQLClientService.fetchGraphQL(editBuildQuery.query, {
-        id: id,
-        input: inputUpdate,
-        note: note ?? '',
-      })
+    mutationFn: (payload: Request) => {
+      return GraphQLClientService.fetchGraphQL(
+        editBuildQuery.query,
+        payload as BaseRecord
+      )
     },
     onSuccess: (data) => {
       if (isLeft(data)) {

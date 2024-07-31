@@ -1,5 +1,5 @@
+import useGraphql from 'features/role-template/domain/graphql/graphql'
 import useCustomTable from 'shared/components/table/hooks/useCustomTable'
-import useGraphql from '../domain/graphql/graphql'
 import { IUseCustomCommonTable } from 'shared/components/table/interface'
 
 const useRoleTemplateTable = (props: IUseCustomCommonTable) => {

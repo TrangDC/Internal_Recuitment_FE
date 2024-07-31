@@ -11,8 +11,8 @@ import useGetCountChecked from '../../hooks/useGetCountChecked'
 function UserPermissionGroup({ roleTemplate }: PermissionGroupProps) {
   const { control, watch, setValue } = useFormContext()
   const [open, setOpen] = useState(true)
-  const editAction = roleTemplate?.HIRING_TEAMS?.EDIT
-  const viewAction = roleTemplate?.HIRING_TEAMS?.VIEW
+  const editAction = roleTemplate?.USER?.EDIT
+  const viewAction = roleTemplate?.USER?.VIEW
 
   const viewData = watch(getKeyName(viewAction.id))
   const editData = watch(getKeyName(editAction.id))
@@ -44,7 +44,7 @@ function UserPermissionGroup({ roleTemplate }: PermissionGroupProps) {
       setOpen={setOpen}
       title={
         <FlexBox justifyContent={'center'} gap={1}>
-          <Text13md color={'grey.900'}>Hiring team</Text13md>
+          <Text13md color={'grey.900'}>Users</Text13md>
           <Tiny12md color={'text.500'}>
             {countChecked}/{state.length}
           </Tiny12md>

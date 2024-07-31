@@ -33,4 +33,52 @@ interface EmailTemplate {
   deleted_at: string
 }
 
+export type CreateEmailTemplateArguments = {
+  input: NewEmailTemplateInput
+  note: string
+}
+
+type NewEmailTemplateInput = {
+  event: string
+  subject: string
+  content: string
+  send_to: string[]
+  roleIds: string[]
+  signature: string
+  cc: string[]
+  bcc: string[]
+}
+
+type UpdateEmailTemplateInput = {
+  event: string
+  subject: string
+  content: string
+  send_to: string[]
+  roleIds: string[]
+  signature: string
+  cc: string[]
+  bcc: string[]
+}
+
+export type UpdateEmailTemplateArguments = {
+  id: string
+  input: UpdateEmailTemplateInput
+  note: string
+}
+
+export type UpdateEmailTemplateStatusArguments = {
+  id: string
+  input: UpdateEmailTemplateStatusInput
+  note: string
+}
+
+export type DeleteEmailTemplateArguments = {
+  id: string
+  note: string
+}
+
+type UpdateEmailTemplateStatusInput = {
+  status: string
+}
+
 export default EmailTemplate

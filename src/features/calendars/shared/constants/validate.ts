@@ -147,9 +147,9 @@ export const getOneInterviewSchema = yup.object().shape({
   hiring_job_id: yup.string().default(''),
   candidate_id: yup.string().default(''),
   candidateJobOfTeamId: yup.string().default(''),
-  interviewer: yup.array<any, User>().default([]),
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
   meeting_link: yup.string(),
+  interviewer: yup.array<any, User>().default([]),
 })
 
 export type CreateInterviewFrom = yup.InferType<typeof CreateInterviewSchema>

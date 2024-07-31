@@ -4,13 +4,11 @@ import {
   schemaUpdate,
   FormDataSchemaUpdate,
 } from '../../shared/constants/schema'
-import {
-  SkillType,
-  SkillTypeInputUpdate,
-} from 'features/skillType/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
-import { SkillInputUpdate } from 'features/skill/domain/interfaces'
+import SkillType, {
+  UpdateSkillTypeArguments,
+} from 'shared/schema/database/skill_type'
 
 type UseEditSillTypeProps = {
   id: string
@@ -23,7 +21,7 @@ function useUpdateSkillType(props: UseEditSillTypeProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     SkillType,
     FormDataSchemaUpdate,
-    SkillTypeInputUpdate
+    UpdateSkillTypeArguments
   >({
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: updateSkillType,
@@ -35,7 +33,6 @@ function useUpdateSkillType(props: UseEditSillTypeProps) {
       return {
         name: data?.name ?? '',
         description: data?.description ?? '',
-        note: '',
       }
     },
   })
@@ -44,21 +41,23 @@ function useUpdateSkillType(props: UseEditSillTypeProps) {
   const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
-  function onSubmit() {
+  function onSubmit(note: string) {
     handleSubmit((value) => {
-      mutate(value as SkillInputUpdate)
+      const payload: UpdateSkillTypeArguments = {
+        id,
+        input: {
+          description: value?.description ?? '',
+          name: value?.name,
+        },
+        note: note,
+      }
+      mutate(payload)
     })()
-  }
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
   }
 
   return {
     actions: {
       onSubmit,
-      callbackSubmit,
     },
     control,
     isValid,

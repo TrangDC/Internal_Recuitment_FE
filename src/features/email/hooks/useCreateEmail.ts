@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/email/domain/graphql/graphql'
-import { NewEmailInput } from 'features/email/domain/interfaces'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { FormDataSchema, schema } from '../shared/constants/schema'
 import { getContentStringHTML, RegexEmail } from 'shared/utils/utils'
@@ -14,6 +13,7 @@ import getKeywordEmail from '../shared/services/getKeywordEmail'
 import { replaceTemplateEmail } from '../shared/utils'
 import { useEffect, useState } from 'react'
 import { DATA_KEYWORD_TEMPLATE } from 'shared/interfaces'
+import { CreateEmailTemplateArguments } from 'shared/schema/database/email_template'
 
 type valid_template = 'subject' | 'content' | 'signature'
 
@@ -26,7 +26,7 @@ function useCreateEmail(props: createEmailProps = {}) {
 
   const { createEmailTemplate, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewEmailInput,
+    CreateEmailTemplateArguments,
     FormDataSchema
   >({
     mutationKey: [queryKey],
@@ -38,17 +38,27 @@ function useCreateEmail(props: createEmailProps = {}) {
       signature: '',
       subject: '',
       cc: [],
-      bcc: [],
       roleIds: [],
-      note: ''
     },
     resolver: yupResolver(schema),
     onSuccess: callbackSuccess,
   })
 
-  const { handleSubmit, control, formState, getValues, watch, resetField, setValue } = useFormReturn
-  const [listKeyWord, setListKeyWord] = useState<DATA_KEYWORD_TEMPLATE[]>([]);
-  const [validTemplate, setValidTemplate] = useState<{subject: boolean, content: boolean, signature: boolean}>({subject: true, content: true, signature: true})
+  const {
+    handleSubmit,
+    control,
+    formState,
+    getValues,
+    watch,
+    resetField,
+    setValue,
+  } = useFormReturn
+  const [listKeyWord, setListKeyWord] = useState<DATA_KEYWORD_TEMPLATE[]>([])
+  const [validTemplate, setValidTemplate] = useState<{
+    subject: boolean
+    content: boolean
+    signature: boolean
+  }>({ subject: true, content: true, signature: true })
 
   //preview data
   const form_values = getValues()
@@ -56,8 +66,12 @@ function useCreateEmail(props: createEmailProps = {}) {
   const subject = watch('subject')
   const signature = watch('signature')
   const event = watch('event')
-  
-  const isValid = !formState.isValid || !Object.keys(validTemplate).every((item) => !!validTemplate[item as valid_template]);
+
+  const isValid =
+    !formState.isValid ||
+    !Object.keys(validTemplate).every(
+      (item) => !!validTemplate[item as valid_template]
+    )
   const { isPending, mutate } = useCreateReturn
 
   function onSubmit() {
@@ -73,12 +87,21 @@ function useCreateEmail(props: createEmailProps = {}) {
       })
 
       if (!isEmpty(role_ids)) send_to.push(SEND_TO_VALUE.role)
-      mutate({
-        ...valueClone,
-        roleIds: role_ids,
-        send_to: send_to,
-        subject: getContentStringHTML(value?.subject)
-      })
+
+      const payload: CreateEmailTemplateArguments = {
+        input: {
+          roleIds: role_ids,
+          send_to: send_to,
+          subject: getContentStringHTML(value?.subject),
+          bcc: [],
+          cc: value?.cc ?? [],
+          content: value?.content,
+          event: value?.event,
+          signature: value?.signature ?? '',
+        },
+        note: '',
+      }
+      mutate(payload)
     })()
   }
 

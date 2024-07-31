@@ -4,9 +4,9 @@ import {
   schemaUpdate,
   FormDataSchemaUpdate,
 } from '../../shared/constants/schema'
-import { Skill, SkillInputUpdate } from 'features/skill/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
+import Skill, { UpdateSkillArguments } from 'shared/schema/database/skill'
 
 type UseEditCandidateProps = {
   id: string
@@ -19,7 +19,7 @@ function useUpdateSkill(props: UseEditCandidateProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     Skill,
     FormDataSchemaUpdate,
-    SkillInputUpdate
+    UpdateSkillArguments
   >({
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: updateSkill,
@@ -41,21 +41,24 @@ function useUpdateSkill(props: UseEditCandidateProps) {
   const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
-  function onSubmit() {
+  function onSubmit(note:string) {
     handleSubmit((value) => {
-      mutate(value as SkillInputUpdate)
+      const payload: UpdateSkillArguments = {
+        id,
+        input: {
+          description: value?.description ?? '',
+          name: value?.name,
+          skill_type_id:value?.skill_type_id,
+        },
+        note: note,
+      }
+      mutate(payload)
     })()
-  }
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
   }
 
   return {
     actions: {
       onSubmit,
-      callbackSubmit,
     },
     control,
     isValid,

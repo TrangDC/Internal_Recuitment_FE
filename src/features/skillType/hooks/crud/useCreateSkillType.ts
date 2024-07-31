@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { schema, FormDataSchema } from '../../shared/constants/schema'
-import { SkillTypeInput } from 'features/skillType/domain/interfaces'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import useGraphql from 'features/skillType/domain/graphql/graphql'
+import { CreateSkillTypeArguments } from 'shared/schema/database/skill_type'
 
 interface createSkillProps {
   defaultValues?: Partial<FormDataSchema>
@@ -14,7 +14,7 @@ function useCreateSkillType(props: createSkillProps) {
 
   const { createSkillType, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    SkillTypeInput,
+    CreateSkillTypeArguments,
     FormDataSchema
   >({
     mutationKey: [queryKey],
@@ -22,7 +22,6 @@ function useCreateSkillType(props: createSkillProps) {
     defaultValues: {
       name: '',
       description: '',
-      note: '',
     },
     resolver: yupResolver(schema),
     onSuccess: callbackSuccess,
@@ -34,7 +33,14 @@ function useCreateSkillType(props: createSkillProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      mutate(value)
+      const payload: CreateSkillTypeArguments = {
+        input: {
+          description: value?.description ?? '',
+          name: value?.name,
+        },
+        note: '',
+      }
+      mutate(payload)
     })()
   }
 

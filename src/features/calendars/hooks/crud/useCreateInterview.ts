@@ -1,17 +1,17 @@
 import useGraphql from 'features/calendars/domain/graphql'
-import { NewInterviewInput } from 'features/calendars/domain/interfaces'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BaseRecord } from 'shared/interfaces/common'
 import { convertToUTC, getLocalTimeOffset } from 'shared/utils/date'
 import { useCreateResource } from 'shared/hooks/crud-hook'
+import { CreateCandidateInterview4CalendarArguments } from 'shared/schema/database/candidate_interview'
 import {
   CreateInterviewFrom,
   CreateInterviewSchema,
-} from '../shared/constants/validate'
+} from 'features/calendars/shared/constants/validate'
 import {
   convertToRootByTimeNow,
   convertToRootDate,
-} from '../presentation/page-sections/google-calendar/functions'
+} from 'features/calendars/presentation/page-sections/google-calendar/functions'
 
 interface IUseCreateInterview {
   onSuccess: (data: BaseRecord) => void
@@ -22,7 +22,7 @@ function useCreateInterview(props: IUseCreateInterview) {
   const today = new Date()
   const { createCandidateInterview, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewInterviewInput,
+    CreateCandidateInterview4CalendarArguments,
     CreateInterviewFrom
   >({
     mutationKey: [queryKey],
@@ -67,19 +67,22 @@ function useCreateInterview(props: IUseCreateInterview) {
           .toISOString()
         const formatStart = convertToUTC(newStart).toDate().toISOString()
         const formatEnd = convertToUTC(newEnd).toDate().toISOString()
-        const formData: NewInterviewInput = {
-          candidate_id: [value.candidateId],
-          description: value.description ?? '',
-          interviewer: value.interviewer ?? [],
-          interview_date: interview_date,
-          start_from: formatStart,
-          end_at: formatEnd,
-          title: value.title,
-          job_id: value.jobId,
-          location: value.location,
-          meeting_link: value.meeting_link ?? '',
+        const payload: CreateCandidateInterview4CalendarArguments = {
+          input: {
+            candidate_id: [value.candidateId],
+            description: value.description ?? '',
+            interviewer: value.interviewer ?? [],
+            interview_date: interview_date,
+            start_from: formatStart,
+            end_at: formatEnd,
+            title: value.title,
+            job_id: value.jobId,
+            location: value.location,
+            meeting_link: value.meeting_link ?? '',
+          },
+          note: '',
         }
-        mutate(formData)
+        mutate(payload)
       }
     })()
   }
@@ -119,7 +122,7 @@ function useCreateInterview(props: IUseCreateInterview) {
     }
   }
 
-  function resetMeetingLink () {
+  function resetMeetingLink() {
     setValue('meeting_link', '')
   }
 
@@ -132,13 +135,13 @@ function useCreateInterview(props: IUseCreateInterview) {
       onSelectedInterviewDate,
       onSelectedTo,
       onSelectedFrom,
-      resetMeetingLink
+      resetMeetingLink,
     },
     watch,
     resetField,
     formState,
     trigger,
-    setValue
+    setValue,
   }
 }
 export default useCreateInterview

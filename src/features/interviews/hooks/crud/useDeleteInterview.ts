@@ -2,28 +2,32 @@ import useGraphql from 'features/interviews/domain/graphql/graphql'
 import { BaseRecord } from 'shared/interfaces'
 import { useDeleteResource } from 'shared/hooks/crud-hook'
 import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
+import { DeleteCandidateInterviewArguments } from 'shared/schema/database/candidate_interview'
 
 type UseDeleteInterviewProps = {
   id: string
   onSuccess: (data: BaseRecord) => void
-  onError?: (data: BaseRecord) => void;
+  onError?: (data: BaseRecord) => void
 }
 
 function useDeleteInterview(props: UseDeleteInterviewProps) {
   const { id, onSuccess, onError } = props
   const { queryKey, deleteCandidateInterview } = useGraphql()
-  const { useDeleteReturn } = useDeleteResource({
-    mutationKey: [queryKey],
-    id,
-    onSuccess,
-    onError,
-    queryString: deleteCandidateInterview,
-  })
+  const { useDeleteReturn } =
+    useDeleteResource<DeleteCandidateInterviewArguments>({
+      mutationKey: [queryKey],
+      onSuccess,
+      onError,
+      queryString: deleteCandidateInterview,
+    })
 
   const { mutate, isPending } = useDeleteReturn
 
-  function onDelete(data: payloadDelete) {
-    mutate(data)
+  function onDelete(note: string) {
+    mutate({
+      id,
+      note,
+    })
   }
 
   return {

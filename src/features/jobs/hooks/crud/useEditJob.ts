@@ -4,8 +4,7 @@ import {
   FormDataSchemaUpdate,
   schemaUpdate,
 } from '../../shared/constants/schema'
-import { UpdateHiringJobInput } from 'features/jobs/domain/interfaces'
-import _, { isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import {
   convertCurrencyToNumber,
   formatRecordSkill,
@@ -15,7 +14,9 @@ import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
-import HiringJob from 'shared/schema/database/hiring_job'
+import HiringJob, {
+  EditHiringJobArguments,
+} from 'shared/schema/database/hiring_job'
 
 type UseEditJobProps = {
   id: string
@@ -28,7 +29,7 @@ function useUpdateJob(props: UseEditJobProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     HiringJob,
     FormDataSchemaUpdate,
-    UpdateHiringJobInput
+    EditHiringJobArguments
   >({
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: updateJob,
@@ -38,10 +39,9 @@ function useUpdateJob(props: UseEditJobProps) {
     onSuccess,
     formatDefaultValues(data) {
       const entity_skill_records = formatRecordSkill(data?.entity_skill_types)
-
       return {
         name: data?.name ?? '',
-        priority: data?.priority.toString() ?? '',
+        priority: data?.priority?.toString() ?? '',
         hiring_team_id: data?.hiring_team?.id ?? '',
         location: data?.location ?? '',
         amount: data?.amount.toString() ?? '',
@@ -61,36 +61,39 @@ function useUpdateJob(props: UseEditJobProps) {
   const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
-  function onSubmit() {
+  function onSubmit(note: string) {
     handleSubmit((value) => {
       const salary_type = value.salary_type
       const entity_skill = updateRecordSkill(value.entity_skill_records)
-
-      const valueClone = {
-        ..._.cloneDeep(value),
-        currency:
-          salary_type !== SALARY_STATE.NEGOTITATION
-            ? value.currency
-            : CURRENCY_STATE.VND,
-        salary_type: salary_type,
-        salary_from: convertCurrencyToNumber(value.salary_from),
-        salary_to: convertCurrencyToNumber(value.salary_to),
-        amount: Number(value.amount),
-        entity_skill_records: entity_skill,
+      const currency = value?.currency ?? CURRENCY_STATE.VND
+      const payload: EditHiringJobArguments = {
+        id,
+        input: {
+          currency:
+            salary_type !== SALARY_STATE.NEGOTITATION
+              ? currency
+              : CURRENCY_STATE.VND,
+          salary_type: salary_type,
+          salary_from: convertCurrencyToNumber(value.salary_from),
+          salary_to: convertCurrencyToNumber(value.salary_to),
+          amount: Number(value.amount),
+          entity_skill_records: entity_skill,
+          created_by: value?.created_by,
+          description: value?.description,
+          hiring_team_id: value?.hiring_team_id,
+          location: value?.location,
+          name: value?.name,
+          priority: Number(value?.priority),
+        },
+        note: note,
       }
-
-      mutate(valueClone as UpdateHiringJobInput)
+      mutate(payload)
     })()
   }
 
   const resetSalary = () => {
     setValue('salary_from', '0')
     setValue('salary_to', '0')
-  }
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
   }
 
   const handleChangeManager = async (hiring_team_id: string) => {
@@ -113,7 +116,6 @@ function useUpdateJob(props: UseEditJobProps) {
     isPending,
     actions: {
       onSubmit,
-      callbackSubmit,
       handleChangeManager,
       resetSalary,
     },

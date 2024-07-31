@@ -8,11 +8,9 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import { Fragment } from 'react/jsx-runtime'
 import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppButton from 'shared/components/buttons/AppButton'
-import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import useEditInterview from '../../../hooks/crud/useEditInterview'
 import dayjs from 'dayjs'
 import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
-import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import { useMemo } from 'react'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
@@ -20,6 +18,7 @@ import LocationInterviewAutoComplete, {
   LOCATION_INTERVIEW_STATE,
 } from 'shared/components/autocomplete/location-interview-autocomplete'
 import HiringJob from 'shared/schema/database/hiring_job'
+import ButtonEdit from 'shared/components/buttons/buttonEdit'
 
 interface IEditInterviewModal {
   open: boolean
@@ -53,7 +52,7 @@ function EditInterviewModal({
     },
   })
 
-  const { callbackSubmit, resetMeetingLink } = actions
+  const { onSubmit, resetMeetingLink } = actions
   const interview_date = watch('interview_date')
   const location_interview = watch('location')
 
@@ -325,18 +324,13 @@ function EditInterviewModal({
             >
               Cancel
             </AppButton>
-
-            <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
-              <ButtonLoading
-                variant="contained"
-                size="small"
-                disabled={isValid}
-                handlesubmit={() => {}}
-                loading={isPending}
-              >
-                Submit
-              </ButtonLoading>
-            </UpdateRecord>
+            <ButtonEdit
+              disabled={isValid}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonEdit>
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>

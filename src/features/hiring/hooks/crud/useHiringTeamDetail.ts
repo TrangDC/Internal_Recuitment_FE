@@ -1,7 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/hiring/domain/graphql/graphql'
-import { BaseRecord } from 'shared/interfaces'
-import { useEditResource } from 'shared/hooks/crud-hook'
+import { useGetResource } from 'shared/hooks/crud-hook'
 import { useState } from 'react'
 import useGetAllPermissionGroups from 'shared/hooks/permissions/useGetAllPermissionGroups'
 import { isEmpty } from 'lodash'
@@ -13,31 +12,26 @@ import {
   schemaHiringDetail,
 } from 'features/hiring/shared/constants/schema'
 import User from 'shared/schema/database/user'
-import { NewUserInput } from 'features/hiring/domain/interfaces'
 
-type UseChangeStatusProps = {
+type UseHiringTeamDetailProps = {
   id: string
-  onSuccess: (data: BaseRecord) => void
 }
 
-function useHiringTeamDetail(props: UseChangeStatusProps) {
-  const { id, onSuccess } = props
-  const { updateUser, getUser, queryKey } = useGraphql()
+function useHiringTeamDetail(props: UseHiringTeamDetailProps) {
+  const { id } = props
+  const { getUser, queryKey } = useGraphql()
   const [permissionGroup, setPermissionGroup] =
     useState<RoleTemplateStructure>()
   const { getAllPermission, isGetting: isGetAllPermissionGroups } =
     useGetAllPermissionGroups()
-  const { useEditReturn, useFormReturn, isGetting } = useEditResource<
+  const { useFormReturn, isGetting } = useGetResource<
     User,
-    FormDataSchemaDetail,
-    NewUserInput
+    FormDataSchemaDetail
   >({
     resolver: yupResolver(schemaHiringDetail),
-    editBuildQuery: updateUser,
     oneBuildQuery: getUser,
     queryKey: [queryKey],
     id,
-    onSuccess,
     formatDefaultValues: async (data) => {
       let entity_permissions_default: PermissionFormData
       const permissionGroup = await getAllPermission()
@@ -67,12 +61,10 @@ function useHiringTeamDetail(props: UseChangeStatusProps) {
 
   const { getValues, control, formState } = useFormReturn
   const isValid = !formState.isValid
-  const { isPending } = useEditReturn
 
   return {
     control,
     isValid,
-    isPending,
     useFormReturn,
     formState,
     getValues,
