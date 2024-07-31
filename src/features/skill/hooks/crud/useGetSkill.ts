@@ -1,6 +1,6 @@
 import useGraphql from 'features/skill/domain/graphql/graphql'
-import { Skill } from 'features/skill/domain/interfaces'
 import useGetDetail from 'shared/hooks/crud-hook/useGetDetail'
+import Skill from 'shared/schema/database/skill'
 
 type UseGetSkillProps = {
   id: string

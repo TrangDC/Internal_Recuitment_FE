@@ -26,6 +26,7 @@ import Cant from 'features/authorization/presentation/components/Cant'
 import AppDateField from 'shared/components/input-fields/DateField'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
 import CandidateJob from 'shared/schema/database/candidate_job'
+import { CandidateStatusEnum } from 'shared/schema'
 
 export type onSuccessChangeStatus = {
   prevStatus: string
@@ -155,8 +156,10 @@ function ChangeStatusModal({
                 <CustomTextField
                   label="Current status"
                   size="small"
-                  //@ts-ignore
-                  value={CANDIDATE_STATUS?.[rowData?.status]?.text}
+                  value={
+                    CANDIDATE_STATUS?.[rowData?.status as CandidateStatusEnum]
+                      ?.text
+                  }
                   fullWidth
                   required
                   focused

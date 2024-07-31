@@ -33,11 +33,3 @@ export const schemaHiringDetail = yup.object({
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>
 export type FormDataSchemaDetail = yup.InferType<typeof schemaHiringDetail>
-
-export const schemaChangeStatus = yup.object({
-  status: yup.string().required(RULE_MESSAGES.MC1('status')),
-  note: yup.string(),
-})
-export type FormDataSchemaUpdateStatus = yup.InferType<
-  typeof schemaChangeStatus
->

@@ -74,7 +74,6 @@ function PermissionSections({ roleTemplate }: PermissionSectionsProps) {
     }
   }, [cantViewCandidate, cantViewCandidateJob])
   if (!roleTemplate) return null
-  console.log('roleTemplate', roleTemplate)
   return (
     <AppCollapse open={open} setOpen={setOpen} title="Permission">
       <FlexBox flexDirection={'column'} gap={2}>

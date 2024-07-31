@@ -28,7 +28,7 @@ interface InputUpdate extends BaseRecord {
 function useEditResource<
   Response,
   FormData extends FieldValues,
-  Input extends InputUpdate,
+  Request,
 >({
   id,
   editBuildQuery,
@@ -52,13 +52,8 @@ function useEditResource<
 
   const useEditReturn = useMutation({
     mutationKey: queryKey,
-    mutationFn: (payload: Input) => {
-      const { note, ...inputUpdate } = payload
-      return GraphQLClientService.fetchGraphQL(editBuildQuery.query, {
-        id: id,
-        input: inputUpdate,
-        note: note ?? '',
-      })
+    mutationFn: (payload: Request) => {
+      return GraphQLClientService.fetchGraphQL(editBuildQuery.query, payload as BaseRecord)
     },
     onSuccess: (data) => {
       if (isLeft(data)) {

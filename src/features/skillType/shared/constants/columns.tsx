@@ -5,9 +5,9 @@ import {
 } from 'shared/components/ActionGroupButtons'
 import { t } from 'i18next'
 import { StyleTinyText } from 'shared/styles'
-import { SkillType } from 'features/skillType/domain/interfaces'
 import checkPermissionActionTable from 'features/skillType/permission/utils/checkPermissonActionTable'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
+import SkillType from 'shared/schema/database/skill_type'
 
 const columnHelper = createColumnHelper<SkillType>()
 

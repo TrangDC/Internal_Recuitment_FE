@@ -2,7 +2,7 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import useTextTranslation from 'shared/constants/text'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
-import { SkillType } from 'features/skillType/domain/interfaces'
+import SkillType from 'shared/schema/database/skill_type'
 
 export enum ActionSkillType {
   EDIT = 'edit',

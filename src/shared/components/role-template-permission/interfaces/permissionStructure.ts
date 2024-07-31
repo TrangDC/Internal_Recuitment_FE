@@ -10,12 +10,12 @@ import { SkillTypeTemplatePermissions } from './role-template-permission/skill_t
 import { SkillTemplatePermissions } from './role-template-permission/skill'
 import { RoleTemplateTemplatePermissions } from './role-template-permission/role_template'
 import { moduleActions } from 'features/authorization/domain/interfaces/permission-refactor'
-import { NewEntityPermissionInput } from 'features/hiring/domain/interfaces'
 import { EmailTemplateTemplatePermissions } from './role-template-permission/email_template'
 import ReportTemplatePermission from './role-template-permission/report'
 import { UserTemplatePermissions } from './role-template-permission/User'
 import EntityPermission from 'shared/schema/database/entity_permission'
 import Permission from 'shared/schema/database/permission'
+import { NewEntityPermissionInput } from 'shared/schema/database/user'
 
 interface PermissionGroup {
   id: string

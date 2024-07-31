@@ -29,9 +29,6 @@ function DetailHiringModal({
   const { isGetting, formState, permissionGroup, useFormReturn, getValues } =
     useHiringTeamDetail({
       id: id,
-      onSuccess: () => {
-        setOpen(false)
-      },
     })
 
   return (

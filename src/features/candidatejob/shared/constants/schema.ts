@@ -13,7 +13,6 @@ export const schema = yup.object({
     .array()
     .required(RULE_MESSAGES.MC1('attachments'))
     .min(1, 'CV is missing'),
-  note: yup.string(),
   offer_expiration_date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Offer expiration date'))
@@ -72,8 +71,6 @@ export const schemaChangeStatus = yup.object({
     ),
   attachments: yup.mixed(),
   feedback: yup.string(),
-  note: yup.string(),
-  //new field
   offer_expiration_date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Offer expiration date'))

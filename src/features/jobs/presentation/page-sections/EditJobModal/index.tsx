@@ -6,7 +6,6 @@ import { FormDataSchemaUpdate as FormDataSchema } from '../../../shared/constant
 import { SALARY_RENDER } from '../../../shared/constants'
 import useUpdateJob from '../../../hooks/crud/useEditJob'
 import useTextTranslation from 'shared/constants/text'
-import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import InputNumberComponent from 'shared/components/form/inputNumberComponent'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -16,13 +15,13 @@ import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complet
 import SalaryTypeAutoComponent from 'shared/components/autocomplete/salary-type-autocomplete'
 import CurrencyAutoComplete from 'shared/components/autocomplete/currency-autocomplete'
 import AppButton from 'shared/components/buttons/AppButton'
-import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import SkillTree from 'shared/components/tree/skill-tree'
+import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import SelectionTeamPermission from 'features/jobs/permission/components/SelectionTeamPermission'
+import ButtonEdit from 'shared/components/buttons/buttonEdit'
 
 interface IEditJobModal {
   open: boolean
@@ -38,7 +37,7 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
         setOpen(false)
       },
     })
-  const { resetSalary, callbackSubmit, handleChangeManager } = actions
+  const { resetSalary, onSubmit, handleChangeManager } = actions
 
   const translation = useTextTranslation()
   const salary = useWatch({ control, name: 'salary_type' })
@@ -182,7 +181,7 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                   name="entity_skill_records"
                   render={({ field, fieldState }) => (
                     <Fragment>
-                      <SkillTree
+                      <SkillTreeSelection
                         value={field.value}
                         onChange={field.onChange}
                         textFieldProps={{ label: 'Skill' }}
@@ -360,17 +359,13 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
             >
               {translation.COMMON.cancel}
             </AppButton>
-            <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
-              <ButtonLoading
-                variant="contained"
-                size="small"
-                disabled={isValid}
-                handlesubmit={() => {}}
-                loading={isPending}
-              >
-                Submit
-              </ButtonLoading>
-            </UpdateRecord>
+            <ButtonEdit
+              disabled={isValid}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonEdit>
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>

@@ -1,10 +1,10 @@
-import { RoleTemplate } from '../domain/interfaces'
-import useGraphql from '../domain/graphql/graphql'
-import { useGetResource } from 'shared/hooks/crud-hook'
-import { DetailRoleTemplateForm } from '../shared/constants/validate'
 import { useState } from 'react'
 import useGetAllPermissionGroups from 'shared/hooks/permissions/useGetAllPermissionGroups'
 import RoleTemplateStructure from 'shared/components/role-template-permission/interfaces/permissionStructure'
+import Role from 'shared/schema/database/role'
+import useGraphql from 'features/role-template/domain/graphql/graphql'
+import { DetailRoleTemplateForm } from 'features/role-template/shared/constants/validate'
+import { useGetResource } from 'shared/hooks/crud-hook'
 
 type UseGetRoleTemplateProps = {
   id: string
@@ -17,7 +17,7 @@ function useGetRoleTemplate({ id }: UseGetRoleTemplateProps) {
   const { getAllPermission, isGetting: isGetAllPermissionGroups } =
     useGetAllPermissionGroups()
   const { useFormReturn, isGetting } = useGetResource<
-    RoleTemplate,
+    Role,
     DetailRoleTemplateForm
   >({
     id,

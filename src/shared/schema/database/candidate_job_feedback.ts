@@ -1,5 +1,5 @@
 import Attachment from './attachment'
-import CandidateJob from './candidate_job'
+import CandidateJob, { NewAttachmentInput } from './candidate_job'
 import User from './user'
 
 interface CandidateJobFeedback {
@@ -13,6 +13,33 @@ interface CandidateJobFeedback {
   attachments: Attachment[]
   created_at: string
   updated_at: string
+}
+
+export type CreateCandidateJobFeedbackArguments = {
+  input: NewCandidateJobFeedbackInput
+  note: string
+}
+
+export type DeleteCandidateJobFeedbackArguments = {
+  id: string
+  note: string
+}
+
+export type UpdateCandidateJobFeedbackArguments = {
+  id: string
+  input: UpdateCandidateJobFeedbackInput
+  note: string
+}
+
+export type UpdateCandidateJobFeedbackInput = {
+  feedback: string
+  attachments: NewAttachmentInput[]
+}
+
+export type NewCandidateJobFeedbackInput = {
+  candidate_job_id: string
+  feedback: string
+  attachments: NewAttachmentInput[]
 }
 
 export default CandidateJobFeedback

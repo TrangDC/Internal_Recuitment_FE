@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/feedback/domain/graphql/graphql'
-import { UpdateCandidateJobFeedbackInput } from 'features/feedback/domain/interfaces'
 import {
   schemaUpdate,
   FormDataSchemaUpdate,
@@ -8,7 +7,9 @@ import {
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import { removeStatusAttachment } from 'shared/utils/utils'
-import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
+import CandidateJobFeedback, {
+  UpdateCandidateJobFeedbackArguments,
+} from 'shared/schema/database/candidate_job_feedback'
 
 type UseEditFeedbackProps = {
   id: string
@@ -21,7 +22,7 @@ function useUpdateFeedback(props: UseEditFeedbackProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     CandidateJobFeedback,
     FormDataSchemaUpdate,
-    UpdateCandidateJobFeedbackInput
+    UpdateCandidateJobFeedbackArguments
   >({
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: updateCandidateJobFeedback,
@@ -43,20 +44,19 @@ function useUpdateFeedback(props: UseEditFeedbackProps) {
   const isValid = !formState.isValid || !formState.isDirty
   const { mutate, isPending } = useEditReturn
 
-  function onSubmit() {
+  function onSubmit(note: string) {
     handleSubmit((value) => {
       const attachments = removeStatusAttachment(value?.attachments)
-
-      mutate({
-        ...value,
-        attachments: attachments,
-      } as UpdateCandidateJobFeedbackInput)
+      const payload: UpdateCandidateJobFeedbackArguments = {
+        id,
+        input: {
+          attachments,
+          feedback: value?.feedback ?? '',
+        },
+        note,
+      }
+      mutate(payload)
     })()
-  }
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
   }
 
   return {
@@ -65,7 +65,6 @@ function useUpdateFeedback(props: UseEditFeedbackProps) {
     isPending,
     actions: {
       onSubmit,
-      callbackSubmit,
     },
     formState,
     setValue,

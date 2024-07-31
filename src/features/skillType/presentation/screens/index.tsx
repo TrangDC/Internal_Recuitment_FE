@@ -15,9 +15,9 @@ import useFilterSkillType from '../../hooks/table/useFilterSkillType'
 import useSkillTypeTable from '../../hooks/table/useSkillTypeTable'
 import { DivContainerWrapper, DivHeaderWrapper } from '../../shared/styles'
 import useActionTable from '../../hooks/table/useActionTable'
-import { SkillType } from 'features/skillType/domain/interfaces'
 import Cant from 'features/authorization/presentation/components/Cant'
 import useBuildActionsTableSkillType from '../../hooks/table/useBuildActionsTableSkillType'
+import SkillType from 'shared/schema/database/skill_type'
 
 const SkillTypeList = () => {
   const {

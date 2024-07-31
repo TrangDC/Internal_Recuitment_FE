@@ -6,6 +6,10 @@ import ErrorException from 'shared/interfaces/response'
 import GraphQLClientService, {
   IBuildQueryReturn,
 } from 'services/graphql-service'
+import {
+  UpdateCandidateInterviewStatusArguments,
+  UpdateCandidateInterviewStatusInput,
+} from 'shared/schema/database/candidate_interview'
 
 interface IuseChangeStatusCandidateInterview {
   editBuildQuery: IBuildQueryReturn
@@ -15,7 +19,7 @@ interface IuseChangeStatusCandidateInterview {
   onError?: (data: ErrorException | Error) => void
 }
 
-function useChangeInterviewStatus<Input>({
+function useChangeInterviewStatus({
   id,
   editBuildQuery,
   queryKey,
@@ -26,11 +30,11 @@ function useChangeInterviewStatus<Input>({
 
   const useEditReturn = useMutation({
     mutationKey: queryKey,
-    mutationFn: (payload: Input) => {
-      return GraphQLClientService.fetchGraphQL(editBuildQuery.query, {
-        id,
-        input: payload,
-      })
+    mutationFn: (payload: UpdateCandidateInterviewStatusArguments) => {
+      return GraphQLClientService.fetchGraphQL(
+        editBuildQuery.query,
+        payload as BaseRecord
+      )
     },
     onSuccess: (data) => {
       if (isLeft(data)) {
@@ -49,8 +53,12 @@ function useChangeInterviewStatus<Input>({
     },
   })
   const { mutate } = useEditReturn
-  function handleChangeStatus(data: Input) {
-    mutate(data)
+  function handleChangeStatus(input: UpdateCandidateInterviewStatusInput) {
+    mutate({
+      id,
+      input,
+      note: '',
+    })
   }
 
   return {

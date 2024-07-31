@@ -4,7 +4,6 @@ import {
   schemaUpdate,
   FormDataSchemaUpdate,
 } from '../../shared/constants/schema'
-import { UpdateCandidateInput } from 'features/candidates/domain/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import {
   formatRecordSkill,
@@ -12,7 +11,10 @@ import {
   updateRecordSkill,
 } from 'shared/utils/utils'
 import { convertToEndDateUTC } from 'shared/utils/date'
-import Candidate from 'shared/schema/database/candidate'
+import Candidate, {
+  CandidateReferenceType,
+  UpdateCandidateArguments,
+} from 'shared/schema/database/candidate'
 
 type UseEditCandidateProps = {
   id: string
@@ -25,7 +27,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     Candidate,
     FormDataSchemaUpdate,
-    UpdateCandidateInput
+    UpdateCandidateArguments
   >({
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: updateCandidate,
@@ -70,27 +72,32 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
   const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
-  function onSubmit() {
+  function onSubmit(note: string) {
     handleSubmit((value) => {
       let attachments = removeStatusAttachment(value?.attachments)
       const entity_skill = updateRecordSkill(value.entity_skill_records)
-
-      mutate({
-        ...value,
-        //@ts-ignore
-        dob: value.dob ? convertToEndDateUTC(value.dob) : value.dob,
-        recruit_time: value.recruit_time
-          ? convertToEndDateUTC(value.recruit_time)
-          : value.recruit_time,
-        attachments: attachments,
-        entity_skill_records: entity_skill,
-      })
+      const payload: UpdateCandidateArguments = {
+        input: {
+          dob: value.dob ? convertToEndDateUTC(value.dob) : '',
+          recruit_time: value.recruit_time
+            ? convertToEndDateUTC(value.recruit_time)
+            : value.recruit_time,
+          attachments: attachments,
+          entity_skill_records: entity_skill,
+          country: value?.country ?? '',
+          description: value?.description ?? '',
+          email: value?.email,
+          name: value?.name,
+          phone: value?.phone,
+          reference_type: value?.reference_type as CandidateReferenceType,
+          reference_uid: value?.reference_uid,
+          reference_value: value?.reference_value ?? '',
+        },
+        id,
+        note,
+      }
+      mutate(payload)
     })()
-  }
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
   }
 
   const resetSourceValue = () => {
@@ -101,7 +108,6 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
   return {
     actions: {
       onSubmit,
-      callbackSubmit,
       resetSourceValue,
     },
     control,

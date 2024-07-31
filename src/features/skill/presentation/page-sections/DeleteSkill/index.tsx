@@ -63,7 +63,7 @@ function DeleteSkillModal({ open, setOpen, id }: IDeleteSkillModal) {
           <ButtonLoading
             variant="contained"
             size="small"
-            handlesubmit={() => onDelete({ note })}
+            handlesubmit={() => onDelete(note)}
             loading={isPending}
           >
             Submit

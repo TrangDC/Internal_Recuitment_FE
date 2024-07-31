@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useGraphql from 'features/calendars/domain/graphql'
-import { PayloadDragDropInput } from 'features/calendars/domain/interfaces'
 import GraphQLClientService from 'services/graphql-service'
 import NotificationService from 'services/notification-service'
 import { BaseRecord } from 'shared/interfaces/common'
 import ErrorException from 'shared/interfaces/response'
+import { UpdateCandidateInterviewScheduleArguments } from 'shared/schema/database/candidate_interview'
 import { isLeft, unwrapEither } from 'shared/utils/handleEither'
 
 interface IUseDragDropInterview {
@@ -18,7 +18,7 @@ function useDragDropInterview(props: IUseDragDropInterview) {
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationKey: [queryKey],
-    mutationFn: (payload: PayloadDragDropInput) =>
+    mutationFn: (payload: UpdateCandidateInterviewScheduleArguments) =>
       GraphQLClientService.fetchGraphQL(
         updateCandidateInterviewSchedule.query,
         { ...payload }
@@ -38,7 +38,9 @@ function useDragDropInterview(props: IUseDragDropInterview) {
     },
   })
 
-  function onDragDropInterview(payload: PayloadDragDropInput) {
+  function onDragDropInterview(
+    payload: UpdateCandidateInterviewScheduleArguments
+  ) {
     mutate(payload)
   }
   return {

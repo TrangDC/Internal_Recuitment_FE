@@ -3,10 +3,8 @@ import { Controller } from 'react-hook-form'
 import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useTextTranslation from 'shared/constants/text'
-import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
-import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import useUpdateEmail from 'features/email/hooks/useUpdateEmail'
 import { IEditModal } from 'shared/interfaces'
@@ -15,12 +13,18 @@ import EditorBoxField from 'shared/components/input-fields/EditorField'
 import useActionTable from 'features/email/hooks/useActionTable'
 import { Fragment } from 'react/jsx-runtime'
 import PreviewEmailModal from '../PreviewEmailModal'
-import EventEmailAutocomplete, { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
+import EventEmailAutocomplete, {
+  EVENT_EMAIL_ENUM,
+} from 'shared/components/autocomplete/event-email-autocomplete'
 import AutoCompleteInput from 'features/email/shared/components/autocomplete-input'
 import SendToAutocomplete from 'shared/components/autocomplete/send-to-autocomplete'
 import { useMemo } from 'react'
-import { SEND_TO_BY_EVENT, SLASH_COMMAND_BY_EVENT } from 'features/email/shared/constants'
+import {
+  SEND_TO_BY_EVENT,
+  SLASH_COMMAND_BY_EVENT,
+} from 'features/email/shared/constants'
 import { SLASH_COMMAND_TYPE } from 'shared/components/input-fields/EditorField/hooks/useGetSlashCommand'
+import ButtonEdit from 'shared/components/buttons/buttonEdit'
 
 function EditEmailModal({ open, setOpen, id }: IEditModal) {
   const {
@@ -28,7 +32,6 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
     control,
     isValid,
     isPending,
-    setValue,
     formState,
     form_values,
     watch,
@@ -44,10 +47,6 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
   const { onSubmit, getValidCc, resetSendTo } = actions
 
   const translation = useTextTranslation()
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
-  }
 
   const event_selected = watch('event')
   const include_sendTo = useMemo(() => {
@@ -70,7 +69,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
             setOpen={setOpen}
           ></BaseModal.Header>
           <BaseModal.ContentMain maxHeight="500px">
-          <FlexBox flexDirection={'column'} gap={2}>
+            <FlexBox flexDirection={'column'} gap={2}>
               <FlexBox
                 justifyContent={'center'}
                 alignItems={'center'}
@@ -173,7 +172,9 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                             }}
                             pluginCustomize={['slashcommands']}
                             slash_command={['attribute']}
-                            attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
+                            attribute_command={
+                              include_slashCommand as SLASH_COMMAND_TYPE
+                            }
                             initProps={{
                               toolbar: false,
                               menubar: false,
@@ -192,7 +193,7 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                   />
                 </FormControl>
               </FlexBox>
-              
+
               <FlexBox justifyContent={'center'} alignItems={'center'}>
                 <FormControl fullWidth>
                   <Controller
@@ -208,7 +209,9 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                             field.onChange(value)
                           }}
                           pluginCustomize={['slashcommands']}
-                          attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
+                          attribute_command={
+                            include_slashCommand as SLASH_COMMAND_TYPE
+                          }
                           event_filter={event_selected as EVENT_EMAIL_ENUM}
                         />
                         <HelperTextForm
@@ -234,7 +237,9 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
                             field.onChange(value)
                           }}
                           pluginCustomize={['slashcommands']}
-                          attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
+                          attribute_command={
+                            include_slashCommand as SLASH_COMMAND_TYPE
+                          }
                           event_filter={event_selected as EVENT_EMAIL_ENUM}
                         />
                         <HelperTextForm
@@ -266,17 +271,13 @@ function EditEmailModal({ open, setOpen, id }: IEditModal) {
               >
                 Preview
               </AppButton>
-              <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
-                <ButtonLoading
-                  variant="contained"
-                  size="small"
-                  disabled={isValid}
-                  handlesubmit={() => {}}
-                  loading={isPending}
-                >
-                  Submit
-                </ButtonLoading>
-              </UpdateRecord>
+              <ButtonEdit
+                disabled={isValid}
+                handlesubmit={onSubmit}
+                loading={isPending}
+              >
+                Submit
+              </ButtonEdit>
             </FlexBox>
           </BaseModal.Footer>
         </BaseModal.Wrapper>

@@ -20,7 +20,7 @@ import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-c
 import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import SkillTree from 'shared/components/tree/skill-tree'
+import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import SelectionTeamPermission from 'features/jobs/permission/components/SelectionTeamPermission'
 
 interface ICreateJobModal {
@@ -185,7 +185,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                   name="entity_skill_records"
                   render={({ field, fieldState }) => (
                     <Fragment>
-                      <SkillTree
+                      <SkillTreeSelection
                         value={field.value}
                         onChange={field.onChange}
                         textFieldProps={{ label: 'Skill' }}

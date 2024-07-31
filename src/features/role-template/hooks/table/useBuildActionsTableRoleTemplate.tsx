@@ -1,9 +1,9 @@
-import { RoleTemplate } from 'features/role-template/domain/interfaces'
 import useTextTranslation from 'shared/constants/text'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
 import EditIcon from 'shared/components/icons/EditIcon'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
+import Role from 'shared/schema/database/role'
 
 export enum ActionRoleTemplates {
   DEtail = 'detail',
@@ -23,7 +23,7 @@ function useBuildActionsTableRoleTemplate({
   handleOpenDetail,
 }: UseBuildActionsTableRoleTemplateProps) {
   const translation = useTextTranslation()
-  const { actions } = useBuildActionsTable<ActionRoleTemplates, RoleTemplate>({
+  const { actions } = useBuildActionsTable<ActionRoleTemplates, Role>({
     actions: {
       detail: {
         id: ActionRoleTemplates.DEtail,

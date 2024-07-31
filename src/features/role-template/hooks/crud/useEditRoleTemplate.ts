@@ -4,15 +4,12 @@ import { useEditResource } from 'shared/hooks/crud-hook'
 import { useState } from 'react'
 import useGetAllPermissionGroups from 'shared/hooks/permissions/useGetAllPermissionGroups'
 import useGraphql from 'features/role-template/domain/graphql/graphql'
-import {
-  RoleTemplate,
-  UpdateRoleInput,
-} from 'features/role-template/domain/interfaces'
 import RoleTemplateStructure from 'shared/components/role-template-permission/interfaces/permissionStructure'
+import Role, { UpdateRoleArguments } from 'shared/schema/database/role'
 import {
   EditRoleTemplateForm,
   EditRoleTemplateSchema,
-} from '../shared/constants/validate'
+} from 'features/role-template/shared/constants/validate'
 
 type UseEditJobProps = {
   id: string
@@ -27,9 +24,9 @@ function useEditRoleTemplate(props: UseEditJobProps) {
   const { getAllPermission, isGetting: isGetAllPermissionGroups } =
     useGetAllPermissionGroups()
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
-    RoleTemplate,
+    Role,
     EditRoleTemplateForm,
-    UpdateRoleInput
+    UpdateRoleArguments
   >({
     resolver: yupResolver(EditRoleTemplateSchema),
     editBuildQuery: updateRole,
@@ -63,13 +60,17 @@ function useEditRoleTemplate(props: UseEditJobProps) {
     handleSubmit((data) => {
       const entity_permissions = data.entity_permissions
       if (entity_permissions) {
-        mutate({
-          name: data.name,
-          description: data.description ?? '',
-          entity_permissions:
-            RoleTemplateStructure.formatEditCreateValue(entity_permissions),
+        const payload: UpdateRoleArguments = {
+          id,
+          input: {
+            name: data.name,
+            description: data.description ?? '',
+            entity_permissions:
+              RoleTemplateStructure.formatEditCreateValue(entity_permissions),
+          },
           note: note,
-        })
+        }
+        mutate(payload)
       }
     })()
   }

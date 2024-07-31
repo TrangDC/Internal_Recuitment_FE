@@ -4,13 +4,12 @@ import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useUpdateSkill from '../../../hooks/crud/useUpdateSkill'
 import useTextTranslation from 'shared/constants/text'
-import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
-import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTypeAutoComplete from 'shared/components/autocomplete/skill-type-autocomplete'
+import ButtonEdit from 'shared/components/buttons/buttonEdit'
 
 interface IEditSkillModal {
   open: boolean
@@ -27,7 +26,7 @@ function EditSkillModal({ open, setOpen, id }: IEditSkillModal) {
       },
     })
 
-  const { callbackSubmit } = actions
+  const { onSubmit } = actions
   const translation = useTextTranslation()
 
   return (
@@ -124,17 +123,13 @@ function EditSkillModal({ open, setOpen, id }: IEditSkillModal) {
             >
               {translation.COMMON.cancel}
             </AppButton>
-            <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
-              <ButtonLoading
-                variant="contained"
-                size="small"
-                disabled={isValid}
-                handlesubmit={() => {}}
-                loading={isPending}
-              >
-                Submit
-              </ButtonLoading>
-            </UpdateRecord>
+            <ButtonEdit
+              disabled={isValid}
+              handlesubmit={onSubmit}
+              loading={isPending}
+            >
+              Submit
+            </ButtonEdit>
           </FlexBox>
         </BaseModal.Footer>
       </BaseModal.Wrapper>

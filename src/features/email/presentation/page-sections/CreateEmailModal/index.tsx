@@ -14,11 +14,16 @@ import { BoxWrapperEditor } from 'features/email/shared/constants/styles/style'
 import useActionTable from 'features/email/hooks/useActionTable'
 import { Fragment } from 'react/jsx-runtime'
 import PreviewEmailModal from '../PreviewEmailModal'
-import EventEmailAutocomplete, { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
+import EventEmailAutocomplete, {
+  EVENT_EMAIL_ENUM,
+} from 'shared/components/autocomplete/event-email-autocomplete'
 import AutoCompleteInput from 'features/email/shared/components/autocomplete-input'
 import SendToAutocomplete from 'shared/components/autocomplete/send-to-autocomplete'
 import { useMemo } from 'react'
-import { SEND_TO_BY_EVENT, SLASH_COMMAND_BY_EVENT } from 'features/email/shared/constants'
+import {
+  SEND_TO_BY_EVENT,
+  SLASH_COMMAND_BY_EVENT,
+} from 'features/email/shared/constants'
 import { SLASH_COMMAND_TYPE } from 'shared/components/input-fields/EditorField/hooks/useGetSlashCommand'
 
 function CreateEmailModal({ open, setOpen }: ICreateModal) {
@@ -173,7 +178,9 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                                 'body{margin:0; padding:10px 10px 5px; height:25px; white-space: nowrap} p { margin:0; padding: 0 ; height:25px }',
                             }}
                             event_filter={event_selected as EVENT_EMAIL_ENUM}
-                            attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
+                            attribute_command={
+                              include_slashCommand as SLASH_COMMAND_TYPE
+                            }
                           />
                         </BoxWrapperEditor>
 
@@ -201,7 +208,9 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                             field.onChange(value)
                           }}
                           pluginCustomize={['slashcommands']}
-                          attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
+                          attribute_command={
+                            include_slashCommand as SLASH_COMMAND_TYPE
+                          }
                           event_filter={event_selected as EVENT_EMAIL_ENUM}
                         />
                         <HelperTextForm
@@ -221,13 +230,15 @@ function CreateEmailModal({ open, setOpen }: ICreateModal) {
                     render={({ field, fieldState }) => (
                       <FlexBox flexDirection={'column'}>
                         <EditorBoxField
-                          label={'Email signature'} 
+                          label={'Email signature'}
                           value={field.value ?? ''}
                           onEditorChange={(value) => {
                             field.onChange(value)
                           }}
                           pluginCustomize={['slashcommands']}
-                          attribute_command={include_slashCommand as SLASH_COMMAND_TYPE}
+                          attribute_command={
+                            include_slashCommand as SLASH_COMMAND_TYPE
+                          }
                           event_filter={event_selected as EVENT_EMAIL_ENUM}
                         />
                         <HelperTextForm

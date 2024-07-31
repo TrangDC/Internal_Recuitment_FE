@@ -8,7 +8,6 @@ import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto-complete'
-import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import AppButton from 'shared/components/buttons/AppButton'
 import { Fragment, useMemo } from 'react'
 import AppDateField from 'shared/components/input-fields/AppDateField'
@@ -16,11 +15,11 @@ import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
-import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
-import useEditInterview from 'features/calendars/hooks/useEditInterview'
 import LocationInterviewAutoComplete, {
   LOCATION_INTERVIEW_STATE,
 } from 'shared/components/autocomplete/location-interview-autocomplete'
+import useEditInterview from 'features/calendars/hooks/crud/useEditInterview'
+import ButtonEdit from 'shared/components/buttons/buttonEdit'
 
 interface IEditInterviewModal {
   open: boolean
@@ -53,13 +52,8 @@ function EditInterviewModal(props: IEditInterviewModal) {
     onSelectedTo,
     resetMeetingLink,
   } = actions
+
   const interviewDate = watch('date')
-
-  const callbackSubmit = (reason: string) => {
-    // setValue('note', reason)
-    onSubmit()
-  }
-
   const location_interview = watch('location')
   const show_meeting_link = useMemo(() => {
     return LOCATION_INTERVIEW_STATE.ONLINE === location_interview
@@ -407,17 +401,13 @@ function EditInterviewModal(props: IEditInterviewModal) {
           >
             Cancel
           </AppButton>
-          <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
-            <ButtonLoading
-              variant="contained"
-              size="small"
-              disabled={isValid}
-              handlesubmit={() => {}}
-              loading={isPending}
-            >
-              Submit
-            </ButtonLoading>
-          </UpdateRecord>
+          <ButtonEdit
+            disabled={isValid}
+            handlesubmit={onSubmit}
+            loading={isPending}
+          >
+            Submit
+          </ButtonEdit>
         </BaseModal.Footer>
       </BaseModal.Wrapper>
     </ConfirmableModalProvider>

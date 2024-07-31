@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/interviews/domain/graphql/graphql'
-import { UpdateCandidateInterviewInput } from 'features/interviews/domain/interfaces'
 import {
   schemaUpdate,
   FormDataSchemaUpdate,
@@ -11,7 +10,9 @@ import dayjs from 'dayjs'
 import { BaseRecord } from 'shared/interfaces'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import { transformListItem } from 'shared/utils/utils'
-import CandidateInterview from 'shared/schema/database/candidate_interview'
+import CandidateInterview, {
+  UpdateCandidateInterviewArguments,
+} from 'shared/schema/database/candidate_interview'
 
 type UseEditInterviewProps = {
   id: string
@@ -24,7 +25,7 @@ function useEditInterview(props: UseEditInterviewProps) {
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     CandidateInterview,
     FormDataSchemaUpdate,
-    UpdateCandidateInterviewInput
+    UpdateCandidateInterviewArguments
   >({
     resolver: yupResolver(schemaUpdate),
     editBuildQuery: updateCandidateInterview,
@@ -62,7 +63,7 @@ function useEditInterview(props: UseEditInterviewProps) {
 
   const { isPending, mutate } = useEditReturn
 
-  function onSubmit() {
+  function onSubmit(note: string) {
     handleSubmit((value) => {
       if (!value.interview_date) return
       let interview_date = dayjs(value.interview_date)
@@ -78,21 +79,24 @@ function useEditInterview(props: UseEditInterviewProps) {
       const interview_date_apply = convertToUTC(
         value.interview_date
       ).toISOString()
-      const valueClone = {
-        ...cloneDeep(value),
-        interview_date: interview_date_apply,
-        start_from: convertToUTC(start_form.toDate()).toISOString(),
-        end_at: convertToUTC(end_at.toDate()).toISOString(),
+      const payload: UpdateCandidateInterviewArguments = {
+        id,
+        input: {
+          interview_date: interview_date_apply,
+          start_from: convertToUTC(start_form.toDate()).toISOString(),
+          end_at: convertToUTC(end_at.toDate()).toISOString(),
+          candidate_job_id: value?.candidate_job_id,
+          description: value?.description ?? '',
+          interviewer: value?.interviewer,
+          location: value?.location,
+          meeting_link: value?.meeting_link ?? '',
+          title: value?.title,
+        },
+        note: note,
       }
 
-      //@ts-ignore
-      mutate(valueClone)
+      mutate(payload)
     })()
-  }
-
-  const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit()
   }
 
   function resetMeetingLink() {
@@ -105,7 +109,6 @@ function useEditInterview(props: UseEditInterviewProps) {
     isPending,
     actions: {
       onSubmit,
-      callbackSubmit,
       resetMeetingLink,
     },
     formState,

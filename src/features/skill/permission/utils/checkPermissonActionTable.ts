@@ -1,9 +1,9 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
-import { Skill } from 'features/skill/domain/interfaces'
 import { ActionSkill } from 'features/skill/hooks/table/useBuildActionsTableSkill'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
+import Skill from 'shared/schema/database/skill'
 
 interface ActionProps {
   newActions: TOptionItem<Skill>[]

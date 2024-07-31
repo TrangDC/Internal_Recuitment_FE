@@ -17,7 +17,7 @@ import CandidateBySource from './components/CandidateBySource'
 import NationalityAutoComplete from 'shared/components/autocomplete/nationality-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import SkillTree from 'shared/components/tree/skill-tree'
+import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
 
 interface ICreateCandidateModal {
@@ -259,7 +259,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                         textFieldProps={{
                           fullWidth: true,
                           size: 'small',
-                          required: true
+                          required: true,
                         }}
                       />
                       <HelperTextForm
@@ -278,7 +278,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                   name="entity_skill_records"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <SkillTree
+                      <SkillTreeSelection
                         value={field.value}
                         onChange={field.onChange}
                       />

@@ -22,10 +22,10 @@ export const schema = yup.object({
     .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
     .test('is_null', function () {
       const interview_date = this.parent?.interview_date
-      if(!interview_date) {
+      if (!interview_date) {
         return this.createError({
           path: this.path,
-          message: RULE_MESSAGES.MC1('interview date')
+          message: RULE_MESSAGES.MC1('interview date'),
         })
       }
       return true
@@ -52,10 +52,9 @@ export const schema = yup.object({
     })
     .test('isPast', 'Start time cannot be past dates', function (value) {
       const { interview_date } = this.parent
-      if (!isValid(interview_date) || !interview_date) return false;
+      if (!isValid(interview_date) || !interview_date) return false
 
       let start_form = dayjs(value)
-
 
       if (interview_date) {
         const interview_date_current = dayjs(this.parent.interview_date)
@@ -88,7 +87,7 @@ export const schema = yup.object({
     }),
   description: yup.string(),
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
-  meeting_link: yup.string()
+  meeting_link: yup.string(),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -106,15 +105,16 @@ export const schemaUpdate = yup.object({
     .required(RULE_MESSAGES.MC1('interviewer'))
     .min(1, RULE_MESSAGES.MC1('interviewer')),
   interview_date: yup
-    .date().nullable()
+    .date()
+    .nullable()
     .typeError(RULE_MESSAGES.MC5('interview date'))
     .min(dayjs().startOf('day').toDate(), 'Cannot be past dates')
     .test('is_null', function () {
       const interview_date = this.parent?.interview_date
-      if(!interview_date) {
+      if (!interview_date) {
         return this.createError({
           path: this.path,
-          message: RULE_MESSAGES.MC1('interview date')
+          message: RULE_MESSAGES.MC1('interview date'),
         })
       }
       return true
@@ -141,10 +141,9 @@ export const schemaUpdate = yup.object({
     })
     .test('isPast', 'Start time cannot be past dates', function (value) {
       const { interview_date } = this.parent
-      if (!isValid(interview_date) || !interview_date) return false;
+      if (!isValid(interview_date) || !interview_date) return false
 
       let start_form = dayjs(value)
-
 
       if (interview_date) {
         const interview_date_current = dayjs(this.parent.interview_date)
@@ -176,9 +175,8 @@ export const schemaUpdate = yup.object({
       return true
     }),
   description: yup.string(),
-  note: yup.string(),
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
-  meeting_link: yup.string()
+  meeting_link: yup.string(),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>

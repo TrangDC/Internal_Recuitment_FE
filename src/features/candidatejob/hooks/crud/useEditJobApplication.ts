@@ -1,5 +1,4 @@
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
-import { UpdateCandidateAttachment } from 'features/candidatejob/domain/interfaces'
 import useEditResourceWithoutGetting from 'shared/hooks/crud-hook/useEditResourceWithoutGetting'
 import { Attachments, BaseRecord } from 'shared/interfaces'
 import {
@@ -10,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { removeStatusAttachment } from 'shared/utils/utils'
 import { useMemo } from 'react'
 import { isEmpty } from 'lodash'
+import { UpdateCandidateJobAttachmentArguments } from 'shared/schema/database/candidate_job'
 
 type UseEditJobApplicationProps = {
   id: string
@@ -21,12 +21,11 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
   const { updateCandidateJobAttachment, queryKey } = useGraphql()
   const { useEditReturn, useFormReturn } = useEditResourceWithoutGetting<
     FormDataSchemaUpdateJobAttachments,
-    UpdateCandidateAttachment
+    UpdateCandidateJobAttachmentArguments
   >({
     resolver: yupResolver(schemaUpdateJobAttachment),
     editBuildQuery: updateCandidateJobAttachment,
     queryKey: [queryKey],
-    id,
     onSuccess,
     formatDefaultValues: {
       attachments: [],
@@ -41,11 +40,14 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
       const attachments: Attachments[] = removeStatusAttachment(
         value?.attachments
       ) as Attachments[]
-      mutate({
-        ...value,
-        attachments: attachments,
+      const payload: UpdateCandidateJobAttachmentArguments = {
+        id,
+        input: {
+          attachments,
+        },
         note: note,
-      })
+      }
+      mutate(payload)
     })()
   }
 
@@ -62,7 +64,7 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
     useFormReturn,
     control,
     formState,
-    getValues
+    getValues,
   }
 }
 

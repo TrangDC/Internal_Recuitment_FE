@@ -15,11 +15,11 @@ import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
-import useCreateInterview from 'features/calendars/hooks/useCreateInterview'
 import SelectionTeamPermission from 'features/calendars/permission/components/SelectionTeamPermission'
 import LocationInterviewAutoComplete, {
   LOCATION_INTERVIEW_STATE,
 } from 'shared/components/autocomplete/location-interview-autocomplete'
+import useCreateInterview from 'features/calendars/hooks/crud/useCreateInterview'
 
 interface IAddInterviewModal {
   open: boolean

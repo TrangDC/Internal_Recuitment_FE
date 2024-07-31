@@ -1,12 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../../shared/constants/schema'
-import { NewHiringJobInput } from 'features/jobs/domain/interfaces'
 import _, { isEmpty } from 'lodash'
 import { convertCurrencyToNumber, updateRecordSkill } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
 import { useCreateResource } from 'shared/hooks/crud-hook'
+import { CreateHiringJobArguments } from 'shared/schema/database/hiring_job'
 
 interface createJobProps {
   defaultValues?: Partial<FormDataSchema>
@@ -17,7 +17,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
   const { createJob, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewHiringJobInput,
+    CreateHiringJobArguments,
     FormDataSchema
   >({
     mutationKey: [queryKey],
@@ -26,7 +26,6 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
       name: '',
       salary_from: '0',
       salary_to: '0',
-      note: '',
       entity_skill_records: {},
       ...defaultValues,
     },
@@ -42,21 +41,29 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     handleSubmit((value) => {
       const salary_type = value.salary_type
       const entity_skill = updateRecordSkill(value.entity_skill_records)
-
-      const valueClone = {
-        ..._.cloneDeep(value),
-        currency:
-          salary_type !== SALARY_STATE.NEGOTITATION
-            ? value.currency
-            : CURRENCY_STATE.VND,
-        salary_type: salary_type,
-        salary_from: convertCurrencyToNumber(value.salary_from),
-        salary_to: convertCurrencyToNumber(value.salary_to),
-        status: 'opened',
-        entity_skill_records: entity_skill,
+      const currency = value?.currency ?? CURRENCY_STATE.VND
+      const payload: CreateHiringJobArguments = {
+        input: {
+          currency:
+            salary_type !== SALARY_STATE.NEGOTITATION
+              ? currency
+              : CURRENCY_STATE.VND,
+          salary_type: salary_type,
+          salary_from: convertCurrencyToNumber(value.salary_from),
+          salary_to: convertCurrencyToNumber(value.salary_to),
+          status: 'opened',
+          entity_skill_records: entity_skill,
+          amount: value?.amount ? Number(value?.amount) : 0,
+          name: value?.name,
+          created_by: value?.created_by,
+          description: value?.description,
+          hiring_team_id: value?.hiring_team_id,
+          location: value?.location,
+          priority: Number(value?.priority),
+        },
+        note: '',
       }
-
-      mutate(valueClone)
+      mutate(payload)
     })()
   }
 

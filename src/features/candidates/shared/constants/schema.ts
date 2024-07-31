@@ -43,7 +43,6 @@ export const schema = yup.object({
     .required(RULE_MESSAGES.MC1('email'))
     .max(64, RULE_MESSAGES.MC4('email', 64)),
   dob: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
-  note: yup.string(),
   country: yup.string(),
   reference_type: yup.string().required(RULE_MESSAGES.MC1('candidate source')),
   reference_value: yup
@@ -53,9 +52,7 @@ export const schema = yup.object({
         RULE_MESSAGES.MC1(renderLabelReference(reference_type))
       )
     }),
-  reference_uid: yup
-    .string()
-    .required(RULE_MESSAGES.MC1('recruiter')),
+  reference_uid: yup.string().required(RULE_MESSAGES.MC1('recruiter')),
   recruit_time: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('recruit time'))
@@ -84,7 +81,6 @@ export const schemaUpdate = yup.object({
     .required(RULE_MESSAGES.MC1('email'))
     .max(64, RULE_MESSAGES.MC4('email', 64)),
   dob: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
-  note: yup.string(),
   //add
   country: yup.string(),
   reference_type: yup.string().required(RULE_MESSAGES.MC1('candidate source')),
@@ -95,9 +91,7 @@ export const schemaUpdate = yup.object({
         RULE_MESSAGES.MC1(renderLabelReference(reference_type))
       )
     }),
-    reference_uid: yup
-    .string()
-    .required(RULE_MESSAGES.MC1('recruiter')),
+  reference_uid: yup.string().required(RULE_MESSAGES.MC1('recruiter')),
   recruit_time: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('recruit time'))

@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/teams/domain/graphql/graphql'
-import { NewHiringTeamInput } from 'features/teams/domain/interfaces'
 import { FormDataSchema, schema } from 'features/teams/shared/constants/schema'
 import { useCreateResource } from 'shared/hooks/crud-hook'
+import { CreateHiringTeamArguments } from 'shared/schema/database/hiring_team'
 
 interface createTeamProps {
   callbackSuccess?: (value: any) => void
@@ -13,7 +13,7 @@ function useCreateTeam(props: createTeamProps = {}) {
 
   const { createTeam, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewHiringTeamInput,
+    CreateHiringTeamArguments,
     FormDataSchema
   >({
     mutationKey: [queryKey],
@@ -21,7 +21,6 @@ function useCreateTeam(props: createTeamProps = {}) {
     defaultValues: {
       name: '',
       members: [],
-      note: '',
     },
     resolver: yupResolver(schema),
     onSuccess: callbackSuccess,
@@ -33,7 +32,14 @@ function useCreateTeam(props: createTeamProps = {}) {
 
   function onSubmit() {
     handleSubmit((value) => {
-      mutate(value)
+      const payload: CreateHiringTeamArguments = {
+        input: {
+          members: value?.members ?? [],
+          name: value?.name,
+        },
+        note: '',
+      }
+      mutate(payload)
     })()
   }
 

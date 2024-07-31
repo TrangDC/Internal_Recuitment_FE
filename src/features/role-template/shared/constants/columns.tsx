@@ -7,16 +7,16 @@ import { t } from 'i18next'
 import { StyleTinyText } from 'shared/styles'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Span } from 'shared/components/Typography'
-import { RoleTemplate } from 'features/role-template/domain/interfaces'
 import checkPermissionActionTable from 'features/role-template/permission/utils/checkPermissonActionTable'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
+import Role from 'shared/schema/database/role'
 
-const columnHelper = createColumnHelper<RoleTemplate>()
+const columnHelper = createColumnHelper<Role>()
 
 export const columns = (
-  actions: TOptionItem<RoleTemplate>[],
+  actions: TOptionItem<Role>[],
   { me, role }: ParamsColumn
-): ColumnDef<RoleTemplate, any>[] => [
+): ColumnDef<Role, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
@@ -48,7 +48,7 @@ export const columns = (
         rowData: rowData,
       })
       return (
-        <ActionGroupButtons<RoleTemplate>
+        <ActionGroupButtons<Role>
           rowId={id}
           actions={newActions}
           rowData={rowData.row.original}

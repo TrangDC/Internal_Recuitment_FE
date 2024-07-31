@@ -6,7 +6,7 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { Fragment, useState } from 'react'
-import useDeleteRoleTemplate from 'features/role-template/hooks/useDeleteRoleTemplate'
+import useDeleteRoleTemplate from 'features/role-template/hooks/crud/useDeleteRoleTemplate'
 
 interface IDeleteInterviewModal {
   open: boolean
@@ -74,7 +74,7 @@ function DeleteRoleTemplateModal({
             <ButtonLoading
               variant="contained"
               size="small"
-              handlesubmit={() => onDelete({ note })}
+              handlesubmit={() => onDelete(note)}
               loading={isPending}
             >
               Submit

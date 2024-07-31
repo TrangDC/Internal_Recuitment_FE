@@ -2,13 +2,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { useState } from 'react'
 import useGetAllPermissionGroups from 'shared/hooks/permissions/useGetAllPermissionGroups'
-import { NewRoleTemplateInput } from 'features/role-template/domain/interfaces'
 import useGraphql from 'features/role-template/domain/graphql/graphql'
 import RoleTemplateStructure from 'shared/components/role-template-permission/interfaces/permissionStructure'
+import { CreateRoleArguments } from 'shared/schema/database/role'
 import {
   CreateRoleTemplateForm,
   CreateRoleTemplateSchema,
-} from '../shared/constants/validate'
+} from 'features/role-template/shared/constants/validate'
 
 interface UseCreateRoleTemplateProps {
   callbackSuccess?: (value: any) => void
@@ -22,7 +22,7 @@ function useCreateRoleTemplate(props: UseCreateRoleTemplateProps) {
   >()
   const { getAllPermission, isGetting } = useGetAllPermissionGroups()
   const { useCreateReturn, useFormReturn } = useCreateResource<
-    NewRoleTemplateInput,
+    CreateRoleArguments,
     CreateRoleTemplateForm
   >({
     mutationKey: [queryKey],
@@ -51,13 +51,16 @@ function useCreateRoleTemplate(props: UseCreateRoleTemplateProps) {
     handleSubmit((data) => {
       const entity_permissions = data.entity_permissions
       if (entity_permissions) {
-        mutate({
-          name: data.name,
-          description: data.description ?? '',
-          entity_permissions:
-            RoleTemplateStructure.formatEditCreateValue(entity_permissions),
+        const payload: CreateRoleArguments = {
+          input: {
+            name: data.name,
+            description: data.description ?? '',
+            entity_permissions:
+              RoleTemplateStructure.formatEditCreateValue(entity_permissions),
+          },
           note: '',
-        })
+        }
+        mutate(payload)
       }
     })()
   }

@@ -9,13 +9,13 @@ import { ICreateModal } from 'shared/components/modal/interface'
 import LoadingField from 'shared/components/form/loadingField'
 import { Text15md } from 'shared/components/Typography'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import useCreateRoleTemplate from 'features/role-template/hooks/useCreateRoleTemplate'
 import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
+import useCreateRoleTemplate from 'features/role-template/hooks/crud/useCreateRoleTemplate'
 
 function CreateRoleTemplateModal({ open, setOpen }: ICreateModal) {
   const { useFormReturn, onSubmit, isValid, permissionGroup, isGetting } =
     useCreateRoleTemplate({
-      callbackSuccess(value) {
+      callbackSuccess() {
         setOpen(false)
       },
     })
