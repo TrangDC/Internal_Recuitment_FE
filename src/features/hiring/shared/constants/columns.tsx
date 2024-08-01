@@ -9,7 +9,7 @@ import ChipField from 'shared/components/chip-stack/chip-field'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { TinyText } from 'shared/components/form/styles'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
-import { Span } from 'shared/components/Typography'
+import { LinkText, Span } from 'shared/components/Typography'
 import Role from 'shared/schema/database/role'
 import User from 'shared/schema/database/user'
 
@@ -22,11 +22,15 @@ const columnHelper = createColumnHelper<User>()
 
 export const columns = (
   actions: TOptionItem<User>[],
-  { me, role }: ParamsColumn
+  { me, role, handleOpenDetail }: ParamsColumn
 ): ColumnDef<User, any>[] => [
   columnHelper.accessor('name', {
     id: 'name',
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => (
+      <LinkText onClick={() => handleOpenDetail?.(info.row.original.id)}>
+        {info.getValue()}
+      </LinkText>
+    ),
     header: () => <span>Name</span>,
     size: 250,
   }),

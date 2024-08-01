@@ -326,8 +326,8 @@ export const LinkText: React.FC<BoxProps & Props> = (props) => {
   return (
     <StyledBox
       component="p"
-      fontSize={15}
-      fontWeight={600}
+      fontSize={13}
+      fontWeight={500}
       lineHeight={'18.29px'}
       ellipsis={ellipsis ? 1 : 0}
       className={clsx({ [className || '']: true })}

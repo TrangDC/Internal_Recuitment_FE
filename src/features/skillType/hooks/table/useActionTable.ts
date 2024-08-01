@@ -6,6 +6,7 @@ const useActionTable = <T extends object>() => {
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
+  const [openDetail, setOpenDetail] = useState(false)
 
   function handleOpenEdit(id: string) {
     rowId.current = id
@@ -17,6 +18,11 @@ const useActionTable = <T extends object>() => {
     setOpenDelete(true)
   }
 
+  function handleOpenDetail(id: string) {
+    rowId.current = id
+    setOpenDetail(true)
+  }
+
   return {
     openCreate,
     openEdit,
@@ -26,6 +32,9 @@ const useActionTable = <T extends object>() => {
     setOpenEdit,
     handleOpenEdit,
     handleOpenDelete,
+    handleOpenDetail,
+    setOpenDetail,
+    openDetail,
     rowId,
     rowData,
   }

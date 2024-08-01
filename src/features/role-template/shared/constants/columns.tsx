@@ -6,7 +6,7 @@ import {
 import { t } from 'i18next'
 import { StyleTinyText } from 'shared/styles'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Span } from 'shared/components/Typography'
+import { LinkText, Span } from 'shared/components/Typography'
 import checkPermissionActionTable from 'features/role-template/permission/utils/checkPermissonActionTable'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 import Role from 'shared/schema/database/role'
@@ -15,11 +15,15 @@ const columnHelper = createColumnHelper<Role>()
 
 export const columns = (
   actions: TOptionItem<Role>[],
-  { me, role }: ParamsColumn
+  { me, role, handleOpenDetail }: ParamsColumn
 ): ColumnDef<Role, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => (
+      <LinkText onClick={() => handleOpenDetail?.(info.row.original.id)}>
+        {info.getValue()}
+      </LinkText>
+    ),
     header: () => <span>Role Name</span>,
     size: 500,
   }),

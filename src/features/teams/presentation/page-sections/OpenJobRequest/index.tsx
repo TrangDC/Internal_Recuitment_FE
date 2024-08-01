@@ -34,7 +34,7 @@ const OpeningJobRequest = () => {
       status: STATUS_HIRING_JOB.OPENED,
     },
   })
-  const { total_record } = useTableReturn
+  const { totalRecord } = useTableReturn
   const navigate = useNavigate()
 
   const {
@@ -71,7 +71,7 @@ const OpeningJobRequest = () => {
             Opening job request
           </SpanGeneration>
           <BoxCircle>
-            <TinyText> {total_record}</TinyText>
+            <TinyText> {totalRecord}</TinyText>
           </BoxCircle>
         </FlexBox>
         <FlexBox gap={1.25} flexWrap={'wrap'}>

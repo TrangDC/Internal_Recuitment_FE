@@ -14,6 +14,7 @@ import SkillTypePermissionGroupDetail from '../../components/detail/SkillTypePer
 import ReportPermissionGroupDetail from '../../components/detail/ReportPermissionGroupDetail'
 import UserPermissionGroupDetail from '../../components/detail/UserPermissionGroupDetail'
 import HiringTeamPermissionGroupDetail from '../../components/detail/HiringTeamPermissionGroupDetail'
+import EmailTemplatePermissionGroupDetail from '../../components/detail/EmailTemplatePermissionGroupDetail'
 
 type PermissionSectionsProps = {
   roleTemplate: RoleTemplateStructure | undefined
@@ -41,6 +42,7 @@ function PermissionSectionsDetail({ roleTemplate }: PermissionSectionsProps) {
         <UserPermissionGroupDetail roleTemplate={roleTemplate} />
         <SkillPermissionGroupDetail roleTemplate={roleTemplate} />
         <SkillTypePermissionGroupDetail roleTemplate={roleTemplate} />
+        <EmailTemplatePermissionGroupDetail roleTemplate={roleTemplate} />
       </FlexBox>
     </AppCollapse>
   )

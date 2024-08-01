@@ -18,6 +18,7 @@ import useActionTable from '../../hooks/table/useActionTable'
 import Cant from 'features/authorization/presentation/components/Cant'
 import useBuildActionsTableSkillType from '../../hooks/table/useBuildActionsTableSkillType'
 import SkillType from 'shared/schema/database/skill_type'
+import DetailSkillTypeModal from '../page-sections/DetailSkillType'
 
 const SkillTypeList = () => {
   const {
@@ -30,6 +31,9 @@ const SkillTypeList = () => {
     openEdit,
     rowId,
     setOpenEdit,
+    handleOpenDetail,
+    openDetail,
+    setOpenDetail,
   } = useActionTable<SkillType>()
 
   const { useSearchListReturn } = useFilterSkillType()
@@ -46,6 +50,7 @@ const SkillTypeList = () => {
   const { columnTable } = useBuildColumnTable({
     actions: actions,
     columns,
+    handleOpenDetail,
   })
 
   return (
@@ -101,6 +106,14 @@ const SkillTypeList = () => {
           open={openDelete}
           setOpen={setOpenDelete}
           id={rowId.current}
+        />
+      )}
+      {openDetail && (
+        <DetailSkillTypeModal
+          open={openDetail}
+          setOpen={setOpenDetail}
+          id={rowId.current}
+          handleOpenEdit={handleOpenEdit}
         />
       )}
     </DivContainerWrapper>

@@ -152,4 +152,8 @@ export const roleTemplateInformation: RoleTemplateInformation = {
   'model.permissions.report.view': {
     description: 'View recruitment report',
   },
+  'model.permissions.email_templates.update_status': {
+    description:
+      'Permission to enable/ disable an email template for an event ',
+  },
 }
