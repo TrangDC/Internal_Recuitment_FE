@@ -44,6 +44,7 @@ const SkillList = () => {
   const { columnTable } = useBuildColumnTable({
     actions: actions,
     columns,
+    handleOpenDetail,
   })
 
   return (

@@ -45,6 +45,7 @@ const RoleTemplateList = () => {
   const { columnTable } = useBuildColumnTable({
     actions: actions,
     columns,
+    handleOpenDetail,
   })
   return (
     <Box pt={2} pb={4}>

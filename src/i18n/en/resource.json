@@ -316,7 +316,8 @@
         "view": "View",
         "create": "Create",
         "update": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "update_status": "Enable/Disable email template"
       },
       "report": {
         "view": "View"

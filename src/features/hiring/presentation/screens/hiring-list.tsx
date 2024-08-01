@@ -43,6 +43,7 @@ const HiringList = () => {
   const { columnTable } = useBuildColumnTable<User>({
     actions: actions,
     columns,
+    handleOpenDetail,
   })
   return (
     <Box pt={2} pb={4}>

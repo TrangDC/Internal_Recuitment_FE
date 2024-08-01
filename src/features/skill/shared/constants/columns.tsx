@@ -8,16 +8,21 @@ import { StyleTinyText } from 'shared/styles'
 import checkPermissionActionTable from 'features/skill/permission/utils/checkPermissonActionTable'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
 import Skill from 'shared/schema/database/skill'
+import { LinkText } from 'shared/components/Typography'
 
 const columnHelper = createColumnHelper<Skill>()
 
 export const columns = (
   actions: TOptionItem<Skill>[],
-  { me, role }: ParamsColumn
+  { me, role, handleOpenDetail }: ParamsColumn
 ): ColumnDef<Skill, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    cell: (info) => (
+      <LinkText onClick={() => handleOpenDetail?.(info.row.original.id)}>
+        {info.getValue()}
+      </LinkText>
+    ),
     header: () => <span>{t('name')}</span>,
     size: 300,
   }),

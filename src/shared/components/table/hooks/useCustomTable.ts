@@ -1,6 +1,5 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { BaseRecord } from 'shared/interfaces'
 import { ISearchData } from './useSearchList'
 import GraphQLClientService, {
@@ -17,9 +16,11 @@ interface IuseCustomTable {
   orderBy?: ISorting
 }
 
-interface IPagination {
+export interface IPagination {
   page: number
   perPage: number
+  orderBy: ISorting
+  state: 'INIT' | 'RUNNING'
 }
 
 interface ISorting {
@@ -32,9 +33,10 @@ export interface IuseCustomTableReturn {
   error: Error | null
   sortData: any[]
   handleChangePage: (page: number) => void
+  handleChangePerPage: (perPage: number) => void
   handleSorTable: (id: string) => void
   totalPage: number
-  total_record: number,
+  totalRecord: number
   refetch: () => void
   variables: {
     pagination: IPagination
@@ -50,27 +52,18 @@ const useCustomTable = ({
   queryKey,
   orderBy,
 }: IuseCustomTable): IuseCustomTableReturn => {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-  const location = useLocation()
-  const [params] = useSearchParams()
-  const initialPage = params.get('page') ? Number(params.get('page')) : 1
-  const initialPerPage = params.get('perPage')
-    ? Number(params.get('perPage'))
-    : perPage
   const [pagination, setPagination] = useState<IPagination>({
-    page: initialPage,
-    perPage: initialPerPage,
-  })
-  const [sorting, setSorting] = useState<ISorting>(
-    orderBy || {
+    orderBy: orderBy || {
       direction: 'DESC',
       field: 'created_at',
-    }
-  )
+    },
+    page: 1,
+    perPage: 10,
+    state: 'INIT',
+  })
+
   const customKey = {
     pagination,
-    sorting,
     filters,
     search,
   }
@@ -80,7 +73,7 @@ const useCustomTable = ({
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(buildQuery.query, {
         orderBy: {
-          ...sorting,
+          ...pagination.orderBy,
         },
         filter: filters,
         freeWord: search,
@@ -91,64 +84,77 @@ const useCustomTable = ({
       }),
   })
 
-  const { sortData, totalPage, total_record } = useMemo(() => {
+  const { sortData, totalPage, totalRecord } = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
-      const totalPage = Math.ceil(
-        (response?.[buildQuery.operation]?.pagination?.total ?? 0) / perPage
-      )
-      const total_record = response?.[buildQuery.operation]?.pagination?.total;     
+      const total = response?.[buildQuery.operation]?.pagination?.total ?? 0
+      const totalPage = Math.ceil(total / pagination.perPage)
       const sortData =
         response?.[buildQuery.operation]?.edges?.map(
-          (item: any) => item?.node
+          (item: BaseRecord) => item?.node
         ) ?? []
       return {
         totalPage,
         sortData,
-        total_record,
+        totalRecord: total,
       }
     }
     return {
       sortData: [],
       totalPage: perPage,
+      totalRecord: 0,
     }
-  }, [data, buildQuery.operation, perPage])
+  }, [data, buildQuery.operation, pagination.perPage])
 
   function handleChangePage(page: number) {
-    navigate(`${location.pathname}?page=${page}&perPage=${10}`, {
-      replace: true,
-    })
     setPagination((prev) => ({ ...prev, page: page }))
   }
 
+  function handleChangePerPage(perPage: number) {
+    setPagination((prev) => ({
+      ...prev,
+      perPage: perPage,
+    }))
+  }
+
+  // function changeUrl(page: number, perPage: number) {
+  //   const newUrl = `${location.pathname}?page=${page}&perPage=${perPage}`
+  //   window.history.replaceState(undefined, '', newUrl)
+  // }
+
   function handleSorTable(id: string) {
     const sortDefault = orderBy?.field ? orderBy?.field : 'created_at'
-    //@ts-ignore
-    setSorting((prev) => {
-      if (id === prev.field) {
-        const isDescending = prev.direction === 'DESC'
+    setPagination((prev) => {
+      if (id === prev.orderBy.field) {
+        const isDescending = prev.orderBy.direction === 'DESC'
         const fieldSort = isDescending ? orderBy?.field || sortDefault : id
-
         let directionSort =
           fieldSort === sortDefault
-            ? prev.field === sortDefault
-              ? prev.direction === 'ASC'
+            ? prev.orderBy.field === sortDefault
+              ? prev.orderBy.direction === 'ASC'
                 ? 'DESC'
                 : 'ASC'
               : 'DESC'
-            : prev.direction === 'ASC'
+            : prev.orderBy.direction === 'ASC'
               ? 'DESC'
               : 'ASC'
 
-        return {
+        const sortBy = {
           direction: directionSort,
           field: fieldSort,
+        } as ISorting
+        return {
+          ...prev,
+          orderBy: sortBy,
         }
       }
 
       return {
-        direction: 'ASC',
-        field: id,
+        ...prev,
+        orderBy: {
+          direction: 'ASC',
+          field: id,
+        },
       }
     })
   }
@@ -159,6 +165,10 @@ const useCustomTable = ({
     }
   }, [sortData, pagination, isLoading])
 
+  // useUpdateStateTableByUrl({
+  //   setPagination,
+  // })
+
   return {
     isLoading,
     error,
@@ -166,11 +176,12 @@ const useCustomTable = ({
     handleChangePage,
     handleSorTable,
     totalPage,
+    handleChangePerPage,
     refetch,
-    total_record,
+    totalRecord,
     variables: {
       pagination: pagination,
-      sortBy: sorting,
+      sortBy: pagination.orderBy,
     },
   }
 }

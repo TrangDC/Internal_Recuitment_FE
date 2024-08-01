@@ -3,12 +3,14 @@ import CollapseGroup from 'shared/components/collapse/CollapseGroup'
 import { Text13md, Tiny12md } from 'shared/components/Typography'
 import { Controller, useFormContext } from 'react-hook-form'
 import { PermissionGroupProps } from '../../interfaces'
-import { getCheck, getKeyName } from '../../utils/utils'
-import ListCheckBox from './ListCheckBox'
+import { getKeyName } from '../../utils/utils'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useGetCountChecked from '../../hooks/useGetCountChecked'
+import ListCheckBoxDetail from './ListCheckBoxDetail'
 
-function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
+function EmailTemplatePermissionGroupDetail({
+  roleTemplate,
+}: PermissionGroupProps) {
   const { control, watch, setValue } = useFormContext()
   const [open, setOpen] = useState(true)
   const createAction = roleTemplate?.EMAIL_TEMPLATE?.CREATE
@@ -80,20 +82,8 @@ function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
           name={getKeyName(viewAction.id)}
           render={({ field }) => {
             return (
-              <ListCheckBox
-                title={viewAction?.title ?? ''}
-                description={viewAction?.description ?? ''}
-                for_all={viewAction?.for_all ?? false}
-                for_owner={viewAction?.for_owner ?? false}
-                for_team={viewAction?.for_team ?? false}
-                onCheck={(key) => {
-                  const data = getCheck(key, field.value, {
-                    for_all: viewAction.for_all,
-                    for_owner: viewAction.for_owner,
-                    for_team: viewAction.for_team,
-                  })
-                  field.onChange(data)
-                }}
+              <ListCheckBoxDetail
+                customPermission={viewAction}
                 value={field.value}
               />
             )
@@ -103,21 +93,8 @@ function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
           control={control}
           name={getKeyName(createAction.id)}
           render={({ field }) => (
-            <ListCheckBox
-              disabled={disabled}
-              title={createAction?.title ?? ''}
-              description={createAction?.description ?? ''}
-              for_all={createAction?.for_all ?? false}
-              for_owner={createAction?.for_owner ?? false}
-              for_team={createAction?.for_team ?? false}
-              onCheck={(key) => {
-                const data = getCheck(key, field.value, {
-                  for_all: createAction.for_all,
-                  for_owner: createAction.for_owner,
-                  for_team: createAction.for_team,
-                })
-                field.onChange(data)
-              }}
+            <ListCheckBoxDetail
+              customPermission={createAction}
               value={field.value}
             />
           )}
@@ -126,21 +103,8 @@ function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
           control={control}
           name={getKeyName(changeStatusAction.id)}
           render={({ field }) => (
-            <ListCheckBox
-              disabled={disabled}
-              title={changeStatusAction?.title ?? ''}
-              description={changeStatusAction?.description ?? ''}
-              for_all={changeStatusAction?.for_all ?? false}
-              for_owner={changeStatusAction?.for_owner ?? false}
-              for_team={changeStatusAction?.for_team ?? false}
-              onCheck={(key) => {
-                const data = getCheck(key, field.value, {
-                  for_all: changeStatusAction.for_all,
-                  for_owner: changeStatusAction.for_owner,
-                  for_team: changeStatusAction.for_team,
-                })
-                field.onChange(data)
-              }}
+            <ListCheckBoxDetail
+              customPermission={changeStatusAction}
               value={field.value}
             />
           )}
@@ -149,21 +113,8 @@ function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
           control={control}
           name={getKeyName(editAction.id)}
           render={({ field }) => (
-            <ListCheckBox
-              disabled={disabled}
-              title={editAction?.title ?? ''}
-              description={editAction?.description ?? ''}
-              for_all={editAction?.for_all ?? false}
-              for_owner={editAction?.for_owner ?? false}
-              for_team={editAction?.for_team ?? false}
-              onCheck={(key) => {
-                const data = getCheck(key, field.value, {
-                  for_all: editAction.for_all,
-                  for_owner: editAction.for_owner,
-                  for_team: editAction.for_team,
-                })
-                field.onChange(data)
-              }}
+            <ListCheckBoxDetail
+              customPermission={editAction}
               value={field.value}
             />
           )}
@@ -172,22 +123,8 @@ function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
           control={control}
           name={getKeyName(deleteAction.id)}
           render={({ field }) => (
-            <ListCheckBox
-              hiddenBorder
-              disabled={disabled}
-              title={deleteAction?.title ?? ''}
-              description={deleteAction?.description ?? ''}
-              for_all={deleteAction?.for_all ?? false}
-              for_owner={deleteAction?.for_owner ?? false}
-              for_team={deleteAction?.for_team ?? false}
-              onCheck={(key) => {
-                const data = getCheck(key, field.value, {
-                  for_all: deleteAction.for_all,
-                  for_owner: deleteAction.for_owner,
-                  for_team: deleteAction.for_team,
-                })
-                field.onChange(data)
-              }}
+            <ListCheckBoxDetail
+              customPermission={deleteAction}
               value={field.value}
             />
           )}
@@ -197,4 +134,4 @@ function EmailTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
   )
 }
 
-export default EmailTemplatePermissionGroup
+export default EmailTemplatePermissionGroupDetail

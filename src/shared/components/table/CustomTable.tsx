@@ -55,8 +55,14 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
   const { columns, useTableReturn } = props
   const { handleSorTable } = useTableReturn
 
-  const { sortData, handleChangePage, totalPage, isLoading, variables } =
-    useTableReturn
+  const {
+    sortData,
+    handleChangePage,
+    totalPage,
+    isLoading,
+    variables,
+    handleChangePerPage,
+  } = useTableReturn
 
   const { pagination, sortBy } = variables
   const columnData = useMemo(() => columns, [columns])
@@ -183,11 +189,14 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
           </Table>
         </Scrollbar>
       </TableContainer>
-      <TablePagination
-        totalPage={totalPage}
-        pagination={pagination}
-        onChange={onChange}
-      />
+      {sortData.length > 0 && (
+        <TablePagination
+          totalPage={totalPage}
+          pagination={pagination}
+          onChange={onChange}
+          handleChangePerPage={handleChangePerPage}
+        />
+      )}
     </Box>
   )
 }
