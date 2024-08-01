@@ -91,8 +91,6 @@ function useEditHiring(props: UseChangeStatusProps) {
             name: data.name,
             status: data.status,
             work_email: data.work_email ?? '',
-            entity_permissions:
-              RoleTemplateStructure.formatEditCreateValue(entity_permissions),
             hiring_team_id: data.hiring_team_id,
             role_id: data.rolesTemplateId,
           },

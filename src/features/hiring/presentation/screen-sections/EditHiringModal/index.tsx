@@ -1,6 +1,6 @@
 import BaseModal from 'shared/components/modal'
 import { Controller, FormProvider } from 'react-hook-form'
-import { FormControl } from '@mui/material'
+import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -11,10 +11,10 @@ import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete
 import LoadingField from 'shared/components/form/loadingField'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import RoleTemplateSelection from '../../components/role-template-selection'
-import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
 import { Text15md } from 'shared/components/Typography'
 import useEditHiring from 'features/hiring/hooks/crud/useEditHiring'
 import User from 'shared/schema/database/user'
+import PermissionSectionsDetail from 'shared/components/role-template-permission/screen-sections/detail/PermissionSectionsDetail'
 
 interface IEditHiringModal {
   open: boolean
@@ -151,40 +151,42 @@ function EditHiringModal({ open, setOpen, id }: IEditHiringModal) {
                           />
                         </FormControl>
                       </LoadingField>
-                      <LoadingField isloading={isGetting}>
-                        <FormControl fullWidth>
-                          <Controller
-                            control={control}
-                            name="rolesTemplateId"
-                            render={({ field, fieldState }) => (
-                              <FlexBox flexDirection={'column'}>
-                                <RoleTemplateSelection
-                                  value={field.value}
-                                  onChange={(ids) => {
-                                    field.onChange(ids)
-                                  }}
-                                  onCustomChange={(role) => {
-                                    selectedRoleTemplate(role)
-                                  }}
-                                  name={field.name}
-                                  multiple={true}
-                                  textFieldProps={{
-                                    label: 'Role template',
-                                  }}
-                                />
-                                <HelperTextForm
-                                  message={fieldState.error?.message}
-                                ></HelperTextForm>
-                              </FlexBox>
-                            )}
-                          />
-                        </FormControl>
-                      </LoadingField>
                     </FlexBox>
                   </FlexBox>
                 </FlexBox>
               </FlexBox>
-              <PermissionSections
+              <Box padding={'0px 16px'}>
+                <LoadingField isloading={isGetting}>
+                  <FormControl fullWidth>
+                    <Controller
+                      control={control}
+                      name="rolesTemplateId"
+                      render={({ field, fieldState }) => (
+                        <FlexBox flexDirection={'column'}>
+                          <RoleTemplateSelection
+                            value={field.value}
+                            onChange={(ids) => {
+                              field.onChange(ids)
+                            }}
+                            onCustomChange={(role) => {
+                              selectedRoleTemplate(role)
+                            }}
+                            name={field.name}
+                            multiple={true}
+                            textFieldProps={{
+                              label: 'Role template',
+                            }}
+                          />
+                          <HelperTextForm
+                            message={fieldState.error?.message}
+                          ></HelperTextForm>
+                        </FlexBox>
+                      )}
+                    />
+                  </FormControl>
+                </LoadingField>
+              </Box>
+              <PermissionSectionsDetail
                 roleTemplate={permissionGroup}
                 isGetting={isGetting}
               />

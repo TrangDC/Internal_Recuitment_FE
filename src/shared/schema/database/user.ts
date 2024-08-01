@@ -26,7 +26,6 @@ export type UpdateUserInput = {
   work_email: string
   status: string
   hiring_team_id: string
-  entity_permissions: NewEntityPermissionInput[]
   role_id: string[]
 }
 
