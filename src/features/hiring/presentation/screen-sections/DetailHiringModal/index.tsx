@@ -117,20 +117,24 @@ function DetailHiringModal({
                           <Text13sb>{getValues('teamName')}</Text13sb>
                         </LoadingField>
                       </FlexBox>
-                      <FlexBox flexDirection={'column'} width={'100%'}>
-                        <Tiny12md>Role</Tiny12md>
-                        <LoadingField isloading={isGetting}>
-                          <Text13sb>
-                            {getValues('rolesTemplateName') &&
-                              getValues('rolesTemplateName').map((i) => (
-                                <ChipField label={i}></ChipField>
-                              ))}
-                          </Text13sb>
-                        </LoadingField>
-                      </FlexBox>
                     </FlexBox>
                   </FlexBox>
                 </FlexBox>
+              </FlexBox>
+              <FlexBox
+                flexDirection={'column'}
+                width={'100%'}
+                padding={'0px 16px'}
+              >
+                <Tiny12md>Role</Tiny12md>
+                <LoadingField isloading={isGetting}>
+                  <Text13sb>
+                    {getValues('rolesTemplateName') &&
+                      getValues('rolesTemplateName').map((i) => (
+                        <ChipField label={i}></ChipField>
+                      ))}
+                  </Text13sb>
+                </LoadingField>
               </FlexBox>
               <PermissionSectionsDetail
                 roleTemplate={permissionGroup}

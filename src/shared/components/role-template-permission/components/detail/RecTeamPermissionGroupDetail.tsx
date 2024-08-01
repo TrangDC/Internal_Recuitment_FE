@@ -8,15 +8,13 @@ import ListCheckBoxDetail from './ListCheckBoxDetail'
 import useGetCountChecked from '../../hooks/useGetCountChecked'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 
-function HiringTeamPermissionGroupDetail({
-  roleTemplate,
-}: PermissionGroupProps) {
+function RecTeamPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
   const { control, watch } = useFormContext()
   const [open, setOpen] = useState(true)
-  const createAction = roleTemplate?.HIRING_TEAMS?.CREATE
-  const editAction = roleTemplate?.HIRING_TEAMS?.EDIT
-  const deleteAction = roleTemplate?.HIRING_TEAMS?.DELETE
-  const viewAction = roleTemplate?.HIRING_TEAMS?.VIEW
+  const createAction = roleTemplate?.REC_TEAMS?.CREATE
+  const editAction = roleTemplate?.REC_TEAMS?.EDIT
+  const deleteAction = roleTemplate?.REC_TEAMS?.DELETE
+  const viewAction = roleTemplate?.REC_TEAMS?.VIEW
 
   const viewData = watch(getKeyName(viewAction.id))
   const editData = watch(getKeyName(editAction.id))
@@ -32,7 +30,7 @@ function HiringTeamPermissionGroupDetail({
       setOpen={setOpen}
       title={
         <FlexBox justifyContent={'center'} gap={1}>
-          <Text13md color={'grey.900'}>Hiring teams</Text13md>
+          <Text13md color={'grey.900'}>Recruitment team</Text13md>
           <Tiny12md color={'text.500'}>
             {countChecked}/{state.length}
           </Tiny12md>
@@ -104,4 +102,4 @@ function HiringTeamPermissionGroupDetail({
   )
 }
 
-export default HiringTeamPermissionGroupDetail
+export default RecTeamPermissionGroupDetail

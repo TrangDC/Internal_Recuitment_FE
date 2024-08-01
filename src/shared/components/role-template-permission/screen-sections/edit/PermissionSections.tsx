@@ -19,6 +19,7 @@ import ReportPermissionGroup from '../../components/edit/ReportPermissionGroup'
 import UserPermissionGroup from '../../components/edit/UserPermissionGroup'
 import HiringTeamPermissionGroup from '../../components/edit/HiringTeamPermissionGroup'
 import JobPositionPermissionGroup from '../../components/edit/JobPositionPermissionGroup'
+import RecTeamPermissionGroup from '../../components/edit/RecTeamPermissionGroup'
 
 type PermissionSectionsProps = {
   roleTemplate: RoleTemplateStructure | undefined
@@ -75,12 +76,13 @@ function PermissionSections({ roleTemplate }: PermissionSectionsProps) {
     }
   }, [cantViewCandidate, cantViewCandidateJob])
   if (!roleTemplate) return null
-  
+
   return (
     <AppCollapse open={open} setOpen={setOpen} title="Permission">
       <FlexBox flexDirection={'column'} gap={2}>
         <Text13md fontWeight={700}>FUNCTION</Text13md>
         <HiringTeamPermissionGroup roleTemplate={roleTemplate} />
+        <RecTeamPermissionGroup roleTemplate={roleTemplate} />
         <JobPermissionGroup roleTemplate={roleTemplate} />
         <CandidatePermissionGroup roleTemplate={roleTemplate} />
         <CandidateJobsPermissionGroup
@@ -103,7 +105,7 @@ function PermissionSections({ roleTemplate }: PermissionSectionsProps) {
         <UserPermissionGroup roleTemplate={roleTemplate} />
         <SkillPermissionGroup roleTemplate={roleTemplate} />
         <SkillTypePermissionGroup roleTemplate={roleTemplate} />
-        <JobPositionPermissionGroup roleTemplate={roleTemplate}/>
+        <JobPositionPermissionGroup roleTemplate={roleTemplate} />
         <EmailTemplatePermissionGroup roleTemplate={roleTemplate} />
       </FlexBox>
     </AppCollapse>

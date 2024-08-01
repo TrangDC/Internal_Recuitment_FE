@@ -16,6 +16,7 @@ import UserPermissionGroupDetail from '../../components/detail/UserPermissionGro
 import HiringTeamPermissionGroupDetail from '../../components/detail/HiringTeamPermissionGroupDetail'
 import EmailTemplatePermissionGroupDetail from '../../components/detail/EmailTemplatePermissionGroupDetail'
 import JobPositionPermissionGroupDetail from '../../components/detail/JobPositionPermissionGroupDetail'
+import RecTeamPermissionGroupDetail from '../../components/detail/RecTeamPermissionGroupDetail'
 
 type PermissionSectionsProps = {
   roleTemplate: RoleTemplateStructure | undefined
@@ -30,6 +31,7 @@ function PermissionSectionsDetail({ roleTemplate }: PermissionSectionsProps) {
       <FlexBox flexDirection={'column'} gap={2}>
         <Text13md fontWeight={700}>FUNCTION</Text13md>
         <HiringTeamPermissionGroupDetail roleTemplate={roleTemplate} />
+        <RecTeamPermissionGroupDetail roleTemplate={roleTemplate} />
         <JobPermissionGroupDetail roleTemplate={roleTemplate} />
         <CandidatePermissionGroupDetail roleTemplate={roleTemplate} />
         <CandidateJobsPermissionGroupDetail roleTemplate={roleTemplate} />

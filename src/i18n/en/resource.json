@@ -163,7 +163,7 @@
     },
     "hiring_teams": {
       "name": "Name",
-      "model_name": "Team",
+      "model_name": "Hiring team",
       "members": "Team’s manager",
       "approvers": "Approvers",
       "description": "Description",
@@ -263,6 +263,12 @@
         "delete": "Delete"
       },
       "hiring_teams": {
+        "view": "View",
+        "create": "Create",
+        "update": "Edit",
+        "delete": "Delete"
+      },
+      "rec_teams": {
         "view": "View",
         "create": "Create",
         "update": "Edit",

@@ -6,16 +6,16 @@ type RoleTemplateInformation = {
 
 export const roleTemplateInformation: RoleTemplateInformation = {
   'model.permissions.hiring_teams.view': {
-    description: 'Permission to view Team information',
+    description: 'Permission to view hiring teams information',
   },
   'model.permissions.hiring_teams.create': {
-    description: 'Permission to create new team',
+    description: 'Permission to create new hiring team',
   },
   'model.permissions.hiring_teams.update': {
-    description: 'Permission to edit Team information',
+    description: 'Permission to edit hiring team information',
   },
   'model.permissions.hiring_teams.delete': {
-    description: 'Permission to delete team ',
+    description: 'Permission to delete hiring team',
   },
   'model.permissions.hiring_jobs.view': {
     description: 'Permission to view Job information and its hiring process',
@@ -167,5 +167,17 @@ export const roleTemplateInformation: RoleTemplateInformation = {
   },
   'model.permissions.job_positions.delete': {
     description: 'Permission to delete Job position',
+  },
+  'model.permissions.rec_teams.view': {
+    description: 'Permission to view REC Team information',
+  },
+  'model.permissions.rec_teams.create': {
+    description: 'Permission to create new REC team',
+  },
+  'model.permissions.rec_teams.update': {
+    description: 'Permission to edit REC Team information',
+  },
+  'model.permissions.rec_teams.delete': {
+    description: 'Permission to delete REC team ',
   },
 }
