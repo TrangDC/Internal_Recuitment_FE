@@ -35,6 +35,7 @@ import RemoveRedEye from './RemoveRedEye'
 import Skill from './SkillIcon'
 import Email from './Mail'
 import ReportIcon from './Report'
+import ExPoint from './ExPoint'
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   HiringTeam,
@@ -73,5 +74,6 @@ export default {
   RemoveRedEye,
   Skill,
   Email,
-  ReportIcon
+  ReportIcon,
+  ExPoint
 }

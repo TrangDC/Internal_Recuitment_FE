@@ -105,11 +105,13 @@ export const renderStatusEmail = (text: string) => {
 type TYPE_SEND_TO = keyof typeof SEND_TO_LABEL
 export const renderSendTo = (text: string) => {
   const list_send_to = Array.from(text).map((send_to) => {
-    const enum_send_to = send_to.includes('model.email_templates.send_to_enum');
-   return enum_send_to ? SEND_TO_LABEL[getLastString(send_to) as TYPE_SEND_TO] : send_to;
-  });
+    const enum_send_to = send_to.includes('model.email_templates.send_to_enum')
+    return enum_send_to
+      ? SEND_TO_LABEL[getLastString(send_to) as TYPE_SEND_TO]
+      : send_to
+  })
 
-  return list_send_to.join(', ');
+  return list_send_to.join(', ')
 }
 
 export function renderDate(date: string) {
@@ -210,4 +212,18 @@ export const renderLink = (text: string) => {
       {text}
     </LinkText>
   )
+}
+
+type ApproveTeam = {name: string, order_id: number}
+export const renderApprovers = (text: string) => {
+  const approves: ApproveTeam[]= Array.from(JSON.parse(text))
+
+  return (
+    <FlexBox flexDirection={'column'} gap={1}>
+      {approves.map((approve) => {
+        return <Box>[level - {approve.order_id}] {approve.name}</Box>
+      })}
+    </FlexBox>
+  )
+
 }

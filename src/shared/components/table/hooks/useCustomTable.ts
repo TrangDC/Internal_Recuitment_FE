@@ -34,6 +34,7 @@ export interface IuseCustomTableReturn {
   handleChangePage: (page: number) => void
   handleSorTable: (id: string) => void
   totalPage: number
+  total_record: number,
   refetch: () => void
   variables: {
     pagination: IPagination
@@ -90,12 +91,13 @@ const useCustomTable = ({
       }),
   })
 
-  const { sortData, totalPage } = useMemo(() => {
+  const { sortData, totalPage, total_record } = useMemo(() => {
     if (data && isRight(data)) {
       const response = unwrapEither(data)
       const totalPage = Math.ceil(
         (response?.[buildQuery.operation]?.pagination?.total ?? 0) / perPage
       )
+      const total_record = response?.[buildQuery.operation]?.pagination?.total;     
       const sortData =
         response?.[buildQuery.operation]?.edges?.map(
           (item: any) => item?.node
@@ -103,6 +105,7 @@ const useCustomTable = ({
       return {
         totalPage,
         sortData,
+        total_record,
       }
     }
     return {
@@ -164,6 +167,7 @@ const useCustomTable = ({
     handleSorTable,
     totalPage,
     refetch,
+    total_record,
     variables: {
       pagination: pagination,
       sortBy: sorting,

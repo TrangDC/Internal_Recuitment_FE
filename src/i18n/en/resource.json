@@ -160,6 +160,8 @@
       "name": "Name",
       "model_name": "Team",
       "members": "Team’s manager",
+      "approvers": "Approvers",
+      "description": "Description",
       "validation": {
         "name_exist": "Name has already existed",
         "user_in_another_hiring_team": "This manager already in another team",

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 
 const HistoryLog = () => {
   const { id } = useParams()
-  return <HistoryLogAuditTrails module="hiring_teams" id={id as string} />
+  return <HistoryLogAuditTrails module='hiring_teams' id={id as string}/>
 }
 
 export default HistoryLog
