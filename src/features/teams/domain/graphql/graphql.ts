@@ -93,10 +93,19 @@ const useGraphql = () => {
         id
         name
         created_at
+        description
         managers {
           id
           name
           work_email
+        }
+        approvers {
+          id
+          order_id
+          user_id
+          user {
+            name
+          }
         }
       }
     `,

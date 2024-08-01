@@ -12,6 +12,13 @@ export const BoxWrapperOuterContainer = styled(Box)(({ theme }) => ({
   width: '100%'
 }))
 
+export const DivHeaderWrapper = styled('div')`
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  width: 100%;
+`
+
 export const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   gap: 8,
   flexWrap: 'wrap',
@@ -96,3 +103,23 @@ export const LinkGoBack = styled(Span)(({ theme }) => ({
   color: '#82868C',
 }))
 
+export const DivWrapperProcess = styled(Box)(({ theme }) => ({
+  width: '100%',
+  padding: '24px 16px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+}))
+
+export const SpanGeneration = styled(Span)(({ theme }) => ({
+  fontSize: '15px',
+  color: theme.palette.primary[800],
+  lineHeight: '18.29px',
+}))
+
+export const WrapperBox = styled(Box)(({ theme }) => ({
+  padding: 0,
+  border: '1px solid #E3E6EB',
+  overflow: 'hidden',
+  borderRadius: '8px'
+}))

@@ -1,36 +1,34 @@
 import { convertStringToArray } from 'shared/utils/convert-string'
 import {
-  renderAttachment,
-  renderCurrencyEN,
-  renderCurrencyEnum,
-  renderDate,
-  renderDateTime,
-  renderDescription,
-  renderEventEmailTemplate,
-  renderFailedReason,
-  renderLink,
-  renderListItem,
-  renderLocation,
-  renderPriority,
-  renderReferenceType,
-  renderReferenceValue,
-  renderSalaryByType,
-  renderSendTo,
-  renderStatusCandidateJob,
-  renderStatusEmail,
-  renderStatusHiringJob,
   renderText,
-  renderYesNo,
 } from '../helper'
 import { ReactNode } from 'react'
 import { BaseRecord } from 'shared/interfaces'
+import { renderFieldTeam } from './team'
+import { renderFieldEmailTemplate } from './email'
+import { renderFieldCandidateJobFeedback } from './candidate-job-feedback'
+import { renderFieldCandidateInterview } from './candidate-job-interview'
+import { renderFieldHiringJob } from './hiring-job'
+import { renderFieldCandidateJob } from './candidate-job'
 
-type renderValueReturn = (text: string, records: BaseRecord) => any
+export type renderValueReturn = (text: string, records: BaseRecord) => any
 
 type renderTextRecordReturn = {
   renderValue: renderValueReturn
   record_value: string | ReactNode
 }
+
+const audit_trails_by_model = {
+  hiring_jobs: renderFieldHiringJob,
+  candidates: renderFieldCandidateInterview,
+  candidate_jobs: renderFieldCandidateJob,
+  candidate_job_feedbacks: renderFieldCandidateJobFeedback,
+  candidate_interviews: renderFieldCandidateInterview,
+  email_templates: renderFieldEmailTemplate,
+  hiring_teams: renderFieldTeam,
+}
+
+type TYPE_AUDIT_MODEL = keyof typeof audit_trails_by_model;
 
 export const renderTextRecord = (
   field_string: string,
@@ -38,201 +36,11 @@ export const renderTextRecord = (
   records: BaseRecord
 ): renderTextRecordReturn => {
   const [path, model, field] = convertStringToArray(field_string)
-  let renderValue: renderValueReturn
-
-  switch (model) {
-    case 'hiring_jobs':
-      renderValue = renderFieldHiringJob(field)
-      break
-    case 'candidates':
-      renderValue = renderFieldCandidate(field)
-      break
-    case 'candidate_jobs':
-      renderValue = renderFieldCandidateJob(field)
-      break
-    case 'candidate_job_feedbacks':
-      renderValue = renderFieldCandidateJobFeedback(field)
-      break
-    case 'candidate_interviews':
-      renderValue = renderFieldCandidateInterview(field)
-      break
-    case 'email_templates':
-      renderValue = renderFieldEmailTemplate(field)
-    break;
-    default:
-      renderValue = renderText
-      break
-  }
-
+  let renderValue: renderValueReturn = audit_trails_by_model?.[model as TYPE_AUDIT_MODEL]?.(field) ?? renderText
   const record_value = renderValue(recordString, records)
 
   return {
     renderValue,
     record_value,
   }
-}
-
-function renderFieldEmailTemplate(field: string): renderValueReturn {
-  let renderValue
-
-  switch (field) {
-    case 'event':
-      renderValue = renderEventEmailTemplate
-    break;
-    case 'content':
-    case 'signature':
-      renderValue = renderDescription
-      break
-    case 'status':
-      renderValue = renderStatusEmail
-      break
-    case 'send_to':
-      renderValue = renderSendTo
-    break;
-    default: {
-      renderValue = renderText
-    }
-  }
-
-  return renderValue
-}
-
-function renderFieldCandidateJobFeedback(field: string): renderValueReturn {
-  let renderValue
-
-  switch (field) {
-    case 'description':
-      renderValue = renderDescription
-      break
-    case 'document':
-      renderValue = renderAttachment
-      break
-    default: {
-      renderValue = renderText
-    }
-  }
-
-  return renderValue
-}
-
-function renderFieldCandidateInterview(field: string): renderValueReturn {
-  let renderValue
-
-  switch (field) {
-    case 'interview_date':
-      renderValue = renderDate
-      break
-    case 'start_from':
-      renderValue = renderDateTime
-      break
-    case 'end_at':
-      renderValue = renderDateTime
-      break
-    case 'members':
-      renderValue = renderListItem
-    break;
-    case 'meeting_link':
-      renderValue = renderLink
-    break;
-    default: {
-      renderValue = renderText
-    }
-  }
-
-  return renderValue
-}
-
-function renderFieldHiringJob(field: string): renderValueReturn {
-  let renderValue
-
-  switch (field) {
-    case 'description':
-      renderValue = renderDescription
-      break
-    case 'salary_from':
-    case 'salary_to':
-      renderValue = renderCurrencyEN
-      break
-    case 'currency':
-      renderValue = renderCurrencyEnum
-      break
-    case 'status':
-      renderValue = renderStatusHiringJob
-      break
-    case 'priority':
-      renderValue = renderPriority
-      break
-    case 'salary_type':
-      renderValue = renderSalaryByType
-      break
-    case 'location':
-      renderValue = renderLocation
-      break
-    case 'skills':
-      renderValue = renderListItem
-    break;
-    default: {
-      renderValue = renderText
-    }
-  }
-
-  return renderValue
-}
-
-function renderFieldCandidateJob(field: string): renderValueReturn {
-  let renderValue
-
-  switch (field) {
-    case 'status':
-      renderValue = renderStatusCandidateJob
-      break
-    case 'document':
-      renderValue = renderAttachment
-      break
-    case 'onboard_date':
-      renderValue = renderDate
-    break;
-    case 'offer_expiration_date':
-      renderValue = renderDate
-    break;
-    case 'failed_reason':
-      renderValue = renderFailedReason
-    break;
-    default: {
-      renderValue = renderText
-    }
-  }
-
-  return renderValue
-}
-
-function renderFieldCandidate(field: string): renderValueReturn {
-  let renderValue
-
-  switch (field) {
-    case 'dob':
-    case 'recruit_time':
-      renderValue = renderDate
-      break
-    case 'is_blacklist':
-      renderValue = renderYesNo
-      break
-    case 'reference_type':
-      renderValue = renderReferenceType
-      break
-    case 'reference_value':
-      renderValue = renderReferenceValue
-      break
-    case 'description':
-      renderValue = renderDescription
-      break
-    case 'document':
-      renderValue = renderAttachment
-      break
-    default: {
-      renderValue = renderText
-    }
-  }
-
-  return renderValue
 }

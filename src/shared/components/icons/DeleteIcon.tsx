@@ -8,6 +8,7 @@ const DeleteIcon = (props: SvgIconProps) => {
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      sx={{fontSize: '16px', ...props.sx}}
       {...props}
     >
       <path
@@ -17,12 +18,5 @@ const DeleteIcon = (props: SvgIconProps) => {
     </SvgIcon>
   )
 }
-
-DeleteIcon.defaultProps = {
-  sx: {
-    fontSize: '16px'
-  }
-};
-
 
 export default DeleteIcon

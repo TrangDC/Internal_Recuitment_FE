@@ -15,16 +15,8 @@ import dayjs from 'dayjs'
 import { BaseRecord } from 'shared/interfaces'
 
 interface Props {
-  module:
-    | 'hiring_teams'
-    | 'hiring_jobs'
-    | 'candidates'
-    | 'skills'
-    | 'email_templates'
-    | 'users'
-    | 'skill_types'
-    | 'roles'
-  id: string
+  module: 'hiring_teams' | 'hiring_jobs' | 'candidates' | 'skills' | 'email_templates' | 'users' | 'skill_types' | 'roles'
+  id: string,
 }
 
 const HistoryLogAuditTrails = ({ module, id }: Props) => {

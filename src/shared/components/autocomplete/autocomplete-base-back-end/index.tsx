@@ -34,8 +34,9 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
     getOptionLabel,
     disableCloseOnSelect,
     orderBy,
+    list_disabled = [],
   } = props
-
+   
   const { options } = useAutoCompleteBackEnd<T>({
     queryKey: queryKey.concat([JSON.stringify(filter)]),
     queryString: queryString,
@@ -84,6 +85,9 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
       size="small"
       value={(getValue as any) ?? null}
       options={options}
+      getOptionDisabled={(option) => {
+        return list_disabled.includes(option[selectedKey] as string)
+      }}
       multiple={multiple as Multiple | undefined}
       noOptionsText={'No options'}
       onChange={handleOnChange}
