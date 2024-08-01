@@ -31,5 +31,6 @@ export enum MODLUE_QUERY_KEY {
   ALL_PERMISSON_GROUPS = 'all_permisson_groups',
   EMAIL_TEMPLATE = 'email_template',
   SLASH_COMMAND = 'slash_command',
-  JOB_POSITION = 'job_position'
+  JOB_POSITION = 'job_position',
+  REC_TEAM= 'rec_team'
 }

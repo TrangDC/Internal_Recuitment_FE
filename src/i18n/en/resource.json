@@ -77,6 +77,7 @@
   "others": "Others",
   "done": "Done",
   "sub_title_update_record": "What information or note have you updated the record?",
+  "add_new_rec_team": "Thêm đội tuyển dụng",
   "model": {
     "job_positions": {
       "model_name": "Job Position",

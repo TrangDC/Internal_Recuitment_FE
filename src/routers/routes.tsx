@@ -51,7 +51,7 @@ const CandidateJobDetail = Loadable(
   lazy(() => import('../pages/candidatejob/candidate-job-detail'))
 )
 
-const HiringList = Loadable(lazy(() => import('../pages/hiring/index')))
+const UserPage = Loadable(lazy(() => import('../pages/user/index')))
 
 const SettingList = Loadable(lazy(() => import('../pages/setting/index')))
 
@@ -59,9 +59,13 @@ const Calendars = Loadable(lazy(() => import('../pages/calendars/index')))
 
 const SkillList = Loadable(lazy(() => import('../pages/skill/index')))
 
-const JobPositionList = Loadable(lazy(() => import('../pages/job-position/index')))
+const JobPositionList = Loadable(
+  lazy(() => import('../pages/job-position/index'))
+)
 
-const JobPositionDetail = Loadable(lazy(() => import('../pages/job-position/job-position-detail')))
+const JobPositionDetail = Loadable(
+  lazy(() => import('../pages/job-position/job-position-detail'))
+)
 
 const RoleTemplatePage = Loadable(
   lazy(() => import('../pages/role-template/index'))
@@ -231,10 +235,10 @@ export const AppRoutes = () => {
             })}
           />
           <Route
-            path="hiring"
+            path="users"
             element={PermissionLayout({
-              module: 'HIRING_TEAMS',
-              children: <HiringList />,
+              module: 'USER',
+              children: <UserPage />,
               checkBy: {
                 compare: 'hasAny',
                 permissions: [
@@ -275,7 +279,7 @@ export const AppRoutes = () => {
               },
             })}
           />
-           <Route
+          <Route
             path="job-position"
             element={PermissionLayout({
               module: 'JOB_POSITION',
@@ -290,7 +294,7 @@ export const AppRoutes = () => {
               },
             })}
           />
-           <Route
+          <Route
             path="job-position-detail/:id"
             element={PermissionLayout({
               module: 'EMAIL_TEMPLATE',
@@ -305,8 +309,6 @@ export const AppRoutes = () => {
               },
             })}
           />
-          {/* <Route path="hiring" element={<HiringList />} />
-          <Route path="role-template" element={<RoleTemplatePage />} /> */}
           <Route path="skill" element={skillPage} />
           <Route
             path="reports"

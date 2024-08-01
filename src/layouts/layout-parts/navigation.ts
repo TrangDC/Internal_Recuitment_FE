@@ -72,11 +72,11 @@ export const navigation: INavigation[] = [
     module: 'ROLES_TEMPLATE',
   },
   {
-    name: 'Hiring team',
-    path: '/dashboard/hiring',
+    name: 'Users',
+    path: '/dashboard/users',
     icon: duotone.HiringTeam,
     type: 'link',
-    module: 'HIRING_TEAMS',
+    module: 'USER',
   },
   {
     name: 'Skill management',
