@@ -26,11 +26,15 @@ export function usePermissionSidebar(props: ICheckPermissions): INavigation[] {
           role['SKILL_TYPES'].VIEW.teamOnly
         return skill || skillType
       }
+
       return (
         role[module].VIEW.everything ||
         role[module].VIEW.ownedOnly ||
         role[module].VIEW.teamOnly
       )
+
+      
+    
     }
 
     return true
