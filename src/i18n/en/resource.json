@@ -78,6 +78,11 @@
   "done": "Done",
   "sub_title_update_record": "What information or note have you updated the record?",
   "model": {
+    "job_positions": {
+      "model_name": "Job Position",
+      "name": "Name",
+      "description": "Description"
+    },
     "skill_types": {
       "validation": {
         "name_exist": "Name has already existed",
@@ -163,6 +168,7 @@
       "approvers": "Approvers",
       "description": "Description",
       "validation": {
+        "hiring_job_exist": "There are already job requests for this team, cannot delete this team.",
         "name_exist": "Name has already existed",
         "user_in_another_hiring_team": "This manager already in another team",
         "cannot_delete_team": "There are already jobs or interviewers for this team, can not delete this team."
@@ -250,6 +256,12 @@
       }
     },
     "permissions": {
+      "job_positions": {
+        "view": "View",
+        "create": "Create",
+        "update": "Edit",
+        "delete": "Delete"
+      },
       "hiring_teams": {
         "view": "View",
         "create": "Create",

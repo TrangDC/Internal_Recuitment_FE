@@ -3,13 +3,11 @@ import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useTextTranslation from 'shared/constants/text'
-import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import MemberAutoComplete from 'shared/components/autocomplete/user-auto-complete'
 import { Fragment } from 'react/jsx-runtime'
 import AppButton from 'shared/components/buttons/AppButton'
-import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import useUpdateTeam from 'features/teams/hooks/crud/useUpdateTeam'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
@@ -20,6 +18,8 @@ import ExPoint from 'shared/components/icons/ExPoint'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import { ButtonAdd } from 'features/teams/shared/constants/styles/style'
 import TooltipComponent from 'shared/components/tooltip'
+import { RULE_MESSAGES } from 'shared/constants/validate'
+import { isEmpty } from 'lodash'
 
 interface IEditTeamModal {
   open: boolean
@@ -44,7 +44,7 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
     },
   })
   const { onSubmit, addApprove, delApprove, onChangeApprove } = actions
-  const { approve_list } = state;
+  const { approve_list } = state
 
   const translation = useTextTranslation()
 
@@ -68,7 +68,7 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
                   name="name"
                   render={({ field, fieldState }) => {
                     return (
-                      <FlexBox alignItems={'center'} flexDirection={'column'}>
+                      <FlexBox flexDirection={'column'}>
                         <AppTextField
                           label={'Name'}
                           required
@@ -122,18 +122,40 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
                     <Fragment>
                       <FlexBox gap={2} flexDirection={'column'}>
                         {approve_list?.map((approve, idx) => {
-                          const disabled_del = idx === 0 && approve_list.length <= 1;
-                          const styled_btn = disabled_del ? { fontSize: '24px', cursor: 'not-allowed', '& path': { fill: '#BABFC5'}} : { fontSize: '24px'}
+                          //@ts-ignore
+                          const error_msg = !isEmpty(fieldState?.error?.[idx])
+                            ? RULE_MESSAGES.MC1(`Approve ${idx + 1}`)
+                            : ''
+
+                          const disabled_del =
+                            idx === 0 && approve_list.length <= 1
+                          const styled_btn = disabled_del
+                            ? {
+                                fontSize: '24px',
+                                cursor: 'not-allowed',
+                                '& path': { fill: '#BABFC5' },
+                              }
+                            : { fontSize: '24px' }
 
                           //list user in selected
-                          const list_disabled = approve_list.reduce((current: string[], next) => {
-                            if(next.user_id !== approve.user_id) current.push(next.user_id);
+                          const list_disabled = approve_list.reduce(
+                            (current: string[], next) => {
+                              if (next.user_id !== approve.user_id)
+                                current.push(next.user_id)
 
-                            return current;
-                          }, [])
+                              return current
+                            },
+                            []
+                          )
 
                           return (
-                            <FlexBox gap={2} alignItems={'center'} key={approve.uid}>
+                            <FlexBox width={'100%'} flexDirection={'column'}>
+                            <FlexBox
+                              gap={2}
+                              alignItems={'center'}
+                              key={approve.uid}
+                              width={'100%'}
+                            >
                               <Box sx={{ flex: 1 }}>
                                 <ApproveAutoComplete
                                   value={approve.user_id}
@@ -153,7 +175,9 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
                                         >
                                           Approve {idx + 1}
                                         </Tiny>
-                                        <Span sx={{ color: '#DB6C56' }}>*</Span>
+                                        <Span sx={{ color: '#DB6C56' }}>
+                                          *
+                                        </Span>
                                         <TooltipComponent title="Approvals for the job vacancy request will require the team's approvers.">
                                           <ExPoint />
                                         </TooltipComponent>
@@ -164,9 +188,16 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
                               </Box>
                               <DeleteIcon
                                 sx={styled_btn}
-                                onClick={() => approve_list.length > 1 && delApprove(approve.uid)}
+                                onClick={() =>
+                                  approve_list.length > 1 &&
+                                  delApprove(approve.uid)
+                                }
                               />
                             </FlexBox>
+                            <HelperTextForm
+                              message={error_msg}
+                            ></HelperTextForm>
+                          </FlexBox>
                           )
                         })}
                       </FlexBox>
@@ -190,12 +221,13 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
                   <Add /> Add approver
                 </ButtonAdd>
               </Box>
-              {approve_list?.length > 1 &&  <Tiny>
-                A new job vacancy requires sequential approval from designated
-                approvers. For instance, a Developer vacancy request needs
-                approval from Approver 1 first, followed by Approver 2.
-              </Tiny>}
-             
+              {approve_list?.length > 1 && (
+                <Tiny>
+                  A new job vacancy requires sequential approval from designated
+                  approvers. For instance, a Developer vacancy request needs
+                  approval from Approver 1 first, followed by Approver 2.
+                </Tiny>
+              )}
             </FlexBox>
 
             <FlexBox gap={2}>
@@ -223,7 +255,6 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
                 />
               </FormControl>
             </FlexBox>
-
           </FlexBox>
         </BaseModal.ContentMain>
         <BaseModal.Footer>

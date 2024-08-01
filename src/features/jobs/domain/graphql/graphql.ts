@@ -127,6 +127,11 @@ const useGraphql = () => {
         currency
         is_able_to_close
         status
+        job_position_id
+        job_position {
+          id
+          name
+        }
         entity_skill_types {
           id
           name

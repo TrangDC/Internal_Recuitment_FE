@@ -49,7 +49,7 @@ function HiringTeamPermissionGroup({ roleTemplate }: PermissionGroupProps) {
       setOpen={setOpen}
       title={
         <FlexBox justifyContent={'center'} gap={1}>
-          <Text13md color={'grey.900'}>Teams</Text13md>
+          <Text13md color={'grey.900'}>Hiring Team</Text13md>
           <Tiny12md color={'text.500'}>
             {countChecked}/{state.length}
           </Tiny12md>

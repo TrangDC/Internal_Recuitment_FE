@@ -4,12 +4,10 @@ import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useUpdateCandidate from '../../../hooks/crud/useUpdateCandidate'
 import useTextTranslation from 'shared/constants/text'
-import UpdateRecord from 'shared/components/modal/modalUpdateRecord'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppDateField from 'shared/components/input-fields/DateField'
 import AppButton from 'shared/components/buttons/AppButton'
-import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import CandidateSourceAutoComplete, {
   TypeCandidateSource,
 } from 'shared/components/autocomplete/candidate-source-auto-complete'

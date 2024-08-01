@@ -19,6 +19,7 @@ import { REPORT_ACTIONS, ReportPermissions } from './report'
 import { USER_ACTIONS, UserPermissions } from './user'
 import { HIRING_TEAM_ACTIONS, HiringTeamPermissions } from './hiring_team'
 import EntityPermission from 'shared/schema/database/entity_permission'
+import { JOB_POSITION_ACTIONS, JobPositionPermissions } from './job_position'
 
 export type GenerateAction<A extends string> = {
   [K in A]: PermissionRole
@@ -46,6 +47,7 @@ export interface PermissionStructure {
   ROLES_TEMPLATE: RoleTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplatePermissions
   REPORT: ReportPermissions
+  JOB_POSITION: JobPositionPermissions
 }
 
 export const moduleActions: GenerateModuleActions<PermissionStructure> = {
@@ -61,6 +63,7 @@ export const moduleActions: GenerateModuleActions<PermissionStructure> = {
   ROLES_TEMPLATE: ROLE_TEMPLATE_ACTIONS,
   EMAIL_TEMPLATE: EMAIL_TEMPLATE_ACTIONS,
   REPORT: REPORT_ACTIONS,
+  JOB_POSITION: JOB_POSITION_ACTIONS
 }
 
 class PermissionStructureImpl implements PermissionStructure {
@@ -76,6 +79,7 @@ class PermissionStructureImpl implements PermissionStructure {
   ROLES_TEMPLATE: RoleTemplatePermissions
   EMAIL_TEMPLATE: EmailTemplatePermissions
   REPORT: ReportPermissions
+  JOB_POSITION: JobPositionPermissions
 
   constructor(data: PermissionStructure) {
     this.JOBS = data.JOBS
@@ -90,6 +94,7 @@ class PermissionStructureImpl implements PermissionStructure {
     this.ROLES_TEMPLATE = data.ROLES_TEMPLATE
     this.EMAIL_TEMPLATE = data.EMAIL_TEMPLATE
     this.REPORT = data.REPORT
+    this.JOB_POSITION = data.JOB_POSITION
   }
 
   static fromJson(

@@ -17,7 +17,6 @@ import { ChipLimit } from 'shared/components/chip-stack'
 const DivWrapperField = styled(Box)(({ theme }) => ({
   width: '100%',
   padding: '24px 16px',
-  //@ts-ignore
   borderBottom: `1px solid ${theme.palette.grey[200]}`,
 }))
 
@@ -27,13 +26,11 @@ const DivField = styled(Box)(({ theme }) => ({
   '& SpanText': {
     width: '12px',
     fontWeight: 500,
-    //@ts-ignore
     color: theme.palette.grey[500],
     lineHeight: '14.63px',
   },
 
   '& p': {
-    //@ts-ignore
     color: theme.palette.grey[900],
     fontWeight: 600,
     fontSize: '13px',
@@ -79,6 +76,11 @@ const GeneralInformationField = () => {
               <SpanText>{translation.MODLUE_JOBS.job_name}</SpanText>
               <TinyText>{jobDetail?.name}</TinyText>
             </DivField>
+            <DivField>
+              <SpanText>Job position</SpanText>
+              <TinyText>{jobDetail?.job_position?.name}</TinyText>
+            </DivField>
+            <DivField></DivField>
           </FlexBox>
           <FlexBox gap={7.5}>
             <DivField>
@@ -96,7 +98,7 @@ const GeneralInformationField = () => {
             </DivField>
 
             <DivField>
-              <SpanText>{translation.MODLUE_TEAMS.team}</SpanText>
+              <SpanText>Hiring team</SpanText>
               <TinyText>{jobDetail?.hiring_team?.name}</TinyText>
             </DivField>
           </FlexBox>

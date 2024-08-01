@@ -18,6 +18,8 @@ import { ButtonAdd } from 'features/teams/shared/constants/styles/style'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import ApproveAutoComplete from 'shared/components/autocomplete/approve-auto-complete'
 import Tooltip from 'shared/components/tooltip'
+import { isEmpty } from 'lodash'
+import { RULE_MESSAGES } from 'shared/constants/validate'
 interface ICreateTeamModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -86,6 +88,7 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                         name={field.name}
                         textFieldProps={{
                           label: `Team's Manager`,
+                          required: true,
                         }}
                       />
                       <HelperTextForm
@@ -106,6 +109,11 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                     <Fragment>
                       <FlexBox gap={2} flexDirection={'column'}>
                         {approve_list.map((approve, idx) => {
+                          //@ts-ignore
+                          const error_msg = !isEmpty(fieldState?.error?.[idx])
+                            ? RULE_MESSAGES.MC1(`Approve ${idx + 1}`)
+                            : ''
+
                           const disabled_del =
                             idx === 0 && approve_list.length <= 1
                           const styled_btn = disabled_del
@@ -128,53 +136,61 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                           )
 
                           return (
-                            <FlexBox
-                              gap={2}
-                              alignItems={'center'}
-                              key={approve.uid}
-                            >
-                              <Box sx={{ flex: 1 }}>
-                                <ApproveAutoComplete
-                                  value={approve.user_id}
-                                  onChange={(value) => {
-                                    onChangeApprove(approve.uid, value ?? '')
-                                  }}
-                                  list_disabled={list_disabled}
-                                  multiple={false}
-                                  name={field.name}
-                                  textFieldProps={{
-                                    label: (
-                                      <FlexBox gap={1} alignItems={'center'}>
-                                        <Tiny
-                                          fontWeight={500}
-                                          color={'#4D607A'}
-                                          lineHeight={'21px'}
-                                        >
-                                          Approve {idx + 1}
-                                        </Tiny>
-                                        <Span sx={{ color: '#DB6C56' }}>*</Span>
-                                        <Tooltip title="Approvals for the job vacancy request will require the team's approvers.">
-                                          <ExPoint />
-                                        </Tooltip>
-                                      </FlexBox>
-                                    ),
-                                  }}
+                            <FlexBox width={'100%'} flexDirection={'column'}>
+                              <FlexBox
+                                gap={2}
+                                alignItems={'center'}
+                                key={approve.uid}
+                                width={'100%'}
+                              >
+                                <Box sx={{ flex: 1 }}>
+                                  <ApproveAutoComplete
+                                    value={approve.user_id}
+                                    onChange={(value) => {
+                                      onChangeApprove(approve.uid, value ?? '')
+                                    }}
+                                    list_disabled={list_disabled}
+                                    multiple={false}
+                                    name={field.name}
+                                    textFieldProps={{
+                                      label: (
+                                        <FlexBox gap={1} alignItems={'center'}>
+                                          <Tiny
+                                            fontWeight={500}
+                                            color={'#4D607A'}
+                                            lineHeight={'21px'}
+                                          >
+                                            Approve {idx + 1}
+                                          </Tiny>
+                                          <Span sx={{ color: '#DB6C56' }}>
+                                            *
+                                          </Span>
+                                          <Tooltip title="Approvals for the job vacancy request will require the team's approvers.">
+                                            <ExPoint />
+                                          </Tooltip>
+                                        </FlexBox>
+                                      ),
+                                    }}
+                                  />
+                                </Box>
+                                <DeleteIcon
+                                  sx={styled_btn}
+                                  onClick={() =>
+                                    approve_list.length > 1 &&
+                                    delApprove(approve.uid)
+                                  }
                                 />
-                              </Box>
-                              <DeleteIcon
-                                sx={styled_btn}
-                                onClick={() =>
-                                  approve_list.length > 1 &&
-                                  delApprove(approve.uid)
-                                }
-                              />
+                              </FlexBox>
+                              <HelperTextForm
+                                message={error_msg}
+                              ></HelperTextForm>
                             </FlexBox>
                           )
                         })}
                       </FlexBox>
-                      <HelperTextForm
+                      {/* <HelperTextForm
                         message={fieldState.error?.message}
-                      ></HelperTextForm>
+                      ></HelperTextForm> */}
                     </Fragment>
                   )}
                 />

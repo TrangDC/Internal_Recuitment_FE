@@ -21,10 +21,6 @@ interface IuseEditResource<Response, FormData>
   resolver: Resolver<FormData & FieldValues, any> | undefined
 }
 
-interface InputUpdate extends BaseRecord {
-  note: string
-}
-
 function useEditResource<
   Response,
   FormData extends FieldValues,

@@ -5,7 +5,6 @@ import {
   FormDataSchemaApplyJob,
 } from '../../shared/constants/schema'
 import { removeStatusAttachment } from 'shared/utils/utils'
-import { cloneDeep } from 'lodash'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { convertToEndDateUTC } from 'shared/utils/date'
 import CandidateJob, {

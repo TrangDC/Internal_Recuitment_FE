@@ -1,4 +1,3 @@
-import HiringTeam from 'shared/schema/database/hiring_team'
 import { AutocompleteBaseBackEnd } from '../autocomplete-base-back-end'
 import { AutocompleteValueBackEndCommonProps } from '../autocomplete-base-back-end/interface'
 import useGraphql from './useGraphql'

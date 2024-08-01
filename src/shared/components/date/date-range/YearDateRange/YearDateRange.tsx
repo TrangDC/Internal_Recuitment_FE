@@ -4,7 +4,6 @@ import { Box, Popover } from '@mui/material'
 import { Dayjs } from 'dayjs'
 import YearPicker from '../../YearPicker/YearPicker'
 import { ValueRangeDate } from 'shared/interfaces/date'
-import { useState } from 'react'
 
 interface YearDateRangeProps {
   handleClose: () => void

@@ -1,35 +1,39 @@
 import EntitySkillType from './entity_skill_type'
 import HiringTeam from './hiring_team'
+import JobPosition from './job_position'
 import User from './user'
 
 type LocationEnum = 'ha_noi' | 'ho_chi_minh' | 'da_nang' | 'japan' | 'singapore'
 type SalaryTypeEnum = 'range' | 'up_to' | 'negotiate' | 'minimum'
 type CurrencyEnum = 'vnd' | 'usd' | 'jpy'
-export type HiringJobStatus = 'daft' | 'opened' | 'closed'
+export type HiringJobStatus = 'draft' | 'opened' | 'closed'
+type priority_status = 1 | 2 | 3 | 4
 
 interface HiringJob {
-  id: string
-  name: string
-  slug: string
-  description: string
-  amount: number
-  location: LocationEnum
-  salary_type: SalaryTypeEnum
-  salary_from: number
-  salary_to: number
-  currency: CurrencyEnum
-  hiring_team: HiringTeam
-  user: User
-  status: HiringJobStatus
-  total_candidates_recruited: number
-  is_able_to_delete: boolean
-  is_able_to_close: number
-  priority: number
-  entity_skill_types: EntitySkillType[]
-  created_at: string
-  updated_at: string
-  deleted_at: string
-}
+    id: string
+    name: string
+    slug: string
+    description: string
+    amount: number
+    location: LocationEnum
+    salary_type: SalaryTypeEnum
+    salary_from: number
+    salary_to: number
+    currency: CurrencyEnum
+    hiring_team: HiringTeam
+    user: User
+    status: HiringJobStatus
+    total_candidates_recruited: number
+    is_able_to_delete: boolean
+    is_able_to_close: number
+    priority: priority_status
+    entity_skill_types: EntitySkillType[]
+    job_position_id: string
+    job_position: JobPosition
+    created_at: string
+    updated_at: string
+    deleted_at: string
+  }
 
 export type CreateHiringJobArguments = {
   input: NewHiringJobInput
@@ -67,6 +71,7 @@ export type NewHiringJobInput = {
   description: string
   entity_skill_records: EntitySkillRecordInput[]
   priority: number
+  job_position_id: string
 }
 
 export type UpdateHiringJobInput = {
@@ -82,6 +87,7 @@ export type UpdateHiringJobInput = {
   description: string
   priority: number
   entity_skill_records: EntitySkillRecordInput[]
+  job_position_id: string
 }
 
 export type EntitySkillRecordInput = {

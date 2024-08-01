@@ -4,7 +4,6 @@ import { Text15sb } from 'shared/components/Typography'
 import { Box, Popover } from '@mui/material'
 import { Dayjs } from 'dayjs'
 import { ValueRangeDate } from 'shared/interfaces/date'
-import { useState } from 'react'
 
 interface QuarterDateRangeProps {
   handleClose: () => void

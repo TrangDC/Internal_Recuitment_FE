@@ -53,6 +53,7 @@ function useUpdateJob(props: UseEditJobProps) {
         description: data?.description ?? '',
         entity_skill_records: entity_skill_records,
         note: '',
+        job_position_id: data?.job_position_id ?? ''
       }
     },
   })
@@ -84,6 +85,7 @@ function useUpdateJob(props: UseEditJobProps) {
           location: value?.location,
           name: value?.name,
           priority: Number(value?.priority),
+          job_position_id: value?.job_position_id
         },
         note: note,
       }

@@ -156,4 +156,16 @@ export const roleTemplateInformation: RoleTemplateInformation = {
     description:
       'Permission to enable/ disable an email template for an event ',
   },
+  'model.permissions.job_positions.create': {
+    description: 'Permission to create a new Job position',
+  },
+  'model.permissions.job_positions.update': {
+    description: 'Permission to update Job position',
+  },
+  'model.permissions.job_positions.view': {
+    description: 'Permission to view Job positions information',
+  },
+  'model.permissions.job_positions.delete': {
+    description: 'Permission to delete Job position',
+  },
 }

@@ -59,6 +59,10 @@ const Calendars = Loadable(lazy(() => import('../pages/calendars/index')))
 
 const SkillList = Loadable(lazy(() => import('../pages/skill/index')))
 
+const JobPositionList = Loadable(lazy(() => import('../pages/job-position/index')))
+
+const JobPositionDetail = Loadable(lazy(() => import('../pages/job-position/job-position-detail')))
+
 const RoleTemplatePage = Loadable(
   lazy(() => import('../pages/role-template/index'))
 )
@@ -261,6 +265,36 @@ export const AppRoutes = () => {
             element={PermissionLayout({
               module: 'EMAIL_TEMPLATE',
               children: <EmailList />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+           <Route
+            path="job-position"
+            element={PermissionLayout({
+              module: 'JOB_POSITION',
+              children: <JobPositionList />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+           <Route
+            path="job-position-detail/:id"
+            element={PermissionLayout({
+              module: 'EMAIL_TEMPLATE',
+              children: <JobPositionDetail />,
               checkBy: {
                 compare: 'hasAny',
                 permissions: [

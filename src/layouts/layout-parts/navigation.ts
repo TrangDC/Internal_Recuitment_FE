@@ -36,9 +36,16 @@ export const navigation: INavigation[] = [
     module: 'HIRING_TEAMS',
   },
   {
-    name: 'Jobs',
-    path: '/dashboard/jobs',
+    name: 'Job positions',
+    path: '/dashboard/job-position',
     icon: duotone.Jobs,
+    type: 'link',
+    module: 'JOB_POSITION',
+  },
+  {
+    name: 'Job request',
+    path: '/dashboard/jobs',
+    icon: duotone.MicroScope,
     type: 'link',
     module: 'JOBS',
   },

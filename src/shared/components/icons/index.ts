@@ -36,6 +36,7 @@ import Skill from './SkillIcon'
 import Email from './Mail'
 import ReportIcon from './Report'
 import ExPoint from './ExPoint'
+import MicroScope from './Microscope'
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   HiringTeam,
@@ -75,5 +76,6 @@ export default {
   Skill,
   Email,
   ReportIcon,
-  ExPoint
+  ExPoint,
+  MicroScope
 }
