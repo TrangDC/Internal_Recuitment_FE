@@ -1,7 +1,6 @@
 import useGraphql from 'features/interviews/domain/graphql/graphql'
 import { BaseRecord } from 'shared/interfaces'
 import { useDeleteResource } from 'shared/hooks/crud-hook'
-import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
 import { DeleteCandidateInterviewArguments } from 'shared/schema/database/candidate_interview'
 
 type UseDeleteInterviewProps = {

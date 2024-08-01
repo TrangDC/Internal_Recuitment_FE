@@ -1,6 +1,5 @@
 import useGraphql from 'features/feedback/domain/graphql/graphql'
 import { BaseRecord } from 'shared/interfaces'
-import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
 import { useDeleteResource } from 'shared/hooks/crud-hook'
 import { DeleteCandidateJobFeedbackArguments } from 'shared/schema/database/candidate_job_feedback'
 

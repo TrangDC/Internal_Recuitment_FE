@@ -14,7 +14,6 @@ import checkPermissionActionTableJob from 'features/jobs/permission/utils/checkP
 import HiringTeam from 'shared/schema/database/hiring_team'
 import User from 'shared/schema/database/user'
 import HiringJob from 'shared/schema/database/hiring_job'
-import ChipJob from 'shared/class/job-status/components/ChipJob'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import _ from 'lodash'

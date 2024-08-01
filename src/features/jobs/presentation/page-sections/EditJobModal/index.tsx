@@ -22,6 +22,7 @@ import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import SelectionTeamPermission from 'features/jobs/permission/components/SelectionTeamPermission'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
+import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
 
 interface IEditJobModal {
   open: boolean
@@ -51,7 +52,7 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
           <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
-            <FlexBox flexDirection={'column'}>
+            <FlexBox gap={2}>
               <FormControl fullWidth>
                 <Controller
                   control={control}
@@ -66,6 +67,30 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                         value={field.value}
                         onChange={field.onChange}
                         loading={isGetting}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="job_position_id"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <JobPositionAutoComplete
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Job position',
+                        }}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

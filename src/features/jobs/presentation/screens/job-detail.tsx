@@ -83,7 +83,7 @@ const JobDetail = () => {
             >
               <FlexBox gap={7.5} flexWrap={'wrap'} rowGap={2}>
                 <FlexBox gap={0.75} alignItems={'center'}>
-                  <SpanText>{translation.MODLUE_TEAMS.team}</SpanText>
+                  <SpanText>Hiring team</SpanText>
                   <TinyText>{jobDetail?.hiring_team?.name}</TinyText>
                 </FlexBox>
 

@@ -56,6 +56,7 @@ export const schema = yup.object({
   entity_skill_records: yup.mixed(),
   description: yup.string().required(RULE_MESSAGES.MC1('job description')),
   priority: yup.string().required(RULE_MESSAGES.MC1('priority')),
+  job_position_id: yup.string().required(RULE_MESSAGES.MC1("Job position"))
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -111,6 +112,7 @@ export const schemaUpdate = yup.object({
   entity_skill_records: yup.mixed(),
   description: yup.string().required(RULE_MESSAGES.MC1('job description')),
   priority: yup.string().required(RULE_MESSAGES.MC1('priority')),
+  job_position_id: yup.string().required(RULE_MESSAGES.MC1("Job position"))
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>

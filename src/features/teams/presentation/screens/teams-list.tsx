@@ -1,7 +1,6 @@
 import { Box } from '@mui/system'
 import Add from 'shared/components/icons/Add'
 import { columns } from '../../shared/constants/columns'
-import useTextTranslation from 'shared/constants/text'
 import TeamIcon from 'shared/components/icons/Team'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import IconScreen from 'shared/components/utils/IconScreen'
@@ -41,7 +40,6 @@ const TeamList = () => {
     search,
     filters: dataFilterWithValue,
   })
-  const translation = useTextTranslation()
   const { actions } = useBuildActionsTableTeam(useActionTableReturn)
   const { columnTable } = useBuildColumnTable({
     columns,

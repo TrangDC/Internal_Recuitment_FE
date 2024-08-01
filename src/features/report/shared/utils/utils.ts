@@ -5,7 +5,6 @@ import {
   setTimeToStartOfDay,
   setTimeToEndOfDay,
   getQuarter,
-  formatLocalTime,
 } from 'shared/utils/date'
 import {
   RangeDateColumnBar,

@@ -60,6 +60,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
           hiring_team_id: value?.hiring_team_id,
           location: value?.location,
           priority: Number(value?.priority),
+          job_position_id: value?.job_position_id
         },
         note: '',
       }

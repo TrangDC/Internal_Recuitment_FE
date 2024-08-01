@@ -10,6 +10,7 @@ export type ModuleProject =
   | 'skill'
   | 'role-template'
   | 'email-template'
+  | 'job-position'
 
 export type StorageFilter<T> = {
   filter?: ListFiltersData<T>

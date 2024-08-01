@@ -56,7 +56,7 @@ function useCreateTeam(props: createTeamProps = {}) {
 
   function delApprove(uid: string) {
     const approve_del = approve_list.filter((approve) => approve.uid !== uid)
-    setValue('approvers', approve_del)
+    setValue('approvers', approve_del, {shouldValidate: true})
   }
 
   function onChangeApprove(uid: string, value: string) {

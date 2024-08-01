@@ -4,7 +4,6 @@ import {
   schemaUpdate,
   FormDataSchemaUpdate,
 } from '../../shared/constants/schema'
-import { cloneDeep } from 'lodash'
 import { convertToUTC, replaceYearWithCurrent } from 'shared/utils/date'
 import dayjs from 'dayjs'
 import { BaseRecord } from 'shared/interfaces'
