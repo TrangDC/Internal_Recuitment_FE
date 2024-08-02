@@ -96,6 +96,7 @@ const useGraphql = () => {
           id,
           name,
           description
+          is_able_to_delete
         }
       }
       pagination {

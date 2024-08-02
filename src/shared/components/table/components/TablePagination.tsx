@@ -8,10 +8,12 @@ type TablePaginationProps = {
   pagination: IPagination
   onChange: (value: number) => void
   handleChangePerPage: (value: number) => void
+  totalRecord: number
 }
 
 function TablePagination(props: TablePaginationProps) {
-  const { totalPage, pagination, onChange, handleChangePerPage } = props
+  const { totalPage, pagination, onChange, handleChangePerPage, totalRecord } =
+    props
   return (
     <Box position={'relative'}>
       <AppPagination
@@ -26,8 +28,11 @@ function TablePagination(props: TablePaginationProps) {
       />
       <Box position={'absolute'} right={0} bottom={'10px'}>
         <PerPageSelected
-          onChange={(e) => handleChangePerPage(e.target.value as number)}
-          value={pagination.perPage}
+          selectedProps={{
+            onChange: (e) => handleChangePerPage(e.target.value as number),
+            value: pagination.perPage,
+          }}
+          totalRecord={totalRecord}
         />
       </Box>
     </Box>
