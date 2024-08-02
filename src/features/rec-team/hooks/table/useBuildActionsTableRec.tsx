@@ -7,7 +7,7 @@ import useTextTranslation from 'shared/constants/text'
 import { IuseTeamsActionTableReturn } from './useActionTable'
 import RecTeam from 'shared/schema/database/rec_team'
 
-export enum ActionsTableTeams {
+export enum ActionsTableRecTeams {
   DELETE = 'delete',
   EDIT = 'edit',
   CREATE = 'create',
@@ -20,12 +20,12 @@ function useBuildActionsTableRecTeam({
   const translation = useTextTranslation()
   const navigate = useNavigate()
   const useBuildActionsTableReturn = useBuildActionsTable<
-    ActionsTableTeams,
+    ActionsTableRecTeams,
     RecTeam
   >({
     actions: {
       create: {
-        id: ActionsTableTeams.CREATE,
+        id: ActionsTableRecTeams.CREATE,
         onClick: (id) => {
           // navigate(`/dashboard/team-detail/${id}`)
         },
@@ -33,7 +33,7 @@ function useBuildActionsTableRecTeam({
         Icon: <SearchIconSmall />,
       },
       edit: {
-        id: ActionsTableTeams.EDIT,
+        id: ActionsTableRecTeams.EDIT,
         onClick: (id) => {
           handleOpenEdit(id)
         },
@@ -41,7 +41,7 @@ function useBuildActionsTableRecTeam({
         Icon: <EditIcon />,
       },
       delete: {
-        id: ActionsTableTeams.DELETE,
+        id: ActionsTableRecTeams.DELETE,
         onClick: (id) => {
           handleOpenDelete(id)
         },

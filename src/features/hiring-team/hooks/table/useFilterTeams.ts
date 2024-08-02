@@ -9,17 +9,16 @@ function useFilterTeams() {
       },
       formatDataWithValue: (data) => {
         return {
-          manager_ids:
-          !isEmpty(data?.manager_ids)
-          ? data?.manager_ids?.map((o) => o.value)
-          : undefined,
+          manager_ids: !isEmpty(data?.manager_ids)
+            ? data?.manager_ids?.map((o) => o.value)
+            : undefined,
         }
       },
     },
     search: {
       searchKey: ['name'],
     },
-    page: 'teams',
+    page: 'hiring-team',
     shouldCacheData: true,
   })
   return {

@@ -2,18 +2,19 @@ import { useRef, useState } from 'react'
 
 const useActionRoleTemplate = () => {
   const rowId = useRef('')
-  const isAbleToDelete = useRef(false)
+  const isAbleToDelete = useRef(true)
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openDetail, setOpenDetail] = useState(false)
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
-  function handleOpenEdit(id: string) {
+  function handleOpenEdit(id: string, rowData: boolean) {
     rowId.current = id
+    isAbleToDelete.current = rowData
     setOpenEdit(true)
   }
 
-  function handleOpenDelete(id: string, rowData:boolean) {
+  function handleOpenDelete(id: string, rowData: boolean) {
     rowId.current = id
     isAbleToDelete.current = rowData
     setOpenDelete(true)
@@ -39,7 +40,7 @@ const useActionRoleTemplate = () => {
     setOpenConfirmDelete,
     openConfirmDelete,
     rowId,
-    isAbleToDelete
+    isAbleToDelete,
   }
 }
 

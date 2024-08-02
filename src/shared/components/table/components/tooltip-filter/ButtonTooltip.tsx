@@ -20,6 +20,7 @@ function ButtonTooltip({ handleClick, title }: Readonly<ButtonTooltipProps>) {
         display: 'flex',
         justifyContent: 'flex-start',
         padding: '0px 5px',
+        minWidth: 'auto !important',
       }}
       onClick={handleClick}
     >

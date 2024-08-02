@@ -39,7 +39,7 @@ function DetaiUserModal({
       >
         <BaseModal.Wrapper open={open} setOpen={setOpen}>
           <BaseModal.Header
-            title="Member details"
+            title="User details"
             setOpen={setOpen}
             EndHeader={
               <FlexBox gap={1}>

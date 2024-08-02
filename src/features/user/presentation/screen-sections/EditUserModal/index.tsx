@@ -15,6 +15,10 @@ import { Text15md } from 'shared/components/Typography'
 import User from 'shared/schema/database/user'
 import PermissionSectionsDetail from 'shared/components/role-template-permission/screen-sections/detail/PermissionSectionsDetail'
 import useEditUser from 'features/user/hooks/crud/useEditUser'
+import TeamTypeAutoComplete, {
+  TeamType,
+} from 'shared/components/autocomplete/team-type-auto-complete'
+import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 
 interface IEditUserModal {
   open: boolean
@@ -34,6 +38,7 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
     permissionGroup,
     useFormReturn,
     selectedRoleTemplate,
+    watch,
   } = useEditUser({
     id: id,
     onSuccess: () => {
@@ -41,6 +46,9 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
     },
   })
   const { onSubmit } = actions
+
+  const teamType = watch('teamType')
+
   return (
     <FormProvider {...useFormReturn}>
       <ConfirmableModalProvider
@@ -49,7 +57,7 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
       >
         <BaseModal.Wrapper open={open} setOpen={setOpen}>
           <BaseModal.Header
-            title="Edit member"
+            title="Edit user"
             setOpen={setOpen}
           ></BaseModal.Header>
           <BaseModal.ContentMain
@@ -128,20 +136,20 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                         <FormControl fullWidth>
                           <Controller
                             control={control}
-                            name="hiring_team_id"
+                            name="teamType"
                             defaultValue=""
                             render={({ field, fieldState }) => (
                               <FlexBox flexDirection={'column'}>
-                                <TeamsAutoComplete
+                                <TeamTypeAutoComplete
                                   value={field.value}
                                   onChange={(value) => {
-                                    field.onChange(value ?? '')
+                                    field.onChange(value?.value ?? '')
                                   }}
-                                  name={field.name}
                                   textFieldProps={{
                                     required: true,
-                                    label: 'Team',
+                                    label: 'Team type',
                                   }}
+                                  multiple={false}
                                 />
                                 <HelperTextForm
                                   message={fieldState.error?.message}
@@ -151,6 +159,65 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                           />
                         </FormControl>
                       </LoadingField>
+                      {teamType !== TeamType.REC_TEAM && (
+                        <LoadingField isloading={isGetting}>
+                          <FormControl fullWidth>
+                            <Controller
+                              control={control}
+                              name="hiring_team_id"
+                              defaultValue=""
+                              render={({ field, fieldState }) => (
+                                <FlexBox flexDirection={'column'}>
+                                  <TeamsAutoComplete
+                                    value={field.value ?? ''}
+                                    onChange={(value) => {
+                                      field.onChange(value ?? '')
+                                    }}
+                                    name={field.name}
+                                    textFieldProps={{
+                                      required: true,
+                                      label: 'Hiring team',
+                                    }}
+                                  />
+                                  <HelperTextForm
+                                    message={fieldState.error?.message}
+                                  ></HelperTextForm>
+                                </FlexBox>
+                              )}
+                            />
+                          </FormControl>
+                        </LoadingField>
+                      )}
+                      {teamType !== TeamType.HIRING_TEAM && (
+                        <LoadingField isloading={isGetting}>
+                          <FormControl fullWidth>
+                            <Controller
+                              control={control}
+                              name="rec_team_id"
+                              defaultValue=""
+                              shouldUnregister
+                              render={({ field, fieldState }) => (
+                                <FlexBox flexDirection={'column'}>
+                                  <RecTeamsAutoComplete
+                                    value={field?.value ?? ''}
+                                    onChange={(value) => {
+                                      field.onChange(value ?? '')
+                                    }}
+                                    name={field.name}
+                                    textFieldProps={{
+                                      required: true,
+                                      label: 'REC team',
+                                    }}
+                                  />
+                                  <HelperTextForm
+                                    message={fieldState.error?.message}
+                                  ></HelperTextForm>
+                                </FlexBox>
+                              )}
+                            />
+                          </FormControl>
+                        </LoadingField>
+                      )}
                     </FlexBox>
                   </FlexBox>
                 </FlexBox>
@@ -174,6 +241,7 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                             name={field.name}
                             multiple={true}
                             textFieldProps={{
+                              required: true,
                               label: 'Role template',
                             }}
                           />

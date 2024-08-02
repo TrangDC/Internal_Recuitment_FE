@@ -4,6 +4,7 @@ import { ActionPermission } from '../interfaces/permissionStructure'
 function useGetCountChecked(state: ActionPermission[]) {
   const countChecked = useMemo(() => {
     const count = state.reduce((a: number, c) => {
+      if (!c) return 0
       const number = c.for_all || c.for_owner || c.for_team ? 1 : 0
       return number + a
     }, 0)

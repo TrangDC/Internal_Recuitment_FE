@@ -18,6 +18,7 @@ import {
   schemaUpdate,
 } from 'features/user/shared/constants/schema'
 import User, { UpdateUserArguments } from 'shared/schema/database/user'
+import { TeamType } from 'shared/components/autocomplete/team-type-auto-complete'
 
 type UseEditUserProps = {
   id: string
@@ -72,11 +73,14 @@ function useEditUser(props: UseEditUserProps) {
         hiring_team_id: data?.member_of_hiring_team?.id ?? '',
         rolesTemplateId,
         entity_permissions: entity_permissions_default,
+        rec_team_id: data?.member_of_rec_team?.id ?? '',
+        teamType: TeamType.ALL,
       }
     },
   })
 
-  const { handleSubmit, control, formState, setValue } = useFormReturn
+  const { handleSubmit, control, formState, setValue, getValues, watch } =
+    useFormReturn
   const isValid = !formState.isValid || !formState.isDirty
   const { mutate, isPending } = useEditReturn
 
@@ -91,7 +95,7 @@ function useEditUser(props: UseEditUserProps) {
             name: data.name,
             status: data.status,
             work_email: data.work_email ?? '',
-            hiring_team_id: data.hiring_team_id,
+            hiring_team_id: data.hiring_team_id ?? '',
             role_id: data.rolesTemplateId,
           },
         })
@@ -105,12 +109,15 @@ function useEditUser(props: UseEditUserProps) {
       shouldTouch: true,
     })
     const data = mergePermissions(role)
-    Object.keys(data).forEach((key) => {
-      const newValue = data[key]
-      const keyName = getKeyName(key) as any
-      setValue(keyName, newValue)
-    })
+    if (Object.keys(data).length > 0) {
+      Object.keys(data).forEach((key) => {
+        const newValue = data[key]
+        const keyName = getKeyName(key) as any
+        setValue(keyName, newValue)
+      })
+    }
   }
+
   return {
     control,
     isValid,
@@ -119,7 +126,9 @@ function useEditUser(props: UseEditUserProps) {
     actions: {
       onSubmit,
     },
+    getValues,
     formState,
+    watch,
     setValue,
     isGetting: isGetting || isGetAllPermissionGroups,
     permissionGroup,

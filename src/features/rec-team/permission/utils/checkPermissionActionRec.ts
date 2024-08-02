@@ -1,7 +1,7 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { CheckPermissionActionTableProps } from 'features/authorization/domain/interfaces'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
-import { ActionsTableTeams } from 'features/hiring-team/hooks/table/useBuildActionsTableTeam'
+import { ActionsTableRecTeams } from 'features/rec-team/hooks/table/useBuildActionsTableRec'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
 import RecTeam from 'shared/schema/database/rec_team'
 
@@ -33,7 +33,7 @@ function editAction({ newActions, isOwner, inTeam, role }: ActionProps) {
       compare: 'hasAny',
       permissions: ['EDIT.ownedOnly', 'EDIT.everything', 'EDIT.teamOnly'],
     },
-    module: 'HIRING_TEAMS',
+    module: 'REC_TEAMS',
   })
 
   const editOwnedOnly = checkPermissions({
@@ -42,7 +42,7 @@ function editAction({ newActions, isOwner, inTeam, role }: ActionProps) {
       compare: 'hasAny',
       permissions: ['EDIT.ownedOnly'],
     },
-    module: 'HIRING_TEAMS',
+    module: 'REC_TEAMS',
   })
 
   const editTeamOnly = checkPermissions({
@@ -51,14 +51,20 @@ function editAction({ newActions, isOwner, inTeam, role }: ActionProps) {
       compare: 'hasAny',
       permissions: ['EDIT.teamOnly'],
     },
-    module: 'HIRING_TEAMS',
+    module: 'REC_TEAMS',
   })
   if (!notEditPermission)
-    return newActions.filter((action) => action.id !== ActionsTableTeams.EDIT)
+    return newActions.filter(
+      (action) => action.id !== ActionsTableRecTeams.EDIT
+    )
   if (editTeamOnly && !inTeam)
-    return newActions.filter((action) => action.id !== ActionsTableTeams.EDIT)
+    return newActions.filter(
+      (action) => action.id !== ActionsTableRecTeams.EDIT
+    )
   if (editOwnedOnly && !isOwner)
-    return newActions.filter((action) => action.id !== ActionsTableTeams.EDIT)
+    return newActions.filter(
+      (action) => action.id !== ActionsTableRecTeams.EDIT
+    )
   return newActions
 }
 
@@ -72,7 +78,9 @@ function deleteAction({ newActions, role }: ActionProps) {
     module: 'HIRING_TEAMS',
   })
   if (!deleteEveryThing)
-    return newActions.filter((action) => action.id !== ActionsTableTeams.DELETE)
+    return newActions.filter(
+      (action) => action.id !== ActionsTableRecTeams.DELETE
+    )
   return newActions
 }
 

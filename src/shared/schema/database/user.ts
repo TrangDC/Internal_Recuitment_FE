@@ -1,5 +1,6 @@
 import EntityPermission from './entity_permission'
 import HiringTeam from './hiring_team'
+import RecTeam from './rec_team'
 import Role from './role'
 
 type UserStatus = 'active' | 'inactive'
@@ -13,6 +14,7 @@ interface User {
   entity_permissions: EntityPermission[]
   member_of_hiring_team: HiringTeam
   roles: Role[]
+  member_of_rec_team: RecTeam
 }
 
 export type UpdateUserArguments = {

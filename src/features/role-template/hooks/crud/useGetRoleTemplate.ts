@@ -37,6 +37,7 @@ function useGetRoleTemplate({ id }: UseGetRoleTemplateProps) {
         name: data?.name ?? '',
         description: data?.description ?? '',
         entity_permissions: entity_permissions_default,
+        is_able_to_delete: data?.is_able_to_delete ?? true,
       }
     },
   })

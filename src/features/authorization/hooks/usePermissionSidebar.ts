@@ -27,14 +27,23 @@ export function usePermissionSidebar(props: ICheckPermissions): INavigation[] {
         return skill || skillType
       }
 
+      if (module === 'HIRING_TEAMS') {
+        const recTeams =
+          role['REC_TEAMS'].VIEW.everything ||
+          role['REC_TEAMS'].VIEW.ownedOnly ||
+          role['REC_TEAMS'].VIEW.teamOnly
+        const hiringTeam =
+          role['HIRING_TEAMS'].VIEW.everything ||
+          role['HIRING_TEAMS'].VIEW.ownedOnly ||
+          role['HIRING_TEAMS'].VIEW.teamOnly
+        return recTeams || hiringTeam
+      }
+
       return (
         role[module].VIEW.everything ||
         role[module].VIEW.ownedOnly ||
         role[module].VIEW.teamOnly
       )
-
-      
-    
     }
 
     return true

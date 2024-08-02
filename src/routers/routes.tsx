@@ -77,6 +77,8 @@ const Error = Loadable(lazy(() => import('../pages/404')))
 export const AppRoutes = () => {
   const { role } = useAuthorization()
   let skillPage: ReactElement | null = <DoNotAllowPage />
+  let teamPage: ReactElement | null = <DoNotAllowPage />
+
   const skillView = checkPermissions({
     role,
     module: 'SKILLS',
@@ -94,8 +96,30 @@ export const AppRoutes = () => {
       permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
     },
   })
+
+  const hiringTeamView = checkPermissions({
+    role,
+    module: 'HIRING_TEAMS',
+    checkBy: {
+      compare: 'hasAny',
+      permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
+    },
+  })
+
+  const recTeamView = checkPermissions({
+    role,
+    module: 'REC_TEAMS',
+    checkBy: {
+      compare: 'hasAny',
+      permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
+    },
+  })
   if (skillTypeView || skillView) {
     skillPage = <DashboardLayout>{<SkillList />}</DashboardLayout>
+  }
+
+  if (hiringTeamView || recTeamView) {
+    teamPage = <DashboardLayout>{<TeamList />}</DashboardLayout>
   }
 
   return (
@@ -114,21 +138,7 @@ export const AppRoutes = () => {
           }
         >
           <Route index element={<Navigate to="/dashboard/reports" replace />} />
-          <Route
-            path="teams"
-            element={PermissionLayout({
-              module: 'HIRING_TEAMS',
-              children: <TeamList />,
-              checkBy: {
-                compare: 'hasAny',
-                permissions: [
-                  'VIEW.everything',
-                  'VIEW.teamOnly',
-                  'VIEW.ownedOnly',
-                ],
-              },
-            })}
-          />
+          <Route path="teams" element={teamPage} />
           <Route
             path="team-detail/:id"
             element={PermissionLayout({
