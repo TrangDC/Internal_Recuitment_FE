@@ -107,7 +107,7 @@ export const columns_job = (
   }),
   columnHelperJob.accessor((row) => row.hiring_team.name, {
     id: 'team',
-    header: () => <span>{t('team')}</span>,
+    header: () => <span>Hiring team</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     enableSorting: false,
     size: 100,

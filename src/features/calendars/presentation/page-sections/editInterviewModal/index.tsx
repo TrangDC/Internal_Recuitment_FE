@@ -115,7 +115,7 @@ function EditInterviewModal(props: IEditInterviewModal) {
                         multiple={false}
                         textFieldProps={{
                           required: true,
-                          label: 'Team',
+                          label: 'Hiring team',
                         }}
                       />
                       <HelperTextForm

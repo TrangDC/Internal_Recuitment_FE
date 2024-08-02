@@ -44,7 +44,13 @@ export const columns = (
         {info.getValue()}
       </LinkText>
     ),
-    header: () => <span>Job name</span>,
+    header: () => <span>Name</span>,
+  }),
+  columnHelper.accessor((row) => row.name, {
+    id: 'job_position',
+    cell: (info) => <StyleTinyText>{info?.row?.original?.job_position?.name}</StyleTinyText>,
+    header: () => <span>Job position</span>,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.hiring_team.name, {
     id: 'team',
@@ -145,11 +151,17 @@ export const columns_opening = (
         {info.getValue()}
       </LinkText>
     ),
-    header: () => <span>Job name</span>,
+    header: () => <span>Name</span>,
+  }),
+  columnHelper.accessor((row) => row.name, {
+    id: 'name',
+    cell: (info) => <StyleTinyText>{info?.row?.original?.job_position?.name}</StyleTinyText>,
+    header: () => <span>Job position</span>,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.hiring_team.name, {
     id: 'team',
-    header: () => <span>{t('team')}</span>,
+    header: () => <span>Hiring team</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     enableSorting: false,
     size: 100,

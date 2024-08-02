@@ -29,7 +29,7 @@ function DeleteTeamModal({ open, setOpen, id }: IDeleteRecModal) {
     <Fragment>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <BaseModal.Header
-          title={translation.MODLUE_TEAMS.delete_team}
+          title="Do you want to delete this REC team?"
           setOpen={setOpen}
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">

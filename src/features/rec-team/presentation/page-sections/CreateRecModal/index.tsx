@@ -32,7 +32,7 @@ function CreateRecModal({ open, setOpen }: ICreateRecTeamModal) {
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <BaseModal.Header
-          title={translation.MODULE_REC_TEAM.add_new_rec_team}
+          title="Add a new REC team"
           setOpen={setOpen}
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
@@ -77,9 +77,12 @@ function CreateRecModal({ open, setOpen }: ICreateRecTeamModal) {
                         onChange={field.onChange}
                         multiple={false}
                         name={field.name}
+                        filter={{
+                          is_able_to_leader_rec_team: true,
+                        }}
                         textFieldProps={{
                           required: true,
-                          label: `Team's Manager`,
+                          label: `Leader`,
                         }}
                       />
                       <HelperTextForm
@@ -106,7 +109,6 @@ function CreateRecModal({ open, setOpen }: ICreateRecTeamModal) {
                         onChange={field.onChange}
                         multiline
                         minRows={4}
-                        required
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

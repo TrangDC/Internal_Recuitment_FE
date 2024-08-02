@@ -27,7 +27,7 @@ function useBuildActionsTableRecTeam({
       create: {
         id: ActionsTableRecTeams.CREATE,
         onClick: (id) => {
-          // navigate(`/dashboard/team-detail/${id}`)
+          navigate(`/dashboard/rec-team-detail/${id}`)
         },
         title: translation.COMMON.detail,
         Icon: <SearchIconSmall />,

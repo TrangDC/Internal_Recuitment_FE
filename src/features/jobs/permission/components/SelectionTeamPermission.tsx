@@ -32,7 +32,7 @@ function SelectionTeamPermission({
       filter={filter}
       textFieldProps={{
         required: true,
-        label: 'Team',
+        label: 'Hiring team',
       }}
     />
   )

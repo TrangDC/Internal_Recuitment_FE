@@ -93,7 +93,11 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
                         multiple={true}
                         name={field.name}
                         textFieldProps={{
-                          label: `Team's Manager`,
+                          label: `Team's Manager`, 
+                        }}
+                        filter={{
+                          is_able_to_manager_hiring_team: true,
+                          hiring_team_id: [id]
                         }}
                       />
                       <HelperTextForm
