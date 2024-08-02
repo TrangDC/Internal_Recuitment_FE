@@ -25,7 +25,16 @@ const SelectTiny = styled(Select)(() => ({
   },
 }))
 
-function PerPageSelected(props: SelectProps) {
+type PerPageSelectedProps = {
+  selectedProps: SelectProps
+  totalRecord: number
+}
+
+function PerPageSelected({ selectedProps, totalRecord }: PerPageSelectedProps) {
+  const countPerPage =
+    totalRecord > (selectedProps.value as number)
+      ? selectedProps.value
+      : totalRecord
   return (
     <FlexBox gap={2} padding={1} alignItems={'center'} height={40}>
       <Text13md color={'#4D607A'} lineHeight={'21px'}>
@@ -34,7 +43,7 @@ function PerPageSelected(props: SelectProps) {
       <SelectTiny
         id="pagination-per-page"
         value={10}
-        {...props}
+        {...selectedProps}
         IconComponent={() => (
           <ArrowRadius sx={{ fill: 'grey.500', fontSize: '20px' }} />
         )}
@@ -44,7 +53,7 @@ function PerPageSelected(props: SelectProps) {
         <MenuItem value={30}>30</MenuItem>
       </SelectTiny>
       <Text13md color={'#4D607A'} lineHeight={'21px'}>
-        {`1–${props.value} of 30`}
+        {`1–${countPerPage} of ${totalRecord}`}
       </Text13md>
     </FlexBox>
   )

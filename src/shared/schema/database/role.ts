@@ -6,6 +6,7 @@ interface Role {
   name: string
   description: string
   entity_permissions: EntityPermission[]
+  is_able_to_delete:boolean
 }
 
 export type CreateRoleArguments = {

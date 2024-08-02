@@ -31,6 +31,7 @@ const RoleTemplateList = () => {
     handleOpenDetail,
     openDetail,
     setOpenDetail,
+    isAbleToDelete,
   } = useActionRoleTemplate()
   const { useSearchListReturn } = useFilterRoleTemplate()
   const { search, handleSearch, searchRef } = useSearchListReturn
@@ -97,6 +98,7 @@ const RoleTemplateList = () => {
             open={openDelete}
             setOpen={setOpenDelete}
             id={rowId.current}
+            isAbleToDelete={isAbleToDelete.current}
           />
         )}
         {openDetail && (

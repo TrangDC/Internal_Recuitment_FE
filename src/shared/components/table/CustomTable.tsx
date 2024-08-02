@@ -62,6 +62,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
     isLoading,
     variables,
     handleChangePerPage,
+    totalRecord,
   } = useTableReturn
 
   const { pagination, sortBy } = variables
@@ -195,6 +196,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
           pagination={pagination}
           onChange={onChange}
           handleChangePerPage={handleChangePerPage}
+          totalRecord={totalRecord}
         />
       )}
     </Box>
