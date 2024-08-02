@@ -29,6 +29,7 @@ export type UpdateUserInput = {
   status: string
   hiring_team_id: string
   role_id: string[]
+  rec_team_id: string
 }
 
 export type NewEntityPermissionInput = {

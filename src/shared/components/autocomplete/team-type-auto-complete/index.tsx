@@ -7,7 +7,6 @@ import {
 function TeamTypeAutoComplete<Multiple extends boolean>(
   props: IAutocompleteCommonProps<Multiple>
 ) {
-  console.log('props', props)
   return <AutocompleteBase<Multiple> {...props} options={options} />
 }
 

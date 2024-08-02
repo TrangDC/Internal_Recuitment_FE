@@ -53,7 +53,6 @@ const UserList = () => {
     handleOpenDetail,
   })
 
-  console.log('dataFilterWithValue', dataFilterWithValue)
   return (
     <Box pt={2} pb={4}>
       <IconScreen Icon={HiringTeam} textLable={'Users'} />
