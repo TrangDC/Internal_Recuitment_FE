@@ -91,6 +91,7 @@ const RoleTemplateList = () => {
             open={openEdit}
             setOpen={setOpenEdit}
             id={rowId.current}
+            isAbleToEdit={isAbleToDelete.current}
           />
         )}
         {openDelete && (

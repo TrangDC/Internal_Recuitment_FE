@@ -26,7 +26,7 @@ function editAction({ newActions, role }: ActionProps) {
       compare: 'hasAny',
       permissions: ['EDIT.everything'],
     },
-    module: 'HIRING_TEAMS',
+    module: 'USER',
   })
 
   if (!everything)

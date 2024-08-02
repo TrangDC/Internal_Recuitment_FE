@@ -1,7 +1,7 @@
 import GraphQLClientService from 'services/graphql-service'
 
 const useGraphql = () => {
-  const queryKey = 'hiring'
+  const queryKey = 'users'
   const getAllHiringTeam = GraphQLClientService.buildQuery({
     operation: 'GetAllUsers',
     options: {
@@ -19,6 +19,10 @@ const useGraphql = () => {
             id
           }
           member_of_hiring_team {
+            id
+            name
+          }
+          member_of_rec_team {
             id
             name
           }
@@ -84,6 +88,10 @@ const useGraphql = () => {
           work_email
           status
           member_of_hiring_team {
+            id
+            name
+          }
+          member_of_rec_team {
             id
             name
           }

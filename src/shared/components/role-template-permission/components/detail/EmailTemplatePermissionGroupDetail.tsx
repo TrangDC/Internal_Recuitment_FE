@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import CollapseGroup from 'shared/components/collapse/CollapseGroup'
 import { Text13md, Tiny12md } from 'shared/components/Typography'
-import { Controller, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { PermissionGroupProps } from '../../interfaces'
 import { getKeyName } from '../../utils/utils'
 import FlexBox from 'shared/components/flexbox/FlexBox'
@@ -11,7 +11,7 @@ import ListCheckBoxDetail from './ListCheckBoxDetail'
 function EmailTemplatePermissionGroupDetail({
   roleTemplate,
 }: PermissionGroupProps) {
-  const { control, watch, setValue } = useFormContext()
+  const { watch, setValue } = useFormContext()
   const [open, setOpen] = useState(true)
   const createAction = roleTemplate?.EMAIL_TEMPLATE?.CREATE
   const editAction = roleTemplate?.EMAIL_TEMPLATE?.EDIT
@@ -77,57 +77,19 @@ function EmailTemplatePermissionGroupDetail({
         </CollapseGroup.CollapseHeaderColumn>
       </CollapseGroup.CollapseHeader>
       <CollapseGroup.CollapseBody>
-        <Controller
-          control={control}
-          name={getKeyName(viewAction.id)}
-          render={({ field }) => {
-            return (
-              <ListCheckBoxDetail
-                customPermission={viewAction}
-                value={field.value}
-              />
-            )
-          }}
+        <ListCheckBoxDetail customPermission={viewAction} value={viewData} />
+        <ListCheckBoxDetail
+          customPermission={createAction}
+          value={createData}
         />
-        <Controller
-          control={control}
-          name={getKeyName(createAction.id)}
-          render={({ field }) => (
-            <ListCheckBoxDetail
-              customPermission={createAction}
-              value={field.value}
-            />
-          )}
+        <ListCheckBoxDetail
+          customPermission={changeStatusAction}
+          value={changeStatusData}
         />
-        <Controller
-          control={control}
-          name={getKeyName(changeStatusAction.id)}
-          render={({ field }) => (
-            <ListCheckBoxDetail
-              customPermission={changeStatusAction}
-              value={field.value}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name={getKeyName(editAction.id)}
-          render={({ field }) => (
-            <ListCheckBoxDetail
-              customPermission={editAction}
-              value={field.value}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name={getKeyName(deleteAction.id)}
-          render={({ field }) => (
-            <ListCheckBoxDetail
-              customPermission={deleteAction}
-              value={field.value}
-            />
-          )}
+        <ListCheckBoxDetail customPermission={editAction} value={editData} />
+        <ListCheckBoxDetail
+          customPermission={deleteAction}
+          value={deleteData}
         />
       </CollapseGroup.CollapseBody>
     </CollapseGroup.CollapseContainer>

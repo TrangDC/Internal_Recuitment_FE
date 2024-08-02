@@ -72,6 +72,7 @@ function useFilter<T>(props: UseFilter<T>): UseFilterReturn<T> {
         ...dataWithValue,
       }
 
+  console.log('dataFilterWithValue', dataFilterWithValue)
   return {
     dataFilterWithValue,
     controlFilter: {

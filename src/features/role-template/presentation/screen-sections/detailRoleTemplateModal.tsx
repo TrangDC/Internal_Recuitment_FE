@@ -13,7 +13,7 @@ type DetailRoleTemplateModalProps = {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
-  handleOpenEdit: (value: string) => void
+  handleOpenEdit: (value: string, rowData: boolean) => void
 }
 
 function DetailRoleTemplateModal({
@@ -50,7 +50,7 @@ function DetailRoleTemplateModal({
                       cursor: 'pointer',
                     }}
                     onClick={() => {
-                      handleOpenEdit(id)
+                      handleOpenEdit(id, getValues('is_able_to_delete'))
                       setOpen(false)
                     }}
                   />

@@ -27,6 +27,7 @@ export const DetailRoleTemplateSchema = yup.object().shape({
   name: yup.string().default(''),
   description: yup.string().default(''),
   entity_permissions: yup.mixed<PermissionFormData>().default({}),
+  is_able_to_delete: yup.boolean().default(true),
 })
 export type CreateRoleTemplateForm = yup.InferType<
   typeof CreateRoleTemplateSchema

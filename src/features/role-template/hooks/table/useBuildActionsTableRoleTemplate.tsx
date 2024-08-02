@@ -12,7 +12,7 @@ export enum ActionRoleTemplates {
 }
 
 type UseBuildActionsTableRoleTemplateProps = {
-  handleOpenEdit: (id: string) => void
+  handleOpenEdit: (id: string, isAbleToEdit: boolean) => void
   handleOpenDelete: (id: string, isAbleToDelete: boolean) => void
   handleOpenDetail: (id: string) => void
 }
@@ -35,8 +35,8 @@ function useBuildActionsTableRoleTemplate({
       },
       edit: {
         id: ActionRoleTemplates.EDIT,
-        onClick: (id) => {
-          handleOpenEdit(id)
+        onClick: (id, rowData) => {
+          handleOpenEdit(id, rowData.is_able_to_delete)
         },
         title: 'Edit',
         Icon: <EditIcon />,

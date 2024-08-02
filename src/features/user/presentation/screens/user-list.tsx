@@ -17,6 +17,11 @@ import useUserTable from 'features/user/hooks/table/useUserTable'
 import useBuildActionsTableUser from 'features/user/hooks/table/useBuildActionsTableUser'
 import DetailHiringModal from '../screen-sections/DetaiUserModal'
 import User from 'shared/schema/database/user'
+import _ from 'lodash'
+import TeamTypeAutoComplete, {
+  TeamType,
+} from 'shared/components/autocomplete/team-type-auto-complete'
+import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 
 const UserList = () => {
   const {
@@ -32,9 +37,11 @@ const UserList = () => {
   const { useSearchListReturn, useFilterReturn } = useFilterUser()
   const { controlFilter, dataFilterWithValue } = useFilterReturn
   const { handleSearch, search, searchRef } = useSearchListReturn
+
+  const filters = _.omit(dataFilterWithValue, ['team_type'])
   const { useTableReturn } = useUserTable({
     search,
-    filters: dataFilterWithValue,
+    filters,
   })
   const { actions } = useBuildActionsTableUser({
     handleOpenEdit,
@@ -45,38 +52,14 @@ const UserList = () => {
     columns,
     handleOpenDetail,
   })
+
+  console.log('dataFilterWithValue', dataFilterWithValue)
   return (
     <Box pt={2} pb={4}>
       <IconScreen Icon={HiringTeam} textLable={'Users'} />
       <BoxWrapperOuterContainer>
         <HeadingWrapper>
           <FlexBox>
-            <ControllerFilter
-              control={controlFilter}
-              title="Team"
-              keyName={'hiring_team_id'}
-              Node={({ onFilter, value }) => (
-                <TeamsAutoComplete
-                  value={value}
-                  name="team"
-                  multiple={true}
-                  open={true}
-                  disableCloseOnSelect={true}
-                  onCustomChange={(data) =>
-                    onFilter(
-                      data.map((value) => ({
-                        label: value.name,
-                        value: value.id,
-                      }))
-                    )
-                  }
-                  textFieldProps={{
-                    label: 'Team',
-                    autoFocus: true,
-                  }}
-                />
-              )}
-            />
             <ControllerFilter
               control={controlFilter}
               title="Role"
@@ -103,6 +86,81 @@ const UserList = () => {
                 />
               )}
             />
+            <ControllerFilter
+              control={controlFilter}
+              title="Team type"
+              keyName={'team_type'}
+              Node={({ onFilter, value }) => (
+                <TeamTypeAutoComplete
+                  value={value}
+                  multiple={false}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  onChange={(data) => onFilter(data)}
+                  textFieldProps={{
+                    label: 'Team type',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+            {dataFilterWithValue.team_type !== TeamType.REC_TEAM && (
+              <ControllerFilter
+                control={controlFilter}
+                title="Hiring team"
+                keyName={'hiring_team_id'}
+                Node={({ onFilter, value }) => (
+                  <TeamsAutoComplete
+                    value={value}
+                    name="team"
+                    multiple={true}
+                    open={true}
+                    disableCloseOnSelect={true}
+                    onCustomChange={(data) =>
+                      onFilter(
+                        data.map((value) => ({
+                          label: value.name,
+                          value: value.id,
+                        }))
+                      )
+                    }
+                    textFieldProps={{
+                      label: 'Hiring team',
+                      autoFocus: true,
+                    }}
+                  />
+                )}
+              />
+            )}
+
+            {dataFilterWithValue.team_type !== TeamType.HIRING_TEAM && (
+              <ControllerFilter
+                control={controlFilter}
+                title="REC team"
+                keyName={'rec_team_ids'}
+                Node={({ onFilter, value }) => (
+                  <RecTeamsAutoComplete
+                    value={value}
+                    name="rec_team_id"
+                    multiple={true}
+                    open={true}
+                    disableCloseOnSelect={true}
+                    onCustomChange={(data) =>
+                      onFilter(
+                        data.map((value) => ({
+                          label: value.name,
+                          value: value.id,
+                        }))
+                      )
+                    }
+                    textFieldProps={{
+                      label: 'REC team',
+                      autoFocus: true,
+                    }}
+                  />
+                )}
+              />
+            )}
           </FlexBox>
           <DivHeaderWrapper>
             <SearchInput

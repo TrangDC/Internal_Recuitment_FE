@@ -94,7 +94,6 @@ function JobPermissionGroup({ roleTemplate }: PermissionGroupProps) {
                     for_owner: viewAction.for_owner,
                     for_team: viewAction.for_team,
                   })
-                  console.log('output', data)
                   field.onChange(data)
                 }}
                 value={field.value}

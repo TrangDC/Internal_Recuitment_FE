@@ -40,16 +40,6 @@ export const columns = (
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     size: 300,
   }),
-  columnHelper.accessor('member_of_hiring_team.name', {
-    id: 'team',
-    header: () => <span>Team</span>,
-    enableSorting: false,
-    cell: (info) => {
-      if (!info.getValue()) return ''
-      return <StyleTinyText>{info.getValue()}</StyleTinyText>
-    },
-    size: 200,
-  }),
   columnHelper.accessor('roles', {
     id: 'roles',
     header: () => <span>Role</span>,
@@ -73,6 +63,27 @@ export const columns = (
     },
     size: 500,
   }),
+  columnHelper.accessor('member_of_hiring_team.name', {
+    id: 'hiring-team',
+    header: () => <span>Hiring Team</span>,
+    enableSorting: false,
+    cell: (info) => {
+      if (!info.getValue()) return ''
+      return <StyleTinyText>{info.getValue()}</StyleTinyText>
+    },
+    size: 200,
+  }),
+  columnHelper.accessor('member_of_rec_team.name', {
+    id: 'rect-team',
+    header: () => <span>REC Team</span>,
+    enableSorting: false,
+    cell: (info) => {
+      if (!info.getValue()) return ''
+      return <StyleTinyText>{info.getValue()}</StyleTinyText>
+    },
+    size: 200,
+  }),
+
   columnHelper.accessor('id', {
     header: () => (
       <FlexBox justifyContent={'flex-end'} width={'100%'}>

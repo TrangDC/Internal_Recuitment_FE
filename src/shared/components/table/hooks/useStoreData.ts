@@ -5,12 +5,13 @@ export type ModuleProject =
   | 'opening-job'
   | 'candidate'
   | 'candidate-black-list'
-  | 'teams'
+  | 'rec-team'
   | 'hiring-team'
   | 'skill'
   | 'role-template'
   | 'email-template'
   | 'job-position'
+  | 'users'
 
 export type StorageFilter<T> = {
   filter?: ListFiltersData<T>

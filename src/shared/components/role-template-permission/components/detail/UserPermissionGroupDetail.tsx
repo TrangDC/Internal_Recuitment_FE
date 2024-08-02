@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import CollapseGroup from 'shared/components/collapse/CollapseGroup'
 import { Text13md, Tiny12md } from 'shared/components/Typography'
-import { Controller, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { PermissionGroupProps } from '../../interfaces'
 import { getKeyName } from '../../utils/utils'
 import ListCheckBoxDetail from './ListCheckBoxDetail'
@@ -9,7 +9,7 @@ import useGetCountChecked from '../../hooks/useGetCountChecked'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 
 function UserPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
-  const { control, watch } = useFormContext()
+  const { watch } = useFormContext()
   const [open, setOpen] = useState(true)
   const editAction = roleTemplate?.USER?.EDIT
   const viewAction = roleTemplate?.USER?.VIEW
@@ -50,29 +50,8 @@ function UserPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
         </CollapseGroup.CollapseHeaderColumn>
       </CollapseGroup.CollapseHeader>
       <CollapseGroup.CollapseBody>
-        <Controller
-          control={control}
-          name={getKeyName(viewAction.id)}
-          render={({ field }) => {
-            return (
-              <ListCheckBoxDetail
-                customPermission={viewAction}
-                value={field.value}
-              />
-            )
-          }}
-        />
-        <Controller
-          control={control}
-          name={getKeyName(editAction.id)}
-          render={({ field }) => (
-            <ListCheckBoxDetail
-              hiddenBorder
-              customPermission={editAction}
-              value={field.value}
-            />
-          )}
-        />
+        <ListCheckBoxDetail customPermission={viewAction} value={viewData} />
+        <ListCheckBoxDetail customPermission={editAction} value={editData} />
       </CollapseGroup.CollapseBody>
     </CollapseGroup.CollapseContainer>
   )

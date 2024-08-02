@@ -12,8 +12,19 @@ import { Text15md } from 'shared/components/Typography'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import PermissionSections from 'shared/components/role-template-permission/screen-sections/edit/PermissionSections'
 import useEditRoleTemplate from 'features/role-template/hooks/crud/useEditRoleTemplate'
+import { useState } from 'react'
+import ConfirmUpdateModal from '../components/ConfirmUpdateModal'
 
-function EditRoleTemplateModal({ open, setOpen, id }: IEditModal) {
+interface EditRoleTemplateModalProps extends IEditModal {
+  isAbleToEdit: boolean
+}
+function EditRoleTemplateModal({
+  open,
+  setOpen,
+  id,
+  isAbleToEdit,
+}: EditRoleTemplateModalProps) {
+  const [openConfirmUpdate, setOpenConfirmUpdate] = useState(false)
   const {
     useFormReturn,
     isValid,
@@ -27,8 +38,9 @@ function EditRoleTemplateModal({ open, setOpen, id }: IEditModal) {
       setOpen(false)
     },
   })
-  const { control, formState } = useFormReturn
+  const { control, formState, getValues } = useFormReturn
   const { onSubmit } = actions
+
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
       <FormProvider {...useFormReturn}>
@@ -123,18 +135,39 @@ function EditRoleTemplateModal({ open, setOpen, id }: IEditModal) {
               >
                 Cancel
               </AppButton>
-              <ButtonEdit
-                loading={isPending}
-                disabled={isValid}
-                data-testid="btn-submit"
-                handlesubmit={onSubmit}
-              >
-                Submit
-              </ButtonEdit>
+              {!isAbleToEdit ? (
+                <AppButton
+                  variant="contained"
+                  size="small"
+                  disabled={isValid}
+                  onClick={() => setOpenConfirmUpdate(true)}
+                >
+                  Submit
+                </AppButton>
+              ) : (
+                <ButtonEdit
+                  loading={isPending}
+                  disabled={isValid}
+                  data-testid="btn-submit"
+                  handlesubmit={onSubmit}
+                >
+                  Submit
+                </ButtonEdit>
+              )}
             </FlexBox>
           </BaseModal.Footer>
         </BaseModal.Wrapper>
       </FormProvider>
+      {openConfirmUpdate && (
+        <ConfirmUpdateModal
+          open={openConfirmUpdate}
+          setOpen={setOpenConfirmUpdate}
+          loading={isPending}
+          onConfirm={onSubmit}
+          roleId={id}
+          name={getValues('name')}
+        />
+      )}
     </ConfirmableModalProvider>
   )
 }
