@@ -15,6 +15,7 @@ import { TinyText } from 'shared/components/form/styles'
 import { JobStatus } from 'shared/class/job-status'
 import useJobTable from 'features/jobs/hooks/table/useJobTable'
 import { CloseJobModal, CreateJobModal, DeleteJobModal, EditJobModal } from 'features/jobs/presentation/page-sections'
+import { useParams } from 'react-router-dom'
 
 const { STATUS_HIRING_JOB } = JobStatus
 const OpeningJobRequest = () => {
@@ -33,9 +34,11 @@ const OpeningJobRequest = () => {
     setOpenEdit,
   } = useActionTable()
 
+  const { id } = useParams()
+
   const { useTableReturn } = useJobTable({
     filters: {
-      // hiring_team_ids: [id],
+      job_position_ids: [id],
       status: STATUS_HIRING_JOB.OPENED,
     },
   })

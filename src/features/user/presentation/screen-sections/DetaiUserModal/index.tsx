@@ -20,7 +20,7 @@ interface IDetaiUserModal {
   handleOpenEdit: (id: string) => void
 }
 
-function DetaiUserModal({
+function DetailUserModal({
   open,
   setOpen,
   id,
@@ -148,4 +148,4 @@ function DetaiUserModal({
   )
 }
 
-export default DetaiUserModal
+export default DetailUserModal

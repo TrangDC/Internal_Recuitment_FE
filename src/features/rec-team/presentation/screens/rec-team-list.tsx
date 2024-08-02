@@ -45,7 +45,6 @@ function RecuitmentTeam() {
     actions: actions,
   })
   const { useTableReturn } = useRecTeamTable({
-    orderBy: { field: 'newest_applied', direction: 'DESC' },
     search,
     filters: dataFilterWithValue,
   })
@@ -70,6 +69,9 @@ function RecuitmentTeam() {
                         value: value.id,
                       }))
                     )
+                  }}
+                  filter={{
+                    is_able_to_leader_rec_team: false,
                   }}
                   open={true}
                   disableCloseOnSelect={true}
@@ -101,7 +103,7 @@ function RecuitmentTeam() {
             >
               <ButtonAdd
                 Icon={Add}
-                textLable={translation.MODULE_REC_TEAM.add_new_rec_team}
+                textLable="Add a new REC team"
                 onClick={() => setOpenCreate(true)}
               />
             </Cant>

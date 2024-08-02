@@ -30,7 +30,7 @@ function useUpdateRecTeam(props: UseEditRecTeamProps) {
     id,
     onSuccess,
     formatDefaultValues(data) {
-      //const leader_id = data?.leader_id
+
       const leader_id = data?.leader_id ?? ''
       return {
         name: data?.name ?? '',

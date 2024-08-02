@@ -1,12 +1,12 @@
 import { Box } from '@mui/system'
+import TeamIcon from 'shared/components/icons/Team'
+import TabCustomize from 'shared/components/tab'
+import IconScreen from 'shared/components/utils/IconScreen'
+import useTextTranslation from 'shared/constants/text'
 import GeneralInformation from '../page-sections/GeneralInformation'
 import HistoryLog from '../page-sections/HistoryLog'
-import TabCustomize from 'shared/components/tab'
-import useTextTranslation from 'shared/constants/text'
-import TeamIcon from 'shared/components/icons/Team'
-import IconScreen from 'shared/components/utils/IconScreen'
 
-const HiringTeam = () => {
+const RecTeamDetail = () => {
   const translation = useTextTranslation()
 
   const renderItem = [
@@ -20,7 +20,7 @@ const HiringTeam = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={TeamIcon} textLable={'Hiring team details'} go_back={true}/>
+        <IconScreen Icon={TeamIcon} textLable={'REC team details'} go_back={true}/>
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>
         <TabCustomize renderItem={renderItem} />
@@ -29,4 +29,4 @@ const HiringTeam = () => {
   )
 }
 
-export default HiringTeam
+export default RecTeamDetail

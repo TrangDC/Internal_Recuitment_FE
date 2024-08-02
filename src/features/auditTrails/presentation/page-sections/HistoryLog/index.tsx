@@ -15,7 +15,7 @@ import dayjs from 'dayjs'
 import { BaseRecord } from 'shared/interfaces'
 
 interface Props {
-  module: 'hiring_teams' | 'hiring_jobs' | 'candidates' | 'skills' | 'email_templates' | 'users' | 'skill_types' | 'roles' | 'job_positions'
+  module: 'hiring_teams' | 'hiring_jobs' | 'candidates' | 'skills' | 'email_templates' | 'users' | 'skill_types' | 'roles' | 'job_positions' | 'rec_teams'
   id: string,
 }
 

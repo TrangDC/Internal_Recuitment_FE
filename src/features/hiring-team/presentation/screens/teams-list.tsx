@@ -49,7 +49,7 @@ const TeamList = () => {
     <Fragment>
       <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
         <HeadingWrapper>
-          <FlexBox flexDirection={'column'} width={'100%'} gap={2}>
+          <FlexBox flexDirection={'column'} width={'100%'} gap={1}>
             <FlexBox>
               <ControllerFilter
                 control={controlFilter}
@@ -67,6 +67,9 @@ const TeamList = () => {
                           value: value.id,
                         }))
                       )
+                    }}
+                    filter={{
+                      is_able_to_manager_hiring_team: false,
                     }}
                     open={true}
                     disableCloseOnSelect={true}

@@ -47,7 +47,7 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <BaseModal.Header
-          title={translation.MODLUE_TEAMS.edit_team}
+          title="Edit REC team"
           setOpen={setOpen}
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
@@ -95,15 +95,44 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
                         onChange={field.onChange}
                         multiple={false}
                         name={field.name}
+                        filter={{
+                          is_able_to_leader_rec_team: true,
+                          rec_team_ids: [id]
+                        }}
                         textFieldProps={{
                           required: true,
-                          label: `Team's Manager`,
+                          label: `Leader`,
                         }}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
                       ></HelperTextForm>
                     </Fragment>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="description"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppTextField
+                        label={'Description'}
+                        size="small"
+                        fullWidth
+                        value={field.value ?? ''}
+                        onChange={field.onChange}
+                        multiline
+                        minRows={4}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
                   )}
                 />
               </FormControl>

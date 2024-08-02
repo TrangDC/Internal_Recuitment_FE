@@ -23,6 +23,10 @@ const useGraphql = () => {
           currency
           priority
           status
+          job_position {
+            id
+            name
+          }
           created_at
           is_able_to_delete
           is_able_to_close

@@ -86,6 +86,9 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                         onChange={field.onChange}
                         multiple={true}
                         name={field.name}
+                        filter={{
+                          is_able_to_manager_hiring_team: true,
+                        }}
                         textFieldProps={{
                           label: `Team's Manager`,
                           required: true,

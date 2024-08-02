@@ -3,8 +3,8 @@ import GeneralInformation from '../page-sections/GeneralInformation'
 import HistoryLog from '../page-sections/HistoryLog'
 import TabCustomize from 'shared/components/tab'
 import useTextTranslation from 'shared/constants/text'
-import TeamIcon from 'shared/components/icons/Team'
 import IconScreen from 'shared/components/utils/IconScreen'
+import Jobs from 'shared/components/icons/Jobs'
 
 const JobDetail = () => {
   const translation = useTextTranslation()
@@ -20,7 +20,7 @@ const JobDetail = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={TeamIcon} textLable={'Job position detail'} go_back={true}/>
+        <IconScreen Icon={Jobs} textLable={'Job position detail'} go_back={true}/>
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>
         <TabCustomize renderItem={renderItem} />

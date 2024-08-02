@@ -79,10 +79,19 @@
   "sub_title_update_record": "What information or note have you updated the record?",
   "add_new_rec_team": "Thêm đội tuyển dụng",
   "model": {
+    "rec_teams": {
+      "model_name": "REC team",
+      "name": "Name",
+      "description": "Description",
+      "rec_team_leader": "Leader"
+    },
     "job_positions": {
       "model_name": "Job Position",
       "name": "Name",
-      "description": "Description"
+      "description": "Description",
+      "validation": {
+        "hiring_job_exist": "There are already job requests or interviews for this position, cannot delete this job position."
+      }
     },
     "skill_types": {
       "validation": {

@@ -92,6 +92,11 @@ const useGraphql = () => {
       data {
         id
         name
+        leader {
+          id
+          name
+        }
+        description
         created_at
         leader_id
       }
@@ -111,9 +116,4 @@ const useGraphql = () => {
   }
 }
 
-// createRecTeam
-
-// getRecTeamDetails
-// updateRecTeam
-// deleteRecTeam
 export default useGraphql

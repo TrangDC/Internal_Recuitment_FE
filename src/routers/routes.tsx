@@ -71,6 +71,10 @@ const RoleTemplatePage = Loadable(
   lazy(() => import('../pages/role-template/index'))
 )
 
+const RecTeamDetailPage = Loadable(
+  lazy(() => import('../pages/rec-team/rec-team-detail'))
+)
+
 // 404/Error page
 const Error = Loadable(lazy(() => import('../pages/404')))
 
@@ -325,6 +329,21 @@ export const AppRoutes = () => {
             element={PermissionLayout({
               module: 'REPORT',
               children: <ReportPage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+          <Route
+            path="rec-team-detail/:id"
+            element={PermissionLayout({
+              module: 'REC_TEAMS',
+              children: <RecTeamDetailPage />,
               checkBy: {
                 compare: 'hasAny',
                 permissions: [
