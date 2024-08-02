@@ -97,6 +97,7 @@ function useEditUser(props: UseEditUserProps) {
             work_email: data.work_email ?? '',
             hiring_team_id: data.hiring_team_id ?? '',
             role_id: data.rolesTemplateId,
+            rec_team_id: data.rec_team_id ?? '',
           },
         })
       }

@@ -15,7 +15,6 @@ export const schemaUpdate = yup.object({
   name: yup.string().required(RULE_MESSAGES.MC1('name')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
   hiring_team_id: yup.string().when(['teamType'], ([teamType], schema) => {
-    console.log('teamType', teamType)
     if (teamType !== TeamType.REC_TEAM)
       return schema.required(RULE_MESSAGES.MC1('hiring team'))
     return schema

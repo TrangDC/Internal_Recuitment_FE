@@ -1,7 +1,8 @@
 import GraphQLClientService from 'services/graphql-service'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const useGraphql = () => {
-  const queryKey = 'hiring'
+  const queryKey = MODLUE_QUERY_KEY.USER
   const getMe = GraphQLClientService.buildQuery({
     operation: 'GetMe',
     options: {

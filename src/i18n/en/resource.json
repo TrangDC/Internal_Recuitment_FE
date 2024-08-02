@@ -186,7 +186,8 @@
     },
     "users": {
       "validation": {
-        "work_email_exist": "Email has already existed"
+        "work_email_exist": "Email has already existed",
+        "user_is_leader_of_another_rec_team": "This user is being a leader for the current recruitment team. Please try again!"
       }
     },
     "candidate_job_feedbacks": {

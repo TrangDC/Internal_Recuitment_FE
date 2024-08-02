@@ -10,6 +10,8 @@ import {
   EditRoleTemplateForm,
   EditRoleTemplateSchema,
 } from 'features/role-template/shared/constants/validate'
+import { useQueryClient } from '@tanstack/react-query'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 type UseEditJobProps = {
   id: string
@@ -19,6 +21,7 @@ type UseEditJobProps = {
 function useEditRoleTemplate(props: UseEditJobProps) {
   const { id, onSuccess } = props
   const { getRole, updateRole, queryKey } = useGraphql()
+  const queryClient = useQueryClient()
   const [permissionGroup, setPermissionGroup] =
     useState<RoleTemplateStructure>()
   const { getAllPermission, isGetting: isGetAllPermissionGroups } =
@@ -33,7 +36,10 @@ function useEditRoleTemplate(props: UseEditJobProps) {
     oneBuildQuery: getRole,
     queryKey: [queryKey],
     id,
-    onSuccess,
+    onSuccess: (data) => {
+      onSuccess?.(data)
+      queryClient.invalidateQueries({ queryKey: [MODLUE_QUERY_KEY.USER] })
+    },
     formatDefaultValues: async (data) => {
       const permissionGroup = await getAllPermission()
       const roleTemplate = RoleTemplateStructure.fromJson(permissionGroup)
