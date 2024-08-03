@@ -13,10 +13,10 @@ const useGraphql = () => {
           id
           work_email
           name
-          hiring_team {
+          member_of_rec_team {
             id
           }
-          member_of_rec_team {
+          member_of_hiring_team {
             id
           }
           entity_permissions {
