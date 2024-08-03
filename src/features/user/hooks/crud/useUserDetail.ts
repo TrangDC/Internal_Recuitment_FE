@@ -52,7 +52,8 @@ function useUserDetail(props: UseUserDetailProps) {
         status: data?.status ?? '',
         name: data?.name ?? '',
         work_email: data?.work_email ?? '',
-        teamName: data?.member_of_hiring_team?.name ?? '',
+        hiringTeamName: data?.member_of_hiring_team?.name ?? '',
+        recTeamName: data?.member_of_rec_team?.name ?? '',
         rolesTemplateName: rolesTemplateName,
         entity_permissions: entity_permissions_default,
       }

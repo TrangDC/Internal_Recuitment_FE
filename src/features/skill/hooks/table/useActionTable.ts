@@ -1,8 +1,10 @@
 import { useRef, useState } from 'react'
+import Skill from 'shared/schema/database/skill'
 
-const useActionTable = <T extends object>() => {
+const useActionTable =() => {
   const rowId = useRef('')
-  const rowData = useRef<T>()
+  const rowData = useRef<Skill>()
+  const isAbleToDelete = useRef<boolean>(false)
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
@@ -13,8 +15,9 @@ const useActionTable = <T extends object>() => {
     setOpenEdit(true)
   }
 
-  function handleOpenDelete(id: string) {
+  function handleOpenDelete(id: string , value:boolean) {
     rowId.current = id
+    isAbleToDelete.current = value
     setOpenDelete(true)
   }
 
@@ -37,6 +40,7 @@ const useActionTable = <T extends object>() => {
     handleOpenDetail,
     rowId,
     rowData,
+    isAbleToDelete:isAbleToDelete.current
   }
 }
 

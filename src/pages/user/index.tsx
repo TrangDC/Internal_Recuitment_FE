@@ -3,7 +3,7 @@ import HelmetComponent from 'shared/components/helmet'
 
 const UserPage = () => {
   return (
-    <HelmetComponent title="[TREC] Hiring Team">
+    <HelmetComponent title="[TREC] User">
       <UserList />
     </HelmetComponent>
   )

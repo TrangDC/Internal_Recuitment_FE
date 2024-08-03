@@ -30,12 +30,12 @@ function DetailSkillTypeModal({
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <Box>
         <BaseModal.Header
-          title={'Skill details'}
+          title={'Skill type details'}
           setOpen={setOpen}
           EndHeader={
             <FlexBox gap={1}>
               <Cant
-                module="SKILLS"
+                module="SKILL_TYPES"
                 checkBy={{
                   compare: 'hasAny',
                   permissions: ['CREATE.everything'],

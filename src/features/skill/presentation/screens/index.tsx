@@ -14,7 +14,6 @@ import SearchInput from 'shared/components/table/components/SearchInput'
 import Cant from 'features/authorization/presentation/components/Cant'
 import DetailSkillModal from '../page-sections/DetailSkill'
 import useBuildActionsTableSkill from 'features/skill/hooks/table/useBuildActionsTableSkill'
-import Skill from 'shared/schema/database/skill'
 
 const SkillList = () => {
   const {
@@ -30,7 +29,8 @@ const SkillList = () => {
     openEdit,
     rowId,
     setOpenEdit,
-  } = useActionTable<Skill>()
+    isAbleToDelete,
+  } = useActionTable()
   const { useSearchListReturn } = useFilterSkills()
   const { handleSearch, search, searchRef } = useSearchListReturn
   const { useTableReturn } = useSkillTable({
@@ -94,6 +94,7 @@ const SkillList = () => {
           open={openDelete}
           setOpen={setOpenDelete}
           id={rowId.current}
+          isAbleToDelete={isAbleToDelete}
         />
       )}
       {openDetail && (

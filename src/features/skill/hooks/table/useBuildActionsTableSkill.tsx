@@ -13,7 +13,7 @@ export enum ActionSkill {
 
 type UseSkillListPermissionActionTableProps = {
   handleOpenEdit: (id: string) => void
-  handleOpenDelete: (id: string) => void
+  handleOpenDelete: (id: string, isAbleToDelete: boolean) => void
   handleOpenDetail: (id: string) => void
 }
 
@@ -44,7 +44,8 @@ function useBuildActionsTableSkill({
       delete: {
         id: ActionSkill.DELETE,
         onClick: (id, rowData) => {
-          handleOpenDelete(id)
+          console.log('rowData', rowData)
+          handleOpenDelete(id, rowData.is_able_to_delete)
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,

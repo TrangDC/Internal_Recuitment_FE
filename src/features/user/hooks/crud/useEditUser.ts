@@ -88,6 +88,8 @@ function useEditUser(props: UseEditUserProps) {
     handleSubmit((data) => {
       const entity_permissions = data.entity_permissions
       if (entity_permissions) {
+        const hiring_team_id =  data.hiring_team_id ?? ''
+        const rec_team_id =   data.rec_team_id ?? ''
         mutate({
           id,
           note,
@@ -95,9 +97,9 @@ function useEditUser(props: UseEditUserProps) {
             name: data.name,
             status: data.status,
             work_email: data.work_email ?? '',
-            hiring_team_id: data.hiring_team_id ?? '',
+            hiring_team_id: data.teamType != TeamType.REC_TEAM ? hiring_team_id : "",
             role_id: data.rolesTemplateId,
-            rec_team_id: data.rec_team_id ?? '',
+            rec_team_id: data.teamType != TeamType.HIRING_TEAM ? rec_team_id : "",
           },
         })
       }
