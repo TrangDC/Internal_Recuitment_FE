@@ -27,6 +27,7 @@ const useGraphql = () => {
             id
             name
           }
+         
         }
       }
       pagination {
@@ -100,6 +101,8 @@ const useGraphql = () => {
             id
             name
           }
+          is_leader_of_rec_team
+          is_manager_of_hiring_team
           entity_permissions {
             id
             for_owner

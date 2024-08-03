@@ -45,4 +45,5 @@ export type MyBasicInformation = {
   email: string
   id: string
   teamId: string
+  rectTeamId:string
 } | null

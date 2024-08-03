@@ -16,6 +16,9 @@ const useGraphql = () => {
           hiring_team {
             id
           }
+          member_of_rec_team {
+            id
+          }
           entity_permissions {
             id
             for_owner

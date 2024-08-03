@@ -75,6 +75,8 @@ function useEditUser(props: UseEditUserProps) {
         entity_permissions: entity_permissions_default,
         rec_team_id: data?.member_of_rec_team?.id ?? '',
         teamType: TeamType.ALL,
+        is_leader_of_rec_team:data?.is_leader_of_rec_team ?? false,
+        is_manager_of_hiring_team:data?.is_manager_of_hiring_team ?? false,
       }
     },
   })

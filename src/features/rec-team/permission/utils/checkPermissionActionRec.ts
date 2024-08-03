@@ -20,7 +20,7 @@ function checkPermissionActionRecTeams({
 }: CheckPermissionActionTableProps<RecTeam>): TOptionItem<RecTeam>[] {
   let newActions = [...actions]
   const isOwner = rowData.row.original.leader.id === me?.id
-  const inTeam = me?.teamId === rowData.row.original.id
+  const inTeam = me?.rectTeamId === rowData.row.original.id
   newActions = editAction({ newActions, isOwner, inTeam, role })
   newActions = deleteAction({ newActions, isOwner, inTeam, role })
   return newActions
@@ -75,7 +75,7 @@ function deleteAction({ newActions, role }: ActionProps) {
       compare: 'hasAny',
       permissions: ['DELETE.everything'],
     },
-    module: 'HIRING_TEAMS',
+    module: 'REC_TEAMS',
   })
   if (!deleteEveryThing)
     return newActions.filter(
