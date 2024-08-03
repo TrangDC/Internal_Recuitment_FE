@@ -15,8 +15,18 @@ import dayjs from 'dayjs'
 import { BaseRecord } from 'shared/interfaces'
 
 interface Props {
-  module: 'hiring_teams' | 'hiring_jobs' | 'candidates' | 'skills' | 'email_templates' | 'users' | 'skill_types' | 'roles' | 'job_positions' | 'rec_teams'
-  id: string,
+  module:
+    | 'hiring_teams'
+    | 'hiring_jobs'
+    | 'candidates'
+    | 'skills'
+    | 'email_templates'
+    | 'users'
+    | 'skill_types'
+    | 'roles'
+    | 'job_positions'
+    | 'rec_teams'
+  id: string
 }
 
 const HistoryLogAuditTrails = ({ module, id }: Props) => {
@@ -54,6 +64,8 @@ const HistoryLogAuditTrails = ({ module, id }: Props) => {
     const end_date = toDate
       ? dayjs(toDate).endOf('date').toDate()
       : dayjs().endOf('date').toDate()
+
+    if (!dayjs(start_form).isValid() || !dayjs(end_date).isValid()) return;
 
     handleChangeDate({
       fromDate: convertDateToISOString(start_form),

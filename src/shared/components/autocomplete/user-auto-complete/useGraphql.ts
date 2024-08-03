@@ -14,6 +14,8 @@ const useGraphql = () => {
           id
           name
           work_email
+          hiring_team_id
+          rec_team_id
         }
       }
       pagination {

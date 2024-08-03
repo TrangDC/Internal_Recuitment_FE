@@ -1,6 +1,5 @@
 import { BaseRecord } from 'shared/interfaces'
 import { useDeleteResource } from 'shared/hooks/crud-hook'
-import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
 import useGraphql from 'features/rec-team/domain/graphql/graphql'
 import { DeleteRecTeamArguments } from 'shared/schema/database/rec_team'
 

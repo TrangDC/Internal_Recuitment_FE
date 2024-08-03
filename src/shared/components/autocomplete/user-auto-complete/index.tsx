@@ -6,6 +6,8 @@ type User = {
   id: string
   name: string
   work_email: number
+  hiring_team_id: string
+  rec_team_id: string
 }
 
 function MemberAutoComplete<Multiple extends boolean>({

@@ -11,7 +11,7 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 function HiringTeamPermissionGroupDetail({
   roleTemplate,
 }: PermissionGroupProps) {
-  const { watch, getValues } = useFormContext()
+  const { watch } = useFormContext()
   const [open, setOpen] = useState(true)
   const createAction = roleTemplate?.HIRING_TEAMS?.CREATE
   const editAction = roleTemplate?.HIRING_TEAMS?.EDIT
