@@ -40,7 +40,8 @@ export const schemaUpdate = yup.object({
 export const schemaHiringDetail = yup.object({
   name: yup.string().default(''),
   status: yup.string().default(''),
-  teamName: yup.string().default(''),
+  recTeamName: yup.string().default(''),
+  hiringTeamName: yup.string().default(''),
   work_email: yup.string().default(''),
   entity_permissions: yup.mixed<PermissionFormData>().default({}),
   rolesTemplateName: yup.array<any, string>().default([]),

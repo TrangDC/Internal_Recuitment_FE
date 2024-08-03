@@ -112,9 +112,15 @@ function DetailUserModal({
                     </FlexBox>
                     <FlexBox gap={2}>
                       <FlexBox flexDirection={'column'} width={'100%'}>
-                        <Tiny12md>Team</Tiny12md>
+                        <Tiny12md>Hiring team</Tiny12md>
                         <LoadingField isloading={isGetting}>
-                          <Text13sb>{getValues('teamName')}</Text13sb>
+                          <Text13sb>{getValues('hiringTeamName')}</Text13sb>
+                        </LoadingField>
+                      </FlexBox>
+                      <FlexBox flexDirection={'column'} width={'100%'}>
+                        <Tiny12md>Rec team</Tiny12md>
+                        <LoadingField isloading={isGetting}>
+                          <Text13sb>{getValues('recTeamName')}</Text13sb>
                         </LoadingField>
                       </FlexBox>
                     </FlexBox>

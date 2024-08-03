@@ -46,6 +46,7 @@ const SkillTypeList = () => {
   const { actions } = useBuildActionsTableSkillType({
     handleOpenDelete,
     handleOpenEdit,
+    handleOpenDetail,
   })
   const { columnTable } = useBuildColumnTable({
     actions: actions,

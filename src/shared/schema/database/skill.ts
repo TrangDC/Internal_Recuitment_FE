@@ -8,6 +8,7 @@ interface Skill {
   created_at: string
   updated_at: string
   deleted_at: string
+  is_able_to_delete:boolean
 }
 
 export type CreateSkillArguments = {

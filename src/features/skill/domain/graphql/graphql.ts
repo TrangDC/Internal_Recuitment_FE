@@ -18,6 +18,7 @@ const useGraphql = () => {
             name
           }
           description
+          is_able_to_delete
           created_at
         }
       }

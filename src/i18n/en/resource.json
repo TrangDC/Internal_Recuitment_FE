@@ -83,7 +83,10 @@
       "model_name": "REC team",
       "name": "Name",
       "description": "Description",
-      "rec_team_leader": "Leader"
+      "rec_team_leader": "Leader",
+      "validation": {
+        "name_exist": "Name has already existed"
+      }
     },
     "job_positions": {
       "model_name": "Job Position",

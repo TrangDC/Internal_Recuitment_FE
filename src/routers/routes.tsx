@@ -16,6 +16,7 @@ import { checkPermissions } from 'features/authorization/domain/functions/functi
 import DoNotAllowPage from 'pages/403'
 import EmailList from 'features/email/presentation/screens/email-list'
 import ReportPage from 'pages/report'
+import EmailPage from 'pages/email-template'
 
 const Loadable = (Component: LazyExoticComponent<FC>) => (props: any) => {
   return (
@@ -282,7 +283,7 @@ export const AppRoutes = () => {
             path="email-notification"
             element={PermissionLayout({
               module: 'EMAIL_TEMPLATE',
-              children: <EmailList />,
+              children: <EmailPage />,
               checkBy: {
                 compare: 'hasAny',
                 permissions: [
