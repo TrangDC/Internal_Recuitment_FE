@@ -13,7 +13,7 @@ function TeamsPage() {
   const cantViewHiringTeam = usePermission({
     checkBy: {
       compare: 'hasAny',
-      permissions: ['VIEW.everything'],
+      permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
     },
     module: 'HIRING_TEAMS',
   })
@@ -21,7 +21,7 @@ function TeamsPage() {
   const cantViewRecTeam = usePermission({
     checkBy: {
       compare: 'hasAny',
-      permissions: ['VIEW.everything'],
+      permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
     },
     module: 'REC_TEAMS',
   })

@@ -31,6 +31,7 @@ function useGetMe() {
         name: me?.name ?? '',
         id: me?.id ?? '',
         teamId: me?.hiring_team?.id ?? '',
+        rectTeamId:me?.member_of_rec_team?.id ?? '',
       }
       return {
         myPermission,

@@ -15,6 +15,8 @@ interface User {
   member_of_hiring_team: HiringTeam
   roles: Role[]
   member_of_rec_team: RecTeam
+  is_leader_of_rec_team: boolean
+  is_manager_of_hiring_team: boolean
 }
 
 export type UpdateUserArguments = {

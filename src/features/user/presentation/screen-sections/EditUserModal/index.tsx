@@ -39,6 +39,7 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
     useFormReturn,
     selectedRoleTemplate,
     watch,
+    getValues,
   } = useEditUser({
     id: id,
     onSuccess: () => {
@@ -49,6 +50,8 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
 
   const teamType = watch('teamType')
 
+  const isManagerOrLeaderOfTeam =
+    getValues('is_leader_of_rec_team') || getValues('is_manager_of_hiring_team')
   return (
     <FormProvider {...useFormReturn}>
       <ConfirmableModalProvider
@@ -150,6 +153,7 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                                     label: 'Team type',
                                   }}
                                   multiple={false}
+                                  disabled={isManagerOrLeaderOfTeam}
                                 />
                                 <HelperTextForm
                                   message={fieldState.error?.message}
@@ -178,6 +182,9 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                                       required: true,
                                       label: 'Hiring team',
                                     }}
+                                    disabled={getValues(
+                                      'is_manager_of_hiring_team'
+                                    )}
                                   />
                                   <HelperTextForm
                                     message={fieldState.error?.message}
@@ -208,6 +215,9 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                                       required: true,
                                       label: 'REC team',
                                     }}
+                                    disabled={getValues(
+                                      'is_leader_of_rec_team'
+                                    )}
                                   />
                                   <HelperTextForm
                                     message={fieldState.error?.message}

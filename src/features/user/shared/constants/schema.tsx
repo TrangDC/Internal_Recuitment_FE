@@ -35,6 +35,8 @@ export const schemaUpdate = yup.object({
     .required(RULE_MESSAGES.MC1('Role'))
     .min(1, RULE_MESSAGES.MC1('Role'))
     .default([]),
+  is_leader_of_rec_team: yup.boolean().default(false),
+  is_manager_of_hiring_team: yup.boolean().default(false),
 })
 
 export const schemaHiringDetail = yup.object({

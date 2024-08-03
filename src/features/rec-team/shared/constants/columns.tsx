@@ -24,7 +24,11 @@ export const columns = (
 ): ColumnDef<RecTeam, any>[] => [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <LinkText to={`/dashboard/rec-team-detail/${info.row.original.id}`}>{info.getValue()}</LinkText>,
+    cell: (info) => (
+      <LinkText to={`/dashboard/rec-team-detail/${info.row.original.id}`}>
+        {info.getValue()}
+      </LinkText>
+    ),
     header: () => <span>{t('name')}</span>,
     size: 300,
   }),
@@ -50,7 +54,7 @@ export const columns = (
       )
     },
     header: () => <span>{'Leader'}</span>,
-    enableSorting: false,
+    enableSorting: true,
   }),
 
   columnHelper.accessor('description', {
@@ -170,4 +174,3 @@ export const columns_user = (
     },
   }),
 ]
-

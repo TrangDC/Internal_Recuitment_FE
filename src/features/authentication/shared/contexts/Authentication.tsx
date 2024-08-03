@@ -3,6 +3,7 @@ import LoadingScreen from 'shared/components/LoadingScreen'
 import Token from 'shared/class/token'
 import handleAuthLocalStorage from 'services/auth-local-storage-service'
 import restApi from 'configs/api/restApi'
+import useStoreData from 'shared/components/table/hooks/useStoreData'
 // --------------------------------------------------------
 
 // props type
@@ -25,6 +26,8 @@ type AuthState = 'INIT' | 'IS_AUTHENTICATED' | 'IS_NOT_AUTHENTICATED'
 
 export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
   const { removeToken, getToken } = handleAuthLocalStorage()
+  const { deleteAllData } = useStoreData()
+
   const [authState, setAuthState] = useState<AuthState>('INIT')
   const login = () => {
     window.location.href = restApi.login
@@ -32,6 +35,7 @@ export const AuthenticationProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     removeToken()
+    deleteAllData()
     window.location.href = '/auth/login'
   }
 
