@@ -1,7 +1,6 @@
 import useGraphql from 'features/email/domain/graphql/graphql'
 import { BaseRecord } from 'shared/interfaces'
 import { useDeleteResource } from 'shared/hooks/crud-hook'
-import { payloadDelete } from 'shared/hooks/crud-hook/interfaces'
 import { DeleteEmailTemplateArguments } from 'shared/schema/database/email_template'
 
 type UseDeleteEmailProps = {

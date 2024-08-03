@@ -4,7 +4,6 @@ import Add from 'shared/components/icons/Add'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
-import useTextTranslation from 'shared/constants/text'
 import {
   BoxWrapperOuterContainer,
   DivHeaderWrapper,
@@ -24,7 +23,6 @@ import ControllerFilter from 'shared/components/table/components/tooltip-filter/
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 
 function RecuitmentTeam() {
-  const translation = useTextTranslation()
   const useActionTableReturn = useActionTable()
   const {
     openCreate,

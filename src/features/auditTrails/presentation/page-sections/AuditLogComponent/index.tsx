@@ -60,11 +60,9 @@ const LogsComponent = ({ module, id }: Props, ref: any) => {
                       color={'#2A2E37 !important'}
                       textTransform={'capitalize'}
                     >
-                      {' '}
                       {auditrail.actionType}
                     </Span>
                     <Span color={'#2A2E37 !important'}>
-                      {' '}
                       {format(
                         new Date(auditrail.updatedAt),
                         'dd-MM-yyyy HH:mm:ss'

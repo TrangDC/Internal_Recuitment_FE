@@ -12,6 +12,8 @@ import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import useUpdateRecTeam from 'features/rec-team/hooks/crud/useUpdateRecTeam'
+import { useMemo, useState } from 'react'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 interface IEditRecModal {
   open: boolean
@@ -25,7 +27,6 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
     control,
     isValid,
     isPending,
-    setValue,
     isGetting,
     formState,
   } = useUpdateRecTeam({
@@ -35,12 +36,29 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
     },
   })
   const { onSubmit } = actions
+  const { handleWarning, handleReset } = usePopup()
+  const [recId, setRecId] = useState<string>('');
 
   const translation = useTextTranslation()
 
+  const show_Warning = useMemo(() => {
+    return !!(recId && recId !== id);
+  }, [recId, id])
+
   const callbackSubmit = (reason: string) => {
-    setValue('note', reason)
-    onSubmit(reason)
+    if(!show_Warning) {
+      onSubmit(reason)
+      return;
+    }
+
+    handleWarning({
+      title: 'Warning',
+      content: `The selected leader is currently in a different REC team. This change will also move the user to this team. Proceeding?`,
+      onSubmit: () => {
+        onSubmit(reason)
+        handleReset()
+      },
+    })
   }
 
   return (
@@ -92,7 +110,10 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
                     <Fragment>
                       <MemberAutoComplete
                         value={field.value || []}
-                        onChange={field.onChange}
+                        onCustomChange={(value) => {
+                          field.onChange(value?.id)
+                          setRecId(value?.rec_team_id ?? '')
+                        }}
                         multiple={false}
                         name={field.name}
                         filter={{

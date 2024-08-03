@@ -36,12 +36,11 @@ function useUpdateRecTeam(props: UseEditRecTeamProps) {
         name: data?.name ?? '',
         leader_id: leader_id,
         description: data?.description ?? '',
-        note: '',
       }
     },
   })
 
-  const { handleSubmit, control, formState, setValue, watch } = useFormReturn
+  const { handleSubmit, control, formState, setValue } = useFormReturn
   const isValid = !formState.isValid || !formState.isDirty
   const { mutate, isPending } = useEditReturn
 

@@ -26,7 +26,6 @@ function useCreateRecTeam(props: createRecTeamProps = {}) {
       name: '',
       leader_id: '',
       description: '',
-      note: '',
     },
     resolver: yupResolver(schema),
     onSuccess: callbackSuccess,

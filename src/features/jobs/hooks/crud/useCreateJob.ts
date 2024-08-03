@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGraphql from 'features/jobs/domain/graphql/graphql'
 import { schema, FormDataSchema } from '../../shared/constants/schema'
-import _, { isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import { convertCurrencyToNumber, updateRecordSkill } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
