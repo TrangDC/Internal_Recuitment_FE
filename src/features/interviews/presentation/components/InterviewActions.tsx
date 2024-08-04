@@ -24,6 +24,7 @@ function InterviewActions(props: InterviewActionsProps) {
 
   const { actions } = useBuildActionsTableInterview({
     status: interview.status,
+    start_from: interview.start_from,
     handleCancelCandidateInterviewStatus,
     handleDoneCandidateInterviewStatus,
     handleOpenDelete,

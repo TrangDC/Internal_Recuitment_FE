@@ -6,6 +6,8 @@ import Done from 'shared/components/icons/Done'
 import Cancel from 'shared/components/icons/Cancel'
 import _ from 'lodash'
 import { CalendarEvent } from 'features/calendars/presentation/page-sections/google-calendar/interface'
+import { isPast } from 'shared/utils/date'
+import dayjs from 'dayjs'
 
 export enum ActionInterview {
   EDIT = 'edit',
@@ -20,6 +22,7 @@ type UseBuildActionsTableInterviewProps = {
   handleCancelCandidateInterviewStatus: (id: string) => void
   handleDoneCandidateInterviewStatus: (id: string) => void
   status: string
+  start_from: string
 }
 
 function useBuildActionsTableInterview({
@@ -28,6 +31,7 @@ function useBuildActionsTableInterview({
   handleCancelCandidateInterviewStatus,
   handleDoneCandidateInterviewStatus,
   status,
+  start_from,
 }: UseBuildActionsTableInterviewProps) {
   const translation = useTextTranslation()
   const { actions } = useBuildActionsTable<ActionInterview, CalendarEvent>({
@@ -67,6 +71,14 @@ function useBuildActionsTableInterview({
     },
   })
 
+  if (!isPast(dayjs(start_from).toDate())) {
+    _.remove(
+      actions,
+      (action) =>
+        action.id === ActionInterview.EDIT ||
+        action.id === ActionInterview.DELETE
+    )
+  }
   if (status === 'invited_to_interview') {
     _.remove(actions, (action) => action.id === ActionInterview.DONE)
   }

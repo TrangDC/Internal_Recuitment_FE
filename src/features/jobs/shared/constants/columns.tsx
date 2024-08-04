@@ -48,13 +48,15 @@ export const columns = (
   }),
   columnHelper.accessor((row) => row.name, {
     id: 'job_position',
-    cell: (info) => <StyleTinyText>{info?.row?.original?.job_position?.name}</StyleTinyText>,
+    cell: (info) => (
+      <StyleTinyText>{info?.row?.original?.job_position?.name}</StyleTinyText>
+    ),
     header: () => <span>Job position</span>,
     enableSorting: false,
   }),
   columnHelper.accessor((row) => row.hiring_team.name, {
     id: 'team',
-    header: () => <span>{t('team')}</span>,
+    header: () => <span>{t('Hiring team')}</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     enableSorting: false,
     size: 100,
@@ -155,7 +157,9 @@ export const columns_opening = (
   }),
   columnHelper.accessor((row) => row.name, {
     id: 'name',
-    cell: (info) => <StyleTinyText>{info?.row?.original?.job_position?.name}</StyleTinyText>,
+    cell: (info) => (
+      <StyleTinyText>{info?.row?.original?.job_position?.name}</StyleTinyText>
+    ),
     header: () => <span>Job position</span>,
     enableSorting: false,
   }),

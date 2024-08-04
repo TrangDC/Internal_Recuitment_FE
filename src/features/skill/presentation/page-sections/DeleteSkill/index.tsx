@@ -56,7 +56,7 @@ function DeleteSkillModal({
           open={open}
           setOpen={setOpen}
           maxWidth={700}
-          title="Do you want to delete this skill"
+          title="Do you want to delete this skill?"
           content="This skill is linked to job requests and candidates. Deleting it will also remove it from those job requests and candidates. Do you want to proceed?"
           buttonMain={buttonMains}
           listButton={buttonSecondary}

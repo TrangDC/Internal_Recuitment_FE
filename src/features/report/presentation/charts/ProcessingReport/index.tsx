@@ -7,7 +7,6 @@ const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(2),
-  color: theme.palette.text.secondary,
 }))
 
 type ProcessingProps = {
@@ -25,7 +24,7 @@ function Processing(props: ProcessingProps) {
   ]
   return (
     <Item sx={{ width: '100%' }}>
-      <Tiny12md>
+      <Tiny12md color={'grey.500'}>
         Statistics on the interview schedules for candidates whose applications
         are at the Applied and Interviewing stage
       </Tiny12md>

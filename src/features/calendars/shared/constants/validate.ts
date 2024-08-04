@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import { RULE_MESSAGES } from 'shared/constants/validate'
+import { CandidateInterviewStatus } from 'shared/schema/database/candidate_interview'
 import User from 'shared/schema/database/user'
 import { isPast } from 'shared/utils/date'
 import * as yup from 'yup'
@@ -150,6 +151,7 @@ export const getOneInterviewSchema = yup.object().shape({
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
   meeting_link: yup.string(),
   interviewer: yup.array<any, User>().default([]),
+  status: yup.string().oneOf(['invited_to_interview', 'interviewing', 'done', 'cancelled']).default('invited_to_interview')
 })
 
 export type CreateInterviewFrom = yup.InferType<typeof CreateInterviewSchema>
