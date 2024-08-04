@@ -22,7 +22,6 @@ function useGetResource<Response, FormData extends FieldValues>({
   formatDefaultValues,
   resolver,
 }: IuseGetResource<Response, FormData>) {
-  const [formData, setFormData] = useState<Response>()
   
   const  {data , isFetching } = useQuery({
     queryKey: [...queryKey, id],
@@ -35,7 +34,6 @@ function useGetResource<Response, FormData extends FieldValues>({
   const newData = useMemo(() => {
     if (data && isRight(data)) {
         const responseData = unwrapEither(data)?.[oneBuildQuery.operation]?.data as Response
-        setFormData(responseData)
         return responseData
     }
     return undefined
@@ -51,7 +49,6 @@ function useGetResource<Response, FormData extends FieldValues>({
   return {
     useFormReturn,
     isGetting: isFetching,
-    formData: formData,
   }
 }
 
