@@ -6,7 +6,7 @@ export const CreateRoleTemplateSchema = yup.object().shape({
     .string()
     .required(RULE_MESSAGES.MC1('role name'))
     .max(64, RULE_MESSAGES.MC4('role name', 64)),
-  description: yup.string().max(64, RULE_MESSAGES.MC4('description', 255)),
+  description: yup.string().max(255, RULE_MESSAGES.MC4('description', 255)),
   entity_permissions: yup.mixed<PermissionFormData>().default({}),
 })
 
@@ -18,7 +18,7 @@ export const EditRoleTemplateSchema = yup.object().shape({
     .default(''),
   description: yup
     .string()
-    .max(64, RULE_MESSAGES.MC4('description', 255))
+    .max(255, RULE_MESSAGES.MC4('description', 255))
     .default(''),
   entity_permissions: yup.mixed<PermissionFormData>().default({}),
 })

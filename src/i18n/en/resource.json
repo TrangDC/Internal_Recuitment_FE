@@ -93,6 +93,7 @@
       "name": "Name",
       "description": "Description",
       "validation": {
+        "name_exist": "Name has already existed",
         "hiring_job_exist": "There are already job requests or interviews for this position, cannot delete this job position."
       }
     },
@@ -128,6 +129,7 @@
       "salary_to": "To",
       "currency": "Unit",
       "priority": "Priority",
+      "job_position":"Job position",
       "validation": {
         "amount_neq_zero": "Number of staff required must be greater than 0",
         "name_exist": "Job name has already existed",

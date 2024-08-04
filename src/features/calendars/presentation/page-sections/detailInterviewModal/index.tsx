@@ -23,6 +23,9 @@ import {
 import { LinkText as Link } from 'shared/styles'
 import { useMemo } from 'react'
 import useGetInterview from 'features/calendars/hooks/crud/useGetInterview'
+import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
+import AppButton from 'shared/components/buttons/AppButton'
+import ChangeStatusButtonPermission from 'features/calendars/permission/components/ChangeStatusButtonPermission'
 interface IDetailIntefviewModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -40,7 +43,12 @@ const labelStyle = {
 function DetailInterviewModal(props: IDetailIntefviewModal) {
   const { open, setOpen, id } = props
   const { useActionInterviewReturn } = useContextCalendar()
-  const { handleOpenEdit, handleOpenDelete } = useActionInterviewReturn
+  const {
+    handleOpenEdit,
+    handleOpenDelete,
+    handleCancelCandidateInterviewStatus,
+    handleDoneCandidateInterviewStatus,
+  } = useActionInterviewReturn
   const { useFormReturn, navigateToCandidate, navigateToCandidateJob } =
     useGetInterview({
       id: id,
@@ -116,26 +124,31 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
               borderColor={'grey.200'}
               width={'100%'}
               paddingBottom={2}
+              height={'50px'}
             >
-              <FlexBox flexDirection={'column'} height={'35px'} gap={1}>
+              <FlexBox flexDirection={'column'} gap={1}>
                 <Tiny12md color={'grey.500'}>Team</Tiny12md>
                 <Text15sb color={'grey.900'}>{getValues('team')}</Text15sb>
               </FlexBox>
-              <FlexBox flexDirection={'column'} height={'35px'} gap={1}>
+              <FlexBox flexDirection={'column'} gap={1}>
                 <Tiny12md color={'grey.500'}>Job</Tiny12md>
                 <LinkText onClick={navigateToCandidateJob}>
                   {getValues('job')}
                 </LinkText>
               </FlexBox>
-              <FlexBox flexDirection={'column'} height={'35px'} gap={1}>
+              <FlexBox flexDirection={'column'} gap={1}>
                 <Tiny12md color={'grey.500'}>Candidate name</Tiny12md>
                 <LinkText onClick={navigateToCandidate}>
                   {getValues('candidateName')}
                 </LinkText>
               </FlexBox>
-              <FlexBox flexDirection={'column'} height={'35px'} gap={1}>
+              <FlexBox flexDirection={'column'} gap={1}>
                 <Tiny12md color={'grey.500'}>Candidate phone</Tiny12md>
                 <Text15sb color={'grey.900'}>{getValues('phone')}</Text15sb>
+              </FlexBox>
+              <FlexBox flexDirection={'column'} gap={1}>
+                <Tiny12md color={'grey.500'}>Status</Tiny12md>
+                <ChipInterviewStatus status={getValues('status') ?? ''} />
               </FlexBox>
             </FlexBox>
             <Box>
@@ -185,6 +198,17 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
             </Box>
           </Box>
         </Scrollbar>
+        <ChangeStatusButtonPermission
+          candidateJobOfTeamId={getValues('candidateJobOfTeamId')}
+          interviewer={getValues('interviewer')}
+          status={getValues('status')}
+          onCancel={() => {
+            handleCancelCandidateInterviewStatus(id)
+          }}
+          onDone={() => {
+            handleDoneCandidateInterviewStatus(id)
+          }}
+        />
       </Box>
     </BaseModal.Wrapper>
   )

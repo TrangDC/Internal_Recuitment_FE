@@ -1,13 +1,13 @@
 import useGraphql from 'features/calendars/domain/graphql'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
-import { useGetResource } from 'shared/hooks/crud-hook'
 import CandidateInterview from 'shared/schema/database/candidate_interview'
 import {
   GetInterviewFrom,
   getOneInterviewSchema,
 } from 'features/calendars/shared/constants/validate'
 import { formatStringToDate } from 'features/calendars/presentation/page-sections/google-calendar/functions'
+import useGetResource from 'shared/hooks/crud-hook/refactor/useGetResource'
 
 export interface IUseGetInterview {
   id: string
@@ -29,12 +29,11 @@ function useGetInterview({ id }: IUseGetInterview) {
         data?.end_at ?? new Date().toString(),
         data?.interview_date ?? new Date().toString()
       )
-
       return {
         id: data?.id ?? '',
         candidateEmail: data?.candidate_job.candidate.email ?? '',
         description: data?.description ?? '',
-        interviewer: data?.interviewer ?? [],
+        interviewer: data?.interviewer || [],
         phone: data?.candidate_job.candidate.phone ?? '',
         candidateName: data?.candidate_job.candidate.name ?? '',
         title: data?.title ?? '',
@@ -49,11 +48,13 @@ function useGetInterview({ id }: IUseGetInterview) {
           data?.candidate_job?.hiring_job?.hiring_team?.id ?? '',
         location: data?.location ?? '',
         meeting_link: data?.meeting_link ?? '',
+        status:data?.status ?? "invited_to_interview"
       }
     },
   })
   const { getValues } = useFormReturn
 
+  console.log('getValues', getValues())
   function navigateToCandidate() {
     navigate(`/dashboard/candidate-detail/${getValues('candidate_id')}`)
   }

@@ -27,13 +27,13 @@ function CandidateReport() {
         />
         <FlexBox alignItems={'center'} gap={2}>
           <FlexBox justifyContent={'center'} gap={'5px'}>
-            <Tiny12md>Active</Tiny12md>
+            <Tiny12md color={'grey.500'}>Active</Tiny12md>
             <Tiny12 fontWeight={600}>
               {informationActive.number} ({`${informationActive.percentage}%`})
             </Tiny12>
           </FlexBox>
           <FlexBox justifyContent={'center'} gap={'5px'}>
-            <Tiny12md>Blacklist</Tiny12md>
+            <Tiny12md color={'grey.500'}>Blacklist</Tiny12md>
             <Tiny12 fontWeight={600}>
               {informationBlackList.number} (
               {`${informationBlackList.percentage}%`})

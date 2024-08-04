@@ -143,16 +143,11 @@ const ListInterview = ({ jobApplicationDetail, listInterview }: Props) => {
                         gap={'15px'}
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {interview.start_from &&
-                          isPast(dayjs(interview.start_from).toDate()) && (
-                            <InterviewActions
-                              interview={interview}
-                              useActionInterviewReturn={
-                                useActionInterviewReturn
-                              }
-                              candidateJobOfTeamId={candidateJobOfTeamId}
-                            />
-                          )}
+                        <InterviewActions
+                          interview={interview}
+                          useActionInterviewReturn={useActionInterviewReturn}
+                          candidateJobOfTeamId={candidateJobOfTeamId}
+                        />
                       </FlexBox>
                     </FlexBox>
 

@@ -22,33 +22,27 @@ interface IEditRecModal {
 }
 
 function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
-  const {
-    actions,
-    control,
-    isValid,
-    isPending,
-    isGetting,
-    formState,
-  } = useUpdateRecTeam({
-    id: id,
-    onSuccess: () => {
-      setOpen(false)
-    },
-  })
+  const { actions, control, isValid, isPending, isGetting, formState } =
+    useUpdateRecTeam({
+      id: id,
+      onSuccess: () => {
+        setOpen(false)
+      },
+    })
   const { onSubmit } = actions
   const { handleWarning, handleReset } = usePopup()
-  const [recId, setRecId] = useState<string>('');
+  const [recId, setRecId] = useState<string>('')
 
   const translation = useTextTranslation()
 
   const show_Warning = useMemo(() => {
-    return !!(recId && recId !== id);
+    return !!(recId && recId !== id)
   }, [recId, id])
 
   const callbackSubmit = (reason: string) => {
-    if(!show_Warning) {
+    if (!show_Warning) {
       onSubmit(reason)
-      return;
+      return
     }
 
     handleWarning({
@@ -89,7 +83,6 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
                           fullWidth
                           value={field.value}
                           onChange={field.onChange}
-                          loading={isGetting}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}
@@ -118,7 +111,7 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
                         name={field.name}
                         filter={{
                           is_able_to_leader_rec_team: true,
-                          rec_team_ids: [id]
+                          rec_team_ids: [id],
                         }}
                         textFieldProps={{
                           required: true,
