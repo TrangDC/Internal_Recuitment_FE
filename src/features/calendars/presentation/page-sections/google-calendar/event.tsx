@@ -7,31 +7,63 @@ import dayjs from 'dayjs'
 import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
 import CalendarActions from '../../components/interviewActions'
+import { Fragment, useState } from 'react'
+import MenuContextInterview from '../../components/MenuContextInterview'
+import useBuildActionsTableCalendar from 'features/calendars/hooks/calendar/useBuildActionsTableCalendar'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import checkActionPermissionCalendar from 'features/calendars/permission/utils/checkActionPermissionCalendar'
+import { isPast } from 'shared/utils/date'
 
 const CustomEvent = (props: EventProps<CalendarEvent>) => {
   const { useActionInterviewReturn } = useContextCalendar()
   const { event } = props
+  const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
+  function onClickRight(event: React.MouseEvent<HTMLDivElement>) {
+    event.preventDefault()
+    setAnchorEl(event.currentTarget)
+  }
+
+  const { actions } = useBuildActionsTableCalendar({
+    ...useActionInterviewReturn,
+    event,
+  })
+  const { role, user } = useAuthorization()
+  const newActions = checkActionPermissionCalendar({
+    actions: actions,
+    me: user,
+    role,
+    rowData: event,
+  })
+ 
   return (
-    <FlexBox flexDirection={'column'} alignItems={'start'} height={'100%'}>
-      <FlexBox alignItems={'center'} gap={1}>
-        <ChipInterviewStatus
-          status={event.resource?.status ?? ''}
-          size="small"
-        />
-        <Tiny10md gap={1} display={'flex'}>
-          {`${dayjs(event?.start).format('HH:mm')} - ${dayjs(event?.end).format('HH:mm')}`}
-        </Tiny10md>
+    <Fragment>
+      <FlexBox
+        flexDirection={'column'}
+        alignItems={'start'}
+        height={'100%'}
+        onContextMenu={onClickRight}
+      >
+        <FlexBox alignItems={'center'} gap={1}>
+          <ChipInterviewStatus
+            status={event.resource?.status ?? ''}
+            size="small"
+          />
+          <Tiny10md gap={1} display={'flex'}>
+            {`${dayjs(event?.start).format('HH:mm')} - ${dayjs(event?.end).format('HH:mm')}`}
+          </Tiny10md>
+        </FlexBox>
+        <Box flex={1}>
+          <Tiny12 marginTop={'5px'}>{event.title}</Tiny12>
+        </Box>
       </FlexBox>
-      <Box flex={1}>
-        <Tiny12 marginTop={'5px'}>{event.title}</Tiny12>
-      </Box>
-      <FlexBox justifyContent={'end'} width={'100%'}>
-        <CalendarActions
-          useActionInterviewReturn={useActionInterviewReturn}
-          event={event}
-        />
-      </FlexBox>
-    </FlexBox>
+      <MenuContextInterview<CalendarEvent>
+        anchorEl={anchorEl}
+        actions={newActions}
+        setAnchorEl={setAnchorEl}
+        rowData={event}
+        rowId={event?.resource?.id ?? ''}
+      />
+    </Fragment>
   )
 }
 
