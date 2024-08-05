@@ -104,7 +104,7 @@ const useCustomTable = ({
       totalPage: perPage,
       totalRecord: 0,
     }
-  }, [data, buildQuery.operation, pagination.perPage])
+  }, [data, buildQuery.operation, pagination])
 
   function handleChangePage(page: number) {
     setPagination((prev) => ({ ...prev, page: page }))

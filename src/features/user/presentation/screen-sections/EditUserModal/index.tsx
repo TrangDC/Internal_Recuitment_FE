@@ -15,9 +15,7 @@ import { Text15md } from 'shared/components/Typography'
 import User from 'shared/schema/database/user'
 import PermissionSectionsDetail from 'shared/components/role-template-permission/screen-sections/detail/PermissionSectionsDetail'
 import useEditUser from 'features/user/hooks/crud/useEditUser'
-import TeamTypeAutoComplete, {
-  TeamType,
-} from 'shared/components/autocomplete/team-type-auto-complete'
+import { TeamType } from 'shared/components/autocomplete/team-type-auto-complete'
 import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 import InformationTooltip from 'shared/components/tooltip/InforTooltip'
 import { Fragment } from 'react/jsx-runtime'
@@ -40,8 +38,8 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
     permissionGroup,
     useFormReturn,
     selectedRoleTemplate,
-    watch,
     getValues,
+    watch,
   } = useEditUser({
     id: id,
     onSuccess: () => {
@@ -50,10 +48,21 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
   })
   const { onSubmit } = actions
 
-  const teamType = watch('teamType')
+  const hiring_team_id = watch('hiring_team_id')
+  const rec_team_id = watch('rec_team_id')
 
-  const isManagerOrLeaderOfTeam =
-    getValues('is_leader_of_rec_team') || getValues('is_manager_of_hiring_team')
+  const inHiringTeam = !!hiring_team_id
+  const inRecTeam = !!rec_team_id
+
+  const isHiringRequired =
+    (inHiringTeam && inRecTeam) ||
+    (inHiringTeam && !inRecTeam) ||
+    (!inHiringTeam && !inRecTeam)
+
+  const isRecRequired =
+    (inRecTeam && inHiringTeam) ||
+    (inRecTeam && !inHiringTeam) ||
+    (!inRecTeam && !inHiringTeam)
   return (
     <FormProvider {...useFormReturn}>
       <ConfirmableModalProvider
@@ -138,132 +147,100 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                     </FlexBox>
                     <FlexBox gap={2}>
                       <LoadingField isloading={isGetting}>
-                        <FormControl fullWidth>
-                          <Controller
-                            control={control}
-                            name="teamType"
-                            defaultValue=""
-                            render={({ field, fieldState }) => (
-                              <FlexBox flexDirection={'column'}>
-                                <TeamTypeAutoComplete
-                                  value={field.value}
-                                  onChange={(value) => {
-                                    field.onChange(value?.value ?? '')
-                                  }}
-                                  textFieldProps={{
-                                    required: true,
-                                    label: 'Team type',
-                                  }}
-                                  multiple={false}
-                                  disabled={isManagerOrLeaderOfTeam}
-                                />
-                                <HelperTextForm
-                                  message={fieldState.error?.message}
-                                ></HelperTextForm>
-                              </FlexBox>
-                            )}
-                          />
-                        </FormControl>
-                      </LoadingField>
-                      {teamType !== TeamType.REC_TEAM && (
-                        <LoadingField isloading={isGetting}>
-                          <Box width={'100%'} position={'relative'}>
-                            <FormControl fullWidth>
-                              <Controller
-                                control={control}
-                                name="hiring_team_id"
-                                defaultValue=""
-                                render={({ field, fieldState }) => (
-                                  <FlexBox flexDirection={'column'}>
-                                    <TeamsAutoComplete
-                                      value={field.value ?? ''}
-                                      onChange={(value) => {
-                                        field.onChange(value ?? '')
-                                      }}
-                                      name={field.name}
-                                      textFieldProps={{
-                                        required: true,
-                                        label: 'Hiring team',
-                                      }}
-                                      disabled={getValues(
+                        <Box width={'100%'} position={'relative'}>
+                          <FormControl fullWidth>
+                            <Controller
+                              control={control}
+                              name="hiring_team_id"
+                              defaultValue=""
+                              render={({ field, fieldState }) => (
+                                <FlexBox flexDirection={'column'}>
+                                  <TeamsAutoComplete
+                                    value={field.value ?? ''}
+                                    onChange={(value) => {
+                                      field.onChange(value ?? '')
+                                    }}
+                                    name={field.name}
+                                    textFieldProps={{
+                                      required: isHiringRequired,
+                                      label: 'Hiring team',
+                                    }}
+                                    disabled={getValues(
+                                      'is_manager_of_hiring_team'
+                                    )}
+                                    popupIcon={
+                                      getValues(
                                         'is_manager_of_hiring_team'
-                                      )}
-                                      popupIcon={
-                                        getValues(
-                                          'is_manager_of_hiring_team'
-                                        ) && <Fragment />
-                                      }
-                                    />
-                                    <HelperTextForm
-                                      message={fieldState.error?.message}
-                                    ></HelperTextForm>
-                                  </FlexBox>
-                                )}
-                              />
-                            </FormControl>
-                            {getValues('is_manager_of_hiring_team') && (
-                              <InformationTooltip
-                                sx={{
-                                  position: 'absolute',
-                                  right: 2,
-                                  top: '4px',
-                                }}
-                                title="This user is being manager for this hiring team. Cannot edit."
-                              />
-                            )}
-                          </Box>
-                        </LoadingField>
-                      )}
-                      {teamType !== TeamType.HIRING_TEAM && (
-                        <LoadingField isloading={isGetting}>
-                          <Box width={'100%'} position={'relative'}>
-                            <FormControl fullWidth>
-                              <Controller
-                                control={control}
-                                name="rec_team_id"
-                                defaultValue=""
-                                shouldUnregister
-                                render={({ field, fieldState }) => (
-                                  <FlexBox flexDirection={'column'}>
-                                    <RecTeamsAutoComplete
-                                      value={field?.value ?? ''}
-                                      onChange={(value) => {
-                                        field.onChange(value ?? '')
-                                      }}
-                                      name={field.name}
-                                      textFieldProps={{
-                                        required: true,
-                                        label: 'REC team',
-                                      }}
-                                      disabled={getValues(
-                                        'is_leader_of_rec_team'
-                                      )}
-                                      popupIcon={
-                                        getValues('is_leader_of_rec_team') && (
-                                          <Fragment />
-                                        )
-                                      }
-                                    />
-                                    <HelperTextForm
-                                      message={fieldState.error?.message}
-                                    ></HelperTextForm>
-                                  </FlexBox>
-                                )}
-                              />
-                            </FormControl>
-                            {getValues('is_leader_of_rec_team') && (
-                              <InformationTooltip
-                                sx={{
-                                  position: 'absolute',
-                                  right: 2,
-                                  top: '4px',
-                                }}
-                                title="This user is being leader for this rec team. Cannot edit."
-                              />
-                            )}
-                          </Box>
-                        </LoadingField>
-                      )}
+                                      ) && <Fragment />
+                                    }
+                                  />
+                                  <HelperTextForm
+                                    message={fieldState.error?.message}
+                                  ></HelperTextForm>
+                                </FlexBox>
+                              )}
+                            />
+                          </FormControl>
+                          {getValues('is_manager_of_hiring_team') && (
+                            <InformationTooltip
+                              sx={{
+                                position: 'absolute',
+                                right: 2,
+                                top: '4px',
+                              }}
+                              title="This user is being manager for this hiring team. Cannot edit."
+                            />
+                          )}
+                        </Box>
+                      </LoadingField>
+                      <LoadingField isloading={isGetting}>
+                        <Box width={'100%'} position={'relative'}>
+                          <FormControl fullWidth>
+                            <Controller
+                              control={control}
+                              name="rec_team_id"
+                              defaultValue=""
+                              shouldUnregister
+                              render={({ field, fieldState }) => (
+                                <FlexBox flexDirection={'column'}>
+                                  <RecTeamsAutoComplete
+                                    value={field?.value ?? ''}
+                                    onChange={(value) => {
+                                      field.onChange(value ?? '')
+                                    }}
+                                    name={field.name}
+                                    textFieldProps={{
+                                      required: isRecRequired,
+                                      label: 'REC team',
+                                    }}
+                                    disabled={getValues(
+                                      'is_leader_of_rec_team'
+                                    )}
+                                    popupIcon={
+                                      getValues('is_leader_of_rec_team') && (
+                                        <Fragment />
+                                      )
+                                    }
+                                  />
+                                  <HelperTextForm
+                                    message={fieldState.error?.message}
+                                  ></HelperTextForm>
+                                </FlexBox>
+                              )}
+                            />
+                          </FormControl>
+                          {getValues('is_leader_of_rec_team') && (
+                            <InformationTooltip
+                              sx={{
+                                position: 'absolute',
+                                right: 2,
+                                top: '4px',
+                              }}
+                              title="This user is being leader for this rec team. Cannot edit."
+                            />
+                          )}
+                        </Box>
+                      </LoadingField>
                     </FlexBox>
                   </FlexBox>
                 </FlexBox>

@@ -1,4 +1,3 @@
-import { TeamType } from 'shared/components/autocomplete/team-type-auto-complete'
 import { PermissionFormData } from 'shared/components/role-template-permission/interfaces/permissionStructure'
 import { RULE_MESSAGES } from 'shared/constants/validate'
 import * as yup from 'yup'
@@ -17,17 +16,29 @@ export const schemaUpdate = yup.object({
     .required(RULE_MESSAGES.MC1('name'))
     .max(255, RULE_MESSAGES.MC4('name', 255)),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
-  hiring_team_id: yup.string().when(['teamType'], ([teamType], schema) => {
-    if (teamType !== TeamType.REC_TEAM)
-      return schema.required(RULE_MESSAGES.MC1('hiring team'))
-    return schema
-  }),
-  rec_team_id: yup.string().when(['teamType'], ([teamType], schema) => {
-    if (teamType !== TeamType.HIRING_TEAM)
-      return schema.required(RULE_MESSAGES.MC1('rec team'))
-    return schema
-  }),
-  teamType: yup.string().required(RULE_MESSAGES.MC1('team type')),
+  hiring_team_id: yup
+    .string()
+    .test('isRequired', RULE_MESSAGES.MC1('hiring team'), function () {
+      if (
+        (!this.parent.rec_team_id && this.parent.hiring_team_id) ||
+        (this.parent.rec_team_id && this.parent.hiring_team_id) ||
+        (this.parent.rec_team_id && !this.parent.hiring_team_id)
+      ) {
+        return true
+      }
+      return false
+    }),
+  rec_team_id: yup
+    .string()
+    .test('isRequired', RULE_MESSAGES.MC1('rec team'), function () {
+      if (
+        (!this.parent.hiring_team_id && this.parent.rec_team_id) ||
+        (this.parent.hiring_team_id && this.parent.rec_team_id) ||
+        (this.parent.hiring_team_id && !this.parent.rec_team_id)
+      )
+        return true
+      return false
+    }),
   work_email: yup
     .string()
     .email(RULE_MESSAGES.MC5('work email'))

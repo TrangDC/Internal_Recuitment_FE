@@ -66,19 +66,6 @@ function useEditUser(props: UseEditUserProps) {
         )
       }
       setPermissionGroup(roleTemplate)
-      const inHiringTeam = !!(
-        data?.member_of_hiring_team?.id && !data?.member_of_rec_team?.id
-      )
-      const inRecTeam = !!(
-        !data?.member_of_hiring_team?.id && data?.member_of_rec_team?.id
-      )
-      let teamType = TeamType.ALL
-      if (inHiringTeam) {
-        teamType = TeamType.HIRING_TEAM
-      }
-      if (inRecTeam) {
-        teamType = TeamType.REC_TEAM
-      }
       return {
         status: data?.status ?? '',
         name: data?.name ?? '',
@@ -87,7 +74,6 @@ function useEditUser(props: UseEditUserProps) {
         rolesTemplateId,
         entity_permissions: entity_permissions_default,
         rec_team_id: data?.member_of_rec_team?.id ?? '',
-        teamType: teamType,
         is_leader_of_rec_team: data?.is_leader_of_rec_team ?? false,
         is_manager_of_hiring_team: data?.is_manager_of_hiring_team ?? false,
       }
@@ -112,11 +98,9 @@ function useEditUser(props: UseEditUserProps) {
             name: data.name,
             status: data.status,
             work_email: data.work_email ?? '',
-            hiring_team_id:
-              data.teamType !== TeamType.REC_TEAM ? hiring_team_id : '',
+            hiring_team_id: hiring_team_id,
             role_id: data.rolesTemplateId,
-            rec_team_id:
-              data.teamType !== TeamType.HIRING_TEAM ? rec_team_id : '',
+            rec_team_id: rec_team_id,
           },
         })
       }
