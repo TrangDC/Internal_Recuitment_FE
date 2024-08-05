@@ -6,23 +6,16 @@ import { Tiny10md, Tiny12 } from 'shared/components/Typography'
 import dayjs from 'dayjs'
 import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
 import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
-import CalendarActions from '../../components/interviewActions'
 import { Fragment, useState } from 'react'
 import MenuContextInterview from '../../components/MenuContextInterview'
 import useBuildActionsTableCalendar from 'features/calendars/hooks/calendar/useBuildActionsTableCalendar'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import checkActionPermissionCalendar from 'features/calendars/permission/utils/checkActionPermissionCalendar'
-import { isPast } from 'shared/utils/date'
 
 const CustomEvent = (props: EventProps<CalendarEvent>) => {
   const { useActionInterviewReturn } = useContextCalendar()
   const { event } = props
   const [anchorEl, setAnchorEl] = useState<null | HTMLDivElement>(null)
-  function onClickRight(event: React.MouseEvent<HTMLDivElement>) {
-    event.preventDefault()
-    setAnchorEl(event.currentTarget)
-  }
-
   const { actions } = useBuildActionsTableCalendar({
     ...useActionInterviewReturn,
     event,
@@ -34,7 +27,13 @@ const CustomEvent = (props: EventProps<CalendarEvent>) => {
     role,
     rowData: event,
   })
- 
+
+  function onClickRight(event: React.MouseEvent<HTMLDivElement>) {
+    if (newActions.length === 0) return
+    event.preventDefault()
+    setAnchorEl(event.currentTarget)
+  }
+
   return (
     <Fragment>
       <FlexBox
