@@ -13,8 +13,8 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import useUpdateRecTeam from 'features/rec-team/hooks/crud/useUpdateRecTeam'
 import { useMemo, useState } from 'react'
-import usePopup from 'contexts/popupProvider/hooks/usePopup'
-
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
+import { Span } from 'shared/components/Typography'
 interface IEditRecModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -30,7 +30,6 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
       },
     })
   const { onSubmit } = actions
-  const { handleWarning, handleReset } = usePopup()
   const [recId, setRecId] = useState<string>('')
 
   const translation = useTextTranslation()
@@ -40,19 +39,7 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
   }, [recId, id])
 
   const callbackSubmit = (reason: string) => {
-    if (!show_Warning) {
-      onSubmit(reason)
-      return
-    }
-
-    handleWarning({
-      title: 'Warning',
-      content: `The selected leader is currently in a different REC team. This change will also move the user to this team. Proceeding?`,
-      onSubmit: () => {
-        onSubmit(reason)
-        handleReset()
-      },
-    })
+    onSubmit(reason)
   }
 
   return (
@@ -163,7 +150,20 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
             >
               {translation.COMMON.cancel}
             </AppButton>
-            <UpdateRecord disabled={isValid} callbackSubmit={callbackSubmit}>
+            <UpdateRecord
+              disabled={isValid}
+              callbackSubmit={callbackSubmit}
+              information={show_Warning &&
+                <FlexBox alignItems={'flex-start'} gap={1} color={'red'}>
+                  <ErrorOutlineIcon sx={{ fontSize: 16 }} />
+                  <Span>
+                    The selected leader is currently in a different REC team.
+                    This change will also move the user to this team.
+                    Proceeding?
+                  </Span>
+                </FlexBox>
+              }
+            >
               <ButtonLoading
                 variant="contained"
                 size="small"
