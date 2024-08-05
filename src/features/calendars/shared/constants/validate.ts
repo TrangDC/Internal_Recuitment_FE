@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import { RULE_MESSAGES } from 'shared/constants/validate'
-import { CandidateInterviewStatus } from 'shared/schema/database/candidate_interview'
 import User from 'shared/schema/database/user'
 import { isPast } from 'shared/utils/date'
 import * as yup from 'yup'
