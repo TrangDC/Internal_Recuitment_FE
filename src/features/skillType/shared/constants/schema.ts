@@ -15,7 +15,7 @@ export const schemaUpdate = yup.object({
   name: yup
     .string()
     .required(RULE_MESSAGES.MC1('name'))
-    .max(64, RULE_MESSAGES.MC4('name', 64)),
+    .max(255, RULE_MESSAGES.MC4('name', 255)),
   description: yup.string().max(512, RULE_MESSAGES.MC4('description', 512)),
 })
 
