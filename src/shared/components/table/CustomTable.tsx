@@ -72,24 +72,28 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
     data: sortData,
     columns: columnData,
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
     initialState: {
       pagination: {
         pageIndex: pagination.page,
         pageSize: pagination.perPage,
       },
+      sorting: [
+        {
+          desc: pagination.orderBy.direction === 'DESC',
+          id: pagination.orderBy.field,
+        },
+      ],
     },
     getSortedRowModel: getSortedRowModel(),
     state: {
-      sorting:
-        sortBy.field !== 'created_at'
-          ? [sortBy].map((sort) => ({
-              desc: sort.direction === 'DESC',
-              id: sort.field,
-            }))
-          : undefined,
+      sorting: [sortBy].map((sort) => ({
+        desc: sort.direction === 'DESC',
+        id: sort.field,
+      })),
     },
     sortDescFirst: true,
+    manualSorting: true,
+    manualPagination: true,
   })
 
   function onChange(page: number) {
@@ -106,7 +110,6 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
       ...style,
     }
   }
-
   return (
     <Box
       sx={{
