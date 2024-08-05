@@ -4,7 +4,7 @@ import { RULE_MESSAGES } from 'shared/constants/validate'
 import * as yup from 'yup'
 
 export const schema = yup.object({
-  name: yup.string().required(),
+  name: yup.string().required().max(255, RULE_MESSAGES.MC4('name', 255)),
   team: yup.object().required(),
   email: yup.string().email().required(),
 })
@@ -12,7 +12,10 @@ export const schema = yup.object({
 export type FormDataSchema = yup.InferType<typeof schema>
 
 export const schemaUpdate = yup.object({
-  name: yup.string().required(RULE_MESSAGES.MC1('name')),
+  name: yup
+    .string()
+    .required(RULE_MESSAGES.MC1('name'))
+    .max(255, RULE_MESSAGES.MC4('name', 255)),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
   hiring_team_id: yup.string().when(['teamType'], ([teamType], schema) => {
     if (teamType !== TeamType.REC_TEAM)

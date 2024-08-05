@@ -96,7 +96,7 @@ export const schemaUpdate = yup.object({
   title: yup
     .string()
     .required(RULE_MESSAGES.MC1('interview title'))
-    .max(64, RULE_MESSAGES.MC4('Interview name', 64)),
+    .max(255, RULE_MESSAGES.MC4('Interview name', 255)),
   candidate_job_id: yup
     .string()
     .required(RULE_MESSAGES.MC1('candidate_job_id')),
@@ -174,7 +174,7 @@ export const schemaUpdate = yup.object({
 
       return true
     }),
-  description: yup.string(),
+  description: yup.string().max(512, RULE_MESSAGES.MC4('description', 512)),
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
   meeting_link: yup.string(),
 })

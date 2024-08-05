@@ -9,7 +9,7 @@ export const CreateInterviewSchema = yup.object().shape({
   title: yup
     .string()
     .required(RULE_MESSAGES.MC1('interview title'))
-    .max(64, RULE_MESSAGES.MC4('interview title', 64)),
+    .max(255, RULE_MESSAGES.MC4('interview title', 255)),
   teamId: yup.string().required(RULE_MESSAGES.MC1('team')).default(''),
   jobId: yup.string().required(RULE_MESSAGES.MC1('job')).default(''),
   interviewer: yup.array().min(1, RULE_MESSAGES.MC1('interviewer')),
@@ -61,7 +61,7 @@ export const CreateInterviewSchema = yup.object().shape({
       if (isPast(this.parent.to)) return true
       return false
     }),
-  description: yup.string(),
+  description: yup.string().max(512, RULE_MESSAGES.MC4('description', 512)),
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
   meeting_link: yup.string(),
 })
@@ -70,7 +70,7 @@ export const EditInterviewSchema = yup.object().shape({
   title: yup
     .string()
     .required(RULE_MESSAGES.MC1('interview title'))
-    .max(64, RULE_MESSAGES.MC4('interview title', 64)),
+    .max(255, RULE_MESSAGES.MC4('interview title', 255)),
   teamId: yup.string().required(RULE_MESSAGES.MC1('team')).default(''),
   jobId: yup.string().required(RULE_MESSAGES.MC1('job')).default(''),
   interviewer: yup.array().min(1, RULE_MESSAGES.MC1('interviewer')),
@@ -123,7 +123,7 @@ export const EditInterviewSchema = yup.object().shape({
       if (isPast(this.parent.to)) return true
       return false
     }),
-  description: yup.string(),
+  description: yup.string().max(512, RULE_MESSAGES.MC4('description', 512)),
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
   meeting_link: yup.string(),
 })
@@ -151,7 +151,10 @@ export const getOneInterviewSchema = yup.object().shape({
   location: yup.string().required(RULE_MESSAGES.MC1('location')),
   meeting_link: yup.string(),
   interviewer: yup.array<any, User>().default([]),
-  status: yup.string().oneOf(['invited_to_interview', 'interviewing', 'done', 'cancelled']).default('invited_to_interview')
+  status: yup
+    .string()
+    .oneOf(['invited_to_interview', 'interviewing', 'done', 'cancelled'])
+    .default('invited_to_interview'),
 })
 
 export type CreateInterviewFrom = yup.InferType<typeof CreateInterviewSchema>
