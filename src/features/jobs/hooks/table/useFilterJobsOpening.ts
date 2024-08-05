@@ -10,7 +10,7 @@ function useFilterJobsOpening() {
         defaultFilter: {
           hiring_job_id: [],
           priority: '',
-          hiring_team_id: [],
+          hiring_team_ids: [],
           skill_id: [],
           location: '',
           created_by_ids: [],
@@ -22,8 +22,8 @@ function useFilterJobsOpening() {
             hiring_job_id: !isEmpty(data?.hiring_job_id)
               ? data?.hiring_job_id?.map((o) => o.value)
               : undefined,
-            hiring_team_id: !isEmpty(data?.hiring_team_id)
-              ? data?.hiring_team_id?.map((o) => o.value)
+              hiring_team_ids: !isEmpty(data?.hiring_team_ids)
+              ? data?.hiring_team_ids?.map((o) => o.value)
               : undefined,
             skill_id: !isEmpty(data?.skill_id)
               ? data?.skill_id?.map((o) => o.value)

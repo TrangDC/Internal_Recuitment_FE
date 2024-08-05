@@ -20,7 +20,6 @@ function checkPermissionActionTable({
 }: CheckPermissionActionTableProps<HiringTeam>): TOptionItem<HiringTeam>[] {
   let newActions = [...actions]
 
-  console.log(' rowData.row.original.managers',  rowData.row.original.managers)
   const isOwner =
     rowData.row.original.managers.filter((manager) => manager.id === me?.id)
       .length > 0

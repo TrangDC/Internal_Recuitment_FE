@@ -57,7 +57,7 @@ function useCreateCandidate(props: createCandidateProps) {
 
       const payload: CreateCandidateArguments = {
         input: {
-          dob: value.dob ? convertToEndDateUTC(value.dob) : '',
+          dob: value.dob ? convertToEndDateUTC(value.dob) : null,
           recruit_time: value.recruit_time
             ? convertToEndDateUTC(value.recruit_time)
             : value.recruit_time,

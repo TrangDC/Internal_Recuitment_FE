@@ -5,7 +5,7 @@ import {
 import { ReactNode } from 'react'
 import { BaseRecord } from 'shared/interfaces'
 import { renderFieldTeam } from './team'
-import { renderFieldEmailTemplate } from './email'
+import { renderFieldEmailTemplate, showFieldEmail } from './email'
 import { renderFieldCandidateJobFeedback } from './candidate-job-feedback'
 import { renderFieldCandidateInterview } from './candidate-job-interview'
 import { renderFieldHiringJob } from './hiring-job'
@@ -16,6 +16,7 @@ export type renderValueReturn = (text: string, records: BaseRecord) => any
 type renderTextRecordReturn = {
   renderValue: renderValueReturn
   record_value: string | ReactNode
+  show_value: boolean
 }
 
 const audit_trails_by_model = {
@@ -28,7 +29,12 @@ const audit_trails_by_model = {
   hiring_teams: renderFieldTeam,
 }
 
+const show_field_by_model = {
+  email_templates: showFieldEmail,
+}
+
 type TYPE_AUDIT_MODEL = keyof typeof audit_trails_by_model;
+type TYPE_SHOW_FIELD_BY_MODEL = keyof typeof show_field_by_model;
 
 export const renderTextRecord = (
   field_string: string,
@@ -38,9 +44,11 @@ export const renderTextRecord = (
   const [path, model, field] = convertStringToArray(field_string)
   let renderValue: renderValueReturn = audit_trails_by_model?.[model as TYPE_AUDIT_MODEL]?.(field) ?? renderText
   const record_value = renderValue(recordString, records)
+  const show_value = show_field_by_model?.[model as TYPE_SHOW_FIELD_BY_MODEL]?.(field) ?? true;
 
   return {
     renderValue,
     record_value,
+    show_value,
   }
 }
