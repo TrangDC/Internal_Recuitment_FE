@@ -28,6 +28,7 @@ export interface AutocompleteValueBackEndCommonProps<
   disableCloseOnSelect?: boolean
   open?: boolean
   list_disabled?: string[]
+  popupIcon?: ReactNode
 }
 interface ISorting {
   direction: 'ASC' | 'DESC'
@@ -55,6 +56,7 @@ export interface IAutocompleteBackEndProps<
   disableCloseOnSelect?: boolean
   open?: boolean
   list_disabled?: string[]
+  popupIcon?: ReactNode
 }
 export type Leaves<T> = T extends object
   ? {

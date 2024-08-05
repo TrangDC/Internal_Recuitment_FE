@@ -35,8 +35,9 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
     disableCloseOnSelect,
     orderBy,
     list_disabled = [],
+    popupIcon,
   } = props
-   
+
   const { options } = useAutoCompleteBackEnd<T>({
     queryKey: queryKey.concat([JSON.stringify(filter)]),
     queryString: queryString,
@@ -93,7 +94,13 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
       onChange={handleOnChange}
       disabled={disabled}
       limitTags={2}
-      popupIcon={<ArrowRadius sx={{ color: 'text.400', fontSize: '16px' }} />}
+      popupIcon={
+        popupIcon ? (
+          popupIcon
+        ) : (
+          <ArrowRadius sx={{ color: 'text.400', fontSize: '16px' }} />
+        )
+      }
       renderInput={(params) => (
         <AppTextField
           {...textFieldProps}

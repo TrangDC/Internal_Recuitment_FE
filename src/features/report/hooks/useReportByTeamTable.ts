@@ -22,19 +22,17 @@ function useReportByTeamTable() {
     const hired = item.hired ?? 0
     const interviewing = item.interviewing ?? 0
     const offering = item.offering ?? 0
-    const total = applied + hired + interviewing + offering
 
-    const appliedPercentage = getPercentage(applied, total)
-    const hiredPercentage = getPercentage(hired, total)
-    const interviewingPercentage = getPercentage(interviewing, total)
-    const offeringPercentage = getPercentage(offering, total)
+    const hiredPercentage = getPercentage(hired, offering)
+    const interviewingPercentage = getPercentage(interviewing, applied)
+    const offeringPercentage = getPercentage(offering, interviewing)
 
     const data: HiringTeamTableData = {
       teamName: item.hiring_team_name,
       indicator: '',
       applied: {
         value: applied,
-        percentage: `${appliedPercentage}%`,
+        percentage: `100%`,
       },
       interviewing: {
         value: interviewing,

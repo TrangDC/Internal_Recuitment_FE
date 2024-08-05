@@ -10,18 +10,6 @@ import {
 } from 'shared/schema/chart/report'
 import GraphQLClientService from 'services/graphql-service'
 
-function getInterviewingPercentage(applied: number, interviewing: number) {
-  return getPercentage(interviewing, applied)
-}
-
-function getOfferingPercentage(interviewing: number, offering: number) {
-  return getPercentage(offering, interviewing)
-}
-
-function getHiredPercentage(offering: number, hired: number) {
-  return getPercentage(hired, offering)
-}
-
 type UseGetCandidateConversationRateReportProps = {
   filters: ReportFilter
 }
@@ -33,38 +21,25 @@ function useGetCandidateConversationRateReport({
   const { data, isLoading } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(
-        getCandidateConversionRateReport.query,
-      ),
+      GraphQLClientService.fetchGraphQL(getCandidateConversionRateReport.query),
   })
 
-  const candidateReport: CandidateConversionRateReport =
-    useMemo(() => {
-      if (data && isRight(data)) {
-        const response = unwrapEither(data)
-        return response?.[getCandidateConversionRateReport.operation]?.data
-      }
-      return null
-    }, [data])
+  const candidateReport: CandidateConversionRateReport = useMemo(() => {
+    if (data && isRight(data)) {
+      const response = unwrapEither(data)
+      return response?.[getCandidateConversionRateReport.operation]?.data
+    }
+    return null
+  }, [data])
 
   const applied = candidateReport?.applied ?? 0
   const interviewing = candidateReport?.interviewing ?? 0
   const hired = candidateReport?.hired ?? 0
   const offering = candidateReport?.offering ?? 0
 
-  const interviewingPercentage = getInterviewingPercentage(
-    applied,
-    interviewing
-  )
-  const offeringPercentage = getOfferingPercentage(
-    interviewing,
-    offering
-  )
-
-  const hiredPercentage = getHiredPercentage(
-    offering,
-    hired
-  )
+  const interviewingPercentage = getPercentage(interviewing, applied)
+  const offeringPercentage = getPercentage(offering, interviewing)
+  const hiredPercentage = getPercentage(hired, offering)
 
   const seriesData: FunnelStep[] = [
     {
