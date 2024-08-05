@@ -14,11 +14,11 @@ export const EditRoleTemplateSchema = yup.object().shape({
   name: yup
     .string()
     .required(RULE_MESSAGES.MC1('role name'))
-    .max(64, RULE_MESSAGES.MC4('role name', 64))
+    .max(255, RULE_MESSAGES.MC4('role name', 255))
     .default(''),
   description: yup
     .string()
-    .max(255, RULE_MESSAGES.MC4('description', 255))
+    .max(512, RULE_MESSAGES.MC4('description', 512))
     .default(''),
   entity_permissions: yup.mixed<PermissionFormData>().default({}),
 })

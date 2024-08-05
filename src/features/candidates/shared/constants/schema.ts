@@ -30,7 +30,7 @@ export const schema = yup.object({
   name: yup
     .string()
     .required(RULE_MESSAGES.MC1('name'))
-    .max(64, RULE_MESSAGES.MC4('name', 64)),
+    .max(255, RULE_MESSAGES.MC4('name', 255)),
   phone: yup
     .string()
     .required(RULE_MESSAGES.MC1('phone'))
@@ -58,7 +58,7 @@ export const schema = yup.object({
     .typeError(RULE_MESSAGES.MC5('recruit time'))
     .required(RULE_MESSAGES.MC1('recruit time')),
   entity_skill_records: yup.mixed(),
-  description: yup.string(),
+  description: yup.string().max(512, RULE_MESSAGES.MC4('description', 512)),
   attachments: yup.array(),
 })
 
@@ -97,7 +97,7 @@ export const schemaUpdate = yup.object({
     .typeError(RULE_MESSAGES.MC5('recruit time'))
     .required(RULE_MESSAGES.MC1('recruit time')),
   entity_skill_records: yup.mixed(),
-  description: yup.string(),
+  description: yup.string().max(512, RULE_MESSAGES.MC4('description', 512)),
   attachments: yup.array(),
 })
 

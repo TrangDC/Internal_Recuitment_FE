@@ -10,7 +10,12 @@ function CandidateSourceAutoComplete<Multiple extends boolean>(
   return <AutocompleteBase<Multiple> {...props} options={options} />
 }
 
-export type TypeCandidateSource = 'EB' | 'REC' | 'hiring_platform' | 'reference' | 'headhunt';
+export type TypeCandidateSource =
+  | 'EB'
+  | 'REC'
+  | 'hiring_platform'
+  | 'reference'
+  | 'headhunt'
 
 export const CANDIDATE_SOURCE_STATE = {
   EB: 'eb',
@@ -25,7 +30,7 @@ export const CANDIDATE_SOURCE_LABEL = {
   rec: 'REC',
   hiring_platform: 'Hiring platform',
   reference: 'Reference',
-  headhunt: 'Reference',
+  headhunt: 'Headhunt',
 }
 
 const options: IOption[] = [
