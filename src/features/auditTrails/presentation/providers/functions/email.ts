@@ -1,5 +1,5 @@
 import { renderValueReturn } from '.'
-import { renderDescription, renderEventEmailTemplate, renderSendTo, renderStatusEmail, renderText } from '../helper'
+import { renderDescription, renderEventEmailTemplate, renderListItem, renderSendTo, renderStatusEmail, renderText } from '../helper'
 
 enum Field {
   EVENT = 'event',
@@ -7,6 +7,11 @@ enum Field {
   SIGNATURE = 'signature',
   STATUS = 'status',
   SEND_TO = 'send_to',
+  CC = 'cc'
+}
+
+enum ShowField {
+  BCC = 'bcc'
 }
 
 const audit_trails_email: Record<Field, renderValueReturn> = {
@@ -15,8 +20,17 @@ const audit_trails_email: Record<Field, renderValueReturn> = {
   [Field.SIGNATURE]: renderDescription,
   [Field.STATUS]: renderStatusEmail,
   [Field.SEND_TO]: renderSendTo,
+  [Field.CC]: renderListItem
 }
+
 export function renderFieldEmailTemplate(field: string): renderValueReturn {
-  console.log("🚀 ~ renderFieldEmailTemplate ~ field:", field)
   return audit_trails_email[field as Field] ?? renderText
+}
+
+const show_field_email: Record<ShowField, boolean> = {
+  [ShowField.BCC]: false,
+}
+
+export function showFieldEmail(field: string): boolean {
+  return show_field_email[field as ShowField] ?? true
 }

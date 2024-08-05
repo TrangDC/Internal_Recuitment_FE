@@ -13,7 +13,7 @@ export type JobsFilter = typeof customInterface
 
 const customInterfaceJobOpening = createSchemaFilter({
   hiring_job_id: 'string[]',
-  hiring_team_id: 'string[]',
+  hiring_team_ids: 'string[]',
   priority: 'string',
   skill_id: 'string[]',
   location: 'string',

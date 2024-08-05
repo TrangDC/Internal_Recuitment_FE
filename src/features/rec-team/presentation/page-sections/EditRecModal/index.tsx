@@ -83,6 +83,7 @@ function EditRecTeamModal({ open, setOpen, id }: IEditRecModal) {
                           fullWidth
                           value={field.value}
                           onChange={field.onChange}
+                          loading={isGetting}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}

@@ -56,7 +56,7 @@ export type DeleteCandidateArguments = {
 export type NewCandidateInput = {
   email: string
   phone: string
-  dob: string
+  dob: string | null
   reference_type: CandidateReferenceType
   reference_value: string
   reference_uid: string
@@ -72,7 +72,7 @@ export type UpdateCandidateInput = {
   name: string
   email: string
   phone: string
-  dob: string
+  dob: string | null
   reference_type: CandidateReferenceType
   reference_value: string
   reference_uid: string

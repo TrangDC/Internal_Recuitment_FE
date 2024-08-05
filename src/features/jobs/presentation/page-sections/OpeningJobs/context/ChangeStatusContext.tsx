@@ -38,7 +38,7 @@ interface InitialState {
     useFilterReturn: UseFilterReturn<
       InterfaceGenerate<{
         hiring_job_id: 'string[]'
-        hiring_team_id: 'string[]'
+        hiring_team_ids: 'string[]'
         priority: 'string'
         skill_id: 'string[]'
         location: 'string'

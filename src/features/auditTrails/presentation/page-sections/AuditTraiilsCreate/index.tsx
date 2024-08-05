@@ -34,7 +34,9 @@ const AuditTrailsCreate = ({ data, type, module }: Props) => {
         <FlexBox flexDirection={'column'} gap={'8px'}>
           {data.map((item, idx) => {
             const isDescription =  getLastString(item.field) === 'description'
-            const { record_value } = renderTextRecord(item.field, item.value, data)
+            const { record_value, show_value } = renderTextRecord(item.field, item.value, data)
+
+            if(!show_value) return;
 
             return (
               <FieldRecord key={idx} sx={{

@@ -1,6 +1,5 @@
 import { toast } from 'react-toastify'
 import { checkMaxSize, regexFile } from 'shared/components/form/inputFileUpload/utils';
-import { RULE_MESSAGES } from 'shared/constants/validate'
 
 export const handleImportFile = async (
   file: File,
@@ -9,7 +8,7 @@ export const handleImportFile = async (
 ) => {
   const regex = regexFile(file, validation.regexString)
   if (!regex) {
-    toast.error(RULE_MESSAGES.MC5('file'))
+    toast.error(`One excel/csv file only, max to ${validation.maxSize}MB`)
     return
   }
 

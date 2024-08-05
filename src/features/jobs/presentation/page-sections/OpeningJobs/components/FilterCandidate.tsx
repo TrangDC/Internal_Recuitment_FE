@@ -77,7 +77,7 @@ const FilterCandidate = () => {
           <ControllerFilter
             control={controlFilter}
             title="Hiring team"
-            keyName={'hiring_team_id'}
+            keyName={'hiring_team_ids'}
             Node={({ onFilter, value }) => (
               <TeamsAutoComplete
                 name="team"

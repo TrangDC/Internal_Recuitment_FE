@@ -78,7 +78,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
       const entity_skill = updateRecordSkill(value.entity_skill_records)
       const payload: UpdateCandidateArguments = {
         input: {
-          dob: value.dob ? convertToEndDateUTC(value.dob) : '',
+          dob: value.dob ? convertToEndDateUTC(value.dob) : null,
           recruit_time: value.recruit_time
             ? convertToEndDateUTC(value.recruit_time)
             : value.recruit_time,
