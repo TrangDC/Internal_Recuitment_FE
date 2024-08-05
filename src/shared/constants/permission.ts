@@ -77,7 +77,7 @@ export const roleTemplateInformation: RoleTemplateInformation = {
     description: 'Delete a feedback',
   },
   'model.permissions.candidate_interviews.view': {
-    description: 'Permission to view Interviews on calendar ',
+    description: 'Permission to view Interviews',
   },
   'model.permissions.candidate_interviews.interviewer': {
     description: 'Permission to be an interviewer to interview candidates',
