@@ -81,10 +81,13 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
     },
     getSortedRowModel: getSortedRowModel(),
     state: {
-      sorting: [sortBy].map((sort) => ({
-        desc: sort.direction === 'DESC',
-        id: sort.field,
-      })),
+      sorting:
+        sortBy.field !== 'created_at'
+          ? [sortBy].map((sort) => ({
+              desc: sort.direction === 'DESC',
+              id: sort.field,
+            }))
+          : undefined,
     },
     sortDescFirst: true,
   })
