@@ -7,10 +7,6 @@ const useRoleTemplateTable = (props: IUseCustomCommonTable) => {
   const useTableReturn = useCustomTable({
     buildQuery: getAllRoles,
     ...props,
-    orderBy: {
-      direction: 'ASC',
-      field: 'name',
-    },
     queryKey,
   })
 
