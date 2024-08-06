@@ -1,9 +1,5 @@
 import graphqlUrl from 'configs/api/graphql'
-import { GraphQLClient } from 'graphql-request'
-import {
-  requestMiddleware,
-  responseMiddleware,
-} from 'middleware/graphql-middleware'
+import { graphqlClient } from 'middleware/graphql-middleware'
 import { BaseRecord } from 'shared/interfaces/common'
 import ErrorException, {
   CustomGraphQLResponse,
@@ -56,22 +52,28 @@ class GraphQLClientService {
   }
 
   static fetchGraphQL = async (
-    query: string,
+    queryString: IBuildQueryReturn,
     variables?: BaseRecord
   ): Promise<CustomGraphQLResponse> => {
     try {
-      const response: BaseRecord = await graphQLClient.request(query, variables)
-      return makeRight(response)
-    } catch ({ response }: any) {
-      const error = ErrorException.fromJson(response)
+      const response: BaseRecord = await graphqlClient.post(graphqlUrl, {
+        operationName: queryString.operation,
+        query: queryString.query,
+        variables: variables,
+      })
+      const errors = response?.data
+      if (ErrorException.hasError(errors)) {
+        const error = ErrorException.fromJson(errors)
+        return makeLeft(error)
+      }
+      const data = response?.data?.data
+      return makeRight(data)
+    } catch (errors: any) {
+      const data = (errors?.response?.data ?? {}) as BaseRecord
+      const error = ErrorException.fromJson(data)
       return makeLeft(error)
     }
   }
 }
-
-const graphQLClient = new GraphQLClient(graphqlUrl, {
-  requestMiddleware,
-  responseMiddleware,
-})
 
 export default GraphQLClientService

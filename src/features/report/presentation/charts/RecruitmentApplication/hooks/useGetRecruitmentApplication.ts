@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import useGraphql from '../graphql/graphql'
 import _ from 'lodash'
-import {  ReportFilter, RangeDateColumnBar } from 'shared/schema/chart/report'
+import { ReportFilter, RangeDateColumnBar } from 'shared/schema/chart/report'
 import { handleFormatLabel } from 'features/report/shared/utils/utils'
 import GraphQLClientService from 'services/graphql-service'
 import { ReportApplication } from 'shared/schema/chart/aplication_column_bar_chart'
@@ -30,7 +30,7 @@ function useGetRecruitmentApplication({
     queryKey: [queryKey, filters],
     enabled: !!filters,
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getRecruitmentReport.query, {
+      GraphQLClientService.fetchGraphQL(getRecruitmentReport, {
         filter: filters,
       }),
   })
@@ -39,29 +39,29 @@ function useGetRecruitmentApplication({
     if (data && isRight(data)) {
       const response = unwrapEither(data)
       const sortData =
-      response?.[getRecruitmentReport.operation]?.edges?.node ?? []
+        response?.[getRecruitmentReport.operation]?.edges?.node ?? []
       return sortData
     }
     return []
   }, [data])
-
 
   const seriesData = Object.keys(applicationLabels).reduce((acc, key) => {
     return _.set(acc, key, [])
   }, {} as any)
 
   applicationReport.forEach((node) => {
-    Object.keys(seriesData).forEach(key => {
-      const count = _.get(node , key, 0)
+    Object.keys(seriesData).forEach((key) => {
+      const count = _.get(node, key, 0)
       seriesData[key].push(count)
-      }
-    )
+    })
   })
 
-  const rangeDateColumnBar:RangeDateColumnBar[] = applicationReport.map((item) => ({
-    from_date:item.from_date,
-    to_date:item.to_date
- }))
+  const rangeDateColumnBar: RangeDateColumnBar[] = applicationReport.map(
+    (item) => ({
+      from_date: item.from_date,
+      to_date: item.to_date,
+    })
+  )
 
   const categories = handleFormatLabel(
     filters.filter_period,
@@ -76,7 +76,8 @@ function useGetRecruitmentApplication({
     const kiv = current?.kiv ?? 0
     const offer_lost = current?.offer_lost ?? 0
     const offering = current?.offering ?? 0
-    const total = applied + ex_staff + hired + interviewing + kiv + offer_lost + offering
+    const total =
+      applied + ex_staff + hired + interviewing + kiv + offer_lost + offering
     return acc + total
   }, 0)
 

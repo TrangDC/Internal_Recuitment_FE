@@ -51,7 +51,7 @@ const getKeywordEmail = async (
     if (!event) return []
 
     const data = await GraphQLClientService.fetchGraphQL(
-      getAllEmailTemplateKeywords.query,
+      getAllEmailTemplateKeywords,
       {
         filter: {
           event,

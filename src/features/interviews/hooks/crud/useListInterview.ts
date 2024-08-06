@@ -11,7 +11,7 @@ const useListInterview = (id: String) => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getAllCandidateInterview.query, {
+      GraphQLClientService.fetchGraphQL(getAllCandidateInterview, {
         filter: {
           candidate_job_id: id,
         },

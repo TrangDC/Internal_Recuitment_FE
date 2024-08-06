@@ -13,7 +13,7 @@ export interface baseInstance {
   name: string
 }
 
-export interface ResponRefreshToken {
+export interface ResponseRefreshToken {
   accessToken: string
   email: string
   expiresAt: string
@@ -21,7 +21,7 @@ export interface ResponRefreshToken {
   tokenType: string
 }
 
-export type UploadStatus = 'init' | 'uploading' | 'error' | 'success';
+export type UploadStatus = 'init' | 'uploading' | 'error' | 'success'
 export type ParamUploadFile = {
   document_id: string
   file: File
@@ -38,8 +38,8 @@ export type Attachments = {
 export interface ICreateModal {
   open: boolean
   setOpen: (open: boolean) => void
-  onSuccess?: (data: any) => void,
-  onError?: (data: any) => void,
+  onSuccess?: (data: any) => void
+  onError?: (data: any) => void
 }
 
 export interface IEditModal extends ICreateModal {
@@ -51,9 +51,8 @@ export interface IDeleteModal extends ICreateModal {
 }
 
 export interface IDetailModal<T> extends ICreateModal {
-  id: string,
+  id: string
   rowData?: T
 }
 
 export type DATA_KEYWORD_TEMPLATE = { key: string; value: string }
-

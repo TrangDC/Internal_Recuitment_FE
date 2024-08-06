@@ -14,7 +14,7 @@ function useGetDetail<T>({ id, queryKey, oneBuildQuery }: IuseGetDetail) {
   const { data, isLoading } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(oneBuildQuery.query, {
+      GraphQLClientService.fetchGraphQL(oneBuildQuery, {
         id,
       }),
   })

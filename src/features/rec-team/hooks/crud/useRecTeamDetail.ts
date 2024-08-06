@@ -11,7 +11,7 @@ const useRecTeamDetail = (id: String) => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getRecTeamDetail.query, {
+      GraphQLClientService.fetchGraphQL(getRecTeamDetail, {
         id,
       }),
   })

@@ -29,7 +29,7 @@ type getMemberByTeam = {
 }
 
 const getMembersByTeam = async (id: string): Promise<getMemberByTeam> => {
-  const data = await GraphQLClientService.fetchGraphQL(getAllUser.query, { id })
+  const data = await GraphQLClientService.fetchGraphQL(getAllUser, { id })
   let managers: User[] = []
   if (data && isRight(data)) {
     managers = unwrapEither(data)?.[getAllUser.operation]?.data?.managers ?? []

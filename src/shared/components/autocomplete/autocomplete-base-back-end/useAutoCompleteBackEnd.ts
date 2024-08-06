@@ -20,7 +20,7 @@ function useAutoCompleteBackEnd<T>({
     queryKey: queryKey,
     gcTime: 0,
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(queryString.query, variables),
+      GraphQLClientService.fetchGraphQL(queryString, variables),
   })
   let options: T[] = []
 

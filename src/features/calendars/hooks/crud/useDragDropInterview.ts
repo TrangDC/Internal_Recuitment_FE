@@ -19,10 +19,9 @@ function useDragDropInterview(props: IUseDragDropInterview) {
   const { mutate } = useMutation({
     mutationKey: [queryKey],
     mutationFn: (payload: UpdateCandidateInterviewScheduleArguments) =>
-      GraphQLClientService.fetchGraphQL(
-        updateCandidateInterviewSchedule.query,
-        { ...payload }
-      ),
+      GraphQLClientService.fetchGraphQL(updateCandidateInterviewSchedule, {
+        ...payload,
+      }),
     onSuccess: (data) => {
       if (isLeft(data)) {
         onError?.(unwrapEither(data))

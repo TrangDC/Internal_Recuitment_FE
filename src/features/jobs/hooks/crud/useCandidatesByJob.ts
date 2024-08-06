@@ -191,7 +191,7 @@ const useCandidatesByJob = (hiring_job_id: string) => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getCandidatesByJob.query, {
+      GraphQLClientService.fetchGraphQL(getCandidatesByJob, {
         filter: {
           hiring_job_id,
         },

@@ -34,17 +34,15 @@ interface Props {
   event?: EVENT_EMAIL_ENUM
 }
 
-const useGetEmailKeyWord = ({
-  event = 'created_interview',
-}: Props) => {
+const useGetEmailKeyWord = ({ event = 'created_interview' }: Props) => {
   const { getAllEmailTemplateKeywords, queryKey_keyword } = useGraphql()
 
   const { data } = useQuery({
     queryKey: [queryKey_keyword, event],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords.query, {
+      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords, {
         filter: {
-          event: event ? event : 'created_interview'
+          event: event ? event : 'created_interview',
         },
       }),
   })

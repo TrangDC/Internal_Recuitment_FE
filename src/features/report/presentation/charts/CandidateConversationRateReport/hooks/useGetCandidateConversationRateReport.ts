@@ -21,7 +21,7 @@ function useGetCandidateConversationRateReport({
   const { data, isLoading } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getCandidateConversionRateReport.query),
+      GraphQLClientService.fetchGraphQL(getCandidateConversionRateReport),
   })
 
   const candidateReport: CandidateConversionRateReport = useMemo(() => {

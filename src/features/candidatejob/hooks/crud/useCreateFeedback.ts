@@ -16,7 +16,7 @@ function useCreateFeedBack() {
     mutationKey: [queryKey],
     mutationFn: (payload: CreateCandidateJobFeedbackArguments) => {
       return GraphQLClientService.fetchGraphQL(
-        createCandidateJobFeedback.query,
+        createCandidateJobFeedback,
         payload
       )
     },

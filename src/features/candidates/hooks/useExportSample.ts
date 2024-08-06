@@ -22,7 +22,7 @@ const useExportSample = (lang: string = 'en') => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(exportSampleCandidate.query, {
+      GraphQLClientService.fetchGraphQL(exportSampleCandidate, {
         lang,
       }),
   })

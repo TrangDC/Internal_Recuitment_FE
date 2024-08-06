@@ -10,9 +10,7 @@ export interface IuseGetResource<Response, FormData> {
   id: string
   queryKey: string[]
   oneBuildQuery: IBuildQueryReturn
-  formatDefaultValues: (
-    data: Response | undefined
-  ) =>  FormData
+  formatDefaultValues: (data: Response | undefined) => FormData
   resolver?: Resolver<FormData & FieldValues, any> | undefined
 }
 function useGetResource<Response, FormData extends FieldValues>({
@@ -22,28 +20,27 @@ function useGetResource<Response, FormData extends FieldValues>({
   formatDefaultValues,
   resolver,
 }: IuseGetResource<Response, FormData>) {
-  
-  const  {data , isFetching } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: [...queryKey, id],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(oneBuildQuery.query, {
+      GraphQLClientService.fetchGraphQL(oneBuildQuery, {
         id: id,
       }),
   })
 
   const newData = useMemo(() => {
     if (data && isRight(data)) {
-        const responseData = unwrapEither(data)?.[oneBuildQuery.operation]?.data as Response
-        return responseData
+      const responseData = unwrapEither(data)?.[oneBuildQuery.operation]
+        ?.data as Response
+      return responseData
     }
     return undefined
-  },[data])
-  
+  }, [data])
 
   const useFormReturn = useForm<FormData>({
     mode: 'onChange',
     resolver,
-    values:formatDefaultValues(newData)
+    values: formatDefaultValues(newData),
   })
 
   return {

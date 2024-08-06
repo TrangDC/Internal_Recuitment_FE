@@ -18,7 +18,7 @@ const updateEmailTemplateStatus = GraphQLClientService.buildQuery({
 
 const changeStatusEmail = async (id: string, status: STATUS_EMAIL_ENUM) => {
   try {
-    await GraphQLClientService.fetchGraphQL(updateEmailTemplateStatus.query, {
+    await GraphQLClientService.fetchGraphQL(updateEmailTemplateStatus, {
       id,
       note: '',
       input: {

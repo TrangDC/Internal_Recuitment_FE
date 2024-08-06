@@ -25,7 +25,7 @@ const handleGetUrlAttachment = async (
   try {
     const { file, ...value } = params
     const response = await GraphQLClientService.fetchGraphQL(
-      createUrlGetAttachment.query,
+      createUrlGetAttachment,
       {
         input: value,
       }
@@ -45,7 +45,9 @@ const handleGetUrlAttachment = async (
   }
 }
 
-export const getAllUrlFromAzure = async (list_upload: ParamCreateURLAttachment[]) => {
+export const getAllUrlFromAzure = async (
+  list_upload: ParamCreateURLAttachment[]
+) => {
   const getUrlAzures = list_upload.map((fileUpload) => {
     return handleGetUrlAttachment(fileUpload)
       .then((response) => {

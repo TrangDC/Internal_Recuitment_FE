@@ -26,7 +26,7 @@ function useGetApplicantReportByStatusReport({
   const { data, isLoading } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getApplicantReportByStatus.query, {
+      GraphQLClientService.fetchGraphQL(getApplicantReportByStatus, {
         filter: filters,
       }),
   })

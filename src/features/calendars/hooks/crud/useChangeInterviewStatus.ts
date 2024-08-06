@@ -32,7 +32,7 @@ function useChangeInterviewStatus({
     mutationKey: queryKey,
     mutationFn: (payload: UpdateCandidateInterviewStatusArguments) => {
       return GraphQLClientService.fetchGraphQL(
-        editBuildQuery.query,
+        editBuildQuery,
         payload as BaseRecord
       )
     },
