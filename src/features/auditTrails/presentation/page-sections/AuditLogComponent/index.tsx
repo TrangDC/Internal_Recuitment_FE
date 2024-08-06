@@ -43,6 +43,7 @@ const LogsComponent = ({ module, id }: Props, ref: any) => {
     <FlexBox flexDirection={'column'} gap={'16px'}>
       {auditrails_history.map((auditrail) => {
         const record_changes = JSON.parse(auditrail.record_changes)
+        console.log("🚀 ~ {auditrails_history.map ~ record_changes:", record_changes)
 
         return (
           <DateFieldContainer key={auditrail.id}>

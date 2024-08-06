@@ -14,6 +14,7 @@ import SearchInput from 'shared/components/table/components/SearchInput'
 import Cant from 'features/authorization/presentation/components/Cant'
 import DetailSkillModal from '../page-sections/DetailSkill'
 import useBuildActionsTableSkill from 'features/skill/hooks/table/useBuildActionsTableSkill'
+import TabSkillDetail from '../page-sections/TabDetail'
 
 const SkillList = () => {
   const {
@@ -97,12 +98,12 @@ const SkillList = () => {
           isAbleToDelete={isAbleToDelete}
         />
       )}
-      {openDetail && (
-        <DetailSkillModal
+       {openDetail && (
+        <TabSkillDetail
           open={openDetail}
           setOpen={setOpenDetail}
           id={rowId.current}
-          handleOpenEdit={handleOpenEdit}
+          handleOpenModalEdit={handleOpenEdit}
         />
       )}
     </DivContainerWrapper>

@@ -18,7 +18,7 @@ import useActionTable from '../../hooks/table/useActionTable'
 import Cant from 'features/authorization/presentation/components/Cant'
 import useBuildActionsTableSkillType from '../../hooks/table/useBuildActionsTableSkillType'
 import SkillType from 'shared/schema/database/skill_type'
-import DetailSkillTypeModal from '../page-sections/DetailSkillType'
+import TabSkillTypeDetail from '../page-sections/TabDetail'
 
 const SkillTypeList = () => {
   const {
@@ -102,19 +102,17 @@ const SkillTypeList = () => {
           id={rowId.current}
         />
       )}
+      {openDetail &&  <TabSkillTypeDetail
+          open={openDetail}
+          setOpen={setOpenDetail}
+          handleOpenModalEdit={handleOpenEdit}
+          id={rowId.current}
+        />}
       {openDelete && (
         <DeleteSkillType
           open={openDelete}
           setOpen={setOpenDelete}
           id={rowId.current}
-        />
-      )}
-      {openDetail && (
-        <DetailSkillTypeModal
-          open={openDetail}
-          setOpen={setOpenDetail}
-          id={rowId.current}
-          handleOpenEdit={handleOpenEdit}
         />
       )}
     </DivContainerWrapper>
