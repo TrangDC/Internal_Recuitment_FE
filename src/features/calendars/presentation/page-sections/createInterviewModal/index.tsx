@@ -15,7 +15,7 @@ import AppTimePickers from 'shared/components/input-fields/AppTimePicker'
 import dayjs from 'dayjs'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import { shouldDisableTime } from 'features/calendars/domain/functions/functions'
-import SelectionTeamPermission from 'features/calendars/permission/components/SelectionTeamPermission'
+import CreateSelectionTeamPermission from 'features/calendars/permission/components/CreateSelectionTeamPermission'
 import LocationInterviewAutoComplete, {
   LOCATION_INTERVIEW_STATE,
 } from 'shared/components/autocomplete/location-interview-autocomplete'
@@ -101,7 +101,7 @@ function CreateInterviewModal(props: IAddInterviewModal) {
                   name="teamId"
                   render={({ field, fieldState }) => (
                     <Fragment>
-                      <SelectionTeamPermission
+                      <CreateSelectionTeamPermission
                         name={field.name}
                         value={field.value}
                         onChange={(value) => {

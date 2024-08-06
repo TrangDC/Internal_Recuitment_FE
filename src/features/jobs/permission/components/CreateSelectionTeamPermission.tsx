@@ -8,7 +8,7 @@ interface SelectionTeamPermissionProps {
   onChange(value: string | null): void
 }
 
-function SelectionTeamPermission({
+function CreateSelectionTeamPermission({
   name,
   onChange,
   value,
@@ -19,7 +19,7 @@ function SelectionTeamPermission({
     module: 'JOBS',
     checkBy: {
       compare: 'hasAny',
-      permissions: ['EDIT.teamOnly'],
+      permissions: ['CREATE.teamOnly'],
     },
   })
   const filter = teamOnly ? { for_hiring_team: true } : undefined
@@ -38,4 +38,4 @@ function SelectionTeamPermission({
   )
 }
 
-export default SelectionTeamPermission
+export default CreateSelectionTeamPermission
