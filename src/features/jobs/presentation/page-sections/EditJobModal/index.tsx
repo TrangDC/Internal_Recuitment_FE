@@ -20,7 +20,7 @@ import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTreeSelection from 'shared/components/tree/skill-tree'
-import SelectionTeamPermission from 'features/jobs/permission/components/SelectionTeamPermission'
+import EditSelectionTeamPermission from 'features/jobs/permission/components/EditSelectionTeamPermission'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
 
@@ -131,7 +131,7 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                   name="hiring_team_id"
                   render={({ field, fieldState }) => (
                     <Fragment>
-                      <SelectionTeamPermission
+                      <EditSelectionTeamPermission
                         name={field.name}
                         value={field.value}
                         onChange={(value) => {
