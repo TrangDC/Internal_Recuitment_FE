@@ -30,34 +30,48 @@ export const replaceTemplateEmail = (
   template: string,
   data: DATA_KEYWORD_TEMPLATE[]
 ): { is_valid: boolean; result: string } => {
-  let is_valid = true
-  const regex = /<del>{{ (.*?) }}<\/del>|{{ (.*?) }}/g
+  let is_valid = true;
 
-  const result = template.replace(regex, (match, p1, p2) => {
-    const key = p1 || p2
-    let value = match
+  const dataMap = new Map(data.map(item => [item.key, item.value]));
 
-    const found = data.find((item) => item.key === key)
+  //regex check tag <del>{{*}}
+  /**
+   * p1: <del>{{*}}</del>
+   * p2: {{*}}
+   * p3: <del><a href="{{*}}">{{*}}</a></del>
+   * p4: <a href="{{*}}">{{*}}</a>
+   */
+  
+  const regex = /<del>{{ (.*?) }}<\/del>|{{ (.*?) }}|<del><a[^>]*href="{{ (.*?) }}"[^>]*>.*?<\/a><\/del>|<a[^>]*href="{{ (.*?) }}"[^>]*>.*?<\/a>/g;
 
-    if (found) {
-      if (p1) {
-        value = `{{ ${key} }}`
+  const result = template.replace(regex, (match, p1, p2, p3, p4) => {
+    const key = p1 || p2 || p3 || p4;
+    let value = match;
+
+    if (dataMap.has(key)) {
+      if (p1 && !p2) {
+        value = `{{ ${key} }}`;
+      } else if (p3 && !p4) {
+        value = match.replace(/<\/?del>/g, '');
       }
     } else {
-      is_valid = false
-      if (!p1) {
-        value = `<del>{{ ${key} }}</del>`
+      is_valid = false;
+      if (!p1 && p2) {
+        value = `<del>{{ ${key} }}</del>`;
+      } else if (!p3 && p4) {
+        value = `<del>${match}</del>`;
       }
     }
 
-    return value
-  })
+    return value;
+  });
 
   return {
     is_valid,
     result,
-  }
-}
+  };
+};
+
 
 export const replaceLink = (content: string) => {
   return content.replace(/href="[^"]*"/g, 'href="#"')

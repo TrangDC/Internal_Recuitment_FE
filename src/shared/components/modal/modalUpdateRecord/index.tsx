@@ -5,17 +5,20 @@ import { CustomeButtonCancel } from 'shared/components/form/styles'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import React, { useState } from 'react'
+import { convertDateToISOString } from '../../../utils/utils'
 
 interface IEditRecord {
   children: string | React.ReactNode
   callbackSubmit?: (reason: string) => void
   disabled?: boolean
+  information?: React.ReactNode
 }
 
 function UpdateRecord({
   children,
   callbackSubmit,
   disabled = false,
+  information,
 }: IEditRecord) {
   const translation = useTextTranslation()
   const [open, setOpen] = useState<boolean>(false)
@@ -63,6 +66,7 @@ function UpdateRecord({
                   onChange={handleChangeReason}
                 />
               </Grid>
+              {information && <Grid item xs={12}>{information}</Grid>}
             </Grid>
           </Box>
         </Box>
