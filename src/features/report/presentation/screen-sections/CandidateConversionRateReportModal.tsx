@@ -1,7 +1,6 @@
 import { Box } from '@mui/material'
 import BaseModal from 'shared/components/modal'
 import TabCustomize from 'shared/components/tab'
-import { Tiny12md } from 'shared/components/Typography'
 import ByHiringTeamTable from './ByHiringTeamTable'
 import { ReportFilter } from 'shared/schema/chart/report'
 

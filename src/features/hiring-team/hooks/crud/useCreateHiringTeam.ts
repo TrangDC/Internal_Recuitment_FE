@@ -1,7 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 import useGraphql from 'features/hiring-team/domain/graphql/graphql'
 import { FormDataSchema, schema } from 'features/hiring-team/shared/constants/schema'
 import { convertApproves } from 'features/hiring-team/shared/utils'
+import { useMemo, useState } from 'react'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { CreateHiringTeamArguments } from 'shared/schema/database/hiring_team'
 import { v4 as uuidv4 } from 'uuid'
@@ -13,6 +15,8 @@ function useCreateHiringTeam(props: createTeamProps = {}) {
   const { callbackSuccess } = props
 
   const { createTeam, queryKey } = useGraphql()
+  const [hiringIds, setHiringIds] = useState<string[]>([])
+  const { handleWarning, handleReset } = usePopup()
   const { useCreateReturn, useFormReturn } = useCreateResource<
     CreateHiringTeamArguments,
     FormDataSchema
@@ -35,7 +39,11 @@ function useCreateHiringTeam(props: createTeamProps = {}) {
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
-  function onSubmit() {
+  const show_warning = useMemo(() => {
+    return hiringIds.some((item) => !!item)
+  }, [hiringIds])
+
+  function onSubmitHiringTeam() {
     handleSubmit((value) => {
       const approvers = convertApproves(value.approvers)
 
@@ -48,6 +56,24 @@ function useCreateHiringTeam(props: createTeamProps = {}) {
       })
     })()
   }
+
+
+  function onSubmit() {
+    if (!show_warning) {
+      onSubmitHiringTeam()
+      return
+    }
+
+    handleWarning({
+      title: 'Warning',
+      content: `The selected manager is currently in a different hiring team. This change will also move the user to this team. Proceeding? `,
+      onSubmit: () => {
+        onSubmitHiringTeam()
+        handleReset()
+      },
+    })
+  }
+
 
   function addApprove() {
     const default_approve = {uid: uuidv4(), user_id: '', id: ''};
@@ -81,7 +107,8 @@ function useCreateHiringTeam(props: createTeamProps = {}) {
     actions: {
       addApprove,
       delApprove,
-      onChangeApprove
+      onChangeApprove,
+      setHiringIds
     }
   }
 }

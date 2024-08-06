@@ -18,7 +18,6 @@ import {
   schemaUpdate,
 } from 'features/user/shared/constants/schema'
 import User, { UpdateUserArguments } from 'shared/schema/database/user'
-import { TeamType } from 'shared/components/autocomplete/team-type-auto-complete'
 
 type UseEditUserProps = {
   id: string
