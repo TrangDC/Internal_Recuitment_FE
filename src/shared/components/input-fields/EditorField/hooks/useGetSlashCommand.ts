@@ -57,7 +57,7 @@ const useGetSlashCommand = ({
   const { data } = useQuery({
     queryKey: [queryKey, filter],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords.query, {
+      GraphQLClientService.fetchGraphQL(getAllEmailTemplateKeywords, {
         filter: filter,
       }),
   })

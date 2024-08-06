@@ -14,7 +14,7 @@ function useGetSkillType() {
   const { data } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getAllSkillTypes.query, {
+      GraphQLClientService.fetchGraphQL(getAllSkillTypes, {
         // filter: {
         //   candidate_job_id: id,
         // },

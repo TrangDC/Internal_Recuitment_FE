@@ -11,7 +11,7 @@ const useListFeedback = (id: String) => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getAllCandidateJobFeedbacks.query, {
+      GraphQLClientService.fetchGraphQL(getAllCandidateJobFeedbacks, {
         filter: {
           candidate_job_id: id,
         },

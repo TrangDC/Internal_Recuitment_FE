@@ -9,6 +9,13 @@ class ErrorException {
     this.code = code
   }
 
+  static hasError(json: any): boolean {
+    console.log('json', json)
+    if (json?.['error'] || (json?.['errors'] && isArray(json?.['errors'])))
+      return true
+    return false
+  }
+
   static fromJson(json: any): ErrorException {
     const code = json?.['status'] ?? 500
     if (json?.['error'])

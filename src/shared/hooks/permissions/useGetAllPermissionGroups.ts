@@ -14,7 +14,7 @@ function useGetAllPermissionGroups() {
     const data = await queryClient.fetchQuery({
       queryKey: [queryKey],
       queryFn: async () =>
-        GraphQLClientService.fetchGraphQL(getAllPermissionGroups.query),
+        GraphQLClientService.fetchGraphQL(getAllPermissionGroups),
     })
     if (data && isRight(data)) {
       const response = unwrapEither(data)

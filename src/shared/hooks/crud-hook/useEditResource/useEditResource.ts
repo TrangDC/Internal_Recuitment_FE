@@ -21,11 +21,7 @@ interface IuseEditResource<Response, FormData>
   resolver: Resolver<FormData & FieldValues, any> | undefined
 }
 
-function useEditResource<
-  Response,
-  FormData extends FieldValues,
-  Request,
->({
+function useEditResource<Response, FormData extends FieldValues, Request>({
   id,
   editBuildQuery,
   oneBuildQuery,
@@ -49,7 +45,10 @@ function useEditResource<
   const useEditReturn = useMutation({
     mutationKey: queryKey,
     mutationFn: (payload: Request) => {
-      return GraphQLClientService.fetchGraphQL(editBuildQuery.query, payload as BaseRecord)
+      return GraphQLClientService.fetchGraphQL(
+        editBuildQuery,
+        payload as BaseRecord
+      )
     },
     onSuccess: (data) => {
       if (isLeft(data)) {

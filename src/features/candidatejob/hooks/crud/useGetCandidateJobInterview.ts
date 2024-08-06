@@ -16,7 +16,7 @@ const useGetCandidateJobInterview = (id: String) => {
       MODLUE_QUERY_KEY.FEEDBACK,
     ],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getCandidateJobInterview.query, {
+      GraphQLClientService.fetchGraphQL(getCandidateJobInterview, {
         id,
       }),
   })

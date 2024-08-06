@@ -11,7 +11,7 @@ const useCandidateJobDetail = (id: String) => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getCandidateJob.query, {
+      GraphQLClientService.fetchGraphQL(getCandidateJob, {
         id,
       }),
   })

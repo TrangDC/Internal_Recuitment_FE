@@ -40,7 +40,7 @@ function useEditResourceWithoutGetting<FormData extends FieldValues, Request>({
     mutationKey: queryKey,
     mutationFn: (payload: Request) => {
       return GraphQLClientService.fetchGraphQL(
-        editBuildQuery.query,
+        editBuildQuery,
         payload as BaseRecord
       )
     },

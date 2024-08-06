@@ -29,7 +29,7 @@ function useDeleteResource<Request>({
     mutationKey,
     mutationFn: (payload: Request) => {
       return GraphQLClientService.fetchGraphQL(
-        queryString.query,
+        queryString,
         payload as BaseRecord
       )
     },

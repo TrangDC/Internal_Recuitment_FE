@@ -51,7 +51,7 @@ const useSendTo = () => {
 
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
-    queryFn: async () => GraphQLClientService.fetchGraphQL(getAllRole.query),
+    queryFn: async () => GraphQLClientService.fetchGraphQL(getAllRole),
   })
 
   const roles_data: Role[] = useMemo(() => {

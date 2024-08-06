@@ -27,10 +27,9 @@ function useGetAllInterview() {
   const { isLoading, data } = useQuery({
     queryKey: [queryKey, JSON.stringify(dateRange)],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(
-        getAllCandidateInterview4Calendar.query,
-        { filter: dateRange }
-      ),
+      GraphQLClientService.fetchGraphQL(getAllCandidateInterview4Calendar, {
+        filter: dateRange,
+      }),
   })
 
   const myEvents: CalendarEvent[] = useMemo(() => {

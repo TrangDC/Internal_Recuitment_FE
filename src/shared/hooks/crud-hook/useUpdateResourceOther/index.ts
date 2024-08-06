@@ -44,7 +44,7 @@ function useEditResource<Response, FormData extends FieldValues, Input>({
   const useEditReturn = useMutation({
     mutationKey: queryKey,
     mutationFn: (payload: Input) => {
-      return GraphQLClientService.fetchGraphQL(editBuildQuery.query, {
+      return GraphQLClientService.fetchGraphQL(editBuildQuery, {
         id,
         ...payload,
       })

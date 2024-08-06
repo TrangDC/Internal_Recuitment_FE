@@ -71,7 +71,7 @@ const useCustomTable = ({
     gcTime: 0,
     queryKey: [queryKey, customKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(buildQuery.query, {
+      GraphQLClientService.fetchGraphQL(buildQuery, {
         orderBy: {
           ...pagination.orderBy,
         },

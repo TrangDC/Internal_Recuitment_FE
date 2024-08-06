@@ -334,22 +334,19 @@ const useCandidatesJob = () => {
     filter,
     freeWord,
   }: ParamGetCandidateJob): Promise<CandidatesByStatus> => {
-    const data = await GraphQLClientService.fetchGraphQL(
-      getCandidatesByJob.query,
-      {
-        orderBy: {
-          direction: 'DESC',
-          field: 'created_at',
-        },
-        pagination: { page: pageCurrent, perPage: INIT_PER_PAGE },
-        filter: {
-          ...filter,
-        },
-        freeWord: {
-          ...freeWord,
-        },
-      }
-    )
+    const data = await GraphQLClientService.fetchGraphQL(getCandidatesByJob, {
+      orderBy: {
+        direction: 'DESC',
+        field: 'created_at',
+      },
+      pagination: { page: pageCurrent, perPage: INIT_PER_PAGE },
+      filter: {
+        ...filter,
+      },
+      freeWord: {
+        ...freeWord,
+      },
+    })
 
     if (data && isRight(data)) {
       const response = unwrapEither(data)

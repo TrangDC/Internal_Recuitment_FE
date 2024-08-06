@@ -12,7 +12,7 @@ const useCandidateDetail = (id: String) => {
   const { data, ...otherValue } = useQuery({
     queryKey: [MODLUE_QUERY_KEY.CANDIDATE, queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getCandidate.query, {
+      GraphQLClientService.fetchGraphQL(getCandidate, {
         id,
       }),
   })

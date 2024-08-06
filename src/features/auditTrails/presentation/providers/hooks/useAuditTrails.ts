@@ -59,7 +59,7 @@ const useAuditTrails = (recordId: string, module: string) => {
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey, filter, freeWord],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(GetAllAuditTrails.query, {
+      GraphQLClientService.fetchGraphQL(GetAllAuditTrails, {
         filter: {
           recordId,
           module,

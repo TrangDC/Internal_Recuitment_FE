@@ -15,7 +15,7 @@ function useGetMe() {
   const { getToken } = handleAuthLocalStorage()
   const { data, isFetching, refetch } = useQuery({
     queryKey: [queryKey, 'me'],
-    queryFn: async () => GraphQLClientService.fetchGraphQL(getMe.query),
+    queryFn: async () => GraphQLClientService.fetchGraphQL(getMe),
     enabled: authState === 'IS_AUTHENTICATED' && !!getToken(),
   })
 
@@ -31,7 +31,7 @@ function useGetMe() {
         name: me?.name ?? '',
         id: me?.id ?? '',
         teamId: me?.member_of_hiring_team?.id ?? '',
-        rectTeamId:me?.member_of_rec_team?.id ?? '',
+        rectTeamId: me?.member_of_rec_team?.id ?? '',
       }
       return {
         myPermission,

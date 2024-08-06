@@ -20,7 +20,7 @@ function useGetCandidateReport() {
   const { data, isLoading } = useQuery({
     queryKey: [queryKey],
     queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(getCandidateReport.query, {
+      GraphQLClientService.fetchGraphQL(getCandidateReport, {
         filter: {
           filter_period: 'all',
           from_date: '0001-01-01T00:00:00Z',
