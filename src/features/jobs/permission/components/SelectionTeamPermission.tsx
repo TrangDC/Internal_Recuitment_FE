@@ -22,7 +22,7 @@ function SelectionTeamPermission({
       permissions: ['EDIT.teamOnly'],
     },
   })
-  const filter = teamOnly ? { for_team: true } : undefined
+  const filter = teamOnly ? { for_hiring_team: true } : undefined
   return (
     <TeamsAutoComplete
       name={name}
