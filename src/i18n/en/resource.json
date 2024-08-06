@@ -98,6 +98,9 @@
       }
     },
     "skill_types": {
+      "model_name": "Skill type",
+      "name": "Name",
+      "description": "Description",
       "validation": {
         "name_exist": "Name has already existed",
         "cannot_delete": "This skill type has related skills and cannot be removed"
@@ -230,6 +233,10 @@
       }
     },
     "skills": {
+      "model_name": "Skill",
+      "name": "Name",
+      "skill_type": "Type",
+      "description": "Description",
       "validation": {
         "name_exist": "Name has already existed"
       }

@@ -5,8 +5,8 @@ const useActionTable = <T extends object>() => {
   const rowData = useRef<T>()
   const [openCreate, setOpenCreate] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-  const [openDelete, setOpenDelete] = useState(false)
   const [openDetail, setOpenDetail] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
 
   function handleOpenEdit(id: string) {
     rowId.current = id
