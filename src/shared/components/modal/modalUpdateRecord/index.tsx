@@ -5,7 +5,6 @@ import { CustomeButtonCancel } from 'shared/components/form/styles'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import React, { useState } from 'react'
-import { convertDateToISOString } from '../../../utils/utils'
 
 interface IEditRecord {
   children: string | React.ReactNode

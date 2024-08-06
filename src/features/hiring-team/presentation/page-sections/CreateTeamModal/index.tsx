@@ -34,7 +34,7 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
     })
 
   const { approve_list } = state
-  const { addApprove, delApprove, onChangeApprove } = actions
+  const { addApprove, delApprove, onChangeApprove, setHiringIds } = actions
   const translation = useTextTranslation()
 
   return (
@@ -83,7 +83,10 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                     <Fragment>
                       <MemberAutoComplete
                         value={field.value || []}
-                        onChange={field.onChange}
+                        onCustomChange={(members) => {
+                          field.onChange(members.map((item) => item.id))
+                          setHiringIds(members.map((item) => item.hiring_team_id));
+                        }}
                         multiple={true}
                         name={field.name}
                         filter={{
@@ -191,9 +194,6 @@ function CreateTeamModal({ open, setOpen }: ICreateTeamModal) {
                           )
                         })}
                       </FlexBox>
-                      {/* <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm> */}
                     </Fragment>
                   )}
                 />

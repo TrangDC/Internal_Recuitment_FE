@@ -11,8 +11,6 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import AppButton from 'shared/components/buttons/AppButton'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import useCreateRecTeam from 'features/rec-team/hooks/crud/useCreateRecTeam'
-import { useState } from 'react'
-import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 interface ICreateRecTeamModal {
   open: boolean

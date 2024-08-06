@@ -1,7 +1,5 @@
-import { ContentCut } from '@mui/icons-material'
 import {
   ListItemIcon,
-  ListItemText,
   Menu,
   MenuItem,
   styled,

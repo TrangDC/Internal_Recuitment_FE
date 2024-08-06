@@ -20,6 +20,8 @@ import { RULE_MESSAGES } from 'shared/constants/validate'
 import { isEmpty } from 'lodash'
 import { ButtonAdd } from 'features/hiring-team/shared/constants/styles/style'
 import useUpdateHiringTeam from 'features/hiring-team/hooks/crud/useUpdateHiringTeam'
+import { useMemo, useState } from 'react'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 
 interface IEditTeamModal {
   open: boolean
@@ -37,6 +39,11 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
     })
   const { onSubmit, addApprove, delApprove, onChangeApprove } = actions
   const { approve_list } = state
+  const [hiringIds, setHiringIds] = useState<string[]>([])
+
+  const show_warning = useMemo(() => {
+    return hiringIds.some((item) => !!item && item !== id)
+  }, [hiringIds])
 
   const translation = useTextTranslation()
 
@@ -89,7 +96,12 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
                     <Fragment>
                       <MemberAutoComplete
                         value={field.value || []}
-                        onChange={field.onChange}
+                        onCustomChange={(members) => {
+                          field.onChange(members.map((item) => item.id))
+                          setHiringIds(
+                            members.map((item) => item.hiring_team_id)
+                          )
+                        }}
                         multiple={true}
                         name={field.name}
                         textFieldProps={{
@@ -267,6 +279,18 @@ function EditTeamModal({ open, setOpen, id }: IEditTeamModal) {
               disabled={isValid}
               handlesubmit={onSubmit}
               loading={isPending}
+              information={
+                show_warning && (
+                  <FlexBox alignItems={'flex-start'} gap={1} color={'red'}>
+                    <ErrorOutlineIcon sx={{ fontSize: 16 }} />
+                    <Span>
+                      The selected manager is currently in a different hiring
+                      team. This change will also move the user to this team.
+                      Proceeding?
+                    </Span>
+                  </FlexBox>
+                )
+              }
             >
               Submit
             </ButtonEdit>

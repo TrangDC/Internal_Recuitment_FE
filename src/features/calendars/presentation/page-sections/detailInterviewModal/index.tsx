@@ -24,7 +24,6 @@ import { LinkText as Link } from 'shared/styles'
 import { useMemo } from 'react'
 import useGetInterview from 'features/calendars/hooks/crud/useGetInterview'
 import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
-import AppButton from 'shared/components/buttons/AppButton'
 import ChangeStatusButtonPermission from 'features/calendars/permission/components/ChangeStatusButtonPermission'
 interface IDetailIntefviewModal {
   open: boolean

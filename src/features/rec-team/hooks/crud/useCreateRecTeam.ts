@@ -6,7 +6,6 @@ import {
   schema,
 } from 'features/rec-team/shared/constants/schema'
 import { useState } from 'react'
-
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { CreateRecTeamArguments } from 'shared/schema/database/rec_team'
 
@@ -18,7 +17,6 @@ function useCreateRecTeam(props: createRecTeamProps = {}) {
   const { callbackSuccess } = props
   const [recId, setRecId] = useState<string>('')
   const { handleWarning, handleReset } = usePopup()
-  console.log("🚀 ~ CreateRecModal ~ recId:", recId)
 
   const { createRecTeam, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<

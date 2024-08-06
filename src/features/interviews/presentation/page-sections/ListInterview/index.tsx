@@ -23,7 +23,7 @@ import { useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import BoxTextSquare from 'shared/components/utils/boxText'
-import { getTime, isPast } from 'shared/utils/date'
+import { getTime } from 'shared/utils/date'
 import {
   CreateInterviewModal,
   DeleteInterviewModal,

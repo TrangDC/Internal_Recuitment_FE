@@ -14,6 +14,7 @@ type IProps = {
   Icon?: ReactNode
   subTitle?: string
   disabled: boolean
+  information?: React.ReactNode
 }
 
 type ModalConfirmpProps = {
@@ -24,6 +25,7 @@ type ModalConfirmpProps = {
   subTitle?: string
   setOpen: (value: boolean) => void
   open: boolean
+  information?: React.ReactNode
 }
 
 const ModalConfirm = ({
@@ -34,6 +36,7 @@ const ModalConfirm = ({
   loading,
   subTitle,
   Icon,
+  information
 }: ModalConfirmpProps) => {
   const translation = useTextTranslation()
   const [reason, setReason] = useState('')
@@ -61,6 +64,7 @@ const ModalConfirm = ({
               onChange={(e) => setReason(e.target.value)}
             />
           </Grid>
+          {information && <Grid item xs={12}>{information}</Grid>}
         </Grid>
       </Box>
       <BaseModal.Footer>
@@ -103,7 +107,7 @@ const ModalConfirm = ({
   )
 }
 
-const ButtonEdit = (props: IProps) => {
+const ButtonEdit = ({information, ...props}: IProps) => {
   const { handlesubmit, children, disabled, loading, Icon } = props
   const [open, setOpen] = useState(false)
   const translation = useTextTranslation()
@@ -128,6 +132,7 @@ const ButtonEdit = (props: IProps) => {
         loading={loading}
         subTitle={subTitle}
         Icon={Icon}
+        information={information}
       />
     </>
   )
