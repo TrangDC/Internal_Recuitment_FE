@@ -72,17 +72,17 @@ export const BoxFieldInfo = styled(Box)(({ theme }) => ({
 export const TinyInfo = styled(Tiny12md)(({ theme }) => ({
   whiteSpace: 'nowrap',
   overflow: 'hidden',
-  textOverflow: 'ellipsis'
+  textOverflow: 'ellipsis',
 }))
 
 export const SpanInfo = styled(Box)(({ theme }) => ({
-    fontSize: '14px',
-    fontWeight: 600,
-    lineHeight: '20px',
-    color: "#2A2E37",
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
+  fontSize: '14px',
+  fontWeight: 600,
+  lineHeight: '20px',
+  color: '#2A2E37',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
 }))
 
 export const BoxTitle = styled(Box)(({ theme }) => ({
@@ -103,7 +103,7 @@ export const BoxField = styled(FlexBox)(({ theme }) => ({
   minHeight: '65px',
 }))
 
-export const BoxFieldContainer = styled(Box)(({ theme }) => ({
+export const BoxFieldContainer = styled("a")(({ theme }) => ({
   width: '100%',
   backgroundColor: theme.palette.primary[50],
   padding: '8px',
@@ -126,6 +126,5 @@ export const BoxFieldContainer = styled(Box)(({ theme }) => ({
 }))
 
 export const BoxHiringProcess = styled(Box)(({ theme }) => ({
-  width: 'calc(100% / 7)'
+  width: 'calc(100% / 7)',
 }))
-
