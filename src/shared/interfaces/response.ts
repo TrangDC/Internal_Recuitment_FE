@@ -10,7 +10,6 @@ class ErrorException {
   }
 
   static hasError(json: any): boolean {
-    console.log('json', json)
     if (json?.['error'] || (json?.['errors'] && isArray(json?.['errors'])))
       return true
     return false

@@ -14,7 +14,6 @@ import DashboardLayout from 'layouts/layout/DashboardLayout'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import DoNotAllowPage from 'pages/403'
-import EmailList from 'features/email/presentation/screens/email-list'
 import ReportPage from 'pages/report'
 import EmailPage from 'pages/email-template'
 
