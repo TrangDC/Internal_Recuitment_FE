@@ -32,5 +32,6 @@ export enum MODLUE_QUERY_KEY {
   EMAIL_TEMPLATE = 'email_template',
   SLASH_COMMAND = 'slash_command',
   JOB_POSITION = 'job_position',
-  REC_TEAM= 'rec_team'
+  REC_TEAM = 'rec_team',
+  AUDIT_TRAILS = 'audit_trails'
 }

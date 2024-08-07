@@ -1,12 +1,15 @@
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { cloneDeep } from 'lodash'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import GraphQLClientService from 'services/graphql-service'
-import { BaseRecord } from 'shared/interfaces'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import { CustomGraphQLResponse } from 'shared/interfaces/response'
 import User from 'shared/schema/database/user'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
+import { FilterAuditTrails, FreeWordAuditTrails } from '../context'
+import { ModuleAuditTrails } from '../../page-sections/HistoryLog'
 
-const queryKey = 'audittrails'
+const queryKey = MODLUE_QUERY_KEY.AUDIT_TRAILS
 const GetAllAuditTrails = GraphQLClientService.buildQuery({
   operation: 'GetAllAuditTrails',
   options: {
@@ -30,6 +33,11 @@ const GetAllAuditTrails = GraphQLClientService.buildQuery({
             updatedAt
         }
     } 
+    pagination {
+      page
+      perPage
+      total
+    }
     `,
   params: {
     filter: 'AuditTrailFilter',
@@ -38,8 +46,9 @@ const GetAllAuditTrails = GraphQLClientService.buildQuery({
     pagination: 'PaginationInput',
   },
 })
+const PER_PAGE = 10
 
-type AuditTrailsJob = {
+export type AuditTrailsJob = {
   id: string
   createdBy: string
   createdInfo: User
@@ -50,72 +59,85 @@ type AuditTrailsJob = {
   record_changes: string
   createdAt: string
   updatedAt: string
-}[]
+}
 
-const useAuditTrails = (recordId: string, module: string) => {
-  const [filter, setFilter] = useState<Record<string, any>>({})
-  const [freeWord, setFreeWord] = useState<Record<string, string>>({})
+interface IAuditTrailsProps {
+  recordId: string
+  module: ModuleAuditTrails
+  variable: {
+    filter: FilterAuditTrails,
+    freeWord: FreeWordAuditTrails,
+  }
+}
 
-  const { data, ...otherValue } = useQuery({
-    queryKey: [queryKey, filter, freeWord],
-    queryFn: async () =>
-      GraphQLClientService.fetchGraphQL(GetAllAuditTrails, {
-        filter: {
-          recordId,
-          module,
-          ...filter,
-        },
-        freeWord: {
-          ...freeWord,
-        },
-      }),
+const useAuditTrails = ({module, recordId, variable}: IAuditTrailsProps) => {
+  const fetchAuditTrails = async ({ pageParam }: { pageParam: number }) => {
+    return GraphQLClientService.fetchGraphQL(GetAllAuditTrails, {
+      filter: {
+        recordId,
+        module,
+        ...variable.filter,
+      },
+      freeWord: {
+        ...variable.freeWord,
+      },
+      pagination: {
+        page: pageParam,
+        perPage: PER_PAGE,
+      },
+    })
+  }
+
+  const { data, fetchNextPage } = useInfiniteQuery({
+    queryKey: [queryKey, variable.filter, variable.freeWord],
+    queryFn: fetchAuditTrails,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
+      return lastPageParam + 1
+    },
   })
 
-  const { auditTrails_history, totalPage } = useMemo(() => {
-    if (data && isRight(data)) {
-      const response = unwrapEither(data)
-      const totalPage = Math.ceil(
-        (response?.[GetAllAuditTrails.operation]?.pagination?.total ?? 0) / 10
-      )
-      const sortData: AuditTrailsJob =
+  function handleGetRightData(rightData: CustomGraphQLResponse | undefined) {
+    const cloneData = cloneDeep(rightData)
+    if (cloneData && isRight(cloneData)) {
+      const response = unwrapEither(cloneData)
+      const totalRecords =
+        response?.[GetAllAuditTrails.operation]?.pagination?.total
+      const sortData: AuditTrailsJob[] =
         response?.[GetAllAuditTrails.operation]?.edges?.map(
           (item: any) => item?.node
         ) ?? []
       return {
-        totalPage,
+        totalRecords,
         auditTrails_history: sortData,
       }
     }
     return {
       auditTrails_history: [],
-      totalPage: 10,
+      totalRecords: 0,
     }
-  }, [data, GetAllAuditTrails.operation])
-
-  const handleFilter = (key: string, value: any) => {
-    const cloneFilter = cloneDeep(filter)
-    cloneFilter[key] = value
-    setFilter(cloneFilter)
   }
 
-  const handleFreeWord = (key: string, value: any) => {
-    const cloneFreeWord = cloneDeep(freeWord)
-    cloneFreeWord[key] = value
+  const { auditTrails_history, totalRecord } = useMemo(() => {
+    const pages = data?.pages ?? []
+    let totalRecord = 0;
 
-    setFreeWord(cloneFreeWord)
-  }
-
-  const handleMultipleFilter = (record: BaseRecord) => {
-    setFilter((prev) => ({ ...prev, ...record }))
-  }
+    const listRecord = pages.flatMap((item) => {
+      const { totalRecords, auditTrails_history } = handleGetRightData(item)
+      if(!totalRecord) totalRecord = totalRecords;
+      return auditTrails_history
+    })
+    
+    return {
+      auditTrails_history: listRecord,
+      totalRecord,
+    }
+  }, [data])
 
   return {
-    ...otherValue,
-    auditrails_history: auditTrails_history,
-    totalPage,
-    handleFilter,
-    handleFreeWord,
-    handleMultipleFilter,
+    auditTrails_history: auditTrails_history,
+    totalRecord,
+    fetchNextPage
   }
 }
 
