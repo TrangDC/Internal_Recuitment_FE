@@ -30,6 +30,15 @@ const INIT_VALUE = {
   team: [],
 }
 
+const EXAMPLE_PREVIEW = [
+  {key: 'gl:receiver_name', value: 'Harry Hieu Nguyen'},
+  {key: 'hrtm:name', value: 'D2'},
+  {key: 'hrtm:manager_name', value: 'Harry Hieu Nguyen '},
+  {key: 'hrjb:name', value: 'Software developer'},
+  {key: 'cd:source', value: 'EB - Tiktok TECHVIFY Official'},
+  {key: 'intv:time', value: 'Hiển thị From - to'},
+]
+
 interface Props {
   event?: EVENT_EMAIL_ENUM
 }
@@ -59,12 +68,21 @@ const useGetEmailKeyWord = ({ event = 'created_interview' }: Props) => {
   }, [data])
 
   const options_keyWord = useMemo(() => {
-    return Object.values(slash_command).flat()
+    const previewMap = new Map(EXAMPLE_PREVIEW.map(exp => [exp.key, exp.value]));
+    
+    const result = Object.values(slash_command).flat().map((item) => {
+      if (previewMap.has(item.key)) {
+        item.value = previewMap.get(item.key) ?? '';
+      }
+    
+      return item;
+    });
+    return result;
   }, [slash_command])
 
   return {
     slash_command,
-    options_keyWord,
+    options_keyWord: options_keyWord,
   }
 }
 
