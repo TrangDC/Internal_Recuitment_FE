@@ -20,8 +20,6 @@ const JobDetailAction = ({
   const [statusSelected, setStatusSelected] = useState<string>()
 
   const { candidateJobInterview } = useGetCandidateJobInterview(id as string)
-  const candidateJobOfTeamId =
-    jobApplicationDetail?.hiring_job?.hiring_team?.id ?? ''
   const listEnabled: {
     feedback: CandidateJobFeedback[]
     interview: CandidateInterview[]
@@ -79,7 +77,6 @@ const JobDetailAction = ({
         >
           <ListFeedBack
             listFeedback={listEnabled?.feedback}
-            candidateJobOfTeamId={candidateJobOfTeamId}
             show_feedback={show_feedback}
           />
         </Cant>

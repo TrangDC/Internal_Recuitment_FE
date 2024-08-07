@@ -1,13 +1,9 @@
 import { Box } from '@mui/material'
-import { useEffect, useRef, useState } from 'react'
 import AppButton from 'shared/components/buttons/AppButton'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import icons from 'shared/components/icons'
-import { pdfjs } from 'react-pdf'
-import {
-  downloadFile,
-  openPDFInNewTab,
-} from 'shared/utils/upload-file'
+import { Document, Page, pdfjs } from 'react-pdf'
+import { downloadFile, openPDFInNewTab } from 'shared/utils/upload-file'
 import DownloadWhiteIcon from 'shared/components/icons/DownloadWhiteIcon'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -21,42 +17,6 @@ interface IPreviewCV {
 }
 
 function PreviewCV({ pdfUrl, pageNumber }: IPreviewCV) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [page, setPage] = useState<any>(null)
-  const [isSuccess, setIsSuccess] = useState(false)
-  useEffect(() => {
-    const loadPage = async () => {
-      try {
-        if (pdfUrl) {
-          const loadingTask = pdfjs.getDocument(pdfUrl)
-          const pdf = await loadingTask.promise
-          const page = await pdf.getPage(pageNumber)
-          setPage(page)
-          setIsSuccess(true)
-        }
-      } catch (err) {
-        setIsSuccess(false)
-        console.log(err)
-      }
-    }
-    loadPage()
-  }, [pdfUrl, pageNumber])
-
-  useEffect(() => {
-    if (page && canvasRef.current) {
-      const viewport = page.getViewport({ scale: 0.5 })
-      const canvas = canvasRef.current
-      const context = canvas.getContext('2d')
-      canvas.width = 170
-      canvas.height = 240
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-      }
-      page.render(renderContext)
-    }
-  }, [page])
-
   function onDownload() {
     if (pdfUrl) downloadFile(pdfUrl, 'downloaded_file')
   }
@@ -72,7 +32,15 @@ function PreviewCV({ pdfUrl, pageNumber }: IPreviewCV) {
       borderRadius={'4px'}
       border={'hidden'}
     >
-      {isSuccess && <canvas ref={canvasRef} width={170} height={240}></canvas>}
+      <Document file={pdfUrl} renderMode="canvas" error="">
+        <Page
+          pageNumber={pageNumber}
+          height={240}
+          width={170}
+          renderAnnotationLayer={false}
+          renderTextLayer={false}
+        />
+      </Document>
       <Box
         width={'100%'}
         height={'100%'}
