@@ -40,7 +40,11 @@ export const columns = (
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => (
-      <LinkText to={`/dashboard/job-detail/${info.row.original.id}`}>
+      <LinkText
+        to={`/dashboard/job-detail/${info.row.original.id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {info.getValue()}
       </LinkText>
     ),

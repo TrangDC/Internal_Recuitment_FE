@@ -107,7 +107,7 @@ export const columns_job_request = (
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     size: 100,
   }),
-   columnHelperJob.accessor((row) => row.priority, {
+  columnHelperJob.accessor((row) => row.priority, {
     id: 'priority',
     size: 150,
     header: () => <span>Priority</span>,
@@ -159,4 +159,3 @@ export const columns_job_request = (
     },
   }),
 ]
-

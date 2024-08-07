@@ -9,7 +9,7 @@ export const BoxWrapperOuterContainer = styled(Box)(({ theme }) => ({
   boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
   overflow: 'hidden',
   marginTop: '20px',
-  width: '100%'
+  width: '100%',
 }))
 
 export const DivHeaderWrapper = styled('div')`
@@ -121,5 +121,5 @@ export const WrapperBox = styled(Box)(({ theme }) => ({
   padding: 0,
   border: '1px solid #E3E6EB',
   overflow: 'hidden',
-  borderRadius: '8px'
+  borderRadius: '8px',
 }))

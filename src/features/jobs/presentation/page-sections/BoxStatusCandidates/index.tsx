@@ -73,7 +73,7 @@ const BoxStatusCandidates = ({
 
   const handleDragStart = (item: CandidateStatusItem, cantDrag: boolean) => {
     if (!cantDrag) return
-    return (event: React.DragEvent<HTMLDivElement>) => {
+    return (event: React.DragEvent<HTMLAnchorElement>) => {
       event.dataTransfer.setData('candidate', JSON.stringify(item))
     }
   }
@@ -126,11 +126,11 @@ const BoxStatusCandidates = ({
           return (
             <BoxFieldContainer
               key={item.id}
-              onClick={() => {
-                navigate(`/dashboard/job-application-detail/${item.id}`)
-              }}
               draggable={true}
               onDragStart={handleDragStart(item, cantDrag)}
+              href={`/dashboard/job-application-detail/${item.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <Span>{item.candidate.name}</Span>
               <FlexBox alignItems={'center'} gap={'6px'}>
