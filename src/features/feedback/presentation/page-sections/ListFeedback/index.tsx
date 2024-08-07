@@ -34,15 +34,10 @@ import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
 
 interface Props {
   listFeedback: CandidateJobFeedback[]
-  candidateJobOfTeamId: string
   show_feedback?: boolean
 }
 
-const ListFeedBack = ({
-  listFeedback,
-  candidateJobOfTeamId,
-  show_feedback = true,
-}: Props) => {
+const ListFeedBack = ({ listFeedback, show_feedback = true }: Props) => {
   const {
     openCreate,
     setOpenCreate,
@@ -130,7 +125,9 @@ const ListFeedBack = ({
                     >
                       <DeleteFeedbackButtonPermission
                         ownerId={feedback?.owner?.id ?? ''}
-                        candidateJobOfTeamId={candidateJobOfTeamId}
+                        candidateJobOfTeamId={
+                          feedback?.owner?.hiring_team?.id ?? ''
+                        }
                         onClick={() => {
                           handleOpenDelete(feedback.id)
                         }}

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import GraphQLClientService from 'services/graphql-service'
 import { CustomGraphQLResponse } from 'shared/interfaces/response'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
-
+import { v4 as uuidv4 } from 'uuid'
 const queryKey = 'attachments'
 const createUrlGetAttachment = GraphQLClientService.buildQuery({
   operation: 'CreateAttachmentSASURL',
@@ -48,13 +48,9 @@ interface createAttachmentProps {
   callbackSuccess?: (value: any, params: ParamCreateURLAttachment) => void
 }
 
-const useGetUrlGetAttachment = (props: createAttachmentProps = {}) => {
-  const { callbackSuccess } = props
-
+const useGetUrlGetAttachment = (props?: createAttachmentProps) => {
   const queryClient = useQueryClient()
-
   const { mutate, mutateAsync } = useMutation({
-    mutationKey: [queryKey],
     mutationFn: (newAttachment: ParamCreateURLAttachment) => {
       const { file, callback, ...otherValue } = newAttachment
       return GraphQLClientService.fetchGraphQL(createUrlGetAttachment, {
@@ -65,7 +61,7 @@ const useGetUrlGetAttachment = (props: createAttachmentProps = {}) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] })
       if (data && isRight(data)) {
         const newData = unwrapEither(data)
-        callbackSuccess && callbackSuccess(newData, params)
+        props?.callbackSuccess?.(newData, params)
         params.callback && params.callback({ data: newData, params })
       }
     },
