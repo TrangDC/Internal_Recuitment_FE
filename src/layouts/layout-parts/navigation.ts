@@ -50,6 +50,13 @@ export const navigation: INavigation[] = [
     module: 'JOBS',
   },
   {
+    name: 'Application',
+    path: '/dashboard/application',
+    icon: duotone.Application,
+    type: 'link',
+    module: 'JOBS',
+  },
+  {
     name: 'Candidates',
     path: '/dashboard/candidates',
     icon: duotone.Candidates,

@@ -16,7 +16,7 @@ const CandidateJobList = () => {
       <Box>
         <IconScreen
           Icon={CandidateIcon}
-          textLable={'Candidate details'}
+          textLabel={'Candidate details'}
           go_back={true}
         />
       </Box>

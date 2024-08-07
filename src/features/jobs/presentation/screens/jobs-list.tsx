@@ -17,7 +17,7 @@ const JobsList = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={MicroScope} textLable={translation.MODLUE_JOBS.jobs} />
+        <IconScreen Icon={MicroScope} textLabel={translation.MODLUE_JOBS.jobs} />
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>
         <TabCustomize renderItem={renderItem} />

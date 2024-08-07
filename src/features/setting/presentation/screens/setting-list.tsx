@@ -8,7 +8,7 @@ const TeamList = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={Settings} textLable={'Setting'} />
+        <IconScreen Icon={Settings} textLabel={'Setting'} />
       </Box>
       <BoxWrapperOuterContainer>
         <HeadingWrapper>

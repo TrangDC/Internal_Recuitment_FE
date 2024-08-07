@@ -12,6 +12,13 @@ export const BoxWrapperOuterContainer = styled(Box)(({ theme }) => ({
   width: '100%',
 }))
 
+export const WrapperContainer = styled(Box)(({ theme }) => ({
+  borderRadius: '8px',
+  overflow: 'hidden',
+  background: 'white'
+}))
+
+
 export const DivHeaderWrapper = styled('div')`
   display: flex;
   align-items: end;

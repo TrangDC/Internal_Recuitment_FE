@@ -46,7 +46,7 @@ const JobPositionList = () => {
       <Box>
         <IconScreen
           Icon={Jobs}
-          textLable="Job positions"
+          textLabel="Job positions"
         />
       </Box>
       <BoxWrapperOuterContainer>

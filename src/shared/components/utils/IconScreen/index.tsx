@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 
 interface Props {
   Icon: React.ComponentType<SvgIconProps>
-  textLable: string
+  textLabel: string
   icon_style?: SxProps
   parent_style?: CSSProperties
   go_back?: boolean
@@ -17,7 +17,7 @@ interface Props {
 
 const IconScreen = ({
   Icon,
-  textLable,
+  textLabel,
   icon_style = { color: 'primary.main' },
   parent_style,
   go_back = false,
@@ -30,7 +30,7 @@ const IconScreen = ({
         <Icon sx={{ ...icon_style }} />
       </IconWrapper>
       <FlexBox flexDirection={'column'} gap={'2px'}>
-        <TextHeading>{textLable}</TextHeading>
+        <TextHeading>{textLabel}</TextHeading>
         {go_back && (
           <LinkGoBack onClick={() => navigate(-1)}>
             <GoBackIcon

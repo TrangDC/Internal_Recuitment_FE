@@ -20,7 +20,7 @@ const CandidateList = () => {
         <FlexBox gap={0.5} alignItems="center">
           <IconScreen
             Icon={CandidateIcon}
-            textLable={translation.MODLUE_CANDIDATES.candidates}
+            textLabel={translation.MODLUE_CANDIDATES.candidates}
           />
         </FlexBox>
       </Box>

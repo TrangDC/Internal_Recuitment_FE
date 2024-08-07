@@ -57,7 +57,7 @@ const EmailList = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={Mail} textLable={'Email notification setting'} />
+        <IconScreen Icon={Mail} textLabel={'Email notification setting'} />
       </Box>
       <BoxWrapperOuterContainer>
         <HeadingWrapper>

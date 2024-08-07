@@ -6,13 +6,12 @@ import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import useActionTable from '../../../hooks/table/useActionTable'
 import useJobTable from '../../../hooks/table/useJobTable'
-import { DivHeaderWrapper } from '../../../shared/styles'
+import { DivFilter, DivHeaderWrapper } from '../../../shared/styles'
 import CreateJobModal from '../CreateJobModal'
 import EditJobModal from '../EditJobModal'
 import DeleteJobModal from '../DeleteJobModal'
 import { CloseJobModal } from '..'
 import useFilterJobs from '../../../hooks/table/useFilterJobs'
-import FlexBox from 'shared/components/flexbox/FlexBox'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import StatusJobAutoComplete from 'shared/components/autocomplete/status-job-autocomplete'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
@@ -67,7 +66,7 @@ const AllJob = () => {
     <Fragment>
       <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
         <HeadingWrapper>
-          <FlexBox>
+          <DivFilter>
             <ControllerFilter
               control={controlFilter}
               title="Team"
@@ -200,7 +199,7 @@ const AllJob = () => {
                 />
               )}
             />
-          </FlexBox>
+          </DivFilter>
           <DivHeaderWrapper>
             <SearchInput
               ref={searchRef}

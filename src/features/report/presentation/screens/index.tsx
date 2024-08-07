@@ -21,7 +21,7 @@ function ReportScreen() {
       <Box marginBottom={'20px'}>
         <IconScreen
           Icon={ReportIcon}
-          textLable={'Report'}
+          textLabel={'Report'}
           icon_style={{
             '& path': {
               fill: '#2499EF',
