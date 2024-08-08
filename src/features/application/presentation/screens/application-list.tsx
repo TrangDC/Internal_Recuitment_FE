@@ -11,7 +11,7 @@ const ApplicationList = () => {
         <IconScreen Icon={ApplicationIcon} textLabel="Application" />
       </Box>
       <WrapperContainer sx={{ width: '100%', marginTop: '20px' }}>
-       <ApplicationPage />
+        <ApplicationPage />
       </WrapperContainer>
     </Box>
   )

@@ -16,11 +16,6 @@ export const DivFilter = styled('div')`
   gap: 16px;
 `
 
-export const DivWrapperProcess = styled(FlexBox)(({ theme }) => ({
-  width: '100%',
-  padding: '24px 16px',
-}))
-
 export const SpanHiring = styled(Span)(({ theme }) => ({
   fontSize: '15px',
   color: '#00508A',
@@ -41,7 +36,6 @@ export const BoxContainerCandidate = styled(Box)(({ theme }) => ({
   width: '240px',
 
   '&.collapse': {
-    // color: 'red'
     width: 'auto',
     minWidth: 'auto',
     writingMode: 'vertical-lr',
@@ -139,8 +133,4 @@ export const BoxFieldContainer = styled(Box)(({ theme }) => ({
     lineHeight: '14.63px',
     color: theme.palette.grey[500],
   },
-}))
-
-export const BoxHiringProcess = styled(Box)(({ theme }) => ({
-  width: 'calc(100% / 7)',
 }))

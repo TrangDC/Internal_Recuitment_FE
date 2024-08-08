@@ -35,17 +35,18 @@ const CandidateList = () => {
 
   const filter_value = useMemo(() => {
     return {
-      created_by_ids: dataFilterWithValue.created_by_ids,
-      location: dataFilterWithValue.location,
-      priority: dataFilterWithValue.priority,
-      skill_ids: dataFilterWithValue.skill_id,
-      hiring_team_ids: dataFilterWithValue.hiring_team_ids,
-      status: 'opened',
+      hiring_job_id: dataFilterWithValue.hiring_job_id,
+      rec_id: dataFilterWithValue.rec_id,
+      level: dataFilterWithValue.level,
+      hiring_team_id: dataFilterWithValue.hiring_team_id,
+      status: dataFilterWithValue.status
+    
     }
   }, [JSON.stringify(dataFilterWithValue)])
 
   const { useTableReturn } = useApplyJobTable({
-    filters: { candidate_id: 'c3d5b3e3-ba75-46ff-ac90-afb3c446351b' },
+    filters: filter_value,
+    search
   })
 
   const { actions } = useBuildActionTableCandidateJobs({

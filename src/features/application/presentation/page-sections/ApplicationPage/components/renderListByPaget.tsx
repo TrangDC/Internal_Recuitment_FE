@@ -2,6 +2,7 @@ import CandidateList from './CandidateList'
 import CandidateJob from './CandidateJob'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import { useMemo } from 'react'
+import { OPENING_PAGE_APPLICATION } from 'features/application/shared/constants'
 
 const RenderListByPage = () => {
   const { action_filter } = useContextChangeStatus()
@@ -13,12 +14,12 @@ const RenderListByPage = () => {
   }, [JSON.stringify(dataFilterWithValue)])
 
   switch (page_job) {
-    case 'list_job':
+    case OPENING_PAGE_APPLICATION.list_candidate:
       return <CandidateList />
-    case 'candidate_job':
+    case OPENING_PAGE_APPLICATION.kanban:
       return <CandidateJob />
     default:
-      return null
+      return <CandidateList />
   }
 }
 

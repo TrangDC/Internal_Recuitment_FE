@@ -1,7 +1,7 @@
 import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
-import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
-import useCandidatesJob from 'features/jobs/hooks/crud/useGetCandidateJob'
-import useFilterJobsOpening from 'features/jobs/hooks/table/useFilterJobsOpening'
+import { CandidateStatusItem } from 'features/application/domain/interfaces'
+import useCandidatesJob from 'features/application/hooks/crud/useGetCandidateJob'
+import useFilterJobsOpening from 'features/application/hooks/table/useFilterJobsOpening'
 import { MutableRefObject, ReactNode, createContext, useContext } from 'react'
 import { ISearchData } from 'shared/components/table/hooks/useSearchList'
 import {
@@ -38,11 +38,10 @@ interface InitialState {
     useFilterReturn: UseFilterReturn<
       InterfaceGenerate<{
         hiring_job_id: 'string[]'
-        hiring_team_ids: 'string[]'
-        priority: 'string'
-        skill_id: 'string[]'
-        location: 'string'
-        created_by_ids: 'string[]'
+        hiring_team_id: 'string[]'
+        status: 'string'
+        rec_id: 'string[]'
+        level: 'string'
         page_job: 'string'
       }>
     >

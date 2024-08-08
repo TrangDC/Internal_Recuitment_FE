@@ -1,44 +1,41 @@
-import { OPENING_PAGE_JOB } from 'features/jobs/shared/constants'
-import { JobsFilterOpening } from 'features/jobs/shared/constants/schema-filter'
+import { OPENING_PAGE_APPLICATION } from 'features/application/shared/constants'
+import { ApplicationFilter } from 'features/application/shared/constants/schema-filter'
 import { isEmpty } from 'lodash'
 import { useFilterTable } from 'shared/components/table'
 
 function useFilterJobsOpening() {
   const { useFilterReturn, useSearchListReturn } =
-    useFilterTable<JobsFilterOpening>({
+    useFilterTable<ApplicationFilter>({
       filter: {
         defaultFilter: {
           hiring_job_id: [],
-          priority: '',
-          hiring_team_ids: [],
-          skill_id: [],
-          location: '',
-          created_by_ids: [],
-          page_job: OPENING_PAGE_JOB.list_job,
+          hiring_team_id: [],
+          rec_id: [],
+          level: '',
+          status: '',
+          page_job: OPENING_PAGE_APPLICATION.list_candidate,
         },
         formatDataWithValue: (data) => {
           return {
-            priority: Number(data?.priority?.value) || undefined,
+            status: data?.status?.value || undefined,
             hiring_job_id: !isEmpty(data?.hiring_job_id)
               ? data?.hiring_job_id?.map((o) => o.value)
               : undefined,
-              hiring_team_ids: !isEmpty(data?.hiring_team_ids)
-              ? data?.hiring_team_ids?.map((o) => o.value)
+            hiring_team_id: !isEmpty(data?.hiring_team_id)
+              ? data?.hiring_team_id?.map((o) => o.value)
               : undefined,
-            skill_id: !isEmpty(data?.skill_id)
-              ? data?.skill_id?.map((o) => o.value)
+            rec_id: !isEmpty(data?.rec_id)
+              ? data?.rec_id?.map((o) => o.value)
               : undefined,
-            location: data?.location?.value || undefined,
-            created_by_ids: !isEmpty(data?.created_by_ids)
-              ? data?.created_by_ids?.map((o) => o.value)
-              : undefined,
-            page_job: data?.page_job?.value ?? OPENING_PAGE_JOB.list_job,
+            level: data?.level?.value || undefined,
+            page_job:
+              data?.page_job?.value ?? OPENING_PAGE_APPLICATION.list_candidate,
           }
         },
       },
-      page: 'opening-job',
+      page: 'application',
       search: {
-        searchKey: ['name'],
+        searchKey: ['hiring_job'],
       },
       shouldCacheData: true,
     })

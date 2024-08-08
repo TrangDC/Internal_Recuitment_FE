@@ -42,7 +42,7 @@ const CandidateJob = () => {
   }, [JSON.stringify(dataFilterWithValue)])
 
   useEffect(() => {
-    handleSearchFreeWorld(search?.name)
+    handleSearchFreeWorld(search?.hiring_job)
   }, [search])
 
   return (
