@@ -16,7 +16,7 @@ const CandidateJobDetail = () => {
       <Box>
         <IconScreen
           Icon={CandidateIcon}
-          textLable={'Job application detail'}
+          textLabel={'Job application detail'}
           go_back={true}
         />
       </Box>

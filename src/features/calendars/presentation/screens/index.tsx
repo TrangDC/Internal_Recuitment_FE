@@ -149,7 +149,7 @@ function CalendarsScreen() {
       <Box>
         <IconScreen
           Icon={duotone.Calender}
-          textLable={translation.MODLUE_CALENDAR.canlendar}
+          textLabel={translation.MODLUE_CALENDAR.canlendar}
         />
       </Box>
       <BoxWrapperOuterContainer>

@@ -20,7 +20,7 @@ const JobDetail = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={Jobs} textLable={'Job position detail'} go_back={true}/>
+        <IconScreen Icon={Jobs} textLabel={'Job position detail'} go_back={true}/>
       </Box>
       <Box sx={{ width: '100%', marginTop: '20px' }}>
         <TabCustomize renderItem={renderItem} />

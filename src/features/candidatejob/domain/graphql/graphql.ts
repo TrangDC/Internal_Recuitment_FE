@@ -81,6 +81,8 @@ const useGraphql = () => {
           }
           candidate {
             name
+            phone
+            email
           }
           created_at
           updated_at
@@ -94,7 +96,7 @@ const useGraphql = () => {
     `,
     params: {
       pagination: 'PaginationInput',
-      filter: 'CandidateJobFilter!',
+      filter: 'CandidateJobFilter',
       orderBy: 'CandidateJobOrder',
       freeWord: 'CandidateJobFreeWord',
     },

@@ -55,7 +55,7 @@ const UserList = () => {
 
   return (
     <Box pt={2} pb={4}>
-      <IconScreen Icon={HiringTeam} textLable={'Users'} />
+      <IconScreen Icon={HiringTeam} textLabel={'Users'} />
       <BoxWrapperOuterContainer>
         <HeadingWrapper>
           <FlexBox>

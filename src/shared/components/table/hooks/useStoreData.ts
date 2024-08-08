@@ -12,6 +12,7 @@ export type ModuleProject =
   | 'email-template'
   | 'job-position'
   | 'users'
+  | 'application'
 
 export type StorageFilter<T> = {
   filter?: ListFiltersData<T>

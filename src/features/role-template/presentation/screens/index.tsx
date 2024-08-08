@@ -51,7 +51,7 @@ const RoleTemplateList = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={Settings} textLable={'Role template'} />
+        <IconScreen Icon={Settings} textLabel={'Role template'} />
       </Box>
       <BoxWrapperOuterContainer>
         <HeadingWrapper>

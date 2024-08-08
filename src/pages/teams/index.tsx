@@ -38,7 +38,7 @@ function TeamsPage() {
       <Box pt={2} pb={4}>
         <Box>
           <FlexBox gap={0.5} alignItems="center">
-            <IconScreen Icon={TeamIcon} textLable="Teams" />
+            <IconScreen Icon={TeamIcon} textLabel="Teams" />
           </FlexBox>
         </Box>
         <Box sx={{ width: '100%', marginTop: '20px' }}>

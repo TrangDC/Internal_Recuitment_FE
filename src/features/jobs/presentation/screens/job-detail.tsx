@@ -70,7 +70,7 @@ const JobDetail = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={Jobs} textLable={jobDetail?.name} go_back={true} />
+        <IconScreen Icon={Jobs} textLabel={jobDetail?.name} go_back={true} />
       </Box>
       <FlexBox flexDirection={'column'} gap={2.5} marginTop={0}>
         <BoxWrapperOuterContainer>

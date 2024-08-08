@@ -75,6 +75,10 @@ const RecTeamDetailPage = Loadable(
   lazy(() => import('../pages/rec-team/rec-team-detail'))
 )
 
+const ApplicationPage = Loadable(
+  lazy(() => import('../pages/application/index'))
+)
+
 // 404/Error page
 const Error = Loadable(lazy(() => import('../pages/404')))
 
@@ -344,6 +348,21 @@ export const AppRoutes = () => {
             element={PermissionLayout({
               module: 'REC_TEAMS',
               children: <RecTeamDetailPage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+          <Route
+            path="application"
+            element={PermissionLayout({
+              module: 'REC_TEAMS',
+              children: <ApplicationPage />,
               checkBy: {
                 compare: 'hasAny',
                 permissions: [
