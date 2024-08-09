@@ -335,7 +335,7 @@ const useCandidatesJob = () => {
     freeWord,
   }: ParamGetCandidateJob): Promise<CandidatesByStatus> => {
     const data = await GraphQLClientService.fetchGraphQL(
-      getCandidatesByJob.query,
+      getCandidatesByJob,
       {
         orderBy: {
           direction: 'DESC',

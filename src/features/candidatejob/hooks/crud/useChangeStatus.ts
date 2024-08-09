@@ -80,6 +80,7 @@ function useChangeStatus(props: useChangeStatusProps) {
         },
         note: '',
       }
+ 
       mutateAsync(payload).then((data) => {
         if (isRight(data)) {
           mutateCreateFeedback({
@@ -89,7 +90,7 @@ function useChangeStatus(props: useChangeStatusProps) {
               feedback: value?.feedback ?? '',
             },
             note: '',
-          }).then(() => callbackSuccess?.(data))
+          }).then(() => callbackSuccess?.({id: id, status: value?.status}))
         }
       })
     })()
