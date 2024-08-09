@@ -8,7 +8,6 @@ import { Span, Tiny } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import PhoneIcon from 'shared/components/icons/PhoneIcon'
 import { DragEventHandler, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { ENABLED_CHANGE_STATUS } from '../../../shared/constants'
 import { toast } from 'react-toastify'
 import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
@@ -44,7 +43,6 @@ const BoxStatusCandidates = ({
   Note,
   status,
 }: Props) => {
-  const navigate = useNavigate()
   const [candidateSelected, setCandidateSelected] = useState({
     candidateId: '',
     status: '',

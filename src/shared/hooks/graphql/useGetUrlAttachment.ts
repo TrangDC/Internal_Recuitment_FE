@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import GraphQLClientService from 'services/graphql-service'
 import { CustomGraphQLResponse } from 'shared/interfaces/response'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
-import { v4 as uuidv4 } from 'uuid'
+
 const queryKey = 'attachments'
 const createUrlGetAttachment = GraphQLClientService.buildQuery({
   operation: 'CreateAttachmentSASURL',

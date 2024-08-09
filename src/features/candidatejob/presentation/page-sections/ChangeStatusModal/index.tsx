@@ -75,9 +75,9 @@ function ChangeStatusModal({
     callbackSuccess: (data) => {
       setOpen(false)
       onSuccess?.({
-        id: data?.id,
+        id: data?.id as string,
         prevStatus: statusCurrent,
-        updateStatus: data?.status,
+        updateStatus: data.status,
       })
     },
     defaultValues: {
