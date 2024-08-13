@@ -65,7 +65,7 @@ export const BoxCandidateTitle = styled(Box)(({ theme }) => ({
   },
 }))
 
-export const BoxFieldInfo = styled(Box)(({ theme }) => ({
+export const BoxFieldInfo = styled('a')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '6px',
@@ -117,7 +117,7 @@ export const BoxField = styled(FlexBox)(({ theme }) => ({
   minHeight: '65px',
 }))
 
-export const BoxFieldContainer = styled(Box)(({ theme }) => ({
+export const BoxFieldContainer = styled('a')(({ theme }) => ({
   width: '100%',
   backgroundColor: theme.palette.primary[50],
   padding: '8px',

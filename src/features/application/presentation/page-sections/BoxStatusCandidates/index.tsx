@@ -73,7 +73,7 @@ const BoxStatusCandidates = ({
 
   const handleDragStart = (item: CandidateStatusItem, cantDrag: boolean) => {
     if (!cantDrag) return
-    return (event: React.DragEvent<HTMLDivElement>) => {
+    return (event: React.DragEvent<HTMLAnchorElement>) => {
       event.dataTransfer.setData('candidate', JSON.stringify(item))
     }
   }

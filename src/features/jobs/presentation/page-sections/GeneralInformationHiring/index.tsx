@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import useTextTranslation from 'shared/constants/text'
 import useCandidatesByJob from '../../../hooks/crud/useCandidatesByJob'
 import {
+  BoxContainerCandidate,
   BoxHiringProcess,
   DivWrapperProcess,
   SpanHiring,
@@ -12,12 +13,14 @@ import BoxTextSquare from 'shared/components/utils/boxText'
 import { ENUM_STATUS_CANDIDATE } from 'shared/constants/constants'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Scrollbar from 'shared/components/ScrollBar'
+import { useState } from 'react'
+import CollapseLeftIcon from 'shared/components/icons/CollapseLeftIcon'
+import CollapseRightIcon from 'shared/components/icons/CollapseRightIcon'
 
 const GenaralInformationHiring = () => {
   const translation = useTextTranslation()
   const { id } = useParams()
   const { candidatesStatus } = useCandidatesByJob(id as string)
-
   return (
     <DivWrapperProcess
       flexDirection={'column'}

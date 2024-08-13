@@ -7,6 +7,7 @@ import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { CreateHiringJobArguments } from 'shared/schema/database/hiring_job'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 
 interface createJobProps {
   defaultValues?: Partial<FormDataSchema>
@@ -14,6 +15,7 @@ interface createJobProps {
 }
 
 function useCreateJob(props: createJobProps = { defaultValues: {} }) {
+  const { user } = useAuthorization()
   const { defaultValues, callbackSuccess } = props
   const { createJob, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
@@ -27,6 +29,8 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
       salary_from: '0',
       salary_to: '0',
       entity_skill_records: {},
+      hiring_team_id: user?.teamId ?? '',
+      created_by: user?.id ?? '',
       ...defaultValues,
     },
     resolver: yupResolver(schema),
@@ -60,7 +64,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
           hiring_team_id: value?.hiring_team_id,
           location: value?.location,
           priority: Number(value?.priority),
-          job_position_id: value?.job_position_id
+          job_position_id: value?.job_position_id,
         },
         note: '',
       }
@@ -68,19 +72,18 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     })()
   }
 
-  const handleChangeManager = async (hiring_team_id: string) => {
-    if (!hiring_team_id) {
-      setValue('created_by', '')
-      return
-    }
-
-    const { managers_first } = await getMembersByTeam(hiring_team_id)
-    if (isEmpty(managers_first)) {
-      setValue('created_by', '')
-      return
-    }
-    setValue('created_by', managers_first?.id)
-  }
+  // const handleChangeManager = async (hiring_team_id: string) => {
+  //   if (!hiring_team_id) {
+  //     setValue('created_by', '')
+  //     return
+  //   }
+  //   const { managers_first } = await getMembersByTeam(hiring_team_id)
+  //   if (isEmpty(managers_first)) {
+  //     setValue('created_by', '')
+  //     return
+  //   }
+  //   setValue('created_by', managers_first?.id)
+  // }
 
   const resetSalary = () => {
     setValue('salary_from', '0')
@@ -95,7 +98,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     formState,
     action: {
       resetSalary,
-      handleChangeManager,
+      //handleChangeManager,
       onSubmit,
     },
   }
