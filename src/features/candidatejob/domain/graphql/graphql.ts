@@ -163,6 +163,7 @@ const useGraphql = () => {
         interview_feature
         onboard_date
         offer_expiration_date
+        level
         owner {
           id
           name

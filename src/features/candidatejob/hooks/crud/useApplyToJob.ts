@@ -4,7 +4,7 @@ import { schema, FormDataSchema } from '../../shared/constants/schema'
 import { removeStatusAttachment } from 'shared/utils/utils'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { convertToEndDateUTC } from 'shared/utils/date'
-import { CreateCandidateJobArguments } from 'shared/schema/database/candidate_job'
+import { CreateCandidateJobArguments, LevelCandidateJob } from 'shared/schema/database/candidate_job'
 
 interface useApplyToJobProps {
   defaultValues?: Partial<FormDataSchema>
@@ -25,6 +25,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
       attachments: [],
       offer_expiration_date: null,
       onboard_date: null,
+      level: null,
       ...defaultValues,
     },
     resolver: yupResolver(schema),
@@ -62,9 +63,11 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
           failed_reason: [],
           hiring_job_id: value?.hiring_job_id,
           status: value?.status,
+          level: value?.level as LevelCandidateJob | null
         },
         note: '',
       }
+
       mutate(payload)
     })()
   }

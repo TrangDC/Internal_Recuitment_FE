@@ -1,3 +1,4 @@
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 
 export const CANDIDATE_STATUS = {
@@ -5,46 +6,52 @@ export const CANDIDATE_STATUS = {
   interviewing: { text: 'Interviewing', backgroundColor: '#5CBAFE' },
   offering: { text: 'Offering', backgroundColor: '#20A4A9' },
   hired: { text: 'Hired', backgroundColor: '#7874FE' },
-  kiv: { text: 'KIV', backgroundColor: '#FF9777' },
   offer_lost: { text: 'Offered lost', backgroundColor: '#82868C' },
   ex_staff: { text: 'Ex-staff', backgroundColor: '#000' },
   new: { text: 'New', backgroundColor: '#FC105C' },
+  failed_cv: { text: 'Failed CV', backgroundColor: '#82868C' },
+  failed_interview: { text: 'Failed Interview', backgroundColor: '#82868C' },
 }
 
 export const list_status_disabled = {
-  [STATUS_CANDIDATE.APPLIED]: [
-    STATUS_CANDIDATE.APPLIED,
-    STATUS_CANDIDATE.EX_STAFTT,
-    STATUS_CANDIDATE.HIRED,
-    STATUS_CANDIDATE.OFFERED_LOST,
+  [application_data.applied.value]: [
+    application_data.applied.value,
+    application_data.ex_staff.value,
+    application_data.hired.value,
+    application_data.offer_lost.value,
+    application_data.failed_interview.value,
   ],
-  [STATUS_CANDIDATE.INTERVIEWING]: [
-    STATUS_CANDIDATE.EX_STAFTT,
-    STATUS_CANDIDATE.APPLIED,
-    STATUS_CANDIDATE.INTERVIEWING,
-    STATUS_CANDIDATE.HIRED,
-    STATUS_CANDIDATE.OFFERED_LOST,
+  [application_data.interviewing.value]: [
+    application_data.ex_staff.value,
+    application_data.applied.value,
+    application_data.interviewing.value,
+    application_data.hired.value,
+    application_data.offer_lost.value,
+    application_data.failed_cv.value,
   ],
-  [STATUS_CANDIDATE.OFFERING]: [
-    STATUS_CANDIDATE.APPLIED,
-    STATUS_CANDIDATE.INTERVIEWING,
-    STATUS_CANDIDATE.OFFERING,
-    STATUS_CANDIDATE.KIV,
-    STATUS_CANDIDATE.EX_STAFTT,
+  [application_data.offering.value]: [
+    application_data.applied.value,
+    application_data.interviewing.value,
+    application_data.offering.value,
+    application_data.failed_cv.value,
+    application_data.failed_interview.value,
+    application_data.ex_staff.value
   ],
-  [STATUS_CANDIDATE.HIRED]: [
-    STATUS_CANDIDATE.APPLIED,
-    STATUS_CANDIDATE.INTERVIEWING,
-    STATUS_CANDIDATE.OFFERING,
-    STATUS_CANDIDATE.HIRED,
-    STATUS_CANDIDATE.KIV,
-    STATUS_CANDIDATE.OFFERED_LOST,
+  [application_data.hired.value]: [
+    application_data.applied.value,
+    application_data.interviewing.value,
+    application_data.offering.value,
+    application_data.hired.value,
+    application_data.failed_cv.value,
+    application_data.failed_interview.value,
+    application_data.offer_lost.value,
   ],
 }
 
 export const status_disabled_applied = [
-  STATUS_CANDIDATE.HIRED,
-  STATUS_CANDIDATE.KIV,
-  STATUS_CANDIDATE.OFFERED_LOST,
-  STATUS_CANDIDATE.EX_STAFTT,
+  application_data.hired.value,
+  application_data.failed_cv.value,
+  application_data.failed_interview.value,
+  application_data.offer_lost.value,
+  application_data.ex_staff.value,
 ]

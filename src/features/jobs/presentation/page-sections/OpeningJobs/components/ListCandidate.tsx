@@ -1,24 +1,47 @@
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import BoxCandidate from './BoxCandidate'
 import Scrollbar from 'shared/components/ScrollBar'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import { Box } from '@mui/material'
 import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { CircularLoading } from '../styles'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { removeEmptyInObject } from 'shared/utils/utils'
+import { DragDropProvider } from 'shared/components/dnd'
+import Droppable from 'shared/components/dnd/components/Droppable'
+import BoxCandidateJob from './BoxCandidateJob'
+import { ENABLED_CHANGE_STATUS } from 'features/application/shared/constants'
+import { toast } from 'react-toastify'
+import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
+import { CandidateStatusEnum } from 'shared/schema'
+import Candidate from 'shared/schema/database/candidate'
+import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
+import CandidateJobDB from 'shared/schema/database/candidate_job'
+import { ChangeStatusModal } from 'features/candidatejob/presentation/page-sections'
+import { BoxDroppableCandidate } from 'features/application/shared/styles'
 
 const ListCandidate = () => {
   const {
     data,
     show_more,
     total_data: { total_current },
-    actions: { handleFetchNextPage },
+    actions: { handleFetchNextPage, handleUpdateStatus },
   } = useContextChangeStatus()
 
-  const { applied, interviewing, offering, hired, kiv, offer_lost, ex_staff } =
+  const { applied, interviewing, offering, hired, failedCV, failedInterview, offer_lost, ex_staff } =
     data
+
+  //change status hiring process
+  const [candidateSelected, setCandidateSelected] = useState<Candidate>()
+  const [destination, setDestination] = useState<string>('')
+
+  const {
+    handleOpenChangeStatus,
+    openChangeStatus,
+    setOpenChangeStatus,
+    rowData,
+    rowId,
+  } = useActionTable<CandidateJobDB>()
 
   const { actions, action_filter } = useContextChangeStatus()
   const { handleFilter, handleFreeWord } = actions
@@ -59,85 +82,200 @@ const ListCandidate = () => {
       >
         <Scrollbar>
           <FlexBox gap={0.75}>
-            <BoxCandidate
-              title="APPLIED"
-              number_candidates={applied?.length}
-              status="applied"
-              list_candidates={applied}
-            />
+            <DragDropProvider
+              onDragEnd={({ destinationId, data, beginId }) => {
+                if (!destinationId) return
+                //get list status is enabled dragging for each status hiring process
+                const listChange = ENABLED_CHANGE_STATUS[data?.status]
 
-            <BoxCandidate
-              title="INTERVIEWING"
-              number_candidates={interviewing?.length}
-              status="interviewing"
-              list_candidates={interviewing}
-            />
-            <BoxCandidate
-              title="OFFERING"
-              number_candidates={offering?.length}
-              status="offering"
-              list_candidates={offering}
-            />
-            <BoxCandidate
-              title="HIRED"
-              number_candidates={hired?.length}
-              status="hired"
-              list_candidates={hired}
-              Note={
-                <BoxTextSquare
-                  boxProps={{
-                    sx: {
-                      background: '#D4FCEC',
-                      color: '#20A4A9',
-                    },
+                if (listChange.includes(destinationId)) {
+                  setCandidateSelected({
+                    ...data.candidate,
+                    status: data.status,
+                  })
+                  handleOpenChangeStatus(data.id, data)
+                  setDestination(destinationId)
+                } else {
+                  toast.error(
+                    `Cannot move candidate from ${STATUS_CANDIDATE_TEXT[data?.status as CandidateStatusEnum]} to ${STATUS_CANDIDATE_TEXT[destinationId as CandidateStatusEnum]}`
+                  )
+                }
+              }}
+            >
+              <BoxDroppableCandidate>
+                <Droppable droppableId="applied">
+                  {({ innerRef, droppableId }) => {
+                    return (
+                      <BoxCandidateJob
+                        title="APPLIED"
+                        number_candidates={applied?.length}
+                        list_candidates={applied}
+                        droppableId={droppableId}
+                      />
+                    )
                   }}
-                  content="Success"
-                />
-              }
-            />
-            <BoxCandidate
-              title="KIV"
-              number_candidates={kiv?.length}
-              status="kiv"
-              list_candidates={kiv}
-              Note={
-                <BoxTextSquare
-                  boxProps={{
-                    sx: {
-                      background: '#FFE4E1',
-                      color: '#DB4E82',
-                    },
+                </Droppable>
+              </BoxDroppableCandidate>
+              <BoxDroppableCandidate>
+                <Droppable droppableId="interviewing">
+                  {({ innerRef, droppableId }) => {
+                    return (
+                      <BoxCandidateJob
+                        title="INTERVIEWING"
+                        number_candidates={interviewing?.length}
+                        list_candidates={interviewing}
+                        droppableId={droppableId}
+                      />
+                    )
                   }}
-                  content="Failed"
-                />
-              }
-            />
-            <BoxCandidate
-              title="OFFERED LOST"
-              number_candidates={offer_lost?.length}
-              status="offer_lost"
-              list_candidates={offer_lost}
-              Note={
-                <BoxTextSquare
-                  boxProps={{
-                    sx: {
-                      background: '#FFE4E1',
-                      color: '#DB4E82',
-                    },
+                </Droppable>
+              </BoxDroppableCandidate>
+              <BoxDroppableCandidate>
+                <Droppable droppableId="offering">
+                  {({ innerRef, droppableId }) => {
+                    return (
+                      <BoxCandidateJob
+                        title="OFFERING"
+                        number_candidates={offering?.length}
+                        list_candidates={offering}
+                        droppableId={droppableId}
+                      />
+                    )
                   }}
-                  content="Failed"
-                />
-              }
-            />
-            <BoxCandidate
-              title="EX-STAFF"
-              number_candidates={ex_staff?.length}
-              status="ex_staff"
-              list_candidates={ex_staff}
-            />
+                </Droppable>
+              </BoxDroppableCandidate>
+              <BoxDroppableCandidate>
+                <Droppable droppableId="hired">
+                  {({ innerRef, droppableId }) => {
+                    return (
+                      <BoxCandidateJob
+                        title="HIRED"
+                        number_candidates={hired?.length}
+                        list_candidates={hired}
+                        droppableId={droppableId}
+                        Note={
+                          <BoxTextSquare
+                            boxProps={{
+                              sx: {
+                                background: '#D4FCEC',
+                                color: '#20A4A9',
+                              },
+                            }}
+                            content="Success"
+                          />
+                        }
+                      />
+                    )
+                  }}
+                </Droppable>
+              </BoxDroppableCandidate>
+              <BoxDroppableCandidate>
+                <Droppable droppableId="failed_cv">
+                  {({ innerRef, droppableId }) => {
+                    return (
+                      <BoxCandidateJob
+                        title="Failed CV"
+                        number_candidates={failedCV?.length}
+                        list_candidates={failedCV}
+                        droppableId={droppableId}
+                        Note={
+                          <BoxTextSquare
+                            boxProps={{
+                              sx: {
+                                background: '#FFE4E1',
+                                color: '#DB4E82',
+                              },
+                            }}
+                            content="Failed"
+                          />
+                        }
+                      />
+                    )
+                  }}
+                </Droppable>
+              </BoxDroppableCandidate>
+              <BoxDroppableCandidate>
+                <Droppable droppableId="failed_interview">
+                  {({ innerRef, droppableId }) => {
+                    return (
+                      <BoxCandidateJob
+                        title="Failed Interview"
+                        number_candidates={failedInterview?.length}
+                        list_candidates={failedInterview}
+                        droppableId={droppableId}
+                        Note={
+                          <BoxTextSquare
+                            boxProps={{
+                              sx: {
+                                background: '#FFE4E1',
+                                color: '#DB4E82',
+                              },
+                            }}
+                            content="Failed"
+                          />
+                        }
+                      />
+                    )
+                  }}
+                </Droppable>
+              </BoxDroppableCandidate>
+
+              <BoxDroppableCandidate>
+                <Droppable droppableId="offer_lost">
+                  {({ innerRef, droppableId }) => {
+                    return (
+                      <BoxCandidateJob
+                        title="OFFERED LOST"
+                        number_candidates={offer_lost?.length}
+                        list_candidates={offer_lost}
+                        droppableId={droppableId}
+                        Note={
+                          <BoxTextSquare
+                            boxProps={{
+                              sx: {
+                                background: '#FFE4E1',
+                                color: '#DB4E82',
+                              },
+                            }}
+                            content="Failed"
+                          />
+                        }
+                      />
+                    )
+                  }}
+                </Droppable>
+              </BoxDroppableCandidate>
+              <BoxDroppableCandidate>
+                <Droppable droppableId="ex_staff">
+                  {({ innerRef, droppableId }) => {
+                    return (
+                      <BoxCandidateJob
+                        title="EX-STAFF"
+                        number_candidates={ex_staff?.length}
+                        list_candidates={ex_staff}
+                        droppableId={droppableId}
+                      />
+                    )
+                  }}
+                </Droppable>
+              </BoxDroppableCandidate>
+            </DragDropProvider>
           </FlexBox>
         </Scrollbar>
       </InfiniteScroll>
+
+      {openChangeStatus && (
+        <ChangeStatusModal
+          open={openChangeStatus}
+          setOpen={setOpenChangeStatus}
+          candidateId={candidateSelected?.id as string}
+          id={rowId.current}
+          rowData={rowData.current}
+          statusCurrent={candidateSelected?.status as CandidateStatusEnum}
+          defaultStatus={destination}
+          onSuccess={handleUpdateStatus}
+        />
+      )}
     </Box>
   )
 }

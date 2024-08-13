@@ -3,8 +3,8 @@ import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import _, { cloneDeep, unionBy } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import GraphQLClientService from 'services/graphql-service'
-import { TYPE_CANDIDATE_STATUS } from 'shared/class/candidate'
 import { BaseRecord } from 'shared/interfaces'
+import { CandidateStatusEnum } from 'shared/schema'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { removeNonExistInObj } from 'shared/utils/utils'
@@ -41,7 +41,32 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             }
             created_at
         }
-        kiv {
+        failed_cv {
+            id
+            candidate_id
+            hiring_job_id
+            status
+            interview_feature
+            candidate {
+                id
+                name,
+                phone,
+            }
+            hiring_job {
+              id
+              name
+              is_able_to_close
+              status
+              priority
+              location
+              hiring_team {
+                id
+                name
+              }
+            }
+            created_at
+        }
+        failed_interview {
             id
             candidate_id
             hiring_job_id
@@ -207,7 +232,8 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
 })
 
 type CandidatesByStatus = {
-  kiv: CandidateStatusItem[]
+  failed_cv: CandidateStatusEnum[]
+  failed_interview: CandidateStatusEnum[]
   offer_lost: CandidateStatusItem[]
   ex_staff: CandidateStatusItem[]
   applied: CandidateStatusItem[]
@@ -239,7 +265,8 @@ const useCandidatesJob = () => {
   const [interviewing, setInterviewing] = useState<CandidateStatusItem[]>([])
   const [offering, setOffering] = useState<CandidateStatusItem[]>([])
   const [hired, setHired] = useState<CandidateStatusItem[]>([])
-  const [kiv, setKiv] = useState<CandidateStatusItem[]>([])
+  const [failedCV, setFailedCV] = useState<CandidateStatusItem[]>([])
+  const [failedInterview, setFailedInterview] = useState<CandidateStatusItem[]>([])
   const [offerLost, setOfferLost] = useState<CandidateStatusItem[]>([])
   const [exStaff, setExStaff] = useState<CandidateStatusItem[]>([])
 
@@ -249,11 +276,12 @@ const useCandidatesJob = () => {
       interviewing,
       offering,
       hired,
-      kiv,
+      failedCV,
+      failedInterview,
       offerLost,
       exStaff
     ).length
-  }, [applied, interviewing, offering, hired, kiv, offerLost, exStaff])
+  }, [applied, interviewing, offering, hired, failedCV, failedInterview, offerLost, exStaff])
 
   const show_more = useMemo(() => {
     return total_current < total
@@ -290,12 +318,18 @@ const useCandidatesJob = () => {
           setData: setInterviewing,
         }
         break
-      case 'kiv':
+      case 'failed_cv':
         result = {
-          data: kiv,
-          setData: setKiv,
+          data: failedCV,
+          setData: setFailedCV,
         }
-        break
+      break;
+      case 'failed_interview':
+        result = {
+          data: failedInterview,
+          setData: setFailedInterview,
+        }
+      break;
       case 'offer_lost':
         result = {
           data: offerLost,
@@ -334,19 +368,22 @@ const useCandidatesJob = () => {
     filter,
     freeWord,
   }: ParamGetCandidateJob): Promise<CandidatesByStatus> => {
-    const data = await GraphQLClientService.fetchGraphQL(getCandidatesByJob, {
-      orderBy: {
-        direction: 'DESC',
-        field: 'created_at',
-      },
-      pagination: { page: pageCurrent, perPage: INIT_PER_PAGE },
-      filter: {
-        ...filter,
-      },
-      freeWord: {
-        ...freeWord,
-      },
-    })
+    const data = await GraphQLClientService.fetchGraphQL(
+      getCandidatesByJob,
+      {
+        orderBy: {
+          direction: 'DESC',
+          field: 'created_at',
+        },
+        pagination: { page: pageCurrent, perPage: INIT_PER_PAGE },
+        filter: {
+          ...filter,
+        },
+        freeWord: {
+          ...freeWord,
+        },
+      }
+    )
 
     if (data && isRight(data)) {
       const response = unwrapEither(data)
@@ -359,7 +396,8 @@ const useCandidatesJob = () => {
       ex_staff: [],
       hired: [],
       interviewing: [],
-      kiv: [],
+      failed_cv: [],
+      failed_interview: [],
       offer_lost: [],
       offering: [],
     }
@@ -414,7 +452,7 @@ const useCandidatesJob = () => {
         status: updateStatus,
         candidate: {
           ...candidateMove.candidate,
-          status: updateStatus as TYPE_CANDIDATE_STATUS,
+          status: updateStatus as CandidateStatusEnum,
         },
       }
     }
@@ -430,7 +468,6 @@ const useCandidatesJob = () => {
     const candidate_changed = handleGetItemByStatus(data.status)
     //add one candidate_job
     setTotal((prev) => prev + 1)
-    // if (candidate_changed.data.length > INIT_PER_PAGE) return
     candidate_changed.setData((prev: CandidateStatusItem[]) => [data, ...prev])
   }
 
@@ -462,7 +499,8 @@ const useCandidatesJob = () => {
       interviewing,
       offering,
       hired,
-      kiv,
+      failedCV,
+      failedInterview,
       offer_lost: offerLost,
       ex_staff: exStaff,
     },

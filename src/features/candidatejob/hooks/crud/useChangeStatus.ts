@@ -8,6 +8,7 @@ import { removeStatusAttachment } from 'shared/utils/utils'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import { convertToEndDateUTC } from 'shared/utils/date'
 import CandidateJob, {
+  LevelCandidateJob,
   UpdateCandidateJobStatusArguments,
 } from 'shared/schema/database/candidate_job'
 import useCreateFeedBack from './useCreateFeedback'
@@ -42,6 +43,7 @@ function useChangeStatus(props: useChangeStatusProps) {
         feedback: '',
         offer_expiration_date: null,
         onboard_date: null,
+        level: null,
         ...defaultValues,
       }
     },
@@ -77,6 +79,7 @@ function useChangeStatus(props: useChangeStatusProps) {
           offer_expiration_date: offer_expiration_date ?? null,
           onboard_date: onboard_date ?? null,
           status: value?.status,
+          level: value?.level as LevelCandidateJob | null
         },
         note: '',
       }

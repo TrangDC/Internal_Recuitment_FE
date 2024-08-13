@@ -10,30 +10,31 @@ export type HiringJobStatus = 'draft' | 'opened' | 'closed'
 type priority_status = 1 | 2 | 3 | 4
 
 interface HiringJob {
-    id: string
-    name: string
-    slug: string
-    description: string
-    amount: number
-    location: LocationEnum
-    salary_type: SalaryTypeEnum
-    salary_from: number
-    salary_to: number
-    currency: CurrencyEnum
-    hiring_team: HiringTeam
-    user: User
-    status: HiringJobStatus
-    total_candidates_recruited: number
-    is_able_to_delete: boolean
-    is_able_to_close: number
-    priority: priority_status
-    entity_skill_types: EntitySkillType[]
-    job_position_id: string
-    job_position: JobPosition
-    created_at: string
-    updated_at: string
-    deleted_at: string
-  }
+  id: string
+  name: string
+  slug: string
+  description: string
+  amount: number
+  location: LocationEnum
+  salary_type: SalaryTypeEnum
+  salary_from: number
+  salary_to: number
+  currency: CurrencyEnum
+  hiring_team: HiringTeam
+  user: User
+  status: HiringJobStatus
+  total_candidates_recruited: number
+  is_able_to_delete: boolean
+  is_able_to_close: number
+  priority: priority_status
+  entity_skill_types: EntitySkillType[]
+  job_position_id: string
+  job_position: JobPosition
+  created_at: string
+  updated_at: string
+  deleted_at: string
+  level: string
+}
 
 export type CreateHiringJobArguments = {
   input: NewHiringJobInput

@@ -17,7 +17,8 @@ interface InitialState {
     interviewing: CandidateStatusItem[]
     offering: CandidateStatusItem[]
     hired: CandidateStatusItem[]
-    kiv: CandidateStatusItem[]
+    failedCV: CandidateStatusItem[]
+    failedInterview: CandidateStatusItem[]
     offer_lost: CandidateStatusItem[]
     ex_staff: CandidateStatusItem[]
   }
@@ -37,11 +38,11 @@ interface InitialState {
   action_filter: {
     useFilterReturn: UseFilterReturn<
       InterfaceGenerate<{
-        hiring_job_id: 'string[]'
-        hiring_team_id: 'string[]'
+        hiring_job_ids: 'string[]'
+        hiring_team_ids: 'string[]'
         status: 'string'
         rec_id: 'string[]'
-        level: 'string'
+        levels: 'string[]'
         page_job: 'string'
       }>
     >
@@ -63,7 +64,8 @@ const ChangeStatusContext = createContext<InitialState>({
     interviewing: [],
     offering: [],
     hired: [],
-    kiv: [],
+    failedCV: [],
+    failedInterview: [],
     offer_lost: [],
     ex_staff: [],
   },

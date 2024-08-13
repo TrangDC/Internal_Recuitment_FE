@@ -27,13 +27,3 @@ export const CANDIDATE_STYLE = {
   ex_staff: { label: 'Ex-staff', backgroundColor: '#FC105C', color: 'white' },
   new: { label: 'New', backgroundColor: '#2CC5BD', color: 'white' },
 }
-
-export type TYPE_CANDIDATE_STATUS =
-  | 'applied'
-  | 'interviewing'
-  | 'offering'
-  | 'hired'
-  | 'kiv'
-  | 'offer_lost'
-  | 'ex_staff'
-  | 'new'

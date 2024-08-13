@@ -19,6 +19,7 @@ import { STATUS_CANDIDATE } from 'shared/class/candidate'
 import AppDateField from 'shared/components/input-fields/DateField'
 import { status_disabled_applied } from 'features/candidatejob/shared/constants'
 import CandidateJob from 'shared/schema/database/candidate_job'
+import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
 
 interface IApplyJobModal {
   open: boolean
@@ -152,7 +153,12 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
             </FormControl>
           </FlexBox>
 
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
+          <FlexBox
+            flexDirection={'row'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            gap={2}
+          >
             <FormControl fullWidth>
               <Controller
                 name="status"
@@ -179,6 +185,33 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                 )}
               />
             </FormControl>
+            {show_date_onboard && (
+              <FormControl fullWidth>
+                <Controller
+                  name="level"
+                  shouldUnregister
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <LevelAutoComplete
+                        multiple={false}
+                        value={field.value ?? ''}
+                        onChange={(data: any) => {
+                          field.onChange(data?.value)
+                        }}
+                        textFieldProps={{
+                          label: 'Level',
+                          required: true,
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            )}
           </FlexBox>
 
           {show_date_onboard && (
@@ -252,23 +285,20 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                     <InputFileUpload
                       getValues={getValues}
                       name={field.name}
-                      accept={'.pdf,.doc,.docx,.xlsx'}
+                      accept={'.pdf'}
                       multiple={false}
                       validator_files={{
                         max_file: {
                           max: 1,
-                          msg_error:
-                            'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          msg_error: 'PDF file only, file size up to 20mb',
                         },
                         max_size: {
                           max: 20,
-                          msg_error:
-                            'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          msg_error: 'PDF file only, file size up to 20mb',
                         },
                         is_valid: {
-                          regex: '\\.(pdf|xlsx|docx|doc)',
-                          msg_error:
-                            'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          regex: '\\.(pdf)',
+                          msg_error: 'PDF file only, file size up to 20mb',
                         },
                       }}
                       descriptionFile={() => {
@@ -279,7 +309,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                               Attach CV{' '}
                             </Span>
                             <Tiny sx={{ color: '#2A2E37 !important' }}>
-                              One PDF,WORD,EXCEL file only, file size up to 20mb
+                              PDF file only, file size up to 20mb
                             </Tiny>
                           </Box>
                         )

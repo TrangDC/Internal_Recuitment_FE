@@ -1,6 +1,7 @@
 import { Chip, ChipProps, styled } from '@mui/material'
-import { CANDIDATE_STYLE, TYPE_CANDIDATE_STATUS } from '../index'
 import { useMemo } from 'react'
+import { CANDIDATE_STATUS } from 'features/candidatejob/shared/constants'
+import { CandidateStatusEnum } from 'shared/schema'
 
 const ChipStyled = styled(Chip)(({ theme }) => ({
   height: '20px',
@@ -13,21 +14,21 @@ const ChipStyled = styled(Chip)(({ theme }) => ({
 }))
 
 interface Props extends ChipProps {
-  status: TYPE_CANDIDATE_STATUS
+  status: CandidateStatusEnum
 }
 
 const ChipCandidate = ({ ...props }: Props) => {
   const { status, ...chipProps } = props
   const field_status = useMemo(() => {
-    return CANDIDATE_STYLE[status]
+    return CANDIDATE_STATUS[status]
   }, [status])
 
   return (
     <ChipStyled
-      label={field_status?.label}
+      label={field_status?.text}
       style={{
         backgroundColor: field_status?.backgroundColor,
-        color: field_status?.color,
+        color: 'white',
       }}
       {...chipProps}
     />

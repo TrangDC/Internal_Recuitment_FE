@@ -8,26 +8,28 @@ function useFilterJobsOpening() {
     useFilterTable<ApplicationFilter>({
       filter: {
         defaultFilter: {
-          hiring_job_id: [],
-          hiring_team_id: [],
+          hiring_job_ids: [],
+          hiring_team_ids: [],
           rec_id: [],
-          level: '',
+          levels: [],
           status: '',
           page_job: OPENING_PAGE_APPLICATION.list_candidate,
         },
         formatDataWithValue: (data) => {
           return {
             status: data?.status?.value || undefined,
-            hiring_job_id: !isEmpty(data?.hiring_job_id)
-              ? data?.hiring_job_id?.map((o) => o.value)
+            hiring_job_ids: !isEmpty(data?.hiring_job_ids)
+              ? data?.hiring_job_ids?.map((o) => o.value)
               : undefined,
-            hiring_team_id: !isEmpty(data?.hiring_team_id)
-              ? data?.hiring_team_id?.map((o) => o.value)
+              hiring_team_ids: !isEmpty(data?.hiring_team_ids)
+              ? data?.hiring_team_ids?.map((o) => o.value)
               : undefined,
             rec_id: !isEmpty(data?.rec_id)
               ? data?.rec_id?.map((o) => o.value)
               : undefined,
-            level: data?.level?.value || undefined,
+            levels: !isEmpty(data?.levels)
+              ? data?.levels?.map((o) => o.value)
+              : undefined,
             page_job:
               data?.page_job?.value ?? OPENING_PAGE_APPLICATION.list_candidate,
           }
@@ -35,7 +37,7 @@ function useFilterJobsOpening() {
       },
       page: 'application',
       search: {
-        searchKey: ['hiring_job'],
+        searchKey: ['candidate_name', 'candidate_email'],
       },
       shouldCacheData: true,
     })

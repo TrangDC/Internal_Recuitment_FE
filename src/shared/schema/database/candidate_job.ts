@@ -19,6 +19,15 @@ type CandidateJobFailedReason =
   | 'candidate_withdrawal'
   | 'others'
 
+export type LevelCandidateJob =
+'intern'
+| 'fresher'
+| 'junior'
+| 'middle'
+| 'senior'
+| 'manager'
+| 'director'
+
 interface CandidateJob {
   id: string
   candidate_id: string
@@ -36,6 +45,7 @@ interface CandidateJob {
   updated_at: string
   offer_expiration_date: string
   onboard_date: string
+  level: LevelCandidateJob
 }
 
 export type CreateCandidateJobArguments = {
@@ -64,6 +74,7 @@ export type UpdateCandidateJobStatus = {
   onboard_date: string | null
   offer_expiration_date: string | null
   failed_reason: string[]
+  level: LevelCandidateJob | null
 }
 
 export type NewCandidateJobInput = {
@@ -74,6 +85,7 @@ export type NewCandidateJobInput = {
   onboard_date: string | null
   offer_expiration_date: string | null
   failed_reason: string[]
+  level: LevelCandidateJob | null
 }
 
 export type NewAttachmentInput = {

@@ -34,11 +34,24 @@ export const DivField = styled(Box)(({ theme }) => ({
 }))
 
 export const BoxContainerCandidate = styled(Box)(({ theme }) => ({
-  border: `1px solid ${theme.palette.grey[200]}`,
-  borderRadius: '4px',
-  backgroundColor: '#F0F1F8',
   minWidth: '240px',
   width: '240px',
+  transition: 'all .3s',
+
+  '&.collapse': {
+    width: '45px',
+    minWidth: '45px',
+    writingMode: 'vertical-lr',
+  },
+
+  '&.collapse .box__title': {
+    alignItems: 'baseline',
+    flexDirection: 'row-reverse',
+  },
+
+  '&.collapse .action__collapse': {
+    flexDirection: 'row-reverse',
+  },
 }))
 
 export const BoxCandidateTitle = styled(Box)(({ theme }) => ({

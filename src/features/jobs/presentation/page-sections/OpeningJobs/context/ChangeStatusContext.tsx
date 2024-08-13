@@ -17,7 +17,8 @@ interface InitialState {
     interviewing: CandidateStatusItem[]
     offering: CandidateStatusItem[]
     hired: CandidateStatusItem[]
-    kiv: CandidateStatusItem[]
+    failedCV: CandidateStatusItem[]
+    failedInterview: CandidateStatusItem[]
     offer_lost: CandidateStatusItem[]
     ex_staff: CandidateStatusItem[]
   }
@@ -37,13 +38,13 @@ interface InitialState {
   action_filter: {
     useFilterReturn: UseFilterReturn<
       InterfaceGenerate<{
-        hiring_job_id: 'string[]'
-        hiring_team_ids: 'string[]'
-        priority: 'string'
-        skill_id: 'string[]'
-        location: 'string'
-        created_by_ids: 'string[]'
-        page_job: 'string'
+        hiring_job_id: 'string[]',
+        hiring_team_ids: 'string[]',
+        priority: 'string',
+        skill_id: 'string[]',
+        location: 'string',
+        created_by_ids: 'string[]',
+        page_job: 'string',
       }>
     >
     useSearchListReturn: {
@@ -64,7 +65,8 @@ const ChangeStatusContext = createContext<InitialState>({
     interviewing: [],
     offering: [],
     hired: [],
-    kiv: [],
+    failedCV: [],
+    failedInterview: [],
     offer_lost: [],
     ex_staff: [],
   },

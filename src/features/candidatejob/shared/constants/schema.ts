@@ -3,6 +3,7 @@ import * as yup from 'yup'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { isEmpty } from 'lodash'
 import dayjs from 'dayjs'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 
 export const schema = yup.object({
   hiring_team_id: yup.string().required(RULE_MESSAGES.MC1('team')),
@@ -11,8 +12,7 @@ export const schema = yup.object({
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
   attachments: yup
     .array()
-    .required(RULE_MESSAGES.MC1('attachments'))
-    .min(1, 'CV is missing'),
+    .required(RULE_MESSAGES.MC1('attachments')),
   offer_expiration_date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Offer expiration date'))
@@ -46,6 +46,10 @@ export const schema = yup.object({
       return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
     })
     .nullable(),
+  level: yup.string().when(['status'], ([status], schema) => {
+    if (status !== STATUS_CANDIDATE.OFFERING) return schema
+    return schema.required(RULE_MESSAGES.MC1('level'))
+  }).nullable(),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -60,8 +64,9 @@ export const schemaChangeStatus = yup.object({
       function (value) {
         const { status, failed_reason } = this.parent
         if (
-          status === STATUS_CANDIDATE.OFFERED_LOST ||
-          status === STATUS_CANDIDATE.KIV
+          status === application_data.failed_cv.value ||
+          status === application_data.offer_lost.value || 
+          status === application_data.failed_interview.value 
         ) {
           return !isEmpty(failed_reason)
         }
@@ -104,6 +109,10 @@ export const schemaChangeStatus = yup.object({
       return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
     })
     .nullable(),
+    level: yup.string().when(['status'], ([status], schema) => {
+      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      return schema.required(RULE_MESSAGES.MC1('level'))
+    }).nullable(),
 })
 
 export const schemaUpdateJobAttachment = yup.object({

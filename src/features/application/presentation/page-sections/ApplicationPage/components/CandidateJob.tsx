@@ -28,7 +28,7 @@ const CandidateJob = () => {
     actions: { handleFetchNextPage, handleUpdateStatus },
   } = useContextChangeStatus()
 
-  const { applied, interviewing, offering, hired, kiv, offer_lost, ex_staff } =
+  const { applied, interviewing, offering, hired, failedCV, failedInterview, offer_lost, ex_staff } =
     data
 
   //change status hiring process
@@ -50,7 +50,8 @@ const CandidateJob = () => {
 
   const handleSearchFreeWorld = (value: string) => {
     handleFreeWord({
-      job_title: value,
+      candidate_email: value,
+      candidate_name:value
     })
   }
 
@@ -65,7 +66,7 @@ const CandidateJob = () => {
   }, [JSON.stringify(dataFilterWithValue)])
 
   useEffect(() => {
-    handleSearchFreeWorld(search?.hiring_job)
+    handleSearchFreeWorld(search?.candidate_email)
   }, [search])
 
   return (
@@ -170,13 +171,13 @@ const CandidateJob = () => {
                 </Droppable>
               </BoxDroppableCandidate>
               <BoxDroppableCandidate>
-                <Droppable droppableId="kiv">
+                <Droppable droppableId="failed_cv">
                   {({ innerRef, droppableId }) => {
                     return (
                       <BoxCandidateJob
-                        title="KIV"
-                        number_candidates={kiv?.length}
-                        list_candidates={kiv}
+                        title="Failed CV"
+                        number_candidates={failedCV?.length}
+                        list_candidates={failedCV}
                         droppableId={droppableId}
                         Note={
                           <BoxTextSquare
@@ -194,6 +195,32 @@ const CandidateJob = () => {
                   }}
                 </Droppable>
               </BoxDroppableCandidate>
+              <BoxDroppableCandidate>
+                <Droppable droppableId="failed_interview">
+                  {({ innerRef, droppableId }) => {
+                    return (
+                      <BoxCandidateJob
+                        title="Failed Interview"
+                        number_candidates={failedInterview?.length}
+                        list_candidates={failedInterview}
+                        droppableId={droppableId}
+                        Note={
+                          <BoxTextSquare
+                            boxProps={{
+                              sx: {
+                                background: '#FFE4E1',
+                                color: '#DB4E82',
+                              },
+                            }}
+                            content="Failed"
+                          />
+                        }
+                      />
+                    )
+                  }}
+                </Droppable>
+              </BoxDroppableCandidate>
+
               <BoxDroppableCandidate>
                 <Droppable droppableId="offer_lost">
                   {({ innerRef, droppableId }) => {

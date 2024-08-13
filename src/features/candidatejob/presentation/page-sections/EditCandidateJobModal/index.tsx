@@ -39,7 +39,7 @@ function EditCandidateJobModal({
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <BaseModal.Header
-          title={translation.MODULE_CANDIDATE_JOB.edit_cv}
+          title="Edit application"
           setOpen={setOpen}
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
