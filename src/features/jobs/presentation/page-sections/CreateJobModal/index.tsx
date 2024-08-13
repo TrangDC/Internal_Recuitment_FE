@@ -23,7 +23,6 @@ import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import CreateSelectionTeamPermission from 'features/jobs/permission/components/CreateSelectionTeamPermission'
 import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
-
 interface ICreateJobModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -36,7 +35,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
     },
   })
 
-  const { handleChangeManager, onSubmit, resetSalary } = action
+  const { onSubmit, resetSalary } = action
 
   const translation = useTextTranslation()
   const salary = useWatch({ control, name: 'salary_type' })
@@ -130,21 +129,23 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 <Controller
                   control={control}
                   name="hiring_team_id"
-                  render={({ field, fieldState }) => (
-                    <Fragment>
-                      <CreateSelectionTeamPermission
-                        name={field.name}
-                        value={field.value}
-                        onChange={(value) => {
-                          field.onChange(value)
-                          handleChangeManager(value as string)
-                        }}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </Fragment>
-                  )}
+                  render={({ field, fieldState }) => {
+                    return (
+                      <Fragment>
+                        <CreateSelectionTeamPermission
+                          name={field.name}
+                          value={field?.value ?? ''}
+                          onChange={(value) => {
+                            field.onChange(value ?? '')
+                            //handleChangeManager(value as string)
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </Fragment>
+                    )
+                  }}
                 />
               </FormControl>
             </FlexBox>
@@ -185,7 +186,9 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                       <MemberAutoComplete
                         name={field.name}
                         value={field.value}
-                        onChange={field.onChange}
+                        onChange={(value) => {
+                          field.onChange(value ?? '')
+                        }}
                         multiple={false}
                         textFieldProps={{
                           required: true,

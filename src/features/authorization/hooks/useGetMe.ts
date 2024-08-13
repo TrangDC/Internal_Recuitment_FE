@@ -13,6 +13,7 @@ function useGetMe() {
   const { getMe, queryKey } = useGraphql()
   const { authState } = useAuth()
   const { getToken } = handleAuthLocalStorage()
+
   const { data, isFetching, refetch } = useQuery({
     queryKey: [queryKey, 'me'],
     queryFn: async () => GraphQLClientService.fetchGraphQL(getMe),

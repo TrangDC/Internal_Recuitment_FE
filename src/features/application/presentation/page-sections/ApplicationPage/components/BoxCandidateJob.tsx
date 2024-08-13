@@ -86,78 +86,82 @@ const BoxCandidateJob = ({
               >
                 {() => {
                   return (
-                    <BoxFieldInfo
-                      key={item?.id}
-                      onClick={() => {
-                        navigate(`/dashboard/job-application-detail/${item.id}`)
-                      }}
-                    >
-                      <SpanInfo>{item?.candidate?.name}</SpanInfo>
-                      <FlexBox flexDirection={'column'} gap={'10px'}>
-                        <FlexBox alignItems={'center'} gap={'6px'}>
-                          <PhoneIcon
-                            sx={{
-                              fontSize: '12px',
-                              color: '#4D607A'
-                            }}
-                          />{' '}
-                          <TinyInfo>{item?.candidate?.phone}</TinyInfo>
-                        </FlexBox>
+                    <BoxFieldInfo>
+                      <a
+                        key={item?.id}
+                        href={`/dashboard/job-application-detail/${item.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <SpanInfo>{item?.candidate?.name}</SpanInfo>
+                        <FlexBox flexDirection={'column'} gap={'10px'}>
+                          <FlexBox alignItems={'center'} gap={'6px'}>
+                            <PhoneIcon
+                              sx={{
+                                fontSize: '12px',
+                                color: '#4D607A',
+                              }}
+                            />{' '}
+                            <TinyInfo>{item?.candidate?.phone}</TinyInfo>
+                          </FlexBox>
 
-                        <FlexBox alignItems={'center'} gap={'6px'}>
-                          <TeamIcon
-                            sx={{
-                              fontSize: '12px',
-                              color: '#4D607A'
-                            }}
-                          />{' '}
-                          <FlexBox gap={0.75} alignItems={'center'}>
-                            <TinyInfo>
-                              {item?.hiring_job?.hiring_team?.name}
-                            </TinyInfo>
-                            <DotIcon />
-                            <TinyInfo>
-                              {LOCATION_LABEL[item?.hiring_job?.location]}
-                            </TinyInfo>
+                          <FlexBox alignItems={'center'} gap={'6px'}>
+                            <TeamIcon
+                              sx={{
+                                fontSize: '12px',
+                                color: '#4D607A',
+                              }}
+                            />{' '}
+                            <FlexBox gap={0.75} alignItems={'center'}>
+                              <TinyInfo>
+                                {item?.hiring_job?.hiring_team?.name}
+                              </TinyInfo>
+                              <DotIcon />
+                              <TinyInfo>
+                                {LOCATION_LABEL[item?.hiring_job?.location]}
+                              </TinyInfo>
+                            </FlexBox>
                           </FlexBox>
                         </FlexBox>
-
-                        <FlexBox alignItems={'center'} gap={'6px'}>
-                          <Jobs
-                            sx={{
-                              fontSize: '12px',
-                              '& path': {
-                                fill: '#4D607A',
-                              },
-                            }}
-                          />
-                          <TinyLink
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              navigate(
-                                `/dashboard/job-detail/${item?.hiring_job_id}`
-                              )
-                            }}
-                          >
-                            {item?.hiring_job.name}
-                          </TinyLink>
-                        </FlexBox>
-
-                        <FlexBox
-                          alignItems={'center'}
-                          gap={'6px'}
-                          justifyContent={'space-between'}
+                      </a>
+                      <FlexBox
+                        marginY={'5px'}
+                        alignItems={'center'}
+                        gap={'6px'}
+                      >
+                        <Jobs
                           sx={{
-                            '& .MuiButtonBase-root': {
-                              padding: '0 !important',
+                            fontSize: '12px',
+                            '& path': {
+                              fill: '#4D607A',
                             },
                           }}
+                        />
+                        <TinyLink
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            navigate(
+                              `/dashboard/job-detail/${item?.hiring_job_id}`
+                            )
+                          }}
                         >
-                          <ChipPriority status={item?.hiring_job?.priority} />
-                          <Box onClick={(e) => e.stopPropagation()}>
-                            <ActionsButton rowId={item?.id} rowData={item} />
-                          </Box>
-                        </FlexBox>
+                          {item?.hiring_job.name}
+                        </TinyLink>
+                      </FlexBox>
+                      <FlexBox
+                        alignItems={'center'}
+                        gap={'6px'}
+                        justifyContent={'space-between'}
+                        sx={{
+                          '& .MuiButtonBase-root': {
+                            padding: '0 !important',
+                          },
+                        }}
+                      >
+                        <ChipPriority status={item?.hiring_job?.priority} />
+                        <Box onClick={(e) => e.stopPropagation()}>
+                          <ActionsButton rowId={item?.id} rowData={item} />
+                        </Box>
                       </FlexBox>
                     </BoxFieldInfo>
                   )
