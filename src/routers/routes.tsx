@@ -53,8 +53,6 @@ const CandidateJobDetail = Loadable(
 
 const UserPage = Loadable(lazy(() => import('../pages/user/index')))
 
-const SettingList = Loadable(lazy(() => import('../pages/setting/index')))
-
 const Calendars = Loadable(lazy(() => import('../pages/calendars/index')))
 
 const SkillList = Loadable(lazy(() => import('../pages/skill/index')))
@@ -77,6 +75,14 @@ const RecTeamDetailPage = Loadable(
 
 const ApplicationPage = Loadable(
   lazy(() => import('../pages/application/index'))
+)
+
+const CreateCandidatePage = Loadable(
+  lazy(() => import('../pages/candidates/create-candidate'))
+)
+
+const EditCandidatePage = Loadable(
+  lazy(() => import('../pages/candidates/edit-candidate'))
 )
 
 // 404/Error page
@@ -369,6 +375,38 @@ export const AppRoutes = () => {
                   'VIEW.everything',
                   'VIEW.teamOnly',
                   'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+
+          <Route
+            path="create-candidate"
+            element={PermissionLayout({
+              module: 'CANDIDATES',
+              children: <CreateCandidatePage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'CREATE.everything',
+                  'CREATE.ownedOnly',
+                  'CREATE.teamOnly',
+                ],
+              },
+            })}
+          />
+
+          <Route
+            path="edit-candidate/:id"
+            element={PermissionLayout({
+              module: 'CANDIDATES',
+              children: <EditCandidatePage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'EDIT.everything',
+                  'EDIT.ownedOnly',
+                  'EDIT.teamOnly',
                 ],
               },
             })}

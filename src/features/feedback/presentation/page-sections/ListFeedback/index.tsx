@@ -125,7 +125,7 @@ const ListFeedBack = ({ listFeedback, show_feedback = true }: Props) => {
                     >
                       <DeleteFeedbackButtonPermission
                         ownerId={feedback?.owner?.id ?? ''}
-                        candidateJobOfTeamId={
+                        feedbackOfTeamId={
                           feedback?.owner?.hiring_team?.id ?? ''
                         }
                         onClick={() => {

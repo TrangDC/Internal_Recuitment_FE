@@ -18,13 +18,11 @@ export enum ActionCandidateTable {
   BLACK_LIST = 'black_list',
 }
 type UseAllCandidatePermissionActionTableProps = {
-  handleOpenEdit: (id: string) => void
   handleOpenDelete: (id: string) => void
   handleOpenBlackList: (id: string) => void
 }
 
 function useBuildActionTableCandidate({
-  handleOpenEdit,
   handleOpenDelete,
   handleOpenBlackList,
 }: UseAllCandidatePermissionActionTableProps) {
@@ -55,7 +53,7 @@ function useBuildActionTableCandidate({
       edit: {
         id: ActionCandidateTable.EDIT,
         onClick: (id) => {
-          handleOpenEdit(id)
+          navigate(`/dashboard/edit-candidate/${id}`)
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,

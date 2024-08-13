@@ -36,6 +36,7 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
     orderBy,
     list_disabled = [],
     popupIcon,
+    removeOptions,
   } = props
 
   const { options } = useAutoCompleteBackEnd<T>({
@@ -85,7 +86,7 @@ export const AutocompleteBaseBackEnd = <T, Multiple extends boolean = false>(
       }
       size="small"
       value={(getValue as any) ?? null}
-      options={options}
+      options={removeOptions ? removeOptions(options) : options}
       getOptionDisabled={(option) => {
         return list_disabled.includes(option[selectedKey] as string)
       }}

@@ -1,25 +1,23 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Box, FormControl } from '@mui/material'
+import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useUpdateCandidate from '../../../hooks/crud/useUpdateCandidate'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
-import AppDateField from 'shared/components/input-fields/DateField'
 import AppButton from 'shared/components/buttons/AppButton'
 import CandidateSourceAutoComplete, {
   TypeCandidateSource,
 } from 'shared/components/autocomplete/candidate-source-auto-complete'
 import NationalityAutoComplete from 'shared/components/autocomplete/nationality-auto-complete'
 import CandidateBySource from '../CreateCandidateModal/components/CandidateBySource'
-import { Span, Tiny } from 'shared/components/Typography'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTreeSelection from 'shared/components/tree/skill-tree'
-import InputFileUpload from 'shared/components/form/inputFileUpload'
 import Candidate from 'shared/schema/database/candidate'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
+import AppDateField from 'shared/components/input-fields/AppDateField'
 
 interface IEditCandidateModal {
   open: boolean
@@ -170,7 +168,7 @@ function EditCandidateModal({
                     <FlexBox flexDirection={'column'}>
                       <AppDateField
                         label={'DOB'}
-                        value={field.value}
+                        value={field.value ?? null}
                         format="dd/MM/yyyy"
                         onChange={field.onChange}
                         textFieldProps={{
@@ -293,13 +291,13 @@ function EditCandidateModal({
                   name="entity_skill_records"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <SkillTreeSelection
+                      {/* <SkillTreeSelection
                         value={field.value}
                         onChange={field.onChange}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
-                      ></HelperTextForm>
+                      ></HelperTextForm> */}
                     </FlexBox>
                   )}
                 />
@@ -340,7 +338,7 @@ function EditCandidateModal({
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <InputFileUpload
+                      {/* <InputFileUpload
                         getValues={getValues}
                         name={field.name}
                         multiple={true}
@@ -373,7 +371,7 @@ function EditCandidateModal({
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
-                      ></HelperTextForm>
+                      ></HelperTextForm> */}
                     </FlexBox>
                   )}
                 />

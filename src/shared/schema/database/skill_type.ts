@@ -1,3 +1,5 @@
+import { SkillSelection } from "./skill"
+
 interface SkillType {
   id: string
   name: string
@@ -31,6 +33,12 @@ type NewSkillTypeInput = {
 type UpdateSkillTypeInput = {
   name: string
   description: string
+}
+
+export type SkillTypeSelection = {
+  id: string
+  name: string
+  skills: SkillSelection[]
 }
 
 export default SkillType

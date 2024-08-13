@@ -39,4 +39,9 @@ type UpdateSkillInput = {
   skill_type_id: string
 }
 
+export type SkillSelection = {
+  id: string
+  name: string
+}
+
 export default Skill

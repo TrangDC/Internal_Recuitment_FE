@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, SxProps } from '@mui/material'
 import { Fragment, useMemo } from 'react'
 import useTextTranslation from 'shared/constants/text'
 import { ParamCreateURLAttachment } from 'shared/hooks/graphql/useGetUrlAttachment'
@@ -24,6 +24,8 @@ export interface InputFileProps {
   validator_files?: VALIDATE_FILES
   value: FileUploadAttachment[]
   onChange: (value: FileUploadAttachment[]) => void
+  inputFileContainerSx?: SxProps
+  titleContainerSx?: SxProps
 }
 
 const InputFile = ({
@@ -33,6 +35,8 @@ const InputFile = ({
   validator_files = INIT_VALIDATOR_FILE,
   value,
   onChange,
+  inputFileContainerSx,
+  titleContainerSx,
 }: InputFileProps) => {
   const idFile = useMemo(() => {
     return uuidv4()
@@ -92,7 +96,7 @@ const InputFile = ({
   }
 
   return (
-    <InputFileWrapper>
+    <InputFileWrapper sx={inputFileContainerSx}>
       <label htmlFor={idFile}>
         <InputFileContainer
           onDragOver={(event) => {
@@ -103,8 +107,9 @@ const InputFile = ({
             const fileEvent = event.dataTransfer.files
             handleGetFile(fileEvent)
           }}
+          sx={inputFileContainerSx}
         >
-          <FlexBoxContainer>
+          <FlexBoxContainer sx={titleContainerSx}>
             <Box>
               <UploadIcon />
             </Box>

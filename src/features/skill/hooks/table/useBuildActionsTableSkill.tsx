@@ -44,7 +44,6 @@ function useBuildActionsTableSkill({
       delete: {
         id: ActionSkill.DELETE,
         onClick: (id, rowData) => {
-          console.log('rowData', rowData)
           handleOpenDelete(id, rowData.is_able_to_delete)
         },
         title: translation.COMMON.delete,

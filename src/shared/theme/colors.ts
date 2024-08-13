@@ -14,6 +14,7 @@ declare module '@mui/material/styles' {
     red?: string
     purple?: string
     yellow?: string
+    error?: string
   }
 }
 
@@ -33,6 +34,7 @@ export const primary = {
   red: '#FF6B93',
   purple: '#A798FF',
   yellow: '#FFF3B8',
+  error: '#FC105C'
 }
 
 const secondaryMain = '#23C657'

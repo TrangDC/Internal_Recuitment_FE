@@ -291,7 +291,7 @@ export const updateRecordSkill = (
     }
   })
 
-  const transform = Object.keys(cloneData).flatMap((key, idx) => {
+  const transform:EntitySkillRecordInput[] = Object.keys(cloneData).flatMap((key, idx) => {
     const value = cloneData[key]
 
     return value.map((item, index) => {
@@ -355,4 +355,10 @@ export const getContentStringHTML = (content: string) => {
   tempDiv.innerHTML = content
 
   return tempDiv.textContent || ''
+}
+
+
+export const pickDataInArray= <T>(objectsArray:T[], key:(keyof T)[]): T[] => {
+  const pickedValues = _.map(objectsArray, obj => _.pick(obj, key));
+  return pickedValues as T[]
 }
