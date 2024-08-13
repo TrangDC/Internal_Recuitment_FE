@@ -19,6 +19,7 @@ import { STATUS_CANDIDATE } from 'shared/class/candidate'
 import AppDateField from 'shared/components/input-fields/DateField'
 import { status_disabled_applied } from 'features/candidatejob/shared/constants'
 import CandidateJob from 'shared/schema/database/candidate_job'
+import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
 
 interface IApplyJobModal {
   open: boolean
@@ -138,6 +139,10 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                       value={field.value}
                       multiple={false}
                       onChange={field.onChange}
+                      filter={{
+                        is_black_list: false,
+                        ignore_statuses: ["hired"]
+                      }}
                       textFieldProps={{
                         required: true,
                         label: 'Candidates',
@@ -152,7 +157,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
             </FormControl>
           </FlexBox>
 
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
+          <FlexBox justifyContent={'center'} alignItems={'center'}  gap={2}>
             <FormControl fullWidth>
               <Controller
                 name="status"
@@ -179,6 +184,32 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                 )}
               />
             </FormControl>
+            {show_date_onboard && (
+                <FormControl fullWidth>
+                  <Controller
+                    name="level"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <LevelAutoComplete
+                          multiple={false}
+                          value={field.value ?? ''}
+                          onChange={(data: any) => {
+                            field.onChange(data.value)
+                          }}
+                          textFieldProps={{
+                            label: 'Level',
+                            required: true,
+                          }}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              )}
           </FlexBox>
 
           {show_date_onboard && (

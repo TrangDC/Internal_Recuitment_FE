@@ -1,6 +1,5 @@
 import { Box, styled } from '@mui/material'
 import dayjs from 'dayjs'
-import { TYPE_CANDIDATE_STATUS } from 'shared/class/candidate'
 import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
 import {
@@ -25,6 +24,7 @@ import {
   LOCATION_LABEL,
   SALARY_TYPE_TEXT,
 } from 'shared/constants/constants'
+import { CandidateStatusEnum } from 'shared/schema'
 import { HiringJobStatus } from 'shared/schema/database/hiring_job'
 import { LinkText } from 'shared/styles'
 import {
@@ -69,7 +69,7 @@ export function renderStatusHiringJob(text: string) {
 
 export function renderStatusCandidateJob(text: string) {
   const status = getLastString(text)
-  return <ChipCandidate status={status as TYPE_CANDIDATE_STATUS} />
+  return <ChipCandidate status={status as CandidateStatusEnum} />
 }
 
 export function renderPriority(text: string) {

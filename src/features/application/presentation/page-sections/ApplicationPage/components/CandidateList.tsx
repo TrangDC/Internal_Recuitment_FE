@@ -35,10 +35,10 @@ const CandidateList = () => {
 
   const filter_value = useMemo(() => {
     return {
-      hiring_job_id: dataFilterWithValue.hiring_job_id,
+      hiring_job_ids: dataFilterWithValue.hiring_job_ids,
       rec_id: dataFilterWithValue.rec_id,
-      level: dataFilterWithValue.level,
-      hiring_team_id: dataFilterWithValue.hiring_team_id,
+      levels: dataFilterWithValue.levels,
+      hiring_team_ids: dataFilterWithValue.hiring_team_ids,
       status: dataFilterWithValue.status
     
     }

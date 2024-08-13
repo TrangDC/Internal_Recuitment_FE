@@ -18,8 +18,6 @@ import useActionInterview from '../../../hooks/table/useActionInterview'
 import { isEmpty } from 'lodash'
 import { format } from 'date-fns'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
-import { STATUS_CANDIDATE } from 'shared/constants/constants'
-import { useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import BoxTextSquare from 'shared/components/utils/boxText'
@@ -45,9 +43,10 @@ import CandidateInterview from 'shared/schema/database/candidate_interview'
 interface Props {
   jobApplicationDetail: CandidateJob
   listInterview: CandidateInterview[]
+  show_interview: boolean,
 }
 
-const ListInterview = ({ jobApplicationDetail, listInterview }: Props) => {
+const ListInterview = ({ jobApplicationDetail, listInterview, show_interview }: Props) => {
   const useActionInterviewReturn = useActionInterview()
 
   const {
@@ -63,13 +62,6 @@ const ListInterview = ({ jobApplicationDetail, listInterview }: Props) => {
     setOpenCancelCandidateInterview,
     setOpenDoneCandidateInterview,
   } = useActionInterviewReturn
-
-  const showInterview = useMemo(() => {
-    return (
-      jobApplicationDetail?.status === STATUS_CANDIDATE.APPLIED ||
-      jobApplicationDetail?.status === STATUS_CANDIDATE.INTERVIEWING
-    )
-  }, [jobApplicationDetail?.status])
 
   const queryClient = useQueryClient()
   const handleRefreshList = () => {
@@ -101,7 +93,7 @@ const ListInterview = ({ jobApplicationDetail, listInterview }: Props) => {
           }}
           module="INTERVIEWS"
         >
-          {showInterview && (
+          {show_interview && (
             <BoxButton>
               <AddNewInterviewButtonPermission
                 candidateJobOfTeamId={candidateJobOfTeamId}

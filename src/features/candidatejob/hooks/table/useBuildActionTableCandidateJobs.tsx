@@ -14,6 +14,7 @@ import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { JobStatus } from 'shared/class/job-status'
 import CandidateJob from 'shared/schema/database/candidate_job'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 
 export enum ActionCandidateJobsTabLe {
   DETAIL = 'detail',
@@ -59,9 +60,10 @@ function useBuildActionTableCandidateJobs({
         Icon: <EditIcon />,
         disabled: (rowData) => {
           const disabledStatuses = [
-            STATUS_CANDIDATE.KIV,
-            STATUS_CANDIDATE.OFFERED_LOST,
-            STATUS_CANDIDATE.EX_STAFTT,
+            application_data.failed_cv.value,
+            application_data.failed_interview.value,
+            application_data.offer_lost.value,
+            application_data.ex_staff.value,
           ]
           const is_job_closed =
             rowData?.hiring_job?.status === JobStatus.STATUS_HIRING_JOB.CLOSED
@@ -74,7 +76,7 @@ function useBuildActionTableCandidateJobs({
         onClick: (id, rowData) => {
           handleOpenEdit(id, rowData)
         },
-        title: 'Edit CV',
+        title: 'Edit application',
         Icon: <EditIcon />,
         disabled: (rowData) => {
           return (
@@ -132,6 +134,13 @@ function useBuildActionTableCandidateJobs({
         },
         title: 'Delete',
         Icon: <DeleteIcon />,
+        disabled: (rowData) => {
+          const disabledStatuses = [
+            application_data.applied.value,
+          ]
+
+          return !disabledStatuses.includes(rowData?.status)
+        },
       },
     },
   })

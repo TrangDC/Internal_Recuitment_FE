@@ -21,6 +21,8 @@ import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complet
 import Cant from 'features/authorization/presentation/components/Cant'
 import { BtnPrimary } from 'shared/styles'
 import { Span } from 'shared/components/Typography'
+import { useQueryClient } from '@tanstack/react-query'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const FilterCandidate = () => {
   const { openCreateApply, setOpenCreateApply } =
@@ -31,6 +33,12 @@ const FilterCandidate = () => {
   const { searchRef, handleSearch } = useSearchListReturn
   const { controlFilter } = useFilterReturn
 
+  const queryClient = useQueryClient()
+  const handleRefreshList = () => {
+    queryClient.invalidateQueries({
+      queryKey: [MODLUE_QUERY_KEY.CANDIDATE_JOB],
+    })
+  }
 
   return (
     <Fragment>
@@ -39,7 +47,7 @@ const FilterCandidate = () => {
           <ControllerFilter
             control={controlFilter}
             title="Job request"
-            keyName={'hiring_job_id'}
+            keyName={'hiring_job_ids'}
             Node={({ onFilter, value }) => (
               <JobsAutoComplete
                 name="job"
@@ -66,7 +74,7 @@ const FilterCandidate = () => {
           <ControllerFilter
             control={controlFilter}
             title="Hiring team"
-            keyName={'hiring_team_id'}
+            keyName={'hiring_team_ids'}
             Node={({ onFilter, value }) => (
               <TeamsAutoComplete
                 name="team"
@@ -141,12 +149,14 @@ const FilterCandidate = () => {
           <ControllerFilter
             control={controlFilter}
             title="Level"
-            keyName={'level'}
+            keyName={'levels'}
             Node={({ onFilter, value }) => (
               <LevelAutoComplete
-                multiple={false}
+                multiple={true}
                 value={value}
-                onChange={(data) => onFilter(data)}
+                onChange={(data) => {
+                  onFilter(data)
+                }}
                 open={true}
                 disableCloseOnSelect={true}
                 textFieldProps={{
@@ -206,7 +216,7 @@ const FilterCandidate = () => {
         <SearchInput
           ref={searchRef}
           onEnter={handleSearch}
-          placeholder="Search by Job request"
+          placeholder="Search by name, email"
           onSearch={handleSearch}
         />
         <FlexBox gap={1} alignItems={'center'}>
@@ -228,7 +238,10 @@ const FilterCandidate = () => {
         <ApplyJobModal
           open={openCreateApply}
           setOpen={setOpenCreateApply}
-          onSuccess={handleAddCandidate}
+          onSuccess={(data) => {
+            handleRefreshList()
+            handleAddCandidate(data)
+          }}
         />
       )}
     </Fragment>

@@ -9,6 +9,7 @@ import { useCreateResource } from 'shared/hooks/crud-hook'
 import { convertToEndDateUTC } from 'shared/utils/date'
 import CandidateJob, {
   CreateCandidateJobArguments,
+  LevelCandidateJob,
 } from 'shared/schema/database/candidate_job'
 
 interface useApplyToJobProps {
@@ -29,6 +30,8 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
     defaultValues: {
       offer_expiration_date: null,
       onboard_date: null,
+      level: null,
+      attachments: [],
       ...defaultValues,
     },
     resolver: yupResolver(schemaApplyJob),
@@ -69,6 +72,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
           onboard_date: onboard_date ?? null,
           status: value?.status,
           attachments: attachments,
+          level: value?.level as LevelCandidateJob | null
         },
         note: '',
       }

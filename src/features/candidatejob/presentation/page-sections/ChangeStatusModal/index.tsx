@@ -16,7 +16,7 @@ import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
 import { useMemo } from 'react'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
-import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete, { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
@@ -27,6 +27,7 @@ import AppDateField from 'shared/components/input-fields/DateField'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import { CandidateStatusEnum } from 'shared/schema'
+import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
 
 export type onSuccessChangeStatus = {
   prevStatus: string
@@ -39,15 +40,7 @@ interface IChangeStatusModal {
   candidateId: string
   id: string
   rowData?: CandidateJob
-  statusCurrent:
-    | 'applied'
-    | 'interviewing'
-    | 'offering'
-    | 'hired'
-    | 'kiv'
-    | 'offer_lost'
-    | 'ex_staff'
-    | 'new'
+  statusCurrent: CandidateStatusEnum
   defaultStatus?: string
   onSuccess?: ({ prevStatus, id, updateStatus }: onSuccessChangeStatus) => void
 }
@@ -96,8 +89,9 @@ function ChangeStatusModal({
   const translation = useTextTranslation()
   const show_failed_reason = useMemo(() => {
     return (
-      new_status === STATUS_CANDIDATE.KIV ||
-      new_status === STATUS_CANDIDATE.OFFERED_LOST
+      new_status === application_data.failed_cv.value ||
+      new_status === application_data.offer_lost.value || 
+      new_status === application_data.failed_interview.value 
     )
   }, [new_status])
 
@@ -195,6 +189,34 @@ function ChangeStatusModal({
                   }}
                 />
               </FormControl>
+              {show_date_onboard && (
+                <FormControl fullWidth sx={{ marginTop: '10px' }}>
+                  <Controller
+                    name="level"
+                    control={control}
+                    render={({ field, fieldState }) => {
+                      return (
+                        <FlexBox flexDirection={'column'}>
+                          <LevelAutoComplete
+                            multiple={false}
+                            value={field.value ?? ''}
+                            onChange={(data: any) => {
+                              field.onChange(data?.value)
+                            }}
+                            textFieldProps={{
+                              label: 'Level',
+                              required: true,
+                            }}
+                          />
+                          <HelperTextForm
+                            message={fieldState.error?.message}
+                          ></HelperTextForm>
+                        </FlexBox>
+                      )
+                    }}
+                  />
+                </FormControl>
+              )}
             </FlexBox>
 
             {show_date_onboard && (
@@ -330,7 +352,7 @@ function ChangeStatusModal({
                       <InputFileUpload
                         getValues={getValues}
                         name={field.name}
-                        accept={'.pdf, .png, .jpg, .jpeg, .doc, .docx'}
+                        accept={'.pdf'}
                         multiple={true}
                         validator_files={{
                           max_file: {
@@ -342,9 +364,8 @@ function ChangeStatusModal({
                             msg_error: 'Up to 10 files and 20MB/file',
                           },
                           is_valid: {
-                            regex: '.(pdf|png|jpg|jpeg|doc|docx)$',
-                            msg_error:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                            regex: '.(pdf)$',
+                            msg_error: 'PDF file only, file size up to 20mb',
                           },
                         }}
                         descriptionFile={() => {
@@ -355,7 +376,7 @@ function ChangeStatusModal({
                                 Attach file{' '}
                               </Span>
                               <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                Up to 10 files and 20MB/file
+                                PDF file only, up to 10 files and 20MB/file
                               </Tiny>
                             </Box>
                           )

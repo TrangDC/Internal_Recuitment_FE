@@ -18,13 +18,14 @@ import EditApplicationButtonPermission from 'features/candidatejob/permission/co
 import ChangeStatusCDDJButtonPermission from 'features/candidatejob/permission/components/ChangeStatusCDDJButtonPermission'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import CandidateJob from 'shared/schema/database/candidate_job'
+import { LEVEL_STATE } from 'shared/components/autocomplete/level-auto-complete'
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }
 
 const JobDetailInformation = ({
   jobApplicationDetail,
-}: JobDetailInformationProps) => {
+}: JobDetailInformationProps) => { 
   const { id } = useParams()
   const navigate = useNavigate()
   const [openEditCandidateJob, setOpenEditCandidateJob] = useState(false)
@@ -129,23 +130,38 @@ const JobDetailInformation = ({
           </FlexBox>
         </DivItemInformation>
 
-        <DivItemInformation>
-          <SpanText>Offer expiration date</SpanText>
-          <TinyText>
-            {jobApplicationDetail?.offer_expiration_date &&
-              format(
+        {jobApplicationDetail?.level && (
+          <DivItemInformation>
+            <SpanText>Level</SpanText>
+            <TinyText>
+              {LEVEL_STATE?.[jobApplicationDetail?.level]?.label}
+            </TinyText>
+          </DivItemInformation>
+        )}
+
+        {jobApplicationDetail?.offer_expiration_date && (
+          <DivItemInformation>
+            <SpanText>Offer expiration date</SpanText>
+            <TinyText>
+              {format(
                 new Date(jobApplicationDetail.offer_expiration_date),
                 'dd/MM/yyyy'
               )}
-          </TinyText>
-        </DivItemInformation>
-        <DivItemInformation>
-          <SpanText>Candidate onboard date</SpanText>
-          <TinyText>
-            {jobApplicationDetail?.onboard_date &&
-              format(new Date(jobApplicationDetail.onboard_date), 'dd/MM/yyyy')}
-          </TinyText>
-        </DivItemInformation>
+            </TinyText>
+          </DivItemInformation>
+        )}
+
+        {jobApplicationDetail?.onboard_date && (
+          <DivItemInformation>
+            <SpanText>Candidate onboard date</SpanText>
+            <TinyText>
+              {format(
+                new Date(jobApplicationDetail.onboard_date),
+                'dd/MM/yyyy'
+              )}
+            </TinyText>
+          </DivItemInformation>
+        )}
       </FlexBox>
       <FlexBox
         flexWrap={'wrap'}

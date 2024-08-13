@@ -10,6 +10,7 @@ import Cant from 'features/authorization/presentation/components/Cant'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
 import CandidateInterview from 'shared/schema/database/candidate_interview'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 
 const JobDetailAction = ({
   jobApplicationDetail,
@@ -39,6 +40,10 @@ const JobDetailAction = ({
     return max_step?.candidate_job_status === statusSelected
   }, [jobApplicationDetail, statusSelected])
 
+  const show_interview = useMemo(() => {
+    return statusSelected === application_data.interviewing.value;
+  }, [jobApplicationDetail, statusSelected])
+
   return (
     <DivActionWrapper>
       <DivAction>
@@ -61,6 +66,7 @@ const JobDetailAction = ({
             <ListInterview
               jobApplicationDetail={jobApplicationDetail}
               listInterview={listEnabled?.interview}
+              show_interview={show_interview}
             />
           </DivAction>
         </Cant>

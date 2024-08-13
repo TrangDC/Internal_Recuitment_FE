@@ -196,6 +196,12 @@ export const columns_opening = (
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
     size: 150,
   }),
+  columnHelper.accessor((row) => row.level, {
+    id: 'level',
+    header: () => <span>{t('level')}</span>,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+    size: 150,
+  }),
   columnHelper.accessor((row) => row.total_candidates_recruited, {
     id: 'total_candidates_recruited',
     header: () => <span>{t('hired')}</span>,

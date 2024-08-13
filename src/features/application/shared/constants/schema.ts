@@ -10,8 +10,7 @@ export const schemaApplyJob = yup.object({
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
   attachments: yup
     .array()
-    .required(RULE_MESSAGES.MC1('attachments'))
-    .min(1, 'CV is missing'),
+    .required(RULE_MESSAGES.MC1('attachments')),
   offer_expiration_date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Offer expiration date'))
@@ -43,6 +42,13 @@ export const schemaApplyJob = yup.object({
     .when(['status'], ([status], schema) => {
       if (status !== STATUS_CANDIDATE.OFFERING) return schema
       return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
+    })
+    .nullable(),
+  level: yup
+    .string()
+    .when(['status'], ([status], schema) => {
+      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      return schema.required(RULE_MESSAGES.MC1('level'))
     })
     .nullable(),
 })

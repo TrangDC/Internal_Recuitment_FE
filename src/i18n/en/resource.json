@@ -12,6 +12,7 @@
   "jobs": "Jobs",
   "requester": "Requester",
   "staft_required": "Staft required",
+  "level" : "Level",
   "hired": "Hired",
   "input_job_title": "Enter Job Title",
   "add_a_new_job": "Add a new job",
