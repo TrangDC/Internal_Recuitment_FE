@@ -75,7 +75,6 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     }
 
     const { managers_first } = await getMembersByTeam(hiring_team_id)
-    console.log('managers_first', managers_first)
     if (isEmpty(managers_first)) {
       setValue('created_by', '')
       return

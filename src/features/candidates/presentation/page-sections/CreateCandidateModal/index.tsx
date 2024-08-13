@@ -1,15 +1,13 @@
 import BaseModal from 'shared/components/modal'
 import { Controller } from 'react-hook-form'
-import { Box, FormControl } from '@mui/material'
+import { FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import useCreateCandidate from '../../../hooks/crud/useCreateCandidate'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
-import AppDateField from 'shared/components/input-fields/DateField'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import { Span, Tiny } from 'shared/components/Typography'
 import CandidateSourceAutoComplete, {
   TypeCandidateSource,
 } from 'shared/components/autocomplete/candidate-source-auto-complete'
@@ -17,8 +15,6 @@ import CandidateBySource from './components/CandidateBySource'
 import NationalityAutoComplete from 'shared/components/autocomplete/nationality-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import SkillTreeSelection from 'shared/components/tree/skill-tree'
-import InputFileUpload from 'shared/components/form/inputFileUpload'
 
 interface ICreateCandidateModal {
   open: boolean
@@ -153,7 +149,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                   name="dob"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <AppDateField
+                      {/* <AppDateField
                         label={'DOB'}
                         value={field.value}
                         format="dd/MM/yyyy"
@@ -162,7 +158,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                           fullWidth: true,
                           size: 'small',
                         }}
-                      />
+                      /> */}
                       <HelperTextForm
                         message={fieldState.error?.message}
                       ></HelperTextForm>
@@ -251,7 +247,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                   name="recruit_time"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <AppDateField
+                      {/* <AppDateField
                         label={'Recruit time'}
                         value={field.value}
                         format="dd/MM/yyyy"
@@ -261,7 +257,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                           size: 'small',
                           required: true,
                         }}
-                      />
+                      /> */}
                       <HelperTextForm
                         message={fieldState.error?.message}
                       ></HelperTextForm>
@@ -278,13 +274,13 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                   name="entity_skill_records"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <SkillTreeSelection
+                      {/* <SkillTreeSelection
                         value={field.value}
                         onChange={field.onChange}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
-                      ></HelperTextForm>
+                      ></HelperTextForm> */}
                     </FlexBox>
                   )}
                 />
@@ -324,7 +320,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                   control={control}
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
-                      <InputFileUpload
+                      {/* <InputFileUpload
                         getValues={getValues}
                         name={field.name}
                         multiple={true}
@@ -354,7 +350,7 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
                         }}
                         value={field.value ?? []}
                         onChange={field.onChange}
-                      />
+                      /> */}
                       <HelperTextForm
                         message={fieldState.error?.message}
                       ></HelperTextForm>

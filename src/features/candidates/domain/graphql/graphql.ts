@@ -146,6 +146,60 @@ const useGraphql = () => {
             skill_id
           }
         }
+        address
+        candidate_exp {
+          id
+          position
+          company
+          location
+          start_date
+          end_date
+          description
+          order_id
+          is_current
+        }
+        candidate_educate {
+          id
+          school_name
+          major
+          gpa
+          start_date
+          end_date
+          location
+          description
+          attachments {
+            id
+            document_name
+            document_id
+          }
+          order_id
+          is_current
+        }
+        candidate_award {
+          id
+          name
+          achieved_date
+          attachments {
+            id
+            document_name
+            document_id
+          }
+          order_id
+        }
+        candidate_certificate {
+          id
+          name
+          score
+          achieved_date
+          attachments {
+            id
+            document_name
+            document_id
+          }
+          order_id
+        }
+        avatar
+        gender
         created_at
       }
     `,

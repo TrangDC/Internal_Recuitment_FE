@@ -5,17 +5,17 @@ import DeleteIcon from 'shared/components/icons/DeleteIcon'
 type DeleteFeedbackButtonPermissionProps = {
   onClick: () => void
   ownerId: string
-  candidateJobOfTeamId: string
+  feedbackOfTeamId: string
 }
 
 function DeleteFeedbackButtonPermission({
   onClick,
   ownerId,
-  candidateJobOfTeamId,
+  feedbackOfTeamId,
 }: DeleteFeedbackButtonPermissionProps) {
   const { user, role } = useAuthorization()
   const isOwner = user?.id === ownerId
-  const inTeam = user?.teamId === candidateJobOfTeamId
+  const inTeam = user?.teamId === feedbackOfTeamId
   const deletePermission = checkPermissions({
     role,
     checkBy: {
@@ -44,8 +44,8 @@ function DeleteFeedbackButtonPermission({
   })
 
   if (!deletePermission) return null
-  if (deleteOwnerOnly && !isOwner) return null
   if (deleteTeamOnly && !inTeam) return null
+  if (deleteOwnerOnly && !isOwner) return null
   return <DeleteIcon onClick={onClick} />
 }
 

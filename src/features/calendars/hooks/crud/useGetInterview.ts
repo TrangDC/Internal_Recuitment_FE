@@ -54,7 +54,6 @@ function useGetInterview({ id }: IUseGetInterview) {
   })
   const { getValues } = useFormReturn
 
-  console.log('getValues', getValues())
   function navigateToCandidate() {
     navigate(`/dashboard/candidate-detail/${getValues('candidate_id')}`)
   }

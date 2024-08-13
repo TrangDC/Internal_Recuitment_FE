@@ -7,40 +7,47 @@ type CustomTextFieldProps = TextFieldProps & {
   skeletonProps?: SkeletonProps
 }
 
-const StyledTextField = styled(TextField)<CustomTextFieldProps>(({ theme }) => ({
-  '& .MuiOutlinedInput-input': {
-    fontWeight: 500,
-    color: theme.palette.text.primary,
-  },
-  '& .MuiOutlinedInput-notchedOutline': {
-    borderRadius: '4px',
-    borderColor: `${theme.palette.grey[300]}`,
-  },
-  '& .MuiOutlinedInput-root': {
-    '&.Mui-disabled': {
-      backgroundColor: '#F0F1F8 !important',
-      borderColor: theme.palette.action.hover,
-      color: '#4D607A',
-      WebkitTextFillColor: '#4D607A',
+const StyledTextField = styled(TextField)<CustomTextFieldProps>(
+  ({ theme }) => ({
+    backgroundColor: 'white',
+    '& .MuiOutlinedInput-input': {
+      fontWeight: 500,
+      color: theme.palette.text.primary,
     },
-  },
-  '& .MuiInputLabel-root': {
-    fontWeight: 500,
-    fontSize: 13,
-    lineHeight: '21px',
-    color: theme.palette.grey[500],
-    '& .MuiFormLabel-asterisk': {
-      color: theme.palette.error.main,
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderRadius: '4px',
+      borderColor: `${theme.palette.grey[300]}`,
     },
-  },
-  '& .MuiInputLabel-root.Mui-focused': { fontWeight: 600 },
-  '& .MuiInputLabel-root .MuiFormLabel-asterisk': { marginLeft: 2 },
-  '& .MuiSvgIcon-root': { color: theme.palette.text.disabled },
-}))
+    '& .MuiOutlinedInput-root': {
+      '&.Mui-disabled': {
+        backgroundColor: '#F0F1F8 !important',
+        borderColor: theme.palette.action.hover,
+        color: '#4D607A',
+        WebkitTextFillColor: '#4D607A',
+      },
+    },
+    '& .MuiInputLabel-root': {
+      fontWeight: 500,
+      fontSize: 13,
+      lineHeight: '21px',
+      color: theme.palette.grey[500],
+      '& .MuiFormLabel-asterisk': {
+        color: theme.palette.error.main,
+      },
+    },
+    '& .MuiInputLabel-root.Mui-focused': { fontWeight: 600 },
+    '& .MuiInputLabel-root .MuiFormLabel-asterisk': { marginLeft: 2 },
+    '& .MuiSvgIcon-root': { color: theme.palette.text.disabled },
+  })
+)
 
 const AppTextField: FC<CustomTextFieldProps> = (props) => {
-  const {loading, skeletonProps, ...inputProps} = props;
-  return loading ? <SkeletonField {...skeletonProps}/> : <StyledTextField {...inputProps} />
+  const { loading, skeletonProps, ...inputProps } = props
+  return loading ? (
+    <SkeletonField {...skeletonProps} />
+  ) : (
+    <StyledTextField {...inputProps} />
+  )
 }
 
 export default AppTextField

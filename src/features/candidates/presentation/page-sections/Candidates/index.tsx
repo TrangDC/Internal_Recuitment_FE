@@ -5,33 +5,19 @@ import { columns } from '../../../shared/constants/columns'
 import useCandidateTable from '../../../hooks/table/useCandidateTable'
 import useActionTable from '../../../hooks/table/useActionTable'
 import { DivContainerWrapper, DivHeaderWrapper } from '../../../shared/styles'
-import { Fragment, useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
-import ButtonAdd from 'shared/components/utils/buttonAdd'
-import { handleImportFile } from '../../../shared/utils'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
 import CandidateStatusAutoComplete, {
   options_status_new,
 } from 'shared/components/autocomplete/candidate-status-auto-complete'
-import { downloadBase64File } from 'shared/utils/utils'
 import { STATUS_CANDIDATE } from 'shared/constants/constants'
-import { useImportFile } from 'shared/hooks/graphql/useUpload'
-import { ArrowDownward } from '@mui/icons-material'
-import { MenuItemComponent } from 'shared/components/menuItemComponent'
-import DownloadIcon from 'shared/components/icons/DownloadIcon'
-import useExportSample from '../../../hooks/useExportSample'
-import {
-  BlackListCandidateModal,
-  CreateCandidateModal,
-  DeleteCandidateModal,
-  EditCandidateModal,
-} from '../index'
+import { BlackListCandidateModal, DeleteCandidateModal } from '../index'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import useFilterCandidates from '../../../hooks/table/useFilterCandidates'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import SearchInput from 'shared/components/table/components/SearchInput'
-import useTextTranslation from 'shared/constants/text'
 import ControllerDateRange from 'shared/components/table/components/tooltip-filter/ControllerDateRange'
 import dayjs from 'dayjs'
 import AppDateRangePicker from 'shared/components/input-fields/AppDateRangePicker'
@@ -41,30 +27,31 @@ import CandidateSourceAutoComplete from 'shared/components/autocomplete/candidat
 import Cant from 'features/authorization/presentation/components/Cant'
 import useBuildActionTableCandidate from '../../../hooks/table/useBuildActionTableCandidate'
 import Candidate from 'shared/schema/database/candidate'
+import AppMenuButton from 'shared/components/buttons/AppMenuButton'
+import DownloadIcon from 'shared/components/icons/DownloadIcon'
+import { useNavigate } from 'react-router-dom'
+import ImportCVModal from '../importCVModal/ImportCVModal'
+import AiIcon from 'shared/components/icons/Ai'
 
 const Candidates = () => {
+  const navigate = useNavigate()
   const {
-    openCreate,
-    setOpenCreate,
-    handleOpenEdit,
     openDelete,
     setOpenDelete,
     handleOpenDelete,
-    openEdit,
     rowId,
-    setOpenEdit,
     openBlackList,
     handleOpenBlackList,
     setOpenBlackList,
+    setOpenImportCV,
+    openImportCV,
   } = useActionTable<Candidate>()
   const is_black_list = false
-  const translation = useTextTranslation()
   const { useFilterReturn, useSearchListReturn } = useFilterCandidates({
     is_black_list,
   })
   const { controlFilter, dataFilterWithValue } = useFilterReturn
   const { handleSearch, search, searchRef } = useSearchListReturn
-  const refInput = useRef<HTMLInputElement>(null)
   const { useTableReturn } = useCandidateTable({
     filters: {
       is_black_list,
@@ -82,14 +69,15 @@ const Candidates = () => {
   const { actions } = useBuildActionTableCandidate({
     handleOpenBlackList,
     handleOpenDelete,
-    handleOpenEdit,
   })
   const { columnTable } = useBuildColumnTable({
     actions: actions,
     columns,
   })
-  const { base64Example } = useExportSample()
-  const { submit } = useImportFile()
+
+  function handleNavigate() {
+    navigate('/dashboard/create-candidate')
+  }
 
   return (
     <DivContainerWrapper>
@@ -281,71 +269,29 @@ const Candidates = () => {
                   permissions: ['CREATE.everything'],
                 }}
               >
-                <Fragment>
-                  <MenuItemComponent
-                    actions={[
-                      {
-                        Icon: <DownloadIcon />,
-                        title: 'Download Template',
-                        id: 'download',
-                        onClick: () => {
-                          downloadBase64File(
-                            base64Example,
-                            'candidate_example.xlsx',
-                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                          )
-                        },
+                <AppMenuButton
+                  options={[
+                    {
+                      Icon: <Add />,
+                      title: 'Create new',
+                      onClick() {
+                        handleNavigate()
                       },
-                      {
-                        Icon: (
-                          <DownloadIcon
-                            sx={{
-                              transform: 'rotate(-90deg)',
-                              fontSize: '16px',
-                            }}
-                          />
-                        ),
-                        title: 'Import',
-                        id: 'import',
-                        onClick: () => {
-                          console.log('import file', refInput.current?.click())
-                        },
+                    },
+                    {
+                      Icon: (
+                        <AiIcon sx={{ fontSize: '15px', color: 'grey.500' }} />
+                      ),
+                      title: 'Import CV by AI',
+                      onClick() {
+                        setOpenImportCV(true)
                       },
-                    ]}
-                    Button={
-                      <ButtonAdd
-                        Icon={ArrowDownward}
-                        textLable={'Import'}
-                        position_icon="end"
-                      />
-                    }
-                  />
-                  <input
-                    ref={refInput}
-                    type="file"
-                    id="fileImport"
-                    name="file"
-                    accept=".xls,.xlsx,.csv"
-                    hidden
-                    onChange={(event) => {
-                      const fileEvent = event.target.files
-                      fileEvent &&
-                        handleImportFile(
-                          fileEvent[0],
-                          {
-                            regexString: '^.*\\.(xls|xlsx|csv)$',
-                            maxSize: 20,
-                          },
-                          submit
-                        )
-                      event.target.value = ''
-                    }}
-                  />
-                </Fragment>
-                <ButtonAdd
-                  Icon={Add}
-                  textLable={translation.MODLUE_CANDIDATES.add_new_candidate}
-                  onClick={() => setOpenCreate(true)}
+                    },
+                  ]}
+                  title="Add a new candidate"
+                  buttonProps={{
+                    startIcon: <Add />,
+                  }}
                 />
               </Cant>
             </FlexBox>
@@ -360,17 +306,6 @@ const Candidates = () => {
           )}
         </Box>
       </BoxWrapperOuterContainer>
-
-      {openCreate && (
-        <CreateCandidateModal open={openCreate} setOpen={setOpenCreate} />
-      )}
-      {openEdit && (
-        <EditCandidateModal
-          open={openEdit}
-          setOpen={setOpenEdit}
-          id={rowId.current}
-        />
-      )}
       {openDelete && (
         <DeleteCandidateModal
           open={openDelete}
@@ -383,6 +318,19 @@ const Candidates = () => {
           open={openBlackList}
           setOpen={setOpenBlackList}
           id={rowId.current}
+        />
+      )}
+      {openImportCV && (
+        <ImportCVModal
+          open={openImportCV}
+          openWarning={false}
+          setOpen={setOpenImportCV}
+          title="Import CV"
+          onSuccess={(data) => {
+            navigate('/dashboard/create-candidate', {
+              state: data,
+            })
+          }}
         />
       )}
     </DivContainerWrapper>

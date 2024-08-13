@@ -8,6 +8,7 @@ const useActionTable = <T extends object>() => {
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openBlackList, setOpenBlackList] = useState(false)
+  const [openImportCV, setOpenImportCV] = useState(false)
 
   function handleOpenEdit(id: string) {
     rowId.current = id
@@ -46,6 +47,8 @@ const useActionTable = <T extends object>() => {
     handleOpenBlackList,
     rowId,
     rowData,
+    setOpenImportCV,
+    openImportCV,
   }
 }
 
