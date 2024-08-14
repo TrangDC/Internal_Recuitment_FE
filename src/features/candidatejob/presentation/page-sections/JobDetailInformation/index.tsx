@@ -4,7 +4,6 @@ import { SpanText, TinyText } from 'shared/components/form/styles'
 import useActionTable from '../../../hooks/table/useActionTable'
 import ChangeStatusModal from '../ChangeStatusModal'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
-import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { useEffect, useMemo, useState } from 'react'
 import PreviewCV from '../../components/previewCV'
 import { DivInformation, DivItemInformation } from '../../../shared/styles'
@@ -19,6 +18,7 @@ import ChangeStatusCDDJButtonPermission from 'features/candidatejob/permission/c
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import { LEVEL_STATE } from 'shared/components/autocomplete/level-auto-complete'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }
@@ -39,9 +39,10 @@ const JobDetailInformation = ({
   const [url, setUrl] = useState('')
   const hiddenChangStatus = useMemo(() => {
     const disabledStatuses = [
-      STATUS_CANDIDATE.KIV,
-      STATUS_CANDIDATE.OFFERED_LOST,
-      STATUS_CANDIDATE.EX_STAFTT,
+      application_data.failed_cv.value,
+      application_data.failed_interview.value,
+      application_data.offer_lost.value,
+      application_data.ex_staff.value,
     ]
 
     return !disabledStatuses.includes(jobApplicationDetail?.status)

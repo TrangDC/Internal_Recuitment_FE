@@ -412,57 +412,6 @@ const useGraphql = () => {
             updated_at
           }
         }
-
-        kiv {
-          interview {
-            id
-            title
-            description
-            candidate_job_id
-            interview_date
-            start_from
-            end_at
-            location
-            status
-            meeting_link
-            interviewer {
-              id
-              name
-              work_email
-            }
-            owner {
-              id
-              name
-              work_email
-            }
-            edit_able
-            edited
-            created_at
-            updated_at
-          }
-          feedback {
-            id
-            created_by
-            owner {
-              id
-              name
-              work_email
-              hiring_team {
-                id
-              }
-            }
-            feedback
-            attachments {
-              id
-              document_name
-              document_id
-            }
-            edited
-            created_at
-            updated_at
-          }
-        }
-
         offer_lost {
           interview {
             id
@@ -598,6 +547,21 @@ const useGraphql = () => {
     },
   })
 
+  const validProcessingCandidateJobExistByCandidateID = GraphQLClientService.buildQuery({
+    operation: 'ValidProcessingCandidateJobExistByCandidateID',
+    options: {
+      type: 'query',
+    },
+    // node: `
+    //   data {
+      
+    //   }
+    // `,
+    params: {
+      candidateID: 'ID!',
+    },
+  })
+
   return {
     queryKey,
     getCandidate,
@@ -609,6 +573,7 @@ const useGraphql = () => {
     getCandidateJobInterview,
     deleteCandidateJob,
     updateCandidateJobAttachment,
+    validProcessingCandidateJobExistByCandidateID
   }
 }
 

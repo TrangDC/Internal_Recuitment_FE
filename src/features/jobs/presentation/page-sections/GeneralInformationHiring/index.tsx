@@ -10,12 +10,14 @@ import {
 } from '../../../shared/styles'
 import BoxStatusCandidates from '../BoxStatusCandidates'
 import BoxTextSquare from 'shared/components/utils/boxText'
-import { ENUM_STATUS_CANDIDATE } from 'shared/constants/constants'
+// import { ENUM_STATUS_CANDIDATE } from 'shared/constants/constants'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Scrollbar from 'shared/components/ScrollBar'
 import { useState } from 'react'
 import CollapseLeftIcon from 'shared/components/icons/CollapseLeftIcon'
 import CollapseRightIcon from 'shared/components/icons/CollapseRightIcon'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
+import { CandidateStatusEnum } from 'shared/schema'
 
 const GenaralInformationHiring = () => {
   const translation = useTextTranslation()
@@ -43,7 +45,7 @@ const GenaralInformationHiring = () => {
                 title="Applied"
                 number_candidates={candidatesStatus?.applied?.length}
                 list_candidates={candidatesStatus?.applied}
-                status={ENUM_STATUS_CANDIDATE.APPLIED}
+                status={application_data.applied.value as CandidateStatusEnum}
               />
             </BoxHiringProcess>
             <BoxHiringProcess>
@@ -51,7 +53,7 @@ const GenaralInformationHiring = () => {
                 title="Interviewing"
                 number_candidates={candidatesStatus?.interviewing?.length}
                 list_candidates={candidatesStatus?.interviewing}
-                status={ENUM_STATUS_CANDIDATE.INTERVIEWING}
+                status={application_data.interviewing.value as CandidateStatusEnum}
               />
             </BoxHiringProcess>
 
@@ -60,7 +62,7 @@ const GenaralInformationHiring = () => {
                 title="Offering"
                 number_candidates={candidatesStatus?.offering?.length}
                 list_candidates={candidatesStatus?.offering}
-                status={ENUM_STATUS_CANDIDATE.OFFERING}
+                status={application_data.offering.value as CandidateStatusEnum}
               />
             </BoxHiringProcess>
             <BoxHiringProcess>
@@ -68,7 +70,7 @@ const GenaralInformationHiring = () => {
                 title="Hired"
                 number_candidates={candidatesStatus?.hired?.length}
                 list_candidates={candidatesStatus?.hired}
-                status={ENUM_STATUS_CANDIDATE.HIRED}
+                status={application_data.hired.value as CandidateStatusEnum}
                 Note={
                   <BoxTextSquare
                     boxProps={{
@@ -84,10 +86,29 @@ const GenaralInformationHiring = () => {
             </BoxHiringProcess>
             <BoxHiringProcess>
               <BoxStatusCandidates
-                title="KIV"
-                number_candidates={candidatesStatus?.kiv?.length}
-                list_candidates={candidatesStatus?.kiv}
-                status={ENUM_STATUS_CANDIDATE.KIV}
+                title="Failed CV"
+                number_candidates={candidatesStatus?.failed_cv?.length}
+                list_candidates={candidatesStatus?.failed_cv}
+                status={application_data.failed_cv.value as CandidateStatusEnum}
+                Note={
+                  <BoxTextSquare
+                    boxProps={{
+                      sx: {
+                        background: '#FFE4E1',
+                        color: '#DB4E82',
+                      },
+                    }}
+                    content="Failed"
+                  />
+                }
+              />
+            </BoxHiringProcess>
+            <BoxHiringProcess>
+              <BoxStatusCandidates
+                title="Failed Interview"
+                number_candidates={candidatesStatus?.failed_interview?.length}
+                list_candidates={candidatesStatus?.failed_interview}
+                status={application_data.failed_cv.value as CandidateStatusEnum}
                 Note={
                   <BoxTextSquare
                     boxProps={{
@@ -106,7 +127,7 @@ const GenaralInformationHiring = () => {
                 title="Offered lost"
                 number_candidates={candidatesStatus?.offer_lost?.length}
                 list_candidates={candidatesStatus?.offer_lost}
-                status={ENUM_STATUS_CANDIDATE.OFFERED_LOST}
+                status={application_data.offer_lost.value as CandidateStatusEnum}
                 Note={
                   <BoxTextSquare
                     boxProps={{
@@ -125,7 +146,7 @@ const GenaralInformationHiring = () => {
                 title="Ex-staff"
                 number_candidates={candidatesStatus?.ex_staff?.length}
                 list_candidates={candidatesStatus?.ex_staff}
-                status={ENUM_STATUS_CANDIDATE.EX_STAFTT}
+                status={application_data.ex_staff.value as CandidateStatusEnum}
               />
             </BoxHiringProcess>
           </FlexBox>

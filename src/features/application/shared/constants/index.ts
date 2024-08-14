@@ -1,7 +1,4 @@
 import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
-import {
-  STATUS_CANDIDATE,
-} from 'shared/constants/constants'
 
 export const ENABLED_CHANGE_STATUS = {
   [application_data.applied.value]: [

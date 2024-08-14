@@ -8,17 +8,18 @@ import useTextTranslation from 'shared/constants/text'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete, { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SelectionTeamForCreateCDDJPermission from 'features/candidatejob/permission/components/SelectionTeamForCreateCDDJPermission'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
-import { STATUS_CANDIDATE } from 'shared/class/candidate'
 import AppDateField from 'shared/components/input-fields/DateField'
 import { status_disabled_applied } from 'features/candidatejob/shared/constants'
 import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
+import useValidProcessingCandidate from 'features/candidatejob/hooks/crud/useValidProcessingCandidate'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 interface IApplyJobModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -51,14 +52,17 @@ function ApplyJobModal({
       candidate_id: candidateId,
     },
   })
+  const { handleWarning, handleReset } = usePopup()
 
   const translation = useTextTranslation()
   const attachments = watch('attachments')
   const hiring_team_id = watch('hiring_team_id')
   const new_status = watch('status')
 
+  const { isValidCandidate } = useValidProcessingCandidate(candidateId)
+
   const show_date_onboard = useMemo(() => {
-    return new_status === STATUS_CANDIDATE.OFFERING
+    return new_status === application_data.offering.value
   }, [new_status])
 
   const isValidAttachments = useMemo(() => {
@@ -66,6 +70,22 @@ function ApplyJobModal({
 
     return attachments.every((file) => file.status === 'success')
   }, [attachments])
+
+  const handleSubmit = () => {
+    if (!isValidCandidate) {
+      onSubmit()
+      return
+    }
+
+    handleWarning({
+      title: 'Warning',
+      content: `This candidate is applying for another job. Do you still want to proceed with this candidate’s application?`,
+      onSubmit: () => {
+        onSubmit()
+        handleReset()
+      },
+    })
+  }
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -320,7 +340,7 @@ function ApplyJobModal({
               variant="contained"
               size="small"
               disabled={isValid || !isValidAttachments}
-              handlesubmit={onSubmit}
+              handlesubmit={handleSubmit}
               loading={isPending}
             >
               Submit

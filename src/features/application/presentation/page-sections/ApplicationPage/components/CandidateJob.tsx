@@ -12,13 +12,13 @@ import Droppable from 'shared/components/dnd/components/Droppable'
 import BoxCandidateJob from './BoxCandidateJob'
 import { ENABLED_CHANGE_STATUS } from 'features/application/shared/constants'
 import { toast } from 'react-toastify'
-import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
 import { CandidateStatusEnum } from 'shared/schema'
 import Candidate from 'shared/schema/database/candidate'
 import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import CandidateJobDB from 'shared/schema/database/candidate_job'
 import { ChangeStatusModal } from 'features/candidatejob/presentation/page-sections'
 import { BoxDroppableCandidate } from 'features/application/shared/styles'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 
 const CandidateJob = () => {
   const {
@@ -98,7 +98,7 @@ const CandidateJob = () => {
                   setDestination(destinationId)
                 } else {
                   toast.error(
-                    `Cannot move candidate from ${STATUS_CANDIDATE_TEXT[data?.status as CandidateStatusEnum]} to ${STATUS_CANDIDATE_TEXT[destinationId as CandidateStatusEnum]}`
+                    `Cannot move candidate from ${application_data?.[data?.status as CandidateStatusEnum]?.label} to ${application_data?.[destinationId as CandidateStatusEnum]?.label}`
                   )
                 }
               }}

@@ -18,15 +18,15 @@ function CandidateStatusAutoComplete<Multiple extends boolean>(
 }
 
 export const application_data = {
-  applied: {label: 'Applied', value: 'applied'},
-  interviewing: {label: 'Interviewing', value: 'interviewing'},
-  offering: {label: 'Offering', value: 'offering'},
-  hired: {label: 'Hired', value: 'hired'},
-  failed_cv: {label: 'Failed CV', value: 'failed_cv'},
-  failed_interview: {label: 'Failed interview', value: 'failed_interview'},
-  offer_lost: {label: 'Offer lost', value: 'offer_lost'},
-  ex_staff: {label: 'Ex-staff', value: 'ex_staff'},
-  new: {label: 'New', value: 'new'},
+  applied: {label: 'Applied', value: 'applied', backgroundColor: '#FFAF46' },
+  interviewing: {label: 'Interviewing', value: 'interviewing', backgroundColor: '#5CBAFE'},
+  offering: {label: 'Offering', value: 'offering', backgroundColor: '#20A4A9'},
+  hired: {label: 'Hired', value: 'hired', backgroundColor: '#7874FE'},
+  failed_cv: {label: 'Failed CV', value: 'failed_cv', backgroundColor: '#82868C'},
+  failed_interview: {label: 'Failed interview', value: 'failed_interview', backgroundColor: '#82868C'},
+  offer_lost: {label: 'Offer lost', value: 'offer_lost', backgroundColor: '#82868C'},
+  ex_staff: {label: 'Ex-staff', value: 'ex_staff', backgroundColor: '#FC105C'},
+  new: {label: 'New', value: 'new', backgroundColor: '#2CC5BD'},
 }
 
 export const options_status: IOption[] = [
