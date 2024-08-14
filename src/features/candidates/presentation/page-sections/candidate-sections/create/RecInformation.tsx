@@ -1,6 +1,6 @@
 import { FormControl } from '@mui/material'
 import { useState } from 'react'
-import { Controller, useFormContext } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import AppContainer from 'shared/components/AppContainer'
 import CandidateSourceAutoComplete, {
   TypeCandidateSource,

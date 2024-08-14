@@ -14,7 +14,6 @@ import NationalityAutoComplete from 'shared/components/autocomplete/nationality-
 import CandidateBySource from '../CreateCandidateModal/components/CandidateBySource'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
-import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import Candidate from 'shared/schema/database/candidate'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import AppDateField from 'shared/components/input-fields/AppDateField'

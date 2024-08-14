@@ -20,7 +20,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import { useCandidateInforContext } from 'features/candidates/shared/context/CandidateInformation'
 import { CandidateStatusEnum } from 'shared/schema'
-import checkPermissionApplicationHistory from 'features/candidates/permission/utils/checkPermissionApplicationHistory'
 
 const ApplicationHistory = () => {
   const { id } = useParams()
@@ -110,7 +109,7 @@ const ApplicationHistory = () => {
           candidateId={id as string}
           id={rowId.current}
           rowData={rowData.current}
-          statusCurrent={candidateInfor?.status as CandidateStatusEnum}
+          statusCurrent={rowData.current?.status as CandidateStatusEnum}
           onSuccess={handleRefreshList}
         />
       )}

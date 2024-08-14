@@ -3,19 +3,14 @@ import { useParams } from 'react-router-dom'
 import useTextTranslation from 'shared/constants/text'
 import useCandidatesByJob from '../../../hooks/crud/useCandidatesByJob'
 import {
-  BoxContainerCandidate,
   BoxHiringProcess,
   DivWrapperProcess,
   SpanHiring,
 } from '../../../shared/styles'
 import BoxStatusCandidates from '../BoxStatusCandidates'
 import BoxTextSquare from 'shared/components/utils/boxText'
-// import { ENUM_STATUS_CANDIDATE } from 'shared/constants/constants'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Scrollbar from 'shared/components/ScrollBar'
-import { useState } from 'react'
-import CollapseLeftIcon from 'shared/components/icons/CollapseLeftIcon'
-import CollapseRightIcon from 'shared/components/icons/CollapseRightIcon'
 import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { CandidateStatusEnum } from 'shared/schema'
 
