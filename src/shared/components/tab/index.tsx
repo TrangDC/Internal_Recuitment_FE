@@ -1,5 +1,11 @@
-import { TabContext, TabList, TabListProps, TabPanel } from '@mui/lab'
-import { Box, Tab, styled } from '@mui/material'
+import {
+  TabContext,
+  TabList,
+  TabListProps,
+  TabPanel,
+  TabPanelProps,
+} from '@mui/lab'
+import { Box, Tab, styled, SxProps } from '@mui/material'
 import React, { useMemo, useState } from 'react'
 import FlexBetween from '../flexbox/FlexBetween'
 import FlexBox from '../flexbox/FlexBox'
@@ -91,9 +97,18 @@ interface renderItem {
 interface TabProps {
   renderItem: renderItem[]
   TabListProps?: TabListProps
+  tabWrapperSx?: SxProps
+  tabPanelSx?: SxProps
+  boxSx?: SxProps
 }
 
-const TabCustomize = ({ renderItem, TabListProps }: TabProps) => {
+const TabCustomize = ({
+  renderItem,
+  TabListProps,
+  tabWrapperSx,
+  boxSx,
+  tabPanelSx,
+}: TabProps) => {
   const [value, setValue] = useState<string>('0')
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
@@ -110,6 +125,7 @@ const TabCustomize = ({ renderItem, TabListProps }: TabProps) => {
           sx={{
             width: 'fit-content',
             boxShadow: '0px 2px 4px 0px rgba(96, 97, 112, 0.16)',
+            ...boxSx,
           }}
         >
           <TabListWrapper
@@ -123,6 +139,7 @@ const TabCustomize = ({ renderItem, TabListProps }: TabProps) => {
                   key={index}
                   label={item.label}
                   value={index.toString()}
+                  sx={tabWrapperSx}
                 />
               )
             })}
@@ -132,7 +149,11 @@ const TabCustomize = ({ renderItem, TabListProps }: TabProps) => {
           {renderItem.map((item, index) => {
             const { Component } = item
             return (
-              <TabPanelStyle value={index.toString()} key={index}>
+              <TabPanelStyle
+                value={index.toString()}
+                key={index}
+                sx={tabPanelSx}
+              >
                 <HeadingWrapper height={'100%'}>
                   <Component />
                 </HeadingWrapper>

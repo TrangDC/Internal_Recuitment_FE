@@ -19,6 +19,7 @@ function SkillField({ index, name, onDelete }: SkillFieldProps) {
   const [skillType, setSkillType] = useState('')
   const { control, setValue, resetField } = useCreateFormContext()
   function onSkillChange(data: Skill[]) {
+    console.log('data[0]', data[0])
     if (data[0]) {
       setValue(`${name}.${index}.skill_type_id`, data[0].skill_type.id, {
         shouldValidate: true,

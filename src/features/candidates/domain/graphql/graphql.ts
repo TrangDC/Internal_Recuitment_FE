@@ -217,7 +217,9 @@ const useGraphql = () => {
       edges {
         node {
           id
-          candidate_id
+          hiring_job {
+            
+          }
           hiring_job_id
           status
           created_at

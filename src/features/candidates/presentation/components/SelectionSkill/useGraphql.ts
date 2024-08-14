@@ -13,6 +13,9 @@ const useGraphql = () => {
         node {
           id
           name
+          skill_type {
+            id
+          }
         }
       }
       pagination {

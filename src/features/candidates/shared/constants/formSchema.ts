@@ -280,11 +280,36 @@ export const EditCandidate = yup.object({
   avatarUrl: yup.string().default(''),
 })
 
+export const GetCandidate = yup.object({
+  name: yup.string().default(''),
+  gender: yup.string().default(''),
+  phone: yup.string().default(''),
+  email: yup.string().default(''),
+  address: yup.string().default(''),
+  dob: yup.mixed<Dayjs>().nullable(),
+  country: yup.string().default(''),
+  reference_type: yup.string().default(''),
+  reference_value: yup.string().default(''),
+  reference_uid: yup.string().default(''),
+  recruit_time: yup.mixed<Dayjs>(),
+  description: yup.string().default(''),
+  attachments: yup.array<any, FileUploadAttachment>().default([]),
+  candidate_exp: yup.array().of(candidateExp).default([]),
+  candidate_educate: yup.array().of(candidateEducate).default([]),
+  candidate_award: yup.array().of(award).default([]),
+  candidate_certificate: yup.array().of(certificate).default([]),
+  avatar: yup.string(),
+  entity_skill_records: yup.array().of(entitySkill).default([]),
+  avatarUrl: yup.string().default(''),
+})
+
 export type FormDataSchemaCreateCandidate = yup.InferType<
   typeof CreateCandidate
 >
 
 export type FormDataSchemaEditCandidate = yup.InferType<typeof EditCandidate>
+
+export type FormDataSchemaGetCandidate = yup.InferType<typeof GetCandidate>
 
 export type FormDataSchemaEducate = yup.InferType<typeof candidateEducate>
 

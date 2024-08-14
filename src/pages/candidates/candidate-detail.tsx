@@ -1,5 +1,5 @@
-import CandidateDetail from 'features/candidatejob/presentation/screens/candidate-job-list';
-import HelmetComponent from 'shared/components/helmet';
+import CandidateDetail from 'features/candidates/presentation/screens/candidate-detail'
+import HelmetComponent from 'shared/components/helmet'
 
 const CandidatePageDetail = () => {
   return (
