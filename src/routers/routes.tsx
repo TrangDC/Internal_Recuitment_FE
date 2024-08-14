@@ -321,7 +321,7 @@ export const AppRoutes = () => {
           <Route
             path="job-position-detail/:id"
             element={PermissionLayout({
-              module: 'EMAIL_TEMPLATE',
+              module: 'JOB_POSITION',
               children: <JobPositionDetail />,
               checkBy: {
                 compare: 'hasAny',
