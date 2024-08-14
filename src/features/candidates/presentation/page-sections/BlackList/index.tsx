@@ -6,9 +6,8 @@ import { DivContainerWrapper, DivHeaderWrapper } from '../../../shared/styles'
 import { useMemo } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete, { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
-import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import {
   BlackListCandidateModal,
   CreateCandidateModal,
@@ -52,8 +51,9 @@ const BlackList = () => {
   const { handleSearch, search, searchRef } = useSearchListReturn
   const showFailedReason = useMemo(() => {
     return (
-      dataFilterWithValue.status === STATUS_CANDIDATE.KIV ||
-      dataFilterWithValue.status === STATUS_CANDIDATE.OFFERED_LOST
+      dataFilterWithValue.status === application_data.failed_cv.value ||
+      dataFilterWithValue.status === application_data.failed_interview.value ||
+      dataFilterWithValue.status === application_data.offer_lost.value
     )
   }, [dataFilterWithValue])
 

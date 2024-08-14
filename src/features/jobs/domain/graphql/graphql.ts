@@ -211,7 +211,24 @@ const useGraphql = () => {
               }
               created_at
           }
-          kiv {
+          failed_cv {
+              id
+              candidate_id
+              hiring_job_id
+              status
+               candidate {
+                  id
+                  name,
+                  phone,
+                  status,
+              }
+              hiring_job {
+                id
+                name
+              }
+              created_at
+          }
+          failed_interview {
               id
               candidate_id
               hiring_job_id

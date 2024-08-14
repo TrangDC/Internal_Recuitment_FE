@@ -149,7 +149,9 @@
         "candidate_job_status_exist": "Candidate is already on the same status with this job",
         "candidate_is_blacklist": "This candidate is in blacklist",
         "status_is_invalid_to_delete": "This job has already closed and cannot be deleted.",
-        "job_is_closed": "This job has already closed and cannot be deleted"
+        "job_is_closed": "This job has already closed and cannot be deleted",
+        "candidate_is_hired": "This candidate has already been hired for another job.",
+        "same_hiring_job": "This candidate has already applied for this job."
       }
     },
     "candidate_jobs": {

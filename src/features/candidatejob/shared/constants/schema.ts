@@ -1,6 +1,5 @@
 import { RULE_MESSAGES } from 'shared/constants/validate'
 import * as yup from 'yup'
-import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { isEmpty } from 'lodash'
 import dayjs from 'dayjs'
 import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
@@ -30,7 +29,7 @@ export const schema = yup.object({
       }
     )
     .when(['status'], ([status], schema) => {
-      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      if (status !== application_data.offering.value) return schema
       return schema.required(RULE_MESSAGES.MC1('Offer expiration date'))
     })
     .nullable(),
@@ -42,12 +41,12 @@ export const schema = yup.object({
       'Onboard date must be after or equal current date'
     )
     .when(['status'], ([status], schema) => {
-      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      if (status !== application_data.offering.value) return schema
       return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
     })
     .nullable(),
   level: yup.string().when(['status'], ([status], schema) => {
-    if (status !== STATUS_CANDIDATE.OFFERING) return schema
+    if (status !== application_data.offering.value) return schema
     return schema.required(RULE_MESSAGES.MC1('level'))
   }).nullable(),
 })
@@ -93,7 +92,7 @@ export const schemaChangeStatus = yup.object({
       }
     )
     .when(['status'], ([status], schema) => {
-      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      if (status !== application_data.offering.value) return schema
       return schema.required(RULE_MESSAGES.MC1('Offer expiration date'))
     })
     .nullable(),
@@ -105,12 +104,12 @@ export const schemaChangeStatus = yup.object({
       'Onboard date must be after or equal current date'
     )
     .when(['status'], ([status], schema) => {
-      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      if (status !== application_data.offering.value) return schema
       return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
     })
     .nullable(),
     level: yup.string().when(['status'], ([status], schema) => {
-      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      if (status !== application_data.offering.value) return schema
       return schema.required(RULE_MESSAGES.MC1('level'))
     }).nullable(),
 })

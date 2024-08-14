@@ -9,9 +9,9 @@ import { useMemo } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
 import CandidateStatusAutoComplete, {
+  application_data,
   options_status_new,
 } from 'shared/components/autocomplete/candidate-status-auto-complete'
-import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import { BlackListCandidateModal, DeleteCandidateModal } from '../index'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
@@ -61,8 +61,9 @@ const Candidates = () => {
   })
   const showFailedReason = useMemo(() => {
     return (
-      dataFilterWithValue.status === STATUS_CANDIDATE.KIV ||
-      dataFilterWithValue.status === STATUS_CANDIDATE.OFFERED_LOST
+      dataFilterWithValue.status === application_data.failed_cv.value ||
+      dataFilterWithValue.status === application_data.failed_interview.value ||
+      dataFilterWithValue.status === application_data.offer_lost.value
     )
   }, [dataFilterWithValue])
 

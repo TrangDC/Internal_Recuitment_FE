@@ -4,7 +4,6 @@ import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomTextField } from 'shared/components/form/styles'
 import {
-  CANDIDATE_STATUS,
   list_status_disabled,
 } from '../../../shared/constants'
 import useChangeStatus from '../../../hooks/crud/useChangeStatus'
@@ -15,7 +14,6 @@ import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
 import { useMemo } from 'react'
-import { STATUS_CANDIDATE } from 'shared/constants/constants'
 import CandidateStatusAutoComplete, { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
@@ -96,7 +94,7 @@ function ChangeStatusModal({
   }, [new_status])
 
   const show_date_onboard = useMemo(() => {
-    return new_status === STATUS_CANDIDATE.OFFERING
+    return new_status === application_data.offering.value
   }, [new_status])
 
   const attachments = watch('attachments')
@@ -150,10 +148,7 @@ function ChangeStatusModal({
                 <CustomTextField
                   label="Current status"
                   size="small"
-                  value={
-                    CANDIDATE_STATUS?.[rowData?.status as CandidateStatusEnum]
-                      ?.text
-                  }
+                  value={application_data?.[rowData?.status as CandidateStatusEnum]?.label}
                   fullWidth
                   required
                   focused

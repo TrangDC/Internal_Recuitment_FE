@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { STATUS_CANDIDATE } from 'shared/class/candidate'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { RULE_MESSAGES } from 'shared/constants/validate'
 import * as yup from 'yup'
 
@@ -28,7 +28,7 @@ export const schemaApplyJob = yup.object({
       }
     )
     .when(['status'], ([status], schema) => {
-      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      if (status !== application_data.offering.value) return schema
       return schema.required(RULE_MESSAGES.MC1('Offer expiration date'))
     })
     .nullable(),
@@ -40,14 +40,14 @@ export const schemaApplyJob = yup.object({
       'Onboard date must be after or equal current date'
     )
     .when(['status'], ([status], schema) => {
-      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      if (status !== application_data.offering.value) return schema
       return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
     })
     .nullable(),
   level: yup
     .string()
     .when(['status'], ([status], schema) => {
-      if (status !== STATUS_CANDIDATE.OFFERING) return schema
+      if (status !== application_data.offering.value) return schema
       return schema.required(RULE_MESSAGES.MC1('level'))
     })
     .nullable(),

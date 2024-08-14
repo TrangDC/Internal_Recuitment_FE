@@ -8,14 +8,13 @@ import useTextTranslation from 'shared/constants/text'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete, { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto-complete'
 import SelectionTeamForCreateCDDJPermission from 'features/candidatejob/permission/components/SelectionTeamForCreateCDDJPermission'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
-import { STATUS_CANDIDATE } from 'shared/class/candidate'
 import AppDateField from 'shared/components/input-fields/DateField'
 import { status_disabled_applied } from 'features/candidatejob/shared/constants'
 import CandidateJob from 'shared/schema/database/candidate_job'
@@ -57,7 +56,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
   const new_status = watch('status')
 
   const show_date_onboard = useMemo(() => {
-    return new_status === STATUS_CANDIDATE.OFFERING
+    return new_status === application_data.offering.value
   }, [new_status])
 
   return (

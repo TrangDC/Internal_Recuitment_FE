@@ -14,26 +14,18 @@ import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import ChangeStatusModal from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
-import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import checkDragDropCandidateJob from 'features/jobs/permission/utils/checkDragDropCandidateJob'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import CandidateJob from 'shared/schema/database/candidate_job'
+import { CandidateStatusEnum } from 'shared/schema'
 
 interface Props {
   title: string
   number_candidates: number
   list_candidates: CandidateStatusItem[]
   Note?: React.ReactNode
-  status:
-    | 'applied'
-    | 'interviewing'
-    | 'offering'
-    | 'hired'
-    | 'kiv'
-    | 'offer_lost'
-    | 'ex_staff'
-    | 'new'
+  status: CandidateStatusEnum
 }
 
 const BoxStatusCandidates = ({
