@@ -1,4 +1,4 @@
-import { Box, Collapse } from '@mui/material'
+import { Collapse } from '@mui/material'
 import { useState } from 'react'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Text13sb, Tiny12md } from 'shared/components/Typography'

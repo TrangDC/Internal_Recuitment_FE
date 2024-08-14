@@ -1,6 +1,6 @@
 import { Avatar, Badge, Button, Skeleton, Tooltip } from '@mui/material'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
-import { ChangeEvent, ChangeEventHandler, useRef, useState } from 'react'
+import { ChangeEvent, useRef } from 'react'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 
 interface IAvatarEmployee {
