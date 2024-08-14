@@ -19,6 +19,7 @@ export enum MODLUE_QUERY_KEY {
   CANDIDATE = 'candidate',
   TEAM = 'team',
   INTERVIEWER = 'interviewer',
+  INTERVIEW = 'interview',
   USER = 'user',
   FEEDBACK = 'feedback',
   CANDIDATE_JOB = 'candidateJob',
@@ -33,5 +34,5 @@ export enum MODLUE_QUERY_KEY {
   SLASH_COMMAND = 'slash_command',
   JOB_POSITION = 'job_position',
   REC_TEAM = 'rec_team',
-  AUDIT_TRAILS = 'audit_trails'
+  AUDIT_TRAILS = 'audit_trails',
 }

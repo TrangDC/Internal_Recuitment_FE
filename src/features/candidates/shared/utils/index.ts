@@ -156,7 +156,7 @@ export function formatDataFormCandidateCV(data?: CandidateCVData) {
     dob: cvData?.dob ? dayjs(cvData?.dob, 'DD/MM/YYYY') : null,
     reference_uid: '',
     description: '',
-    address: cvData?.email ?? '',
+    address: cvData?.address ?? '',
     attachments: att,
     avatar: '',
     entity_skill_records: [],

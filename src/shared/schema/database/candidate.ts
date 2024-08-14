@@ -40,7 +40,6 @@ interface Candidate {
   created_at: string
   updated_at: string
   deleted_at: string
-
   address: string
   candidate_exp: CandidateExp[]
   candidate_educate: CandidateEducate[]
@@ -50,7 +49,7 @@ interface Candidate {
   gender: CandidateGenderEnum
 }
 
-type CandidateExp = {
+export type CandidateExp = {
   id: string
   position: string
   company: string
@@ -64,7 +63,7 @@ type CandidateExp = {
   updated_at: string
 }
 
-type CandidateEducate = {
+export type CandidateEducate = {
   id: string
   school_name: string
   major: string
@@ -80,7 +79,7 @@ type CandidateEducate = {
   updated_at: string
 }
 
-type CandidateAward = {
+export type CandidateAward = {
   id: string
   name: string
   achieved_date: string
@@ -90,7 +89,7 @@ type CandidateAward = {
   updated_at: string
 }
 
-type CandidateCertificate = {
+export type CandidateCertificate = {
   id: string
   name: string
   score: string

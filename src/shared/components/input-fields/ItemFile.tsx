@@ -1,4 +1,4 @@
-import { Button, Tooltip, styled } from '@mui/material'
+import { Button, SxProps, Tooltip, styled } from '@mui/material'
 import React from 'react'
 import FlexBox from '../flexbox/FlexBox'
 import FileIcon from '../icons/FileIcon'
@@ -36,11 +36,12 @@ interface ShowFileProps {
   name: string
   size?: number
   IconEnd?: React.ReactNode
+  containerSx?: SxProps
 }
 
-const ShowFile = ({ name, size, IconEnd }: ShowFileProps) => {
+const ShowFile = ({ name, size, IconEnd, containerSx }: ShowFileProps) => {
   return (
-    <ItemFile>
+    <ItemFile sx={containerSx}>
       <FlexBox gap={'10px'} alignItems={'center'}>
         <FlexBox>
           <FileIcon />
