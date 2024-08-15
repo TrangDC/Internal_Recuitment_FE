@@ -86,7 +86,6 @@ function EditInterviewModal(props: IEditInterviewModal) {
                         fullWidth
                         value={field.value}
                         onChange={field.onChange}
-                        disabled
                         loading={isGetting}
                       />
                       <HelperTextForm
@@ -375,7 +374,6 @@ function EditInterviewModal(props: IEditInterviewModal) {
                       <AppTextField
                         label={'Description'}
                         size="small"
-                        disabled
                         fullWidth
                         value={field.value}
                         onChange={field.onChange}

@@ -9,10 +9,11 @@ import _ from 'lodash'
 import { CalendarEvent } from 'features/calendars/presentation/page-sections/google-calendar/interface'
 import { isPast } from 'shared/utils/date'
 import dayjs from 'dayjs'
+import { InterviewStatus } from 'shared/components/chip/ChipInterviewStatus/constants'
 
 export enum ActionCalendar {
   EDIT = 'edit',
-  DELETE = 'delete',
+  // DELETE = 'delete',
   DONE = 'done',
   CANCEL = 'cancel',
 }
@@ -50,15 +51,18 @@ function useBuildActionsTableCalendar({
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
+        disabled: (rowData) => {
+          return rowData?.resource?.status !== InterviewStatus.INTERVIEW_STATUS.INVITED_TO_INTERVIEW && rowData?.resource?.status !== InterviewStatus.INTERVIEW_STATUS.INTERVIEWING
+        }
       },
-      delete: {
-        id: ActionCalendar.DELETE,
-        onClick: (id) => {
-          handleOpenDelete(id)
-        },
-        title: translation.COMMON.delete,
-        Icon: <DeleteIcon />,
-      },
+      // delete: {
+      //   id: ActionCalendar.DELETE,
+      //   onClick: (id) => {
+      //     handleOpenDelete(id)
+      //   },
+      //   title: translation.COMMON.delete,
+      //   Icon: <DeleteIcon />,
+      // },
     },
   })
 
@@ -69,7 +73,8 @@ function useBuildActionsTableCalendar({
     _.remove(
       actions,
       (action) =>
-        action.id === ActionCalendar.EDIT || action.id === ActionCalendar.DELETE
+        action.id === ActionCalendar.EDIT
+      //  || action.id === ActionCalendar.DELETE
     )
   }
   if (status === 'invited_to_interview') {

@@ -102,12 +102,12 @@ function deleteAction({
     },
     module: 'INTERVIEWS',
   })
-  if (!deletePermission)
-    return newActions.filter((action) => action.id !== ActionCalendar.DELETE)
-  if (deleteTeamOnly && !inTeam)
-    return newActions.filter((action) => action.id !== ActionCalendar.DELETE)
-  if (deleteOwnerOnly && !isInterviewer)
-    return newActions.filter((action) => action.id !== ActionCalendar.DELETE)
+  // if (!deletePermission)
+  //   return newActions.filter((action) => action.id !== ActionCalendar.DELETE)
+  // if (deleteTeamOnly && !inTeam)
+  //   return newActions.filter((action) => action.id !== ActionCalendar.DELETE)
+  // if (deleteOwnerOnly && !isInterviewer)
+  //   return newActions.filter((action) => action.id !== ActionCalendar.DELETE)
   return newActions
 }
 

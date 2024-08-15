@@ -6,8 +6,8 @@ import * as yup from 'yup'
 export const schema = yup.object({
   title: yup
     .string()
-    .required(RULE_MESSAGES.MC1('interview title'))
-    .max(255, RULE_MESSAGES.MC4('Interview name', 255)),
+    .required(RULE_MESSAGES.MC1('Interview title'))
+    .max(64, RULE_MESSAGES.MC4('Interview title', 64)),
   candidate_job_id: yup
     .string()
     .required(RULE_MESSAGES.MC1('candidate_job_id')),
@@ -95,8 +95,8 @@ export type FormDataSchema = yup.InferType<typeof schema>
 export const schemaUpdate = yup.object({
   title: yup
     .string()
-    .required(RULE_MESSAGES.MC1('interview title'))
-    .max(255, RULE_MESSAGES.MC4('Interview name', 255)),
+    .required(RULE_MESSAGES.MC1('Interview title'))
+    .max(64, RULE_MESSAGES.MC4('Interview title', 64)),
   candidate_job_id: yup
     .string()
     .required(RULE_MESSAGES.MC1('candidate_job_id')),
