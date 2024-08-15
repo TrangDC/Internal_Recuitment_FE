@@ -29,7 +29,7 @@ const STATUS_STYLE = {
 }
 
 export class InterviewStatus {
-  static STATUS_HIRING_JOB = INTERVIEW_STATUS
+  static INTERVIEW_STATUS = INTERVIEW_STATUS
   static STATUS_STYLE = STATUS_STYLE
 
   static getDataByStatus(status: string): InterviewStatus {

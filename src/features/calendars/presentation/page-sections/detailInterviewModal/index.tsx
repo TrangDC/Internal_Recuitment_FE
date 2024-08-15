@@ -88,13 +88,13 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
                         setOpen(false)
                       }}
                     />
-                    <DeleteInterviewButtonPermission
+                    {/* <DeleteInterviewButtonPermission
                       onClick={() => {
                         handleOpenDelete(id)
                       }}
                       candidateJobOfTeamId={candidateJobOfTeamId}
                       interviewers={getValues('interviewer')}
-                    />
+                    /> */}
                   </Fragment>
                 )}
                 <CloseIcon

@@ -93,7 +93,6 @@ function EditInterviewModal({
                         fullWidth
                         value={field.value}
                         onChange={field.onChange}
-                        disabled
                         loading={isGetting}
                       />
                       <HelperTextForm
@@ -302,7 +301,6 @@ function EditInterviewModal({
                         onChange={field.onChange}
                         multiline
                         minRows={4}
-                        disabled
                         loading={isGetting}
                       />
                       <HelperTextForm

@@ -41,7 +41,7 @@ const JobDetailAction = ({
   }, [jobApplicationDetail, statusSelected])
 
   const show_interview = useMemo(() => {
-    return statusSelected === application_data.interviewing.value;
+    return statusSelected === application_data.interviewing.value && jobApplicationDetail.status === application_data.interviewing.value;
   }, [jobApplicationDetail, statusSelected])
 
   return (

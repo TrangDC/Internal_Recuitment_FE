@@ -230,9 +230,10 @@
         "job_close": "This job is closed",
         "candidate_job_status_ended": "This job is closed",
         "start_from_end_at_invalid": "The end time must be after the start time",
-        "schedule_exist": "Candidate is not available",
+        "schedule_exist": "This candidate has another interview at this time and is not available.",
         "title_exist": "Title has already existed",
-        "candidate_job_not_found": "Cannot create an interview for this candidate anymore"
+        "candidate_job_not_found": "Cannot create an interview for this candidate anymore",
+        "candidate_schedule_exist": "This candidate has another interview at this time and is not available."
       }
     },
     "skills": {
