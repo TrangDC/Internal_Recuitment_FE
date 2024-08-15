@@ -5,6 +5,7 @@ include: "/.gitlab/.gitlab-ci.template.yml"
     REACT_APP_ENDPOINT_API: https://trec-api.techvify.dev/graphql
     REACT_APP_ENDPOINT_BE: https://trec-api.techvify.dev
     TINY_API_KEY: 7cp5et9axt0vggdyr98zpys32gj6tpdxqmh1pdouq0w41gjs
+    REACT_APP_ENDPOINT_TALENA: https://platform-api.talena.ai/api/v1
   rules:
     - if: $PIPELINE_NAME == "CD" && $ENVIRONMENT == "development"
     - when: never
@@ -14,6 +15,7 @@ include: "/.gitlab/.gitlab-ci.template.yml"
     REACT_APP_ENDPOINT_API: https://trec-api.techvify.com/graphql
     REACT_APP_ENDPOINT_BE: https://trec-api.techvify.com
     TINY_API_KEY: 620prxjy4scyrk644plakexmeua9xa0g4rmbtzxrklkxtxw8
+    REACT_APP_ENDPOINT_TALENA: https://platform-api.talena.ai/api/v1
   rules:
     - if: $PIPELINE_NAME == "CD" && $ENVIRONMENT == "production"
     - when: never
