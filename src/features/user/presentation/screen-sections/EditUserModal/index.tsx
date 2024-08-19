@@ -62,6 +62,9 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
     (inRecTeam && inHiringTeam) ||
     (inRecTeam && !inHiringTeam) ||
     (!inRecTeam && !inHiringTeam)
+
+  const isManagerOfHiringTeam = getValues('is_manager_of_hiring_team')
+  const isLeaderOfRecTeam = getValues('is_leader_of_rec_team')
   return (
     <FormProvider {...useFormReturn}>
       <ConfirmableModalProvider
@@ -173,9 +176,6 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                                       ) && <Fragment />
                                     }
                                   />
-                                  <HelperTextForm
-                                    message={fieldState.error?.message}
-                                  ></HelperTextForm>
                                 </FlexBox>
                               )}
                             />
@@ -221,9 +221,6 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                                       )
                                     }
                                   />
-                                  <HelperTextForm
-                                    message={fieldState.error?.message}
-                                  ></HelperTextForm>
                                 </FlexBox>
                               )}
                             />
@@ -241,6 +238,12 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                         </Box>
                       </LoadingField>
                     </FlexBox>
+                    {!isLeaderOfRecTeam &&
+                      !isManagerOfHiringTeam &&
+                      !hiring_team_id &&
+                      !rec_team_id && (
+                        <HelperTextForm message="User must belong to at least one team (hiring or recruitment teams)!" />
+                      )}
                   </FlexBox>
                 </FlexBox>
               </FlexBox>
