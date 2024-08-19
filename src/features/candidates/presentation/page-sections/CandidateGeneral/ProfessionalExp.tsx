@@ -10,6 +10,11 @@ type ProfessionalExpProps = {
 }
 
 function ProfessionalExp({ exps }: ProfessionalExpProps) {
+  function getLabelDate(start: string, end: string) {
+    const startDate = start ? dayjs(start).format('MMM YYYY') : ''
+    const endDate = end ? dayjs(end).format('MMM YYYY') : ''
+    return `${startDate} - ${endDate}`
+  }
   return (
     <BoxCandidateInfor>
       <H3 sx={{ color: 'primary.800', fontWeight: 500 }} marginBottom={1}>
@@ -24,8 +29,7 @@ function ProfessionalExp({ exps }: ProfessionalExpProps) {
             {epx.company}
           </Tiny12md>
           <Tiny12md color={'grey.500'} marginBottom={'4px'}>
-            {dayjs(epx.start_date).format('MMM YYYY')} -{' '}
-            {dayjs(epx.end_date).format('MMM YYYY')}
+            {getLabelDate(epx.start_date, epx.end_date)}
           </Tiny12md>
           <Tiny12md color={'grey.500'} marginBottom={'8px'}>
             {epx.location}

@@ -1,4 +1,5 @@
 import { FormControl } from '@mui/material'
+import dayjs from 'dayjs'
 import { useEditFormContext } from 'features/candidates/hooks/crud/useContext'
 import CandidateAvatar from 'features/candidates/presentation/components/edit/CandidateAvatar'
 import { useState } from 'react'
@@ -37,6 +38,9 @@ function CandidateAbout({ isGetting }: CandidateAboutProps) {
         padding={0}
         directionTitle="row-reverse"
         gapTitle={1}
+        titleStyle={{
+          fontSize: 18,
+        }}
       >
         <FlexBox gap={2} width={'100%'}>
           <CandidateAvatar />
@@ -163,7 +167,7 @@ function CandidateAbout({ isGetting }: CandidateAboutProps) {
                     render={({ field, fieldState }) => (
                       <FlexBox flexDirection={'column'}>
                         <AppDateField
-                          value={field.value ?? null}
+                          value={field.value ? dayjs(field.value) : null}
                           textFieldProps={{
                             label: 'DOB',
                           }}
@@ -203,6 +207,10 @@ function CandidateAbout({ isGetting }: CandidateAboutProps) {
                             max: 20,
                             msg_error:
                               'One PDF file only, file size up to 20MB',
+                          },
+                          is_valid: {
+                            regex: '\\.(pdf)',
+                            msg_error: 'PDF file only, file size up to 20mb',
                           },
                         }}
                         descriptionFile={() => (

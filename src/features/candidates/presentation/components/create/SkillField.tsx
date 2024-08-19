@@ -19,7 +19,6 @@ function SkillField({ index, name, onDelete }: SkillFieldProps) {
   const [skillType, setSkillType] = useState('')
   const { control, setValue, resetField } = useCreateFormContext()
   function onSkillChange(data: Skill[]) {
-    console.log('data[0]', data[0])
     if (data[0]) {
       setValue(`${name}.${index}.skill_type_id`, data[0].skill_type.id, {
         shouldValidate: true,
@@ -63,11 +62,13 @@ function SkillField({ index, name, onDelete }: SkillFieldProps) {
             <FlexBox flexDirection={'column'}>
               <SelectionSkill
                 onChange={(value) => {
+                  console.log('value', value)
                   field.onChange(value?.map((o) => o.id))
                   onSkillChange(value)
                 }}
                 value={field.value}
                 skillType={skillType}
+                disabled={!skillType}
               />
               <HelperTextForm
                 message={fieldState.error?.message}

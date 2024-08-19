@@ -9,6 +9,7 @@ import { Text13md, Text15sb } from 'shared/components/Typography'
 import BoxContainer from '../BoxContainer'
 import DeleteBox from '../DeleteBox'
 import { useCreateFormContext } from 'features/candidates/hooks/crud/useContext'
+import dayjs from 'dayjs'
 
 type ExperienceFieldProps = {
   index: number
@@ -40,7 +41,7 @@ function ExperienceField({ index, onDelete, name }: ExperienceFieldProps) {
                   />
                 }
                 label={
-                  <Text13md color={'grey.600'}>Currently working here</Text13md>
+                  <Text13md color={'#2A2E37'}>Currently working here</Text13md>
                 }
               />
             )}
@@ -116,7 +117,7 @@ function ExperienceField({ index, onDelete, name }: ExperienceFieldProps) {
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
                     <AppDateField
-                      value={field.value ?? null}
+                      value={field.value ? dayjs(field.value) : null}
                       textFieldProps={{
                         label: 'Start date',
                       }}
@@ -138,7 +139,7 @@ function ExperienceField({ index, onDelete, name }: ExperienceFieldProps) {
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <AppDateField
-                        value={field.value ?? null}
+                        value={field.value ? dayjs(field.value) : null}
                         textFieldProps={{
                           label: 'End date',
                         }}

@@ -31,6 +31,9 @@ function Skill() {
         padding={0}
         directionTitle="row-reverse"
         gapTitle={1}
+        titleStyle={{
+          fontSize: 18,
+        }}
         CustomTitle={
           <TinyButton
             startIcon={<Add />}

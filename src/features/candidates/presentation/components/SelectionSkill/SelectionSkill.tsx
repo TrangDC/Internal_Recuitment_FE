@@ -7,9 +7,15 @@ type SelectionSkillProps = {
   skillType: string
   onChange: (value: Skill[]) => void
   value: string[]
+  disabled: boolean
 }
 
-function SelectionSkill({ skillType, onChange, value }: SelectionSkillProps) {
+function SelectionSkill({
+  skillType,
+  onChange,
+  value,
+  disabled,
+}: SelectionSkillProps) {
   const { getAllSkill, queryKey } = useGraphql()
   const variables = skillType
     ? {
@@ -33,6 +39,7 @@ function SelectionSkill({ skillType, onChange, value }: SelectionSkillProps) {
       selectedKey={'id'}
       keyName="name"
       value={value}
+      disabled={disabled}
       textFieldProps={{
         label: 'Skill',
         required: true,

@@ -16,6 +16,7 @@ import {
 } from 'shared/components/Typography'
 import BoxContainer from '../BoxContainer'
 import DeleteBox from '../DeleteBox'
+import dayjs from 'dayjs'
 
 type EducationFieldProps = {
   index: number
@@ -124,7 +125,7 @@ function EducationField({ index, onDelete, name }: EducationFieldProps) {
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
                     <AppDateField
-                      value={field.value ?? null}
+                      value={field.value ? dayjs(field.value) : null}
                       textFieldProps={{
                         label: 'Start date',
                       }}
@@ -146,7 +147,7 @@ function EducationField({ index, onDelete, name }: EducationFieldProps) {
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <AppDateField
-                        value={field.value ?? null}
+                        value={field.value ? dayjs(field.value) : null}
                         textFieldProps={{
                           label: 'End date',
                         }}

@@ -83,8 +83,6 @@ export function makeOldAttachment(att: Attachment[]) {
 
 export function formatDataFormCandidateCV(data?: CandidateCVData) {
   const cvData = data?.data
-
-  console.log('cvData', cvData)
   const att: FileUploadAttachment[] = data?.file
     ? [
         {
@@ -112,8 +110,10 @@ export function formatDataFormCandidateCV(data?: CandidateCVData) {
     ),
     location: '',
     position: exp.position,
-    start_date: dayjs(exp.start_date).isValid() ? dayjs(exp.start_date) : null,
-    end_date: dayjs(exp.end_date).isValid() ? dayjs(exp.end_date) : null,
+    start_date: dayjs(exp.start_date).isValid()
+      ? new Date(exp.start_date)
+      : null,
+    end_date: dayjs(exp.end_date).isValid() ? new Date(exp.end_date) : null,
     is_current: isPresent(exp.end_date),
   }))
 
@@ -137,8 +137,10 @@ export function formatDataFormCandidateCV(data?: CandidateCVData) {
     gpa: edu.cpa_gpa.toString(),
     location: '',
     major: edu.major,
-    end_date: dayjs(edu.end_date).isValid() ? dayjs(edu.end_date) : null,
-    start_date: dayjs(edu.start_date).isValid() ? dayjs(edu.start_date) : null,
+    end_date: dayjs(edu.end_date).isValid() ? new Date(edu.end_date) : null,
+    start_date: dayjs(edu.start_date).isValid()
+      ? new Date(edu.start_date)
+      : null,
     is_current: isPresent(edu.end_date),
   }))
 
@@ -146,14 +148,14 @@ export function formatDataFormCandidateCV(data?: CandidateCVData) {
     id: '',
     attachments: [],
     name: aw.name,
-    achieved_date: dayjs(aw.date).isValid() ? dayjs(aw.date) : null,
+    achieved_date: dayjs(aw.date).isValid() ? new Date(aw.date) : null,
   }))
 
   return {
     name: cvData?.name ?? '',
     email: cvData?.email ?? '',
     phone: cvData?.phone ?? '',
-    dob: cvData?.dob ? dayjs(cvData?.dob, 'DD/MM/YYYY') : null,
+    dob: cvData?.dob ? new Date(cvData?.dob) : null,
     reference_uid: '',
     description: '',
     address: cvData?.address ?? '',
@@ -165,7 +167,7 @@ export function formatDataFormCandidateCV(data?: CandidateCVData) {
     candidate_educate: candidate_educate,
     candidate_exp: candidate_exp,
     gender: CandidateGenderEnum.OTHERS,
-    recruit_time: dayjs(),
+    recruit_time: new Date(),
     reference_type: '',
     reference_value: '',
     country: 'Vietnam',

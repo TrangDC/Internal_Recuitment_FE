@@ -10,6 +10,7 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import { Text13sb, Text15sb, Tiny12md } from 'shared/components/Typography'
 import BoxContainer from '../BoxContainer'
 import DeleteBox from '../DeleteBox'
+import dayjs from 'dayjs'
 
 type CertificateFieldProps = {
   index: number
@@ -58,7 +59,7 @@ function CertificateField({ index, onDelete, name }: CertificateFieldProps) {
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
                     <AppDateField
-                      value={field.value ?? null}
+                      value={field.value ? dayjs(field.value) : null}
                       onChange={field.onChange}
                       label="Achieved date"
                     />

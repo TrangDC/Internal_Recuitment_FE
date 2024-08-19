@@ -27,7 +27,9 @@ function Certificates({ certificates }: CertificatesProps) {
             <FlexBox>
               <Tiny12md>Achieved date:</Tiny12md>
               <Tiny12md>
-                {dayjs(certificate.achieved_date).format('MMM YYYY')}
+                {certificate.achieved_date
+                  ? dayjs(certificate.achieved_date).format('MMM YYYY')
+                  : ''}
               </Tiny12md>
             </FlexBox>
             <FlexBox>

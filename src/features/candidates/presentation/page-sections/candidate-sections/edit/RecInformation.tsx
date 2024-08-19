@@ -14,6 +14,7 @@ import CandidateBySource from '../../CreateCandidateModal/components/CandidateBy
 import { useEditFormContext } from 'features/candidates/hooks/crud/useContext'
 import LoadingField from 'shared/components/form/loadingField'
 import AppTextField from 'shared/components/input-fields/AppTextField'
+import dayjs from 'dayjs'
 
 type RefInformationProps = {
   isGetting: boolean
@@ -42,6 +43,9 @@ function RefInformation({ isGetting }: RefInformationProps) {
         padding={0}
         directionTitle="row-reverse"
         gapTitle={1}
+        titleStyle={{
+          fontSize: 18,
+        }}
       >
         <FlexBox gap={2} flexDirection={'column'}>
           <FlexBox gap={2}>
@@ -129,7 +133,7 @@ function RefInformation({ isGetting }: RefInformationProps) {
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <AppDateField
-                        value={field.value}
+                        value={field.value ? dayjs(field.value) : null}
                         onChange={field.onChange}
                         label="Recruit time"
                         textFieldProps={{

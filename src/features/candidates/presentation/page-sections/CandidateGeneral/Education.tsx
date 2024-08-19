@@ -15,6 +15,11 @@ type EducationProps = {
 
 function Education({ educations }: EducationProps) {
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
+  function getLabelDate(start: string, end: string) {
+    const startDate = start ? dayjs(start).format('MMM YYYY') : ''
+    const endDate = end ? dayjs(end).format('MMM YYYY') : ''
+    return `${startDate} - ${endDate}`
+  }
   return (
     <BoxCandidateInfor>
       <H3 sx={{ color: 'primary.800', fontWeight: 500 }} marginBottom={1}>
@@ -29,8 +34,7 @@ function Education({ educations }: EducationProps) {
             {education.major}
           </Tiny12md>
           <Tiny12md color={'grey.500'} marginBottom={'4px'}>
-            {dayjs(education.start_date).format('MMM YYYY')} -{' '}
-            {dayjs(education.end_date).format('MMM YYYY')}
+            {getLabelDate(education.start_date, education.end_date)}
           </Tiny12md>
           <Tiny12md color={'grey.500'} marginBottom={'8px'}>
             {education.location}

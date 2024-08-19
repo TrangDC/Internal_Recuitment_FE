@@ -78,6 +78,7 @@ function SkillField({ index, name, onDelete }: SkillFieldProps) {
                 onChange={onSkillChange}
                 value={field.value}
                 skillType={skillType}
+                disabled={!skillType}
               />
               <HelperTextForm
                 message={fieldState.error?.message}

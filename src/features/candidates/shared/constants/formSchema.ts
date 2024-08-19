@@ -9,10 +9,14 @@ import * as yup from 'yup'
 const candidateExp = yup.object({
   id: yup.string(),
   position: yup.string().required(RULE_MESSAGES.MC1('position')).default(''),
-  company: yup.string().required(RULE_MESSAGES.MC1('company')).default(''),
+  company: yup
+    .string()
+    .required(RULE_MESSAGES.MC1('company/ organization'))
+    .default(''),
   location: yup.string().default(''),
   start_date: yup
-    .mixed<Dayjs>()
+    .date()
+    .typeError(RULE_MESSAGES.MC5('start date'))
     .nullable()
     .test(
       'is-before-to',
@@ -24,7 +28,8 @@ const candidateExp = yup.object({
       }
     ),
   end_date: yup
-    .mixed<Dayjs>()
+    .date()
+    .typeError(RULE_MESSAGES.MC5('end date'))
     .nullable()
     .test(
       'is-before-to',
@@ -54,7 +59,8 @@ const candidateEducate = yup.object({
   major: yup.string(),
   gpa: yup.string(),
   start_date: yup
-    .mixed<Dayjs>()
+    .date()
+    .typeError(RULE_MESSAGES.MC5('start date'))
     .nullable()
     .test(
       'is-before-to',
@@ -66,7 +72,8 @@ const candidateEducate = yup.object({
       }
     ),
   end_date: yup
-    .mixed<Dayjs>()
+    .date()
+    .typeError(RULE_MESSAGES.MC5('end date'))
     .nullable()
     .test(
       'is-before-to',
@@ -86,7 +93,10 @@ const candidateEducate = yup.object({
 const award = yup.object({
   id: yup.string(),
   name: yup.string().required(RULE_MESSAGES.MC1('name')),
-  achieved_date: yup.mixed<Dayjs>().nullable(),
+  achieved_date: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('achieved date'))
+    .nullable(),
   attachments: yup.array().of(attachmentInput),
 })
 
@@ -94,7 +104,10 @@ const certificate = yup.object({
   id: yup.string(),
   name: yup.string().required(RULE_MESSAGES.MC1('name')),
   score: yup.string(),
-  achieved_date: yup.mixed<Dayjs>().nullable(),
+  achieved_date: yup
+    .date()
+    .typeError(RULE_MESSAGES.MC5('achieved date'))
+    .nullable(),
   attachments: yup.array().of(attachmentInput),
 })
 
@@ -121,7 +134,7 @@ export const CreateCandidate = yup.object({
   gender: yup.string().required(RULE_MESSAGES.MC1('gender')).default(''),
   phone: yup
     .string()
-    .required(RULE_MESSAGES.MC1('phone'))
+    .required(RULE_MESSAGES.MC1('phone number'))
     // .matches(/^\+?\d+$/, RULE_MESSAGES.MC5('phone'))
     // .min(8, RULE_MESSAGES.MC2('phone', 8, 15))
     // .max(15, RULE_MESSAGES.MC2('phone', 8, 15))
@@ -133,7 +146,7 @@ export const CreateCandidate = yup.object({
     .max(64, RULE_MESSAGES.MC4('email', 64))
     .default(''),
   address: yup.string().default(''),
-  dob: yup.mixed<Dayjs>().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
+  dob: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
   country: yup.string(),
   reference_type: yup
     .string()
@@ -152,7 +165,7 @@ export const CreateCandidate = yup.object({
     .required(RULE_MESSAGES.MC1('recruiter'))
     .default(''),
   recruit_time: yup
-    .mixed<Dayjs>()
+    .date()
     .typeError(RULE_MESSAGES.MC5('recruit time'))
     .required(RULE_MESSAGES.MC1('recruit time')),
   description: yup
@@ -205,7 +218,7 @@ export const EditCandidate = yup.object({
   gender: yup.string().required(RULE_MESSAGES.MC1('gender')).default(''),
   phone: yup
     .string()
-    .required(RULE_MESSAGES.MC1('phone'))
+    .required(RULE_MESSAGES.MC1('phone number'))
     // .matches(/^\+?\d+$/, RULE_MESSAGES.MC5('phone'))
     // .min(8, RULE_MESSAGES.MC2('phone', 8, 15))
     // .max(15, RULE_MESSAGES.MC2('phone', 8, 15))
@@ -217,7 +230,7 @@ export const EditCandidate = yup.object({
     .max(64, RULE_MESSAGES.MC4('email', 64))
     .default(''),
   address: yup.string().default(''),
-  dob: yup.mixed<Dayjs>().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
+  dob: yup.date().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
   country: yup.string().default(''),
   reference_type: yup
     .string()
@@ -236,7 +249,7 @@ export const EditCandidate = yup.object({
     .required(RULE_MESSAGES.MC1('recruiter'))
     .default(''),
   recruit_time: yup
-    .mixed<Dayjs>()
+    .date()
     .typeError(RULE_MESSAGES.MC5('recruit time'))
     .required(RULE_MESSAGES.MC1('recruit time')),
   description: yup
@@ -286,12 +299,12 @@ export const GetCandidate = yup.object({
   phone: yup.string().default(''),
   email: yup.string().default(''),
   address: yup.string().default(''),
-  dob: yup.mixed<Dayjs>().nullable(),
+  dob: yup.date().nullable(),
   country: yup.string().default(''),
   reference_type: yup.string().default(''),
   reference_value: yup.string().default(''),
   reference_uid: yup.string().default(''),
-  recruit_time: yup.mixed<Dayjs>(),
+  recruit_time: yup.date(),
   description: yup.string().default(''),
   attachments: yup.array<any, FileUploadAttachment>().default([]),
   candidate_exp: yup.array().of(candidateExp).default([]),
