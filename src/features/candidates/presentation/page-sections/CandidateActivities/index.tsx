@@ -6,46 +6,44 @@ import EmailTab from './EmailTab'
 import FeedbackTab from './FeedbackTab'
 import InterviewTab from './InterviewTab'
 import NoteTab from './NoteTab'
-import FlexBox from 'shared/components/flexbox/FlexBox'
-import Scrollbar from 'shared/components/ScrollBar'
-
-const WrapperTab = (note: () => JSX.Element) => {
-  return (
-    <FlexBox flexDirection={'column'} height={'67vh'} width={'100%'}>
-      <Scrollbar>{note()}</Scrollbar>
-    </FlexBox>
-  )
-}
+import { CandidateActivityProvider } from 'features/candidates/shared/context/CandidateActivityContext'
+import BoxFilter from './BoxFilter'
 
 const CandidateActivities = () => {
   const renderItem = [
-    { label: 'All', Component: () => WrapperTab(AllTab) },
-    { label: 'Notes', Component: () => WrapperTab(NoteTab) },
-    { label: 'Calls', Component: () => WrapperTab(CallTab) },
-    { label: 'Interviews ', Component: () => WrapperTab(InterviewTab) },
-    { label: 'Feedbacks', Component: () => WrapperTab(FeedbackTab) },
-    { label: 'Emails', Component: () => WrapperTab(EmailTab) },
+    { label: 'All', Component: AllTab },
+    { label: 'Notes', Component: NoteTab },
+    { label: 'Calls', Component: CallTab },
+    { label: 'Interviews ', Component: InterviewTab },
+    { label: 'Feedbacks', Component: FeedbackTab },
+    { label: 'Emails', Component: EmailTab },
   ]
 
   return (
-    <Box padding={2} width="100%">
-      <TabCustomize
-        renderItem={renderItem}
-        tabWrapperSx={{
-          color: '#4D607A',
-          borderBottom: 'none',
-          backgroundColor: 'white',
-          boxShadow: 'none',
-          '&.Mui-selected': {
-            fontWeight: '500',
+    <CandidateActivityProvider>
+      <Box padding={2} width="100%" height={'calc(80vh - 48px)'}>
+        <BoxFilter />
+        <TabCustomize
+          renderItem={renderItem}
+          tabWrapperSx={{
+            color: '#4D607A',
             borderBottom: 'none',
-          },
-        }}
-        boxSx={{
-          boxShadow: 'none',
-        }}
-      ></TabCustomize>
-    </Box>
+            backgroundColor: 'white',
+            boxShadow: 'none',
+            '&.Mui-selected': {
+              fontWeight: '500',
+              borderBottom: 'none',
+            },
+          }}
+          boxSx={{
+            boxShadow: 'none',
+          }}
+          tabPanelSx={{
+            boxShadow: 'none',
+          }}
+        ></TabCustomize>
+      </Box>
+    </CandidateActivityProvider>
   )
 }
 

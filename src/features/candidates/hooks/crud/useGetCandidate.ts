@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import useGraphql from 'features/candidates/domain/graphql/graphql'
+import useCandidateGraphql from 'features/candidates/domain/graphql/candidate'
 import { useMemo } from 'react'
 import GraphQLClientService from 'services/graphql-service'
 import Candidate from 'shared/schema/database/candidate'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 
 const useGetCandidate = (id?: string) => {
-  const { getCandidate, queryKey } = useGraphql()
+  const { getCandidate, queryKey } = useCandidateGraphql()
   const { data, ...otherValue } = useQuery({
     queryKey: [queryKey],
     enabled: !!id,

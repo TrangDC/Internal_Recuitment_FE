@@ -1,7 +1,7 @@
 import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
-const useCandidateFeedback = () => {
+const useCandidateFeedbackGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.FEEDBACK
   const getAllCandidateFeedbacks = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidateJobFeedbacks',
@@ -15,8 +15,14 @@ const useCandidateFeedback = () => {
           created_by
           owner {
             id
+            name
             hiring_team {
               id
+            }
+          }
+          candidate_job {
+            hiring_job {
+              name
             }
           }
           feedback
@@ -44,4 +50,4 @@ const useCandidateFeedback = () => {
   }
 }
 
-export default useCandidateFeedback
+export default useCandidateFeedbackGraphql

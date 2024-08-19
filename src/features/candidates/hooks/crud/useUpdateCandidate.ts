@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { useEditResource } from 'shared/hooks/crud-hook'
 import Candidate, {
   CandidateAwardInput,
@@ -27,6 +26,7 @@ import {
   pickAttachment,
 } from 'features/candidates/shared/utils'
 import { EntitySkillRecordInput } from 'shared/schema/database/hiring_job'
+import useCandidateGraphql from 'features/candidates/domain/graphql/candidate'
 
 type UseEditCandidateProps = {
   id: string
@@ -36,7 +36,7 @@ type UseEditCandidateProps = {
 function useUpdateCandidate(props: UseEditCandidateProps) {
   const { id, onSuccess } = props
   const { getUrl } = useGetImage()
-  const { updateCandidate, getCandidate, queryKey } = useGraphql()
+  const { updateCandidate, getCandidate, queryKey } = useCandidateGraphql()
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     Candidate,
     FormDataSchemaEditCandidate,

@@ -15,10 +15,10 @@ import useCreateCandidate from 'features/candidates/hooks/crud/useCreateCandidat
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import AiIcon from 'shared/components/icons/Ai'
-import ImportCVModal from '../page-sections/importCVModal/ImportCVModal'
 import { useState } from 'react'
 import { CandidateCVData } from 'features/candidates/domain/interfaces'
 import { formatDataFormCandidateCV } from 'features/candidates/shared/utils'
+import ImportCVModal from '../page-sections/ImportCVModal'
 
 function CreateCandidate() {
   const location = useLocation()

@@ -53,7 +53,6 @@ const ApplicationHistory = () => {
     })
   }
 
-
   return (
     <ContainerRight>
       <FlexBox

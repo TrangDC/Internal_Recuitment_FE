@@ -37,11 +37,18 @@ interface ShowFileProps {
   size?: number
   IconEnd?: React.ReactNode
   containerSx?: SxProps
+  onClick?: () => void
 }
 
-const ShowFile = ({ name, size, IconEnd, containerSx }: ShowFileProps) => {
+const ShowFile = ({
+  name,
+  size,
+  IconEnd,
+  containerSx,
+  onClick,
+}: ShowFileProps) => {
   return (
-    <ItemFile sx={containerSx}>
+    <ItemFile sx={containerSx} onClick={onClick}>
       <FlexBox gap={'10px'} alignItems={'center'}>
         <FlexBox>
           <FileIcon />

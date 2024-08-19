@@ -8,13 +8,15 @@ import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
 import ChipLimit from 'shared/components/chip-stack/chip-limit'
 import CandidateInterview from 'shared/schema/database/candidate_interview'
 import { formatDateToString, getTime } from 'shared/utils/date'
+import dayjs from 'dayjs'
+import BoxTextSquare from 'shared/components/utils/boxText'
 
 type InterviewProps = {
   candidateInterview: CandidateInterview
 }
 
 function Interview({ candidateInterview }: InterviewProps) {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const interviewers: string[] = candidateInterview.interviewer.map(
     (i) => i.name
   )
@@ -35,48 +37,56 @@ function Interview({ candidateInterview }: InterviewProps) {
         width={'100%'}
       >
         <FlexBox alignItems={'center'} onClick={() => setOpen((prev) => !prev)}>
-          {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
+          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           <FlexBox gap={1}>
-            <Text13sb marginLeft={1}>Tech Interview</Text13sb>
+            <Text13sb marginLeft={1}>{candidateInterview.title}</Text13sb>
             <Text13sb color={'primary.600'}>
-              {candidateInterview.title}
+              {candidateInterview.candidate_job.hiring_job.name}
             </Text13sb>
+            <Tiny12md color={'grey.500'}>Created by</Tiny12md>
+            <Tiny12md color={'primary.600'}>
+              {candidateInterview.owner.name}
+            </Tiny12md>
+            {candidateInterview.edited && <BoxTextSquare content="Edited" />}
           </FlexBox>
         </FlexBox>
-        <Tiny12md>
+        <Tiny12md color={'grey.500'}>
           {formatDateToString(
-            new Date(candidateInterview.interview_date),
-            'ddd, MMM D'
+            new Date(candidateInterview.created_at),
+            'DD/MM/YYYY'
           )}
           {', '}
-          {getTime(new Date(candidateInterview.start_from))} -{' '}
-          {getTime(new Date(candidateInterview.end_at))}
+          {getTime(new Date(candidateInterview.created_at))}
         </Tiny12md>
       </FlexBox>
       <FlexBox gap={3} marginLeft={4}>
         <FlexBox flexDirection={'column'}>
-          <Tiny12md>Date and time</Tiny12md>
-          <Text13sb>20/08/2024, 14:30 - 16:30</Text13sb>
+          <Tiny12md color={'grey.500'}>Date and time</Tiny12md>
+          <Text13sb>
+            {dayjs(candidateInterview.interview_date).format('DD/MM/YYYY')},{' '}
+            {dayjs(candidateInterview.start_from).format('HH:MM')} -{' '}
+            {dayjs(candidateInterview.end_at).format('HH:MM')}
+          </Text13sb>
         </FlexBox>
         <FlexBox flexDirection={'column'}>
-          <Tiny12md>Status</Tiny12md>
+          <Tiny12md color={'grey.500'}>Status</Tiny12md>
           <ChipInterviewStatus status={candidateInterview.status} />
         </FlexBox>
       </FlexBox>
       <Collapse in={open} unmountOnExit>
-        <FlexBox marginLeft={4} gap={1} flexDirection={'column'}>
+        <FlexBox marginLeft={4} gap={1} flexDirection={'column'} marginTop={1}>
           <FlexBox flexDirection={'column'}>
-            <Tiny12md>Interviewers</Tiny12md>
+            <Tiny12md color={'grey.500'}>Interviewers</Tiny12md>
             <FlexBox>
               <ChipLimit chips={interviewers} limit={3} />
             </FlexBox>
           </FlexBox>
           <FlexBox flexDirection={'column'}>
-            <Tiny12md>Location</Tiny12md>
+            <Tiny12md color={'grey.500'}>Location</Tiny12md>
             <Text13sb>{candidateInterview.location} </Text13sb>
           </FlexBox>
           <FlexBox flexDirection={'column'}>
-            <Tiny12md>Description</Tiny12md>
+            <Tiny12md color={'grey.500'}>Description</Tiny12md>
             <Text13sb>{candidateInterview.description}</Text13sb>
           </FlexBox>
         </FlexBox>

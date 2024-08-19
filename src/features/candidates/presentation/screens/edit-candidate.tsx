@@ -15,9 +15,9 @@ import AppButton from 'shared/components/buttons/AppButton'
 import useUpdateCandidate from 'features/candidates/hooks/crud/useUpdateCandidate'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import AiIcon from 'shared/components/icons/Ai'
-import ImportCVModal from '../page-sections/importCVModal/ImportCVModal'
 import { formatDataFormCandidateCV } from 'features/candidates/shared/utils'
 import { useState } from 'react'
+import ImportCVModal from '../page-sections/ImportCVModal'
 
 function EditCandidate() {
   const { id } = useParams()

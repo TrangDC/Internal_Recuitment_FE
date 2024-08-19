@@ -1,7 +1,7 @@
 import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
-const useCandidateInterview = () => {
+const useCandidateInterviewGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.INTERVIEW
   const getAllCandidateInterviews = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidateInterviews',
@@ -20,6 +20,11 @@ const useCandidateInterview = () => {
           interviewer {
             id
             name
+          }
+          candidate_job {
+            hiring_job {
+              name
+            }
           }
           edit_able
           owner{
@@ -51,4 +56,4 @@ const useCandidateInterview = () => {
   }
 }
 
-export default useCandidateInterview
+export default useCandidateInterviewGraphql

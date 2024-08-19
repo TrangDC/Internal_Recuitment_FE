@@ -45,15 +45,12 @@ function Education({ educations }: EducationProps) {
                 <ShowFile
                   key={attachment.id}
                   name={attachment.document_name}
-                  IconEnd={
-                    <DownloadIcon
-                      onClick={() => {
-                        if (attachment) {
-                          downloadOneFile(attachment, handleGetUrlDownload)
-                        }
-                      }}
-                    />
-                  }
+                  onClick={() => {
+                    if (attachment) {
+                      downloadOneFile(attachment, handleGetUrlDownload)
+                    }
+                  }}
+                  IconEnd={<DownloadIcon />}
                   containerSx={{
                     width: 'auto',
                   }}

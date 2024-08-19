@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import useGraphql from 'features/candidates/domain/graphql/graphql'
+import useCandidateGraphql from 'features/candidates/domain/graphql/candidate';
 import { useMemo } from 'react';
 import useCustomTable from 'shared/components/table/hooks/useCustomTable'
 import { IUseCustomCommonTable } from 'shared/components/table/interface'
@@ -18,7 +18,7 @@ const useCandidateTable = (props: IUseCustomCommonTable) => {
     return to_date ? convertDateToISOString(dayjs(to_date).endOf('day').toDate()) : convertDateToISOString(dayjs('2050-1-1').toDate())
   }, [filters?.recruit_time_to_date])
 
-  const { getAllCandidates, queryKey } = useGraphql()
+  const { getAllCandidates, queryKey } = useCandidateGraphql()
   const useTableReturn = useCustomTable({
     buildQuery: getAllCandidates,
     queryKey,

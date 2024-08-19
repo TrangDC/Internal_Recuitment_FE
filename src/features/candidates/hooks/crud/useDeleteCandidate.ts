@@ -1,7 +1,7 @@
-import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { BaseRecord } from 'shared/interfaces'
 import { useDeleteResource } from 'shared/hooks/crud-hook'
 import { DeleteCandidateArguments } from 'shared/schema/database/candidate'
+import useCandidateGraphql from 'features/candidates/domain/graphql/candidate'
 
 type UseDeleteJobProps = {
   id: string
@@ -11,7 +11,7 @@ type UseDeleteJobProps = {
 
 function useDeleteCandidate(props: UseDeleteJobProps) {
   const { id, onSuccess, onError } = props
-  const { queryKey, deleteCandidate } = useGraphql()
+  const { queryKey, deleteCandidate } = useCandidateGraphql()
   const { useDeleteReturn } = useDeleteResource<DeleteCandidateArguments>({
     mutationKey: [queryKey],
     onSuccess,

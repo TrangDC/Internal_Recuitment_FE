@@ -1,6 +1,5 @@
 import { Box, Divider } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import AvatarUser from 'features/user/presentation/components/AvatarUser'
 import Tooltip from 'shared/components/tooltip'
 import {
   H3,
@@ -26,14 +25,18 @@ import DescriptionIcon from '@mui/icons-material/Description'
 import { ButtonSwage } from '../../components/ButtonSware'
 import MailIcon from '@mui/icons-material/Mail'
 import { ContainerLeft } from '../../components/Container'
-import FileCopyIcon from '@mui/icons-material/FileCopy'
 import Scrollbar from 'shared/components/ScrollBar'
 import { useCandidateInforContext } from 'features/candidates/shared/context/CandidateInformation'
+import CreateCandidateNoteModal from '../CreateCandidateNoteModal'
+import CreateHistoryCallModal from '../CreateHistoryCallModal'
+import AvatarUpload from 'shared/components/upload/AvatarUpload'
 
 const CandidateProfile = () => {
-  const { candidateInfor } = useCandidateInforContext()
+  const { candidateInfor, avatar } = useCandidateInforContext()
   const attachments = candidateInfor?.attachments ?? []
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
+  const [open, setOpen] = useState(false)
+  const [openHistoryCall, setOpenHistoryCall] = useState(false)
 
   const [showMore, setShowMore] = useState(false)
   const candidate_skills = useMemo(() => {
@@ -52,7 +55,7 @@ const CandidateProfile = () => {
   return (
     <ContainerLeft>
       <Box height={'200px'}>
-        <AvatarUser action="detail"></AvatarUser>
+        <AvatarUpload readonly url={avatar} />
         <H3
           sx={{
             textAlign: 'center',
@@ -63,7 +66,7 @@ const CandidateProfile = () => {
         </H3>
         <FlexBox gap={2} justifyContent={'center'}>
           <Tooltip title="Add a new note">
-            <ButtonSwage>
+            <ButtonSwage onClick={() => setOpen(true)}>
               <DescriptionIcon
                 sx={{
                   fontSize: '20px',
@@ -75,7 +78,7 @@ const CandidateProfile = () => {
           </Tooltip>
 
           <Tooltip title="Add a new call">
-            <ButtonSwage>
+            <ButtonSwage onClick={() => setOpenHistoryCall(true)}>
               <LocalPhoneIcon
                 sx={{
                   fontSize: '20px',
@@ -114,7 +117,7 @@ const CandidateProfile = () => {
                 }}
               ></LocalPhoneIcon>
               <Small>{candidateInfor?.phone}</Small>
-              <FileCopyIcon sx={{ color: 'grey.500', fontSize: '16px' }} />
+              {/* <FileCopyIcon sx={{ color: 'grey.500', fontSize: '16px' }} /> */}
             </FlexBox>
             <FlexBox
               alignItems={'center'}
@@ -132,7 +135,7 @@ const CandidateProfile = () => {
                 }}
               ></MailIcon>
               <Small>{candidateInfor?.email}</Small>
-              <FileCopyIcon sx={{ color: 'grey.500', fontSize: '16px' }} />
+              {/* <FileCopyIcon sx={{ color: 'grey.500', fontSize: '16px' }} /> */}
             </FlexBox>
             <FlexBox
               gap={1}
@@ -258,16 +261,12 @@ const CandidateProfile = () => {
                 <Box sx={{ minWidth: '183px' }} key={idx}>
                   <ShowFile
                     name={item.document_name}
-                    IconEnd={
-                      <DownloadIcon
-                        onClick={() => {
-                          console.log('item', item)
-                          if (item) {
-                            downloadOneFile(item, handleGetUrlDownload)
-                          }
-                        }}
-                      />
-                    }
+                    onClick={() => {
+                      if (item) {
+                        downloadOneFile(item, handleGetUrlDownload)
+                      }
+                    }}
+                    IconEnd={<DownloadIcon />}
                   />
                 </Box>
               ))}
@@ -275,6 +274,13 @@ const CandidateProfile = () => {
           )}
         </Scrollbar>
       </Box>
+      {open && <CreateCandidateNoteModal open={open} setOpen={setOpen} />}
+      {openHistoryCall && (
+        <CreateHistoryCallModal
+          open={openHistoryCall}
+          setOpen={setOpenHistoryCall}
+        />
+      )}
     </ContainerLeft>
   )
 }

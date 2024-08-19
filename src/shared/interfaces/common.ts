@@ -35,4 +35,8 @@ export enum MODLUE_QUERY_KEY {
   JOB_POSITION = 'job_position',
   REC_TEAM = 'rec_team',
   AUDIT_TRAILS = 'audit_trails',
+  CANDIDATE_NOTE = 'candidate_note',
+  CANDIDATE_HISTORY_CALL = 'candidate_history_call',
+  CANDIDATE_ACTIVITY = 'candidate_activity',
+  CANDIDATE_EMAIL = 'candidate_email',
 }

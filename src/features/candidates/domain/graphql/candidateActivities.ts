@@ -1,8 +1,8 @@
 import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
-const useCandidateActivities = () => {
-  const queryKey = MODLUE_QUERY_KEY.CANDIDATE_JOB
+const useCandidateActivitiesGraphql = () => {
+  const queryKey = MODLUE_QUERY_KEY.CANDIDATE_ACTIVITY
   const getCandidateActivities = GraphQLClientService.buildQuery({
     operation: 'GetCandidateActivities',
     options: {
@@ -10,6 +10,7 @@ const useCandidateActivities = () => {
     },
     node: `
       data {
+        total
         candidate_notes {
           id
           candidate {
@@ -42,6 +43,11 @@ const useCandidateActivities = () => {
              name
            }
            createdAt
+           attachments {
+              id
+              document_name
+              document_id
+           }
         }
         candidate_interviews {
            id
@@ -72,6 +78,15 @@ const useCandidateActivities = () => {
            meeting_link
            created_at
         }
+        outgoing_emails {
+           id
+           to
+           subject
+           content
+           signature
+           recipient_type
+           status
+        }
       }
     `,
     params: {
@@ -88,4 +103,4 @@ const useCandidateActivities = () => {
   }
 }
 
-export default useCandidateActivities
+export default useCandidateActivitiesGraphql
