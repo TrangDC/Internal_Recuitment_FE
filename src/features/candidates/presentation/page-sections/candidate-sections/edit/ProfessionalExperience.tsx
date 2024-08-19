@@ -43,7 +43,8 @@ function ProfessionalExperience({ isGetting }: ProfessionalExperienceProps) {
         directionTitle="row-reverse"
         gapTitle={1}
         titleStyle={{
-          width: 200,
+          width: 250,
+          fontSize: 18,
         }}
         showIcon={inValid}
         onClose={isValidFields}

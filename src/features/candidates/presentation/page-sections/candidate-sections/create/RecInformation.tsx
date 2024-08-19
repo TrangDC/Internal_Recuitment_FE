@@ -13,6 +13,7 @@ import AppDateField from 'shared/components/input-fields/AppDateField'
 import { useCreateFormContext } from 'features/candidates/hooks/crud/useContext'
 import CandidateBySource from '../../CreateCandidateModal/components/CandidateBySource'
 import AppTextField from 'shared/components/input-fields/AppTextField'
+import dayjs from 'dayjs'
 
 function RefInformation() {
   const [opeCollapse, setOpeCollapse] = useState(true)
@@ -37,6 +38,9 @@ function RefInformation() {
         padding={0}
         directionTitle="row-reverse"
         gapTitle={1}
+        titleStyle={{
+          fontSize: 18,
+        }}
       >
         <FlexBox gap={2} flexDirection={'column'}>
           <FlexBox gap={2}>
@@ -117,7 +121,7 @@ function RefInformation() {
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
                     <AppDateField
-                      value={field.value}
+                      value={field.value ? dayjs(field.value) : null}
                       onChange={field.onChange}
                       label="Recruit time"
                       textFieldProps={{

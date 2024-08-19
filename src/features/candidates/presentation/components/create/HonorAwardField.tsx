@@ -10,6 +10,7 @@ import { Text13sb, Text15sb, Tiny12md } from 'shared/components/Typography'
 import BoxContainer from '../BoxContainer'
 import DeleteBox from '../DeleteBox'
 import { useCreateFormContext } from 'features/candidates/hooks/crud/useContext'
+import dayjs from 'dayjs'
 
 type HonorAwardFieldProps = {
   index: number
@@ -58,7 +59,7 @@ function HonorAwardField({ index, onDelete, name }: HonorAwardFieldProps) {
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
                     <AppDateField
-                      value={field.value ?? null}
+                      value={field.value ? dayjs(field.value) : null}
                       onChange={field.onChange}
                       label="Achieved date"
                     />

@@ -44,6 +44,9 @@ function Education({ isGetting }: EducationProps) {
         gapTitle={1}
         onClose={isValidFields}
         showIcon={inValid}
+        titleStyle={{
+          fontSize: 18,
+        }}
         CustomTitle={
           <TinyButton
             startIcon={<Add />}

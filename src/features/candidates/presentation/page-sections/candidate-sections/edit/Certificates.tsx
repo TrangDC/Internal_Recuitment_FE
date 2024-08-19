@@ -43,6 +43,9 @@ function Certificates({ isGetting }: CertificatesProps) {
         gapTitle={1}
         showIcon={inValid}
         onClose={isValidFields}
+        titleStyle={{
+          fontSize: 18,
+        }}
         CustomTitle={
           <TinyButton
             startIcon={<Add />}
@@ -57,7 +60,7 @@ function Certificates({ isGetting }: CertificatesProps) {
               })
             }}
           >
-            Add Education
+            Add Certificate
           </TinyButton>
         }
       >

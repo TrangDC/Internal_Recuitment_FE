@@ -15,11 +15,12 @@ const AuthCallback = () => {
     async function main() {
       const azureToken = loginAzure()
       if (azureToken) {
+        saveToken(azureToken)
         const talenaToken = await signToTalena()
         if (talenaToken) {
-          saveToken(azureToken)
           saveTalenaToken(talenaToken)
         }
+        window.location.href = '/'
       }
       navigate('/auth/login')
     }

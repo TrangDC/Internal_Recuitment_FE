@@ -40,6 +40,9 @@ function HonorAward() {
         gapTitle={1}
         onClose={isValidFields}
         showIcon={inValid}
+        titleStyle={{
+          fontSize: 18,
+        }}
         CustomTitle={
           <TinyButton
             startIcon={<Add />}
@@ -53,7 +56,7 @@ function HonorAward() {
               })
             }}
           >
-            Add Education
+            Add Honor/ Awards
           </TinyButton>
         }
       >

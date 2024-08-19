@@ -72,7 +72,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
         return {
           id: o.id,
           name: o.name ?? '',
-          achieved_date: o.achieved_date ? dayjs(o.achieved_date) : null,
+          achieved_date: o.achieved_date ? new Date(o.achieved_date) : null,
           attachments: attachments,
         }
       })
@@ -82,7 +82,7 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
         const attachments = makeOldAttachment(att)
         return {
           attachments: attachments,
-          achieved_date: o.achieved_date ? dayjs(o.achieved_date) : null,
+          achieved_date: o.achieved_date ? new Date(o.achieved_date) : null,
           score: o.score ?? '',
           id: o.id,
           name: o.name ?? '',
@@ -97,8 +97,8 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
           school_name: o.school_name || '',
           major: o.major || '',
           gpa: o.gpa || '',
-          start_date: o.start_date ? dayjs(o.start_date) : null,
-          end_date: o.end_date ? dayjs(o.end_date) : null,
+          start_date: o.start_date ? new Date(o.start_date) : null,
+          end_date: o.end_date ? new Date(o.end_date) : null,
           location: o.location || '',
           description: o.description || '',
           attachments: attachments,
@@ -111,8 +111,8 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
         position: o.position || '',
         company: o.company || '',
         location: o.location || '',
-        start_date: o.start_date ? dayjs(o.start_date) : null,
-        end_date: o.end_date ? dayjs(o.end_date) : null,
+        start_date: o.start_date ? new Date(o.start_date) : null,
+        end_date: o.end_date ? new Date(o.end_date) : null,
         description: o.description || '',
         is_current: o.is_current || false,
       }))
@@ -120,12 +120,14 @@ function useUpdateCandidate(props: UseEditCandidateProps) {
         email: data?.email ?? '',
         name: data?.name ?? '',
         phone: data?.phone ?? '',
-        dob: data?.dob ? dayjs(data?.dob) : null,
+        dob: data?.dob ? new Date(data?.dob) : null,
         country: data?.country ?? '',
         reference_type: data?.reference_type ?? '',
         reference_value: data?.reference_value ?? '',
         description: data?.description ?? '',
-        recruit_time: data?.recruit_time ? dayjs(data?.recruit_time) : dayjs(),
+        recruit_time: data?.recruit_time
+          ? new Date(data?.recruit_time)
+          : new Date(),
         reference_uid: data?.reference_uid ?? '',
         attachments: attachments,
         entity_skill_records: skills,

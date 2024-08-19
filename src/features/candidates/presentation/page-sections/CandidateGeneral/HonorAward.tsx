@@ -25,9 +25,11 @@ function HonorAward({ awards }: HonorAwardProps) {
           <FlexBox flexDirection="column" gap={1} key={award.id}>
             <Text15sb color={'grey.900'}>{award.name}</Text15sb>
             <FlexBox>
-              <Tiny12md>Achieved date:</Tiny12md>
+              <Tiny12md>Achieved date: </Tiny12md>
               <Tiny12md>
-                {dayjs(award.achieved_date).format('MMM YYYY')}
+                {award.achieved_date
+                  ? dayjs(award.achieved_date).format('MMM YYYY')
+                  : ''}
               </Tiny12md>
             </FlexBox>
             <FlexBox flexDirection={'column'}>

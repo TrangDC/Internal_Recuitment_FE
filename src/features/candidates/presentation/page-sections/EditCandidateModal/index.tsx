@@ -17,6 +17,7 @@ import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import Candidate from 'shared/schema/database/candidate'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import AppDateField from 'shared/components/input-fields/AppDateField'
+import dayjs from 'dayjs'
 
 interface IEditCandidateModal {
   open: boolean
@@ -167,7 +168,7 @@ function EditCandidateModal({
                     <FlexBox flexDirection={'column'}>
                       <AppDateField
                         label={'DOB'}
-                        value={field.value ?? null}
+                        value={field.value ? dayjs(field.value) : null}
                         format="dd/MM/yyyy"
                         onChange={field.onChange}
                         textFieldProps={{
@@ -265,7 +266,7 @@ function EditCandidateModal({
                     <FlexBox flexDirection={'column'}>
                       <AppDateField
                         label={'Recruit time'}
-                        value={field.value}
+                        value={field.value ? dayjs(field.value) : null}
                         format="dd/MM/yyyy"
                         onChange={field.onChange}
                         textFieldProps={{
