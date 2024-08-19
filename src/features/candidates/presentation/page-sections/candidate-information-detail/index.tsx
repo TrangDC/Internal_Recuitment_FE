@@ -11,7 +11,6 @@ const CandidateInformationDetail = () => {
 
   return (
     <ContainerMain
-      square
       sx={{
         border: '1px solid #e3e6eb',
       }}

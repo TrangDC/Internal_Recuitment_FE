@@ -28,11 +28,13 @@ const CandidateActivities = () => {
             name={candidateInfor?.name ?? ''}
             phone={candidateInfor?.phone ?? ''}
           />
-          <ProfessionalExp exps={exps} />
-          <Education educations={educations} />
-          <Skills skills={skills} />
-          <HonorAward awards={awards} />
-          <Certificates certificates={certificate} />
+          {exps.length > 0 && <ProfessionalExp exps={exps} />}
+          {educations.length > 0 && <Education educations={educations} />}
+          {skills.length > 0 && <Skills skills={skills} />}
+          {awards.length > 0 && <HonorAward awards={awards} />}
+          {certificate.length > 0 && (
+            <Certificates certificates={certificate} />
+          )}
         </FlexBox>
       </Scrollbar>
     </Box>

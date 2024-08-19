@@ -5,6 +5,7 @@ import CandidateProfile from '../page-sections/candidate-profile'
 import CandidateInformationDetail from '../page-sections/candidate-information-detail'
 import ApplicationHistory from '../page-sections/application-history'
 import { CandidateInformationProvider } from 'features/candidates/shared/context/CandidateInformation'
+import { Container } from '../components/Container'
 
 const CandidateDetail = () => {
   return (
@@ -17,19 +18,11 @@ const CandidateDetail = () => {
             go_back={true}
           />
         </Box>
-        <Box
-          sx={{
-            width: '100%',
-            marginTop: '20px',
-            display: 'flex',
-            flexDirection: 'row',
-            height: '80vh',
-          }}
-        >
+        <Container>
           <CandidateProfile />
           <CandidateInformationDetail />
           <ApplicationHistory />
-        </Box>
+        </Container>
       </Box>
     </CandidateInformationProvider>
   )

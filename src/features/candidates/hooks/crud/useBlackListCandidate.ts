@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { BlackListCandidateInput } from 'features/candidates/domain/interfaces'
 import { BaseRecord } from 'shared/interfaces'
 import {
@@ -8,6 +7,7 @@ import {
 } from '../../shared/constants/schema'
 import { useUpdateResourceOther } from 'shared/hooks/crud-hook'
 import Candidate from 'shared/schema/database/candidate'
+import useCandidateGraphql from 'features/candidates/domain/graphql/candidate'
 
 type UseChangeStatusProps = {
   id: string
@@ -17,7 +17,7 @@ type UseChangeStatusProps = {
 function useChangeStatusJob(props: UseChangeStatusProps) {
   const { id, onSuccess } = props
 
-  const { blackListCandidate, queryKey, getCandidate } = useGraphql()
+  const { blackListCandidate, queryKey, getCandidate } = useCandidateGraphql()
   const { useEditReturn, useFormReturn, formData } = useUpdateResourceOther<
     Candidate,
     FormDataSchemaBlackList,

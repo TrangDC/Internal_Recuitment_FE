@@ -8,7 +8,7 @@ interface IAvatarEmployee {
   width?: number
   height?: number
   readonly?: boolean
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   titleTooltip?: string
   url: string
 }

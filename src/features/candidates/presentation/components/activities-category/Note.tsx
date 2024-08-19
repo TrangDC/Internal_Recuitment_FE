@@ -6,9 +6,24 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import ShowFile from 'shared/components/input-fields/ItemFile'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
+import CandidateNote from 'shared/schema/database/candidate_note'
+import { downloadOneFile } from 'features/candidatejob/shared/helper'
+import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
+import dayjs from 'dayjs'
+import {
+  ActionGroupButtons,
+  TOptionItem,
+} from 'shared/components/ActionGroupButtons'
+import BoxTextSquare from 'shared/components/utils/boxText'
 
-function Note() {
-  const [open, setOpen] = useState(true)
+type NodeProps = {
+  candidateNote: CandidateNote
+  actions: TOptionItem<CandidateNote>[]
+}
+
+function Note({ candidateNote, actions }: NodeProps) {
+  const [open, setOpen] = useState(false)
+  const { handleGetUrlDownload } = useGetUrlGetAttachment()
   return (
     <FlexBox
       flexDirection={'column'}
@@ -26,48 +41,54 @@ function Note() {
         width={'100%'}
       >
         <FlexBox alignItems={'center'} onClick={() => setOpen((prev) => !prev)}>
-          {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
-          <Text13sb marginLeft={1}>Note title</Text13sb>
+          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          <FlexBox gap={1} alignItems={'center'}>
+            <Text13sb marginLeft={1}>{candidateNote.name}</Text13sb>
+            <Tiny12md color={'grey.500'}>Created by</Tiny12md>
+            <Tiny12md color={'primary.600'}>
+              {candidateNote.created_by.name}
+            </Tiny12md>
+            {candidateNote.edited && <BoxTextSquare content="Edited" />}
+          </FlexBox>
         </FlexBox>
-        <Tiny12md>20/07/2024, 14:30</Tiny12md>
+        <FlexBox alignItems={'center'} gap={1}>
+          <Tiny12md color={'grey.500'}>
+            {dayjs(candidateNote.created_at).format('DD/MM/YYYY')},{' '}
+            {dayjs(candidateNote.created_at).format('HH:mm')}
+          </Tiny12md>
+          <ActionGroupButtons<CandidateNote>
+            rowId={candidateNote.id}
+            actions={actions}
+            rowData={candidateNote}
+            iconButtonSx={{
+              padding: '5px',
+            }}
+          />
+        </FlexBox>
       </FlexBox>
       <FlexBox flexDirection={'column'} gap={1} marginLeft={4}>
         <FlexBox flexDirection={'column'}>
-          <Tiny12md>Created by</Tiny12md>
-          <Text13sb>Arianne Bui (TECHVIFY.ITS)</Text13sb>
-        </FlexBox>
-        <FlexBox flexDirection={'column'}>
-          <Tiny12md>Description</Tiny12md>
-          <Text13sb>
-            Lorem ipsum dolor sit amet ad suspendisse blandit aliquam ut nulla
-            torquent pulvinar cursus pellentesque lectus posuere est per eget
-            inceptos adipiscing nibh odio felis ultricies... See more
-          </Text13sb>
+          <Tiny12md color={'grey.500'}>Description</Tiny12md>
+          <Text13sb>{candidateNote.description}</Text13sb>
         </FlexBox>
       </FlexBox>
       <Collapse in={open} unmountOnExit>
         <FlexBox flexWrap={'wrap'} gap={'10px'} marginLeft={4} marginTop={1}>
-          <ShowFile
-            name={'Document.doc'}
-            IconEnd={<DownloadIcon />}
-            containerSx={{
-              width: 'auto',
-            }}
-          />
-          <ShowFile
-            name={'Document.doc'}
-            IconEnd={<DownloadIcon />}
-            containerSx={{
-              width: 'auto',
-            }}
-          />
-          <ShowFile
-            name={'Document.doc'}
-            IconEnd={<DownloadIcon />}
-            containerSx={{
-              width: 'auto',
-            }}
-          />
+          {candidateNote.attachments.map((a) => (
+            <ShowFile
+              key={a.id}
+              name={a.document_name}
+              onClick={() => {
+                if (a) {
+                  downloadOneFile(a, handleGetUrlDownload)
+                }
+              }}
+              IconEnd={<DownloadIcon />}
+              containerSx={{
+                width: 'auto',
+              }}
+            />
+          ))}
         </FlexBox>
       </Collapse>
     </FlexBox>

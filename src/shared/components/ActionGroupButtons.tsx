@@ -70,7 +70,7 @@ export const ActionGroupButtons = <T extends object>({
       ) : (
         <IconButton
           onClick={handleMoreOpen}
-          sx={{ padding: '11px !important', ...iconButtonSx }}
+          sx={{ padding: '11px', ...iconButtonSx }}
         >
           <MoreHoriz sx={{ color: 'text.disabled' }} />
         </IconButton>

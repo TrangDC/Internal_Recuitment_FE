@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import useGraphql from 'features/candidates/domain/graphql/graphql'
 import { FormDataSchema } from '../../shared/constants/schema'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import {
@@ -22,6 +21,7 @@ import {
   pickAttachment,
 } from 'features/candidates/shared/utils'
 import { EntitySkillRecordInput } from 'shared/schema/database/hiring_job'
+import useCandidateGraphql from 'features/candidates/domain/graphql/candidate'
 
 interface createCandidateProps {
   defaultValues?: Partial<FormDataSchema>
@@ -31,7 +31,7 @@ interface createCandidateProps {
 
 function useCreateCandidate(props: createCandidateProps) {
   const { callbackSuccess, candidateData } = props
-  const { createCandidate, queryKey } = useGraphql()
+  const { createCandidate, queryKey } = useCandidateGraphql()
   function formatToDefaultData(
     data?: CandidateCVData
   ): FormDataSchemaCreateCandidate {

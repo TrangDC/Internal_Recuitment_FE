@@ -29,8 +29,8 @@ import useBuildActionTableCandidate from '../../../hooks/table/useBuildActionTab
 import Candidate from 'shared/schema/database/candidate'
 import AppMenuButton from 'shared/components/buttons/AppMenuButton'
 import { useNavigate } from 'react-router-dom'
-import ImportCVModal from '../importCVModal/ImportCVModal'
 import AiIcon from 'shared/components/icons/Ai'
+import ImportCVModal from '../ImportCVModal'
 
 const Candidates = () => {
   const navigate = useNavigate()

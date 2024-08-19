@@ -21,7 +21,7 @@ function useGetImage() {
         return unwrapEither(data)?.[createUrlGetAttachment.operation]?.url
       return ''
     }
-    return ""
+    return ''
   }
   return {
     getUrl,

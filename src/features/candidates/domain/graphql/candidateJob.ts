@@ -1,7 +1,7 @@
 import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
-const useCandidateJob = () => {
+const useCandidateJobGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.CANDIDATE_JOB
   const getAllCandidateJob = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidateJobs',
@@ -132,4 +132,4 @@ const useCandidateJob = () => {
   }
 }
 
-export default useCandidateJob
+export default useCandidateJobGraphql

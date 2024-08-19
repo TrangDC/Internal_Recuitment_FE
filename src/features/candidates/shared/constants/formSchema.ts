@@ -132,7 +132,7 @@ export const CreateCandidate = yup.object({
     .required(RULE_MESSAGES.MC1('email'))
     .max(64, RULE_MESSAGES.MC4('email', 64))
     .default(''),
-  address: yup.string().max(64, RULE_MESSAGES.MC4('address', 64)).default(''),
+  address: yup.string().default(''),
   dob: yup.mixed<Dayjs>().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
   country: yup.string(),
   reference_type: yup
@@ -216,7 +216,7 @@ export const EditCandidate = yup.object({
     .required(RULE_MESSAGES.MC1('email'))
     .max(64, RULE_MESSAGES.MC4('email', 64))
     .default(''),
-  address: yup.string().max(64, RULE_MESSAGES.MC4('address', 64)).default(''),
+  address: yup.string().default(''),
   dob: yup.mixed<Dayjs>().typeError(RULE_MESSAGES.MC5('dob')).nullable(),
   country: yup.string().default(''),
   reference_type: yup

@@ -1,7 +1,7 @@
 import GraphQLClientService from 'services/graphql-service'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
-const useGraphql = () => {
+const useCandidateGraphql = () => {
   const queryKey = MODLUE_QUERY_KEY.CANDIDATE
   const getAllCandidates = GraphQLClientService.buildQuery({
     operation: 'GetAllCandidates',
@@ -198,6 +198,9 @@ const useGraphql = () => {
           }
           order_id
         }
+        reference_user {
+          name
+        }
         avatar
         gender
         created_at
@@ -267,4 +270,4 @@ const useGraphql = () => {
   }
 }
 
-export default useGraphql
+export default useCandidateGraphql

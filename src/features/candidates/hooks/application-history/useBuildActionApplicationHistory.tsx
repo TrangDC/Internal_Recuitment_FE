@@ -135,7 +135,6 @@ function useBuildActionApplicationHistory({
         Icon: <DeleteIcon />,
         disabled: (rowData) => {
           const disabledStatuses = [application_data.applied.value]
-
           return !disabledStatuses.includes(rowData?.status)
         },
       },
