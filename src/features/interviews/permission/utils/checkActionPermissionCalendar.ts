@@ -3,6 +3,8 @@ import { CheckPermissionActionTableProps } from 'features/authorization/domain/i
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
 import { ActionInterview } from 'features/interviews/hooks/table/useBuildActionsTableInterview'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
+import { CandidateStatusEnum } from 'shared/schema'
 import CandidateInterview from 'shared/schema/database/candidate_interview'
 import User from 'shared/schema/database/user'
 
@@ -11,6 +13,7 @@ interface ActionProps {
   inTeam: boolean
   role: PermissionStructureImpl | null
   isInterviewer: boolean
+  statusApplication: CandidateStatusEnum
 }
 
 function checkActionPermissionInterview({
@@ -19,9 +22,11 @@ function checkActionPermissionInterview({
   actions,
   candidateJobOfTeamId,
   interviewer,
+  statusApplication,
 }: Omit<CheckPermissionActionTableProps<CandidateInterview>, 'rowData'> & {
   interviewer: User[]
   candidateJobOfTeamId: string
+  statusApplication: CandidateStatusEnum
 }): TOptionItem<CandidateInterview>[] {
   let newActions = [...actions]
   const inTeam = me?.teamId === candidateJobOfTeamId
@@ -31,13 +36,37 @@ function checkActionPermissionInterview({
     (interviewer) => interviewer.id === me?.id
   )
 
-  newActions = editAction({ newActions, inTeam, role, isInterviewer })
-  newActions = deleteAction({ newActions, inTeam, role, isInterviewer })
-  newActions = changeStatusAction({ newActions, inTeam, role, isInterviewer })
+  newActions = editAction({
+    newActions,
+    inTeam,
+    role,
+    isInterviewer,
+    statusApplication,
+  })
+  newActions = deleteAction({
+    newActions,
+    inTeam,
+    role,
+    isInterviewer,
+    statusApplication,
+  })
+  newActions = changeStatusAction({
+    newActions,
+    inTeam,
+    role,
+    isInterviewer,
+    statusApplication,
+  })
   return newActions
 }
 
-function editAction({ newActions, inTeam, role, isInterviewer }: ActionProps) {
+function editAction({
+  newActions,
+  inTeam,
+  role,
+  isInterviewer,
+  statusApplication,
+}: ActionProps) {
   const editPermission = checkPermissions({
     role,
     checkBy: {
@@ -69,6 +98,8 @@ function editAction({ newActions, inTeam, role, isInterviewer }: ActionProps) {
   if (editTeamOnly && !inTeam)
     return newActions.filter((action) => action.id !== ActionInterview.EDIT)
   if (editOwnerOnly && !isInterviewer)
+    return newActions.filter((action) => action.id !== ActionInterview.EDIT)
+  if (statusApplication !== application_data.interviewing.value)
     return newActions.filter((action) => action.id !== ActionInterview.EDIT)
   return newActions
 }

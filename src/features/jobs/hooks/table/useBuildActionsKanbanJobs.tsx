@@ -1,5 +1,6 @@
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import { useNavigate } from 'react-router-dom'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import SearchIconSmall from 'shared/components/icons/SearchIconSmall'
@@ -51,6 +52,9 @@ function useBuildActionsKanbanJobs({
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
+        disabled: (rowData) => {
+          return rowData.status !== application_data.applied.value;
+        },
       },
     },
   })

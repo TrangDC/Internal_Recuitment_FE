@@ -49,7 +49,7 @@ const FilterCandidate = () => {
             <ControllerFilter
               control={controlFilter}
               title="Job"
-              keyName={'hiring_job_id'}
+              keyName={'hiring_job_ids'}
               Node={({ onFilter, value }) => (
                 <JobsAutoComplete
                   name="job"

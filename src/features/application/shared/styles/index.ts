@@ -138,3 +138,37 @@ export const BoxFieldContainer = styled('a')(({ theme }) => ({
     color: theme.palette.grey[500],
   },
 }))
+
+export const DivWrapperContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  backgroundColor: theme.palette.background.paper,
+  borderWidth: '0px 0px 1px 0px',
+  borderStyle: 'solid',
+  borderColor: '#E3E6EB',
+  borderRadius: '8px',
+}))
+
+export const DivInformation = styled(FlexBox)(({ theme }) => ({
+  padding: '24px',
+  flexWrap: 'wrap',
+  gap: '20px',
+  borderRight: '1px solid',
+  borderColor: theme.palette.grey[200],
+}))
+
+export const DivItemInformation = styled(Box)(({ theme }) => ({
+  width: '100%',
+}))
+
+export const DivWrapperProcess = styled(Box)(({ theme }) => ({
+  width: '100%',
+  padding: '24px 16px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+}))
+
+export const DivAction = styled(Box)(({ theme }) => ({
+  padding: '24px',
+  width: '100%',
+}))

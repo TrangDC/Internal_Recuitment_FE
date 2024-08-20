@@ -8,7 +8,7 @@ function useFilterJobsOpening() {
     useFilterTable<JobsFilterOpening>({
       filter: {
         defaultFilter: {
-          hiring_job_id: [],
+          hiring_job_ids: [],
           priority: '',
           hiring_team_ids: [],
           skill_id: [],
@@ -19,8 +19,8 @@ function useFilterJobsOpening() {
         formatDataWithValue: (data) => {
           return {
             priority: Number(data?.priority?.value) || undefined,
-            hiring_job_id: !isEmpty(data?.hiring_job_id)
-              ? data?.hiring_job_id?.map((o) => o.value)
+            hiring_job_ids: !isEmpty(data?.hiring_job_ids)
+              ? data?.hiring_job_ids?.map((o) => o.value)
               : undefined,
               hiring_team_ids: !isEmpty(data?.hiring_team_ids)
               ? data?.hiring_team_ids?.map((o) => o.value)

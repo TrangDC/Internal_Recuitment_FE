@@ -23,6 +23,7 @@ import DotIcon from 'shared/components/icons/DotIcon'
 import CollapseLeftIcon from 'shared/components/icons/CollapseLeftIcon'
 import CollapseRightIcon from 'shared/components/icons/CollapseRightIcon'
 import Draggable from 'shared/components/dnd/components/Draggable'
+import { BoxCircle } from 'shared/styles'
 
 interface Props {
   title: string
@@ -59,9 +60,11 @@ const BoxCandidateJob = ({
           >
             <FlexBox alignItems={'center'} gap={1.25}>
               <SpanHiringStatus>{title}</SpanHiringStatus>
-              <Tiny color={'#4D607A'} lineHeight={'14.63px'}>
-                {number_candidates}
-              </Tiny>
+              <BoxCircle sx={{ backgroundColor: '#82868C' }}>
+                <Tiny color={'#fff'} lineHeight={'14.63px'}>
+                  {number_candidates}
+                </Tiny>
+              </BoxCircle>
             </FlexBox>
             <FlexBox gap={1.25} className="action__collapse">
               {Note}

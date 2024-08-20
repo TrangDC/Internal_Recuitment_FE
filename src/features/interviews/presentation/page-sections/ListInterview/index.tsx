@@ -79,6 +79,7 @@ const ListInterview = ({ jobApplicationDetail, listInterview, show_interview }: 
 
   const candidateJobOfTeamId =
     jobApplicationDetail?.hiring_job?.hiring_team?.id ?? ''
+  const statusApplication = jobApplicationDetail?.status;
 
   return (
     <ListInterviewContainer>
@@ -139,6 +140,7 @@ const ListInterview = ({ jobApplicationDetail, listInterview, show_interview }: 
                           interview={interview}
                           useActionInterviewReturn={useActionInterviewReturn}
                           candidateJobOfTeamId={candidateJobOfTeamId}
+                          statusApplication={statusApplication}
                         />
                       </FlexBox>
                     </FlexBox>

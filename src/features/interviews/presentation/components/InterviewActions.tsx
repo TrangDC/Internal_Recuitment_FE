@@ -4,15 +4,17 @@ import { UseActionInterviewReturn } from 'features/interviews/hooks/table/useAct
 import checkActionPermissionInterview from 'features/interviews/permission/utils/checkActionPermissionCalendar'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import CandidateInterview from 'shared/schema/database/candidate_interview'
+import { CandidateStatusEnum } from 'shared/schema'
 
 type InterviewActionsProps = {
   useActionInterviewReturn: UseActionInterviewReturn
   interview: CandidateInterview
   candidateJobOfTeamId: string
+  statusApplication: CandidateStatusEnum
 }
 
 function InterviewActions(props: InterviewActionsProps) {
-  const { useActionInterviewReturn, interview, candidateJobOfTeamId } = props
+  const { useActionInterviewReturn, interview, candidateJobOfTeamId, statusApplication } = props
   const {
     handleOpenEdit,
     handleOpenDelete,
@@ -37,8 +39,9 @@ function InterviewActions(props: InterviewActionsProps) {
     role,
     interviewer: interview?.interviewer ?? [],
     candidateJobOfTeamId,
+    statusApplication
   })
- 
+
   return (
     <ActionGroupButtons<CandidateInterview>
       rowId={interview.id}

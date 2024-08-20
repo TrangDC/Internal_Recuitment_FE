@@ -19,6 +19,7 @@ import checkDragDropCandidateJob from 'features/jobs/permission/utils/checkDragD
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import { CandidateStatusEnum } from 'shared/schema'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 
 interface Props {
   title: string
@@ -74,6 +75,7 @@ const BoxStatusCandidates = ({
 
     if (parsedData.status === status) return
     const listChange = ENABLED_CHANGE_STATUS[parsedData.status]
+
     if (listChange.includes(status)) {
       setCandidateSelected({
         candidateId: parsedData.candidate.id,
@@ -82,8 +84,7 @@ const BoxStatusCandidates = ({
       handleOpenChangeStatus(parsedData.id, parsedData)
     } else {
       toast.error(
-        //@ts-ignore
-        `Cannot move candidate from ${STATUS_CANDIDATE_TEXT[parsedData.status]} to ${STATUS_CANDIDATE_TEXT[status]}`
+        `Cannot move candidate from ${application_data?.[parsedData.status as CandidateStatusEnum]?.label} to ${application_data?.[status as CandidateStatusEnum]?.label}`
       )
     }
   }

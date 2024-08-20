@@ -1,7 +1,7 @@
-import CandidateJobDetail from 'features/candidatejob/presentation/screens/candidate-job-detail';
+import CandidateJobDetail from 'features/application/presentation/screens/application-detail';
 import HelmetComponent from 'shared/components/helmet';
 
-const CandidateJobDetailPage = () => {
+const ApplicationDetail = () => {
 
   return (
     <HelmetComponent title="[TREC] Job application detail">
@@ -10,4 +10,4 @@ const CandidateJobDetailPage = () => {
   )
 }
 
-export default CandidateJobDetailPage
+export default ApplicationDetail

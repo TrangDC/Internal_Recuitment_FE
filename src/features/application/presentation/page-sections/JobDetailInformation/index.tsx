@@ -1,15 +1,11 @@
 import { format } from 'date-fns'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { SpanText, TinyText } from 'shared/components/form/styles'
-import useActionTable from '../../../hooks/table/useActionTable'
-import ChangeStatusModal from '../ChangeStatusModal'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { useEffect, useMemo, useState } from 'react'
-import PreviewCV from '../../components/previewCV'
-import { DivInformation, DivItemInformation } from '../../../shared/styles'
+import { DivInformation, DivItemInformation, } from '../../../shared/styles'
 import { LinkText } from 'shared/components/Typography'
 import { useNavigate, useParams } from 'react-router-dom'
-import EditCandidateJobModal from '../EditCandidateJobModal'
 import CopyIcon from 'shared/components/icons/CopyIcon'
 import { getDomain, handleCopyClipBoard } from 'shared/utils/utils'
 import Cant from 'features/authorization/presentation/components/Cant'
@@ -19,6 +15,11 @@ import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import { LEVEL_STATE } from 'shared/components/autocomplete/level-auto-complete'
 import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
+import { ChangeStatusModal } from 'features/candidatejob/presentation/page-sections'
+import EditCandidateJobModal from 'features/candidatejob/presentation/page-sections/EditCandidateJobModal'
+import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
+import PreviewCV from 'features/candidatejob/presentation/components/previewCV'
+
 interface JobDetailInformationProps {
   jobApplicationDetail: CandidateJob
 }
