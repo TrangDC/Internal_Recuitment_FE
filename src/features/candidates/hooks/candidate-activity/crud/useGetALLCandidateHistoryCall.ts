@@ -6,6 +6,7 @@ import { BaseRecord } from 'shared/interfaces'
 import { CandidateHistoryCall } from 'shared/schema/database/candidate_history_calls'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { CandidateActivityFilters } from '../filters/useActivityFilter'
+import { DEFAULT_DATE_FILTER } from 'shared/constants/constants'
 
 type UseGetALLCandidateHistoryCallProps = {
   id: string
@@ -23,10 +24,10 @@ function useGetALLCandidateHistoryCall({
       candidate_id: id,
       from_date: filters?.fromDate
         ? filters.fromDate.toISOString()
-        : undefined,
+        : DEFAULT_DATE_FILTER.from,
       to_date: filters?.toDate
         ? filters.toDate.toISOString()
-        : undefined,
+        : DEFAULT_DATE_FILTER.to,
     },
     orderBy: {
       field: 'created_at',

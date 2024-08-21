@@ -20,7 +20,9 @@ function useGetALLCandidateFeedback({
   const variables = {
     filter: {
       candidate_id: id,
-      created_by: filters?.fromDate ? filters.fromDate.toISOString() : undefined,
+      created_by: filters?.fromDate
+        ? filters.fromDate.toISOString()
+        : undefined,
     },
     orderBy: {
       field: 'created_at',

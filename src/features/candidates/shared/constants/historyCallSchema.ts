@@ -13,7 +13,7 @@ export const CreateHistoryCallSchema = yup.object({
       'From time must be after the To time',
       function (value) {
         const { timeTo } = this.parent
-        if (!value && !timeTo) return true
+        if (!value || !timeTo) return true
         return dayjs(value).isBefore(dayjs(timeTo))
       }
     ),
@@ -26,7 +26,7 @@ export const CreateHistoryCallSchema = yup.object({
       'From time must be after the To time',
       function (value) {
         const { timeFrom } = this.parent
-        if (!value && !timeFrom) return true
+        if (!value || !timeFrom) return true
         return dayjs(timeFrom).isBefore(dayjs(value))
       }
     ),
@@ -65,7 +65,7 @@ export const EditHistoryCallSchema = yup.object({
       'From time must be after the To time',
       function (value) {
         const { timeTo } = this.parent
-        if (!value && !timeTo) return true
+        if (!value || !timeTo) return true
         return dayjs(value).isBefore(dayjs(timeTo))
       }
     ),
@@ -78,7 +78,7 @@ export const EditHistoryCallSchema = yup.object({
       'From time must be after the To time',
       function (value) {
         const { timeFrom } = this.parent
-        if (!value && !timeFrom) return true
+        if (!value || !timeFrom) return true
         return dayjs(timeFrom).isBefore(dayjs(value))
       }
     ),

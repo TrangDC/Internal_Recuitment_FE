@@ -1,6 +1,5 @@
 import { FormControl } from '@mui/material'
 import { useCreateFormContext } from 'features/candidates/hooks/crud/useContext'
-import { useState } from 'react'
 import { Controller } from 'react-hook-form'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
@@ -16,8 +15,8 @@ type SkillFieldProps = {
   name: 'entity_skill_records'
 }
 function SkillField({ index, name, onDelete }: SkillFieldProps) {
-  const [skillType, setSkillType] = useState('')
-  const { control, setValue, resetField } = useCreateFormContext()
+  const { control, setValue, resetField, watch } = useCreateFormContext()
+  const skillType = watch(`${name}.${index}.skill_type_id`)
   function onSkillChange(data: Skill[]) {
     if (data[0]) {
       setValue(`${name}.${index}.skill_type_id`, data[0].skill_type.id, {
@@ -28,9 +27,6 @@ function SkillField({ index, name, onDelete }: SkillFieldProps) {
 
   function onSkillTypeChange(value: SkillType | null) {
     resetField(`${name}.${index}.skill_id`, { defaultValue: [] })
-    if (value) {
-      setSkillType(value.id)
-    }
   }
   return (
     <FlexBox width={'100%'} gap={2} marginBottom={2}>

@@ -1,7 +1,7 @@
 import { Collapse } from '@mui/material'
 import { useState } from 'react'
 import FlexBox from 'shared/components/flexbox/FlexBox'
-import { Text13sb, Tiny12md } from 'shared/components/Typography'
+import { Link, Text13sb, Tiny12md } from 'shared/components/Typography'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
@@ -40,9 +40,13 @@ function Interview({ candidateInterview }: InterviewProps) {
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           <FlexBox gap={1}>
             <Text13sb marginLeft={1}>{candidateInterview.title}</Text13sb>
-            <Text13sb color={'primary.600'}>
+            <Link
+              href={`/dashboard/job-detail/${candidateInterview.candidate_job.hiring_job.id}`}
+              target="_blank"
+              color={'primary.600'}
+            >
               {candidateInterview.candidate_job.hiring_job.name}
-            </Text13sb>
+            </Link>
             <Tiny12md color={'grey.500'}>Created by</Tiny12md>
             <Tiny12md color={'primary.600'}>
               {candidateInterview.owner.name}

@@ -23,7 +23,7 @@ export const SALARY_TYPE_TEXT = {
   range: 'Range',
   up_to: 'Up to',
   minimum: 'Minimum',
-  negotiate: 'Negotiate'
+  negotiate: 'Negotiate',
 }
 
 export const CURRENCY_STATE = {
@@ -43,7 +43,7 @@ export const LOCATION_STATE = {
   DA_NANG: 'da_nang',
   HO_CHI_MINH: 'ho_chi_minh',
   JAPAN: 'japan',
-  SINGAPORE: 'singapore'
+  SINGAPORE: 'singapore',
 }
 
 export const LOCATION_LABEL = {
@@ -75,4 +75,9 @@ export const HEADER = {
   AUTHORIZATION: 'Authorization',
   REFRESHTOKEN: 'x-rtoken-id',
   CONTENT_TYPE: 'Content-Type',
+}
+
+export const DEFAULT_DATE_FILTER = {
+  from: '1970-01-01T17:00:00.000Z',
+  to: '2050-01-01T17:00:00.000Z',
 }

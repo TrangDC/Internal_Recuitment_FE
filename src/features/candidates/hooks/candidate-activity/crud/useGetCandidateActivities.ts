@@ -15,6 +15,7 @@ import GraphQLClientService from 'services/graphql-service'
 import CandidateActivity from 'shared/schema/database/candidate_activity'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { CandidateActivityFilters } from '../filters/useActivityFilter'
+import { DEFAULT_DATE_FILTER } from 'shared/constants/constants'
 
 type UseGetCandidateActivitiesProps = {
   id: string
@@ -29,8 +30,12 @@ function useGetCandidateActivities({
   const variables = {
     filter: {
       candidate_id: id,
-      from_date: filters?.fromDate ? filters.fromDate.toISOString() : undefined,
-      to_date: filters?.toDate ? filters.toDate.toISOString() : undefined,
+      from_date: filters?.fromDate
+        ? filters.fromDate.toISOString()
+        : DEFAULT_DATE_FILTER.from,
+      to_date: filters?.toDate
+        ? filters.toDate.toISOString()
+        : DEFAULT_DATE_FILTER.to,
     },
     orderBy: {
       field: 'created_at',

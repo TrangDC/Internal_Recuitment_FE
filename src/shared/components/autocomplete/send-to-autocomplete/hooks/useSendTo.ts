@@ -18,8 +18,8 @@ export const SEND_TO_VALUE = {
 export const SEND_TO_LABEL = {
   interviewer: 'Interviewer',
   job_request: 'Requester',
-  team_manager: 'Team manager',
-  team_member: 'Team member',
+  team_manager: 'Hiring team manager',
+  team_member: 'Hiring team member',
   role: 'Role',
   candidate: 'Candidate',
 }
@@ -34,11 +34,11 @@ const options_fixed: IOption[] = [
     value: SEND_TO_VALUE.job_request,
   },
   {
-    label: 'Team manager',
+    label: 'Hiring team manager',
     value: SEND_TO_VALUE.team_manager,
   },
   {
-    label: 'Team member',
+    label: 'Hiring team member',
     value: SEND_TO_VALUE.team_member,
   },
   { label: 'Candidate', value: SEND_TO_VALUE.candidate },

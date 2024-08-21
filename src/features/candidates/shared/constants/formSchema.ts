@@ -23,7 +23,7 @@ const candidateExp = yup.object({
       'End date must be after the Start time',
       function (value) {
         const { end_date } = this.parent
-        if (!end_date) return true
+        if (!end_date || value) return true
         return dayjs(value).isBefore(dayjs(end_date))
       }
     ),
@@ -36,7 +36,7 @@ const candidateExp = yup.object({
       'End date must be after the Start time',
       function (value) {
         const { start_date } = this.parent
-        if (!start_date) return true
+        if (!start_date || value) return true
         return dayjs(start_date).isBefore(dayjs(value))
       }
     ),

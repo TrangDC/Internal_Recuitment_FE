@@ -30,7 +30,7 @@ function useActivityFilter() {
     setFilters((prev) => {
       return {
         ...prev,
-        [key]: value,
+        [key]: dayjs(value).isValid() ? value : null,
       }
     })
   }
