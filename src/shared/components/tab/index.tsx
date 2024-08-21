@@ -3,7 +3,6 @@ import {
   TabList,
   TabListProps,
   TabPanel,
-  TabPanelProps,
 } from '@mui/lab'
 import { Box, Tab, styled, SxProps } from '@mui/material'
 import React, { useMemo, useState } from 'react'

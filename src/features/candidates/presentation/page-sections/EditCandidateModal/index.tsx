@@ -42,7 +42,6 @@ function EditCandidateModal({
     isGetting,
     watch,
     formState,
-    getValues,
   } = useUpdateCandidate({
     id: id,
     onSuccess: (data) => {

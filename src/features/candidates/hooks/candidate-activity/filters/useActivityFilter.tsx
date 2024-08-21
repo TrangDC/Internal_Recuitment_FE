@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs'
+import { Dayjs } from 'dayjs'
 import { useRef, useState } from 'react'
 
 export type CandidateActivityFilters = {
@@ -35,7 +35,7 @@ function useActivityFilter() {
     })
   }
 
-  console.log('filters', filters)
+
   return {
     handleSearch,
     filters,

@@ -2,7 +2,6 @@ import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-s
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import _, { cloneDeep, unionBy } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import GraphQLClientService from 'services/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
 import { CandidateStatusEnum } from 'shared/schema'

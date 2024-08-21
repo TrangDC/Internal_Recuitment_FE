@@ -1,6 +1,5 @@
 import { FormControl, FormControlLabel } from '@mui/material'
-import { FormDataSchemaCreateCandidate } from 'features/candidates/shared/constants/formSchema'
-import { Controller, useFormContext } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import AppCheckBox from 'shared/components/AppCheckBox'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'

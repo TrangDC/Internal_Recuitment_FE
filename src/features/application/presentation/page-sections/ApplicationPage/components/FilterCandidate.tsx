@@ -14,9 +14,7 @@ import ControllerFilterWrapper from 'shared/components/table/components/tooltip-
 import { OPENING_PAGE_APPLICATION } from 'features/application/shared/constants'
 import { sxIconSelected } from '../styles'
 import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
-import CandidateStatusAutoComplete, {
-  options_status_new,
-} from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete from 'shared/components/autocomplete/candidate-status-auto-complete'
 import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
 import Cant from 'features/authorization/presentation/components/Cant'
 import { BtnPrimary } from 'shared/styles'

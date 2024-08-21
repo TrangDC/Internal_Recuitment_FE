@@ -1,4 +1,3 @@
-import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
 import useTextTranslation from 'shared/constants/text'
 import { useBuildActionsTable } from 'shared/components/table/hooks/useBuildActionsTable'
@@ -7,8 +6,6 @@ import Cancel from 'shared/components/icons/Cancel'
 import { UseActionInterviewReturn } from './useActionInterview'
 import _ from 'lodash'
 import { CalendarEvent } from 'features/calendars/presentation/page-sections/google-calendar/interface'
-import { isPast } from 'shared/utils/date'
-import dayjs from 'dayjs'
 import { InterviewStatus } from 'shared/components/chip/ChipInterviewStatus/constants'
 
 export enum ActionCalendar {

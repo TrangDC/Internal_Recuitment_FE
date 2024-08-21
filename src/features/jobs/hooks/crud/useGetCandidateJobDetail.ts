@@ -255,7 +255,11 @@ type ParamGetCandidateJob = {
   freeWord: BaseRecord
 }
 
-const useCandidatesJob = () => {
+type ICandidateJobDetail = {
+    id: string
+}
+
+const useCandidatesJobDetail = (props: ICandidateJobDetail) => {
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(0)
   const [filter, setFilter] = useState<BaseRecord>({})
@@ -483,9 +487,10 @@ const useCandidatesJob = () => {
   }
 
   useEffect(() => {
+    if(!props.id) return;
     handleGetData({
       pageCurrent: page,
-      filter: { ...filter },
+      filter: {...filter, hiring_job_ids: [props.id]},
       freeWord: freeWord,
     })
   }, [page, filter, freeWord])
@@ -519,4 +524,4 @@ const useCandidatesJob = () => {
   }
 }
 
-export default useCandidatesJob
+export default useCandidatesJobDetail

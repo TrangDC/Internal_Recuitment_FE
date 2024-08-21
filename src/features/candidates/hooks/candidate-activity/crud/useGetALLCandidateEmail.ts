@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import dayjs from 'dayjs'
 import useCandidateEmailGraphql from 'features/candidates/domain/graphql/candidateEmail'
 import { useMemo } from 'react'
 import GraphQLClientService from 'services/graphql-service'
