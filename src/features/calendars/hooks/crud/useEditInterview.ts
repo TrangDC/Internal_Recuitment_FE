@@ -12,10 +12,11 @@ import {
   EditInterviewSchema,
 } from 'features/calendars/shared/constants/validate'
 import {
-  convertToRootByTimeNow,
   convertToRootDate,
   formatStringToDate,
 } from 'features/calendars/presentation/page-sections/google-calendar/functions'
+
+import { convertToRootDate as convertToRoot } from 'shared/utils/date'
 
 type UseEditInterviewProps = {
   id: string
@@ -114,12 +115,12 @@ function useEditInterview(props: UseEditInterviewProps) {
     const to = getValues('to')
     const date = getValues('date')
     if (from && date) {
-      const fromDate = convertToRootByTimeNow(from, date)
+      const fromDate = convertToRoot(from, date)
       setValue('from', fromDate.toDate(), { shouldValidate: true })
     }
 
     if (to && date) {
-      const toDate = convertToRootByTimeNow(to, date)
+      const toDate = convertToRoot(to, date)
       setValue('to', toDate.toDate(), { shouldValidate: true })
     }
     trigger(['from', 'to'])
@@ -128,7 +129,7 @@ function useEditInterview(props: UseEditInterviewProps) {
   function onSelectedTo(value?: Date) {
     const date = getValues('date')
     if (value && date) {
-      const fromDate = convertToRootByTimeNow(value, date)
+      const fromDate = convertToRoot(value, date)
       setValue('to', fromDate.toDate(), {
         shouldValidate: true,
         shouldDirty: true,
@@ -140,7 +141,7 @@ function useEditInterview(props: UseEditInterviewProps) {
   function onSelectedFrom(value?: Date) {
     const date = getValues('date')
     if (value && date) {
-      const fromDate = convertToRootByTimeNow(value, date)
+      const fromDate = convertToRoot(value, date)
       setValue('from', fromDate.toDate(), {
         shouldValidate: true,
         shouldDirty: true,

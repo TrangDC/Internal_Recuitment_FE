@@ -8,10 +8,9 @@ import {
   CreateInterviewFrom,
   CreateInterviewSchema,
 } from 'features/calendars/shared/constants/validate'
-import {
-  convertToRootByTimeNow,
-  convertToRootDate,
-} from 'features/calendars/presentation/page-sections/google-calendar/functions'
+import { convertToRootDate } from 'features/calendars/presentation/page-sections/google-calendar/functions'
+
+import { convertToRootDate as convertToRoot } from 'shared/utils/date'
 
 interface IUseCreateInterview {
   onSuccess: (data: BaseRecord) => void
@@ -93,13 +92,13 @@ function useCreateInterview(props: IUseCreateInterview) {
     const date = getValues('date')
 
     if (from && date) {
-      const fromDate = convertToRootByTimeNow(from, date)
+      const fromDate = convertToRoot(from, date)
       setValue('from', fromDate.toDate(), { shouldValidate: true })
       trigger(['from'])
     }
 
     if (to && date) {
-      const toDate = convertToRootByTimeNow(to, date)
+      const toDate = convertToRoot(to, date)
       setValue('to', toDate.toDate(), { shouldValidate: true })
       trigger(['to'])
     }
@@ -108,7 +107,7 @@ function useCreateInterview(props: IUseCreateInterview) {
   function onSelectedTo(value?: Date) {
     const date = getValues('date')
     if (value && date) {
-      const fromDate = convertToRootByTimeNow(value, date)
+      const fromDate = convertToRoot(value, date)
       setValue('to', fromDate.toDate(), { shouldValidate: true })
       trigger('from')
     }
@@ -117,7 +116,7 @@ function useCreateInterview(props: IUseCreateInterview) {
   function onSelectedFrom(value?: Date) {
     const date = getValues('date')
     if (value && date) {
-      const fromDate = convertToRootByTimeNow(value, date)
+      const fromDate = convertToRoot(value, date)
       setValue('from', fromDate.toDate(), { shouldValidate: true })
     }
   }
