@@ -200,6 +200,7 @@ const useGraphql = () => {
                   name,
                   phone,
                   status,
+                  
               }
               hiring_job {
                 id

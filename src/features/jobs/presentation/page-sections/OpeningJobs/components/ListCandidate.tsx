@@ -28,8 +28,16 @@ const ListCandidate = () => {
     actions: { handleFetchNextPage, handleUpdateStatus },
   } = useContextChangeStatus()
 
-  const { applied, interviewing, offering, hired, failedCV, failedInterview, offer_lost, ex_staff } =
-    data
+  const {
+    applied,
+    interviewing,
+    offering,
+    hired,
+    failedCV,
+    failedInterview,
+    offer_lost,
+    ex_staff,
+  } = data
 
   //change status hiring process
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()

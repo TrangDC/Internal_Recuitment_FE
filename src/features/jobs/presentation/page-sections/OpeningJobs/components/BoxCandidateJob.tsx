@@ -86,42 +86,45 @@ const BoxCandidateJob = ({
               >
                 {() => {
                   return (
-                    <BoxFieldInfo
-                      key={item?.id}
-                      onClick={() => {
-                        navigate(`/dashboard/job-application-detail/${item.id}`)
-                      }}
-                    >
-                      <SpanInfo>{item?.candidate?.name}</SpanInfo>
-                      <FlexBox flexDirection={'column'} gap={'10px'}>
-                        <FlexBox alignItems={'center'} gap={'6px'}>
-                          <PhoneIcon
-                            sx={{
-                              fontSize: '12px',
-                              color: '#4D607A'
-                            }}
-                          />{' '}
-                          <TinyInfo>{item?.candidate?.phone}</TinyInfo>
-                        </FlexBox>
+                    <BoxFieldInfo>
+                      <a
+                        key={item?.id}
+                        href={`/dashboard/job-application-detail/${item.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <SpanInfo>{item?.candidate?.name}</SpanInfo>
+                        <FlexBox flexDirection={'column'} gap={'10px'}>
+                          <FlexBox alignItems={'center'} gap={'6px'}>
+                            <PhoneIcon
+                              sx={{
+                                fontSize: '12px',
+                                color: '#4D607A',
+                              }}
+                            />{' '}
+                            <TinyInfo>{item?.candidate?.phone}</TinyInfo>
+                          </FlexBox>
 
-                        <FlexBox alignItems={'center'} gap={'6px'}>
-                          <TeamIcon
-                            sx={{
-                              fontSize: '12px',
-                              color: '#4D607A'
-                            }}
-                          />{' '}
-                          <FlexBox gap={0.75} alignItems={'center'}>
-                            <TinyInfo>
-                              {item?.hiring_job?.hiring_team?.name}
-                            </TinyInfo>
-                            <DotIcon />
-                            <TinyInfo>
-                              {LOCATION_LABEL[item?.hiring_job?.location]}
-                            </TinyInfo>
+                          <FlexBox alignItems={'center'} gap={'6px'}>
+                            <TeamIcon
+                              sx={{
+                                fontSize: '12px',
+                                color: '#4D607A',
+                              }}
+                            />{' '}
+                            <FlexBox gap={0.75} alignItems={'center'}>
+                              <TinyInfo>
+                                {item?.hiring_job?.hiring_team?.name}
+                              </TinyInfo>
+                              <DotIcon />
+                              <TinyInfo>
+                                {LOCATION_LABEL[item?.hiring_job?.location]}
+                              </TinyInfo>
+                            </FlexBox>
                           </FlexBox>
                         </FlexBox>
-
+                      </a>
+                      <FlexBox flexDirection={'column'} gap={'10px'}>
                         <FlexBox alignItems={'center'} gap={'6px'}>
                           <Jobs
                             sx={{
