@@ -8,6 +8,7 @@ import Note from '../../components/activities-category/Note'
 import { useCandidateActivityContext } from 'features/candidates/shared/context/CandidateActivityContext'
 import Email from '../../components/activities-category/Email'
 import useGetCandidateActivities from 'features/candidates/hooks/candidate-activity/crud/useGetCandidateActivities'
+import Feedback from '../../components/activities-category/Feedback'
 
 const AllTab = () => {
   const { id } = useParams()
@@ -46,6 +47,8 @@ const AllTab = () => {
               return <Interview candidateInterview={o.data} key={o.data.id} />
             case ActivitiesCategoryEnums.EMAIL:
               return <Email outgoingEmail={o.data} key={o.data.id} />
+            case ActivitiesCategoryEnums.FEEDBACK:
+              return <Feedback candidateJobFeedback={o.data} key={o.data.id} />
             case ActivitiesCategoryEnums.NOTE:
               return (
                 <Note

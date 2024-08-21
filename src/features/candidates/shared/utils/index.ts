@@ -60,6 +60,11 @@ export function hasErrorsInArray(errors: FieldErrors, name: string) {
   return !!fieldErrors
 }
 
+export function hasErrors<T>(errors: FieldErrors, names: (keyof T)[]) {
+  const fieldErrors = names.some((name) => _.has(errors, name))
+  return fieldErrors
+}
+
 export function pickAttachment(att: FileUploadAttachment[]) {
   const attachments = pickDataInArray<FileUploadAttachment>(att, [
     'id',
@@ -83,6 +88,8 @@ export function makeOldAttachment(att: Attachment[]) {
 
 export function formatDataFormCandidateCV(data?: CandidateCVData) {
   const cvData = data?.data
+  const skills = cvData?.skills || []
+  const description = skills.reduce((acc, sk) => acc + ' ' + sk, '')
   const att: FileUploadAttachment[] = data?.file
     ? [
         {
@@ -155,9 +162,9 @@ export function formatDataFormCandidateCV(data?: CandidateCVData) {
     name: cvData?.name ?? '',
     email: cvData?.email ?? '',
     phone: cvData?.phone ?? '',
-    dob: cvData?.dob ? new Date(cvData?.dob) : null,
+    dob: cvData?.dob ? dayjs(cvData?.dob, 'DD/MM/YYYY').toDate() : null,
     reference_uid: '',
-    description: '',
+    description: description,
     address: cvData?.address ?? '',
     attachments: att,
     avatar: '',

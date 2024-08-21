@@ -77,7 +77,7 @@ class TalenaCandidateCV {
       experiences: (data.experiences || []).map((exp: any) =>
         Experience.fromJson(exp)
       ),
-      skills: (data.skills || []).map((exp: any) => Skill.fromJson(exp)),
+      skills: data.skills || [],
       links: data.links || [],
       certificates: (data.certificates || []).map((exp: any) =>
         Certificate.fromJson(exp)

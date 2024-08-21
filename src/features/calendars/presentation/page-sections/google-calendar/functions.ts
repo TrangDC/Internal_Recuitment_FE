@@ -132,23 +132,6 @@ export function convertToRootDate(start: Date, end: Date, root: Date) {
   }
 }
 
-export function convertToRootByTimeNow(now: Date, root: Date) {
-  const rootDate = dayjs(root)
-
-  // Lấy thông tin giờ phút từ start và end
-  const startHour = dayjs(now).hour()
-  const startMinute = dayjs(now).minute()
-
-  // Tạo mới start và end theo ngày của root nhưng giữ nguyên giờ phút ban đầu
-  const newStart = rootDate
-    .hour(startHour)
-    .minute(startMinute)
-    .second(0)
-    .millisecond(0)
-
-  return newStart
-}
-
 export function ruleDragDropCalendar(
   currentDate: Date,
   start: Date,
@@ -169,7 +152,10 @@ export function formatStringToDate(
 
   const startDate = replaceYearWithCurrent(start)
   const endDate = replaceYearWithCurrent(end)
-  const interview_date = dayjs(currentDate).hour(now.hour()).minute(now.minute()).toDate()
+  const interview_date = dayjs(currentDate)
+    .hour(now.hour())
+    .minute(now.minute())
+    .toDate()
   const { newEnd, newStart } = convertToRootDate(
     new Date(startDate),
     new Date(endDate),

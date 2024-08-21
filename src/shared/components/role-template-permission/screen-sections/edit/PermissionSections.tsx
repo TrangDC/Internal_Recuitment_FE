@@ -20,6 +20,7 @@ import UserPermissionGroup from '../../components/edit/UserPermissionGroup'
 import HiringTeamPermissionGroup from '../../components/edit/HiringTeamPermissionGroup'
 import JobPositionPermissionGroup from '../../components/edit/JobPositionPermissionGroup'
 import RecTeamPermissionGroup from '../../components/edit/RecTeamPermissionGroup'
+import CandidateActivitiesPermissionGroup from '../../components/edit/CandidateActivitiesPermissionGroup'
 
 type PermissionSectionsProps = {
   roleTemplate: RoleTemplateStructure | undefined
@@ -85,6 +86,7 @@ function PermissionSections({ roleTemplate }: PermissionSectionsProps) {
         <RecTeamPermissionGroup roleTemplate={roleTemplate} />
         <JobPermissionGroup roleTemplate={roleTemplate} />
         <CandidatePermissionGroup roleTemplate={roleTemplate} />
+        <CandidateActivitiesPermissionGroup roleTemplate={roleTemplate} />
         <CandidateJobsPermissionGroup
           roleTemplate={roleTemplate}
           moduleDisabled={!cantViewCandidate}

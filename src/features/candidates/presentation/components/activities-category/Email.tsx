@@ -1,4 +1,4 @@
-import { Collapse } from '@mui/material'
+import { Box, Collapse } from '@mui/material'
 import { useState } from 'react'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Text13sb, Tiny12md } from 'shared/components/Typography'
@@ -53,11 +53,13 @@ function Email({ outgoingEmail }: EmailProps) {
         </FlexBox>
       </FlexBox>
       <Collapse in={open} unmountOnExit>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: outgoingEmail.content,
-          }}
-        ></div>
+        <Box marginLeft={4}>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: outgoingEmail.content,
+            }}
+          ></div>
+        </Box>
       </Collapse>
     </FlexBox>
   )

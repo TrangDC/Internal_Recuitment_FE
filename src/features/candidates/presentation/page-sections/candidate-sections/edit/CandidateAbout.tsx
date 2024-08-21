@@ -2,6 +2,8 @@ import { FormControl } from '@mui/material'
 import dayjs from 'dayjs'
 import { useEditFormContext } from 'features/candidates/hooks/crud/useContext'
 import CandidateAvatar from 'features/candidates/presentation/components/edit/CandidateAvatar'
+import { FormDataSchemaEditCandidate } from 'features/candidates/shared/constants/formSchema'
+import { hasErrors } from 'features/candidates/shared/utils'
 import { useState } from 'react'
 import { Controller } from 'react-hook-form'
 import AppContainer from 'shared/components/AppContainer'
@@ -22,7 +24,25 @@ type CandidateAboutProps = {
 
 function CandidateAbout({ isGetting }: CandidateAboutProps) {
   const [opeCollapse, setOpeCollapse] = useState(true)
-  const { control } = useEditFormContext()
+  const { control, formState, trigger, getValues } = useEditFormContext()
+
+  const names: (keyof FormDataSchemaEditCandidate)[] = [
+    'name',
+    'gender',
+    'email',
+    'phone',
+    'address',
+    'dob',
+    'attachments',
+  ]
+  const inValid = hasErrors<FormDataSchemaEditCandidate>(
+    formState.errors,
+    names
+  )
+
+  function isValidFields() {
+    trigger(names)
+  }
   return (
     <AppContainer
       sx={{
@@ -36,8 +56,10 @@ function CandidateAbout({ isGetting }: CandidateAboutProps) {
         title="About the candidate"
         setOpen={setOpeCollapse}
         padding={0}
+        showIcon={inValid}
         directionTitle="row-reverse"
         gapTitle={1}
+        onClose={isValidFields}
         titleStyle={{
           fontSize: 18,
         }}
@@ -185,7 +207,6 @@ function CandidateAbout({ isGetting }: CandidateAboutProps) {
             <LoadingField isloading={isGetting}>
               <Controller
                 name="attachments"
-                shouldUnregister
                 control={control}
                 render={({ field, fieldState }) => {
                   return (

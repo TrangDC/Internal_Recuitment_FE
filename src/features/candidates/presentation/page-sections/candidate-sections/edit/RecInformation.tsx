@@ -15,6 +15,8 @@ import { useEditFormContext } from 'features/candidates/hooks/crud/useContext'
 import LoadingField from 'shared/components/form/loadingField'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import dayjs from 'dayjs'
+import { hasErrors } from 'features/candidates/shared/utils'
+import { FormDataSchemaEditCandidate } from 'features/candidates/shared/constants/formSchema'
 
 type RefInformationProps = {
   isGetting: boolean
@@ -22,13 +24,29 @@ type RefInformationProps = {
 
 function RefInformation({ isGetting }: RefInformationProps) {
   const [opeCollapse, setOpeCollapse] = useState(true)
-  const { control, setValue, clearErrors, watch } = useEditFormContext()
+  const { control, setValue, clearErrors, watch, trigger, formState } =
+    useEditFormContext()
   const candidate_source = watch('reference_type')
 
   const resetSourceValue = () => {
     setValue('reference_value', '')
     clearErrors('reference_value')
   }
+
+  const names: (keyof FormDataSchemaEditCandidate)[] = [
+    'reference_type',
+    'reference_uid',
+    'recruit_time',
+    'reference_value',
+  ]
+  function isValidFields() {
+    trigger(names)
+  }
+
+  const inValid = hasErrors<FormDataSchemaEditCandidate>(
+    formState.errors,
+    names
+  )
 
   return (
     <AppContainer
@@ -43,6 +61,8 @@ function RefInformation({ isGetting }: RefInformationProps) {
         padding={0}
         directionTitle="row-reverse"
         gapTitle={1}
+        showIcon={inValid}
+        onClose={isValidFields}
         titleStyle={{
           fontSize: 18,
         }}
@@ -76,28 +96,30 @@ function RefInformation({ isGetting }: RefInformationProps) {
                 />
               </FormControl>
             </LoadingField>
-            <LoadingField isloading={isGetting}>
-              <FormControl fullWidth>
-                <Controller
-                  control={control}
-                  name="reference_value"
-                  render={({ field, fieldState }) => (
-                    <FlexBox flexDirection={'column'}>
-                      <CandidateBySource
-                        name={field.name}
-                        onChange={field.onChange}
-                        source={candidate_source as TypeCandidateSource}
-                        value={field.value ?? ''}
-                        required={true}
-                      />
-                      <HelperTextForm
-                        message={fieldState.error?.message}
-                      ></HelperTextForm>
-                    </FlexBox>
-                  )}
-                />
-              </FormControl>
-            </LoadingField>
+            {candidate_source && (
+              <LoadingField isloading={isGetting}>
+                <FormControl fullWidth>
+                  <Controller
+                    control={control}
+                    name="reference_value"
+                    render={({ field, fieldState }) => (
+                      <FlexBox flexDirection={'column'}>
+                        <CandidateBySource
+                          name={field.name}
+                          onChange={field.onChange}
+                          source={candidate_source as TypeCandidateSource}
+                          value={field.value ?? ''}
+                          required={true}
+                        />
+                        <HelperTextForm
+                          message={fieldState.error?.message}
+                        ></HelperTextForm>
+                      </FlexBox>
+                    )}
+                  />
+                </FormControl>
+              </LoadingField>
+            )}
           </FlexBox>
           <FlexBox gap={2}>
             <LoadingField isloading={isGetting}>

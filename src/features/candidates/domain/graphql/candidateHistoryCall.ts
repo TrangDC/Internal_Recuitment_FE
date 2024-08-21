@@ -95,6 +95,9 @@ const useCandidateHistoryCallGraphql = () => {
           created_by {
             id
             name
+            hiring_team {
+               id
+            }
           }
           attachments {
             id

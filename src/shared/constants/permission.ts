@@ -180,4 +180,17 @@ export const roleTemplateInformation: RoleTemplateInformation = {
   'model.permissions.rec_teams.delete': {
     description: 'Permission to delete REC team ',
   },
+  'model.permissions.candidate_activities.view': {
+    description: 'Permission to view candidate activities',
+  },
+  'model.permissions.candidate_activities.create': {
+    description:
+      'Permission to create new activity with the targeted candidate',
+  },
+  'model.permissions.candidate_activities.edit': {
+    description: 'Permission to edit activity with the targeted candidate',
+  },
+  'model.permissions.candidate_activities.delete': {
+    description: 'Permission to delete activities',
+  },
 }

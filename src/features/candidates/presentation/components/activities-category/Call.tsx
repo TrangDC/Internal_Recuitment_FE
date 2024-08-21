@@ -16,6 +16,8 @@ import {
 import BoxTextSquare from 'shared/components/utils/boxText'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { downloadOneFile } from 'features/candidatejob/shared/helper'
+import checkPermissionCandidateHistoryCall from 'features/candidates/permission/utils/checkPermissionCandidateHistoryCall'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 
 type CallProps = {
   candidateHistoryCall: CandidateHistoryCall
@@ -24,6 +26,7 @@ type CallProps = {
 
 function Call({ candidateHistoryCall, actions }: CallProps) {
   const [open, setOpen] = useState(false)
+  const { role, user } = useAuthorization()
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
   const date = dayjs(candidateHistoryCall.date).format('DD/MM/YYYY')
   const startTime = dayjs(candidateHistoryCall.start_time).format('HH:mm')
@@ -32,6 +35,12 @@ function Call({ candidateHistoryCall, actions }: CallProps) {
     candidateHistoryCall.start_time && candidateHistoryCall.end_time
       ? `${date}, ${startTime} - ${endTime}`
       : `${date}`
+  const newActions = checkPermissionCandidateHistoryCall({
+    actions: actions,
+    candidateHistoryCall,
+    me: user,
+    role,
+  })
   return (
     <FlexBox
       flexDirection={'column'}
@@ -66,7 +75,7 @@ function Call({ candidateHistoryCall, actions }: CallProps) {
           </Tiny12md>
           <ActionGroupButtons<CandidateHistoryCall>
             rowId={candidateHistoryCall.id}
-            actions={actions}
+            actions={newActions}
             rowData={candidateHistoryCall}
             iconButtonSx={{
               padding: '5px',

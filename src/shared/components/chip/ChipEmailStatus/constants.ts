@@ -8,7 +8,7 @@ type StatusStyle = {
 
 const STATUS_STYLE = {
   [OutgoingEmailStatus.FAILED]: {
-    backgroundColor: '#FFAF46',
+    backgroundColor: '#FC105C',
     color: 'white',
     text: 'Failed',
   },
@@ -18,9 +18,9 @@ const STATUS_STYLE = {
     text: 'Pending',
   },
   [OutgoingEmailStatus.SENT]: {
-    backgroundColor: '#82868C',
+    backgroundColor: '#20A4A9',
     color: 'white',
-    text: 'Sent',
+    text: 'Delivered',
   },
 }
 

@@ -15,6 +15,8 @@ import {
   TOptionItem,
 } from 'shared/components/ActionGroupButtons'
 import BoxTextSquare from 'shared/components/utils/boxText'
+import checkPermissionCandidateNote from 'features/candidates/permission/utils/checkPermissionCandidateNote'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 
 type NodeProps = {
   candidateNote: CandidateNote
@@ -24,6 +26,13 @@ type NodeProps = {
 function Note({ candidateNote, actions }: NodeProps) {
   const [open, setOpen] = useState(false)
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
+  const { role, user } = useAuthorization()
+  const newActions = checkPermissionCandidateNote({
+    actions: actions,
+    candidateNote,
+    me: user,
+    role,
+  })
   return (
     <FlexBox
       flexDirection={'column'}
@@ -58,7 +67,7 @@ function Note({ candidateNote, actions }: NodeProps) {
           </Tiny12md>
           <ActionGroupButtons<CandidateNote>
             rowId={candidateNote.id}
-            actions={actions}
+            actions={newActions}
             rowData={candidateNote}
             iconButtonSx={{
               padding: '5px',

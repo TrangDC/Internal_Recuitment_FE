@@ -43,6 +43,10 @@ function EditHistoryCallModal({
     getValues,
     watch,
     isGetting,
+    onSelectedFrom,
+    onSelectedInterviewDate,
+    onSelectedTo,
+    setValue,
   } = useEditHistoryCall({
     id: id,
     successCallback: () => {
@@ -96,7 +100,16 @@ function EditHistoryCallModal({
                           <AppDateField
                             label={'Select date'}
                             value={field.value ? dayjs(field.value) : null}
-                            onChange={field.onChange}
+                            onChange={(value) => {
+                              if (value) {
+                                field.onChange(value?.toDate())
+                                onSelectedInterviewDate()
+                              } else {
+                                setValue('contactDate', null, {
+                                  shouldValidate: true,
+                                })
+                              }
+                            }}
                             textFieldProps={{
                               required: true,
                             }}
@@ -122,7 +135,10 @@ function EditHistoryCallModal({
                           <AppTimePickers
                             label={'From time'}
                             value={field.value ? dayjs(field.value) : null}
-                            onChange={field.onChange}
+                            onChange={(value) => {
+                              if (value) onSelectedFrom(value?.toDate())
+                              else field.onChange(value)
+                            }}
                             views={['hours', 'minutes']}
                             ampm={false}
                             timeSteps={{
@@ -147,7 +163,10 @@ function EditHistoryCallModal({
                           <AppTimePickers
                             label={'To time'}
                             value={field.value ? dayjs(field.value) : null}
-                            onChange={field.onChange}
+                            onChange={(value) => {
+                              if (value) onSelectedTo(value?.toDate())
+                              else field.onChange(value)
+                            }}
                             views={['hours', 'minutes']}
                             ampm={false}
                             timeSteps={{

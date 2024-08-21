@@ -1,14 +1,7 @@
 import { Box, Divider } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Tooltip from 'shared/components/tooltip'
-import {
-  H3,
-  Small,
-  Span,
-  Text13md,
-  Text13sb,
-  Tiny12md,
-} from 'shared/components/Typography'
+import { H3, Text13md, Text13sb, Tiny12md } from 'shared/components/Typography'
 import { format } from 'date-fns'
 import Cake from 'shared/components/icons/Cake'
 import Address from 'shared/components/icons/Address'
@@ -31,6 +24,7 @@ import { useCandidateInforContext } from 'features/candidates/shared/context/Can
 import CreateCandidateNoteModal from '../CreateCandidateNoteModal'
 import CreateHistoryCallModal from '../CreateHistoryCallModal'
 import AvatarUpload from 'shared/components/upload/AvatarUpload'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 const CandidateProfile = () => {
   const { candidateInfor, avatar } = useCandidateInforContext()
@@ -67,29 +61,52 @@ const CandidateProfile = () => {
             {candidateInfor?.name}
           </H3>
           <FlexBox gap={2} justifyContent={'center'}>
-            <Tooltip title="Add a new note">
-              <ButtonSwage onClick={() => setOpen(true)}>
-                <DescriptionIcon
-                  sx={{
-                    fontSize: '20px',
-                    cursor: 'pointer',
-                    color: 'primary.600',
-                  }}
-                />
-              </ButtonSwage>
-            </Tooltip>
-
-            <Tooltip title="Add a new call">
-              <ButtonSwage onClick={() => setOpenHistoryCall(true)}>
-                <LocalPhoneIcon
-                  sx={{
-                    fontSize: '20px',
-                    cursor: 'pointer',
-                    color: 'primary.600',
-                  }}
-                />
-              </ButtonSwage>
-            </Tooltip>
+            <Cant
+              module="CANDIDATE_ACTIVITIES"
+              checkBy={{
+                compare: 'hasAny',
+                permissions: [
+                  'CREATE.everything',
+                  'CREATE.ownedOnly',
+                  'CREATE.teamOnly',
+                ],
+              }}
+            >
+              <Tooltip title="Add a new note">
+                <ButtonSwage onClick={() => setOpen(true)}>
+                  <DescriptionIcon
+                    sx={{
+                      fontSize: '20px',
+                      cursor: 'pointer',
+                      color: 'primary.600',
+                    }}
+                  />
+                </ButtonSwage>
+              </Tooltip>
+            </Cant>
+            <Cant
+              module="CANDIDATE_ACTIVITIES"
+              checkBy={{
+                compare: 'hasAny',
+                permissions: [
+                  'CREATE.everything',
+                  'CREATE.ownedOnly',
+                  'CREATE.teamOnly',
+                ],
+              }}
+            >
+              <Tooltip title="Add a new call">
+                <ButtonSwage onClick={() => setOpenHistoryCall(true)}>
+                  <LocalPhoneIcon
+                    sx={{
+                      fontSize: '20px',
+                      cursor: 'pointer',
+                      color: 'primary.600',
+                    }}
+                  />
+                </ButtonSwage>
+              </Tooltip>
+            </Cant>
           </FlexBox>
         </Box>
         <Divider

@@ -89,13 +89,13 @@ const TabListWrapper = styled(TabList)(({ theme }) => ({
   },
 }))
 
-interface renderItem {
+export interface RenderItem {
   label: string
   Component: React.FC
 }
 
 interface TabProps {
-  renderItem: renderItem[]
+  renderItem: RenderItem[]
   TabListProps?: TabListProps
   tabWrapperSx?: SxProps
   tabPanelSx?: SxProps

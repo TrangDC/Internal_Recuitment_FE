@@ -29,12 +29,23 @@ function CreateHistoryCallModal({
   setOpen,
 }: CreateHistoryCallModalProps) {
   const translation = useTextTranslation()
-  const { control, formState, isValid, isPending, onSubmit, getValues, watch } =
-    useCreateHistoryCall({
-      successCallback: () => {
-        setOpen(false)
-      },
-    })
+  const {
+    control,
+    formState,
+    isValid,
+    isPending,
+    onSubmit,
+    getValues,
+    watch,
+    onSelectedInterviewDate,
+    onSelectedFrom,
+    onSelectedTo,
+    setValue,
+  } = useCreateHistoryCall({
+    successCallback: () => {
+      setOpen(false)
+    },
+  })
   const contactType = watch('contactType')
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -77,7 +88,16 @@ function CreateHistoryCallModal({
                         <AppDateField
                           label={'Select date'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={field.onChange}
+                          onChange={(value) => {
+                            if (value) {
+                              field.onChange(value?.toDate())
+                              onSelectedInterviewDate()
+                            } else {
+                              setValue('contactDate', null, {
+                                shouldValidate: true,
+                              })
+                            }
+                          }}
                           textFieldProps={{
                             required: true,
                           }}
@@ -101,7 +121,10 @@ function CreateHistoryCallModal({
                         <AppTimePickers
                           label={'From time'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={field.onChange}
+                          onChange={(value) => {
+                            if (value) onSelectedFrom(value?.toDate())
+                            else field.onChange(value)
+                          }}
                           views={['hours', 'minutes']}
                           ampm={false}
                           timeSteps={{
@@ -124,7 +147,10 @@ function CreateHistoryCallModal({
                         <AppTimePickers
                           label={'To time'}
                           value={field.value ? dayjs(field.value) : null}
-                          onChange={field.onChange}
+                          onChange={(value) => {
+                            if (value) onSelectedTo(value?.toDate())
+                            else field.onChange(value)
+                          }}
                           views={['hours', 'minutes']}
                           ampm={false}
                           timeSteps={{

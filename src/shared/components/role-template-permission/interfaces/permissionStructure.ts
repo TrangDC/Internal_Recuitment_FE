@@ -18,6 +18,7 @@ import Permission from 'shared/schema/database/permission'
 import { NewEntityPermissionInput } from 'shared/schema/database/user'
 import JobPositionTemplatePermission from './role-template-permission/job_position'
 import RecTeamTemplatePermission from './role-template-permission/rec_teams'
+import CandidateActivitiesTemplatePermission from './role-template-permission/candidate_activities'
 
 interface PermissionGroup {
   id: string
@@ -54,6 +55,7 @@ export interface RoleTemplate {
   REPORT: ReportTemplatePermission
   JOB_POSITION: JobPositionTemplatePermission
   REC_TEAMS: RecTeamTemplatePermission
+  CANDIDATE_ACTIVITIES: CandidateActivitiesTemplatePermission
 }
 
 class RoleTemplateStructure implements RoleTemplate {
@@ -71,6 +73,7 @@ class RoleTemplateStructure implements RoleTemplate {
   REPORT: ReportTemplatePermission
   JOB_POSITION: JobPositionTemplatePermission
   REC_TEAMS: RecTeamTemplatePermission
+  CANDIDATE_ACTIVITIES: CandidateActivitiesTemplatePermission
 
   constructor(data: RoleTemplateStructure) {
     this.CANDIDATE_JOB_FEEDBACKS = data.CANDIDATE_JOB_FEEDBACKS
@@ -87,6 +90,7 @@ class RoleTemplateStructure implements RoleTemplate {
     this.REPORT = data.REPORT
     this.JOB_POSITION = data.JOB_POSITION
     this.REC_TEAMS = data.REC_TEAMS
+    this.CANDIDATE_ACTIVITIES = data.CANDIDATE_ACTIVITIES
   }
 
   static fromJson(params: PermissionGroup[]): RoleTemplateStructure {

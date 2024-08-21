@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import {
   FileUploadAttachment,
   UploadStatus,
@@ -20,7 +20,7 @@ const candidateExp = yup.object({
     .nullable()
     .test(
       'is-before-to',
-      'End time of the interview must be after the Start time',
+      'End date must be after the Start time',
       function (value) {
         const { end_date } = this.parent
         if (!end_date) return true
@@ -33,7 +33,7 @@ const candidateExp = yup.object({
     .nullable()
     .test(
       'is-before-to',
-      'End time of the interview must be after the Start time',
+      'End date must be after the Start time',
       function (value) {
         const { start_date } = this.parent
         if (!start_date) return true
@@ -64,7 +64,7 @@ const candidateEducate = yup.object({
     .nullable()
     .test(
       'is-before-to',
-      'End time of the interview must be after the Start time',
+      'End date must be after the Start time',
       function (value) {
         const { end_date } = this.parent
         if (!end_date || !value) return true
@@ -77,7 +77,7 @@ const candidateEducate = yup.object({
     .nullable()
     .test(
       'is-before-to',
-      'End time of the interview must be after the Start time',
+      'End date must be after the Start time',
       function (value) {
         const { start_date } = this.parent
         if (!start_date || !value) return true
