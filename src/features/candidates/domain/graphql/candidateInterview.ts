@@ -23,6 +23,7 @@ const useCandidateInterviewGraphql = () => {
           }
           candidate_job {
             hiring_job {
+              id
               name
             }
           }

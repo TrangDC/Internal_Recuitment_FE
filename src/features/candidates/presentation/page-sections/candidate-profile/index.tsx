@@ -56,6 +56,7 @@ const CandidateProfile = () => {
             sx={{
               textAlign: 'center',
               padding: '15px 0',
+              color: '#2A2E37',
             }}
           >
             {candidateInfor?.name}

@@ -22,6 +22,7 @@ const useCandidateFeedbackGraphql = () => {
           }
           candidate_job {
             hiring_job {
+              id
               name
             }
           }

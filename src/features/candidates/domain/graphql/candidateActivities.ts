@@ -69,6 +69,7 @@ const useCandidateActivitiesGraphql = () => {
            candidate_job {
              id
              hiring_job {
+               id
                name
              }
            }
@@ -104,6 +105,7 @@ const useCandidateActivitiesGraphql = () => {
           }
           candidate_job {
             hiring_job {
+              id
               name
             }
           }

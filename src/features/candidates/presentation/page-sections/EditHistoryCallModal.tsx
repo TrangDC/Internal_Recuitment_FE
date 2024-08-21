@@ -113,7 +113,6 @@ function EditHistoryCallModal({
                             textFieldProps={{
                               required: true,
                             }}
-                            minDate={dayjs()}
                           />
                           <HelperTextForm
                             message={fieldState.error?.message}

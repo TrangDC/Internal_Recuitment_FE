@@ -85,11 +85,11 @@ function HonorAwardField({ index, onDelete, name }: HonorAwardFieldProps) {
                   validator_files={{
                     max_file: {
                       max: 10,
-                      msg_error: 'One PDF file only, file size up to 20MB',
+                      msg_error: 'Up to 10 files and 20MB/file',
                     },
                     max_size: {
                       max: 20,
-                      msg_error: 'One PDF file only, file size up to 20MB',
+                      msg_error: 'Up to 10 files and 20MB/file',
                     },
                   }}
                   descriptionFile={() => (

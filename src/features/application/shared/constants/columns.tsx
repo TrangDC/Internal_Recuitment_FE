@@ -61,6 +61,7 @@ export const columns_candidate_job = (
   columnHelperCandidateJob.accessor((row) => row.hiring_job.hiring_team.name, {
     id: 'hiring_team',
     header: () => <span>Hiring team</span>,
+    enableSorting: false,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
   // columnHelperCandidateJob.accessor((row) => row.status, {

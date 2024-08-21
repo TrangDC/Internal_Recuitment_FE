@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { AnchorHTMLAttributes, DetailedHTMLProps, FC } from 'react'
 import { Box, BoxProps, styled } from '@mui/material'
 import clsx from 'clsx'
 
@@ -8,6 +8,16 @@ const StyledBox = styled(Box)<{ ellipsis?: number }>(({ ellipsis }) => ({
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
   }),
+}))
+
+const StyledLink = styled('a')(({ theme }) => ({
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  color: theme.palette.primary[600],
+  fontSize: 13,
+  lineHeight: '15.85px',
+  fontWeight: 600,
 }))
 
 type Props = { ellipsis?: boolean }
@@ -340,4 +350,14 @@ export const LinkText: React.FC<BoxProps & Props> = (props) => {
       {children}
     </StyledBox>
   )
+}
+
+export const Link = (
+  props: DetailedHTMLProps<
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    HTMLAnchorElement
+  >
+) => {
+  const { children } = props
+  return <StyledLink {...props}>{children}</StyledLink>
 }

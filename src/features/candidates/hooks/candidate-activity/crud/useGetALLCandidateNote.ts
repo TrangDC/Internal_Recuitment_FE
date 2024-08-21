@@ -6,6 +6,7 @@ import { BaseRecord } from 'shared/interfaces'
 import CandidateNote from 'shared/schema/database/candidate_note'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { CandidateActivityFilters } from '../filters/useActivityFilter'
+import { DEFAULT_DATE_FILTER } from 'shared/constants/constants'
 
 type UseGetAllCandidateNoteProps = {
   id: string
@@ -17,8 +18,12 @@ function useGetAllCandidateNote({ id, filters }: UseGetAllCandidateNoteProps) {
   const variables = {
     filter: {
       candidate_id: id,
-      from_date: filters?.fromDate ? filters.fromDate.toISOString() : undefined,
-      to_date: filters?.toDate ? filters.toDate.toISOString() : undefined,
+      from_date: filters?.fromDate
+        ? filters.fromDate.toISOString()
+        : DEFAULT_DATE_FILTER.from,
+      to_date: filters?.toDate
+        ? filters.toDate.toISOString()
+        : DEFAULT_DATE_FILTER.to,
     },
     orderBy: {
       field: 'created_at',

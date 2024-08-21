@@ -18,6 +18,7 @@ function Email({ outgoingEmail }: EmailProps) {
   const date = dayjs(outgoingEmail.created_at).format('DD/MM/YYYY')
   const time = dayjs(outgoingEmail.created_at).format('HH:mm')
   const dateLabel = `${date}, ${time}`
+
   return (
     <FlexBox
       flexDirection={'column'}
@@ -37,7 +38,7 @@ function Email({ outgoingEmail }: EmailProps) {
         <FlexBox alignItems={'center'} onClick={() => setOpen((prev) => !prev)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           <Text13sb marginLeft={1}>
-            {`Email send to  ${outgoingEmail.to} when ${outgoingEmail.recipient_type}`}
+            {`Email send to  <${outgoingEmail.to.reduce((a, b) => a + ' ' + b, '')}> when ${outgoingEmail.recipient_type}`}
           </Text13sb>
         </FlexBox>
         <Tiny12md color={'grey.500'}>{dateLabel}</Tiny12md>
