@@ -76,14 +76,14 @@ function useBuildActionsTableInterview({
     },
   })
 
-  if (!isPast(dayjs(start_from).toDate())) {
-    _.remove(
-      actions,
-      (action) =>
-        action.id === ActionInterview.EDIT 
-      // || action.id === ActionInterview.DELETE
-    )
-  }
+  // if (!isPast(dayjs(start_from).toDate())) {
+  //   _.remove(
+  //     actions,
+  //     (action) =>
+  //       action.id === ActionInterview.EDIT 
+  //     // || action.id === ActionInterview.DELETE
+  //   )
+  // }
   if (status === 'invited_to_interview') {
     _.remove(actions, (action) => action.id === ActionInterview.DONE)
   }

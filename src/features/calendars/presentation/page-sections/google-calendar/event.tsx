@@ -20,6 +20,7 @@ const CustomEvent = (props: EventProps<CalendarEvent>) => {
     ...useActionInterviewReturn,
     event,
   })
+
   const { role, user } = useAuthorization()
   const newActions = checkActionPermissionCalendar({
     actions: actions,

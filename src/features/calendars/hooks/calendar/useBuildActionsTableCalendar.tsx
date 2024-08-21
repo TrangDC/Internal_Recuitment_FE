@@ -69,14 +69,14 @@ function useBuildActionsTableCalendar({
   const status = event?.resource?.status
   const start_from = event.start
 
-  if (!isPast(dayjs(start_from).toDate())) {
-    _.remove(
-      actions,
-      (action) =>
-        action.id === ActionCalendar.EDIT
-      //  || action.id === ActionCalendar.DELETE
-    )
-  }
+  // if (!isPast(dayjs(start_from).toDate())) {
+  //   _.remove(
+  //     actions,
+  //     (action) =>
+  //       action.id === ActionCalendar.EDIT
+  //     //  || action.id === ActionCalendar.DELETE
+  //   )
+  // }
   if (status === 'invited_to_interview') {
     _.remove(actions, (action) => action.id === ActionCalendar.DONE)
   }
