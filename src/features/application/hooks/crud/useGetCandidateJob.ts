@@ -2,6 +2,7 @@ import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-s
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import _, { cloneDeep, unionBy } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import GraphQLClientService from 'services/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
 import { CandidateStatusEnum } from 'shared/schema'
@@ -260,13 +261,14 @@ const useCandidatesJob = () => {
   const [total, setTotal] = useState<number>(0)
   const [filter, setFilter] = useState<BaseRecord>({})
   const [freeWord, setFreeWord] = useState<BaseRecord>({})
-
   const [applied, setApplied] = useState<CandidateStatusItem[]>([])
   const [interviewing, setInterviewing] = useState<CandidateStatusItem[]>([])
   const [offering, setOffering] = useState<CandidateStatusItem[]>([])
   const [hired, setHired] = useState<CandidateStatusItem[]>([])
   const [failedCV, setFailedCV] = useState<CandidateStatusItem[]>([])
-  const [failedInterview, setFailedInterview] = useState<CandidateStatusItem[]>([])
+  const [failedInterview, setFailedInterview] = useState<CandidateStatusItem[]>(
+    []
+  )
   const [offerLost, setOfferLost] = useState<CandidateStatusItem[]>([])
   const [exStaff, setExStaff] = useState<CandidateStatusItem[]>([])
 
@@ -281,7 +283,16 @@ const useCandidatesJob = () => {
       offerLost,
       exStaff
     ).length
-  }, [applied, interviewing, offering, hired, failedCV, failedInterview, offerLost, exStaff])
+  }, [
+    applied,
+    interviewing,
+    offering,
+    hired,
+    failedCV,
+    failedInterview,
+    offerLost,
+    exStaff,
+  ])
 
   const show_more = useMemo(() => {
     return total_current < total
@@ -323,13 +334,13 @@ const useCandidatesJob = () => {
           data: failedCV,
           setData: setFailedCV,
         }
-      break;
+        break
       case 'failed_interview':
         result = {
           data: failedInterview,
           setData: setFailedInterview,
         }
-      break;
+        break
       case 'offer_lost':
         result = {
           data: offerLost,
@@ -368,22 +379,19 @@ const useCandidatesJob = () => {
     filter,
     freeWord,
   }: ParamGetCandidateJob): Promise<CandidatesByStatus> => {
-    const data = await GraphQLClientService.fetchGraphQL(
-      getCandidatesByJob,
-      {
-        orderBy: {
-          direction: 'DESC',
-          field: 'created_at',
-        },
-        pagination: { page: pageCurrent, perPage: INIT_PER_PAGE },
-        filter: {
-          ...filter,
-        },
-        freeWord: {
-          ...freeWord,
-        },
-      }
-    )
+    const data = await GraphQLClientService.fetchGraphQL(getCandidatesByJob, {
+      orderBy: {
+        direction: 'DESC',
+        field: 'created_at',
+      },
+      pagination: { page: pageCurrent, perPage: INIT_PER_PAGE },
+      filter: {
+        ...filter,
+      },
+      freeWord: {
+        ...freeWord,
+      },
+    })
 
     if (data && isRight(data)) {
       const response = unwrapEither(data)
@@ -476,7 +484,11 @@ const useCandidatesJob = () => {
   }
 
   useEffect(() => {
-    handleGetData({ pageCurrent: page, filter: filter, freeWord: freeWord })
+    handleGetData({
+      pageCurrent: page,
+      filter: { ...filter },
+      freeWord: freeWord,
+    })
   }, [page, filter, freeWord])
 
   return {
@@ -493,6 +505,7 @@ const useCandidatesJob = () => {
       handleUpdateStatus,
       handleRemoveCandidate,
       handleAddCandidate,
+      getCandidateByJob,
     },
     data: {
       applied,

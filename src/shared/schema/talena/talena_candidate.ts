@@ -1,4 +1,9 @@
-export type UploadCVState = 'DONE' | 'UPLOADING' | 'FAILED' | 'INIT' | 'DUPLICATED'
+export type UploadCVState =
+  | 'DONE'
+  | 'UPLOADING'
+  | 'FAILED'
+  | 'INIT'
+  | 'DUPLICATED'
 
 class TalenaCandidateCV {
   cvFulltext: string
@@ -69,12 +74,18 @@ class TalenaCandidateCV {
       phone: data.phone,
       address: data.address,
       dob: data.dob,
-      experiences: (data.experiences || []).map((exp:any) => Experience.fromJson(exp)),
-      skills: (data.skills || []).map((exp:any) => Skill.fromJson(exp)),
+      experiences: (data.experiences || []).map((exp: any) =>
+        Experience.fromJson(exp)
+      ),
+      skills: (data.skills || []).map((exp: any) => Skill.fromJson(exp)),
       links: data.links || [],
-      certificates: (data.certificates || []).map((exp:any) => Certificate.fromJson(exp)),
-      awards: (data.awards || []).map((exp:any) => Award.fromJson(exp)),
-      educations: (data.educations || []).map((exp:any) => Education.fromJson(exp)),
+      certificates: (data.certificates || []).map((exp: any) =>
+        Certificate.fromJson(exp)
+      ),
+      awards: (data.awards || []).map((exp: any) => Award.fromJson(exp)),
+      educations: (data.educations || []).map((exp: any) =>
+        Education.fromJson(exp)
+      ),
       languages: data.languages || [],
       yearOfExp: data.year_of_exp,
       university: data.university,
@@ -110,7 +121,8 @@ class Experience {
   static fromJson(data: any): Experience {
     return new Experience({
       start_date: data.start_date,
-      end_date: data.end_date === "PRESENT" ? new Date().toString() : data.end_date,
+      end_date:
+        data.end_date === 'PRESENT' ? new Date().toString() : data.end_date,
       company: data.company,
       position: data.position,
       description: data.description || [],
@@ -180,7 +192,8 @@ class Education {
   static fromJson(data: any): Education {
     return new Education({
       start_date: data.start_date,
-      end_date: data.end_date === "PRESENT" ? new Date().toString() : data.end_date,
+      end_date:
+        data.end_date === 'PRESENT' ? new Date().toString() : data.end_date,
       school_name: data.school_name,
       cpa_gpa: data.cpa_gpa,
       major: data.major,

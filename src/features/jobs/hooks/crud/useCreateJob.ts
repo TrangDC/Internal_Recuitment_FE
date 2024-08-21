@@ -29,13 +29,17 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
       entity_skill_records: {},
       hiring_team_id: user?.teamId ?? '',
       created_by: user?.id ?? '',
+      description: '',
       ...defaultValues,
     },
     resolver: yupResolver(schema),
-    onSuccess: callbackSuccess,
+    onSuccess: (data) => {
+      callbackSuccess?.(data)
+    },
   })
 
-  const { handleSubmit, control, formState, setValue } = useFormReturn
+  const { handleSubmit, control, formState, setValue, getValues } =
+    useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
 
@@ -88,16 +92,22 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     setValue('salary_to', '0')
   }
 
+  const updateDescription = (description: string) => {
+    setValue('description', description)
+  }
+
   return {
     control,
     isValid,
     isPending,
     setValue,
     formState,
+    getValues,
     action: {
       resetSalary,
       //handleChangeManager,
       onSubmit,
+      updateDescription,
     },
   }
 }

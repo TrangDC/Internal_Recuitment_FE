@@ -10,6 +10,7 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import DotIcon from 'shared/components/icons/DotIcon'
 import TeamIcon from 'shared/components/icons/Team'
 import { Text14sb, Tiny12md } from 'shared/components/Typography'
+import { LOCATION_LABEL } from 'shared/constants/constants'
 import { CandidateStatusEnum } from 'shared/schema'
 import CandidateJob from 'shared/schema/database/candidate_job'
 
@@ -61,7 +62,7 @@ function CandidateJobBox({ candidateJob, actions }: CandidateJobBoxProps) {
         </Tiny12md>
         <DotIcon />
         <Tiny12md sx={{ marginX: '4px' }}>
-          {candidateJob.hiring_job.location}
+          {LOCATION_LABEL[candidateJob.hiring_job.location]}
         </Tiny12md>
       </FlexBox>
     </Box>

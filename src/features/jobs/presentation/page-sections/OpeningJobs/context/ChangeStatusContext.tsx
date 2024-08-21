@@ -38,13 +38,13 @@ interface InitialState {
   action_filter: {
     useFilterReturn: UseFilterReturn<
       InterfaceGenerate<{
-        hiring_job_ids: 'string[]',
-        hiring_team_ids: 'string[]',
-        priority: 'string',
-        skill_id: 'string[]',
-        location: 'string',
-        created_by_ids: 'string[]',
-        page_job: 'string',
+        hiring_job_ids: 'string[]'
+        hiring_team_ids: 'string[]'
+        priority: 'string'
+        skill_id: 'string[]'
+        location: 'string'
+        created_by_ids: 'string[]'
+        page_job: 'string'
       }>
     >
     useSearchListReturn: {

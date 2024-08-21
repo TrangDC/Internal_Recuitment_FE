@@ -40,9 +40,7 @@ const DivField = styled(Box)(({ theme }) => ({
 
 const GeneralInformationField = () => {
   const { id } = useParams()
-
   const { jobDetail } = useJobDetail(id as String)
-
   const job_skills = useMemo(() => {
     if (!jobDetail.entity_skill_types) return []
 

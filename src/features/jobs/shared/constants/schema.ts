@@ -54,9 +54,11 @@ export const schema = yup.object({
       : schema.required(RULE_MESSAGES.MC1('unit'))
   }),
   entity_skill_records: yup.mixed(),
-  description: yup.string().required(RULE_MESSAGES.MC1('job description')),
+  // description: yup.string().required(RULE_MESSAGES.MC1('job description')),
+  description: yup.string().default(''),
   priority: yup.string().required(RULE_MESSAGES.MC1('priority')),
   job_position_id: yup.string().required(RULE_MESSAGES.MC1('Job position')),
+  staff_level: yup.string().required(RULE_MESSAGES.MC1('staff_level')),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -131,9 +133,7 @@ export const schemaApplyJob = yup.object({
   candidate_id: yup.string().required(RULE_MESSAGES.MC1('candidate')),
   hiring_job_id: yup.string().required(RULE_MESSAGES.MC1('job name')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
-  attachments: yup
-    .array()
-    .required(RULE_MESSAGES.MC1('attachments')),
+  attachments: yup.array().required(RULE_MESSAGES.MC1('attachments')),
   offer_expiration_date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Offer expiration date'))
