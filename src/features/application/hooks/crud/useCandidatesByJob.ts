@@ -35,29 +35,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
             }
             created_at
         }
-        failed_cv {
-            id
-            candidate_id
-            hiring_job_id
-            status
-            interview_feature
-             candidate {
-                id
-                name,
-                phone,
-                status,
-            }
-            hiring_job {
-              id
-              name
-              hiring_team {
-                id
-                name
-              }
-            }
-            created_at
-        }
-        failed_interview {
+        kiv {
             id
             candidate_id
             hiring_job_id
@@ -200,8 +178,7 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
 })
 
 type CandidatesByStatus = {
-  failedCV: CandidateStatusItem[]
-  failedInterview: CandidateStatusItem[]
+  kiv: CandidateStatusItem[]
   offer_lost: CandidateStatusItem[]
   ex_staff: CandidateStatusItem[]
   applied: CandidateStatusItem[]
@@ -216,7 +193,7 @@ const useCandidatesByJob = (hiring_job_id: string) => {
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(getCandidatesByJob, {
         filter: {
-          hiring_job_ids: [hiring_job_id],
+          hiring_job_id,
         },
         orderBy: {
           direction: 'DESC',
