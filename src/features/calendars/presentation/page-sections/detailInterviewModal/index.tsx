@@ -25,6 +25,7 @@ import { useMemo } from 'react'
 import useGetInterview from 'features/calendars/hooks/crud/useGetInterview'
 import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
 import ChangeStatusButtonPermission from 'features/calendars/permission/components/ChangeStatusButtonPermission'
+import { InterviewStatus } from 'shared/components/chip/ChipInterviewStatus/constants'
 interface IDetailIntefviewModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -61,6 +62,14 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
     return getValues('location') === LOCATION_INTERVIEW_STATE.ONLINE
   }, [getValues('location')])
 
+  const show_edit = useMemo(() => {
+    return (
+      getValues('status') ===
+        InterviewStatus.INTERVIEW_STATUS.INVITED_TO_INTERVIEW ||
+      getValues('status') === InterviewStatus.INTERVIEW_STATUS.INTERVIEWING
+    )
+  }, [getValues('status')])
+
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
       <Box>
@@ -78,7 +87,7 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
                 {getTime(getValues('end_at'))}
               </Text13md>
               <FlexBox gap={1}>
-                {start_from && isPast(start_from) && (
+                {show_edit && (
                   <Fragment>
                     <EditInterviewButtonPermission
                       candidateJobOfTeamId={candidateJobOfTeamId}
