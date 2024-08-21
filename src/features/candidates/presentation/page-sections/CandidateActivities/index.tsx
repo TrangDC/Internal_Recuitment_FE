@@ -8,23 +8,26 @@ import InterviewTab from './InterviewTab'
 import NoteTab from './NoteTab'
 import { CandidateActivityProvider } from 'features/candidates/shared/context/CandidateActivityContext'
 import BoxFilter from './BoxFilter'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import checkPermissionTabCandidateActivities from 'features/candidates/permission/utils/checkPermissionTabCandidateActivities'
 
 const CandidateActivities = () => {
+  const { role } = useAuthorization()
   const renderItem = [
     { label: 'All', Component: AllTab },
     { label: 'Notes', Component: NoteTab },
     { label: 'Calls', Component: CallTab },
-    { label: 'Interviews ', Component: InterviewTab },
+    { label: 'Interviews', Component: InterviewTab },
     { label: 'Feedbacks', Component: FeedbackTab },
     { label: 'Emails', Component: EmailTab },
   ]
-
+  const newTabs = checkPermissionTabCandidateActivities(role, renderItem)
   return (
     <CandidateActivityProvider>
       <Box padding={2} width="100%" height={'calc(80vh - 48px)'}>
         <BoxFilter />
         <TabCustomize
-          renderItem={renderItem}
+          renderItem={newTabs}
           tabWrapperSx={{
             color: '#4D607A',
             borderBottom: 'none',

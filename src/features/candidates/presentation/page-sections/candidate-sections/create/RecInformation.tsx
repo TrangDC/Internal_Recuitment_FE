@@ -14,17 +14,33 @@ import { useCreateFormContext } from 'features/candidates/hooks/crud/useContext'
 import CandidateBySource from '../../CreateCandidateModal/components/CandidateBySource'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import dayjs from 'dayjs'
+import { hasErrors } from 'features/candidates/shared/utils'
+import { FormDataSchemaCreateCandidate } from 'features/candidates/shared/constants/formSchema'
 
 function RefInformation() {
   const [opeCollapse, setOpeCollapse] = useState(true)
-  const { control, setValue, clearErrors, watch } = useCreateFormContext()
+  const { control, setValue, clearErrors, watch, formState, trigger } =
+    useCreateFormContext()
   const candidate_source = watch('reference_type')
 
   const resetSourceValue = () => {
     setValue('reference_value', '')
     clearErrors('reference_value')
   }
+  const names: (keyof FormDataSchemaCreateCandidate)[] = [
+    'reference_type',
+    'reference_uid',
+    'recruit_time',
+    'reference_value',
+  ]
+  function isValidFields() {
+    trigger(names)
+  }
 
+  const inValid = hasErrors<FormDataSchemaCreateCandidate>(
+    formState.errors,
+    names
+  )
   return (
     <AppContainer
       sx={{
@@ -36,8 +52,10 @@ function RefInformation() {
         title="New Candidate Recruitment Information"
         setOpen={setOpeCollapse}
         padding={0}
+        showIcon={inValid}
         directionTitle="row-reverse"
         gapTitle={1}
+        onClose={isValidFields}
         titleStyle={{
           fontSize: 18,
         }}
@@ -69,26 +87,28 @@ function RefInformation() {
                 )}
               />
             </FormControl>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
-                name="reference_value"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <CandidateBySource
-                      name={field.name}
-                      onChange={field.onChange}
-                      source={candidate_source as TypeCandidateSource}
-                      value={field.value ?? ''}
-                      required={true}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
+            {candidate_source && (
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="reference_value"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <CandidateBySource
+                        name={field.name}
+                        onChange={field.onChange}
+                        source={candidate_source as TypeCandidateSource}
+                        value={field.value ?? ''}
+                        required={true}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            )}
           </FlexBox>
           <FlexBox gap={2}>
             <FormControl fullWidth>

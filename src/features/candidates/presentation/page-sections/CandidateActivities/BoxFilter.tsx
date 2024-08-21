@@ -12,14 +12,17 @@ function BoxFilter() {
         onEnter={handleSearch}
         onSearch={handleSearch}
         ref={searchRef}
+        placeholder="Search"
       />
       <AppDateField
         value={filters?.fromDate}
         onChange={(value) => handleOnChangeDate('fromDate', value)}
+        label="From date"
       />
       <AppDateField
         value={filters?.toDate}
         onChange={(value) => handleOnChangeDate('toDate', value)}
+        label="To date"
       />
     </FlexBox>
   )

@@ -20,6 +20,8 @@ import useActivityFilter, {
 import useBuildActionCandidateNote from 'features/candidates/hooks/candidate-activity/actions/useBuildActionCandidateNote'
 import useBuildActionHistoryCall from 'features/candidates/hooks/candidate-activity/actions/useBuildActionHistoryCall'
 import { Dayjs } from 'dayjs'
+import DetailCandidateNoteModal from 'features/candidates/presentation/page-sections/DetailCandidateNoteModal'
+import DetailCandidateHistoryCallModal from 'features/candidates/presentation/page-sections/DetailCandidateHistoryCallModal'
 // --------------------------------------------------------
 
 // props type
@@ -63,11 +65,13 @@ export const CandidateActivityProvider = ({
   const { actions: noteOptionActions } = useBuildActionCandidateNote({
     handleOpenDelete: useActionCandidateNoteReturn.handleOpenDelete,
     handleOpenEdit: useActionCandidateNoteReturn.handleOpenEdit,
+    handleOpenDetail: useActionCandidateNoteReturn.handleOpenDetail,
   })
 
   const { actions: historyCallOptionActions } = useBuildActionHistoryCall({
     handleOpenDelete: useActionHistoryCallReturn.handleOpenDelete,
     handleOpenEdit: useActionHistoryCallReturn.handleOpenEdit,
+    handleOpenDetail: useActionHistoryCallReturn.handleOpenDetail,
   })
 
   function refreshList() {
@@ -127,6 +131,20 @@ export const CandidateActivityProvider = ({
           open={useActionCandidateNoteReturn.openEdit}
           setOpen={useActionCandidateNoteReturn.setOpenEdit}
           successCallback={refreshList}
+        />
+      )}
+      {useActionCandidateNoteReturn.openDetail && (
+        <DetailCandidateNoteModal
+          id={useActionCandidateNoteReturn.rowId}
+          open={useActionCandidateNoteReturn.openDetail}
+          setOpen={useActionCandidateNoteReturn.setOpenDetail}
+        />
+      )}
+      {useActionHistoryCallReturn.openDetail && (
+        <DetailCandidateHistoryCallModal
+          id={useActionHistoryCallReturn.rowId}
+          open={useActionHistoryCallReturn.openDetail}
+          setOpen={useActionHistoryCallReturn.setOpenDetail}
         />
       )}
     </CandidateActivityContext.Provider>

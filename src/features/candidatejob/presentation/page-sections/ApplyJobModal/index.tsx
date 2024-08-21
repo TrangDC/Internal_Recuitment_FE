@@ -8,7 +8,9 @@ import useTextTranslation from 'shared/constants/text'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import CandidateStatusAutoComplete, { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete, {
+  application_data,
+} from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
@@ -290,15 +292,18 @@ function ApplyJobModal({
                         validator_files={{
                           max_file: {
                             max: 1,
-                            msg_error: 'PDF file only, file size up to 20mb',
+                            msg_error:
+                              'One PDF file only, file size up to 20mb',
                           },
                           max_size: {
                             max: 20,
-                            msg_error: 'PDF file only, file size up to 20mb',
+                            msg_error:
+                              'One PDF file only, file size up to 20mb',
                           },
                           is_valid: {
                             regex: '\\.(pdf)',
-                            msg_error: 'PDF file only, file size up to 20mb',
+                            msg_error:
+                              'One PDF file only, file size up to 20mb',
                           },
                         }}
                         descriptionFile={() => {
@@ -309,7 +314,7 @@ function ApplyJobModal({
                                 Attach CV{' '}
                               </Span>
                               <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                PDF file only, file size up to 20mb
+                                One PDF file only, file size up to 20mb
                               </Tiny>
                             </Box>
                           )

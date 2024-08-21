@@ -6,15 +6,22 @@ import TinyButton from 'shared/components/buttons/TinyButton'
 import Add from 'shared/components/icons/Add'
 import { useCreateFormContext } from 'features/candidates/hooks/crud/useContext'
 import SkillField from 'features/candidates/presentation/components/create/SkillField'
+import { hasErrorsInArray } from 'features/candidates/shared/utils'
 
 function Skill() {
   const [opeCollapse, setOpeCollapse] = useState(true)
-  const { control } = useCreateFormContext()
+  const { control, trigger, formState } = useCreateFormContext()
   const name = 'entity_skill_records'
   const { fields, append, remove } = useFieldArray({
     name,
     control,
   })
+
+  function isValidFields() {
+    trigger(name)
+  }
+
+  const inValid = hasErrorsInArray(formState.errors, name)
   return (
     <AppContainer
       sx={{
@@ -31,6 +38,8 @@ function Skill() {
         padding={0}
         directionTitle="row-reverse"
         gapTitle={1}
+        onClose={isValidFields}
+        showIcon={inValid}
         titleStyle={{
           fontSize: 18,
         }}

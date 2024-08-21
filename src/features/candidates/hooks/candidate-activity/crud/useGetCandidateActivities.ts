@@ -7,6 +7,7 @@ import {
   CustomTypeCandidateEmail,
   CustomTypeCandidateHistoryCall,
   CustomTypeCandidateInterview,
+  CustomTypeCandidateJobFeedback,
   CustomTypeCandidateNote,
 } from 'features/candidates/domain/interfaces/canidate-activities'
 import _ from 'lodash'
@@ -76,6 +77,9 @@ function useGetCandidateActivities({
             ...(activity.candidate_interviews || [])
           )
           acc.outgoing_emails.push(...(activity.outgoing_emails || []))
+          acc.candidate_job_feedbacks.push(
+            ...(activity.candidate_job_feedbacks || [])
+          )
           acc.total = activity.total
           return acc
         },
@@ -84,6 +88,7 @@ function useGetCandidateActivities({
           candidate_history_calls: [],
           candidate_interviews: [],
           outgoing_emails: [],
+          candidate_job_feedbacks: [],
           total: 0,
         }
       )
@@ -94,6 +99,7 @@ function useGetCandidateActivities({
       candidate_history_calls: [],
       candidate_interviews: [],
       outgoing_emails: [],
+      candidate_job_feedbacks: [],
       total: 0,
     }
   }, [data])
@@ -103,6 +109,7 @@ function useGetCandidateActivities({
     const interviews = candidateActivity.candidate_interviews || []
     const notes = candidateActivity.candidate_notes || []
     const emails = candidateActivity.outgoing_emails || []
+    const jobFeedbacks = candidateActivity.candidate_job_feedbacks || []
 
     const customTypeHistoryCallType: CustomTypeCandidateHistoryCall[] =
       historyCalls.map((o) => ({
@@ -131,12 +138,20 @@ function useGetCandidateActivities({
       createdAt: o.created_at,
     }))
 
+    const customTypeCandidateJobFeedbacks: CustomTypeCandidateJobFeedback[] =
+      jobFeedbacks.map((o) => ({
+        type: ActivitiesCategoryEnums.FEEDBACK,
+        data: o,
+        createdAt: o.created_at,
+      }))
+
     return _.orderBy(
       [
         ...customTypeHistoryCallType,
         ...customTypeInterviews,
         ...customTypeNotes,
         ...customTypeEmails,
+        ...customTypeCandidateJobFeedbacks,
       ],
       ['createdAt'],
       'desc'

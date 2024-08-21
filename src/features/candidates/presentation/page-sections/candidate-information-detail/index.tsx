@@ -2,13 +2,16 @@ import TabCustomize from 'shared/components/tab'
 import CandidateGeneral from '../CandidateGeneral'
 import CandidateActivities from '../CandidateActivities'
 import { ContainerMain } from '../../components/Container'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import checkPermissionTabCandidateDetail from 'features/candidates/permission/utils/checkPermissionTabCandidateDetail'
 
 const CandidateInformationDetail = () => {
+  const { role } = useAuthorization()
   const renderItem = [
     { label: 'General', Component: CandidateGeneral },
     { label: 'Activities', Component: CandidateActivities },
   ]
-
+  const newTabs = checkPermissionTabCandidateDetail(role, renderItem)
   return (
     <ContainerMain
       sx={{
@@ -16,7 +19,7 @@ const CandidateInformationDetail = () => {
       }}
     >
       <TabCustomize
-        renderItem={renderItem}
+        renderItem={newTabs}
         TabListProps={{
           TabIndicatorProps: {
             style: {

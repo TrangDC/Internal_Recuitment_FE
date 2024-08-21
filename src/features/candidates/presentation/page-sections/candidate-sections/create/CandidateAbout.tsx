@@ -2,6 +2,8 @@ import { FormControl } from '@mui/material'
 import dayjs from 'dayjs'
 import { useCreateFormContext } from 'features/candidates/hooks/crud/useContext'
 import CandidateAvatar from 'features/candidates/presentation/components/create/CandidateAvatar'
+import { FormDataSchemaCreateCandidate } from 'features/candidates/shared/constants/formSchema'
+import { hasErrors } from 'features/candidates/shared/utils'
 import { useState } from 'react'
 import { Controller } from 'react-hook-form'
 import AppContainer from 'shared/components/AppContainer'
@@ -17,7 +19,25 @@ import { Text13sb, Tiny12md } from 'shared/components/Typography'
 
 function CandidateAbout() {
   const [opeCollapse, setOpeCollapse] = useState(true)
-  const { control } = useCreateFormContext()
+  const { control, formState, trigger } = useCreateFormContext()
+
+  const names: (keyof FormDataSchemaCreateCandidate)[] = [
+    'name',
+    'gender',
+    'email',
+    'phone',
+    'address',
+    'dob',
+    'attachments',
+  ]
+  const inValid = hasErrors<FormDataSchemaCreateCandidate>(
+    formState.errors,
+    names
+  )
+
+  function isValidFields() {
+    trigger(names)
+  }
   return (
     <AppContainer
       sx={{
@@ -31,6 +51,8 @@ function CandidateAbout() {
         title="About the candidate"
         setOpen={setOpeCollapse}
         padding={0}
+        showIcon={inValid}
+        onClose={isValidFields}
         directionTitle="row-reverse"
         gapTitle={1}
         titleStyle={{
@@ -168,7 +190,6 @@ function CandidateAbout() {
             </FlexBox>
             <Controller
               name="attachments"
-              shouldUnregister
               control={control}
               render={({ field, fieldState }) => {
                 return (

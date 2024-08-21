@@ -13,14 +13,15 @@ const useCandidateActivitiesGraphql = () => {
         total
         candidate_notes {
           id
-          candidate {
-            name
-          }
           created_by {
             id
             name
+            hiring_team {
+              id
+            }
           }
           name
+          edited
           description
           attachments {
             id
@@ -41,7 +42,11 @@ const useCandidateActivitiesGraphql = () => {
            created_by {
              id
              name
+             hiring_team {
+              id
+             }
            }
+           edited
            createdAt
            attachments {
               id
@@ -86,6 +91,30 @@ const useCandidateActivitiesGraphql = () => {
            signature
            recipient_type
            status
+        }
+        candidate_job_feedbacks {
+          id
+          created_by
+          owner {
+            id
+            name
+            hiring_team {
+              id
+            }
+          }
+          candidate_job {
+            hiring_job {
+              name
+            }
+          }
+          feedback
+          edited
+          attachments {
+            id
+            document_name
+            document_id
+          }
+          created_at
         }
       }
     `,

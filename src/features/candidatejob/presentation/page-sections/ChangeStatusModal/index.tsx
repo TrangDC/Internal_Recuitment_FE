@@ -3,9 +3,7 @@ import { Controller } from 'react-hook-form'
 import { Box, FormControl } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { CustomTextField } from 'shared/components/form/styles'
-import {
-  list_status_disabled,
-} from '../../../shared/constants'
+import { list_status_disabled } from '../../../shared/constants'
 import useChangeStatus from '../../../hooks/crud/useChangeStatus'
 import useTextTranslation from 'shared/constants/text'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -14,7 +12,9 @@ import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import FailedReasonAutoComplete from 'shared/components/autocomplete/failed-reason-auto-complete'
 import { useMemo } from 'react'
-import CandidateStatusAutoComplete, { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete, {
+  application_data,
+} from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { transformListItem } from 'shared/utils/utils'
 import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
@@ -89,8 +89,8 @@ function ChangeStatusModal({
   const show_failed_reason = useMemo(() => {
     return (
       new_status === application_data.failed_cv.value ||
-      new_status === application_data.offer_lost.value || 
-      new_status === application_data.failed_interview.value 
+      new_status === application_data.offer_lost.value ||
+      new_status === application_data.failed_interview.value
     )
   }, [new_status])
 
@@ -149,7 +149,10 @@ function ChangeStatusModal({
                 <CustomTextField
                   label="Current status"
                   size="small"
-                  value={application_data?.[rowData?.status as CandidateStatusEnum]?.label}
+                  value={
+                    application_data?.[rowData?.status as CandidateStatusEnum]
+                      ?.label
+                  }
                   fullWidth
                   required
                   focused

@@ -57,11 +57,15 @@ const useCandidateNoteGraphql = () => {
         node {
           id
           created_by {
-             id
-             name
+            id
+            name
+            hiring_team {
+              id
+            }
           }
           name 
           description
+          edited
           attachments{
             id
             document_name

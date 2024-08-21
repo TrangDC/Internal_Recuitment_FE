@@ -7,6 +7,7 @@ import Add from 'shared/components/icons/Add'
 import SkillField from 'features/candidates/presentation/components/create/SkillField'
 import { useEditFormContext } from 'features/candidates/hooks/crud/useContext'
 import LoadingField from 'shared/components/form/loadingField'
+import { hasErrorsInArray } from 'features/candidates/shared/utils'
 
 type SkillProps = {
   isGetting: boolean
@@ -14,12 +15,18 @@ type SkillProps = {
 
 function Skill({ isGetting }: SkillProps) {
   const [opeCollapse, setOpeCollapse] = useState(true)
-  const { control } = useEditFormContext()
+  const { control, trigger, formState } = useEditFormContext()
   const name = 'entity_skill_records'
   const { fields, append, remove } = useFieldArray({
     name,
     control,
   })
+
+  function isValidFields() {
+    trigger(name)
+  }
+
+  const inValid = hasErrorsInArray(formState.errors, name)
   return (
     <AppContainer
       sx={{
@@ -36,6 +43,8 @@ function Skill({ isGetting }: SkillProps) {
         padding={0}
         directionTitle="row-reverse"
         gapTitle={1}
+        showIcon={inValid}
+        onClose={isValidFields}
         titleStyle={{
           fontSize: 18,
         }}

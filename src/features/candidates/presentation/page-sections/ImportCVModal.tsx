@@ -8,6 +8,7 @@ import FlexBox from 'shared/components/flexbox/FlexBox'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
 import { FileUploadAttachment } from 'shared/components/form/uploadFileBox/types'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import RequiredIcon from 'shared/components/forms/RequiredIcon'
 import ExPoint from 'shared/components/icons/ExPoint'
 import BaseModal from 'shared/components/modal'
 import { Span, Tiny, Tiny12md } from 'shared/components/Typography'
@@ -68,11 +69,11 @@ function ImportCVModal({
                   validator_files={{
                     max_file: {
                       max: 1,
-                      msg_error: 'Up to 1 files and 20MB/file',
+                      msg_error: 'One PDF file only, file size up to 20mb',
                     },
                     max_size: {
                       max: 20,
-                      msg_error: 'Up to 1 files and 20MB/file',
+                      msg_error: 'One PDF file only, file size up to 20mb',
                     },
                     is_valid: {
                       regex: '\\.(pdf)',
@@ -83,10 +84,11 @@ function ImportCVModal({
                     return (
                       <Box>
                         <Span sx={{ color: '#2A2E37 !important' }}>
-                          Attach file
+                          Attach CV
                         </Span>
+                        <RequiredIcon />
                         <Tiny sx={{ color: '#2A2E37 !important' }}>
-                          Up to 1 files and 20MB/file
+                          PDF file only, file size up to 20mb
                         </Tiny>
                       </Box>
                     )

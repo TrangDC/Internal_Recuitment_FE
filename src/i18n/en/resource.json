@@ -12,7 +12,7 @@
   "jobs": "Jobs",
   "requester": "Requester",
   "staft_required": "Staft required",
-  "level" : "Level",
+  "level": "Level",
   "hired": "Hired",
   "input_job_title": "Enter Job Title",
   "add_a_new_job": "Add a new job",
@@ -80,6 +80,27 @@
   "sub_title_update_record": "What information or note have you updated the record?",
   "add_new_rec_team": "Thêm đội tuyển dụng",
   "model": {
+    "candidate_notes": {
+      "model_name": "Candidate note",
+      "name": "Name",
+      "description": "Description",
+      "document": "Attachment"
+    },
+    "candidate_history_calls": {
+      "model_name": "Candidate history calls",
+      "name": "Name",
+      "candidate": "Candidate",
+      "created_by": "Created by",
+      "contact_to": "Contact to",
+      "description": "Description",
+      "date": "Date",
+      "start_time": "Start time",
+      "end_time": "End time",
+      "type": "Type",
+      "type_enum": {
+        "candidate": "Candidate"
+      }
+    },
     "rec_teams": {
       "model_name": "REC team",
       "name": "Name",
@@ -133,7 +154,7 @@
       "salary_to": "To",
       "currency": "Unit",
       "priority": "Priority",
-      "job_position":"Job position",
+      "job_position": "Job position",
       "validation": {
         "amount_neq_zero": "Number of staff required must be greater than 0",
         "name_exist": "Job name has already existed",
@@ -287,6 +308,12 @@
         "view": "View",
         "create": "Create",
         "update": "Edit",
+        "delete": "Delete"
+      },
+      "candidate_activities": {
+        "view": "View",
+        "create": "Create",
+        "edit": "Edit",
         "delete": "Delete"
       },
       "hiring_teams": {

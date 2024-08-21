@@ -38,7 +38,7 @@ export function convertToUTC(clientDateTime: Date) {
 }
 
 export function convertToEndDateUTC(date: Date) {
-  return dayjs(date).endOf('date').toISOString();
+  return dayjs(date).endOf('date').toISOString()
 }
 
 // Hàm chuyển đổi thời gian từ UTC về múi giờ của client
@@ -121,4 +121,13 @@ export const getQuarter = (date: string) => {
 export const formatLocalTime = (utcTime: Dayjs) => {
   const localTime = dayjs.utc(utcTime).tz(dayjs.tz.guess())
   return localTime
+}
+
+export function convertToRootDate(date: Date, root: Date) {
+  const rootDate = dayjs(root)
+  const hour = dayjs(date).hour()
+  const minute = dayjs(date).minute()
+  const newStart = rootDate.hour(hour).minute(minute).second(0).millisecond(0)
+
+  return newStart
 }

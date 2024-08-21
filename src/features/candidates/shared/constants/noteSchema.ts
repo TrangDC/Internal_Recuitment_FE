@@ -1,11 +1,7 @@
 import { RULE_MESSAGES } from 'shared/constants/validate'
 import * as yup from 'yup'
 export const CreateNote = yup.object({
-  name: yup
-    .string()
-    .required(RULE_MESSAGES.MC1('name'))
-    .max(64, RULE_MESSAGES.MC4('name', 64))
-    .default(''),
+  name: yup.string().required(RULE_MESSAGES.MC1('name')).default(''),
   description: yup
     .string()
     .required(RULE_MESSAGES.MC1('description'))
@@ -14,11 +10,7 @@ export const CreateNote = yup.object({
 })
 
 export const EditNote = yup.object({
-  name: yup
-    .string()
-    .required(RULE_MESSAGES.MC1('name'))
-    .max(64, RULE_MESSAGES.MC4('name', 64))
-    .default(''),
+  name: yup.string().required(RULE_MESSAGES.MC1('name')).default(''),
   description: yup
     .string()
     .required(RULE_MESSAGES.MC1('description'))
