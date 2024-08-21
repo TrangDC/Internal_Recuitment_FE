@@ -23,22 +23,94 @@ import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import CreateSelectionTeamPermission from 'features/jobs/permission/components/CreateSelectionTeamPermission'
 import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
+import AiIcon from 'shared/components/icons/Ai'
+import toast from 'react-hot-toast'
+import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
+import useGenerateJD from 'features/jobs/hooks/crud/useGenerateJd'
+import { JobDescriptionData } from 'features/jobs/domain/interfaces'
+import { useState } from 'react'
 interface ICreateJobModal {
   open: boolean
   setOpen: (value: boolean) => void
 }
 
+function formatJobDescription(data: JobDescriptionData): string {
+  return `
+    <introduction-component>
+      <p>${data.data.introduction}</p>
+    </introduction-component>
+    <response-component>
+      <h3>Responsibilities</h3>
+      <ul class="tight" data-tight="true">
+        ${data.data.responsibilities.map((res) => `<li><p>${res}</p></li>`).join('')}
+      </ul>
+    </response-component>
+    
+    <require-component>
+      <h3>Requirements</h3>
+      <ul class="tight" data-tight="true">
+        ${data.data.requirements.map((req) => `<li><p>${req}</p></li>`).join('')}
+      </ul>
+    </require-component>
+    
+    <benefit-component>
+      <h3>Benefits</h3>
+      <ul class="tight" data-tight="true">
+        ${data.data.benefits.map((ben) => `<li><p>${ben}</p></li>`).join('')}
+      </ul>
+    </benefit-component>
+  `
+}
+
 function CreateJobModal({ open, setOpen }: ICreateJobModal) {
-  const { action, control, isPending, isValid, formState } = useCreateJob({
+  const {
+    action,
+    control,
+    isPending,
+    isValid,
+    formState,
+    setValue,
+    getValues,
+  } = useCreateJob({
     callbackSuccess: () => {
       setOpen(false)
     },
   })
 
+  const [description, setDescription] = useState<string>('')
   const { onSubmit, resetSalary } = action
-
   const translation = useTextTranslation()
   const salary = useWatch({ control, name: 'salary_type' })
+  const name = useWatch({ control, name: 'name' })
+  const title = useWatch({ control, name: 'job_position_id' })
+  const workingLocation = useWatch({ control, name: 'location' })
+  const salaryFrom = useWatch({ control, name: 'salary_from' })
+  const salaryTo = useWatch({ control, name: 'salary_to' })
+  const currency = useWatch({ control, name: 'currency' })
+  const staffLevel = useWatch({ control, name: 'staff_level' })
+
+  const { generateJD, loading } = useGenerateJD({
+    onSuccess: (data) => {
+      toast.success('Job description generated successfully!')
+      const formattedDescription = formatJobDescription(data)
+      setValue('description', formattedDescription)
+      console.log(data)
+    },
+    formData: {
+      name,
+      title,
+      workingLocation,
+      salaryFrom: parseInt(salaryFrom.replace(/,/g, ''), 10),
+      salaryTo: parseInt(salaryTo.replace(/,/g, ''), 10),
+      currency: salary === 'negotiate' ? 'negotiate' : currency,
+      staffLevel,
+      working_hour_from: '8:30',
+      working_hour_to: '17:30',
+    },
+  })
+
+  console.log(getValues())
+  console.log(description)
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -115,6 +187,29 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                         textFieldProps={{
                           required: true,
                           label: 'Priority',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="staff_level"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <LevelAutoComplete
+                        value={field.value}
+                        onChange={(data) => field.onChange(data?.value)}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Staff Level',
                         }}
                       />
                       <HelperTextForm
@@ -359,6 +454,29 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
               </FlexBox>
             </FlexBox>
 
+            <FlexBox justifyContent={'flex-end'}>
+              {/* <AppButton
+                disabled={isValid}
+                variant="contained"
+                startIcon={<AiIcon />}
+                onClick={() => {
+                  generateJD()
+                }}
+              >
+                Generate JD by AI
+              </AppButton> */}
+
+              <ButtonLoading
+                variant="contained"
+                startIcon={<AiIcon />}
+                disabled={isValid}
+                handlesubmit={generateJD}
+                loading={loading === 'UPLOADING' ? true : false}
+              >
+                Generate JD by AI
+              </ButtonLoading>
+            </FlexBox>
+
             <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
               <FormControl fullWidth>
                 <Controller
@@ -368,9 +486,11 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                     <FlexBox flexDirection={'column'}>
                       <EditorBoxField
                         label={'Job description'}
-                        required
                         value={field.value}
-                        onEditorChange={field.onChange}
+                        onEditorChange={(value) => {
+                          field.onChange(value)
+                          setDescription(value)
+                        }}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

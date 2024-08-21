@@ -22,7 +22,7 @@ function useFilterJobsOpening() {
             hiring_job_ids: !isEmpty(data?.hiring_job_ids)
               ? data?.hiring_job_ids?.map((o) => o.value)
               : undefined,
-              hiring_team_ids: !isEmpty(data?.hiring_team_ids)
+            hiring_team_ids: !isEmpty(data?.hiring_team_ids)
               ? data?.hiring_team_ids?.map((o) => o.value)
               : undefined,
             skill_id: !isEmpty(data?.skill_id)

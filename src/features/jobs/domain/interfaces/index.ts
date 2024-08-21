@@ -1,5 +1,6 @@
 import Candidate from 'shared/schema/database/candidate'
 import HiringJob from 'shared/schema/database/hiring_job'
+import TalenaJobDescription from 'shared/schema/talena/talena_jd'
 
 export type CandidateStatusItem = {
   id: string
@@ -15,4 +16,8 @@ export type CandidateStatusItem = {
   candidate: Candidate
   created_at: string
   updated_at: string
+}
+
+export type JobDescriptionData = {
+  data: TalenaJobDescription
 }

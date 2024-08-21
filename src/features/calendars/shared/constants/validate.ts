@@ -8,7 +8,7 @@ export const CreateInterviewSchema = yup.object().shape({
   title: yup
     .string()
     .required(RULE_MESSAGES.MC1('interview title'))
-    .max(64, RULE_MESSAGES.MC4('interview title', 64)),
+    .max(255, RULE_MESSAGES.MC4('interview title', 255)),
   teamId: yup.string().required(RULE_MESSAGES.MC1('team')).default(''),
   jobId: yup.string().required(RULE_MESSAGES.MC1('job')).default(''),
   interviewer: yup.array().min(1, RULE_MESSAGES.MC1('interviewer')),
@@ -69,7 +69,7 @@ export const EditInterviewSchema = yup.object().shape({
   title: yup
     .string()
     .required(RULE_MESSAGES.MC1('interview title'))
-    .max(64, RULE_MESSAGES.MC4('interview title', 64)),
+    .max(255, RULE_MESSAGES.MC4('interview title', 255)),
   teamId: yup.string().required(RULE_MESSAGES.MC1('team')).default(''),
   jobId: yup.string().required(RULE_MESSAGES.MC1('job')).default(''),
   interviewer: yup.array().min(1, RULE_MESSAGES.MC1('interviewer')),

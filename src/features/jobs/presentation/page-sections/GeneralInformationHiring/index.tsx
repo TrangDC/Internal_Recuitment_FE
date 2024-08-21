@@ -3,7 +3,7 @@ import Scrollbar from 'shared/components/ScrollBar'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import { Box } from '@mui/material'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DragDropProvider } from 'shared/components/dnd'
 import Droppable from 'shared/components/dnd/components/Droppable'
 import { ENABLED_CHANGE_STATUS } from 'features/application/shared/constants'
@@ -15,13 +15,15 @@ import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import CandidateJobDB from 'shared/schema/database/candidate_job'
 import { ChangeStatusModal } from 'features/candidatejob/presentation/page-sections'
 import { BoxDroppableCandidate } from 'features/application/shared/styles'
-//import { useContextChangeStatus } from '../OpeningJobs/context/ChangeStatusContext'
 import { CircularLoading } from '../OpeningJobs/styles'
 import BoxCandidateJob from '../OpeningJobs/components/BoxCandidateJob'
-import useGetCandidateJob from 'features/application/hooks/crud/useGetCandidateJob'
+
 import { DivWrapperProcess } from 'shared/styles'
 import { SpanHiring } from 'features/jobs/shared/styles'
 import useTextTranslation from 'shared/constants/text'
+import useGetCandidateJob from 'features/jobs/hooks/crud/useGetCandidateJob'
+import { useContextChangeStatus } from '../OpeningJobs/context/ChangeStatusContext'
+import { useParams } from 'react-router-dom'
 
 const GenaralInformationHiring = () => {
   const translation = useTextTranslation()
@@ -30,7 +32,7 @@ const GenaralInformationHiring = () => {
     show_more,
     total_data: { total_current },
     actions: { handleFetchNextPage, handleUpdateStatus },
-  } = useGetCandidateJob()
+  } = useContextChangeStatus()
 
   const {
     applied,
@@ -43,10 +45,12 @@ const GenaralInformationHiring = () => {
     ex_staff,
   } = data
 
+  console.log()
+
   //change status hiring process
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()
   const [destination, setDestination] = useState<string>('')
-
+  const { id } = useParams()
   const {
     handleOpenChangeStatus,
     openChangeStatus,
@@ -54,6 +58,15 @@ const GenaralInformationHiring = () => {
     rowData,
     rowId,
   } = useActionTable<CandidateJobDB>()
+
+  const { actions } = useContextChangeStatus()
+  const { handleFilter } = actions
+
+  useEffect(() => {
+    handleFilter({
+      hiring_job_ids: [id],
+    })
+  }, [id])
 
   return (
     <DivWrapperProcess

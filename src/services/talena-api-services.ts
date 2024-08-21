@@ -3,6 +3,7 @@ import { talenaClient } from 'middleware/talena-middleware'
 import { Either } from 'shared/interfaces/common'
 import ErrorException from 'shared/interfaces/response'
 import TalenaCandidateCV from 'shared/schema/talena/talena_candidate'
+import TalenaJobDescription from 'shared/schema/talena/talena_jd'
 import TalenaToken from 'shared/schema/talenaToken'
 import { makeLeft, makeRight } from 'shared/utils/handleEither'
 
@@ -36,6 +37,23 @@ class TalenaApiService {
       }
       const cv = TalenaCandidateCV.fromJson(res.data)
       return makeRight(cv)
+    } catch (error) {
+      return makeLeft(error as ErrorException)
+    }
+  }
+
+  static async generateJD(
+    formData: FormData
+  ): Promise<Either<ErrorException, TalenaJobDescription>> {
+    try {
+      const res = await talenaClient.post(talenaApi.generateJD, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // body: JSON.stringify(data),
+      })
+      const data = res?.data
+      return makeRight(data)
     } catch (error) {
       return makeLeft(error as ErrorException)
     }
