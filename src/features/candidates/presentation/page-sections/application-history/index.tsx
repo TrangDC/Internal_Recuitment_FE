@@ -24,7 +24,6 @@ import { CandidateStatusEnum } from 'shared/schema'
 const ApplicationHistory = () => {
   const { id } = useParams()
   const queryClient = useQueryClient()
-  const { candidateInfor } = useCandidateInforContext()
   const { candidateJobs } = useGetAllCandidateJob(id)
   const {
     handleOpenChangeStatus,

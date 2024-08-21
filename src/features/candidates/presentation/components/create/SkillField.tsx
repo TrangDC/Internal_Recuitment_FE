@@ -62,7 +62,6 @@ function SkillField({ index, name, onDelete }: SkillFieldProps) {
             <FlexBox flexDirection={'column'}>
               <SelectionSkill
                 onChange={(value) => {
-                  console.log('value', value)
                   field.onChange(value?.map((o) => o.id))
                   onSkillChange(value)
                 }}

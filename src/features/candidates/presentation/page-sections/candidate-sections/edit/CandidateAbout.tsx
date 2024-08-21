@@ -24,7 +24,7 @@ type CandidateAboutProps = {
 
 function CandidateAbout({ isGetting }: CandidateAboutProps) {
   const [opeCollapse, setOpeCollapse] = useState(true)
-  const { control, formState, trigger, getValues } = useEditFormContext()
+  const { control, formState, trigger } = useEditFormContext()
 
   const names: (keyof FormDataSchemaEditCandidate)[] = [
     'name',

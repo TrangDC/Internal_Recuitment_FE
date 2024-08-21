@@ -94,7 +94,6 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
       toast.success('Job description generated successfully!')
       const formattedDescription = formatJobDescription(data)
       setValue('description', formattedDescription)
-      console.log(data)
     },
     formData: {
       name,
@@ -108,9 +107,6 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
       working_hour_to: '17:30',
     },
   })
-
-  console.log(getValues())
-  console.log(description)
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>

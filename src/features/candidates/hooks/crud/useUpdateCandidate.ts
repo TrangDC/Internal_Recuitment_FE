@@ -13,7 +13,6 @@ import {
   EditCandidate,
   FormDataSchemaEditCandidate,
 } from 'features/candidates/shared/constants/formSchema'
-import dayjs from 'dayjs'
 import useGetImage from 'shared/components/upload/hooks/useGetImage'
 import {
   AttachmentAction,

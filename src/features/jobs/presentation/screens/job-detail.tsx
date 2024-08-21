@@ -24,7 +24,7 @@ import ChipJob from 'shared/class/job-status/components/ChipJob'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import { ChipLimit } from 'shared/components/chip-stack'
 import CloseJobButtonPermission from 'features/jobs/permission/components/CloseJobButtonPermission'
-import ChangeStatusProvider from '../page-sections/OpeningJobs/context/ChangeStatusContext'
+import CandidateDetailProvider from '../page-sections/OpeningJobs/context/CandidateDetailContext'
 
 const { STATUS_HIRING_JOB } = JobStatus
 
@@ -151,9 +151,9 @@ const JobDetail = () => {
 
         <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
           <HeadingWrapper sx={{ marginTop: 0, padding: 2 }}>
-            <ChangeStatusProvider>
+            <CandidateDetailProvider>
               <GenaralInformationHiring />
-            </ChangeStatusProvider>
+            </CandidateDetailProvider>
           </HeadingWrapper>
         </BoxWrapperOuterContainer>
       </FlexBox>

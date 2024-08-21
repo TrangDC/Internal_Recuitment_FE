@@ -1,5 +1,4 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import dayjs from 'dayjs'
 import useCandidateActivitiesGraphql from 'features/candidates/domain/graphql/candidateActivities'
 import {
   ActivitiesCategoryEnums,

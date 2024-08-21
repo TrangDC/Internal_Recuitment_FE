@@ -17,13 +17,12 @@ import { ChangeStatusModal } from 'features/candidatejob/presentation/page-secti
 import { BoxDroppableCandidate } from 'features/application/shared/styles'
 import { CircularLoading } from '../OpeningJobs/styles'
 import BoxCandidateJob from '../OpeningJobs/components/BoxCandidateJob'
-
 import { DivWrapperProcess } from 'shared/styles'
 import { SpanHiring } from 'features/jobs/shared/styles'
 import useTextTranslation from 'shared/constants/text'
-import useGetCandidateJob from 'features/jobs/hooks/crud/useGetCandidateJob'
 import { useContextChangeStatus } from '../OpeningJobs/context/ChangeStatusContext'
 import { useParams } from 'react-router-dom'
+import { useContextCandidateDetail } from '../OpeningJobs/context/CandidateDetailContext'
 
 const GenaralInformationHiring = () => {
   const translation = useTextTranslation()
@@ -32,7 +31,7 @@ const GenaralInformationHiring = () => {
     show_more,
     total_data: { total_current },
     actions: { handleFetchNextPage, handleUpdateStatus },
-  } = useContextChangeStatus()
+  } = useContextCandidateDetail()
 
   const {
     applied,
@@ -44,8 +43,6 @@ const GenaralInformationHiring = () => {
     offer_lost,
     ex_staff,
   } = data
-
-  console.log()
 
   //change status hiring process
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()
