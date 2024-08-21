@@ -7,7 +7,7 @@ import CandidateIcon from 'shared/components/icons/Candidates'
 import { useParams } from 'react-router-dom'
 import useCandidateJobDetail from '../../hooks/crud/useCandidateJobDetail'
 
-const CandidateJobDetail = () => {
+const ApplicationDetail = () => {
   const { id } = useParams()
   const { jobApplicationDetail } = useCandidateJobDetail(id as string)
 
@@ -38,4 +38,4 @@ const CandidateJobDetail = () => {
   )
 }
 
-export default CandidateJobDetail
+export default ApplicationDetail

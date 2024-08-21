@@ -63,13 +63,13 @@ export const columns_candidate_job = (
     header: () => <span>Hiring team</span>,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
-  columnHelperCandidateJob.accessor((row) => row.status, {
-    id: 'rec_team',
-    header: () => <span>REC team</span>,
-    enableSorting: false,
-    size: 200,
-    cell: (info) => <ChipCandidate status={info.row.original.status} />,
-  }),
+  // columnHelperCandidateJob.accessor((row) => row.status, {
+  //   id: 'rec_team',
+  //   header: () => <span>REC team</span>,
+  //   enableSorting: false,
+  //   size: 200,
+  //   cell: (info) => <ChipCandidate status={info.row.original.status} />,
+  // }),
   columnHelperCandidateJob.accessor((row) => row.created_at, {
     id: 'created_at',
     header: () => <span>Applied on</span>,

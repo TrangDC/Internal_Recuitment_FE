@@ -131,7 +131,6 @@ const FilterCandidate = () => {
             Node={({ onFilter, value }) => (
               <CandidateStatusAutoComplete
                 multiple={false}
-                options={options_status_new}
                 value={value}
                 onChange={(data) => {
                   onFilter(data)

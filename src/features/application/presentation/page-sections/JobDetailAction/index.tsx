@@ -1,5 +1,5 @@
 import { Divider } from '@mui/material'
-import { DivAction, DivActionWrapper } from '../../../shared/styles'
+import { DivAction, DivItemInformation } from '../../../shared/styles'
 import StepInterview from 'features/interviews/presentation/page-sections/StepInterview'
 import ListFeedBack from 'features/feedback/presentation/page-sections/ListFeedback'
 import { Fragment, useEffect, useMemo, useState } from 'react'
@@ -45,7 +45,7 @@ const JobDetailAction = ({
   }, [jobApplicationDetail, statusSelected])
 
   return (
-    <DivActionWrapper>
+    <DivItemInformation>
       <DivAction>
         <StepInterview
           steps={jobApplicationDetail?.steps}
@@ -87,7 +87,7 @@ const JobDetailAction = ({
           />
         </Cant>
       </DivAction>
-    </DivActionWrapper>
+    </DivItemInformation>
   )
 }
 

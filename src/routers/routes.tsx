@@ -47,8 +47,8 @@ const CandidateDetail = Loadable(
   lazy(() => import('../pages/candidates/candidate-detail'))
 )
 
-const CandidateJobDetail = Loadable(
-  lazy(() => import('../pages/candidatejob/candidate-job-detail'))
+const ApplicationDetail = Loadable(
+  lazy(() => import('../pages/application/application-detail'))
 )
 
 const UserPage = Loadable(lazy(() => import('../pages/user/index')))
@@ -232,7 +232,7 @@ export const AppRoutes = () => {
             path="job-application-detail/:id"
             element={PermissionLayout({
               module: 'CANDIDATE_JOBS',
-              children: <CandidateJobDetail />,
+              children: <ApplicationDetail />,
               checkBy: {
                 compare: 'hasAny',
                 permissions: [

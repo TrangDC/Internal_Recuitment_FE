@@ -59,7 +59,7 @@ export const schemaChangeStatus = yup.object({
     .array()
     .test(
       'failed-reason',
-      RULE_MESSAGES.MC1('failed_reason'),
+      RULE_MESSAGES.MC1('Failed reason'),
       function (value) {
         const { status, failed_reason } = this.parent
         if (
