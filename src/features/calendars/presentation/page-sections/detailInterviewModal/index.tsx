@@ -11,10 +11,9 @@ import {
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import ChipField from 'shared/components/input-fields/ChipField'
 import BaseModal from 'shared/components/modal'
-import { formatDateToString, getTime, isPast } from 'shared/utils/date'
+import { formatDateToString, getTime } from 'shared/utils/date'
 import { Fragment } from 'react/jsx-runtime'
 import { useContextCalendar } from 'features/calendars/shared/contexts/calendarProvider/CalendarProvider'
-import DeleteInterviewButtonPermission from 'features/calendars/permission/components/DeleteInterviewButtonPermission'
 import EditInterviewButtonPermission from 'features/calendars/permission/components/EditInterviewButtonPermission'
 import {
   GetLocationName,
@@ -54,8 +53,7 @@ function DetailInterviewModal(props: IDetailIntefviewModal) {
       id: id,
     })
 
-  const { getValues, watch } = useFormReturn
-  const start_from = watch('start_from')
+  const { getValues } = useFormReturn
   const candidateJobOfTeamId = getValues('candidateJobOfTeamId')
 
   const show_meeting_link = useMemo(() => {

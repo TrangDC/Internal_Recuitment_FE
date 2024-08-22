@@ -30,7 +30,6 @@ function CreateCandidateModal({ open, setOpen }: ICreateCandidateModal) {
     watch,
     actions,
     formState,
-    getValues,
   } = useCreateCandidate({
     callbackSuccess: () => {
       setOpen(false)

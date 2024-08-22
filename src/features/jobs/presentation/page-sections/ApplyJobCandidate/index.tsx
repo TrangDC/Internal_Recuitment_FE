@@ -21,6 +21,8 @@ import AppDateField from 'shared/components/input-fields/DateField'
 import { status_disabled_applied } from 'features/candidatejob/shared/constants'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
+import useValidProcessingCandidate from 'features/candidatejob/hooks/crud/useValidProcessingCandidate'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 interface IApplyJobModal {
   open: boolean
@@ -44,10 +46,14 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
       onSuccess?.(data)
     },
   })
-
+  const { handleWarning, handleReset } = usePopup()
   const translation = useTextTranslation()
   const attachments = watch('attachments')
   const hiring_team_id = watch('hiring_team_id')
+
+  const candidateId = watch('candidate_id')
+
+  const { isValidCandidate } = useValidProcessingCandidate(candidateId)
 
   const isValidAttachments = useMemo(() => {
     if (!Array.isArray(attachments) || isEmpty(attachments)) return true
@@ -60,6 +66,22 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
   const show_date_onboard = useMemo(() => {
     return new_status === application_data.offering.value
   }, [new_status])
+
+  const handleSubmit = () => {
+    if (!isValidCandidate) {
+      onSubmit()
+      return
+    }
+
+    handleWarning({
+      title: 'Warning',
+      content: `This candidate is applying for another job. Do you still want to proceed with this candidate’s application?`,
+      onSubmit: () => {
+        onSubmit()
+        handleReset()
+      },
+    })
+  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -341,7 +363,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
             variant="contained"
             size="small"
             disabled={isValid || !isValidAttachments}
-            handlesubmit={onSubmit}
+            handlesubmit={handleSubmit}
             loading={isPending}
           >
             Submit

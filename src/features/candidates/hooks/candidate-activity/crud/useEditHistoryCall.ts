@@ -15,7 +15,6 @@ import useCandidateHistoryCallGraphql from 'features/candidates/domain/graphql/c
 import {
   convertToRootDate,
   convertToUTC,
-  getLocalTimeOffset,
 } from 'shared/utils/date'
 import { formatStringToDate } from 'features/calendars/presentation/page-sections/google-calendar/functions'
 

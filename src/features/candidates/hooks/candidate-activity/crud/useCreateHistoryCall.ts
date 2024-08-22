@@ -16,7 +16,6 @@ import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 import {
   convertToRootDate,
   convertToUTC,
-  getLocalTimeOffset,
 } from 'shared/utils/date'
 import dayjs from 'dayjs'
 

@@ -1,7 +1,7 @@
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import Scrollbar from 'shared/components/ScrollBar'
 import BoxTextSquare from 'shared/components/utils/boxText'
-import { Box } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useEffect, useState } from 'react'
 import { DragDropProvider } from 'shared/components/dnd'
@@ -13,7 +13,9 @@ import { CandidateStatusEnum } from 'shared/schema'
 import Candidate from 'shared/schema/database/candidate'
 import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import CandidateJobDB from 'shared/schema/database/candidate_job'
-import { ChangeStatusModal } from 'features/candidatejob/presentation/page-sections'
+import {
+  ChangeStatusModal,
+} from 'features/candidatejob/presentation/page-sections'
 import { BoxDroppableCandidate } from 'features/application/shared/styles'
 import { CircularLoading } from '../OpeningJobs/styles'
 import BoxCandidateJob from '../OpeningJobs/components/BoxCandidateJob'
@@ -23,14 +25,20 @@ import useTextTranslation from 'shared/constants/text'
 import { useContextChangeStatus } from '../OpeningJobs/context/ChangeStatusContext'
 import { useParams } from 'react-router-dom'
 import { useContextCandidateDetail } from '../OpeningJobs/context/CandidateDetailContext'
+import ApplyJobModalDetail from '../ApplyJob'
+import HiringJob from 'shared/schema/database/hiring_job'
 
-const GenaralInformationHiring = () => {
+interface IGeneralInformationHiring {
+  jobDetail: HiringJob
+}
+
+const GeneralInformationHiring = ({jobDetail}: IGeneralInformationHiring) => {
   const translation = useTextTranslation()
   const {
     data,
     show_more,
     total_data: { total_current },
-    actions: { handleFetchNextPage, handleUpdateStatus },
+    actions: { handleFetchNextPage, handleUpdateStatus, handleAddCandidate },
   } = useContextCandidateDetail()
 
   const {
@@ -53,6 +61,8 @@ const GenaralInformationHiring = () => {
     openChangeStatus,
     setOpenChangeStatus,
     rowData,
+    openCreate,
+    setOpenCreate,
     rowId,
   } = useActionTable<CandidateJobDB>()
 
@@ -71,9 +81,10 @@ const GenaralInformationHiring = () => {
       gap={'10px'}
       sx={{ padding: 0 }}
     >
-      <Box>
+      <FlexBox alignItems={'center'} justifyContent={'space-between'}>
         <SpanHiring>{translation.MODLUE_JOBS.hiring_process}</SpanHiring>
-      </Box>
+        <Button variant="contained" onClick={() => setOpenCreate(true)}>Apply Candidate</Button>
+      </FlexBox>
       <Box>
         <InfiniteScroll
           dataLength={total_current}
@@ -281,9 +292,20 @@ const GenaralInformationHiring = () => {
             onSuccess={handleUpdateStatus}
           />
         )}
+
+        {openCreate && (
+          <ApplyJobModalDetail
+            open={openCreate}
+            setOpen={setOpenCreate}
+            jobDetail={jobDetail}
+            onSuccess={(data) => {
+              handleAddCandidate(data)
+            }}
+          />
+        )}
       </Box>
     </DivWrapperProcess>
   )
 }
 
-export default GenaralInformationHiring
+export default GeneralInformationHiring

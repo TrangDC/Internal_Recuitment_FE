@@ -8,7 +8,9 @@ import useTextTranslation from 'shared/constants/text'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import CandidateStatusAutoComplete, { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
+import CandidateStatusAutoComplete, {
+  application_data,
+} from 'shared/components/autocomplete/candidate-status-auto-complete'
 import { Span, Tiny } from 'shared/components/Typography'
 import { isEmpty } from 'lodash'
 import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
@@ -19,6 +21,8 @@ import AppDateField from 'shared/components/input-fields/DateField'
 import { status_disabled_applied } from 'features/candidatejob/shared/constants'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
+import useValidProcessingCandidate from 'features/candidatejob/hooks/crud/useValidProcessingCandidate'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 interface IApplyJobModal {
   open: boolean
@@ -42,10 +46,14 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
       onSuccess?.(data)
     },
   })
-
+  const { handleWarning, handleReset } = usePopup()
   const translation = useTextTranslation()
   const attachments = watch('attachments')
   const hiring_team_id = watch('hiring_team_id')
+
+  const candidateId = watch('candidate_id')
+
+  const { isValidCandidate } = useValidProcessingCandidate(candidateId)
 
   const isValidAttachments = useMemo(() => {
     if (!Array.isArray(attachments) || isEmpty(attachments)) return true
@@ -58,6 +66,22 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
   const show_date_onboard = useMemo(() => {
     return new_status === application_data.offering.value
   }, [new_status])
+
+  const handleSubmit = () => {
+    if (!isValidCandidate) {
+      onSubmit()
+      return
+    }
+
+    handleWarning({
+      title: 'Warning',
+      content: `This candidate is applying for another job. Do you still want to proceed with this candidate’s application?`,
+      onSubmit: () => {
+        onSubmit()
+        handleReset()
+      },
+    })
+  }
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -140,7 +164,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                       onChange={field.onChange}
                       filter={{
                         is_black_list: false,
-                        ignore_statuses: ["hired"]
+                        ignore_statuses: ['hired'],
                       }}
                       textFieldProps={{
                         required: true,
@@ -156,7 +180,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
             </FormControl>
           </FlexBox>
 
-          <FlexBox justifyContent={'center'} alignItems={'center'}  gap={2}>
+          <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
             <FormControl fullWidth>
               <Controller
                 name="status"
@@ -184,31 +208,31 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
               />
             </FormControl>
             {show_date_onboard && (
-                <FormControl fullWidth>
-                  <Controller
-                    name="level"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <FlexBox flexDirection={'column'}>
-                        <LevelAutoComplete
-                          multiple={false}
-                          value={field.value ?? ''}
-                          onChange={(data: any) => {
-                            field.onChange(data.value)
-                          }}
-                          textFieldProps={{
-                            label: 'Level',
-                            required: true,
-                          }}
-                        />
-                        <HelperTextForm
-                          message={fieldState.error?.message}
-                        ></HelperTextForm>
-                      </FlexBox>
-                    )}
-                  />
-                </FormControl>
-              )}
+              <FormControl fullWidth>
+                <Controller
+                  name="level"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <LevelAutoComplete
+                        multiple={false}
+                        value={field.value ?? ''}
+                        onChange={(data: any) => {
+                          field.onChange(data.value)
+                        }}
+                        textFieldProps={{
+                          label: 'Level',
+                          required: true,
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            )}
           </FlexBox>
 
           {show_date_onboard && (
@@ -282,23 +306,20 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                     <InputFileUpload
                       getValues={getValues}
                       name={field.name}
-                      accept={'.pdf,.doc,.docx,.xlsx'}
+                      accept={'.pdf'}
                       multiple={false}
                       validator_files={{
                         max_file: {
                           max: 1,
-                          msg_error:
-                            'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          msg_error: 'One PDF file only, file size up to 20mb',
                         },
                         max_size: {
                           max: 20,
-                          msg_error:
-                            'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          msg_error: 'One PDF file only, file size up to 20mb',
                         },
                         is_valid: {
-                          regex: '\\.(pdf|xlsx|docx|doc)',
-                          msg_error:
-                            'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                          regex: '\\.(pdf)',
+                          msg_error: 'One PDF file only, file size up to 20mb',
                         },
                       }}
                       descriptionFile={() => {
@@ -309,7 +330,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                               Attach CV{' '}
                             </Span>
                             <Tiny sx={{ color: '#2A2E37 !important' }}>
-                              One PDF,WORD,EXCEL file only, file size up to 20mb
+                              One PDF file only, file size up to 20mb
                             </Tiny>
                           </Box>
                         )
@@ -340,7 +361,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
             variant="contained"
             size="small"
             disabled={isValid || !isValidAttachments}
-            handlesubmit={onSubmit}
+            handlesubmit={handleSubmit}
             loading={isPending}
           >
             Submit
