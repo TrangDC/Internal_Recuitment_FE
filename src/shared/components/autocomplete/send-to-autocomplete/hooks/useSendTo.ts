@@ -18,8 +18,8 @@ export const SEND_TO_VALUE = {
 export const SEND_TO_LABEL = {
   interviewer: 'Interviewer',
   job_request: 'Requester',
-  team_manager: 'Hiring team manager',
-  team_member: 'Hiring team member',
+  hiring_team_manager: 'Hiring team manager',
+  hiring_team_member: 'Hiring team member',
   role: 'Role',
   candidate: 'Candidate',
 }
