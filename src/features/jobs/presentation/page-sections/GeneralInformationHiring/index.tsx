@@ -13,9 +13,7 @@ import { CandidateStatusEnum } from 'shared/schema'
 import Candidate from 'shared/schema/database/candidate'
 import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import CandidateJobDB from 'shared/schema/database/candidate_job'
-import {
-  ChangeStatusModal,
-} from 'features/candidatejob/presentation/page-sections'
+import { ChangeStatusModal } from 'features/candidatejob/presentation/page-sections'
 import { BoxDroppableCandidate } from 'features/application/shared/styles'
 import { CircularLoading } from '../OpeningJobs/styles'
 import BoxCandidateJob from '../OpeningJobs/components/BoxCandidateJob'
@@ -27,12 +25,13 @@ import { useParams } from 'react-router-dom'
 import { useContextCandidateDetail } from '../OpeningJobs/context/CandidateDetailContext'
 import ApplyJobModalDetail from '../ApplyJob'
 import HiringJob from 'shared/schema/database/hiring_job'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 interface IGeneralInformationHiring {
   jobDetail: HiringJob
 }
 
-const GeneralInformationHiring = ({jobDetail}: IGeneralInformationHiring) => {
+const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
   const translation = useTextTranslation()
   const {
     data,
@@ -83,7 +82,17 @@ const GeneralInformationHiring = ({jobDetail}: IGeneralInformationHiring) => {
     >
       <FlexBox alignItems={'center'} justifyContent={'space-between'}>
         <SpanHiring>{translation.MODLUE_JOBS.hiring_process}</SpanHiring>
-        <Button variant="contained" onClick={() => setOpenCreate(true)}>Apply Candidate</Button>
+        <Cant
+          checkBy={{
+            compare: 'hasAny',
+            permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+          }}
+          module="CANDIDATE_JOBS"
+        >
+          <Button variant="contained" onClick={() => setOpenCreate(true)}>
+            Apply Candidate
+          </Button>
+        </Cant>
       </FlexBox>
       <Box>
         <InfiniteScroll
