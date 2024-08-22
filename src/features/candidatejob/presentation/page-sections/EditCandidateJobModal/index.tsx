@@ -55,23 +55,20 @@ function EditCandidateJobModal({
                       <InputFileUpload
                         getValues={getValues}
                         name={field.name}
-                        accept={'.pdf,.doc,.docx,.xlsx'}
+                        accept={'.pdf'}
                         multiple={false}
                         validator_files={{
                           max_file: {
                             max: 1,
-                            msg_error:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                            msg_error: 'One PDF file only, file size up to 20mb',
                           },
                           max_size: {
                             max: 20,
-                            msg_error:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                            msg_error: 'One PDF file only, file size up to 20mb',
                           },
                           is_valid: {
-                            regex: '\\.(pdf|xlsx|docx|doc)',
-                            msg_error:
-                              'One PDF,WORD,EXCEL file only, file size up to 20mb',
+                            regex: '\\.(pdf)',
+                            msg_error: 'One PDF file only, file size up to 20mb',
                           },
                         }}
                         descriptionFile={() => {
@@ -82,8 +79,7 @@ function EditCandidateJobModal({
                                 Attach CV{' '}
                               </Span>
                               <Tiny sx={{ color: '#2A2E37 !important' }}>
-                                One PDF,WORD,EXCEL file only, file size up to
-                                20mb
+                                One PDF file only, file size up to 20mb
                               </Tiny>
                             </Box>
                           )
