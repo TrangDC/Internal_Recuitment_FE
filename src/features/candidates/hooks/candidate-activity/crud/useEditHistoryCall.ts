@@ -17,6 +17,7 @@ import {
   convertToUTC,
   getLocalTimeOffset,
 } from 'shared/utils/date'
+import { formatStringToDate } from 'features/calendars/presentation/page-sections/google-calendar/functions'
 
 type UseCreateNoteProps = {
   successCallback: () => void
@@ -36,15 +37,20 @@ function useEditHistoryCall({ successCallback, id }: UseCreateNoteProps) {
     oneBuildQuery: getCandidateHistoryCall,
     queryKey: [queryKey],
     formatDefaultValues: (data) => {
+      const { currentDate, newEnd, newStart } = formatStringToDate(
+        data?.start_time ?? new Date().toString(),
+        data?.end_time ?? new Date().toString(),
+        data?.date ?? new Date().toString()
+      )
       return {
         name: data?.name ?? '',
         attachments: data?.attachments || [],
         description: data?.description ?? '',
-        contactDate: data?.date ? dayjs(data?.date).toDate() : null,
-        timeFrom: data?.start_time ? dayjs(data?.start_time).toDate() : null,
+        contactDate: currentDate ? currentDate : null,
+        timeFrom: data?.start_time ? newStart : null,
         contactTo: data?.contact_to ?? '',
         contactType: data?.type ?? '',
-        timeTo: data?.end_time ? dayjs(data?.end_time).toDate() : null,
+        timeTo: data?.end_time ? newEnd : null,
       }
     },
     resolver: yupResolver(EditHistoryCallSchema),
@@ -74,9 +80,8 @@ function useEditHistoryCall({ successCallback, id }: UseCreateNoteProps) {
         const startTime = value.timeFrom
           ? convertToRootDate(value.timeFrom, value.contactDate)
           : null
-        const contactDate = convertToUTC(value.contactDate)
+        const contactDate = dayjs(value.contactDate)
           .startOf('day')
-          .subtract(getLocalTimeOffset(), 'hour')
           .toISOString()
         const attachments = removeStatusAttachment(value?.attachments)
         const payload: UpdateCandidateHistoryCallArguments = {
@@ -109,14 +114,12 @@ function useEditHistoryCall({ successCallback, id }: UseCreateNoteProps) {
 
     if (from && date) {
       const fromDate = convertToRootDate(from, date)
-      setValue('timeFrom', fromDate.toDate(), { shouldValidate: true })
-      trigger(['timeFrom'])
+      setValue('timeFrom', fromDate.toDate())
     }
 
     if (to && date) {
       const toDate = convertToRootDate(to, date)
-      setValue('timeTo', toDate.toDate(), { shouldValidate: true })
-      trigger(['timeTo'])
+      setValue('timeTo', toDate.toDate())
     }
   }
 

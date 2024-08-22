@@ -26,18 +26,9 @@ function checkPermissionTabCandidateActivities(
     module: 'INTERVIEWS',
   })
 
-  const hasViewEmail = checkPermissions({
-    role,
-    checkBy: {
-      compare: 'hasAny',
-      permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
-    },
-    module: 'EMAIL_TEMPLATE',
-  })
   if (!hasViewFeedback) _.remove(cloneTabs, (tab) => tab.label === 'Feedbacks')
   if (!hasViewInterview)
     _.remove(cloneTabs, (tab) => tab.label === 'Interviews')
-  if (!hasViewEmail) _.remove(cloneTabs, (tab) => tab.label === 'Emails')
   return cloneTabs
 }
 

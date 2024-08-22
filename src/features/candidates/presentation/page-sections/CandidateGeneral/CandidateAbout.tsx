@@ -53,7 +53,7 @@ function CandidateAbout({
           </Box>
           <Box marginY="4px">
             <Tiny>DOB</Tiny>
-            <Text15md>{dayjs(dob).format('DD/MM/YYYY')}</Text15md>
+            {dob && <Text15md>{dayjs(dob).format('DD/MM/YYYY')}</Text15md>}
           </Box>
         </FlexBox>
       </FlexBox>
