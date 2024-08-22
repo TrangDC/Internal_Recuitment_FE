@@ -12,6 +12,7 @@ import AppCollapse from 'shared/components/collapse/AppCollapse'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import UploadFileBox from 'shared/components/form/uploadFileBox'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
+import RequiredIcon from 'shared/components/forms/RequiredIcon'
 import UploadIconSmall from 'shared/components/icons/UploadIconSmall'
 import AppDateField from 'shared/components/input-fields/AppDateField'
 import AppTextField from 'shared/components/input-fields/AppTextField'
@@ -218,7 +219,10 @@ function CandidateAbout() {
                           flexDirection={'column'}
                           alignItems={'flex-start'}
                         >
-                          <Text13sb>Attach CV</Text13sb>
+                          <Text13sb>
+                            Attach CV
+                            <RequiredIcon />
+                          </Text13sb>
                           <Tiny12md>
                             One PDF file only, file size up to 20MB
                           </Tiny12md>

@@ -134,7 +134,7 @@ const CandidateProfile = () => {
                 color: 'grey.500',
               }}
             ></LocalPhoneIcon>
-            <Text13md>{candidateInfor?.phone}</Text13md>
+            <Text13md color={'#2A2E37'}>{candidateInfor?.phone}</Text13md>
             {/* <FileCopyIcon sx={{ color: 'grey.500', fontSize: '16px' }} /> */}
           </FlexBox>
           <FlexBox
@@ -152,7 +152,7 @@ const CandidateProfile = () => {
                 color: 'grey.500',
               }}
             ></MailIcon>
-            <Text13md>{candidateInfor?.email}</Text13md>
+            <Text13md color={'#2A2E37'}>{candidateInfor?.email}</Text13md>
             {/* <FileCopyIcon sx={{ color: 'grey.500', fontSize: '16px' }} /> */}
           </FlexBox>
           <FlexBox
@@ -166,7 +166,7 @@ const CandidateProfile = () => {
                 fontSize: '18px',
               }}
             ></Cake>
-            <Text13md>
+            <Text13md color={'#2A2E37'}>
               {candidateInfor?.dob &&
                 format(new Date(candidateInfor?.dob), 'dd/MM/yyyy')}
             </Text13md>
@@ -183,7 +183,7 @@ const CandidateProfile = () => {
                 fontSize: '18px',
               }}
             ></Address>
-            <Text13md>{candidateInfor?.address}</Text13md>
+            <Text13md color={'#2A2E37'}>{candidateInfor?.address}</Text13md>
           </FlexBox>
         </FlexBox>
         <FlexBox
@@ -191,7 +191,13 @@ const CandidateProfile = () => {
             margin: '15px 0',
           }}
         >
-          <ChipLimit chips={candidate_skills} limit={3} />
+          <ChipLimit
+            chips={candidate_skills}
+            limit={3}
+            chipSx={{
+              backgroundColor: '#E0F1FD !important',
+            }}
+          />
         </FlexBox>
         <FlexBox
           flexDirection={'column'}
@@ -199,8 +205,8 @@ const CandidateProfile = () => {
             margin: '8px 0',
           }}
         >
-          <Tiny12md>Candidate Source</Tiny12md>
-          <Text13sb>
+          <Tiny12md color={'#4D607A'}>Candidate Source</Tiny12md>
+          <Text13sb color={'#0B0E1E'}>
             {candidateInfor &&
               CANDIDATE_SOURCE_LABEL[candidateInfor?.reference_type]}
           </Text13sb>
@@ -211,8 +217,8 @@ const CandidateProfile = () => {
             margin: '8px 0',
           }}
         >
-          <Tiny12md>Recruit Channel</Tiny12md>
-          <Text13sb>
+          <Tiny12md color={'#4D607A'}>Recruit Channel</Tiny12md>
+          <Text13sb color={'#0B0E1E'}>
             {candidateInfor &&
               renderReferenceValueByType(
                 candidateInfor?.reference_type,
@@ -226,8 +232,10 @@ const CandidateProfile = () => {
             margin: '8px 0',
           }}
         >
-          <Tiny12md>Recruiter</Tiny12md>
-          <Text13sb>{candidateInfor?.reference_user?.name}</Text13sb>
+          <Tiny12md color={'#4D607A'}>Recruiter</Tiny12md>
+          <Text13sb color={'#0B0E1E'}>
+            {candidateInfor?.reference_user?.name}
+          </Text13sb>
         </FlexBox>
         <FlexBox
           flexDirection={'column'}
@@ -235,8 +243,8 @@ const CandidateProfile = () => {
             margin: '8px 0',
           }}
         >
-          <Tiny12md>Recruit time</Tiny12md>
-          <Text13sb>
+          <Tiny12md color={'#4D607A'}>Recruit time</Tiny12md>
+          <Text13sb color={'#0B0E1E'}>
             {dayjs(candidateInfor?.recruit_time).format('DD/MM/YYYY')}
           </Text13sb>
         </FlexBox>
@@ -248,8 +256,8 @@ const CandidateProfile = () => {
               margin: '8px 0',
             }}
           >
-            <Tiny12md>Descriptions</Tiny12md>
-            <Text13sb>
+            <Tiny12md color={'#4D607A'}>Descriptions</Tiny12md>
+            <Text13sb color={'#0B0E1E'}>
               {showMore
                 ? description
                 : `${description.substring(0, MAX_LENGTH)}`}
