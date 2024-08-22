@@ -9,8 +9,8 @@ import GraphQLClientService from 'services/graphql-service'
 export const SEND_TO_VALUE = {
   interviewer: 'interviewer',
   job_request: 'job_request',
-  team_manager: 'team_manager',
-  team_member: 'team_member',
+  team_manager: 'hiring_team_manager',
+  team_member: 'hiring_team_member',
   role: 'role',
   candidate: 'candidate',
 }

@@ -3,7 +3,6 @@ export {default as CloseJobModal} from './ChangeStatusJobModal';
 export {default as CreateJobModal} from './CreateJobModal';
 export {default as DeleteJobModal} from './DeleteJobModal';
 export {default as EditJobModal} from './EditJobModal';
-export {default as GeneralInformation} from './GeneralInformation';
 export {default as GeneralInformationField} from './GeneralInformationField';
 export {default as GeneralInformationHiring} from './GeneralInformationHiring';
 export {default as HistoryLog} from './HistoryLog';

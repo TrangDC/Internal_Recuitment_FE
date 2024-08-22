@@ -110,6 +110,28 @@ const useGraphql = () => {
     node: `
       data {
         id
+        candidate_id
+        interview_feature
+        status
+        created_at
+        candidate {
+          id
+          name
+          phone
+          status
+        }
+        hiring_job {
+          id
+          is_able_to_close
+          location
+          name
+          priority
+          status
+          hiring_team {
+            id
+            name
+          }
+        }
       }
     `,
     params: {

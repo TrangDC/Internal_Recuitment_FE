@@ -152,7 +152,7 @@ const JobDetail = () => {
         <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
           <HeadingWrapper sx={{ marginTop: 0, padding: 2 }}>
             <CandidateDetailProvider>
-              <GenaralInformationHiring />
+              <GenaralInformationHiring jobDetail={jobDetail}/>
             </CandidateDetailProvider>
           </HeadingWrapper>
         </BoxWrapperOuterContainer>

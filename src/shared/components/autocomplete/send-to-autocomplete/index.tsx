@@ -23,7 +23,6 @@ function SendToAutocomplete<Multiple extends boolean>(
     return result
   }, [include])
 
-  console.log('options', options)
   return <AutocompleteBase<Multiple> {...autoCompleteProps} options={options} />
 }
 

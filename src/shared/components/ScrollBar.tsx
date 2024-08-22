@@ -1,6 +1,6 @@
 import { alpha, styled } from '@mui/material'
 import { SxProps } from '@mui/system'
-import { ReactNode, CSSProperties, UIEventHandler } from 'react'
+import { ReactNode, CSSProperties } from 'react'
 import SimpleBar, { Props } from 'simplebar-react'
 
 const StyledScrollBar = styled(SimpleBar)(({ theme }) => ({

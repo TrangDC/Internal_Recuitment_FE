@@ -9,6 +9,7 @@ import useBuildActionsKanbanJobs from 'features/jobs/hooks/table/useBuildActions
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import checkPermissionActionKanBan from 'features/jobs/permission/utils/checkPermissionActionKanBan'
 import CandidateJob from 'shared/schema/database/candidate_job'
+import { useContextCandidateDetail } from '../context/CandidateDetailContext'
 
 interface IActionGroupButtons {
   rowId: string
@@ -18,6 +19,7 @@ interface IActionGroupButtons {
 const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
   const { actions } = useContextChangeStatus()
   const { handleRemoveCandidate } = actions
+  const contextCandidateDetail = useContextCandidateDetail()
   const {
     openDelete,
     setOpenDelete,
@@ -52,6 +54,7 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
           id={rowId}
           onSuccess={() => {
             handleRemoveCandidate(rowData?.status, rowId)
+            contextCandidateDetail.actions.handleRemoveCandidate(rowData?.status, rowId)
           }}
         />
       )}
