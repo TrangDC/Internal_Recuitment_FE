@@ -12,6 +12,7 @@ interface IDetailEmailModal {
 
 function DetailEmailModal({ id }: IDetailEmailModal) {
   const { email_detail } = useEmailDetail(id as string)
+  // console.log("🚀 ~ DetailEmailModal ~ email_detail:", email_detail)
 
   return (
     <Box padding={'24px 16px'}>

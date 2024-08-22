@@ -28,6 +28,7 @@ import HiringJob from 'shared/schema/database/hiring_job'
 import Cant from 'features/authorization/presentation/components/Cant'
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import { JobStatus } from 'shared/class/job-status'
 
 interface IGeneralInformationHiring {
   jobDetail: HiringJob
@@ -78,7 +79,18 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
 
   const { role, user } = useAuthorization()
   const showApplyJob = useMemo(() => {
-    const createPermission = checkPermissions({
+    if(jobDetail.status !== JobStatus.STATUS_HIRING_JOB.OPENED) return false;
+
+    const createPermissionEverything = checkPermissions({
+      role,
+      checkBy: {
+        compare: 'hasAny',
+        permissions: ['CREATE.everything'],
+      },
+      module: 'CANDIDATE_JOBS',
+    })
+
+    const createPermissionTeam = checkPermissions({
       role,
       checkBy: {
         compare: 'hasAny',
@@ -87,7 +99,7 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
       module: 'CANDIDATE_JOBS',
     })
 
-    return createPermission && user?.teamId === jobDetail?.hiring_team?.id
+    return createPermissionEverything || (user?.teamId === jobDetail?.hiring_team?.id && createPermissionTeam)
   }, [role, user, jobDetail])
 
   return (

@@ -48,7 +48,7 @@ function useUpdateEmail(props: UseEditTeamProps) {
         send_to: [...send_to, ...roles],
         content: data?.content ?? '',
         signature: data?.signature ?? '',
-        subject: `<p>${data?.subject}</p>` ?? '',
+        subject: `<p>${data?.subject}</p>`,
         cc: data?.cc ?? [],
         bcc: [],
         note: '',
