@@ -7,6 +7,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import OutgoingEmail from 'shared/schema/database/out_going_email'
 import dayjs from 'dayjs'
 import ChipEmailStatus from 'shared/components/chip/ChipEmailStatus'
+import { EVENT_EMAIL } from 'shared/components/autocomplete/event-email-autocomplete'
 
 type EmailProps = {
   outgoingEmail: OutgoingEmail
@@ -38,7 +39,7 @@ function Email({ outgoingEmail }: EmailProps) {
         <FlexBox alignItems={'center'} onClick={() => setOpen((prev) => !prev)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           <Text13sb marginLeft={1}>
-            {`Email send to  <${outgoingEmail.to.reduce((a, b) => a + ' ' + b, '')}> when ${outgoingEmail.recipient_type}`}
+            {`Email sent when ${EVENT_EMAIL[outgoingEmail.event]?.label?.toLocaleLowerCase()}`}
           </Text13sb>
         </FlexBox>
         <Tiny12md color={'grey.500'}>{dateLabel}</Tiny12md>

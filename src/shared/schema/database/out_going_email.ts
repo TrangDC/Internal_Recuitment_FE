@@ -8,6 +8,16 @@ interface OutgoingEmail {
   status: OutgoingEmailStatus
   created_at: string
   updated_at: string
+  event: EmailTemplateEvent
+}
+
+export enum EmailTemplateEvent {
+  CANDIDATE_APPLIED_TO_KIV = 'candidate_applied_to_kiv',
+  CANDIDATE_INTERVIEWING_TO_KIV = 'candidate_interviewing_to_kiv',
+  CANDIDATE_INTERVIEWING_TO_OFFERING = 'candidate_interviewing_to_offering',
+  CREATED_INTERVIEW = 'created_interview',
+  UPDATING_INTERVIEW = 'updating_interview',
+  CANCEL_INTERVIEW = 'cancel_interview',
 }
 
 export enum OutgoingEmailRecipientType {
