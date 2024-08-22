@@ -42,7 +42,7 @@ function editAction({ newActions, role }: ActionProps) {
   return newActions
 }
 
-function deleteAction({ newActions, role, inTeam }: ActionProps) {
+function deleteAction({ newActions, role, inTeam, isOwner }: ActionProps) {
   const deletePermission = checkPermissions({
     role,
     checkBy: {
@@ -61,9 +61,20 @@ function deleteAction({ newActions, role, inTeam }: ActionProps) {
     module: 'CANDIDATE_ACTIVITIES',
   })
 
+  const deleteOwnerOnly = checkPermissions({
+    role,
+    checkBy: {
+      compare: 'hasAny',
+      permissions: ['DELETE.ownedOnly'],
+    },
+    module: 'CANDIDATE_ACTIVITIES',
+  })
+
   if (!deletePermission)
     return newActions.filter((action) => action.id !== ActionHistoryCall.DELETE)
   if (deleteTeamOnly && !inTeam)
+    return newActions.filter((action) => action.id !== ActionHistoryCall.DELETE)
+  if (deleteOwnerOnly && !isOwner)
     return newActions.filter((action) => action.id !== ActionHistoryCall.DELETE)
   return newActions
 }
