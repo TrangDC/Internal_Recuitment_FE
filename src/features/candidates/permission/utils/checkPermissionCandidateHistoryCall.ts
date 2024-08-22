@@ -20,7 +20,8 @@ function checkPermissionCandidateHistoryCall({
 }: Omit<CheckPermissionActionTableProps<CandidateHistoryCall>, 'rowData'> & {
   candidateHistoryCall: CandidateHistoryCall
 }): TOptionItem<CandidateHistoryCall>[] {
-  const inTeam = me?.teamId === candidateHistoryCall.created_by?.hiring_team?.id
+  const inTeam =
+    me?.teamId === candidateHistoryCall.created_by?.member_of_hiring_team?.id
   const isOwner = me?.id === candidateHistoryCall.created_by.id
   let newActions = [...actions]
   newActions = editAction({ newActions, role, inTeam, isOwner })
