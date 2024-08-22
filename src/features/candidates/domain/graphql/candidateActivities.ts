@@ -92,6 +92,7 @@ const useCandidateActivitiesGraphql = () => {
            signature
            recipient_type
            status
+           created_at
         }
         candidate_job_feedbacks {
           id
