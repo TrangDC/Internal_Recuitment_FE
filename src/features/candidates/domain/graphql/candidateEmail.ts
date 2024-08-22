@@ -18,6 +18,7 @@ const useCandidateEmailGraphql = () => {
           signature
           recipient_type
           status
+          created_at
         }
       }
     `,
