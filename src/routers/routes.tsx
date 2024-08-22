@@ -139,10 +139,7 @@ export const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={<Navigate to="/dashboard/reports" replace />}
-        />
+        <Route path="/" element={<Navigate to="/dashboard/jobs" replace />} />
         <Route
           path="/dashboard"
           element={
@@ -151,7 +148,7 @@ export const AppRoutes = () => {
             </ProtectedLayout>
           }
         >
-          <Route index element={<Navigate to="/dashboard/reports" replace />} />
+          <Route index element={<Navigate to="/dashboard/jobs" replace />} />
           <Route path="teams" element={teamPage} />
           <Route
             path="team-detail/:id"
