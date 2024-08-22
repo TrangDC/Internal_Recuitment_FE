@@ -55,6 +55,9 @@ function EditHistoryCallModal({
     },
   })
   const contactType = watch('contactType')
+  const timeFrom = watch('timeFrom')
+  const contactDate = watch('contactDate')
+
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -143,7 +146,9 @@ function EditHistoryCallModal({
                             timeSteps={{
                               minutes: 30,
                             }}
+                            disabled={!contactDate}
                           />
+
                           <HelperTextForm
                             message={fieldState.error?.message}
                           ></HelperTextForm>
@@ -171,6 +176,7 @@ function EditHistoryCallModal({
                             timeSteps={{
                               minutes: 30,
                             }}
+                            disabled={!timeFrom || !contactDate}
                           />
                           <HelperTextForm
                             message={fieldState.error?.message}

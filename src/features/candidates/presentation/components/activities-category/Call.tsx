@@ -18,6 +18,7 @@ import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import { downloadOneFile } from 'features/candidatejob/shared/helper'
 import checkPermissionCandidateHistoryCall from 'features/candidates/permission/utils/checkPermissionCandidateHistoryCall'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import { ActionHistoryCall } from 'features/candidates/hooks/candidate-activity/actions/useBuildActionHistoryCall'
 
 type CallProps = {
   candidateHistoryCall: CandidateHistoryCall
@@ -32,11 +33,15 @@ function Call({ candidateHistoryCall, actions }: CallProps) {
   const startTime = dayjs(candidateHistoryCall.start_time).format('HH:mm')
   const endTime = dayjs(candidateHistoryCall.end_time).format('HH:mm')
   const dateLabel =
-    candidateHistoryCall.start_time && candidateHistoryCall.end_time
-      ? `${date}, ${startTime} - ${endTime}`
-      : `${date}`
+    !candidateHistoryCall.start_time && !candidateHistoryCall.end_time
+      ? `${date}`
+      : `${date}, ${startTime} - ${dayjs(endTime).isValid() ? endTime : ''}`
+
+  const removeHistoryLog = candidateHistoryCall.edited
+    ? actions
+    : actions.filter((i) => i.id !== ActionHistoryCall.VIEW)
   const newActions = checkPermissionCandidateHistoryCall({
-    actions: actions,
+    actions: removeHistoryLog,
     candidateHistoryCall,
     me: user,
     role,

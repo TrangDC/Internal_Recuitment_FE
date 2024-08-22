@@ -87,6 +87,7 @@ function EditCandidateNoteModal({
                         label="Description"
                         rows={3}
                         multiline
+                        required
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}

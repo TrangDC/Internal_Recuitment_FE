@@ -17,6 +17,7 @@ import {
 import BoxTextSquare from 'shared/components/utils/boxText'
 import checkPermissionCandidateNote from 'features/candidates/permission/utils/checkPermissionCandidateNote'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import { ActionCandidateNote } from 'features/candidates/hooks/candidate-activity/actions/useBuildActionCandidateNote'
 
 type NodeProps = {
   candidateNote: CandidateNote
@@ -27,8 +28,11 @@ function Note({ candidateNote, actions }: NodeProps) {
   const [open, setOpen] = useState(false)
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
   const { role, user } = useAuthorization()
+  const removeHistoryLog = candidateNote.edited
+    ? actions
+    : actions.filter((i) => i.id !== ActionCandidateNote.VIEW)
   const newActions = checkPermissionCandidateNote({
-    actions: actions,
+    actions: removeHistoryLog,
     candidateNote,
     me: user,
     role,

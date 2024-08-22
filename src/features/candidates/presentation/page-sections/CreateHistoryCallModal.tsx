@@ -37,7 +37,7 @@ function CreateHistoryCallModal({
     onSubmit,
     getValues,
     watch,
-    onSelectedInterviewDate,
+    onSelectedDate,
     onSelectedFrom,
     onSelectedTo,
     setValue,
@@ -47,6 +47,9 @@ function CreateHistoryCallModal({
     },
   })
   const contactType = watch('contactType')
+  const timeFrom = watch('timeFrom')
+  const contactDate = watch('contactDate')
+
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
@@ -91,7 +94,7 @@ function CreateHistoryCallModal({
                           onChange={(value) => {
                             if (value) {
                               field.onChange(value?.toDate())
-                              onSelectedInterviewDate()
+                              onSelectedDate()
                             } else {
                               setValue('contactDate', null, {
                                 shouldValidate: true,
@@ -121,14 +124,15 @@ function CreateHistoryCallModal({
                           label={'From time'}
                           value={field.value ? dayjs(field.value) : null}
                           onChange={(value) => {
-                            if (value) onSelectedFrom(value?.toDate())
-                            else field.onChange(value)
+                            field.onChange(value)
+                            onSelectedFrom(value?.toDate())
                           }}
                           views={['hours', 'minutes']}
                           ampm={false}
                           timeSteps={{
                             minutes: 30,
                           }}
+                          disabled={!contactDate}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}
@@ -147,14 +151,15 @@ function CreateHistoryCallModal({
                           label={'To time'}
                           value={field.value ? dayjs(field.value) : null}
                           onChange={(value) => {
-                            if (value) onSelectedTo(value?.toDate())
-                            else field.onChange(value)
+                            field.onChange(value)
+                            onSelectedTo(value?.toDate())
                           }}
                           views={['hours', 'minutes']}
                           ampm={false}
                           timeSteps={{
                             minutes: 30,
                           }}
+                          disabled={!timeFrom || !contactDate}
                         />
                         <HelperTextForm
                           message={fieldState.error?.message}

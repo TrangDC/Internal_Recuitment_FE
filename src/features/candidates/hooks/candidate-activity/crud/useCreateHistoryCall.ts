@@ -18,6 +18,7 @@ import {
   convertToUTC,
   getLocalTimeOffset,
 } from 'shared/utils/date'
+import dayjs from 'dayjs'
 
 type UseCreateNoteProps = {
   successCallback: () => void
@@ -73,9 +74,8 @@ function useCreateHistoryCall({ successCallback }: UseCreateNoteProps) {
         const startTime = value.timeFrom
           ? convertToRootDate(value.timeFrom, value.contactDate)
           : null
-        const contactDate = convertToUTC(value.contactDate)
+        const contactDate = dayjs(value.contactDate)
           .startOf('day')
-          .subtract(getLocalTimeOffset(), 'hour')
           .toISOString()
         const attachments = removeStatusAttachment(value?.attachments)
         const payload: CreateCandidateHistoryCallArguments = {
@@ -101,21 +101,19 @@ function useCreateHistoryCall({ successCallback }: UseCreateNoteProps) {
     })()
   }
 
-  function onSelectedInterviewDate() {
+  function onSelectedDate() {
     const from = getValues('timeFrom')
     const to = getValues('timeTo')
     const date = getValues('contactDate')
 
     if (from && date) {
       const fromDate = convertToRootDate(from, date)
-      setValue('timeFrom', fromDate.toDate(), { shouldValidate: true })
-      trigger(['timeFrom'])
+      setValue('timeFrom', fromDate.toDate())
     }
 
     if (to && date) {
       const toDate = convertToRootDate(to, date)
-      setValue('timeTo', toDate.toDate(), { shouldValidate: true })
-      trigger(['timeTo'])
+      setValue('timeTo', toDate.toDate())
     }
   }
 
@@ -147,7 +145,7 @@ function useCreateHistoryCall({ successCallback }: UseCreateNoteProps) {
     useCreateReturn,
     useFormReturn,
     setValue,
-    onSelectedInterviewDate,
+    onSelectedDate,
     onSelectedTo,
     onSelectedFrom,
   }
