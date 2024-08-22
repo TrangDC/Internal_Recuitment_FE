@@ -69,7 +69,7 @@ const AllJob = () => {
           <DivFilter>
             <ControllerFilter
               control={controlFilter}
-              title="Team"
+              title="Hiring team"
               keyName={'hiring_team_ids'}
               Node={({ onFilter, value }) => (
                 <TeamsAutoComplete
