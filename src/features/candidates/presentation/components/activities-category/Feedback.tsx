@@ -59,7 +59,7 @@ function Feedback({ candidateJobFeedback }: FeedbackProps) {
           </FlexBox>
         </FlexBox>
         <Tiny12md color={'grey.500'}>
-          {dayjs(candidateJobFeedback.created_at).format('DD/MM/YYYY, HH:MM')}
+          {dayjs(candidateJobFeedback.created_at).format('DD/MM/YYYY, HH:mm')}
         </Tiny12md>
       </FlexBox>
       <FlexBox flexDirection={'column'} marginLeft={4}>

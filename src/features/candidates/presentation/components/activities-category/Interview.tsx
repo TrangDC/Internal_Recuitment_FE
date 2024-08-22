@@ -68,8 +68,8 @@ function Interview({ candidateInterview }: InterviewProps) {
           <Tiny12md color={'grey.500'}>Date and time</Tiny12md>
           <Text13sb>
             {dayjs(candidateInterview.interview_date).format('DD/MM/YYYY')},{' '}
-            {dayjs(candidateInterview.start_from).format('HH:MM')} -{' '}
-            {dayjs(candidateInterview.end_at).format('HH:MM')}
+            {dayjs(candidateInterview.start_from).format('HH:mm')} -{' '}
+            {dayjs(candidateInterview.end_at).format('HH:mm')}
           </Text13sb>
         </FlexBox>
         <FlexBox flexDirection={'column'}>
