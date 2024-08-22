@@ -96,7 +96,7 @@ const FilterCandidate = () => {
             )}
           />
 
-          <ControllerFilter
+          {/* <ControllerFilter
             control={controlFilter}
             title="REC team"
             keyName={'rec_id'}
@@ -121,7 +121,7 @@ const FilterCandidate = () => {
                 }}
               />
             )}
-          />
+          /> */}
           <ControllerFilter
             control={controlFilter}
             keyName="status"
