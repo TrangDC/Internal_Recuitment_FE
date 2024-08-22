@@ -20,7 +20,8 @@ function checkPermissionCandidateNote({
 }: Omit<CheckPermissionActionTableProps<CandidateNote>, 'rowData'> & {
   candidateNote: CandidateNote
 }): TOptionItem<CandidateNote>[] {
-  const inTeam = me?.teamId === candidateNote.created_by?.hiring_team?.id
+  const inTeam =
+    me?.teamId === candidateNote.created_by?.member_of_hiring_team?.id
   const isOwner = me?.id === candidateNote.created_by.id
   let newActions = [...actions]
   newActions = editAction({ newActions, role, inTeam, isOwner })
