@@ -3,7 +3,7 @@ import Scrollbar from 'shared/components/ScrollBar'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import { Box, Button } from '@mui/material'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { DragDropProvider } from 'shared/components/dnd'
 import Droppable from 'shared/components/dnd/components/Droppable'
 import { ENABLED_CHANGE_STATUS } from 'features/application/shared/constants'
@@ -26,6 +26,8 @@ import { useContextCandidateDetail } from '../OpeningJobs/context/CandidateDetai
 import ApplyJobModalDetail from '../ApplyJob'
 import HiringJob from 'shared/schema/database/hiring_job'
 import Cant from 'features/authorization/presentation/components/Cant'
+import { checkPermissions } from 'features/authorization/domain/functions/functions'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 
 interface IGeneralInformationHiring {
   jobDetail: HiringJob
@@ -74,6 +76,20 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
     })
   }, [id])
 
+  const { role, user } = useAuthorization()
+  const showApplyJob = useMemo(() => {
+    const createPermission = checkPermissions({
+      role,
+      checkBy: {
+        compare: 'hasAny',
+        permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+      },
+      module: 'CANDIDATE_JOBS',
+    })
+
+    return createPermission && user?.teamId === jobDetail?.hiring_team?.id
+  }, [role, user, jobDetail])
+
   return (
     <DivWrapperProcess
       flexDirection={'column'}
@@ -82,17 +98,12 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
     >
       <FlexBox alignItems={'center'} justifyContent={'space-between'}>
         <SpanHiring>{translation.MODLUE_JOBS.hiring_process}</SpanHiring>
-        <Cant
-          checkBy={{
-            compare: 'hasAny',
-            permissions: ['CREATE.everything', 'CREATE.teamOnly'],
-          }}
-          module="CANDIDATE_JOBS"
-        >
+
+        {showApplyJob && (
           <Button variant="contained" onClick={() => setOpenCreate(true)}>
             Apply Candidate
           </Button>
-        </Cant>
+        )}
       </FlexBox>
       <Box>
         <InfiniteScroll
