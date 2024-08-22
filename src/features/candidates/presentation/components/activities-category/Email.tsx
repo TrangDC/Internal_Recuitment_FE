@@ -39,7 +39,7 @@ function Email({ outgoingEmail }: EmailProps) {
         <FlexBox alignItems={'center'} onClick={() => setOpen((prev) => !prev)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           <Text13sb marginLeft={1}>
-            {`Email sent when ${EVENT_EMAIL[outgoingEmail.event]?.label?.toLocaleLowerCase()}`}
+            {`Email sent when ${outgoingEmail.event ? EVENT_EMAIL[outgoingEmail.event]?.label?.toLocaleLowerCase() : ''} `}
           </Text13sb>
         </FlexBox>
         <Tiny12md color={'grey.500'}>{dateLabel}</Tiny12md>

@@ -18,8 +18,8 @@ import {
 import EditCandidateJobModal from 'features/candidatejob/presentation/page-sections/EditCandidateJobModal'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
-import { useCandidateInforContext } from 'features/candidates/shared/context/CandidateInformation'
 import { CandidateStatusEnum } from 'shared/schema'
+import Cant from 'features/authorization/presentation/components/Cant'
 
 const ApplicationHistory = () => {
   const { id } = useParams()
@@ -73,13 +73,25 @@ const ApplicationHistory = () => {
         >
           Application history
         </Text15sb>
-        <AppButton
-          startIcon={<Add />}
-          variant="contained"
-          onClick={() => setOpenCreate(true)}
+        <Cant
+          checkBy={{
+            compare: 'hasAny',
+            permissions: [
+              'CREATE.everything',
+              'CREATE.ownedOnly',
+              'CREATE.teamOnly',
+            ],
+          }}
+          module="CANDIDATE_JOBS"
         >
-          Apply to a job request
-        </AppButton>
+          <AppButton
+            startIcon={<Add />}
+            variant="contained"
+            onClick={() => setOpenCreate(true)}
+          >
+            Apply to a job request
+          </AppButton>
+        </Cant>
       </FlexBox>
       <Box flexGrow={1} height={'calc(80vh - 100px)'}>
         <Scrollbar>

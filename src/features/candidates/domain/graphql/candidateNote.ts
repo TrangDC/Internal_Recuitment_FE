@@ -59,7 +59,7 @@ const useCandidateNoteGraphql = () => {
           created_by {
             id
             name
-            hiring_team {
+            member_of_hiring_team {
               id
             }
           }
