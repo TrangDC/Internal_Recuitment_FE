@@ -16,9 +16,10 @@ const useCandidateEmailGraphql = () => {
           subject
           content
           signature
-          recipient_type
           status
           created_at
+          event
+
         }
       }
     `,

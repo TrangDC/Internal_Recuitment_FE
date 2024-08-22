@@ -90,9 +90,9 @@ const useCandidateActivitiesGraphql = () => {
            subject
            content
            signature
-           recipient_type
            status
            created_at
+           event
         }
         candidate_job_feedbacks {
           id
