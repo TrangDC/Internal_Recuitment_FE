@@ -13,6 +13,7 @@ import CandidateJob, {
 } from 'shared/schema/database/candidate_job'
 import useCreateFeedBack from './useCreateFeedback'
 import { isRight } from 'shared/utils/handleEither'
+import { isEmpty } from 'lodash'
 
 interface useChangeStatusProps {
   defaultValues?: Partial<FormDataSchemaChangeStatus>
@@ -64,6 +65,7 @@ function useChangeStatus(props: useChangeStatusProps) {
 
   function onSubmit() {
     handleSubmit((value) => {
+      const createFeedback = !!(value.feedback || !isEmpty(value.attachments));
       const attachments = removeStatusAttachment(value?.attachments)
       const offer_expiration_date = value.offer_expiration_date
         ? convertToEndDateUTC(value.offer_expiration_date)
@@ -85,7 +87,7 @@ function useChangeStatus(props: useChangeStatusProps) {
       }
  
       mutateAsync(payload).then((data) => {
-        if (isRight(data)) {
+        if (isRight(data) && createFeedback) {
           mutateCreateFeedback({
             input: {
               attachments,
@@ -94,6 +96,8 @@ function useChangeStatus(props: useChangeStatusProps) {
             },
             note: '',
           }).then(() => callbackSuccess?.({id: id, status: value?.status}))
+        } else {
+          callbackSuccess?.({id: id, status: value?.status})
         }
       })
     })()
