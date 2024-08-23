@@ -4,7 +4,7 @@ import { RULE_MESSAGES } from 'shared/constants/validate'
 import * as yup from 'yup'
 
 export const schemaApplyJob = yup.object({
-  hiring_team_id: yup.string().required(RULE_MESSAGES.MC1('team')),
+  hiring_team_id: yup.string().required(RULE_MESSAGES.MC1('Hiring team')),
   candidate_id: yup.string().required(RULE_MESSAGES.MC1('candidate')),
   hiring_job_id: yup.string().required(RULE_MESSAGES.MC1('job name')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
