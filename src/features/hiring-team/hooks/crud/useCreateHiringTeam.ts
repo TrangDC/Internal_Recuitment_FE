@@ -3,7 +3,7 @@ import usePopup from 'contexts/popupProvider/hooks/usePopup'
 import useGraphql from 'features/hiring-team/domain/graphql/graphql'
 import { FormDataSchema, schema } from 'features/hiring-team/shared/constants/schema'
 import { convertApproves } from 'features/hiring-team/shared/utils'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { CreateHiringTeamArguments } from 'shared/schema/database/hiring_team'
 import { v4 as uuidv4 } from 'uuid'
@@ -73,7 +73,6 @@ function useCreateHiringTeam(props: createTeamProps = {}) {
       },
     })
   }
-
 
   function addApprove() {
     const default_approve = {uid: uuidv4(), user_id: '', id: ''};
