@@ -50,6 +50,12 @@ const ApplicationHistory = () => {
     queryClient.invalidateQueries({
       queryKey: [MODLUE_QUERY_KEY.CANDIDATE, MODLUE_QUERY_KEY.CANDIDATE_JOB],
     })
+    queryClient.invalidateQueries({
+      queryKey: [MODLUE_QUERY_KEY.FEEDBACK],
+    })
+    queryClient.invalidateQueries({
+      queryKey: [MODLUE_QUERY_KEY.CANDIDATE_ACTIVITY],
+    })
   }
 
   return (
