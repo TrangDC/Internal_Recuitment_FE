@@ -7,6 +7,29 @@ import TalenaJobDescription from 'shared/schema/talena/talena_jd'
 import TalenaToken from 'shared/schema/talenaToken'
 import { makeLeft, makeRight } from 'shared/utils/handleEither'
 
+export type GenerateJDPayload = {
+  application_form?: []
+  currency: string
+  employee_level: string
+  employment_type: string
+  name: string
+  questions?: []
+  salary_from: number
+  salary_to: number
+  title: string
+  working_hour_from: string
+  working_hour_to: string
+  working_location: string
+}
+
+export type CommandRewrite = 'MAKE_LONGER' | 'MAKE_SHORTER' | 'CORRECT_GRAMMAR' | 'MAKE_MORE_PROFESSIONAL'
+
+export type RewritePayload = {
+  command:'MAKE_LONGER' | 'MAKE_SHORTER' | 'CORRECT_GRAMMAR' | 'MAKE_MORE_PROFESSIONAL'
+  text:string
+}
+
+
 class TalenaApiService {
   static async getToken(): Promise<Either<null, TalenaToken>> {
     try {
@@ -43,15 +66,22 @@ class TalenaApiService {
   }
 
   static async generateJD(
-    formData: FormData
+    variable: GenerateJDPayload
   ): Promise<Either<ErrorException, TalenaJobDescription>> {
     try {
-      const res = await talenaClient.post(talenaApi.generateJD, formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // body: JSON.stringify(data),
-      })
+      const res = await talenaClient.post(talenaApi.generateJD, variable)
+      const data = res?.data
+      return makeRight(data)
+    } catch (error) {
+      return makeLeft(error as ErrorException)
+    }
+  }
+
+  static async rewrite(
+    variable: RewritePayload
+  ): Promise<Either<ErrorException, string>> {
+    try {
+      const res = await talenaClient.post(talenaApi.reWriteJD, variable)
       const data = res?.data
       return makeRight(data)
     } catch (error) {

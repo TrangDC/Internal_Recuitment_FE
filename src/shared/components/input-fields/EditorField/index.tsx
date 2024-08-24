@@ -11,10 +11,11 @@ import useGetSlashCommand, {
   SLASH_COMMAND_TYPE,
 } from './hooks/useGetSlashCommand'
 import { EVENT_EMAIL_ENUM } from 'shared/components/autocomplete/event-email-autocomplete'
+import { InitOptions } from '@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor'
 
 interface TinyProps extends IAllProps {
   label?: string
-  initProps?: object
+  initProps?: InitOptions
   defaultValue?: string
   callbackChange?: (value: string) => void
   required?: boolean

@@ -77,36 +77,33 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
     },
   })
 
-  const [description, setDescription] = useState<string>('')
   const { onSubmit, resetSalary } = action
   const translation = useTextTranslation()
   const salary = useWatch({ control, name: 'salary_type' })
-  const name = useWatch({ control, name: 'name' })
-  const title = useWatch({ control, name: 'job_position_id' })
-  const workingLocation = useWatch({ control, name: 'location' })
-  const salaryFrom = useWatch({ control, name: 'salary_from' })
-  const salaryTo = useWatch({ control, name: 'salary_to' })
-  const currency = useWatch({ control, name: 'currency' })
-  const staffLevel = useWatch({ control, name: 'staff_level' })
-
   const { generateJD, loading } = useGenerateJD({
     onSuccess: (data) => {
       toast.success('Job description generated successfully!')
       const formattedDescription = formatJobDescription(data)
       setValue('description', formattedDescription)
     },
-    formData: {
-      name,
-      title,
-      workingLocation,
-      salaryFrom: parseInt(salaryFrom.replace(/,/g, ''), 10),
-      salaryTo: parseInt(salaryTo.replace(/,/g, ''), 10),
-      currency: salary === 'negotiate' ? 'negotiate' : currency,
-      staffLevel,
+  })
+
+  function handleGenerateJD() {
+    const data = getValues()
+    generateJD({
+      name: data.name,
+      title: data.name,
+      working_location: data.location,
+      salary_from: parseInt(data.salary_from.replace(/,/g, ''), 10),
+      salary_to: parseInt(data.salary_to.replace(/,/g, ''), 10),
+      currency:
+        data.salary_type === 'negotiate' ? 'negotiate' : data.salary_type,
+      employee_level: data.staff_level,
       working_hour_from: '8:30',
       working_hour_to: '17:30',
-    },
-  })
+      employment_type: 'fulltime',
+    })
+  }
 
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
@@ -466,7 +463,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                 variant="contained"
                 startIcon={<AiIcon />}
                 disabled={isValid}
-                handlesubmit={generateJD}
+                handlesubmit={handleGenerateJD}
                 loading={loading === 'UPLOADING' ? true : false}
               >
                 Generate JD by AI
@@ -483,9 +480,18 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
                       <EditorBoxField
                         label={'Job description'}
                         value={field.value}
+                        pluginCustomize={[
+                          'talenaMakeLonger',
+                          'talenaMakeShorter',
+                          'correctGrammar',
+                          'makeProfessional',
+                        ]}
                         onEditorChange={(value) => {
                           field.onChange(value)
-                          setDescription(value)
+                        }}
+                        initProps={{
+                          contextmenu:
+                            'talenaMakeLonger talenaMakeShorter correctGrammar makeProfessional',
                         }}
                       />
                       <HelperTextForm

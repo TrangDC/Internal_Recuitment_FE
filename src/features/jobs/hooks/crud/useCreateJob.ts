@@ -74,19 +74,6 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     })()
   }
 
-  // const handleChangeManager = async (hiring_team_id: string) => {
-  //   if (!hiring_team_id) {
-  //     setValue('created_by', '')
-  //     return
-  //   }
-  //   const { managers_first } = await getMembersByTeam(hiring_team_id)
-  //   if (isEmpty(managers_first)) {
-  //     setValue('created_by', '')
-  //     return
-  //   }
-  //   setValue('created_by', managers_first?.id)
-  // }
-
   const resetSalary = () => {
     setValue('salary_from', '0')
     setValue('salary_to', '0')
@@ -105,7 +92,6 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     getValues,
     action: {
       resetSalary,
-      //handleChangeManager,
       onSubmit,
       updateDescription,
     },
