@@ -1,6 +1,7 @@
 import { CandidateCVData } from 'features/candidates/domain/interfaces'
 import { FormDataSchemaAttachment } from 'features/candidates/shared/constants/formSchema'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import TalenaApiService from 'services/talena-api-services'
 import { FileUploadAttachment } from 'shared/components/form/uploadFileBox/types'
 import { UploadCVState } from 'shared/schema/talena/talena_candidate'
@@ -29,7 +30,10 @@ function useImportCV({ onSuccess }: UseImportCVProps) {
       const cvData = await TalenaApiService.extractCV(formData)
       if (isRight(cvData)) {
         const data = unwrapEither(cvData)
-        if (data.state === 'FAILED') return setLoading('FAILED')
+        if (data.state === 'FAILED') {
+          toast.error('Invalid CV. Please try another file')
+          return setLoading('FAILED')
+        }
         if (data.state === 'DONE' || data.state === 'DUPLICATED') {
           onSuccess({
             data: data,
@@ -37,6 +41,7 @@ function useImportCV({ onSuccess }: UseImportCVProps) {
           })
         }
         setLoading('DONE')
+        toast.success('CV import success')
       } else {
         setLoading('FAILED')
       }

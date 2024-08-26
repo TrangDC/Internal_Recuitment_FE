@@ -72,13 +72,12 @@ const PopupContext = createContext({
 
 export const PopupProvider = ({ children }: PopupProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  console.log("🚀 ~ PopupProvider ~ state:", state)
 
   const setOpen = (open: boolean) => {
     dispatch({ type: 'setOpen', payload: open })
 
-    if(!open) {
-      dispatch({type: 'reset'})
+    if (!open) {
+      dispatch({ type: 'reset' })
     }
   }
 

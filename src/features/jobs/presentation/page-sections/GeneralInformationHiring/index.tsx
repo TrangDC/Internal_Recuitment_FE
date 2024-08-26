@@ -79,7 +79,7 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
 
   const { role, user } = useAuthorization()
   const showApplyJob = useMemo(() => {
-    if(jobDetail.status !== JobStatus.STATUS_HIRING_JOB.OPENED) return false;
+    if (jobDetail.status !== JobStatus.STATUS_HIRING_JOB.OPENED) return false
 
     const createPermissionEverything = checkPermissions({
       role,
@@ -99,7 +99,10 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
       module: 'CANDIDATE_JOBS',
     })
 
-    return createPermissionEverything || (user?.teamId === jobDetail?.hiring_team?.id && createPermissionTeam)
+    return (
+      createPermissionEverything ||
+      (user?.teamId === jobDetail?.hiring_team?.id && createPermissionTeam)
+    )
   }, [role, user, jobDetail])
 
   return (

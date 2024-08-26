@@ -72,7 +72,7 @@ export const navigation: INavigation[] = [
   },
   { type: 'label', label: 'System' },
   {
-    name: 'Role template',
+    name: 'Role',
     path: '/dashboard/role-template',
     icon: duotone.Settings,
     type: 'link',
