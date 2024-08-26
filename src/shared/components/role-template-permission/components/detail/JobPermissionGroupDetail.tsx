@@ -31,7 +31,7 @@ function JobPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
       setOpen={setOpen}
       title={
         <FlexBox justifyContent={'center'} gap={1}>
-          <Text13md color={'grey.900'}>Jobs</Text13md>
+          <Text13md color={'grey.900'}>Job request</Text13md>
           <Tiny12md color={'text.500'}>
             {countChecked}/{state.length}
           </Tiny12md>

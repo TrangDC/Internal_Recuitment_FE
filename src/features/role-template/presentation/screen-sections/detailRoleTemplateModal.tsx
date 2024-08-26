@@ -31,7 +31,7 @@ function DetailRoleTemplateModal({
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <Box>
           <BaseModal.Header
-            title={'Role template details'}
+            title={'Role details'}
             setOpen={setOpen}
             EndHeader={
               <FlexBox gap={1}>

@@ -3,7 +3,7 @@ import HelmetComponent from 'shared/components/helmet'
 
 function RoleTemplatePage() {
   return (
-    <HelmetComponent title="[TREC] Role Template">
+    <HelmetComponent title="[TREC] Role">
       <RoleTemplateList />
     </HelmetComponent>
   )

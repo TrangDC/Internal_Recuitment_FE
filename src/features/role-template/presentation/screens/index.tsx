@@ -70,7 +70,7 @@ const RoleTemplateList = () => {
           >
             <ButtonAdd
               Icon={Add}
-              textLable={'Add role template'}
+              textLable={'Add a new role'}
               onClick={() => setOpenCreate(true)}
             />
           </Cant>

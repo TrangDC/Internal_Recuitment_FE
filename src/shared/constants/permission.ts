@@ -18,19 +18,20 @@ export const roleTemplateInformation: RoleTemplateInformation = {
     description: 'Permission to delete hiring team',
   },
   'model.permissions.hiring_jobs.view': {
-    description: 'Permission to view Job information and its hiring process',
+    description:
+      'Permission to view job request information and its hiring process',
   },
   'model.permissions.hiring_jobs.create': {
-    description: 'Permission to create new job',
+    description: 'Permission to create new job request',
   },
   'model.permissions.hiring_jobs.edit': {
-    description: 'Permission to edit Job information ',
+    description: 'Permission to edit job request information ',
   },
   'model.permissions.hiring_jobs.delete': {
-    description: 'Permission to delete job ',
+    description: 'Permission to delete job request ',
   },
   'model.permissions.hiring_jobs.close_job': {
-    description: 'Permission to close Job ',
+    description: 'Permission to close job request',
   },
   'model.permissions.candidates.view': {
     description:

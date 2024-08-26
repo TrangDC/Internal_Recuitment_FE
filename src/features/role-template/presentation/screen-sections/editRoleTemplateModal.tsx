@@ -46,7 +46,7 @@ function EditRoleTemplateModal({
       <FormProvider {...useFormReturn}>
         <BaseModal.Wrapper open={open} setOpen={setOpen}>
           <BaseModal.Header
-            title="Edit role template"
+            title="Edit role "
             setOpen={setOpen}
           ></BaseModal.Header>
           <BaseModal.ContentMain

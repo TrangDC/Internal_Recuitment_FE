@@ -25,7 +25,7 @@ function CreateRoleTemplateModal({ open, setOpen }: ICreateModal) {
       <FormProvider {...useFormReturn}>
         <BaseModal.Wrapper open={open} setOpen={setOpen}>
           <BaseModal.Header
-            title="Create role template"
+            title="Create role"
             setOpen={setOpen}
           ></BaseModal.Header>
           <BaseModal.ContentMain

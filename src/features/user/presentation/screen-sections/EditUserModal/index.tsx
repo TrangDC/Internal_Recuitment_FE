@@ -267,7 +267,7 @@ function EditUserModal({ open, setOpen, id }: IEditUserModal) {
                             multiple={true}
                             textFieldProps={{
                               required: true,
-                              label: 'Role template',
+                              label: 'Role',
                             }}
                           />
                           <HelperTextForm
