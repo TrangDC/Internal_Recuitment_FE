@@ -49,7 +49,7 @@ function RoleTemplatePermissionGroup({ roleTemplate }: PermissionGroupProps) {
       setOpen={setOpen}
       title={
         <FlexBox justifyContent={'center'} gap={1}>
-          <Text13md color={'grey.900'}>Role template setting </Text13md>
+          <Text13md color={'grey.900'}>Role setting </Text13md>
           <Tiny12md color={'text.500'}>
             {countChecked}/{state.length}
           </Tiny12md>

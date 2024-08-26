@@ -43,7 +43,6 @@ export interface IuseCustomTableReturn {
     sortBy: ISorting
   }
 }
-
 const useCustomTable = ({
   buildQuery,
   filters,

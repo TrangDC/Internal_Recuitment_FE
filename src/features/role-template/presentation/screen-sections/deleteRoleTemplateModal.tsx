@@ -68,7 +68,7 @@ function DeleteRoleTemplateModal({
       ) : (
         <BaseModal.Wrapper open={open} setOpen={setOpen}>
           <BaseModal.Header
-            title="Do you want to delete this role template?"
+            title="Do you want to delete this role ?"
             setOpen={setOpen}
           ></BaseModal.Header>
           <BaseModal.ContentMain maxHeight="500px">

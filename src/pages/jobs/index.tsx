@@ -3,7 +3,7 @@ import HelmetComponent from 'shared/components/helmet'
 
 function JobsPage() {
   return (
-    <HelmetComponent title="[TREC] Jobs">
+    <HelmetComponent title="[TREC] Job request">
       <JobList />
     </HelmetComponent>
   )
