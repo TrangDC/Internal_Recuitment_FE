@@ -53,12 +53,14 @@ function useUpdateJob(props: UseEditJobProps) {
         description: data?.description ?? '',
         entity_skill_records: entity_skill_records,
         note: '',
-        job_position_id: data?.job_position_id ?? ''
+        job_position_id: data?.job_position_id ?? '',
+        staff_level: data?.level ?? '',
       }
     },
   })
 
-  const { handleSubmit, control, formState, setValue } = useFormReturn
+  const { handleSubmit, control, formState, setValue, getValues } =
+    useFormReturn
   const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
@@ -85,7 +87,7 @@ function useUpdateJob(props: UseEditJobProps) {
           location: value?.location,
           name: value?.name,
           priority: Number(value?.priority),
-          job_position_id: value?.job_position_id
+          job_position_id: value?.job_position_id,
         },
         note: note,
       }
@@ -124,6 +126,7 @@ function useUpdateJob(props: UseEditJobProps) {
     formState,
     setValue,
     isGetting,
+    getValues,
   }
 }
 

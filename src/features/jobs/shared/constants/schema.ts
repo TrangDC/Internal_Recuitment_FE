@@ -58,7 +58,7 @@ export const schema = yup.object({
   description: yup.string().default(''),
   priority: yup.string().required(RULE_MESSAGES.MC1('priority')),
   job_position_id: yup.string().required(RULE_MESSAGES.MC1('Job position')),
-  staff_level: yup.string().required(RULE_MESSAGES.MC1('staff_level')),
+  staff_level: yup.string().required(RULE_MESSAGES.MC1('staff level')),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -115,6 +115,7 @@ export const schemaUpdate = yup.object({
   description: yup.string().required(RULE_MESSAGES.MC1('job description')),
   priority: yup.string().required(RULE_MESSAGES.MC1('priority')),
   job_position_id: yup.string().required(RULE_MESSAGES.MC1('Job position')),
+  staff_level: yup.string().required(RULE_MESSAGES.MC1('staff level')),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>

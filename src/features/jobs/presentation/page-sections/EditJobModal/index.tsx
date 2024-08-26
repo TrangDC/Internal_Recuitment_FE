@@ -23,6 +23,12 @@ import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import EditSelectionTeamPermission from 'features/jobs/permission/components/EditSelectionTeamPermission'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
+import useGenerateJD from 'features/jobs/hooks/crud/useGenerateJd'
+import { formatJobDescription } from 'features/jobs/shared/utils'
+import toast from 'react-hot-toast'
+import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
+import ButtonLoading from 'shared/components/buttons/ButtonLoading'
+import AiIcon from 'shared/components/icons/Ai'
 
 interface IEditJobModal {
   open: boolean
@@ -31,18 +37,50 @@ interface IEditJobModal {
 }
 
 function EditJobModal({ open, setOpen, id }: IEditJobModal) {
-  const { actions, control, isPending, isValid, isGetting, formState } =
-    useUpdateJob({
-      id: id,
-      onSuccess: () => {
-        setOpen(false)
-      },
-    })
+  const {
+    actions,
+    control,
+    isPending,
+    isValid,
+    isGetting,
+    formState,
+    getValues,
+    setValue,
+  } = useUpdateJob({
+    id: id,
+    onSuccess: () => {
+      setOpen(false)
+    },
+  })
   const { resetSalary, onSubmit, handleChangeManager } = actions
 
   const translation = useTextTranslation()
   const salary = useWatch({ control, name: 'salary_type' })
 
+  const { generateJD, loading } = useGenerateJD({
+    onSuccess: (data) => {
+      toast.success('Job description generated successfully!')
+      const formattedDescription = formatJobDescription(data)
+      setValue('description', formattedDescription)
+    },
+  })
+
+  function handleGenerateJD() {
+    const data = getValues()
+    generateJD({
+      name: data.name,
+      title: data.name,
+      working_location: data.location,
+      salary_from: parseInt(data.salary_from.replace(/,/g, ''), 10),
+      salary_to: parseInt(data.salary_to.replace(/,/g, ''), 10),
+      currency:
+        data.salary_type === 'negotiate' ? 'negotiate' : data.salary_type,
+      employee_level: data.staff_level,
+      working_hour_from: '8:30',
+      working_hour_to: '17:30',
+      employment_type: 'fulltime',
+    })
+  }
   return (
     <ConfirmableModalProvider actionCloseModal={setOpen} formState={formState}>
       <BaseModal.Wrapper open={open} setOpen={setOpen} maxWidth={1400}>
@@ -124,7 +162,28 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                   )}
                 />
               </FormControl>
-
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="staff_level"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <LevelAutoComplete
+                        value={field.value}
+                        onChange={(data) => field.onChange(data?.value)}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Staff Level',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
               <FormControl fullWidth>
                 <Controller
                   control={control}
@@ -350,7 +409,28 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                 </FormControl>
               </FlexBox>
             </FlexBox>
+            <FlexBox justifyContent={'flex-end'}>
+              {/* <AppButton
+                disabled={isValid}
+                variant="contained"
+                startIcon={<AiIcon />}
+                onClick={() => {
+                  generateJD()
+                }}
+              >
+                Generate JD by AI
+              </AppButton> */}
 
+              <ButtonLoading
+                variant="contained"
+                startIcon={<AiIcon />}
+                disabled={isValid}
+                handlesubmit={handleGenerateJD}
+                loading={loading === 'UPLOADING' ? true : false}
+              >
+                Generate JD by AI
+              </ButtonLoading>
+            </FlexBox>
             <FlexBox justifyContent={'center'} alignItems={'center'} gap={2}>
               <FormControl fullWidth>
                 <Controller
@@ -362,8 +442,20 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                         label={'Job description'}
                         required
                         value={field.value}
-                        onEditorChange={field.onChange}
                         loading={isGetting}
+                        pluginCustomize={[
+                          'talenaMakeLonger',
+                          'talenaMakeShorter',
+                          'correctGrammar',
+                          'makeProfessional',
+                        ]}
+                        onEditorChange={(value) => {
+                          field.onChange(value)
+                        }}
+                        initProps={{
+                          contextmenu:
+                            'talenaMakeLonger talenaMakeShorter correctGrammar makeProfessional',
+                        }}
                       />
                       <HelperTextForm
                         message={fieldState.error?.message}
