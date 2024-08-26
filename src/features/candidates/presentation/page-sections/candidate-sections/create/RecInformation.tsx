@@ -166,7 +166,7 @@ function RefInformation() {
                     value={field.value}
                     name={field.name}
                     onChange={field.onChange}
-                    label="HR note"
+                    label="Description"
                     rows={3}
                     multiline
                   />

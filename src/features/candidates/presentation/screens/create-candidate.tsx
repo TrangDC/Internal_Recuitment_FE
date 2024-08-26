@@ -86,6 +86,7 @@ function CreateCandidate() {
             window.history.replaceState({}, '')
             const defaultValues = formatDataFormCandidateCV(data)
             useFormReturn.reset(defaultValues)
+            console.log(data)
             setOpen(false)
           }}
         />

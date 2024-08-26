@@ -16,7 +16,7 @@ const useTextTranslation = () => {
       manager: t('manager'),
     },
     MODLUE_JOBS: {
-      jobs: t('jobs'),
+      jobs: t('jobs request'),
       requester: t('requester'),
       staft_required: t('staft_required'),
       hired: t('hired'),
@@ -49,7 +49,7 @@ const useTextTranslation = () => {
       applied_date: t('applied_date'),
       change_status: t('change_status'),
     },
-    MODULE_REC_TEAM:{
+    MODULE_REC_TEAM: {
       add_new_rec_team: t('add_new_rec_team'),
     },
     COMMON: {
