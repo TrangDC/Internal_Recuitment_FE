@@ -3,7 +3,7 @@ import Scrollbar from 'shared/components/ScrollBar'
 import BoxTextSquare from 'shared/components/utils/boxText'
 import { Box, Button } from '@mui/material'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { DragDropProvider } from 'shared/components/dnd'
 import Droppable from 'shared/components/dnd/components/Droppable'
 import { ENABLED_CHANGE_STATUS } from 'features/application/shared/constants'
@@ -15,17 +15,14 @@ import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import CandidateJobDB from 'shared/schema/database/candidate_job'
 import { ChangeStatusModal } from 'features/candidatejob/presentation/page-sections'
 import { BoxDroppableCandidate } from 'features/application/shared/styles'
-import { CircularLoading } from '../OpeningJobs/styles'
-import BoxCandidateJob from '../OpeningJobs/components/BoxCandidateJob'
+import { CircularLoading } from '../AllJobRequest/styles'
+import BoxCandidateJob from '../AllJobRequest/components/BoxCandidateJob'
 import { DivWrapperProcess } from 'shared/styles'
 import { SpanHiring } from 'features/jobs/shared/styles'
 import useTextTranslation from 'shared/constants/text'
-import { useContextChangeStatus } from '../OpeningJobs/context/ChangeStatusContext'
-import { useParams } from 'react-router-dom'
-import { useContextCandidateDetail } from '../OpeningJobs/context/CandidateDetailContext'
+import { useContextCandidateDetail } from '../AllJobRequest/context/CandidateDetailContext'
 import ApplyJobModalDetail from '../ApplyJob'
 import HiringJob from 'shared/schema/database/hiring_job'
-import Cant from 'features/authorization/presentation/components/Cant'
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import { JobStatus } from 'shared/class/job-status'
@@ -40,7 +37,7 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
     data,
     show_more,
     total_data: { total_current },
-    actions: { handleFetchNextPage, handleUpdateStatus, handleAddCandidate },
+    actions: { fetchNextPage, refetch },
   } = useContextCandidateDetail()
 
   const {
@@ -57,7 +54,7 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
   //change status hiring process
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()
   const [destination, setDestination] = useState<string>('')
-  const { id } = useParams()
+
   const {
     handleOpenChangeStatus,
     openChangeStatus,
@@ -67,15 +64,6 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
     setOpenCreate,
     rowId,
   } = useActionTable<CandidateJobDB>()
-
-  const { actions } = useContextChangeStatus()
-  const { handleFilter } = actions
-
-  useEffect(() => {
-    handleFilter({
-      hiring_job_ids: [id],
-    })
-  }, [id])
 
   const { role, user } = useAuthorization()
   const showApplyJob = useMemo(() => {
@@ -123,7 +111,7 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
       <Box>
         <InfiniteScroll
           dataLength={total_current}
-          next={handleFetchNextPage}
+          next={fetchNextPage}
           hasMore={show_more}
           loader={
             <Box sx={{ marginTop: 1 }}>
@@ -324,7 +312,7 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
             rowData={rowData.current}
             statusCurrent={candidateSelected?.status as CandidateStatusEnum}
             defaultStatus={destination}
-            onSuccess={handleUpdateStatus}
+            onSuccess={refetch}
           />
         )}
 
@@ -333,8 +321,8 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
             open={openCreate}
             setOpen={setOpenCreate}
             jobDetail={jobDetail}
-            onSuccess={(data) => {
-              handleAddCandidate(data)
+            onSuccess={() => {
+              refetch()
             }}
           />
         )}

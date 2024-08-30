@@ -10,7 +10,7 @@ export type ILabelSideBar = {
 export type IMenuSideBar = {
   name: string
   path: string
-  icon: (props: SvgIconProps) => JSX.Element
+  icon?: (props: SvgIconProps) => JSX.Element
   type: 'extLink' | 'link'
   module: keyof PermissionStructureImpl
   children?: IMenuSideBar[]
@@ -48,6 +48,20 @@ export const navigation: INavigation[] = [
     icon: duotone.MicroScope,
     type: 'link',
     module: 'JOBS',
+    children: [
+      {
+        name: 'Job request',
+        path: '/dashboard/jobs',
+        type: 'link',
+        module: 'JOBS',
+      },
+      {
+        name: 'My approvals',
+        path: '/dashboard/my-approvals',
+        type: 'link',
+        module: 'JOBS',
+      },
+    ],
   },
   {
     name: 'Application',

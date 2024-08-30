@@ -25,7 +25,7 @@ import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import { Box } from '@mui/material'
 import ActionsButton from './ActionGroupButton'
 import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
-import { useContextChangeStatus } from '../context/ChangeStatusContext'
+import { useContextKanbanJob } from '../context/KanbanJobContext'
 import { SpanHiringStatus, TinyLink } from '../styles'
 import DotIcon from 'shared/components/icons/DotIcon'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
@@ -59,8 +59,8 @@ const BoxCandidate = ({
   const navigate = useNavigate()
   const { role, user } = useAuthorization()
   const [candidateSelected, setCandidateSelected] = useState<Candidate>()
-  const { actions } = useContextChangeStatus()
-  const { handleUpdateStatus } = actions
+  const { actions } = useContextKanbanJob()
+  // const { handleUpdateStatus } = actions
   const {
     handleOpenChangeStatus,
     openChangeStatus,
@@ -218,7 +218,7 @@ const BoxCandidate = ({
           //@ts-ignore
           statusCurrent={candidateSelected?.status}
           defaultStatus={status}
-          onSuccess={handleUpdateStatus}
+          // onSuccess={handleUpdateStatus}
         />
       )}
     </BoxContainerCandidate>

@@ -54,11 +54,12 @@ export const schema = yup.object({
       : schema.required(RULE_MESSAGES.MC1('unit'))
   }),
   entity_skill_records: yup.mixed(),
-  // description: yup.string().required(RULE_MESSAGES.MC1('job description')),
   description: yup.string().default(''),
   priority: yup.string().required(RULE_MESSAGES.MC1('priority')),
   job_position_id: yup.string().required(RULE_MESSAGES.MC1('Job position')),
-  staff_level: yup.string().required(RULE_MESSAGES.MC1('staff level')),
+  level: yup.string().required(RULE_MESSAGES.MC1('level')),
+  rec_team_id: yup.string().required(RULE_MESSAGES.MC1('REC team')),
+  note: yup.string().max(512, RULE_MESSAGES.MC4('Note', 512)),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -115,7 +116,11 @@ export const schemaUpdate = yup.object({
   description: yup.string().required(RULE_MESSAGES.MC1('job description')),
   priority: yup.string().required(RULE_MESSAGES.MC1('priority')),
   job_position_id: yup.string().required(RULE_MESSAGES.MC1('Job position')),
-  staff_level: yup.string().required(RULE_MESSAGES.MC1('staff level')),
+  level: yup.string().required(RULE_MESSAGES.MC1('level')),
+  rec_team_id: yup.string().required(RULE_MESSAGES.MC1('REC team')),
+  rec_in_charge_id: yup.string().required(RULE_MESSAGES.MC1('REC in charge')),
+  status: yup.string(),
+  note: yup.string().max(512, RULE_MESSAGES.MC4('Note', 512)),
 })
 
 export type FormDataSchemaUpdate = yup.InferType<typeof schemaUpdate>
@@ -127,6 +132,19 @@ export const schemaChangeStatus = yup.object({
 
 export type FormDataSchemaChangeStatus = yup.InferType<
   typeof schemaChangeStatus
+>
+
+export const schemaUpdateStepStatus = yup.object({
+  hiring_job_ids: yup
+    .array()
+    .required(RULE_MESSAGES.MC1('status'))
+    .min(1, RULE_MESSAGES.MC1('Hing job')),
+  status: yup.string(),
+  note: yup.string(),
+})
+
+export type FormDataSchemaUpdateJobStatus = yup.InferType<
+  typeof schemaUpdateStepStatus
 >
 
 export const schemaApplyJob = yup.object({

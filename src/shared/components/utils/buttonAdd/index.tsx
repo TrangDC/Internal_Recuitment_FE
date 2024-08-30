@@ -9,6 +9,8 @@ interface Props {
   variant?: 'text' | 'outlined' | 'contained'
   icon_style?: SxProps
   position_icon?: 'start' | 'end'
+  disabled?: boolean
+  sx?: SxProps
 }
 
 const ButtonAdd = (props: Props) => {
@@ -19,6 +21,8 @@ const ButtonAdd = (props: Props) => {
     onClick,
     variant = 'contained',
     position_icon = 'start',
+    disabled = false,
+    sx = {},
   } = props
 
   const adornment = (
@@ -32,7 +36,9 @@ const ButtonAdd = (props: Props) => {
 
   return (
     <Button
+      disabled={disabled}
       variant={variant}
+      sx={sx}
       onClick={() => {
         onClick && onClick()
       }}

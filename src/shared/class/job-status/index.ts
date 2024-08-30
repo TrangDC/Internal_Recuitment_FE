@@ -1,14 +1,17 @@
+import { HiringJobStatus } from "shared/schema/database/hiring_job"
+
 const STATUS_HIRING_JOB = {
-  DRAFT: 'draft',
+  PENDING_APPROVALS: 'pending_approvals',
   OPENED: 'opened',
   CLOSED: 'closed',
+  CANCELLED: 'cancelled'
 }
 
 const STATUS_STYLE = {
-  [STATUS_HIRING_JOB.DRAFT]: {
-    backgroundColor: '#eff3f5',
-    color: 'black',
-    text: 'Draft',
+  [STATUS_HIRING_JOB.PENDING_APPROVALS]: {
+    backgroundColor: '#FFAF46',
+    color: 'white',
+    text: 'Pending approvals',
   },
   [STATUS_HIRING_JOB.OPENED]: {
     backgroundColor: '#20A4A9',
@@ -20,15 +23,18 @@ const STATUS_STYLE = {
     color: 'white',
     text: 'Closed',
   },
+  [STATUS_HIRING_JOB.CANCELLED]: {
+    backgroundColor: '#FF9777',
+    color: 'white',
+    text: 'Cancelled',
+  },
 }
-
-export type TYPE_JOB_STATUS = 'draft' | 'opened' | 'closed'
 
 export class JobStatus {
   static STATUS_HIRING_JOB = STATUS_HIRING_JOB
   static STATUS_STYLE = STATUS_STYLE
 
-  static getDataByStatus(status: TYPE_JOB_STATUS) {
+  static getDataByStatus(status: HiringJobStatus) {
     return this.STATUS_STYLE[status]
   }
 }

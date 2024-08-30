@@ -1,4 +1,4 @@
-import { TableCell, styled } from '@mui/material'
+import { Box, TableCell, styled } from '@mui/material'
 
 export const TableCellStyle = styled(TableCell)(({ theme }) => ({
  fontSize: '13px',
@@ -75,3 +75,8 @@ export const ActionBodyTableCell = styled(TableCell)`
   text-align: center;
   border-bottom: 1px solid #e3e6eb;
 `
+
+export const BoxWrapper = styled(Box)(({ theme }) =>  ({
+  width: '100%'
+}))
+

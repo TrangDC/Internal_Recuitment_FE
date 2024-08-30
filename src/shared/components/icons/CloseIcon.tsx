@@ -1,6 +1,6 @@
 import { SvgIcon, SvgIconProps } from '@mui/material'
 
-const CloseIcon = (props: SvgIconProps) => {
+const CloseIcon = ({ sx, ...props }: SvgIconProps) => {
   return (
     <SvgIcon
       width="16"
@@ -8,6 +8,7 @@ const CloseIcon = (props: SvgIconProps) => {
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      sx={{ fontSize: '16px', ...sx }}
       {...props}
     >
       <path
@@ -16,12 +17,6 @@ const CloseIcon = (props: SvgIconProps) => {
       />
     </SvgIcon>
   )
-}
-
-CloseIcon.defaultProps = {
-  sx: {
-    fontSize: '16px',
-  },
 }
 
 export default CloseIcon

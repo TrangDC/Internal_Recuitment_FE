@@ -10,14 +10,14 @@ export const BoxWrapperOuterContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   marginTop: '20px',
   width: '100%',
+  borderRadius: '8px',
 }))
 
 export const WrapperContainer = styled(Box)(({ theme }) => ({
   borderRadius: '8px',
   overflow: 'hidden',
-  background: 'white'
+  background: 'white',
 }))
-
 
 export const DivHeaderWrapper = styled('div')`
   display: flex;
@@ -48,8 +48,29 @@ export const HeadingWrapper = styled(FlexBetween)(({ theme }) => ({
   },
 }))
 
+export const ContainerWrapper = styled(FlexBetween)(({ theme }) => ({
+  gap: 8,
+  flexWrap: 'wrap',
+  backgroundColor: theme.palette.background.paper,
+  padding: '24px 16px',
+  borderWidth: '0px 0px 1px 0px',
+  borderStyle: 'solid',
+  borderColor: '#E3E6EB',
+  [theme.breakpoints.down(453)]: {
+    '& .MuiButton-root': { order: 2 },
+    '& .MuiTabs-root': {
+      order: 3,
+      width: '100%',
+      '& .MuiTabs-flexContainer': { justifyContent: 'space-between' },
+    },
+  },
+
+  '& .MuiTextField-root': {
+    marginTop: 0,
+  },
+}))
+
 export const BtnPrimary = styled(FlexBox)(({ theme }) => ({
-  marginLeft: 'auto',
   border: `1px solid ${theme.palette.primary[300]}`,
   backgroundColor: theme.palette.primary[50],
   height: '40px',
@@ -70,12 +91,16 @@ export const BtnPrimary = styled(FlexBox)(({ theme }) => ({
 
   '&.disabled': {
     cursor: 'not-allowed',
-    backgroundColor: '#babfc5',
-    border: `1px solid #BABFC5`,
+    backgroundColor: ' #0b0e1e1f',
+    border: `none`,
   },
 
   '&.disabled span': {
-    color: '#ffffff !important',
+    color: '#8CA3BA !important',
+  },
+
+  '&.disabled svg': {
+    color: '#8CA3BA !important',
   },
 }))
 
@@ -129,4 +154,9 @@ export const WrapperBox = styled(Box)(({ theme }) => ({
   border: '1px solid #E3E6EB',
   overflow: 'hidden',
   borderRadius: '8px',
+}))
+
+export const BottomLine = styled(Box)(({ theme }) => ({
+  width: '100%',
+  borderBottom: `1px solid ${theme.palette.grey[200]}`,
 }))

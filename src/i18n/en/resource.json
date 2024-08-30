@@ -161,7 +161,10 @@
         "candidate_job_exist": "This job cannot be deleted as applications have already been received from candidates",
         "candidate_job_open_exist": "Candidate job has already existed",
         "priority_ugent_exist": "Each hiring team can only have one job with URGENT priority.",
-        "priority_high_exist": "Each hiring team can only have one job with HIGH priority."
+        "priority_high_exist": "Each hiring team can only have one job with HIGH priority.",
+        "close_processing_job": "This job request has at least one candidate application currently in processing. Please update the status of the application before closing the job.",
+        "close_not_hired_job": "This job request can only be closed until at least one candidate has been hired.",
+        "cancel_not_failed_job": "This job request has at least one candidate application currently in processing. Please update the status of the application before canceling the job."
       }
     },
     "candidate_job": {

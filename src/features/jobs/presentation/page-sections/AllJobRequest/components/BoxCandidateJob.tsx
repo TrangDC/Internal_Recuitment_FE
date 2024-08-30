@@ -24,6 +24,7 @@ import CollapseLeftIcon from 'shared/components/icons/CollapseLeftIcon'
 import CollapseRightIcon from 'shared/components/icons/CollapseRightIcon'
 import Draggable from 'shared/components/dnd/components/Draggable'
 import { BoxCircle } from 'shared/styles'
+import ActionsButtonAllJob from './ActionGroupButtonAllJob'
 
 interface Props {
   title: string

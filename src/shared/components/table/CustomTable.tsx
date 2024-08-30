@@ -95,7 +95,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
     manualSorting: true,
     manualPagination: true,
   })
-
+  
   function onChange(page: number) {
     handleChangePage(page)
   }

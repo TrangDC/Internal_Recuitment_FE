@@ -3,6 +3,7 @@ import { ISearchData } from './useSearchList'
 export type ModuleProject =
   | 'jobs'
   | 'opening-job'
+  | 'pending-approval-job'
   | 'candidate'
   | 'candidate-black-list'
   | 'rec-team'

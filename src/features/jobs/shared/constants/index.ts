@@ -6,6 +6,7 @@ import {
 } from 'shared/constants/constants'
 import { t } from 'i18next'
 import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
+import { JobStatus } from 'shared/class/job-status'
 
 export const SALARY_DATA = [
   { name: 'Range', value: SALARY_STATE.RANGE },
@@ -126,8 +127,22 @@ export const ENABLED_CHANGE_STATUS = {
   [application_data.ex_staff.value]: [],
 }
 
+const { STATUS_HIRING_JOB } = JobStatus
+export const ACTION_JOB_BY_STATUS = {
+  detail: [
+    STATUS_HIRING_JOB.PENDING_APPROVALS,
+    STATUS_HIRING_JOB.OPENED,
+    STATUS_HIRING_JOB.CLOSED,
+    STATUS_HIRING_JOB.CANCELLED,
+  ],
+  edit: [STATUS_HIRING_JOB.PENDING_APPROVALS, STATUS_HIRING_JOB.OPENED],
+  cancel: [STATUS_HIRING_JOB.PENDING_APPROVALS, STATUS_HIRING_JOB.OPENED],
+  close: [STATUS_HIRING_JOB.OPENED],
+  reopen: [STATUS_HIRING_JOB.CLOSED],
+  delete: [STATUS_HIRING_JOB.PENDING_APPROVALS],
+}
 
-export const OPENING_PAGE_JOB = {
-  list_job: 'list_job',
-  candidate_job: 'candidate_job',
+export const VIEW_PAGE_JOB = {
+  list_all_job: 'list_all_job',
+  list_job_kanban: 'list_job_kanban',
 }

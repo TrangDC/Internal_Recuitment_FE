@@ -1,5 +1,5 @@
 import { Box } from '@mui/system'
-import { columns } from '../../../shared/constants/columns'
+import { columns_opening } from '../../../shared/constants/columns'
 import Add from 'shared/components/icons/Add'
 import useTextTranslation from 'shared/constants/text'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
@@ -7,13 +7,8 @@ import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import useActionTable from '../../../hooks/table/useActionTable'
 import useJobTable from '../../../hooks/table/useJobTable'
 import { DivFilter, DivHeaderWrapper } from '../../../shared/styles'
-import CreateJobModal from '../CreateJobModal'
-import EditJobModal from '../EditJobModal'
 import DeleteJobModal from '../DeleteJobModal'
-import { CloseJobModal } from '..'
-import useFilterJobs from '../../../hooks/table/useFilterJobs'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
-import StatusJobAutoComplete from 'shared/components/autocomplete/status-job-autocomplete'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import { Fragment } from 'react/jsx-runtime'
@@ -24,42 +19,69 @@ import Cant from 'features/authorization/presentation/components/Cant'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import useBuildAllJobsActionsTable from '../../../hooks/table/useAllJobsPermissionActionTable'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
+import { JobStatus } from 'shared/class/job-status'
+import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
+import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
+import useFilterJobsOpening from 'features/jobs/hooks/table/useFilterJobsOpening'
+import CancelModal from '../CancelModal'
+import CloseJobModal from '../CloseJobModal'
+import ReopenJobModal from '../ReopenModal'
+import { useNavigate } from 'react-router-dom'
+import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
+import { isEmpty } from 'lodash'
+import { REC_IN_CHARGE_STATE } from 'shared/components/autocomplete/rec-in-charge-auto-complete/hooks/useRecInCharge'
 
 const AllJob = () => {
   const {
-    openCreate,
-    setOpenCreate,
-    handleOpenEdit,
-    openEdit,
     openDelete,
     setOpenDelete,
     handleOpenDelete,
-    openStatus,
-    setOpenStatus,
-    handleOpenStatus,
+    openCancel,
+    setOpenCancel,
+    handleOpenCancel,
+    openClose,
+    setOpenClose,
+    handleOpenClose,
+    openReopen,
+    setOpenReopen,
+    handleOpenReopen,
     rowId,
-    setOpenEdit,
   } = useActionTable()
 
-  const { useFilterReturn, useSearchListReturn } = useFilterJobs()
+  const { useFilterReturn, useSearchListReturn } = useFilterJobsOpening()
   const { dataFilterWithValue, controlFilter } = useFilterReturn
   const { search, searchRef, handleSearch } = useSearchListReturn
+
+  const recInChargeIds =
+    Array.isArray(dataFilterWithValue.rec_in_charge_ids) &&
+    !isEmpty(dataFilterWithValue.rec_in_charge_ids)
+      ? dataFilterWithValue.rec_in_charge_ids.filter(
+          (recInCharge) => recInCharge !== REC_IN_CHARGE_STATE.unassigned
+        )
+      : undefined
+
   const { useTableReturn } = useJobTable({
-    filters: dataFilterWithValue,
+    filters: {
+      ...dataFilterWithValue,
+      rec_in_charge_ids: recInChargeIds,
+      status: JobStatus.STATUS_HIRING_JOB.OPENED,
+    },
     search: search,
   })
 
+  const navigate = useNavigate()
   const translation = useTextTranslation()
 
   const { actions } = useBuildAllJobsActionsTable({
     handleOpenDelete,
-    handleOpenEdit,
-    handleOpenStatus,
+    handleOpenCancel,
+    handleOpenClose,
+    handleOpenReopen,
   })
 
   const { columnTable } = useBuildColumnTable({
     actions,
-    columns,
+    columns: columns_opening,
   })
 
   return (
@@ -95,17 +117,71 @@ const AllJob = () => {
             />
             <ControllerFilter
               control={controlFilter}
-              title="Status"
-              keyName={'status'}
+              title="REC team"
+              keyName={'rec_team_ids'}
               Node={({ onFilter, value }) => (
-                <StatusJobAutoComplete
-                  multiple={false}
+                <RecTeamsAutoComplete
                   value={value}
-                  onChange={(data) => onFilter(data)}
+                  name="rec_team_ids"
+                  multiple={true}
                   open={true}
                   disableCloseOnSelect={true}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
                   textFieldProps={{
-                    label: 'Status',
+                    label: 'REC team',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+            <ControllerFilter
+              control={controlFilter}
+              title="REC in charge"
+              keyName={'rec_in_charge_ids'}
+              Node={({ onFilter, value }) => (
+                <RecInChargeAutoComplete
+                  value={value}
+                  multiple={true}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  onChange={(data) => {
+                    onFilter(data)
+                  }}
+                  textFieldProps={{
+                    label: 'REC in charge',
+                    autoFocus: true,
+                  }}
+                />
+              )}
+            />
+            <ControllerFilter
+              control={controlFilter}
+              title="Job position"
+              keyName={'job_position_ids'}
+              Node={({ onFilter, value }) => (
+                <JobPositionAutoComplete
+                  value={value}
+                  name="job_position_ids"
+                  multiple={true}
+                  open={true}
+                  disableCloseOnSelect={true}
+                  onCustomChange={(data) =>
+                    onFilter(
+                      data.map((value) => ({
+                        label: value.name,
+                        value: value.id,
+                      }))
+                    )
+                  }
+                  textFieldProps={{
+                    label: 'Job position',
                     autoFocus: true,
                   }}
                 />
@@ -114,10 +190,10 @@ const AllJob = () => {
             <ControllerFilter
               control={controlFilter}
               title="Priority"
-              keyName={'priority'}
+              keyName={'priorities'}
               Node={({ onFilter, value }) => (
                 <PriorityAutoComplete
-                  multiple={false}
+                  multiple={true}
                   value={value}
                   onChange={(data) => onFilter(data)}
                   open={true}
@@ -204,7 +280,7 @@ const AllJob = () => {
             <SearchInput
               ref={searchRef}
               onEnter={handleSearch}
-              placeholder="Search by Job title"
+              placeholder="Search by Job request name"
               onSearch={handleSearch}
             />
             <Cant
@@ -217,7 +293,7 @@ const AllJob = () => {
               <ButtonAdd
                 Icon={Add}
                 textLable={translation.MODLUE_JOBS.add_a_new_job}
-                onClick={() => setOpenCreate(true)}
+                onClick={() => navigate('/dashboard/add-new-job-request')}
               />
             </Cant>
           </DivHeaderWrapper>
@@ -232,17 +308,6 @@ const AllJob = () => {
         </Box>
       </BoxWrapperOuterContainer>
 
-      {openCreate && (
-        <CreateJobModal open={openCreate} setOpen={setOpenCreate} />
-      )}
-      {openEdit && (
-        <EditJobModal
-          open={openEdit}
-          setOpen={setOpenEdit}
-          id={rowId.current}
-        />
-      )}
-
       {openDelete && (
         <DeleteJobModal
           open={openDelete}
@@ -251,10 +316,26 @@ const AllJob = () => {
         />
       )}
 
-      {openStatus && (
+      {openClose && (
         <CloseJobModal
-          open={openStatus}
-          setOpen={setOpenStatus}
+          open={openClose}
+          setOpen={setOpenClose}
+          id={rowId.current}
+        />
+      )}
+
+      {openReopen && (
+        <ReopenJobModal
+          open={openReopen}
+          setOpen={setOpenReopen}
+          id={rowId.current}
+        />
+      )}
+
+      {openCancel && (
+        <CancelModal
+          open={openCancel}
+          setOpen={setOpenCancel}
           id={rowId.current}
         />
       )}

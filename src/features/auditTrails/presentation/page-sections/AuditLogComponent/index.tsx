@@ -17,7 +17,7 @@ import {
 import { Box } from '@mui/material'
 import { useContextAuditTrails } from '../../providers/context'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { CircularLoading } from 'features/jobs/presentation/page-sections/OpeningJobs/styles'
+import { CircularLoading } from 'features/jobs/presentation/page-sections/AllJobRequest/styles'
 import Scrollbar from 'shared/components/ScrollBar'
 
 const LogsComponent = () => {

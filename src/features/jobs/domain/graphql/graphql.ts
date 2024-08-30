@@ -23,12 +23,12 @@ const useGraphql = () => {
           currency
           priority
           status
+          is_able_to_cancel
           job_position {
             id
             name
           }
           created_at
-          is_able_to_delete
           is_able_to_close
           total_candidates_recruited
           entity_skill_types {
@@ -50,6 +50,15 @@ const useGraphql = () => {
             id
             name
             work_email
+          }
+          level
+          rec_team {
+            id
+            name
+          }
+          rec_in_charge {
+            id
+            name
           }
         }
       }
@@ -160,7 +169,18 @@ const useGraphql = () => {
           name
           work_email
         }
+        level 
+        rec_team {
+          id
+          name
+        }
+        rec_in_charge {
+            id
+            name
+        }
+        note
       }
+      
     `,
     params: {
       id: 'ID!',
@@ -180,6 +200,18 @@ const useGraphql = () => {
       id: 'ID!',
       note: 'String!',
       status: 'HiringJobStatus!',
+    },
+  })
+
+  const updateBulkHiringJobStepsStatus = GraphQLClientService.buildQuery({
+    operation: 'UpdateBulkHiringJobStepsStatus',
+    options: {
+      type: 'mutation',
+    },
+    // node: ``,
+    params: {
+      hiring_job_ids: '[ID!]',
+      status: 'HiringJobStepStatusEnum!',
     },
   })
 
@@ -386,6 +418,7 @@ const useGraphql = () => {
     changeStatusJob,
     getCandidatesByJob,
     createCandidateJob,
+    updateBulkHiringJobStepsStatus,
   }
 }
 

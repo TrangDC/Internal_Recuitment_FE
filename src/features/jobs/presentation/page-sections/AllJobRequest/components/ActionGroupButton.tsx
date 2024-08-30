@@ -3,7 +3,6 @@ import { Fragment } from 'react'
 import { ActionGroupButtons } from 'shared/components/ActionGroupButtons'
 import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import { DeleteCandidateJobModal } from 'features/candidatejob/presentation/page-sections'
-import { useContextChangeStatus } from '../context/ChangeStatusContext'
 import EditCandidateJobModal from 'features/candidatejob/presentation/page-sections/EditCandidateJobModal'
 import useBuildActionsKanbanJobs from 'features/jobs/hooks/table/useBuildActionsKanbanJobs'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
@@ -17,9 +16,8 @@ interface IActionGroupButtons {
 }
 
 const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
-  const { actions } = useContextChangeStatus()
-  const { handleRemoveCandidate } = actions
-  const contextCandidateDetail = useContextCandidateDetail()
+  const { actions } = useContextCandidateDetail()
+  const { refetch } = actions
   const {
     openDelete,
     setOpenDelete,
@@ -53,8 +51,7 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
           setOpen={setOpenDelete}
           id={rowId}
           onSuccess={() => {
-            handleRemoveCandidate(rowData?.status, rowId)
-            contextCandidateDetail.actions.handleRemoveCandidate(rowData?.status, rowId)
+            refetch()
           }}
         />
       )}

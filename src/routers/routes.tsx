@@ -85,6 +85,20 @@ const EditCandidatePage = Loadable(
   lazy(() => import('../pages/candidates/edit-candidate'))
 )
 
+const AddJobRequestPage = Loadable(
+  lazy(() => import('../pages/jobs/add-job-request'))
+)
+
+const EditJobRequestPage = Loadable(
+  lazy(() => import('../pages/jobs/edit-job-request'))
+)
+
+const MyApprovalPage = Loadable(lazy(() => import('../pages/jobs/my-approval')))
+
+const JobOverviewPage = Loadable(
+  lazy(() => import('../pages/jobs/job-overview'))
+)
+
 // 404/Error page
 const Error = Loadable(lazy(() => import('../pages/404')))
 
@@ -181,6 +195,21 @@ export const AppRoutes = () => {
             })}
           />
           <Route
+            path="my-approvals"
+            element={PermissionLayout({
+              module: 'JOBS',
+              children: <MyApprovalPage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+          <Route
             path="job-detail/:id"
             element={PermissionLayout({
               module: 'JOBS',
@@ -191,6 +220,51 @@ export const AppRoutes = () => {
                   'VIEW.everything',
                   'VIEW.teamOnly',
                   'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+          <Route
+            path="job-overview/:id"
+            element={PermissionLayout({
+              module: 'JOBS',
+              children: <JobOverviewPage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+          <Route
+            path="add-new-job-request"
+            element={PermissionLayout({
+              module: 'JOBS',
+              children: <AddJobRequestPage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'CREATE.everything',
+                  'CREATE.ownedOnly',
+                  'CREATE.teamOnly',
+                ],
+              },
+            })}
+          />
+          <Route
+            path="edit-job-request/:id"
+            element={PermissionLayout({
+              module: 'JOBS',
+              children: <EditJobRequestPage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'EDIT.everything',
+                  'EDIT.ownedOnly',
+                  'EDIT.teamOnly',
                 ],
               },
             })}

@@ -9,6 +9,19 @@ const useActionTable = () => {
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openStatus, setOpenStatus] = useState(false)
+  const [openCancel, setOpenCancel] = useState(false)
+  const [openClose, setOpenClose] = useState(false)
+  const [openReopen, setOpenReopen] = useState(false)
+  const [openApprove, setOpenApprove] = useState(false)
+  const [openReject, setOpenReject] = useState(false)
+
+  function handleOpenApprove() {
+    setOpenApprove(true)
+  }
+
+  function handleOpenReject() {
+    setOpenReject(true)
+  }
 
   function handleOpenEdit(id: string) {
     rowId.current = id
@@ -25,6 +38,21 @@ const useActionTable = () => {
     setOpenStatus(true)
   }
 
+  function handleOpenCancel(id: string) {
+    rowId.current = id
+    setOpenCancel(true)
+  }
+
+  function handleOpenClose(id: string) {
+    rowId.current = id
+    setOpenClose(true)
+  }
+
+  function handleOpenReopen(id: string) {
+    rowId.current = id
+    setOpenReopen(true)
+  }
+
   return {
     openCreate,
     openEdit,
@@ -39,6 +67,21 @@ const useActionTable = () => {
     openStatus,
     setOpenStatus,
     handleOpenStatus,
+    openCancel,
+    setOpenCancel,
+    handleOpenCancel,
+    openClose,
+    setOpenClose,
+    handleOpenClose,
+    openReopen,
+    setOpenReopen,
+    handleOpenReopen,
+    openApprove,
+    openReject,
+    setOpenApprove,
+    setOpenReject,
+    handleOpenApprove,
+    handleOpenReject,
     rowId,
     rowData,
   }

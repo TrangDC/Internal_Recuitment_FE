@@ -2,46 +2,59 @@ import { Box } from '@mui/system'
 import { BoxWrapperOuterContainer } from 'shared/styles'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import { Fragment } from 'react/jsx-runtime'
-import CreateJobModal from '../../CreateJobModal'
-import EditJobModal from '../../EditJobModal'
 import DeleteJobModal from '../../DeleteJobModal'
-import { CloseJobModal } from '../..'
-import { columns_opening } from 'features/jobs/shared/constants/columns'
-import { useContextChangeStatus } from '../context/ChangeStatusContext'
+import { columns } from 'features/jobs/shared/constants/columns'
+import { useContextKanbanJob } from '../context/KanbanJobContext'
 import { useMemo } from 'react'
 import useActionTable from 'features/jobs/hooks/table/useActionTable'
 import useJobTable from 'features/jobs/hooks/table/useJobTable'
 import useAllJobsPermissionActionTable from 'features/jobs/hooks/table/useAllJobsPermissionActionTable'
+import CloseJobModal from '../../CloseJobModal'
+import ReopenJobModal from '../../ReopenModal'
+import CancelModal from '../../CancelModal'
+import { REC_IN_CHARGE_STATE } from 'shared/components/autocomplete/rec-in-charge-auto-complete/hooks/useRecInCharge'
+import { isEmpty } from 'lodash'
 
-const AllJobOpening = () => {
+const ListAllJob = () => {
   const {
-    openCreate,
-    setOpenCreate,
-    handleOpenEdit,
-    openEdit,
     openDelete,
     setOpenDelete,
     handleOpenDelete,
-    openStatus,
-    setOpenStatus,
-    handleOpenStatus,
+    openReopen,
+    setOpenReopen,
+    handleOpenReopen,
+    openCancel,
+    setOpenCancel,
+    handleOpenCancel,
+    openClose,
+    setOpenClose,
+    handleOpenClose,
     rowId,
-    setOpenEdit,
   } = useActionTable()
 
-  const { action_filter } = useContextChangeStatus()
+  const { action_filter } = useContextKanbanJob()
   const { useFilterReturn, useSearchListReturn } = action_filter
   const { search } = useSearchListReturn
   const { dataFilterWithValue } = useFilterReturn
+
+  const recInChargeIds =
+    Array.isArray(dataFilterWithValue.rec_in_charge_ids) &&
+    !isEmpty(dataFilterWithValue.rec_in_charge_ids)
+      ? dataFilterWithValue.rec_in_charge_ids.filter(
+          (recInCharge) => recInCharge !== REC_IN_CHARGE_STATE.unassigned
+        )
+      : undefined
 
   const filter_value = useMemo(() => {
     return {
       created_by_ids: dataFilterWithValue.created_by_ids,
       location: dataFilterWithValue.location,
-      priority: dataFilterWithValue.priority,
-      skill_ids: dataFilterWithValue.skill_id,
+      priorities: dataFilterWithValue.priorities,
+      skill_ids: dataFilterWithValue.skill_ids,
       hiring_team_ids: dataFilterWithValue.hiring_team_ids,
-      status: 'opened',
+      rec_team_ids: dataFilterWithValue.rec_team_ids,
+      unassigned: dataFilterWithValue?.unassigned,
+      rec_in_charge_ids: recInChargeIds,
     }
   }, [JSON.stringify(dataFilterWithValue)])
 
@@ -52,13 +65,14 @@ const AllJobOpening = () => {
 
   const { actions } = useAllJobsPermissionActionTable({
     handleOpenDelete,
-    handleOpenEdit,
-    handleOpenStatus,
+    handleOpenCancel,
+    handleOpenClose,
+    handleOpenReopen,
   })
 
   const { columnTable } = useBuildColumnTable({
     actions,
-    columns: columns_opening,
+    columns: columns,
   })
 
   return (
@@ -74,17 +88,6 @@ const AllJobOpening = () => {
         </Box>
       </BoxWrapperOuterContainer>
 
-      {openCreate && (
-        <CreateJobModal open={openCreate} setOpen={setOpenCreate} />
-      )}
-      {openEdit && (
-        <EditJobModal
-          open={openEdit}
-          setOpen={setOpenEdit}
-          id={rowId.current}
-        />
-      )}
-
       {openDelete && (
         <DeleteJobModal
           open={openDelete}
@@ -93,10 +96,26 @@ const AllJobOpening = () => {
         />
       )}
 
-      {openStatus && (
+      {openClose && (
         <CloseJobModal
-          open={openStatus}
-          setOpen={setOpenStatus}
+          open={openClose}
+          setOpen={setOpenClose}
+          id={rowId.current}
+        />
+      )}
+
+      {openReopen && (
+        <ReopenJobModal
+          open={openReopen}
+          setOpen={setOpenReopen}
+          id={rowId.current}
+        />
+      )}
+
+      {openCancel && (
+        <CancelModal
+          open={openCancel}
+          setOpen={setOpenCancel}
           id={rowId.current}
         />
       )}
@@ -104,4 +123,4 @@ const AllJobOpening = () => {
   )
 }
 
-export default AllJobOpening
+export default ListAllJob

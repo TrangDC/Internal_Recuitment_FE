@@ -55,5 +55,5 @@ root.render(
         </AuthenticationProvider>
       </SettingsProvider>
     </LocalizationProvider>
-  </React.StrictMode>
+</React.StrictMode>
 )

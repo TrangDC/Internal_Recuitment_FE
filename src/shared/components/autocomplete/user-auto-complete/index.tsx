@@ -10,7 +10,7 @@ type User = {
   rec_team_id: string
 }
 
-function MemberAutoComplete<Multiple extends boolean>({
+function UserAutoComplete<Multiple extends boolean>({
   onChange,
   value,
   multiple,
@@ -37,4 +37,4 @@ function MemberAutoComplete<Multiple extends boolean>({
   )
 }
 
-export default MemberAutoComplete
+export default UserAutoComplete

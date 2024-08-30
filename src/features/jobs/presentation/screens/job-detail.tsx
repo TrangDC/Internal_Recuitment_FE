@@ -2,7 +2,7 @@ import { Box } from '@mui/system'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Span } from 'shared/components/Typography'
 import useTextTranslation from 'shared/constants/text'
-import Jobs from 'shared/components/icons/Jobs'
+import MicroScope from 'shared/components/icons/Microscope'
 import {
   BoxCircle,
   BoxWrapperOuterContainer,
@@ -24,7 +24,7 @@ import ChipJob from 'shared/class/job-status/components/ChipJob'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import { ChipLimit } from 'shared/components/chip-stack'
 import CloseJobButtonPermission from 'features/jobs/permission/components/CloseJobButtonPermission'
-import CandidateDetailProvider from '../page-sections/OpeningJobs/context/CandidateDetailContext'
+import CandidateDetailProvider from '../page-sections/AllJobRequest/context/CandidateDetailContext'
 
 const { STATUS_HIRING_JOB } = JobStatus
 
@@ -43,6 +43,7 @@ const JobDetail = () => {
     openEdit,
     setOpenEdit,
     handleOpenEdit,
+    handleOpenClose,
   } = useActionTable()
 
   const disabledBtn = useMemo(() => {
@@ -71,7 +72,11 @@ const JobDetail = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={Jobs} textLabel={jobDetail?.name} go_back={true} />
+        <IconScreen
+          Icon={MicroScope}
+          textLabel={jobDetail?.name}
+          go_back={true}
+        />
       </Box>
       <FlexBox flexDirection={'column'} gap={2.5} marginTop={0}>
         <BoxWrapperOuterContainer>
@@ -136,10 +141,8 @@ const JobDetail = () => {
               </FlexBox>
               <FlexBox gap={1}>
                 <CloseJobButtonPermission
-                  disabledBtn={disabledBtn}
-                  handleOpenStatus={handleOpenStatus}
+                  handleOpenClose={handleOpenClose}
                   jobDetail={jobDetail}
-                  opened={STATUS_HIRING_JOB.OPENED}
                 />
                 <BtnPrimary onClick={() => setOpenTab(true)}>
                   <Span>View Details</Span>
@@ -152,7 +155,7 @@ const JobDetail = () => {
         <BoxWrapperOuterContainer sx={{ marginTop: 0 }}>
           <HeadingWrapper sx={{ marginTop: 0, padding: 2 }}>
             <CandidateDetailProvider>
-              <GenaralInformationHiring jobDetail={jobDetail}/>
+              <GenaralInformationHiring jobDetail={jobDetail} />
             </CandidateDetailProvider>
           </HeadingWrapper>
         </BoxWrapperOuterContainer>

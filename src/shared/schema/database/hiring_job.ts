@@ -1,13 +1,32 @@
 import EntitySkillType from './entity_skill_type'
 import HiringTeam from './hiring_team'
 import JobPosition from './job_position'
+import RecTeam from './rec_team'
 import User from './user'
 
 type LocationEnum = 'ha_noi' | 'ho_chi_minh' | 'da_nang' | 'japan' | 'singapore'
 type SalaryTypeEnum = 'range' | 'up_to' | 'negotiate' | 'minimum'
 type CurrencyEnum = 'vnd' | 'usd' | 'jpy'
-export type HiringJobStatus = 'draft' | 'opened' | 'closed'
+export type HiringJobStatus =
+  | 'pending_approvals'
+  | 'opened'
+  | 'closed'
+  | 'cancelled'
 type priority_status = 1 | 2 | 3 | 4
+export type HiringJobLevel =
+  | 'intern'
+  | 'fresher'
+  | 'junior'
+  | 'middle'
+  | 'senior'
+  | 'manager'
+  | 'director'
+
+export type HiringJobStatusStep =
+  | 'waiting'
+  | 'pending'
+  | 'accepted'
+  | 'rejected'
 
 interface HiringJob {
   id: string
@@ -26,6 +45,7 @@ interface HiringJob {
   total_candidates_recruited: number
   is_able_to_delete: boolean
   is_able_to_close: number
+  is_able_to_cancel: boolean
   priority: priority_status
   entity_skill_types: EntitySkillType[]
   job_position_id: string
@@ -33,7 +53,10 @@ interface HiringJob {
   created_at: string
   updated_at: string
   deleted_at: string
-  level: string
+  level: HiringJobLevel
+  rec_team: RecTeam
+  rec_in_charge: User
+  note: string
 }
 
 export type CreateHiringJobArguments = {
@@ -53,13 +76,17 @@ export type UpdateHiringJobStatusArguments = {
   note: string
 }
 
+export type UpdateHiringJobStepInputArguments = {
+  hiring_job_ids: string[]
+  status: HiringJobStatusStep
+}
+
 export type DeleteHiringJobArguments = {
   id: string
   note: string
 }
 
 export type NewHiringJobInput = {
-  status: string
   name: string
   amount: number
   location: string
@@ -73,6 +100,9 @@ export type NewHiringJobInput = {
   entity_skill_records: EntitySkillRecordInput[]
   priority: number
   job_position_id: string
+  level: HiringJobLevel
+  rec_team_id: string
+  note: string
 }
 
 export type UpdateHiringJobInput = {
@@ -89,6 +119,10 @@ export type UpdateHiringJobInput = {
   priority: number
   entity_skill_records: EntitySkillRecordInput[]
   job_position_id: string
+  level: HiringJobLevel
+  rec_team_id: string
+  note: string
+  rec_in_charge_id: string
 }
 
 export type EntitySkillRecordInput = {
