@@ -41,7 +41,7 @@ const ListAllJob = () => {
     Array.isArray(dataFilterWithValue.rec_in_charge_ids) &&
     !isEmpty(dataFilterWithValue.rec_in_charge_ids)
       ? dataFilterWithValue.rec_in_charge_ids.filter(
-          (recInCharge) => recInCharge !== REC_IN_CHARGE_STATE.unassigned
+          (recInCharge) => recInCharge !== REC_IN_CHARGE_STATE.has_rec_in_charge
         )
       : undefined
 
@@ -53,7 +53,7 @@ const ListAllJob = () => {
       skill_ids: dataFilterWithValue.skill_ids,
       hiring_team_ids: dataFilterWithValue.hiring_team_ids,
       rec_team_ids: dataFilterWithValue.rec_team_ids,
-      unassigned: dataFilterWithValue?.unassigned,
+      has_rec_in_charge: dataFilterWithValue?.has_rec_in_charge,
       rec_in_charge_ids: recInChargeIds,
     }
   }, [JSON.stringify(dataFilterWithValue)])

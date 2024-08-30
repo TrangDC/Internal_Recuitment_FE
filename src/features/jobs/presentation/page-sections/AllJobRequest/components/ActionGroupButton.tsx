@@ -9,6 +9,7 @@ import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import checkPermissionActionKanBan from 'features/jobs/permission/utils/checkPermissionActionKanBan'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import { useContextCandidateDetail } from '../context/CandidateDetailContext'
+import { useContextChangeStatus } from 'features/application/presentation/page-sections/ApplicationPage/context/ChangeStatusContext'
 
 interface IActionGroupButtons {
   rowId: string
@@ -16,8 +17,9 @@ interface IActionGroupButtons {
 }
 
 const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
-  const { actions } = useContextCandidateDetail()
-  const { refetch } = actions
+  const { actions } = useContextChangeStatus()
+  const { handleRemoveCandidate } = actions
+
   const {
     openDelete,
     setOpenDelete,
@@ -51,7 +53,7 @@ const ActionsButton = ({ rowId, rowData }: IActionGroupButtons) => {
           setOpen={setOpenDelete}
           id={rowId}
           onSuccess={() => {
-            refetch()
+            handleRemoveCandidate(rowData?.status, rowId)
           }}
         />
       )}

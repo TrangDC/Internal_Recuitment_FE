@@ -11,7 +11,7 @@ export const customInterface = createSchemaFilter({
   created_by_ids: 'string[]',
   status: 'string',
   page_job: 'string',
-  unassigned: 'string',
+  has_rec_in_charge: 'string',
 })
 
 export type JobsFilter = typeof customInterface
@@ -25,7 +25,7 @@ const customInterfaceJobOpening = createSchemaFilter({
   skill_ids: 'string[]',
   location: 'string',
   created_by_ids: 'string[]',
-  unassigned: 'string',
+  has_rec_in_charge: 'string',
 })
 
 export type JobsFilterOpening = typeof customInterfaceJobOpening
@@ -39,7 +39,7 @@ const customInterfaceJobPendingApproval = createSchemaFilter({
   skill_ids: 'string[]',
   location: 'string',
   created_by_ids: 'string[]',
-  unassigned: 'string',
+  has_rec_in_charge: 'string',
 })
 
 export type JobsFilterPendingApproval = typeof customInterfaceJobPendingApproval
@@ -55,3 +55,17 @@ const customInterfaceMyApprovals = createSchemaFilter({
 })
 
 export type JobsFilterApprovals = typeof customInterfaceMyApprovals
+
+const customInterfaceApprovalRejected = createSchemaFilter({
+  hiring_team_ids: 'string[]',
+  rec_team_ids: 'string[]',
+  job_position_ids: 'string[]',
+  rec_in_charge_ids: 'string[]',
+  priorities: 'string[]',
+  skill_ids: 'string[]',
+  location: 'string',
+  created_by_ids: 'string[]',
+  has_rec_in_charge: 'string',
+})
+
+export type ApprovalRejected = typeof customInterfaceApprovalRejected

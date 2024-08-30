@@ -79,9 +79,13 @@ export type UpdateHiringJobStatusArguments = {
   note: string
 }
 
-export type UpdateHiringJobStepInputArguments = {
+export type UpdateHiringJobStepInput = {
   hiring_job_ids: string[]
   status: HiringJobStatusStep
+}
+
+export type UpdateHiringJobStepInputArguments = {
+  input: UpdateHiringJobStepInput
 }
 
 export type DeleteHiringJobArguments = {

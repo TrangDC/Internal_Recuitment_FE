@@ -1,4 +1,4 @@
-import { CircularProgress, SxProps, styled } from '@mui/material'
+import { Box, CircularProgress, SxProps, styled } from '@mui/material'
 import { Span, Tiny12md } from 'shared/components/Typography'
 
 export const TinyLink = styled(Tiny12md)(({ theme }) => ({
@@ -31,3 +31,14 @@ export const sxIconSelected = (selected: boolean): SxProps => {
       }
     : {}
 }
+
+export const BoxDroppableJob = styled(Box)(({ theme }) => ({
+  border: `1px solid ${theme.palette.grey[200]}`,
+  borderRadius: '4px',
+  width: '100%',
+  backgroundColor: '#F0F1F8',
+
+  '&.collapse': {
+    width: 'auto',
+  },
+}))

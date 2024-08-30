@@ -44,8 +44,10 @@ function useChangeApprovals(props: UseChangeStatusProps) {
   function onSubmit() {
     handleSubmit((value) => {
       const payload: UpdateHiringJobStepInputArguments = {
-        hiring_job_ids: value?.hiring_job_ids,
-        status: value?.status as HiringJobStatusStep,
+        input: {
+          hiring_job_ids: value?.hiring_job_ids,
+          status: value?.status as HiringJobStatusStep,
+        },
       }
       mutate(payload)
     })()

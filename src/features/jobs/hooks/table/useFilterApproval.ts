@@ -39,7 +39,7 @@ function useFilterMyApprovals() {
           }
         },
       },
-      page: 'opening-job',
+      page: 'approval-pending',
       search: {
         searchKey: ['name'],
       },

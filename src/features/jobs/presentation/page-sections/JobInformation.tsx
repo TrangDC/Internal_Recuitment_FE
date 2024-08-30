@@ -1,9 +1,9 @@
-import { Box, Divider, Grid } from '@mui/material'
+import { Box, Button, Divider, Grid } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Text13sb, Text15md, Tiny12md } from 'shared/components/Typography'
 import ApprovalProcess from './ApprovalProcess'
 import useJobDetail from 'features/jobs/hooks/crud/useJobDetail'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useMemo } from 'react'
 import { SalaryFactory } from 'shared/class/salary'
 import { getInfoData } from 'shared/utils/utils'
@@ -16,6 +16,8 @@ import ChipJob from 'shared/class/job-status/components/ChipJob'
 import CustomIframe from 'shared/components/CustomIframe'
 import { capitalizeFirstLetter } from 'shared/utils/convert-string'
 import RequestResolutionTime from '../components/RequestResolutionTime'
+import ButtonAdd from 'shared/components/utils/buttonAdd'
+import EditIcon from 'shared/components/icons/EditIcon'
 
 function JobInformation() {
   const { id } = useParams()
@@ -23,6 +25,8 @@ function JobInformation() {
   const widthItemRec = 'calc(20% - 16px)'
   const widthItemHir = 'calc(33.33% - 16px)'
   const widthInformation = 'calc(100% - 280px)'
+
+  const navigate = useNavigate()
 
   const job_skills = useMemo(() => {
     if (!jobDetail.entity_skill_types) return []
@@ -250,6 +254,24 @@ function JobInformation() {
           title="Job Description"
         />
       </Box>
+
+      <FlexBox
+        padding={'16px 24px 24px 24px'}
+        width={'100%'}
+        borderTop={'1px solid #E3E6EB'}
+        justifyContent={'flex-end'}
+      >
+        <ButtonAdd
+          icon_style={{
+            color: 'white !important',
+          }}
+          Icon={EditIcon}
+          textLable="Edit"
+          onClick={() => {
+            navigate(`/dashboard/edit-job-request/${id}`)
+          }}
+        ></ButtonAdd>
+      </FlexBox>
     </Box>
   )
 }

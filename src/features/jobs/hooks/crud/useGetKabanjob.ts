@@ -235,7 +235,6 @@ const useGetKabanJob = ({ filter = {}, freeWord = {} }: IUseCandidateJob) => {
   const show_more = useMemo(() => {
     return total_current < totalRecord
   }, [totalRecord, total_current])
-
   return {
     total_data: {
       total_current,

@@ -25,12 +25,14 @@ import ReopenButtonPermission from 'features/jobs/permission/components/ReopenJo
 import CloseJobModal from '../page-sections/CloseJobModal'
 import ReopenJobModal from '../page-sections/ReopenModal'
 import GeneralInformationHiring from '../page-sections/GeneralInformationHiring'
+import RequestResolutionTime from '../components/RequestResolutionTime'
 
 const { STATUS_HIRING_JOB } = JobStatus
 
 const JobOverview = () => {
   const { id } = useParams()
   const { jobDetail } = useJobDetail(id as String)
+
   const translation = useTextTranslation()
 
   const {
@@ -43,8 +45,8 @@ const JobOverview = () => {
     setOpenReopen,
   } = useActionTable()
 
-  const showReopenBtn = jobDetail.status === STATUS_HIRING_JOB.CLOSED
-  const showCloseBtn = jobDetail.status === STATUS_HIRING_JOB.OPENED
+  const showReopenBtn = jobDetail?.status === STATUS_HIRING_JOB.CLOSED
+  const showCloseBtn = jobDetail?.status === STATUS_HIRING_JOB.OPENED
 
   return (
     <Box pt={2} pb={4}>
@@ -165,7 +167,9 @@ const JobOverview = () => {
                   flexDirection={'column'}
                 >
                   <SpanText>Request resolution time</SpanText>
-                  <TinyText>{LOCATION_LABEL[jobDetail?.location]}</TinyText>
+                  <RequestResolutionTime
+                    time={new Date(jobDetail?.opened_at)}
+                  />
                 </FlexBox>
               </FlexBox>
 
@@ -183,7 +187,7 @@ const JobOverview = () => {
                   />
                 )}
                 <Link
-                  to={`/dashboard/job-detail/${jobDetail.id}`}
+                  to={`/dashboard/job-detail/${jobDetail?.id}`}
                   target="_blank"
                 >
                   <BtnPrimary>

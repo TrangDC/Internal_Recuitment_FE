@@ -139,7 +139,7 @@ const MultiLevelMenu: FC<MultiLevelMenuProps> = ({ sidebarCompact }) => {
                 compact={COMPACT}
                 active={activeRoute(menuSideBar.path)}
               >
-                {menuSideBar.name}
+                {menuSideBar?.title ? menuSideBar?.title : menuSideBar.name}
               </StyledText>
 
               <Box mx="auto" />
@@ -168,7 +168,7 @@ const MultiLevelMenu: FC<MultiLevelMenuProps> = ({ sidebarCompact }) => {
                 compact={COMPACT}
                 active={activeRoute(menuSideBar.path)}
               >
-                {menuSideBar.name}
+                {menuSideBar?.title ? menuSideBar.title : menuSideBar.name}
               </StyledText>
 
               <Box mx="auto" />

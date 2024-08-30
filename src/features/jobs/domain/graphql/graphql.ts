@@ -219,10 +219,8 @@ const useGraphql = () => {
     options: {
       type: 'mutation',
     },
-    // node: ``,
     params: {
-      hiring_job_ids: '[ID!]',
-      status: 'HiringJobStepStatusEnum!',
+      input: 'UpdateHiringJobStepInput!',
     },
   })
 
