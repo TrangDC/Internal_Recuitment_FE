@@ -1,9 +1,4 @@
-import {
-  TabContext,
-  TabList,
-  TabListProps,
-  TabPanel,
-} from '@mui/lab'
+import { TabContext, TabList, TabListProps, TabPanel } from '@mui/lab'
 import { Box, Tab, styled, SxProps } from '@mui/material'
 import React, { useMemo, useState } from 'react'
 import FlexBetween from '../flexbox/FlexBetween'
@@ -89,7 +84,7 @@ const TabListWrapper = styled(TabList)(({ theme }) => ({
 }))
 
 export interface RenderItem {
-  label: string
+  label: string | React.ReactNode
   Component: React.FC
 }
 

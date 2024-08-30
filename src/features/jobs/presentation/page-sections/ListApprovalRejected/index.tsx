@@ -1,13 +1,10 @@
 import { Box } from '@mui/system'
-import { columns_pending_approvals } from '../../../shared/constants/columns'
-import Add from 'shared/components/icons/Add'
-import useTextTranslation from 'shared/constants/text'
-import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
+import {
+  BoxWrapperOuterContainer,
+  DivHeaderWrapper,
+  HeadingWrapper,
+} from 'shared/styles'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
-import useActionTable from '../../../hooks/table/useActionTable'
-import useJobTable from '../../../hooks/table/useJobTable'
-import { DivFilter, DivHeaderWrapper } from '../../../shared/styles'
-import DeleteJobModal from '../DeleteJobModal'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import SearchInput from 'shared/components/table/components/SearchInput'
@@ -15,44 +12,33 @@ import { Fragment } from 'react/jsx-runtime'
 import SkillAutoComplete from 'shared/components/autocomplete/skill-autocomplete'
 import LocationAutoComplete from 'shared/components/autocomplete/location-auto-complete'
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
-import Cant from 'features/authorization/presentation/components/Cant'
-import ButtonAdd from 'shared/components/utils/buttonAdd'
-import useBuildAllJobsActionsTable from '../../../hooks/table/useAllJobsPermissionActionTable'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
-import useFilterJobsPendingApproval from 'features/jobs/hooks/table/useFilterJobPendingApproval'
+import useActionTable from 'features/jobs/hooks/table/useActionTable'
+import useJobTable from 'features/jobs/hooks/table/useJobTable'
+import useBuildAllJobsActionsTable from 'features/jobs/hooks/table/useAllJobsPermissionActionTable'
+import { DivFilter } from 'features/jobs/shared/styles'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
-import { JobStatus } from 'shared/class/job-status'
-import CancelModal from '../CancelModal'
-import ReopenJobModal from '../ReopenModal'
-import CloseJobModal from '../CloseJobModal'
-import { useNavigate } from 'react-router-dom'
+import { columns_rejected_approvals } from 'features/jobs/shared/constants/columns'
+import useFilterApprovalRejected from 'features/jobs/hooks/table/useFilterApprovalRejected'
 import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
 import { REC_IN_CHARGE_STATE } from 'shared/components/autocomplete/rec-in-charge-auto-complete/hooks/useRecInCharge'
 import { isEmpty } from 'lodash'
 
-const PendingApprovals = () => {
+const ListApprovalRejected = () => {
   const {
-    openDelete,
-    setOpenDelete,
     handleOpenDelete,
-    openCancel,
-    setOpenCancel,
     handleOpenCancel,
     handleOpenClose,
     handleOpenReopen,
-    openClose,
-    setOpenClose,
-    openReopen,
-    setOpenReopen,
-    rowId,
   } = useActionTable()
 
-  const { useFilterReturn, useSearchListReturn } =
-    useFilterJobsPendingApproval()
+  const { useFilterReturn, useSearchListReturn } = useFilterApprovalRejected()
+  const { user } = useAuthorization()
+
   const { dataFilterWithValue, controlFilter } = useFilterReturn
   const { search, searchRef, handleSearch } = useSearchListReturn
-
   const recInChargeIds =
     Array.isArray(dataFilterWithValue.rec_in_charge_ids) &&
     !isEmpty(dataFilterWithValue.rec_in_charge_ids)
@@ -65,13 +51,11 @@ const PendingApprovals = () => {
     filters: {
       ...dataFilterWithValue,
       rec_in_charge_ids: recInChargeIds,
-      status: JobStatus.STATUS_HIRING_JOB.PENDING_APPROVALS,
+      approver_id: user?.id,
+      approver_status: 'rejected',
     },
     search: search,
   })
-  const navigate = useNavigate()
-
-  const translation = useTextTranslation()
 
   const { actions } = useBuildAllJobsActionsTable({
     handleOpenDelete,
@@ -82,7 +66,7 @@ const PendingApprovals = () => {
 
   const { columnTable } = useBuildColumnTable({
     actions,
-    columns: columns_pending_approvals,
+    columns: columns_rejected_approvals,
   })
 
   return (
@@ -281,22 +265,9 @@ const PendingApprovals = () => {
             <SearchInput
               ref={searchRef}
               onEnter={handleSearch}
-              placeholder="Search by Job request name"
+              placeholder="Search by name"
               onSearch={handleSearch}
             />
-            <Cant
-              checkBy={{
-                compare: 'hasAny',
-                permissions: ['CREATE.everything', 'CREATE.teamOnly'],
-              }}
-              module="JOBS"
-            >
-              <ButtonAdd
-                Icon={Add}
-                textLable={translation.MODLUE_JOBS.add_a_new_job}
-                onClick={() => navigate('/dashboard/add-new-job-request')}
-              />
-            </Cant>
           </DivHeaderWrapper>
         </HeadingWrapper>
         <Box>
@@ -308,40 +279,8 @@ const PendingApprovals = () => {
           )}
         </Box>
       </BoxWrapperOuterContainer>
-
-      {openDelete && (
-        <DeleteJobModal
-          open={openDelete}
-          setOpen={setOpenDelete}
-          id={rowId.current}
-        />
-      )}
-
-      {openClose && (
-        <CloseJobModal
-          open={openClose}
-          setOpen={setOpenClose}
-          id={rowId.current}
-        />
-      )}
-
-      {openReopen && (
-        <ReopenJobModal
-          open={openReopen}
-          setOpen={setOpenReopen}
-          id={rowId.current}
-        />
-      )}
-
-      {openCancel && (
-        <CancelModal
-          open={openCancel}
-          setOpen={setOpenCancel}
-          id={rowId.current}
-        />
-      )}
     </Fragment>
   )
 }
 
-export default PendingApprovals
+export default ListApprovalRejected

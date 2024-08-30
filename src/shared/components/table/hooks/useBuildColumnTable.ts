@@ -6,7 +6,7 @@ import { intersection, remove, union } from 'lodash'
 import { useState } from 'react'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
 
-export type ParamsColumn = {
+export type ParamsColumn<E = {}> = {
   role: PermissionStructureImpl | null
   me: MyBasicInformation
   handleOpenDetail?: (id: string) => void
@@ -14,52 +14,59 @@ export type ParamsColumn = {
   addRowSelected: (selected: string | string[]) => void
   removeSelected: (selected: string | string[]) => void
   isBelongRowSelected: (string: string[]) => {
-    checked: boolean,
-    indeterminate: boolean,
+    checked: boolean
+    indeterminate: boolean
   }
+  eventTable: E
 }
 
-export interface IuseBuildColumnTable<T> {
+export interface IuseBuildColumnTable<T, E> {
   actions: TOptionItem<T>[]
   handleOpenDetail?: (id: string) => void
+  eventTable?: E
   columns: (
     actions: TOptionItem<T>[],
-    params: ParamsColumn
+    params: ParamsColumn<E>
   ) => ColumnDef<T, any>[]
 }
 
-const useBuildColumnTable = <T extends object>({
+const useBuildColumnTable = <
+  T extends object,
+  E extends Record<string, any> = {},
+>({
   columns,
   actions,
   handleOpenDetail,
-}: IuseBuildColumnTable<T>) => {
+  eventTable,
+}: IuseBuildColumnTable<T, E>) => {
   const { role, user } = useAuthorization()
-  const [rowSelected, setRowSelected] = useState<string[]>([]);
+  const [rowSelected, setRowSelected] = useState<string[]>([])
 
-  function addRowSelected (item: string | string[]) {
+  function addRowSelected(item: string | string[]) {
     setRowSelected((prev) => {
-      return typeof item === 'string' ? union(prev, [item]) : union(prev, item);
+      return typeof item === 'string' ? union(prev, [item]) : union(prev, item)
     })
   }
 
-  function removeSelected (item: string | string[]) {
-    const listRemove = typeof item === 'string' ? [item] : item;
+  function removeSelected(item: string | string[]) {
+    const listRemove = typeof item === 'string' ? [item] : item
     setRowSelected((prev) => {
       return remove(prev, (row) => {
         return !listRemove.includes(row)
       })
-    }) 
+    })
   }
 
-  function isBelongRowSelected (item: string[]) {
+  function isBelongRowSelected(item: string[]) {
     //check row selected same
-    const intersectionRow = intersection(rowSelected, item);
+    const intersectionRow = intersection(rowSelected, item)
     return {
       checked: intersectionRow.length === item.length && item.length > 0,
-      indeterminate: intersectionRow.length > 0 && intersectionRow.length < item.length,
-    };
+      indeterminate:
+        intersectionRow.length > 0 && intersectionRow.length < item.length,
+    }
   }
-  
+
   return {
     columnTable: columns(actions, {
       role,
@@ -68,9 +75,11 @@ const useBuildColumnTable = <T extends object>({
       rowSelected,
       addRowSelected,
       removeSelected,
-      isBelongRowSelected
+      isBelongRowSelected,
+      eventTable: eventTable as E,
     }),
-    rowSelected
+    rowSelected,
+    resetRowSelected: () => setRowSelected([]),
   }
 }
 

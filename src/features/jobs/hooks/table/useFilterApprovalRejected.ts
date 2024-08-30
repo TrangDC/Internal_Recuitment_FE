@@ -1,11 +1,11 @@
-import { JobsFilterPendingApproval } from 'features/jobs/shared/constants/schema-filter'
+import { ApprovalRejected } from 'features/jobs/shared/constants/schema-filter'
 import { isEmpty } from 'lodash'
 import { REC_IN_CHARGE_STATE } from 'shared/components/autocomplete/rec-in-charge-auto-complete/hooks/useRecInCharge'
 import { useFilterTable } from 'shared/components/table'
 
-function useFilterJobsPendingApproval() {
+function useFilterApprovalRejected() {
   const { useFilterReturn, useSearchListReturn } =
-    useFilterTable<JobsFilterPendingApproval>({
+    useFilterTable<ApprovalRejected>({
       filter: {
         defaultFilter: {
           hiring_team_ids: [],
@@ -57,7 +57,7 @@ function useFilterJobsPendingApproval() {
           }
         },
       },
-      page: 'pending-approval-job',
+      page: 'approval-rejected',
       search: {
         searchKey: ['name'],
       },
@@ -69,4 +69,4 @@ function useFilterJobsPendingApproval() {
   }
 }
 
-export default useFilterJobsPendingApproval
+export default useFilterApprovalRejected

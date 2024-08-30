@@ -19,7 +19,6 @@ interface IActionGroupButtons {
 const ActionsButtonAllJob = ({ rowId, rowData }: IActionGroupButtons) => {
   const { actions } = useContextKanbanJob()
   const { refetch } = actions
-
   const {
     openDelete,
     setOpenDelete,

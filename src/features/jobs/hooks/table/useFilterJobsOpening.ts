@@ -16,20 +16,22 @@ function useFilterJobsOpening() {
           skill_ids: [],
           location: '',
           created_by_ids: [],
-          unassigned: '',
+          has_rec_in_charge: '',
         },
         formatDataWithValue: (data) => {
-          const unassigned =
+          const has_rec_in_charge =
             Array.isArray(data?.rec_in_charge_ids) &&
             !isEmpty(data?.rec_in_charge_ids)
               ? data?.rec_in_charge_ids.some(
                   (recInCharge) =>
-                    recInCharge.value === REC_IN_CHARGE_STATE.unassigned
+                    recInCharge.value === REC_IN_CHARGE_STATE.has_rec_in_charge
                 )
               : undefined
 
           return {
-            unassigned: unassigned ? unassigned : undefined,
+            has_rec_in_charge: has_rec_in_charge
+              ? has_rec_in_charge
+              : undefined,
             priorities: !isEmpty(data?.priorities)
               ? data?.priorities?.map((o) => o.value)
               : undefined,

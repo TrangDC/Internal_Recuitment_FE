@@ -210,10 +210,40 @@ export const AppRoutes = () => {
             })}
           />
           <Route
+            path="my-approvals"
+            element={PermissionLayout({
+              module: 'JOBS',
+              children: <MyApprovalPage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+          <Route
             path="job-detail/:id"
             element={PermissionLayout({
               module: 'JOBS',
               children: <JobDetailPage />,
+              checkBy: {
+                compare: 'hasAny',
+                permissions: [
+                  'VIEW.everything',
+                  'VIEW.teamOnly',
+                  'VIEW.ownedOnly',
+                ],
+              },
+            })}
+          />
+          <Route
+            path="job-overview/:id"
+            element={PermissionLayout({
+              module: 'JOBS',
+              children: <JobOverviewPage />,
               checkBy: {
                 compare: 'hasAny',
                 permissions: [

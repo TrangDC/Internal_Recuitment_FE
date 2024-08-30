@@ -10,21 +10,21 @@ import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import useChangeApprovals from 'features/jobs/hooks/crud/useApprovalJob'
 
-interface IApproveModal {
+interface IRejectModal {
   open: boolean
   setOpen: (value: boolean) => void
   onSuccess?: () => void
   listRecord: string[]
 }
 
-function ApproveModal({ open, setOpen, onSuccess, listRecord }: IApproveModal) {
+function RejectModal({ open, setOpen, onSuccess, listRecord }: IRejectModal) {
   const { action, control, isPending, isValid } = useChangeApprovals({
     onSuccess: () => {
       setOpen(false)
       onSuccess?.()
     },
     defaultValue: {
-      status: 'accepted',
+      status: 'rejected',
       hiring_job_ids: listRecord,
     },
   })
@@ -36,7 +36,7 @@ function ApproveModal({ open, setOpen, onSuccess, listRecord }: IApproveModal) {
     <Fragment>
       <BaseModal.Wrapper open={open} setOpen={setOpen}>
         <BaseModal.Header
-          title={`Do you want to approve ${listRecord.length} job request?`}
+          title={`Do you want to reject ${listRecord.length} job request?`}
           setOpen={setOpen}
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
@@ -96,4 +96,4 @@ function ApproveModal({ open, setOpen, onSuccess, listRecord }: IApproveModal) {
   )
 }
 
-export default ApproveModal
+export default RejectModal

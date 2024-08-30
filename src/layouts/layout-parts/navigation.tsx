@@ -1,5 +1,6 @@
 import { SvgIconProps } from '@mui/material'
 import PermissionStructureImpl from 'features/authorization/domain/interfaces/permission-refactor'
+import MyApprovalTitle from 'layouts/components/my-approval-title'
 import duotone from 'shared/components/icons'
 
 export type ILabelSideBar = {
@@ -9,6 +10,7 @@ export type ILabelSideBar = {
 
 export type IMenuSideBar = {
   name: string
+  title?: JSX.Element
   path: string
   icon?: (props: SvgIconProps) => JSX.Element
   type: 'extLink' | 'link'
@@ -57,6 +59,7 @@ export const navigation: INavigation[] = [
       },
       {
         name: 'My approvals',
+        title: <MyApprovalTitle />,
         path: '/dashboard/my-approvals',
         type: 'link',
         module: 'JOBS',

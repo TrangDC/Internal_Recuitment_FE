@@ -7,13 +7,13 @@ import User from 'shared/schema/database/user'
 import { IOption } from '../../autocomplete-base/interface'
 
 export const REC_IN_CHARGE_STATE = {
-  unassigned: 'unassigned',
+  has_rec_in_charge: 'has_rec_in_charge',
 }
 
 const options_fixed: IOption[] = [
   {
     label: 'Not assigned',
-    value: REC_IN_CHARGE_STATE.unassigned,
+    value: REC_IN_CHARGE_STATE.has_rec_in_charge,
   },
 ]
 

@@ -1,13 +1,11 @@
 import { Box } from '@mui/system'
-import { columns_pending_approvals } from '../../../shared/constants/columns'
-import Add from 'shared/components/icons/Add'
-import useTextTranslation from 'shared/constants/text'
-import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
+import {
+  BoxWrapperOuterContainer,
+  BtnPrimary,
+  DivHeaderWrapper,
+  HeadingWrapper,
+} from 'shared/styles'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
-import useActionTable from '../../../hooks/table/useActionTable'
-import useJobTable from '../../../hooks/table/useJobTable'
-import { DivFilter, DivHeaderWrapper } from '../../../shared/styles'
-import DeleteJobModal from '../DeleteJobModal'
 import ControllerFilter from 'shared/components/table/components/tooltip-filter/ControllerFilter'
 import PriorityAutoComplete from 'shared/components/autocomplete/priority-auto-complete'
 import SearchInput from 'shared/components/table/components/SearchInput'
@@ -17,73 +15,73 @@ import LocationAutoComplete from 'shared/components/autocomplete/location-auto-c
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import Cant from 'features/authorization/presentation/components/Cant'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
-import useBuildAllJobsActionsTable from '../../../hooks/table/useAllJobsPermissionActionTable'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
-import useFilterJobsPendingApproval from 'features/jobs/hooks/table/useFilterJobPendingApproval'
+import useActionTable from 'features/jobs/hooks/table/useActionTable'
+import useJobTable from 'features/jobs/hooks/table/useJobTable'
+import { DivFilter } from 'features/jobs/shared/styles'
+import { Span, Tiny } from 'shared/components/Typography'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import Verify from 'shared/components/icons/Verify'
+import RemoveBox from 'shared/components/icons/RemoveBox'
+import useFilterMyApprovals from 'features/jobs/hooks/table/useFilterApproval'
+import { JobStatus } from 'shared/class/job-status'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
-import { JobStatus } from 'shared/class/job-status'
-import CancelModal from '../CancelModal'
-import ReopenJobModal from '../ReopenModal'
-import CloseJobModal from '../CloseJobModal'
-import { useNavigate } from 'react-router-dom'
-import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
-import { REC_IN_CHARGE_STATE } from 'shared/components/autocomplete/rec-in-charge-auto-complete/hooks/useRecInCharge'
-import { isEmpty } from 'lodash'
+import { columnsApproval } from 'features/jobs/shared/constants/columns'
+import ApproveModal from '../ApproveModal'
+import RejectModal from '../RejectModal'
+import { useState } from 'react'
+import HiringJob from 'shared/schema/database/hiring_job'
 
-const PendingApprovals = () => {
+const ListApprovalPending = () => {
   const {
-    openDelete,
-    setOpenDelete,
-    handleOpenDelete,
-    openCancel,
-    setOpenCancel,
-    handleOpenCancel,
-    handleOpenClose,
-    handleOpenReopen,
-    openClose,
-    setOpenClose,
-    openReopen,
-    setOpenReopen,
-    rowId,
+    openApprove,
+    openReject,
+    setOpenApprove,
+    setOpenReject,
+    handleOpenApprove,
+    handleOpenReject,
   } = useActionTable()
 
-  const { useFilterReturn, useSearchListReturn } =
-    useFilterJobsPendingApproval()
+  const [listRecord, setListRecord] = useState<string[]>([])
+
+  const { useFilterReturn, useSearchListReturn } = useFilterMyApprovals()
+  const { user } = useAuthorization()
+
   const { dataFilterWithValue, controlFilter } = useFilterReturn
   const { search, searchRef, handleSearch } = useSearchListReturn
-
-  const recInChargeIds =
-    Array.isArray(dataFilterWithValue.rec_in_charge_ids) &&
-    !isEmpty(dataFilterWithValue.rec_in_charge_ids)
-      ? dataFilterWithValue.rec_in_charge_ids.filter(
-          (recInCharge) => recInCharge !== REC_IN_CHARGE_STATE.has_rec_in_charge
-        )
-      : undefined
-
   const { useTableReturn } = useJobTable({
     filters: {
       ...dataFilterWithValue,
-      rec_in_charge_ids: recInChargeIds,
       status: JobStatus.STATUS_HIRING_JOB.PENDING_APPROVALS,
+      approver_id: user?.id,
+      approver_status: 'pending',
     },
     search: search,
   })
-  const navigate = useNavigate()
 
-  const translation = useTextTranslation()
+  const eventTable = {
+    handleOpenApprove: (listRecord: string[]) => {
+      handleOpenApprove()
+      setListRecord(listRecord)
+    },
+    handleOpenReject: (listRecord: string[]) => {
+      handleOpenReject()
+      setListRecord(listRecord)
+    },
+  }
 
-  const { actions } = useBuildAllJobsActionsTable({
-    handleOpenDelete,
-    handleOpenCancel,
-    handleOpenClose,
-    handleOpenReopen,
+  const { columnTable, rowSelected, resetRowSelected } = useBuildColumnTable<
+    HiringJob,
+    typeof eventTable
+  >({
+    actions: [],
+    columns: columnsApproval,
+    eventTable,
   })
 
-  const { columnTable } = useBuildColumnTable({
-    actions,
-    columns: columns_pending_approvals,
-  })
+  const disabledBtn = rowSelected.length === 0
 
   return (
     <Fragment>
@@ -137,26 +135,6 @@ const PendingApprovals = () => {
                   }
                   textFieldProps={{
                     label: 'REC team',
-                    autoFocus: true,
-                  }}
-                />
-              )}
-            />
-            <ControllerFilter
-              control={controlFilter}
-              title="REC in charge"
-              keyName={'rec_in_charge_ids'}
-              Node={({ onFilter, value }) => (
-                <RecInChargeAutoComplete
-                  value={value}
-                  multiple={true}
-                  open={true}
-                  disableCloseOnSelect={true}
-                  onChange={(data) => {
-                    onFilter(data)
-                  }}
-                  textFieldProps={{
-                    label: 'REC in charge',
                     autoFocus: true,
                   }}
                 />
@@ -281,23 +259,52 @@ const PendingApprovals = () => {
             <SearchInput
               ref={searchRef}
               onEnter={handleSearch}
-              placeholder="Search by Job request name"
+              placeholder="Search by name"
               onSearch={handleSearch}
             />
-            <Cant
-              checkBy={{
-                compare: 'hasAny',
-                permissions: ['CREATE.everything', 'CREATE.teamOnly'],
-              }}
-              module="JOBS"
-            >
-              <ButtonAdd
-                Icon={Add}
-                textLable={translation.MODLUE_JOBS.add_a_new_job}
-                onClick={() => navigate('/dashboard/add-new-job-request')}
-              />
-            </Cant>
+            <FlexBox gap={1} alignItems={'center'}>
+              <Cant
+                checkBy={{
+                  compare: 'hasAny',
+                  permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+                }}
+                module="JOBS"
+              >
+                <BtnPrimary
+                  className={`${disabledBtn && 'disabled'}`}
+                  onClick={() => {
+                    if (disabledBtn) return
+                    handleOpenReject()
+                    setListRecord(rowSelected)
+                  }}
+                >
+                  <RemoveBox sx={{ color: '#1F84EB', fontSize: '15px' }} />
+                  <Span>Reject</Span>
+                </BtnPrimary>
+              </Cant>
+
+              <Cant
+                checkBy={{
+                  compare: 'hasAny',
+                  permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+                }}
+                module="JOBS"
+              >
+                <ButtonAdd
+                  Icon={Verify}
+                  textLable="Approve"
+                  disabled={disabledBtn}
+                  onClick={() => {
+                    handleOpenApprove()
+                    setListRecord(rowSelected)
+                  }}
+                />
+              </Cant>
+            </FlexBox>
           </DivHeaderWrapper>
+          <FlexBox>
+            <Tiny>{rowSelected.length} records selected</Tiny>
+          </FlexBox>
         </HeadingWrapper>
         <Box>
           {useTableReturn && (
@@ -309,39 +316,31 @@ const PendingApprovals = () => {
         </Box>
       </BoxWrapperOuterContainer>
 
-      {openDelete && (
-        <DeleteJobModal
-          open={openDelete}
-          setOpen={setOpenDelete}
-          id={rowId.current}
+      {openApprove && (
+        <ApproveModal
+          open={openApprove}
+          setOpen={setOpenApprove}
+          listRecord={listRecord}
+          onSuccess={() => {
+            resetRowSelected()
+            setListRecord([])
+          }}
         />
       )}
 
-      {openClose && (
-        <CloseJobModal
-          open={openClose}
-          setOpen={setOpenClose}
-          id={rowId.current}
-        />
-      )}
-
-      {openReopen && (
-        <ReopenJobModal
-          open={openReopen}
-          setOpen={setOpenReopen}
-          id={rowId.current}
-        />
-      )}
-
-      {openCancel && (
-        <CancelModal
-          open={openCancel}
-          setOpen={setOpenCancel}
-          id={rowId.current}
+      {openReject && (
+        <RejectModal
+          open={openReject}
+          setOpen={setOpenReject}
+          listRecord={listRecord}
+          onSuccess={() => {
+            resetRowSelected()
+            setListRecord([])
+          }}
         />
       )}
     </Fragment>
   )
 }
 
-export default PendingApprovals
+export default ListApprovalPending

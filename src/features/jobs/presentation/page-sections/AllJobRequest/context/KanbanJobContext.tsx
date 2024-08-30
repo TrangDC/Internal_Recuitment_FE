@@ -73,7 +73,7 @@ function KanbanJobProvider(props: KanbanProps) {
     Array.isArray(dataFilterWithValue.rec_in_charge_ids) &&
     !isEmpty(dataFilterWithValue.rec_in_charge_ids)
       ? dataFilterWithValue.rec_in_charge_ids.filter(
-          (recInCharge) => recInCharge !== REC_IN_CHARGE_STATE.unassigned
+          (recInCharge) => recInCharge !== REC_IN_CHARGE_STATE.has_rec_in_charge
         )
       : undefined
 
@@ -87,7 +87,7 @@ function KanbanJobProvider(props: KanbanProps) {
     rec_team_ids: dataFilterWithValue?.rec_team_ids,
     skill_ids: dataFilterWithValue?.skill_ids,
     status: dataFilterWithValue?.status,
-    unassigned: dataFilterWithValue?.unassigned,
+    has_rec_in_charge: dataFilterWithValue?.has_rec_in_charge,
   }
 
   const { data, total_data, show_more, actions } = useGetKabanJob({
