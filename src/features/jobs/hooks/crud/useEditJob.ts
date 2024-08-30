@@ -88,7 +88,7 @@ function useUpdateJob(props: UseEditJobProps) {
           salary_to: convertCurrencyToNumber(value.salary_to),
           amount: Number(value.amount),
           entity_skill_records: entity_skill,
-          created_by: value?.created_by,
+          // created_by: value?.created_by,
           description: value?.description,
           hiring_team_id: value?.hiring_team_id,
           location: value?.location,

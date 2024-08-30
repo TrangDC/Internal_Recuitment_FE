@@ -141,6 +141,7 @@ const useGraphql = () => {
         is_able_to_close
         status
         job_position_id
+        level
         job_position {
           id
           name
@@ -179,6 +180,16 @@ const useGraphql = () => {
             name
         }
         note
+        opened_at
+        steps {
+          id
+          status
+          approver {
+            name
+            work_email
+          }
+          order_id
+        }
       }
       
     `,

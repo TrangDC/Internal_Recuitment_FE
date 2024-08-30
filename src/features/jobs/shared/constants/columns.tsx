@@ -38,7 +38,7 @@ export const columns_opening = (
     id: 'name',
     cell: (info) => (
       <LinkText
-        to={`/dashboard/job-detail/${info.row.original.id}`}
+        to={`/dashboard/job-overview/${info.row.original.id}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -179,7 +179,7 @@ export const columns_pending_approvals = (
     id: 'name',
     cell: (info) => (
       <LinkText
-        to={`/dashboard/job-detail/${info.row.original.id}`}
+        to={`/dashboard/job-overview/${info.row.original.id}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -364,7 +364,7 @@ export const columnsApproval = (
     id: 'name',
     cell: (info) => (
       <LinkText
-        to={`/dashboard/job-detail/${info.row.original.id}`}
+        to={`/dashboard/job-overview/${info.row.original.id}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -524,7 +524,7 @@ export const columns = (
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => (
-      <LinkText to={`/dashboard/job-detail/${info.row.original.id}`}>
+      <LinkText to={`/dashboard/job-overview/${info.row.original.id}`}>
         {info.getValue()}
       </LinkText>
     ),
