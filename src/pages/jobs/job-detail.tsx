@@ -1,5 +1,5 @@
-import JobDetail from 'features/jobs/presentation/screens/job-detail';
-import HelmetComponent from 'shared/components/helmet';
+import JobDetail from 'features/jobs/presentation/screens/job-detail'
+import HelmetComponent from 'shared/components/helmet'
 
 function JobDetailPage() {
   return (

@@ -131,3 +131,87 @@ export function convertToRootDate(date: Date, root: Date) {
 
   return newStart
 }
+
+export function calculateTimeDifference(inputTime: Date) {
+  const now = new Date()
+  const inputDate = new Date(inputTime)
+
+  let years = now.getFullYear() - inputDate.getFullYear()
+  let months = now.getMonth() - inputDate.getMonth()
+  let days = now.getDate() - inputDate.getDate()
+  let hours = now.getHours() - inputDate.getHours()
+  let minutes = now.getMinutes() - inputDate.getMinutes()
+  let seconds = now.getSeconds() - inputDate.getSeconds()
+
+  if (seconds < 0) {
+    seconds += 60
+    minutes -= 1
+  }
+
+  if (minutes < 0) {
+    minutes += 60
+    hours -= 1
+  }
+
+  if (hours < 0) {
+    hours += 24
+    days -= 1
+  }
+
+  if (days < 0) {
+    const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0)
+    days += lastMonth.getDate()
+    months -= 1
+  }
+
+  if (months < 0) {
+    months += 12
+    years -= 1
+  }
+
+  return {
+    years,
+    months,
+    days,
+    hours,
+    minutes,
+    seconds,
+  }
+}
+
+export function formatTimeDifference(props: {
+  timeDiff: {
+    years: number
+    months: number
+    days: number
+    hours: number
+    minutes: number
+    seconds: number
+  }
+  shows: Array<'years' | 'months' | 'days' | 'hours' | 'minutes' | 'seconds'>
+}) {
+  const { timeDiff, shows } = props
+  const { years, months, days, hours, minutes, seconds } = timeDiff
+  const parts = []
+
+  if (shows.includes('years') && years > 0) {
+    parts.push(`${years} year${years > 1 ? 's' : ''}`)
+  }
+  if (shows.includes('months') && months > 0) {
+    parts.push(`${months} month${months > 1 ? 's' : ''}`)
+  }
+  if (shows.includes('days') && days > 0) {
+    parts.push(`${days} day${days > 1 ? 's' : ''}`)
+  }
+  if (shows.includes('hours') && hours > 0) {
+    parts.push(`${hours} hour${hours > 1 ? 's' : ''}`)
+  }
+  if (shows.includes('minutes') && minutes > 0) {
+    parts.push(`${minutes} minute${minutes > 1 ? 's' : ''}`)
+  }
+  if (shows.includes('seconds')) {
+    parts.push(`${seconds} second${seconds > 1 ? 's' : ''}.`)
+  }
+
+  return parts.join(', ')
+}

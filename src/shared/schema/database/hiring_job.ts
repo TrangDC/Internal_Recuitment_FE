@@ -1,4 +1,5 @@
 import EntitySkillType from './entity_skill_type'
+import HiringJobStep from './hiring_job_step'
 import HiringTeam from './hiring_team'
 import JobPosition from './job_position'
 import RecTeam from './rec_team'
@@ -57,6 +58,8 @@ interface HiringJob {
   rec_team: RecTeam
   rec_in_charge: User
   note: string
+  steps: HiringJobStep[]
+  opened_at: string
 }
 
 export type CreateHiringJobArguments = {
@@ -114,7 +117,7 @@ export type UpdateHiringJobInput = {
   salary_to: number
   hiring_team_id: string
   currency: string
-  created_by: string
+  // created_by: string
   description: string
   priority: number
   entity_skill_records: EntitySkillRecordInput[]
