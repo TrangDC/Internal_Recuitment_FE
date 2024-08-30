@@ -69,7 +69,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
       salary_to: parseInt(data.salary_to.replace(/,/g, ''), 10),
       currency:
         data.salary_type === 'negotiate' ? 'negotiate' : data.salary_type,
-      employee_level: data.staff_level,
+      employee_level: data.level,
       working_hour_from: '8:30',
       working_hour_to: '17:30',
       employment_type: 'fulltime',
@@ -164,7 +164,7 @@ function CreateJobModal({ open, setOpen }: ICreateJobModal) {
               <FormControl fullWidth>
                 <Controller
                   control={control}
-                  name="staff_level"
+                  name="level"
                   render={({ field, fieldState }) => (
                     <FlexBox flexDirection={'column'}>
                       <LevelAutoComplete

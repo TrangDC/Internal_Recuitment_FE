@@ -19,6 +19,7 @@ const { STATUS_HIRING_JOB } = JobStatus
 type UseChangeStatusProps = {
   id: string
   onSuccess: (data: BaseRecord) => void
+  defaultValue?: Partial<FormDataSchemaChangeStatus>
 }
 
 function useChangeStatusJob(props: UseChangeStatusProps) {
@@ -44,10 +45,8 @@ function useChangeStatusJob(props: UseChangeStatusProps) {
     formatDefaultValues(data) {
       return {
         note: '',
-        status:
-          data?.status === STATUS_HIRING_JOB.OPENED
-            ? STATUS_HIRING_JOB.CLOSED
-            : STATUS_HIRING_JOB.OPENED,
+        status: data?.status ?? '',
+        ...props.defaultValue,
       }
     },
   })

@@ -14,8 +14,10 @@ function StatusJobAutoComplete<Multiple extends boolean>(
 const { STATUS_HIRING_JOB } = JobStatus;
 
 const options: IOption[] = [
+  { label: 'Pending approvals', value: STATUS_HIRING_JOB.PENDING_APPROVALS },
   { label: 'Opening', value: STATUS_HIRING_JOB.OPENED },
   { label: 'Closed', value: STATUS_HIRING_JOB.CLOSED },
+  { label: 'Cancelled', value: STATUS_HIRING_JOB.CANCELLED },
 ]
 
 export default StatusJobAutoComplete

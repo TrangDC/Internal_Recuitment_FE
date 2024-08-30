@@ -14,7 +14,12 @@ import { BoxCircle, WrapperBox } from 'shared/styles'
 import { TinyText } from 'shared/components/form/styles'
 import { JobStatus } from 'shared/class/job-status'
 import useJobTable from 'features/jobs/hooks/table/useJobTable'
-import { CloseJobModal, CreateJobModal, DeleteJobModal, EditJobModal } from 'features/jobs/presentation/page-sections'
+import {
+  CloseJobModal,
+  CreateJobModal,
+  DeleteJobModal,
+  EditJobModal,
+} from 'features/jobs/presentation/page-sections'
 import { useParams } from 'react-router-dom'
 
 const { STATUS_HIRING_JOB } = JobStatus
@@ -22,14 +27,15 @@ const OpeningJobRequest = () => {
   const {
     openCreate,
     setOpenCreate,
-    handleOpenEdit,
     openEdit,
     openDelete,
     setOpenDelete,
     handleOpenDelete,
     openStatus,
     setOpenStatus,
-    handleOpenStatus,
+    handleOpenCancel,
+    handleOpenClose,
+    handleOpenReopen,
     rowId,
     setOpenEdit,
   } = useActionTable()
@@ -46,8 +52,9 @@ const OpeningJobRequest = () => {
 
   const { actions } = useAllJobsPermissionActionTable({
     handleOpenDelete,
-    handleOpenEdit,
-    handleOpenStatus,
+    handleOpenCancel,
+    handleOpenClose,
+    handleOpenReopen,
   })
   const { columnTable } = useBuildColumnTable({
     actions: actions,
@@ -75,7 +82,7 @@ const OpeningJobRequest = () => {
           <ButtonAdd
             Icon={Add}
             textLable="Add a new request"
-              onClick={() => setOpenCreate(true)}
+            onClick={() => setOpenCreate(true)}
           />
         </Cant>
       </FlexBox>

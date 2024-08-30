@@ -114,7 +114,7 @@ function ChangeStatusModal({
 
     handleWarning({
       title: 'Warning',
-      content: `This candidate still has ${rowData?.interview_feature} left, are you sure want to change the hiring status?`,
+      content: `This candidate still has ${rowData?.interview_feature} interview(s) left, are you sure want to change the hiring status?`,
       onSubmit: () => {
         onSubmit()
         handleReset()

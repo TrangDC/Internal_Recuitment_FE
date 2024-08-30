@@ -2,16 +2,18 @@ import { Box } from '@mui/system'
 import useTextTranslation from 'shared/constants/text'
 import IconScreen from 'shared/components/utils/IconScreen'
 import TabCustomize from 'shared/components/tab'
-import AllJobs from '../page-sections/AllJobs'
-import OpeningJob from '../page-sections/OpeningJobs'
+import JobOpening from '../page-sections/JobOpening'
+import AllJobRequest from '../page-sections/AllJobRequest'
 import MicroScope from 'shared/components/icons/Microscope'
+import PendingApprovals from '../page-sections/PendingApproval'
 
 const JobsList = () => {
   const translation = useTextTranslation()
 
   const renderItem = [
-    { label: 'Opening Jobs', Component: OpeningJob },
-    { label: 'All Jobs', Component: AllJobs },
+    { label: 'Opening', Component: JobOpening },
+    { label: 'Pending approvals', Component: PendingApprovals },
+    { label: 'All job request', Component: AllJobRequest },
   ]
 
   return (

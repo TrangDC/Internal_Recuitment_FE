@@ -1,7 +1,7 @@
 import { DivFilter, DivHeaderWrapper } from 'features/candidates/shared/styles'
-import { Fragment, useMemo } from 'react'
+import { Fragment } from 'react'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
-import { useContextChangeStatus } from '../context/ChangeStatusContext'
+import { useContextKanbanJob } from '../context/KanbanJobContext'
 import useTextTranslation from 'shared/constants/text'
 import { Add } from '@mui/icons-material'
 import useActionTable from '../../../../hooks/table/useActionTable'
@@ -17,72 +17,47 @@ import LocationAutoComplete from 'shared/components/autocomplete/location-auto-c
 import InterViewerAutoComplete from 'shared/components/autocomplete/interviewer-auto-complete'
 import SearchInput from 'shared/components/table/components/SearchInput'
 import Cant from 'features/authorization/presentation/components/Cant'
-import JobsAutoComplete from 'shared/components/autocomplete/job-auto-complete'
 import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 import ListBullIcon from 'shared/components/icons/ListBullIcon'
 import ListShellIcon from 'shared/components/icons/ListShellIcon'
 import ControllerFilterWrapper from 'shared/components/table/components/tooltip-filter/ControllerFilterWrapper'
-import { OPENING_PAGE_JOB } from 'features/jobs/shared/constants'
+import { VIEW_PAGE_JOB } from 'features/jobs/shared/constants'
 import { sxIconSelected } from '../styles'
+import { useNavigate } from 'react-router-dom'
+import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
+import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
+import StatusJobAutoComplete from 'shared/components/autocomplete/status-job-autocomplete'
+import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
 
 const FilterCandidate = () => {
   const translation = useTextTranslation()
 
   const { openCreate, setOpenCreate, openCreateApply, setOpenCreateApply } =
     useActionTable()
-  const { actions, action_filter } = useContextChangeStatus()
-  const { handleAddCandidate } = actions
+  const { action_filter, actions } = useContextKanbanJob()
   const { useFilterReturn, useSearchListReturn } = action_filter
+  const { refetch } = actions
   const { searchRef, handleSearch } = useSearchListReturn
 
-  const { dataFilterWithValue, controlFilter } = useFilterReturn
+  const { controlFilter } = useFilterReturn
 
-  const show_filter_job = useMemo(() => {
-    return dataFilterWithValue.page_job === OPENING_PAGE_JOB.candidate_job
-  }, [dataFilterWithValue.page_job])
+  const navigate = useNavigate()
 
   return (
     <Fragment>
       <FlexBox width={'100%'} justifyContent={'space-between'}>
         <DivFilter>
-          {show_filter_job && (
-            <ControllerFilter
-              control={controlFilter}
-              title="Job"
-              keyName={'hiring_job_ids'}
-              Node={({ onFilter, value }) => (
-                <JobsAutoComplete
-                  name="job"
-                  multiple={true}
-                  value={value}
-                  onCustomChange={(data) =>
-                    onFilter(
-                      data.map((value) => ({
-                        label: value.name,
-                        value: value.id,
-                      }))
-                    )
-                  }
-                  open={true}
-                  disableCloseOnSelect={true}
-                  textFieldProps={{
-                    label: 'Job',
-                    autoFocus: true,
-                  }}
-                />
-              )}
-            />
-          )}
-
           <ControllerFilter
             control={controlFilter}
             title="Hiring team"
             keyName={'hiring_team_ids'}
             Node={({ onFilter, value }) => (
               <TeamsAutoComplete
+                value={value}
                 name="team"
                 multiple={true}
-                value={value}
+                open={true}
+                disableCloseOnSelect={true}
                 onCustomChange={(data) =>
                   onFilter(
                     data.map((value) => ({
@@ -91,8 +66,6 @@ const FilterCandidate = () => {
                     }))
                   )
                 }
-                open={true}
-                disableCloseOnSelect={true}
                 textFieldProps={{
                   label: 'Team',
                   autoFocus: true,
@@ -100,14 +73,103 @@ const FilterCandidate = () => {
               />
             )}
           />
-
+          <ControllerFilter
+            control={controlFilter}
+            title="REC team"
+            keyName={'rec_team_ids'}
+            Node={({ onFilter, value }) => (
+              <RecTeamsAutoComplete
+                value={value}
+                name="rec_team_ids"
+                multiple={true}
+                open={true}
+                disableCloseOnSelect={true}
+                onCustomChange={(data) =>
+                  onFilter(
+                    data.map((value) => ({
+                      label: value.name,
+                      value: value.id,
+                    }))
+                  )
+                }
+                textFieldProps={{
+                  label: 'REC team',
+                  autoFocus: true,
+                }}
+              />
+            )}
+          />
+          <ControllerFilter
+            control={controlFilter}
+            title="REC in charge"
+            keyName={'rec_in_charge_ids'}
+            Node={({ onFilter, value }) => (
+              <RecInChargeAutoComplete
+                value={value}
+                multiple={true}
+                open={true}
+                disableCloseOnSelect={true}
+                onChange={(data) => {
+                  onFilter(data)
+                }}
+                textFieldProps={{
+                  label: 'REC in charge',
+                  autoFocus: true,
+                }}
+              />
+            )}
+          />
+          <ControllerFilter
+            control={controlFilter}
+            title="Job position"
+            keyName={'job_position_ids'}
+            Node={({ onFilter, value }) => (
+              <JobPositionAutoComplete
+                value={value}
+                name="job_position_ids"
+                multiple={true}
+                open={true}
+                disableCloseOnSelect={true}
+                onCustomChange={(data) =>
+                  onFilter(
+                    data.map((value) => ({
+                      label: value.name,
+                      value: value.id,
+                    }))
+                  )
+                }
+                textFieldProps={{
+                  label: 'Job position',
+                  autoFocus: true,
+                }}
+              />
+            )}
+          />
+          <ControllerFilter
+            control={controlFilter}
+            title="Status"
+            keyName={'status'}
+            Node={({ onFilter, value }) => (
+              <StatusJobAutoComplete
+                multiple={false}
+                value={value}
+                onChange={(data) => onFilter(data)}
+                open={true}
+                disableCloseOnSelect={true}
+                textFieldProps={{
+                  label: 'Status',
+                  autoFocus: true,
+                }}
+              />
+            )}
+          />
           <ControllerFilter
             control={controlFilter}
             title="Priority"
-            keyName={'priority'}
+            keyName={'priorities'}
             Node={({ onFilter, value }) => (
               <PriorityAutoComplete
-                multiple={false}
+                multiple={true}
                 value={value}
                 onChange={(data) => onFilter(data)}
                 open={true}
@@ -122,7 +184,7 @@ const FilterCandidate = () => {
           <ControllerFilter
             control={controlFilter}
             title="Skill"
-            keyName={'skill_id'}
+            keyName={'skill_ids'}
             Node={({ onFilter, value }) => (
               <SkillAutoComplete
                 name="skill"
@@ -145,7 +207,6 @@ const FilterCandidate = () => {
               />
             )}
           />
-
           <ControllerFilter
             control={controlFilter}
             title="Location"
@@ -164,7 +225,6 @@ const FilterCandidate = () => {
               />
             )}
           />
-
           <ControllerFilter
             control={controlFilter}
             title="Requester"
@@ -197,7 +257,7 @@ const FilterCandidate = () => {
             control={controlFilter}
             keyName="page_job"
             Node={({ onFilter, value }) => {
-              const sx = sxIconSelected(value === OPENING_PAGE_JOB.list_job)
+              const sx = sxIconSelected(value === VIEW_PAGE_JOB.list_all_job)
 
               return (
                 <ListBullIcon
@@ -205,7 +265,7 @@ const FilterCandidate = () => {
                   onClick={() => {
                     onFilter({
                       label: 'Opening job',
-                      value: OPENING_PAGE_JOB.list_job,
+                      value: VIEW_PAGE_JOB.list_all_job,
                     })
                   }}
                 />
@@ -217,9 +277,7 @@ const FilterCandidate = () => {
             control={controlFilter}
             keyName="page_job"
             Node={({ onFilter, value }) => {
-              const sx = sxIconSelected(
-                value === OPENING_PAGE_JOB.candidate_job
-              )
+              const sx = sxIconSelected(value === VIEW_PAGE_JOB.list_job_kanban)
 
               return (
                 <ListShellIcon
@@ -227,7 +285,7 @@ const FilterCandidate = () => {
                   onClick={() => {
                     onFilter({
                       label: 'Candidate job',
-                      value: OPENING_PAGE_JOB.candidate_job,
+                      value: VIEW_PAGE_JOB.list_job_kanban,
                     })
                   }}
                 />
@@ -241,7 +299,7 @@ const FilterCandidate = () => {
         <SearchInput
           ref={searchRef}
           onEnter={handleSearch}
-          placeholder="Search by Job title"
+          placeholder="Search by Job request name"
           onSearch={handleSearch}
         />
         <FlexBox gap={1} alignItems={'center'}>
@@ -253,7 +311,7 @@ const FilterCandidate = () => {
             module="CANDIDATE_JOBS"
           >
             <BtnPrimary onClick={() => setOpenCreateApply(true)}>
-              <Span>Apply candidate to a job</Span>
+              <Span>Apply candidate</Span>
             </BtnPrimary>
           </Cant>
 
@@ -267,7 +325,9 @@ const FilterCandidate = () => {
             <ButtonAdd
               Icon={Add}
               textLable={translation.MODLUE_JOBS.add_a_new_job}
-              onClick={() => setOpenCreate(true)}
+              onClick={() => {
+                navigate('/dashboard/add-new-job-request')
+              }}
             />
           </Cant>
         </FlexBox>
@@ -281,7 +341,7 @@ const FilterCandidate = () => {
         <ApplyJobModal
           open={openCreateApply}
           setOpen={setOpenCreateApply}
-          onSuccess={handleAddCandidate}
+          onSuccess={refetch}
         />
       )}
     </Fragment>

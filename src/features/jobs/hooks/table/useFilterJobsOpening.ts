@@ -1,6 +1,6 @@
-import { OPENING_PAGE_JOB } from 'features/jobs/shared/constants'
 import { JobsFilterOpening } from 'features/jobs/shared/constants/schema-filter'
 import { isEmpty } from 'lodash'
+import { REC_IN_CHARGE_STATE } from 'shared/components/autocomplete/rec-in-charge-auto-complete/hooks/useRecInCharge'
 import { useFilterTable } from 'shared/components/table'
 
 function useFilterJobsOpening() {
@@ -8,31 +8,50 @@ function useFilterJobsOpening() {
     useFilterTable<JobsFilterOpening>({
       filter: {
         defaultFilter: {
-          hiring_job_ids: [],
-          priority: '',
           hiring_team_ids: [],
-          skill_id: [],
+          priorities: [],
+          rec_team_ids: [],
+          job_position_ids: [],
+          rec_in_charge_ids: [],
+          skill_ids: [],
           location: '',
           created_by_ids: [],
-          page_job: OPENING_PAGE_JOB.list_job,
+          unassigned: '',
         },
         formatDataWithValue: (data) => {
+          const unassigned =
+            Array.isArray(data?.rec_in_charge_ids) &&
+            !isEmpty(data?.rec_in_charge_ids)
+              ? data?.rec_in_charge_ids.some(
+                  (recInCharge) =>
+                    recInCharge.value === REC_IN_CHARGE_STATE.unassigned
+                )
+              : undefined
+
           return {
-            priority: Number(data?.priority?.value) || undefined,
-            hiring_job_ids: !isEmpty(data?.hiring_job_ids)
-              ? data?.hiring_job_ids?.map((o) => o.value)
+            unassigned: unassigned ? unassigned : undefined,
+            priorities: !isEmpty(data?.priorities)
+              ? data?.priorities?.map((o) => o.value)
               : undefined,
             hiring_team_ids: !isEmpty(data?.hiring_team_ids)
               ? data?.hiring_team_ids?.map((o) => o.value)
               : undefined,
-            skill_id: !isEmpty(data?.skill_id)
-              ? data?.skill_id?.map((o) => o.value)
+            rec_team_ids: !isEmpty(data?.rec_team_ids)
+              ? data?.rec_team_ids?.map((o) => o.value)
+              : undefined,
+            rec_in_charge_ids: !isEmpty(data?.rec_in_charge_ids)
+              ? data?.rec_in_charge_ids?.map((o) => o.value)
+              : undefined,
+            job_position_ids: !isEmpty(data?.job_position_ids)
+              ? data?.job_position_ids?.map((o) => o.value)
+              : undefined,
+            skill_ids: !isEmpty(data?.skill_ids)
+              ? data?.skill_ids?.map((o) => o.value)
               : undefined,
             location: data?.location?.value || undefined,
             created_by_ids: !isEmpty(data?.created_by_ids)
               ? data?.created_by_ids?.map((o) => o.value)
               : undefined,
-            page_job: data?.page_job?.value ?? OPENING_PAGE_JOB.list_job,
           }
         },
       },

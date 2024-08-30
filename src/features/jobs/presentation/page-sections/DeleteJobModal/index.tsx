@@ -11,14 +11,16 @@ interface IDeleteJobModal {
   open: boolean
   setOpen: (value: boolean) => void
   id: string
+  onSuccess?: () => void
 }
 
-function DeleteJobModal({ open, setOpen, id }: IDeleteJobModal) {
+function DeleteJobModal({ open, setOpen, id, onSuccess }: IDeleteJobModal) {
   const [note, setNote] = useState('')
   const { onDelete, isPending } = useDeleteJob({
     id: id,
     onSuccess: () => {
       setOpen(false)
+      onSuccess?.()
     },
   })
 

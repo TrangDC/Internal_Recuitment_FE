@@ -54,6 +54,27 @@ export const BoxContainerCandidate = styled(Box)(({ theme }) => ({
   },
 }))
 
+export const BoxContainerJob = styled(Box)(({ theme }) => ({
+  minWidth: '304px',
+  width: '100%',
+  transition: 'all .3s',
+
+  '&.collapse': {
+    width: '45px',
+    minWidth: '45px',
+    writingMode: 'vertical-lr',
+  },
+
+  '&.collapse .box__title': {
+    alignItems: 'baseline',
+    flexDirection: 'row-reverse',
+  },
+
+  '&.collapse .action__collapse': {
+    flexDirection: 'row-reverse',
+  },
+}))
+
 export const BoxCandidateTitle = styled(Box)(({ theme }) => ({
   padding: '10px',
 

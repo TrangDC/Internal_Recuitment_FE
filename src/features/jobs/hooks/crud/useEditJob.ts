@@ -16,7 +16,11 @@ import { useEditResource } from 'shared/hooks/crud-hook'
 import getMembersByTeam from 'shared/hooks/graphql/getMemberByTeam'
 import HiringJob, {
   EditHiringJobArguments,
+  HiringJobLevel,
 } from 'shared/schema/database/hiring_job'
+import useGenerateJD from './useGenerateJd'
+import { formatJobDescription } from 'features/jobs/shared/utils'
+import { toast } from 'react-toastify'
 
 type UseEditJobProps = {
   id: string
@@ -52,14 +56,17 @@ function useUpdateJob(props: UseEditJobProps) {
         created_by: data?.user.id ?? '',
         description: data?.description ?? '',
         entity_skill_records: entity_skill_records,
-        note: '',
+        note: data?.note ?? '',
         job_position_id: data?.job_position_id ?? '',
-        staff_level: data?.level ?? '',
+        level: data?.level ?? '',
+        rec_in_charge_id: data?.rec_in_charge?.id ?? '',
+        rec_team_id: data?.rec_team?.id ?? '',
+        status: data?.status ?? '',
       }
     },
   })
 
-  const { handleSubmit, control, formState, setValue, getValues } =
+  const { handleSubmit, control, formState, setValue, getValues, watch } =
     useFormReturn
   const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
@@ -88,6 +95,10 @@ function useUpdateJob(props: UseEditJobProps) {
           name: value?.name,
           priority: Number(value?.priority),
           job_position_id: value?.job_position_id,
+          level: value?.level as HiringJobLevel,
+          rec_team_id: value?.rec_team_id,
+          note: value?.note ?? '',
+          rec_in_charge_id: value?.rec_in_charge_id,
         },
         note: note,
       }
@@ -98,6 +109,13 @@ function useUpdateJob(props: UseEditJobProps) {
   const resetSalary = () => {
     setValue('salary_from', '0')
     setValue('salary_to', '0')
+  }
+
+  const resetRecInCharge = () => {
+    setValue('rec_in_charge_id', '', {
+      shouldDirty: true,
+      shouldValidate: true,
+    })
   }
 
   const handleChangeManager = async (hiring_team_id: string) => {
@@ -114,14 +132,43 @@ function useUpdateJob(props: UseEditJobProps) {
     setValue('created_by', managers_first?.id)
   }
 
+  const { generateJD, loading } = useGenerateJD({
+    onSuccess: (data) => {
+      toast.success('Job description generated successfully!')
+      const formattedDescription = formatJobDescription(data)
+      setValue('description', formattedDescription)
+    },
+  })
+
+  function handleGenerateJD() {
+    const data = getValues()
+    generateJD({
+      name: data.name,
+      title: data.name,
+      working_location: data.location,
+      salary_from: parseInt(data.salary_from.replace(/,/g, ''), 10),
+      salary_to: parseInt(data.salary_to.replace(/,/g, ''), 10),
+      currency:
+        data.salary_type === 'negotiate' ? 'negotiate' : data.salary_type,
+      employee_level: data.level,
+      working_hour_from: '8:30',
+      working_hour_to: '17:30',
+      employment_type: 'fulltime',
+    })
+  }
+
   return {
     control,
     isValid,
     isPending,
+    loadingBtnGenerate: loading,
+    watch,
     actions: {
       onSubmit,
       handleChangeManager,
       resetSalary,
+      handleGenerateJD,
+      resetRecInCharge,
     },
     formState,
     setValue,

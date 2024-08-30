@@ -6,12 +6,14 @@ interface SelectionTeamPermissionProps {
   name: string
   value: string
   onChange(value: string | null): void
+  disabled?: boolean
 }
 
 function CreateSelectionTeamPermission({
   name,
   onChange,
   value,
+  disabled = false,
 }: SelectionTeamPermissionProps) {
   const { role } = useAuthorization()
   const teamOnly = checkPermissions({
@@ -30,6 +32,7 @@ function CreateSelectionTeamPermission({
       onChange={onChange}
       multiple={false}
       filter={filter}
+      disabled={disabled}
       textFieldProps={{
         required: true,
         label: 'Hiring team',

@@ -1,14 +1,14 @@
-import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
-import _, { cloneDeep, unionBy } from 'lodash'
-import { useEffect, useMemo, useState } from 'react'
+import _, { cloneDeep, isEmpty, unionBy } from 'lodash'
+import { useMemo } from 'react'
 import GraphQLClientService from 'services/graphql-service'
 import { BaseRecord } from 'shared/interfaces'
-import { CandidateStatusEnum } from 'shared/schema'
-import CandidateJob from 'shared/schema/database/candidate_job'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import { CustomGraphQLResponse } from 'shared/interfaces/response'
 import { isRight, unwrapEither } from 'shared/utils/handleEither'
-import { removeNonExistInObj } from 'shared/utils/utils'
 
+const queryKey = MODLUE_QUERY_KEY.CANDIDATE_JOB
 const getCandidatesByJob = GraphQLClientService.buildQuery({
   operation: 'GetCandidateJobGroupByStatus',
   options: {
@@ -232,8 +232,8 @@ const getCandidatesByJob = GraphQLClientService.buildQuery({
 })
 
 type CandidatesByStatus = {
-  failed_cv: CandidateStatusEnum[]
-  failed_interview: CandidateStatusEnum[]
+  failed_cv: CandidateStatusItem[]
+  failed_interview: CandidateStatusItem[]
   offer_lost: CandidateStatusItem[]
   ex_staff: CandidateStatusItem[]
   applied: CandidateStatusItem[]
@@ -241,285 +241,152 @@ type CandidatesByStatus = {
   offering: CandidateStatusItem[]
   hired: CandidateStatusItem[]
 }
-
-const INIT_PER_PAGE = 5
-
-type GetDataByStatus = {
-  data: CandidateStatusItem[]
-  setData: (data: any) => void
-}
-
-type ParamGetCandidateJob = {
-  pageCurrent: number
-  filter: BaseRecord
-  freeWord: BaseRecord
+const PER_PAGE = 5
+const INIT_CANDIDATE_STATUS: CandidatesByStatus = {
+  applied: [],
+  ex_staff: [],
+  hired: [],
+  interviewing: [],
+  failed_cv: [],
+  failed_interview: [],
+  offer_lost: [],
+  offering: [],
 }
 
 type ICandidateJobDetail = {
-    id: string
+  filter?: BaseRecord
+  freeWord?: BaseRecord
 }
 
 const useCandidatesJobDetail = (props: ICandidateJobDetail) => {
-  const [page, setPage] = useState<number>(1)
-  const [total, setTotal] = useState<number>(0)
-  const [filter, setFilter] = useState<BaseRecord>({})
-  const [freeWord, setFreeWord] = useState<BaseRecord>({})
-  const [applied, setApplied] = useState<CandidateStatusItem[]>([])
-  const [interviewing, setInterviewing] = useState<CandidateStatusItem[]>([])
-  const [offering, setOffering] = useState<CandidateStatusItem[]>([])
-  const [hired, setHired] = useState<CandidateStatusItem[]>([])
-  const [failedCV, setFailedCV] = useState<CandidateStatusItem[]>([])
-  const [failedInterview, setFailedInterview] = useState<CandidateStatusItem[]>(
-    []
-  )
-  const [offerLost, setOfferLost] = useState<CandidateStatusItem[]>([])
-  const [exStaff, setExStaff] = useState<CandidateStatusItem[]>([])
+  //:::::::::::::::::::::::::::::::::::::::::::new:::::::::::::::::::::::::
+  const fetchAllJob = async ({ pageParam }: { pageParam: number }) => {
+    return GraphQLClientService.fetchGraphQL(getCandidatesByJob, {
+      filter: props.filter,
+      pagination: {
+        page: pageParam,
+        perPage: PER_PAGE,
+      },
+    })
+  }
+
+  const { data, fetchNextPage, refetch } = useInfiniteQuery({
+    queryKey: [queryKey, props.filter],
+    queryFn: fetchAllJob,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
+      return lastPageParam + 1
+    },
+    enabled: !isEmpty(props.filter),
+  })
+
+  function handleGetRightData(rightData: CustomGraphQLResponse | undefined) {
+    const cloneData = cloneDeep(rightData)
+    if (cloneData && isRight(cloneData)) {
+      const response = unwrapEither(cloneData)
+      const totalRecords =
+        response?.[getCandidatesByJob.operation]?.pagination?.total
+      const sortData: CandidatesByStatus =
+        response?.[getCandidatesByJob.operation]?.data ?? []
+
+      return {
+        totalRecords,
+        list_job: sortData,
+      }
+    }
+    return {
+      list_job: {
+        applied: [],
+        ex_staff: [],
+        hired: [],
+        interviewing: [],
+        failed_cv: [],
+        failed_interview: [],
+        offer_lost: [],
+        offering: [],
+      },
+      totalRecords: 0,
+    }
+  }
+
+  const { list_all_job, totalRecord } = useMemo(() => {
+    const pages = data?.pages ?? []
+    let totalRecord = 0
+
+    const flatMapJobs = pages.flatMap((item) => {
+      const { totalRecords, list_job } = handleGetRightData(item)
+      if (!totalRecord) totalRecord = totalRecords
+      return list_job
+    })
+
+    const listRecord = flatMapJobs.reduce((current, next) => {
+      for (const key in next) {
+        if (next.hasOwnProperty(key)) {
+          //@ts-ignore
+          current[key] = unionBy(current[key], next[key], 'id')
+        }
+      }
+      return current
+    }, cloneDeep(INIT_CANDIDATE_STATUS))
+
+    return {
+      list_all_job: listRecord,
+      totalRecord,
+    }
+  }, [data])
 
   const total_current = useMemo(() => {
     return _.concat(
-      applied,
-      interviewing,
-      offering,
-      hired,
-      failedCV,
-      failedInterview,
-      offerLost,
-      exStaff
+      list_all_job.applied,
+      list_all_job.interviewing,
+      list_all_job.offering,
+      list_all_job.hired,
+      list_all_job.failed_cv,
+      list_all_job.failed_interview,
+      list_all_job.offer_lost,
+      list_all_job.ex_staff
     ).length
   }, [
-    applied,
-    interviewing,
-    offering,
-    hired,
-    failedCV,
-    failedInterview,
-    offerLost,
-    exStaff,
+    list_all_job.applied,
+    list_all_job.interviewing,
+    list_all_job.offering,
+    list_all_job.hired,
+    list_all_job.failed_cv,
+    list_all_job.failed_interview,
+    list_all_job.offer_lost,
+    list_all_job.ex_staff,
   ])
 
   const show_more = useMemo(() => {
-    return total_current < total
-  }, [total, total_current])
-
-  const handleGetItemByStatus = (status: string): GetDataByStatus => {
-    let result: GetDataByStatus = {
-      data: [],
-      setData: () => {},
-    }
-
-    switch (status) {
-      case 'applied':
-        result = {
-          data: applied,
-          setData: setApplied,
-        }
-        break
-      case 'ex_staff':
-        result = {
-          data: exStaff,
-          setData: setExStaff,
-        }
-        break
-      case 'hired':
-        result = {
-          data: hired,
-          setData: setHired,
-        }
-        break
-      case 'interviewing':
-        result = {
-          data: interviewing,
-          setData: setInterviewing,
-        }
-        break
-      case 'failed_cv':
-        result = {
-          data: failedCV,
-          setData: setFailedCV,
-        }
-        break
-      case 'failed_interview':
-        result = {
-          data: failedInterview,
-          setData: setFailedInterview,
-        }
-        break
-      case 'offer_lost':
-        result = {
-          data: offerLost,
-          setData: setOfferLost,
-        }
-        break
-      case 'offering':
-        result = {
-          data: offering,
-          setData: setOffering,
-        }
-        break
-    }
-
-    return result
-  }
-
-  const handleSetValue = (
-    key: string,
-    dataCandidate: CandidateStatusItem[]
-  ) => {
-    let nextCandidateJobList = cloneDeep(dataCandidate)
-    const candidateUtil = handleGetItemByStatus(key)
-    const { setData } = candidateUtil
-    if (page === 1) {
-      setData(nextCandidateJobList)
-      return
-    }
-    setData((prev: CandidateStatusItem[]) =>
-      unionBy(prev, nextCandidateJobList, 'id')
-    )
-  }
-
-  const getCandidateByJob = async ({
-    pageCurrent,
-    filter,
-    freeWord,
-  }: ParamGetCandidateJob): Promise<CandidatesByStatus> => {
-    const data = await GraphQLClientService.fetchGraphQL(getCandidatesByJob, {
-      orderBy: {
-        direction: 'DESC',
-        field: 'created_at',
-      },
-      pagination: { page: pageCurrent, perPage: INIT_PER_PAGE },
-      filter: {
-        ...filter,
-      },
-      freeWord: {
-        ...freeWord,
-      },
-    })
-
-    if (data && isRight(data)) {
-      const response = unwrapEither(data)
-      setTotal(response?.[getCandidatesByJob.operation]?.pagination?.total)
-      return response?.[getCandidatesByJob.operation]?.data
-    }
-
-    return {
-      applied: [],
-      ex_staff: [],
-      hired: [],
-      interviewing: [],
-      failed_cv: [],
-      failed_interview: [],
-      offer_lost: [],
-      offering: [],
-    }
-  }
-
-  const handleGetData = async ({
-    pageCurrent,
-    filter,
-    freeWord,
-  }: ParamGetCandidateJob) => {
-    const response = await getCandidateByJob({
-      pageCurrent: pageCurrent,
-      filter: filter,
-      freeWord: freeWord,
-    })
-
-    for (let property in response) {
-      //@ts-ignore
-      handleSetValue(property, response[property])
-    }
-  }
-
-  const handleFilter = (record: BaseRecord) => {
-    setPage(1)
-    setFilter((prev) => removeNonExistInObj({ ...prev, ...record }))
-  }
-
-  const handleFreeWord = (freeWord: BaseRecord) => {
-    setPage(1)
-    setFreeWord(freeWord)
-  }
-
-  const handleRemoveCandidate = (status: string, id: string) => {
-    const { setData } = handleGetItemByStatus(status)
-    //delete one candidate_job
-    setTotal((prev) => prev - 1)
-    setData((prev: CandidateStatusItem[]) => {
-      return prev.filter((item) => item.id !== id)
-    })
-  }
-
-  const handleUpdateStatus = (data: onSuccessChangeStatus) => {
-    const { prevStatus, id, updateStatus } = data
-    const dragCandidate = handleGetItemByStatus(prevStatus)
-    const dropCandidate = handleGetItemByStatus(updateStatus)
-
-    //get candidate move
-    let candidateMove = dragCandidate.data.find((item) => item.id === id)
-    if (candidateMove) {
-      candidateMove = {
-        ...candidateMove,
-        status: updateStatus,
-        candidate: {
-          ...candidateMove.candidate,
-          status: updateStatus as CandidateStatusEnum,
-        },
-      }
-    }
-
-    handleRemoveCandidate(prevStatus, id)
-
-    dropCandidate.setData((prev: CandidateStatusItem[]) => {
-      return [...prev, candidateMove]
-    })
-  }
-
-  const handleAddCandidate = (data: CandidateJob) => {
-    const candidate_changed = handleGetItemByStatus(data.status)
-    //add one candidate_job
-    setTotal((prev) => prev + 1)
-    candidate_changed.setData((prev: CandidateStatusItem[]) => [data, ...prev])
-  }
-
-  const handleFetchNextPage = () => {
-    setPage((prev) => prev + 1)
-  }
-
-  useEffect(() => {
-    if(!props.id) return;
-    handleGetData({
-      pageCurrent: page,
-      filter: {...filter, hiring_job_ids: [props.id]},
-      freeWord: freeWord,
-    })
-  }, [page, filter, freeWord])
+    return total_current < totalRecord
+  }, [totalRecord, total_current])
 
   return {
     total_data: {
       total_current,
-      total: total,
+      total: totalRecord,
     },
     show_more,
     actions: {
-      handleFetchNextPage,
+      fetchNextPage,
+      refetch,
       //static
-      handleFilter,
-      handleFreeWord,
-      handleUpdateStatus,
-      handleRemoveCandidate,
-      handleAddCandidate,
-      getCandidateByJob,
+      // handleFilter,
+      // handleFreeWord,
+      // handleUpdateStatus,
+      // handleRemoveCandidate,
+      // handleAddCandidate,
+      // getCandidateByJob,
     },
     data: {
-      applied,
-      interviewing,
-      offering,
-      hired,
-      failedCV,
-      failedInterview,
-      offer_lost: offerLost,
-      ex_staff: exStaff,
+      applied: list_all_job.applied,
+      interviewing: list_all_job.interviewing,
+      offering: list_all_job.offering,
+      hired: list_all_job.hired,
+      failedCV: list_all_job.failed_cv,
+      failedInterview: list_all_job.failed_interview,
+      offer_lost: list_all_job.offer_lost,
+      ex_staff: list_all_job.ex_staff,
     },
   }
 }

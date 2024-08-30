@@ -6,16 +6,12 @@ import { BtnPrimary } from 'shared/styles'
 
 type CloseJobButtonPermissionProps = {
   jobDetail: HiringJob
-  disabledBtn: boolean
-  opened: string
-  handleOpenStatus: (id: string) => void
+  handleOpenClose: (id: string) => void
 }
 
 function CloseJobButtonPermission({
   jobDetail,
-  disabledBtn,
-  opened,
-  handleOpenStatus,
+  handleOpenClose,
 }: CloseJobButtonPermissionProps) {
   const { role, user } = useAuthorization()
   const inTeam = user?.teamId === jobDetail.hiring_team?.id
@@ -41,12 +37,10 @@ function CloseJobButtonPermission({
   return (
     <BtnPrimary
       onClick={() => {
-        if (disabledBtn) return
-        handleOpenStatus(jobDetail?.id)
+        handleOpenClose(jobDetail?.id)
       }}
-      className={disabledBtn ? 'disabled' : ''}
     >
-      <Span>{jobDetail.status === opened ? 'Close Job' : 'Reopen Job'}</Span>
+      <Span>Close Job</Span>
     </BtnPrimary>
   )
 }

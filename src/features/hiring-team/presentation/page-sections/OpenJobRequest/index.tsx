@@ -47,15 +47,18 @@ const OpeningJobRequest = () => {
     handleOpenDelete,
     openStatus,
     setOpenStatus,
-    handleOpenStatus,
+    handleOpenCancel,
+    handleOpenClose,
+    handleOpenReopen,
     rowId,
     setOpenEdit,
   } = useActionTable()
 
   const { actions } = useBuildAllJobsActionsTable({
     handleOpenDelete,
-    handleOpenEdit,
-    handleOpenStatus,
+    handleOpenCancel,
+    handleOpenClose,
+    handleOpenReopen,
   })
 
   const { columnTable } = useBuildColumnTable({

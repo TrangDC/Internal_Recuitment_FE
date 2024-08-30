@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
-import ChangeStatusProvider from './context/ChangeStatusContext'
+import ChangeStatusProvider from './context/KanbanJobContext'
 import FilterCandidate from './components/FilterCandidate'
 import RenderListByPage from './components/renderListByPaget'
 

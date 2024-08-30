@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { JobStatus } from 'shared/class/job-status'
+import CancelIcon from 'shared/components/icons/CancelIcon'
 import CloseIcon from 'shared/components/icons/CloseIcon'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
@@ -13,20 +14,24 @@ export enum ActionAllJobsTable {
   EDIT = 'edit',
   DELETE = 'delete',
   CLOSE_JOB = 'close_job',
+  REOPEN = 'reopen',
+  CANCEL = 'cancel',
 }
 
 const { STATUS_HIRING_JOB } = JobStatus
 
 type UseBuildAllJobsActionsTableProps = {
-  handleOpenEdit: (id: string) => void
+  handleOpenCancel: (id: string) => void
   handleOpenDelete: (id: string) => void
-  handleOpenStatus: (id: string) => void
+  handleOpenClose: (id: string) => void
+  handleOpenReopen: (id: string) => void
 }
 
 function useBuildAllJobsActionsTable({
-  handleOpenEdit,
+  handleOpenCancel,
   handleOpenDelete,
-  handleOpenStatus,
+  handleOpenClose,
+  handleOpenReopen,
 }: UseBuildAllJobsActionsTableProps) {
   const translation = useTextTranslation()
   const navigate = useNavigate()
@@ -34,43 +39,51 @@ function useBuildAllJobsActionsTable({
     actions: {
       detail: {
         id: ActionAllJobsTable.DETAIL,
-        onClick: (id) => {
-          navigate(`/dashboard/job-detail/${id}`)
+        onClick: (id, rowData) => {
+          const linkNavigate =
+            rowData?.status === JobStatus.STATUS_HIRING_JOB.PENDING_APPROVALS
+              ? `/dashboard/job-detail/${id}`
+              : `/dashboard/job-overview/${id}`
+
+          navigate(linkNavigate)
         },
         title: translation.COMMON.detail,
         Icon: <SearchIconSmall />,
       },
-      close_job: {
-        id: ActionAllJobsTable.CLOSE_JOB,
-        onClick: (id) => {
-          handleOpenStatus(id)
-        },
-        title: (rowData) => {
-          return rowData.status === STATUS_HIRING_JOB.OPENED
-            ? 'Close job'
-            : 'Reopen Job'
-        },
-        disabled: (rowData) => {
-          if (rowData?.status !== STATUS_HIRING_JOB.OPENED) return false
-          if (
-            rowData?.is_able_to_close &&
-            rowData.status === STATUS_HIRING_JOB.OPENED
-          )
-            return false
-          return true
-        },
-        Icon: <CloseIcon />,
-      },
       edit: {
         id: ActionAllJobsTable.EDIT,
-        onClick: (id, rowData) => {
-          handleOpenEdit(id)
+        onClick: (id) => {
+          navigate(`/dashboard/edit-job-request/${id}`)
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
         disabled: (rowData) => {
           return rowData.status === STATUS_HIRING_JOB.CLOSED
         },
+      },
+      close_job: {
+        id: ActionAllJobsTable.CLOSE_JOB,
+        onClick: (id) => {
+          handleOpenClose(id)
+        },
+        title: 'Close job',
+        Icon: <CloseIcon />,
+      },
+      reopen: {
+        id: ActionAllJobsTable.REOPEN,
+        onClick: (id) => {
+          handleOpenReopen(id)
+        },
+        title: 'Reopen Job',
+        Icon: <CloseIcon />,
+      },
+      cancel: {
+        id: ActionAllJobsTable.CANCEL,
+        onClick: (id) => {
+          handleOpenCancel(id)
+        },
+        title: 'Cancel',
+        Icon: <CancelIcon />,
       },
       delete: {
         id: ActionAllJobsTable.DELETE,

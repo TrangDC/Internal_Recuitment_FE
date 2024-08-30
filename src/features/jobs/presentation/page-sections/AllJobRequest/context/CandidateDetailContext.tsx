@@ -1,10 +1,7 @@
-import { onSuccessChangeStatus } from 'features/candidatejob/presentation/page-sections/ChangeStatusModal'
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import useCandidatesJobDetail from 'features/jobs/hooks/crud/useGetCandidateJobDetail'
 import { ReactNode, createContext, useContext } from 'react'
 import { useParams } from 'react-router-dom'
-import { BaseRecord } from 'shared/interfaces'
-import CandidateJob from 'shared/schema/database/candidate_job'
 
 interface InitialState {
   data: {
@@ -23,12 +20,8 @@ interface InitialState {
   }
   show_more: boolean
   actions: {
-    handleFetchNextPage: () => void
-    handleFilter: (filter: BaseRecord) => void
-    handleFreeWord: (filter: BaseRecord) => void
-    handleUpdateStatus: (data: onSuccessChangeStatus) => void
-    handleRemoveCandidate: (status: string, id: string) => void
-    handleAddCandidate: (candidateJob: CandidateJob) => void
+    fetchNextPage: () => void
+    refetch: () => void
   }
 }
 
@@ -53,12 +46,8 @@ const ChangeStatusContext = createContext<InitialState>({
   },
   show_more: false,
   actions: {
-    handleFetchNextPage: () => {},
-    handleFilter: (filter: BaseRecord) => {},
-    handleFreeWord: (filter: BaseRecord) => {},
-    handleUpdateStatus: (data: onSuccessChangeStatus) => {},
-    handleRemoveCandidate: (status: string, id: string) => {},
-    handleAddCandidate: (candidateJob: CandidateJob) => {},
+    fetchNextPage: () => {},
+    refetch: () => {},
   },
 })
 
@@ -66,7 +55,9 @@ function CandidateDetailProvider(props: ChangeStatusProps) {
   const { children } = props
   const { id } = useParams()
 
-  const { data, total_data, show_more, actions } = useCandidatesJobDetail({id: id as string})
+  const { data, total_data, show_more, actions } = useCandidatesJobDetail({
+    filter: { hiring_job_ids: [id] },
+  })
 
   return (
     <ChangeStatusContext.Provider
