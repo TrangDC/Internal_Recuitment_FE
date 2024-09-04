@@ -23,6 +23,8 @@ import CandidateJob from 'shared/schema/database/candidate_job'
 import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
 import useValidProcessingCandidate from 'features/candidatejob/hooks/crud/useValidProcessingCandidate'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
+import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
+import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
 
 interface IApplyJobModal {
   open: boolean
@@ -52,7 +54,7 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
   const hiring_team_id = watch('hiring_team_id')
 
   const candidateId = watch('candidate_id')
-
+  const rec_team = watch('rec_team_id')
   const { isValidCandidate } = useValidProcessingCandidate(candidateId)
 
   const isValidAttachments = useMemo(() => {
@@ -296,6 +298,67 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
               </FormControl>
             </FlexBox>
           )}
+
+          <FlexBox justifyContent={'center'} alignItems={'center'}>
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="rec_team_id"
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <RecTeamsAutoComplete
+                      name="rec_team_id"
+                      value={field.value}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'REC team',
+                      }}
+                      onChange={(value) => {
+                        field.onChange(value)
+                        resetField('rec_in_charge_id')
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
+                )}
+              />
+            </FormControl>
+          </FlexBox>
+
+          <FlexBox justifyContent={'center'} alignItems={'center'}>
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="rec_in_charge_id"
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <RecInChargeAutoComplete
+                      value={field.value}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'REC in charge',
+                      }}
+                      filter={{
+                        rec_team_ids: rec_team ? [rec_team] : undefined,
+                      }}
+                      disabled={!rec_team}
+                      hasAssigned={false}
+                      onChange={(item) => {
+                        field.onChange(item?.value ?? '')
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
+                )}
+              />
+            </FormControl>
+          </FlexBox>
 
           <FlexBox justifyContent={'center'} alignItems={'center'}>
             <FormControl fullWidth>

@@ -4,7 +4,10 @@ import { schema, FormDataSchema } from '../../shared/constants/schema'
 import { convertCurrencyToNumber, updateRecordSkill } from 'shared/utils/utils'
 import { CURRENCY_STATE, SALARY_STATE } from 'shared/constants/constants'
 import { useCreateResource } from 'shared/hooks/crud-hook'
-import { CreateHiringJobArguments, HiringJobLevel } from 'shared/schema/database/hiring_job'
+import {
+  CreateHiringJobArguments,
+  HiringJobLevel,
+} from 'shared/schema/database/hiring_job'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import useGenerateJD from './useGenerateJd'
 import toast from 'react-hot-toast'
@@ -41,7 +44,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     },
   })
 
-  const { handleSubmit, control, formState, setValue, getValues } =
+  const { handleSubmit, control, formState, setValue, getValues, clearErrors } =
     useFormReturn
   const isValid = !formState.isValid
   const { isPending, mutate } = useCreateReturn
@@ -82,6 +85,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
   const resetSalary = () => {
     setValue('salary_from', '0')
     setValue('salary_to', '0')
+    clearErrors(['salary_from', 'salary_to'])
   }
 
   const updateDescription = (description: string) => {
@@ -125,7 +129,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
       resetSalary,
       onSubmit,
       updateDescription,
-      handleGenerateJD
+      handleGenerateJD,
     },
   }
 }

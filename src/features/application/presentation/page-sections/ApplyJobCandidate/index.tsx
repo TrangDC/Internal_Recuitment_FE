@@ -23,6 +23,8 @@ import CandidateJob from 'shared/schema/database/candidate_job'
 import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
 import useValidProcessingCandidate from 'features/candidatejob/hooks/crud/useValidProcessingCandidate'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
+import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
+import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
 
 interface IApplyJobModal {
   open: boolean
@@ -294,6 +296,34 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
               </FormControl>
             </FlexBox>
           )}
+
+          <FlexBox justifyContent={'center'} alignItems={'center'}>
+            <FormControl fullWidth>
+              <Controller
+                control={control}
+                name="rec_in_charge_id"
+                render={({ field, fieldState }) => (
+                  <FlexBox flexDirection={'column'}>
+                    <RecInChargeAutoComplete
+                      value={field.value}
+                      multiple={false}
+                      textFieldProps={{
+                        required: true,
+                        label: 'REC in charge',
+                      }}
+                      hasAssigned={false}
+                      onChange={(item) => {
+                        field.onChange(item?.value ?? '')
+                      }}
+                    />
+                    <HelperTextForm
+                      message={fieldState.error?.message}
+                    ></HelperTextForm>
+                  </FlexBox>
+                )}
+              />
+            </FormControl>
+          </FlexBox>
 
           <FlexBox justifyContent={'center'} alignItems={'center'}>
             <FormControl fullWidth>

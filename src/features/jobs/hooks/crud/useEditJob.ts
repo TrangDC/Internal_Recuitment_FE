@@ -66,8 +66,15 @@ function useUpdateJob(props: UseEditJobProps) {
     },
   })
 
-  const { handleSubmit, control, formState, setValue, getValues, watch } =
-    useFormReturn
+  const {
+    handleSubmit,
+    control,
+    formState,
+    setValue,
+    getValues,
+    watch,
+    clearErrors,
+  } = useFormReturn
   const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
@@ -109,6 +116,7 @@ function useUpdateJob(props: UseEditJobProps) {
   const resetSalary = () => {
     setValue('salary_from', '0')
     setValue('salary_to', '0')
+    clearErrors(['salary_from', 'salary_to'])
   }
 
   const resetRecInCharge = () => {

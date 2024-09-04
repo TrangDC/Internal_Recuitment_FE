@@ -8,8 +8,8 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import useChangeStatusJob from '../../../hooks/crud/useChangeStatusJob'
 import { JobStatus } from 'shared/class/job-status'
+import useCloseJob from 'features/jobs/hooks/crud/useCloseJob'
 
 interface ICloseJobModal {
   open: boolean
@@ -20,7 +20,7 @@ interface ICloseJobModal {
 
 const { STATUS_HIRING_JOB } = JobStatus
 function CloseJobModal({ open, setOpen, id, onSuccess }: ICloseJobModal) {
-  const { action, control, isPending, isValid } = useChangeStatusJob({
+  const { action, control, isPending, isValid } = useCloseJob({
     id: id,
     onSuccess: () => {
       setOpen(false)

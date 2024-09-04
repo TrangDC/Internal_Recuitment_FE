@@ -10,6 +10,8 @@ import useEditJobApplication from '../../../hooks/crud/useEditJobApplication'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
+import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
+import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 
 type EditCandidateJobModalProps = {
   open: boolean
@@ -24,14 +26,21 @@ function EditCandidateJobModal({
   candidateId,
   onSuccess,
 }: EditCandidateJobModalProps) {
-  const { onSubmit, isPending, isValid, control, formState, getValues } =
-    useEditJobApplication({
-      id: candidateId,
-      onSuccess(data) {
-        setOpen(false)
-        onSuccess?.()
-      },
-    })
+  const {
+    onSubmit,
+    isPending,
+    isValid,
+    control,
+    formState,
+    getValues,
+    resetField,
+  } = useEditJobApplication({
+    id: candidateId,
+    onSuccess(data) {
+      setOpen(false)
+      onSuccess?.()
+    },
+  })
 
   const translation = useTextTranslation()
 
@@ -44,6 +53,33 @@ function EditCandidateJobModal({
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
           <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="rec_in_charge_id"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <RecInChargeAutoComplete
+                        value={field.value}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'REC in charge',
+                        }}
+                        hasAssigned={false}
+                        onChange={(item) => {
+                          field.onChange(item?.value ?? '')
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
             <FlexBox justifyContent={'center'} alignItems={'center'}>
               <FormControl fullWidth>
                 <Controller
@@ -60,15 +96,18 @@ function EditCandidateJobModal({
                         validator_files={{
                           max_file: {
                             max: 1,
-                            msg_error: 'One PDF file only, file size up to 20mb',
+                            msg_error:
+                              'One PDF file only, file size up to 20mb',
                           },
                           max_size: {
                             max: 20,
-                            msg_error: 'One PDF file only, file size up to 20mb',
+                            msg_error:
+                              'One PDF file only, file size up to 20mb',
                           },
                           is_valid: {
                             regex: '\\.(pdf)',
-                            msg_error: 'One PDF file only, file size up to 20mb',
+                            msg_error:
+                              'One PDF file only, file size up to 20mb',
                           },
                         }}
                         descriptionFile={() => {

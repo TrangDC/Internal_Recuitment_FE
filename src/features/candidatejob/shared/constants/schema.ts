@@ -9,9 +9,7 @@ export const schema = yup.object({
   candidate_id: yup.string().required(RULE_MESSAGES.MC1('candidate_id')),
   hiring_job_id: yup.string().required(RULE_MESSAGES.MC1('job name')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
-  attachments: yup
-    .array()
-    .required(RULE_MESSAGES.MC1('attachments')),
+  attachments: yup.array().required(RULE_MESSAGES.MC1('attachments')),
   offer_expiration_date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Offer expiration date'))
@@ -45,10 +43,14 @@ export const schema = yup.object({
       return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
     })
     .nullable(),
-  level: yup.string().when(['status'], ([status], schema) => {
-    if (status !== application_data.offering.value) return schema
-    return schema.required(RULE_MESSAGES.MC1('level'))
-  }).nullable(),
+  level: yup
+    .string()
+    .when(['status'], ([status], schema) => {
+      if (status !== application_data.offering.value) return schema
+      return schema.required(RULE_MESSAGES.MC1('level'))
+    })
+    .nullable(),
+  rec_in_charge_id: yup.string().required(RULE_MESSAGES.MC1('REC in charge')),
 })
 
 export type FormDataSchema = yup.InferType<typeof schema>
@@ -64,8 +66,8 @@ export const schemaChangeStatus = yup.object({
         const { status, failed_reason } = this.parent
         if (
           status === application_data.failed_cv.value ||
-          status === application_data.offer_lost.value || 
-          status === application_data.failed_interview.value 
+          status === application_data.offer_lost.value ||
+          status === application_data.failed_interview.value
         ) {
           return !isEmpty(failed_reason)
         }
@@ -108,14 +110,18 @@ export const schemaChangeStatus = yup.object({
       return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
     })
     .nullable(),
-    level: yup.string().when(['status'], ([status], schema) => {
+  level: yup
+    .string()
+    .when(['status'], ([status], schema) => {
       if (status !== application_data.offering.value) return schema
       return schema.required(RULE_MESSAGES.MC1('level'))
-    }).nullable(),
+    })
+    .nullable(),
 })
 
 export const schemaUpdateJobAttachment = yup.object({
   attachments: yup.mixed(),
+  rec_in_charge_id: yup.string().required(RULE_MESSAGES.MC1('REC in charge')),
 })
 
 export type FormDataSchemaChangeStatus = yup.InferType<

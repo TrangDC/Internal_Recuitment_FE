@@ -4,10 +4,10 @@ const customInterface = createSchemaFilter({
   hiring_job_ids: 'string[]',
   hiring_team_ids: 'string[]',
   status: 'string',
-  rec_id: 'string[]',
+  rec_team_ids: 'string[]',
   levels: 'string[]',
-  page_job: 'string'
+  page_job: 'string',
+  rec_in_charge_ids: 'string[]',
 })
 
 export type ApplicationFilter = typeof customInterface
-

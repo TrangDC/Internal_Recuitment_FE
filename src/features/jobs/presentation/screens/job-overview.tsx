@@ -26,6 +26,11 @@ import CloseJobModal from '../page-sections/CloseJobModal'
 import ReopenJobModal from '../page-sections/ReopenModal'
 import GeneralInformationHiring from '../page-sections/GeneralInformationHiring'
 import RequestResolutionTime from '../components/RequestResolutionTime'
+import CancelButtonPermission from 'features/jobs/permission/components/CancelJobButtonPermission'
+import CancelModal from '../page-sections/CancelModal'
+import ExPoint from 'shared/components/icons/ExPoint'
+import TooltipComponent from 'shared/components/tooltip'
+import { t } from 'i18next'
 
 const { STATUS_HIRING_JOB } = JobStatus
 
@@ -40,6 +45,9 @@ const JobOverview = () => {
     setOpenClose,
     handleOpenClose,
     handleOpenReopen,
+    handleOpenCancel,
+    openCancel,
+    setOpenCancel,
     rowId,
     openReopen,
     setOpenReopen,
@@ -47,6 +55,9 @@ const JobOverview = () => {
 
   const showReopenBtn = jobDetail?.status === STATUS_HIRING_JOB.CLOSED
   const showCloseBtn = jobDetail?.status === STATUS_HIRING_JOB.OPENED
+  const showCancelBtn =
+    jobDetail?.status === STATUS_HIRING_JOB.OPENED &&
+    jobDetail?.is_able_to_cancel
 
   return (
     <Box pt={2} pb={4}>
@@ -92,7 +103,15 @@ const JobOverview = () => {
                     alignItems={'flex-start'}
                     flexDirection={'column'}
                   >
-                    <SpanText>Hiring team</SpanText>
+                    <FlexBox gap={0.5} alignItems={'center'}>
+                      <SpanText>Hiring team</SpanText>
+                      <TooltipComponent
+                        title={t('tooltip.job_request.approver')}
+                      >
+                        <ExPoint />
+                      </TooltipComponent>
+                    </FlexBox>
+
                     <TinyText>{jobDetail?.hiring_team?.name}</TinyText>
                   </FlexBox>
 
@@ -101,7 +120,14 @@ const JobOverview = () => {
                     alignItems={'flex-start'}
                     flexDirection={'column'}
                   >
-                    <SpanText>Staff needed</SpanText>
+                    <FlexBox gap={0.5} alignItems={'center'}>
+                      <SpanText>Staff needed</SpanText>
+                      <TooltipComponent
+                        title={t('tooltip.job_request.staff_needed')}
+                      >
+                        <ExPoint />
+                      </TooltipComponent>
+                    </FlexBox>
                     <BoxCircle>
                       <TinyText>{jobDetail?.amount}</TinyText>
                     </BoxCircle>
@@ -112,12 +138,18 @@ const JobOverview = () => {
                     alignItems={'flex-start'}
                     flexDirection={'column'}
                   >
-                    <SpanText>Staff level</SpanText>
+                    <FlexBox gap={0.5} alignItems={'center'}>
+                      <SpanText>Staff level</SpanText>
+                      <TooltipComponent
+                        title={t('tooltip.job_request.staff_level')}
+                      >
+                        <ExPoint />
+                      </TooltipComponent>
+                    </FlexBox>
+
                     <TinyText>{LEVEL_STATE[jobDetail?.level]?.label}</TinyText>
                   </FlexBox>
-                </FlexBox>
 
-                <FlexBox gap={7.5} flexWrap={'wrap'} rowGap={2}>
                   <FlexBox
                     gap={0.75}
                     alignItems={'flex-start'}
@@ -148,7 +180,14 @@ const JobOverview = () => {
                   alignItems={'flex-start'}
                   flexDirection={'column'}
                 >
-                  <SpanText>REC in charge</SpanText>
+                  <FlexBox gap={0.5} alignItems={'center'}>
+                    <SpanText>REC in charge</SpanText>
+                    <TooltipComponent
+                      title={t('tooltip.job_request.rec_in_charge')}
+                    >
+                      <ExPoint />
+                    </TooltipComponent>
+                  </FlexBox>
                   <TinyText>{jobDetail?.rec_in_charge?.name}</TinyText>
                 </FlexBox>
 
@@ -157,7 +196,12 @@ const JobOverview = () => {
                   alignItems={'flex-start'}
                   flexDirection={'column'}
                 >
-                  <SpanText>REC team</SpanText>
+                  <FlexBox gap={0.5} alignItems={'center'}>
+                    <SpanText>REC team</SpanText>
+                    <TooltipComponent title={t('tooltip.job_request.rec_team')}>
+                      <ExPoint />
+                    </TooltipComponent>
+                  </FlexBox>
                   <TinyText>{jobDetail?.rec_team?.name}</TinyText>
                 </FlexBox>
 
@@ -166,7 +210,15 @@ const JobOverview = () => {
                   alignItems={'flex-start'}
                   flexDirection={'column'}
                 >
-                  <SpanText>Request resolution time</SpanText>
+                  <FlexBox gap={0.5} alignItems={'center'}>
+                    <SpanText>Request resolution time</SpanText>
+                    <TooltipComponent
+                      title={t('tooltip.job_request.request_solution_time')}
+                    >
+                      <ExPoint />
+                    </TooltipComponent>
+                  </FlexBox>
+
                   <RequestResolutionTime
                     time={new Date(jobDetail?.opened_at)}
                   />
@@ -174,6 +226,12 @@ const JobOverview = () => {
               </FlexBox>
 
               <FlexBox gap={1} justifyContent={'flex-end'}>
+                {showCancelBtn && (
+                  <CancelButtonPermission
+                    handleOpenCancel={handleOpenCancel}
+                    jobDetail={jobDetail}
+                  />
+                )}
                 {showReopenBtn && (
                   <ReopenButtonPermission
                     handleOpenReopen={handleOpenReopen}
@@ -212,6 +270,14 @@ const JobOverview = () => {
         <CloseJobModal
           open={openClose}
           setOpen={setOpenClose}
+          id={rowId.current}
+        />
+      )}
+
+      {openCancel && (
+        <CancelModal
+          open={openCancel}
+          setOpen={setOpenCancel}
           id={rowId.current}
         />
       )}

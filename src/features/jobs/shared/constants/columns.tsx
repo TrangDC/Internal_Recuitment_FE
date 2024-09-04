@@ -10,7 +10,7 @@ import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import { ChipLimit } from 'shared/components/chip-stack'
 import checkPermissionActionTable from 'features/jobs/permission/utils/checkPermissonActionTable'
 import { ParamsColumn } from 'shared/components/table/hooks/useBuildColumnTable'
-import _, { isEmpty } from 'lodash'
+import _ from 'lodash'
 import HiringJob from 'shared/schema/database/hiring_job'
 import { ChangeEvent } from 'react'
 import IndeterminateCheckbox from 'shared/components/table/components/IndeterminateCheckbox'
@@ -520,7 +520,7 @@ export const columns = (
   { me, role }: ParamsColumn
 ): ColumnDef<HiringJob, any>[] => [
   columnHelper.accessor((row) => row.status, {
-    id: 'priority',
+    id: 'status',
     size: 150,
     header: () => <span>Status</span>,
     cell: (info) => {

@@ -9,7 +9,10 @@ import useActionTable from 'features/candidatejob/hooks/table/useActionTable'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import useBuildActionTableCandidateJobs from 'features/candidatejob/hooks/table/useBuildActionTableCandidateJobs'
 import useApplyJobTable from 'features/candidatejob/hooks/table/useApplyJobTable'
-import { ChangeStatusModal, DeleteCandidateJobModal } from 'features/candidatejob/presentation/page-sections'
+import {
+  ChangeStatusModal,
+  DeleteCandidateJobModal,
+} from 'features/candidatejob/presentation/page-sections'
 import EditCandidateJobModal from 'features/candidatejob/presentation/page-sections/EditCandidateJobModal'
 import { CandidateStatusEnum } from 'shared/schema'
 
@@ -36,17 +39,17 @@ const CandidateList = () => {
   const filter_value = useMemo(() => {
     return {
       hiring_job_ids: dataFilterWithValue.hiring_job_ids,
-      rec_id: dataFilterWithValue.rec_id,
+      rec_team_ids: dataFilterWithValue.rec_team_ids,
+      rec_in_charge_ids: dataFilterWithValue.rec_in_charge_ids,
       levels: dataFilterWithValue.levels,
       hiring_team_ids: dataFilterWithValue.hiring_team_ids,
-      status: dataFilterWithValue.status
-    
+      status: dataFilterWithValue.status,
     }
   }, [JSON.stringify(dataFilterWithValue)])
 
   const { useTableReturn } = useApplyJobTable({
     filters: filter_value,
-    search
+    search,
   })
 
   const { actions } = useBuildActionTableCandidateJobs({

@@ -55,6 +55,7 @@ const ListAllJob = () => {
       rec_team_ids: dataFilterWithValue.rec_team_ids,
       has_rec_in_charge: dataFilterWithValue?.has_rec_in_charge,
       rec_in_charge_ids: recInChargeIds,
+      status: dataFilterWithValue?.status,
     }
   }, [JSON.stringify(dataFilterWithValue)])
 

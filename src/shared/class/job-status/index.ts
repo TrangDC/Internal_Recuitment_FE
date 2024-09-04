@@ -1,10 +1,10 @@
-import { HiringJobStatus } from "shared/schema/database/hiring_job"
+import { HiringJobStatus } from 'shared/schema/database/hiring_job'
 
 const STATUS_HIRING_JOB = {
   PENDING_APPROVALS: 'pending_approvals',
   OPENED: 'opened',
   CLOSED: 'closed',
-  CANCELLED: 'cancelled'
+  CANCELLED: 'cancelled',
 }
 
 const STATUS_STYLE = {
@@ -19,12 +19,12 @@ const STATUS_STYLE = {
     text: 'Opening',
   },
   [STATUS_HIRING_JOB.CLOSED]: {
-    backgroundColor: '#82868C',
+    backgroundColor: '#ff9777',
     color: 'white',
     text: 'Closed',
   },
   [STATUS_HIRING_JOB.CANCELLED]: {
-    backgroundColor: '#FF9777',
+    backgroundColor: '#82868c',
     color: 'white',
     text: 'Cancelled',
   },

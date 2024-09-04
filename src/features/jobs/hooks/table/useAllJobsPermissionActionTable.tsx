@@ -67,7 +67,7 @@ function useBuildAllJobsActionsTable({
         onClick: (id) => {
           handleOpenClose(id)
         },
-        title: 'Close job',
+        title: 'Close request',
         Icon: <CloseIcon />,
         disabled: (data) => data.is_able_to_close === false,
       },
@@ -84,7 +84,7 @@ function useBuildAllJobsActionsTable({
         onClick: (id) => {
           handleOpenCancel(id)
         },
-        title: 'Cancel',
+        title: 'Cancel request',
         Icon: <CancelIcon />,
         disabled: (data) => data.is_able_to_cancel === false,
       },

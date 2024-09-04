@@ -36,7 +36,10 @@ const StyledTextField = styled(TextField)<CustomTextFieldProps>(
         color: theme.palette.error.main,
       },
     },
-    '& .MuiInputLabel-root.Mui-focused': { fontWeight: 600 },
+    '& .MuiInputLabel-root.Mui-focused': {
+      fontWeight: 600,
+      color: '#2499EF',
+    },
     '& .MuiInputLabel-root .MuiFormLabel-asterisk': { marginLeft: 2 },
     '& .MuiSvgIcon-root': { color: theme.palette.text.disabled },
   })

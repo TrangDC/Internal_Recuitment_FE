@@ -104,7 +104,7 @@ const GeneralInformationHiring = ({ jobDetail }: IGeneralInformationHiring) => {
 
         {showApplyJob && (
           <Button variant="contained" onClick={() => setOpenCreate(true)}>
-            Apply Candidate
+            Apply candidate
           </Button>
         )}
       </FlexBox>
