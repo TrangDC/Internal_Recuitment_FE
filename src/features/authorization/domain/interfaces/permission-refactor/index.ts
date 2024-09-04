@@ -147,7 +147,7 @@ export type PermissionName<M extends keyof PermissionStructureImpl> = Leaves<
 >
 
 export type CheckActions<M extends keyof PermissionStructureImpl> = {
-  compare: 'hasAny' | 'hasAll'
+  compare: 'hasAny' 
   permissions: PermissionName<M>[]
 }
 

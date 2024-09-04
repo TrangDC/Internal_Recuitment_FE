@@ -1,5 +1,6 @@
 import { CandidateStatusItem } from 'features/jobs/domain/interfaces'
 import { useNavigate } from 'react-router-dom'
+import { JobStatus } from 'shared/class/job-status'
 import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 import DeleteIcon from 'shared/components/icons/DeleteIcon'
 import EditIcon from 'shared/components/icons/EditIcon'
@@ -17,6 +18,8 @@ type UseBuildActionsKanbanJobsProps = {
   handleOpenEdit: (id: string) => void
   handleOpenDelete: (id: string) => void
 }
+
+const { STATUS_HIRING_JOB } = JobStatus
 
 function useBuildActionsKanbanJobs({
   handleOpenEdit,
@@ -44,6 +47,9 @@ function useBuildActionsKanbanJobs({
         },
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
+        disabled: (rowData) => {
+          return rowData.hiring_job.status === STATUS_HIRING_JOB.CLOSED
+        },
       },
       delete: {
         id: ActionJobsKanbanTable.DELETE,
@@ -53,7 +59,7 @@ function useBuildActionsKanbanJobs({
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
         disabled: (rowData) => {
-          return rowData.status !== application_data.applied.value;
+          return rowData.status !== application_data.applied.value
         },
       },
     },

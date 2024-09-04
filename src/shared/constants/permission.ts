@@ -194,4 +194,16 @@ export const roleTemplateInformation: RoleTemplateInformation = {
   'model.permissions.candidate_activities.delete': {
     description: 'Permission to delete activities',
   },
+  'model.permissions.hiring_jobs.edit_pending': {
+    description: 'Permission to edit Pending approvals Job request information',
+  },
+  'model.permissions.hiring_jobs.edit_opened': {
+    description: 'Permission to edit Opening Job request information',
+  },
+  'model.permissions.hiring_jobs.cancel': {
+    description: 'Permission to cancel job request',
+  },
+  'model.permissions.hiring_jobs.reopen': {
+    description: 'Permission to reopen job request ',
+  },
 }

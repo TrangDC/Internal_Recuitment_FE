@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import { JobStatus } from 'shared/class/job-status'
 import CancelIcon from 'shared/components/icons/CancelIcon'
@@ -68,6 +69,7 @@ function useBuildAllJobsActionsTable({
         },
         title: 'Close job',
         Icon: <CloseIcon />,
+        disabled: (data) => data.is_able_to_close === false,
       },
       reopen: {
         id: ActionAllJobsTable.REOPEN,
@@ -84,6 +86,7 @@ function useBuildAllJobsActionsTable({
         },
         title: 'Cancel',
         Icon: <CancelIcon />,
+        disabled: (data) => data.is_able_to_cancel === false,
       },
       delete: {
         id: ActionAllJobsTable.DELETE,

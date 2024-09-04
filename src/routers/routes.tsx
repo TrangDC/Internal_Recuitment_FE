@@ -106,6 +106,7 @@ export const AppRoutes = () => {
   const { role } = useAuthorization()
   let skillPage: ReactElement | null = <DoNotAllowPage />
   let teamPage: ReactElement | null = <DoNotAllowPage />
+  let jobEditPage: ReactElement | null = <DoNotAllowPage />
 
   const skillView = checkPermissions({
     role,
@@ -142,12 +143,43 @@ export const AppRoutes = () => {
       permissions: ['VIEW.everything', 'VIEW.ownedOnly', 'VIEW.teamOnly'],
     },
   })
+
+  const editJobApprovalView = checkPermissions({
+    role,
+    module: 'JOBS',
+    checkBy: {
+      compare: 'hasAny',
+      permissions: [
+        'EDIT_PENDING_APPROVAL.everything',
+        'EDIT_PENDING_APPROVAL.ownedOnly',
+        'EDIT_PENDING_APPROVAL.teamOnly',
+      ],
+    },
+  })
+
+  const editOpenJobView = checkPermissions({
+    role,
+    module: 'JOBS',
+    checkBy: {
+      compare: 'hasAny',
+      permissions: [
+        'EDIT_OPENING_JOB.everything',
+        'EDIT_OPENING_JOB.ownedOnly',
+        'EDIT_OPENING_JOB.teamOnly',
+      ],
+    },
+  })
+
   if (skillTypeView || skillView) {
     skillPage = <DashboardLayout>{<SkillList />}</DashboardLayout>
   }
 
   if (hiringTeamView || recTeamView) {
     teamPage = <DashboardLayout>{<TeamList />}</DashboardLayout>
+  }
+
+  if (editJobApprovalView || editOpenJobView) {
+    jobEditPage = <DashboardLayout>{<EditJobRequestPage />}</DashboardLayout>
   }
 
   return (
@@ -284,21 +316,7 @@ export const AppRoutes = () => {
               },
             })}
           />
-          <Route
-            path="edit-job-request/:id"
-            element={PermissionLayout({
-              module: 'JOBS',
-              children: <EditJobRequestPage />,
-              checkBy: {
-                compare: 'hasAny',
-                permissions: [
-                  'EDIT.everything',
-                  'EDIT.ownedOnly',
-                  'EDIT.teamOnly',
-                ],
-              },
-            })}
-          />
+          <Route path="edit-job-request/:id" element={jobEditPage} />
           <Route
             path="candidates"
             element={PermissionLayout({
