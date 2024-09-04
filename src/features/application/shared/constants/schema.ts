@@ -8,9 +8,7 @@ export const schemaApplyJob = yup.object({
   candidate_id: yup.string().required(RULE_MESSAGES.MC1('candidate')),
   hiring_job_id: yup.string().required(RULE_MESSAGES.MC1('job name')),
   status: yup.string().required(RULE_MESSAGES.MC1('status')),
-  attachments: yup
-    .array()
-    .required(RULE_MESSAGES.MC1('attachments')),
+  attachments: yup.array().required(RULE_MESSAGES.MC1('attachments')),
   offer_expiration_date: yup
     .date()
     .typeError(RULE_MESSAGES.MC5('Offer expiration date'))
@@ -51,6 +49,7 @@ export const schemaApplyJob = yup.object({
       return schema.required(RULE_MESSAGES.MC1('level'))
     })
     .nullable(),
+  rec_in_charge_id: yup.string().required(RULE_MESSAGES.MC1('REC in charge')),
 })
 
 export type FormDataSchemaApplyJob = yup.InferType<typeof schemaApplyJob>

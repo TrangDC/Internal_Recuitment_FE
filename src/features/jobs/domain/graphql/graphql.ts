@@ -76,6 +76,24 @@ const useGraphql = () => {
     },
   })
 
+  const countPendingJob = GraphQLClientService.buildQuery({
+    operation: 'GetAllHiringJobs',
+    options: {
+      type: 'query',
+    },
+    node: `
+      pagination {
+        total
+      }
+    `,
+    params: {
+      pagination: 'PaginationInput',
+      filter: 'HiringJobFilter',
+      orderBy: 'HiringJobOrderBy!',
+      freeWord: 'HiringJobFreeWord',
+    },
+  })
+
   const createJob = GraphQLClientService.buildQuery({
     operation: 'CreateHiringJob',
     options: {
@@ -139,6 +157,7 @@ const useGraphql = () => {
         priority
         currency
         is_able_to_close
+        is_able_to_cancel
         status
         job_position_id
         level
@@ -200,6 +219,54 @@ const useGraphql = () => {
 
   const changeStatusJob = GraphQLClientService.buildQuery({
     operation: 'UpdateHiringJobStatus',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+    data {
+      id
+    }`,
+    params: {
+      id: 'ID!',
+      note: 'String!',
+      status: 'HiringJobStatus!',
+    },
+  })
+
+  const cancelHiringJob = GraphQLClientService.buildQuery({
+    operation: 'CancelHiringJob',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+    data {
+      id
+    }`,
+    params: {
+      id: 'ID!',
+      note: 'String!',
+      status: 'HiringJobStatus!',
+    },
+  })
+
+  const closeHiringJob = GraphQLClientService.buildQuery({
+    operation: 'CloseHiringJob',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+    data {
+      id
+    }`,
+    params: {
+      id: 'ID!',
+      note: 'String!',
+      status: 'HiringJobStatus!',
+    },
+  })
+
+  const reopenHiringJob = GraphQLClientService.buildQuery({
+    operation: 'ReopenHiringJob',
     options: {
       type: 'mutation',
     },
@@ -428,6 +495,10 @@ const useGraphql = () => {
     getCandidatesByJob,
     createCandidateJob,
     updateBulkHiringJobStepsStatus,
+    countPendingJob,
+    cancelHiringJob,
+    closeHiringJob,
+    reopenHiringJob,
   }
 }
 

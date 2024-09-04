@@ -65,6 +65,14 @@ const useGraphql = () => {
           status
           is_able_to_delete
           interview_feature
+          rec_team {
+            id
+            name
+          }
+          rec_in_charge {
+            id
+            name
+          }
           attachments {
             id
             document_id
@@ -186,6 +194,14 @@ const useGraphql = () => {
         onboard_date
         offer_expiration_date
         level
+        rec_team {
+          id
+          name
+        }
+        rec_in_charge {
+          id
+          name
+        }
         owner {
           id
           name
@@ -569,20 +585,16 @@ const useGraphql = () => {
     },
   })
 
-  const validProcessingCandidateJobExistByCandidateID = GraphQLClientService.buildQuery({
-    operation: 'ValidProcessingCandidateJobExistByCandidateID',
-    options: {
-      type: 'query',
-    },
-    // node: `
-    //   data {
-      
-    //   }
-    // `,
-    params: {
-      candidateID: 'ID!',
-    },
-  })
+  const validProcessingCandidateJobExistByCandidateID =
+    GraphQLClientService.buildQuery({
+      operation: 'ValidProcessingCandidateJobExistByCandidateID',
+      options: {
+        type: 'query',
+      },
+      params: {
+        candidateID: 'ID!',
+      },
+    })
 
   return {
     queryKey,
@@ -595,7 +607,7 @@ const useGraphql = () => {
     getCandidateJobInterview,
     deleteCandidateJob,
     updateCandidateJobAttachment,
-    validProcessingCandidateJobExistByCandidateID
+    validProcessingCandidateJobExistByCandidateID,
   }
 }
 

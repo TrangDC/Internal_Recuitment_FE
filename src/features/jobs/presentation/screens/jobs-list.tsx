@@ -6,21 +6,14 @@ import JobOpening from '../page-sections/JobOpening'
 import AllJobRequest from '../page-sections/AllJobRequest'
 import MicroScope from 'shared/components/icons/Microscope'
 import PendingApprovals from '../page-sections/PendingApproval'
-import { useLayoutEffect, useState } from 'react'
-import { getCountPendingApproval } from 'features/jobs/domain/service'
 import { BoxCircle } from 'shared/styles'
 import { TinyText } from 'shared/components/form/styles'
 import FlexBox from 'shared/components/flexbox/FlexBox'
+import { useCountPendingApproval } from 'features/jobs/domain/service'
 
 const JobsList = () => {
   const translation = useTextTranslation()
-  const [countPA, setCountPA] = useState<number>(0)
-
-  useLayoutEffect(() => {
-    ;(async () => {
-      setCountPA(await getCountPendingApproval())
-    })()
-  }, [])
+  const { countPendingApproval } = useCountPendingApproval()
 
   const renderItem = [
     { label: 'Opening', Component: JobOpening },
@@ -29,7 +22,7 @@ const JobsList = () => {
         <FlexBox gap={1.25} alignItems={'center'}>
           Pending approvals
           <BoxCircle>
-            <TinyText>{countPA}</TinyText>
+            <TinyText>{countPendingApproval}</TinyText>
           </BoxCircle>
         </FlexBox>
       ),

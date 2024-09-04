@@ -8,8 +8,8 @@ import AppTextField from 'shared/components/input-fields/AppTextField'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
-import useChangeStatusJob from '../../../hooks/crud/useChangeStatusJob'
 import { JobStatus } from 'shared/class/job-status'
+import useReopenJob from 'features/jobs/hooks/crud/useReopenJob'
 
 interface IReopenJobModal {
   open: boolean
@@ -20,7 +20,7 @@ interface IReopenJobModal {
 
 const { STATUS_HIRING_JOB } = JobStatus
 function ReopenJobModal({ open, setOpen, id, onSuccess }: IReopenJobModal) {
-  const { action, control, isPending, isValid } = useChangeStatusJob({
+  const { action, control, isPending, isValid } = useReopenJob({
     id: id,
     onSuccess: () => {
       setOpen(false)

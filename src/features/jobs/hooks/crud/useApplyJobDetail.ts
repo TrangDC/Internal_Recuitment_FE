@@ -3,15 +3,23 @@ import useGraphql from 'features/candidatejob/domain/graphql/graphql'
 import { removeStatusAttachment } from 'shared/utils/utils'
 import { useCreateResource } from 'shared/hooks/crud-hook'
 import { convertToEndDateUTC } from 'shared/utils/date'
-import CandidateJob, { CreateCandidateJobArguments, LevelCandidateJob } from 'shared/schema/database/candidate_job'
-import { FormDataSchemaApplyJob, schemaApplyJob } from 'features/application/shared/constants/schema'
+import CandidateJob, {
+  CreateCandidateJobArguments,
+  LevelCandidateJob,
+} from 'shared/schema/database/candidate_job'
+import {
+  FormDataSchemaApplyJob,
+  schemaApplyJob,
+} from 'features/application/shared/constants/schema'
 
 interface useApplyToJobProps {
   defaultValues?: Partial<FormDataSchemaApplyJob>
   callbackSuccess?: (value: any) => void
 }
 
-function useApplyToJobDetail(props: useApplyToJobProps = { defaultValues: {} }) {
+function useApplyToJobDetail(
+  props: useApplyToJobProps = { defaultValues: {} }
+) {
   const { defaultValues, callbackSuccess } = props
 
   const { createCandidateJob, queryKey } = useGraphql()
@@ -67,7 +75,8 @@ function useApplyToJobDetail(props: useApplyToJobProps = { defaultValues: {} }) 
           failed_reason: [],
           hiring_job_id: value?.hiring_job_id,
           status: value?.status,
-          level: value?.level as LevelCandidateJob | null
+          level: value?.level as LevelCandidateJob | null,
+          rec_in_charge_id: value?.rec_in_charge_id,
         },
         note: '',
       }

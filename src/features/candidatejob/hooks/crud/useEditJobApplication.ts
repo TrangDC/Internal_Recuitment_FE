@@ -1,5 +1,4 @@
 import useGraphql from 'features/candidatejob/domain/graphql/graphql'
-import useEditResourceWithoutGetting from 'shared/hooks/crud-hook/useEditResourceWithoutGetting'
 import { Attachments, BaseRecord } from 'shared/interfaces'
 import {
   FormDataSchemaUpdateJobAttachments,
@@ -9,7 +8,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { removeStatusAttachment } from 'shared/utils/utils'
 import { useMemo } from 'react'
 import { isEmpty } from 'lodash'
-import { UpdateCandidateJobAttachmentArguments } from 'shared/schema/database/candidate_job'
+import CandidateJob, {
+  UpdateCandidateJobAttachmentArguments,
+} from 'shared/schema/database/candidate_job'
+import { useEditResource } from 'shared/hooks/crud-hook'
 
 type UseEditJobApplicationProps = {
   id: string
@@ -18,8 +20,11 @@ type UseEditJobApplicationProps = {
 
 function useEditJobApplication(props: UseEditJobApplicationProps) {
   const { id, onSuccess } = props
-  const { updateCandidateJobAttachment, queryKey } = useGraphql()
-  const { useEditReturn, useFormReturn } = useEditResourceWithoutGetting<
+  const { updateCandidateJobAttachment, queryKey, getCandidateJob } =
+    useGraphql()
+
+  const { useEditReturn, useFormReturn } = useEditResource<
+    CandidateJob,
     FormDataSchemaUpdateJobAttachments,
     UpdateCandidateJobAttachmentArguments
   >({
@@ -27,12 +32,19 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
     editBuildQuery: updateCandidateJobAttachment,
     queryKey: [queryKey],
     onSuccess,
-    formatDefaultValues: {
-      attachments: [],
+    id: id,
+    oneBuildQuery: getCandidateJob,
+    formatDefaultValues(data) {
+      return {
+        attachments: [],
+        rec_in_charge_id: data?.rec_in_charge?.id ?? '',
+        rec_team: data?.rec_team?.id ?? '',
+      }
     },
   })
 
-  const { handleSubmit, watch, control, formState, getValues } = useFormReturn
+  const { handleSubmit, watch, control, formState, getValues, resetField } =
+    useFormReturn
   const { isPending, mutate } = useEditReturn
 
   function onSubmit(note: string) {
@@ -44,6 +56,7 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
         id,
         input: {
           attachments,
+          rec_in_charge_id: value?.rec_in_charge_id,
         },
         note: note,
       }
@@ -65,6 +78,8 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
     control,
     formState,
     getValues,
+    watch,
+    resetField,
   }
 }
 

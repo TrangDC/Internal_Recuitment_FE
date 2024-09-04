@@ -414,5 +414,23 @@
         "wrong_phone_number": "Wrong phone number at (column;row)"
       }
     }
+  },
+  "tooltip": {
+    "hiring_team": {
+      "approver": "Approvals for the job vacancy request will require the team's approvers"
+    },
+    "job_request": {
+      "approver": "Approvals for the job vacancy request will require the team's approvers",
+      "staff_needed": "Number of employees needed for this job request",
+      "staff_level": "The level of employees required for this job request",
+      "note": "Note details about this job, e.g., which project it's for",
+      "hiring_team": "The hiring team that the job request hiring for",
+      "rec_team": "The REC team that will be in charge of this job request",
+      "rec_in_charge": "REC member that is responsible to process this job request",
+      "request_solution_time": "Measure the duration from when the request is opened until the job is closed."
+    },
+    "application": {
+      "rec_in_charge": "REC member that is responsible to take care this candidate application"
+    }
   }
 }

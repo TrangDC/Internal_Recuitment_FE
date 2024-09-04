@@ -2,7 +2,11 @@ import { Box } from '@mui/system'
 import { columns_pending_approvals } from '../../../shared/constants/columns'
 import Add from 'shared/components/icons/Add'
 import useTextTranslation from 'shared/constants/text'
-import { BoxWrapperOuterContainer, HeadingWrapper } from 'shared/styles'
+import {
+  BoxWrapperOuterContainer,
+  BtnPrimary,
+  HeadingWrapper,
+} from 'shared/styles'
 import { CustomTable, useBuildColumnTable } from 'shared/components/table'
 import useActionTable from '../../../hooks/table/useActionTable'
 import useJobTable from '../../../hooks/table/useJobTable'
@@ -30,6 +34,9 @@ import { useNavigate } from 'react-router-dom'
 import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
 import { REC_IN_CHARGE_STATE } from 'shared/components/autocomplete/rec-in-charge-auto-complete/hooks/useRecInCharge'
 import { isEmpty } from 'lodash'
+import FlexBox from 'shared/components/flexbox/FlexBox'
+import { Span } from 'shared/components/Typography'
+import ApplyJobModal from '../ApplyJobCandidate'
 
 const PendingApprovals = () => {
   const {
@@ -45,6 +52,8 @@ const PendingApprovals = () => {
     setOpenClose,
     openReopen,
     setOpenReopen,
+    setOpenCreateApply,
+    openCreateApply,
     rowId,
   } = useActionTable()
 
@@ -284,19 +293,35 @@ const PendingApprovals = () => {
               placeholder="Search by Job request name"
               onSearch={handleSearch}
             />
-            <Cant
-              checkBy={{
-                compare: 'hasAny',
-                permissions: ['CREATE.everything', 'CREATE.teamOnly'],
-              }}
-              module="JOBS"
-            >
-              <ButtonAdd
-                Icon={Add}
-                textLable={translation.MODLUE_JOBS.add_a_new_job}
-                onClick={() => navigate('/dashboard/add-new-job-request')}
-              />
-            </Cant>
+            <FlexBox gap={1} alignItems={'center'}>
+              <Cant
+                checkBy={{
+                  compare: 'hasAny',
+                  permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+                }}
+                module="CANDIDATE_JOBS"
+              >
+                <BtnPrimary onClick={() => setOpenCreateApply(true)}>
+                  <Span>Apply candidate</Span>
+                </BtnPrimary>
+              </Cant>
+
+              <Cant
+                checkBy={{
+                  compare: 'hasAny',
+                  permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+                }}
+                module="JOBS"
+              >
+                <ButtonAdd
+                  Icon={Add}
+                  textLable={translation.MODLUE_JOBS.add_a_new_job}
+                  onClick={() => {
+                    navigate('/dashboard/add-new-job-request')
+                  }}
+                />
+              </Cant>
+            </FlexBox>
           </DivHeaderWrapper>
         </HeadingWrapper>
         <Box>
@@ -339,6 +364,10 @@ const PendingApprovals = () => {
           setOpen={setOpenCancel}
           id={rowId.current}
         />
+      )}
+
+      {openCreateApply && (
+        <ApplyJobModal open={openCreateApply} setOpen={setOpenCreateApply} />
       )}
     </Fragment>
   )

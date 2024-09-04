@@ -24,6 +24,8 @@ import useApplyToJobDetail from 'features/jobs/hooks/crud/useApplyJobDetail'
 import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto-complete'
 import HiringJob from 'shared/schema/database/hiring_job'
 import CandidateJob from 'shared/schema/database/candidate_job'
+import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
+import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
 
 interface IApplyJobModal {
   open: boolean
@@ -47,6 +49,7 @@ function ApplyJobModalDetail({
     formState,
     getValues,
     trigger,
+    resetField,
   } = useApplyToJobDetail({
     callbackSuccess: (data) => {
       setOpen(false)
@@ -282,6 +285,34 @@ function ApplyJobModalDetail({
                 </FormControl>
               </FlexBox>
             )}
+
+            <FlexBox justifyContent={'center'} alignItems={'center'}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="rec_in_charge_id"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <RecInChargeAutoComplete
+                        value={field.value}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'REC in charge',
+                        }}
+                        hasAssigned={false}
+                        onChange={(item) => {
+                          field.onChange(item?.value ?? '')
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
 
             <FlexBox justifyContent={'center'} alignItems={'center'}>
               <FormControl fullWidth>

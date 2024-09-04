@@ -10,22 +10,26 @@ function useFilterJobsOpening() {
         defaultFilter: {
           hiring_job_ids: [],
           hiring_team_ids: [],
-          rec_id: [],
+          rec_team_ids: [],
+          rec_in_charge_ids: [],
           levels: [],
           status: '',
           page_job: OPENING_PAGE_APPLICATION.list_candidate,
         },
         formatDataWithValue: (data) => {
           return {
+            rec_in_charge_ids: !isEmpty(data?.rec_in_charge_ids)
+              ? data?.rec_in_charge_ids?.map((o) => o.value)
+              : undefined,
             status: data?.status?.value || undefined,
             hiring_job_ids: !isEmpty(data?.hiring_job_ids)
               ? data?.hiring_job_ids?.map((o) => o.value)
               : undefined,
-              hiring_team_ids: !isEmpty(data?.hiring_team_ids)
+            hiring_team_ids: !isEmpty(data?.hiring_team_ids)
               ? data?.hiring_team_ids?.map((o) => o.value)
               : undefined,
-            rec_id: !isEmpty(data?.rec_id)
-              ? data?.rec_id?.map((o) => o.value)
+            rec_team_ids: !isEmpty(data?.rec_team_ids)
+              ? data?.rec_team_ids?.map((o) => o.value)
               : undefined,
             levels: !isEmpty(data?.levels)
               ? data?.levels?.map((o) => o.value)

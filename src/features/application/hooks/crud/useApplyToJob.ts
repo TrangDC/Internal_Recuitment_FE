@@ -72,7 +72,8 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
           onboard_date: onboard_date ?? null,
           status: value?.status,
           attachments: attachments,
-          level: value?.level as LevelCandidateJob | null
+          level: value?.level as LevelCandidateJob | null,
+          rec_in_charge_id: value?.rec_in_charge_id,
         },
         note: '',
       }

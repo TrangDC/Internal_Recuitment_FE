@@ -21,10 +21,10 @@ import { BtnPrimary } from 'shared/styles'
 import { Span } from 'shared/components/Typography'
 import { useQueryClient } from '@tanstack/react-query'
 import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
+import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
 
 const FilterCandidate = () => {
-  const { openCreateApply, setOpenCreateApply } =
-    useActionTable()
+  const { openCreateApply, setOpenCreateApply } = useActionTable()
   const { actions, action_filter } = useContextChangeStatus()
   const { handleAddCandidate } = actions
   const { useFilterReturn, useSearchListReturn } = action_filter
@@ -96,13 +96,13 @@ const FilterCandidate = () => {
             )}
           />
 
-          {/* <ControllerFilter
+          <ControllerFilter
             control={controlFilter}
             title="REC team"
-            keyName={'rec_id'}
+            keyName={'rec_team_ids'}
             Node={({ onFilter, value }) => (
               <RecTeamsAutoComplete
-                name="rec_id"
+                name="rec_team_ids"
                 multiple={true}
                 value={value}
                 onCustomChange={(data) =>
@@ -121,7 +121,7 @@ const FilterCandidate = () => {
                 }}
               />
             )}
-          /> */}
+          />
           <ControllerFilter
             control={controlFilter}
             keyName="status"
@@ -163,13 +163,37 @@ const FilterCandidate = () => {
               />
             )}
           />
+
+          <ControllerFilter
+            control={controlFilter}
+            title="REC in charge"
+            keyName={'rec_in_charge_ids'}
+            Node={({ onFilter, value }) => (
+              <RecInChargeAutoComplete
+                value={value}
+                multiple={true}
+                open={true}
+                hasAssigned={false}
+                disableCloseOnSelect={true}
+                onChange={(data) => {
+                  onFilter(data)
+                }}
+                textFieldProps={{
+                  label: 'REC in charge',
+                  autoFocus: true,
+                }}
+              />
+            )}
+          />
         </DivFilter>
         <FlexBox gap={1}>
           <ControllerFilterWrapper
             control={controlFilter}
             keyName="page_job"
             Node={({ onFilter, value }) => {
-              const sx = sxIconSelected(value === OPENING_PAGE_APPLICATION.list_candidate)
+              const sx = sxIconSelected(
+                value === OPENING_PAGE_APPLICATION.list_candidate
+              )
 
               return (
                 <ListBullIcon

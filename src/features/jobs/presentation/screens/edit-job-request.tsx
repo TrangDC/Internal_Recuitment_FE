@@ -3,6 +3,7 @@ import useUpdateJob from 'features/jobs/hooks/crud/useEditJob'
 import CreateSelectionTeamPermission from 'features/jobs/permission/components/CreateSelectionTeamPermission'
 import { SALARY_RENDER } from 'features/jobs/shared/constants'
 import { FormDataSchema } from 'features/jobs/shared/constants/schema'
+import { t } from 'i18next'
 import { Fragment } from 'react'
 import { Controller, useWatch } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -22,12 +23,15 @@ import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import InputNumberComponent from 'shared/components/form/inputNumberComponent'
+import { SpanText } from 'shared/components/form/styles'
 import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AiIcon from 'shared/components/icons/Ai'
+import ExPoint from 'shared/components/icons/ExPoint'
 import MicroScope from 'shared/components/icons/Microscope'
 import AppTextField from 'shared/components/input-fields/AppTextField'
 import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
+import TooltipComponent from 'shared/components/tooltip'
 import SkillTreeSelection from 'shared/components/tree/skill-tree'
 import { Text15md } from 'shared/components/Typography'
 import IconScreen from 'shared/components/utils/IconScreen'
@@ -66,7 +70,11 @@ const EditJobRequest = () => {
   return (
     <Box pt={2} pb={4}>
       <Box>
-        <IconScreen Icon={MicroScope} textLabel="Edit job request" />
+        <IconScreen
+          Icon={MicroScope}
+          textLabel="Edit job request"
+          go_back={true}
+        />
       </Box>
       <BoxWrapperOuterContainer>
         <ContainerWrapper>
@@ -82,7 +90,7 @@ const EditJobRequest = () => {
                     render={({ field, fieldState }) => (
                       <FlexBox flexDirection={'column'}>
                         <AppTextField
-                          label={'Job name'}
+                          label={'Name'}
                           required
                           size="small"
                           fullWidth
@@ -312,10 +320,19 @@ const EditJobRequest = () => {
                     render={({ field, fieldState }) => (
                       <FlexBox flexDirection={'column'}>
                         <NumberField
-                          label="Staff needed"
+                          label={
+                            <FlexBox gap={0.5} alignItems={'baseline'}>
+                              <SpanText>Staff needed</SpanText>
+                              <SpanText color="#DB6C56">*</SpanText>
+                              <TooltipComponent
+                                title={t('tooltip.job_request.staff_needed')}
+                              >
+                                <ExPoint />
+                              </TooltipComponent>
+                            </FlexBox>
+                          }
                           //@ts-ignore
                           size={'small'}
-                          required={true}
                           fullWidth={true}
                           value={field.value}
                           onChange={(e) => {
@@ -345,8 +362,17 @@ const EditJobRequest = () => {
                             field.onChange(data.value)
                           }}
                           textFieldProps={{
-                            label: 'Staff level',
-                            required: true,
+                            label: (
+                              <FlexBox gap={0.5} alignItems={'baseline'}>
+                                <SpanText>Staff level</SpanText>
+                                <SpanText color="#DB6C56">*</SpanText>
+                                <TooltipComponent
+                                  title={t('tooltip.job_request.staff_level')}
+                                >
+                                  <ExPoint />
+                                </TooltipComponent>
+                              </FlexBox>
+                            ),
                           }}
                         />
                         <HelperTextForm
@@ -429,8 +455,17 @@ const EditJobRequest = () => {
                               JobStatus.STATUS_HIRING_JOB.PENDING_APPROVALS
                             }
                             textFieldProps={{
-                              label: 'REC team',
-                              required: true,
+                              label: (
+                                <FlexBox gap={0.5} alignItems={'baseline'}>
+                                  <SpanText>REC team</SpanText>
+                                  <SpanText color="#DB6C56">*</SpanText>
+                                  <TooltipComponent
+                                    title={t('tooltip.job_request.rec_team')}
+                                  >
+                                    <ExPoint />
+                                  </TooltipComponent>
+                                </FlexBox>
+                              ),
                             }}
                           />
                           <HelperTextForm
@@ -459,7 +494,19 @@ const EditJobRequest = () => {
                               field.onChange(value ?? '')
                             }}
                             textFieldProps={{
-                              label: 'REC in charge',
+                              label: (
+                                <FlexBox gap={0.5} alignItems={'baseline'}>
+                                  <SpanText>REC in charge</SpanText>
+                                  <SpanText color="#DB6C56">*</SpanText>
+                                  <TooltipComponent
+                                    title={t(
+                                      'tooltip.job_request.rec_in_charge'
+                                    )}
+                                  >
+                                    <ExPoint />
+                                  </TooltipComponent>
+                                </FlexBox>
+                              ),
                               required: true,
                             }}
                           />

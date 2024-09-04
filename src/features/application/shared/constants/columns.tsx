@@ -64,13 +64,20 @@ export const columns_candidate_job = (
     enableSorting: false,
     cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
   }),
-  // columnHelperCandidateJob.accessor((row) => row.status, {
-  //   id: 'rec_team',
-  //   header: () => <span>REC team</span>,
-  //   enableSorting: false,
-  //   size: 200,
-  //   cell: (info) => <ChipCandidate status={info.row.original.status} />,
-  // }),
+  columnHelperCandidateJob.accessor((row) => row.rec_team?.name, {
+    id: 'rec_team',
+    header: () => <span>REC team</span>,
+    enableSorting: false,
+    size: 200,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+  }),
+  columnHelperCandidateJob.accessor((row) => row.rec_in_charge?.name, {
+    id: 'rec_in_charge',
+    header: () => <span>REC in charge</span>,
+    enableSorting: false,
+    size: 200,
+    cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
+  }),
   columnHelperCandidateJob.accessor((row) => row.created_at, {
     id: 'created_at',
     header: () => <span>Applied on</span>,

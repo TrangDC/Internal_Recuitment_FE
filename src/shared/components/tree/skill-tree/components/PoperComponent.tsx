@@ -49,7 +49,11 @@ const PopperWrapper = ({
           {...textFieldProps}
         />
 
-        <PopperStyled open={Boolean(anchorEl)} anchorEl={anchorEl} placement='bottom-start'>
+        <PopperStyled
+          open={Boolean(anchorEl)}
+          anchorEl={anchorEl}
+          placement="bottom-start"
+        >
           <TypographyStyled>{node}</TypographyStyled>
         </PopperStyled>
       </Box>

@@ -1,13 +1,23 @@
-import { Accordion, AccordionDetails, AccordionSummary, Button, Chip, Popper, styled, TextField, Typography } from "@mui/material";
-import FlexBox from "shared/components/flexbox/FlexBox";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  Chip,
+  Popper,
+  styled,
+  TextField,
+  Typography,
+} from '@mui/material'
+import FlexBox from 'shared/components/flexbox/FlexBox'
 
 export const AccordionWrapper = styled(Accordion)(({ theme }) => ({
   borderBottom: '1px solid #E3E6EB',
   margin: '0px !important',
 
   '&:before': {
-    height: '0px'
-  }
+    height: '0px',
+  },
 }))
 
 export const AccordionHeader = styled(AccordionSummary)(({ theme }) => ({
@@ -17,12 +27,12 @@ export const AccordionHeader = styled(AccordionSummary)(({ theme }) => ({
   '.Mui-expanded & #down_icon': {
     position: 'relative',
     left: '7px',
-    top: '7px'
-  }
+    top: '7px',
+  },
 }))
 
 export const AccordionBody = styled(AccordionDetails)(({ theme }) => ({
-  padding: 0
+  padding: 0,
 }))
 
 export const FlexBoxBody = styled(FlexBox)(({ theme }) => ({
@@ -33,6 +43,10 @@ export const FlexBoxBody = styled(FlexBox)(({ theme }) => ({
 
 export const TextFieldPopper = styled(TextField)(({ theme }) => ({
   width: '100%',
+  '&.MuiFormControl-root .MuiInputBase-root': {
+    overflow: 'hidden',
+    width: '90%',
+  },
   '& .MuiInputBase-input': {
     display: 'flex',
     alignItems: 'center',

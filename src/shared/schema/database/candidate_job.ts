@@ -5,6 +5,7 @@ import Candidate from './candidate'
 import CandidateJobStep from './candidate_job_step'
 import HiringJob from './hiring_job'
 import User from './user'
+import RecTeam from './rec_team'
 
 type CandidateJobFailedReason =
   | 'poor_professionalism'
@@ -20,13 +21,13 @@ type CandidateJobFailedReason =
   | 'others'
 
 export type LevelCandidateJob =
-'intern'
-| 'fresher'
-| 'junior'
-| 'middle'
-| 'senior'
-| 'manager'
-| 'director'
+  | 'intern'
+  | 'fresher'
+  | 'junior'
+  | 'middle'
+  | 'senior'
+  | 'manager'
+  | 'director'
 
 interface CandidateJob {
   id: string
@@ -46,6 +47,8 @@ interface CandidateJob {
   offer_expiration_date: string
   onboard_date: string
   level: LevelCandidateJob
+  rec_team: RecTeam
+  rec_in_charge: User
 }
 
 export type CreateCandidateJobArguments = {
@@ -86,6 +89,7 @@ export type NewCandidateJobInput = {
   offer_expiration_date: string | null
   failed_reason: string[]
   level: LevelCandidateJob | null
+  rec_in_charge_id: string
 }
 
 export type NewAttachmentInput = {
@@ -102,6 +106,7 @@ export type UpdateCandidateJobAttachmentArguments = {
 
 export type UpdateCandidateAttachment = {
   attachments: Attachments[]
+  rec_in_charge_id: string
 }
 
 export default CandidateJob
