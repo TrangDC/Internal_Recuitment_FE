@@ -16,7 +16,7 @@ const useTextTranslation = () => {
       manager: t('manager'),
     },
     MODLUE_JOBS: {
-      jobs: t('job request'),
+      jobs: t('Job request'),
       requester: t('requester'),
       staft_required: t('staft_required'),
       hired: t('hired'),
