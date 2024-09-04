@@ -17,9 +17,7 @@ import useActionTable from 'features/jobs/hooks/table/useActionTable'
 import useJobTable from 'features/jobs/hooks/table/useJobTable'
 import {
   CloseJobModal,
-  CreateJobModal,
   DeleteJobModal,
-  EditJobModal,
 } from 'features/jobs/presentation/page-sections'
 import { JobStatus } from 'shared/class/job-status'
 import { Span } from 'shared/components/Typography'
@@ -38,10 +36,7 @@ const OpeningJobRequest = () => {
   const navigate = useNavigate()
 
   const {
-    openCreate,
     setOpenCreate,
-    handleOpenEdit,
-    openEdit,
     openDelete,
     setOpenDelete,
     handleOpenDelete,
@@ -51,7 +46,6 @@ const OpeningJobRequest = () => {
     handleOpenClose,
     handleOpenReopen,
     rowId,
-    setOpenEdit,
   } = useActionTable()
 
   const { actions } = useBuildAllJobsActionsTable({
@@ -91,7 +85,7 @@ const OpeningJobRequest = () => {
             <ButtonAdd
               Icon={Add}
               textLable="Add a new request"
-              onClick={() => setOpenCreate(true)}
+              onClick={() => navigate('/dashboard/add-new-job-request')}
             />
           </Cant>
         </FlexBox>
@@ -101,17 +95,6 @@ const OpeningJobRequest = () => {
           <CustomTable columns={columnTable} useTableReturn={useTableReturn} />
         )}
       </WrapperBox>
-
-      {openCreate && (
-        <CreateJobModal open={openCreate} setOpen={setOpenCreate} />
-      )}
-      {openEdit && (
-        <EditJobModal
-          open={openEdit}
-          setOpen={setOpenEdit}
-          id={rowId.current}
-        />
-      )}
 
       {openDelete && (
         <DeleteJobModal

@@ -335,9 +335,12 @@
       "hiring_jobs": {
         "view": "View",
         "create": "Create",
-        "edit": "Edit",
+        "edit_pending": "Edit Pending Approval job request",
+        "edit_opened": "Edit Opening job request",
         "delete": "Delete",
-        "close_job": "Close job"
+        "close_job": "Close job",
+        "cancel": "Cancel",
+        "reopen": "Reopen"
       },
       "candidates": {
         "view": "View",

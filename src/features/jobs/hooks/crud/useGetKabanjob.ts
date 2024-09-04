@@ -40,6 +40,9 @@ const getKanbanJob = GraphQLClientService.buildQuery({
                     orderId
                 }
             }
+            user {
+              id
+            }
         }
         opened {
             id
@@ -64,6 +67,9 @@ const getKanbanJob = GraphQLClientService.buildQuery({
                     skill_id
                     orderId
                 }
+            }
+            user {
+              id
             }
         }
         closed {
@@ -90,6 +96,9 @@ const getKanbanJob = GraphQLClientService.buildQuery({
                     orderId
                 }
             }
+            user {
+              id
+            }
         }
         cancelled {
             id
@@ -114,6 +123,9 @@ const getKanbanJob = GraphQLClientService.buildQuery({
                     skill_id
                     orderId
                 }
+            }
+            user {
+              id
             }
         }
     }

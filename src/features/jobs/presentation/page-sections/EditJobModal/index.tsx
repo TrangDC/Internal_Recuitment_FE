@@ -20,7 +20,6 @@ import EditorBoxField from 'shared/components/input-fields/EditorField'
 import NumberField from 'shared/components/input-fields/NumberField'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import SkillTreeSelection from 'shared/components/tree/skill-tree'
-import EditSelectionTeamPermission from 'features/jobs/permission/components/EditSelectionTeamPermission'
 import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import JobPositionAutoComplete from 'shared/components/autocomplete/job-position-auto-complete'
 import useGenerateJD from 'features/jobs/hooks/crud/useGenerateJd'
@@ -29,6 +28,7 @@ import toast from 'react-hot-toast'
 import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import AiIcon from 'shared/components/icons/Ai'
+import TeamsAutoComplete from 'shared/components/autocomplete/team-auto-complete'
 
 interface IEditJobModal {
   open: boolean
@@ -190,12 +190,14 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                   name="hiring_team_id"
                   render={({ field, fieldState }) => (
                     <Fragment>
-                      <EditSelectionTeamPermission
+                      <TeamsAutoComplete
                         name={field.name}
                         value={field.value}
-                        onChange={(value) => {
-                          field.onChange(value)
-                          handleChangeManager(value as string)
+                        onChange={field.onChange}
+                        multiple={false}
+                        textFieldProps={{
+                          required: true,
+                          label: 'Hiring team',
                         }}
                       />
                       <HelperTextForm

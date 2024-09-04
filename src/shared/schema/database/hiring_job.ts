@@ -44,8 +44,7 @@ interface HiringJob {
   user: User
   status: HiringJobStatus
   total_candidates_recruited: number
-  is_able_to_delete: boolean
-  is_able_to_close: number
+  is_able_to_close: boolean
   is_able_to_cancel: boolean
   priority: priority_status
   entity_skill_types: EntitySkillType[]

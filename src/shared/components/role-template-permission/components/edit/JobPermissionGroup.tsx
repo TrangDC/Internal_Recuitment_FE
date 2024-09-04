@@ -12,18 +12,35 @@ function JobPermissionGroup({ roleTemplate }: PermissionGroupProps) {
   const { control, watch, setValue } = useFormContext()
   const [open, setOpen] = useState(true)
   const createAction = roleTemplate?.JOBS?.CREATE
-  const editAction = roleTemplate?.JOBS?.EDIT
+  const editPendingApprovalAction = roleTemplate?.JOBS?.EDIT_PENDING_APPROVAL
+  const editOpeningJobAction = roleTemplate?.JOBS?.EDIT_OPENING_JOB
   const deleteAction = roleTemplate?.JOBS?.DELETE
   const viewAction = roleTemplate?.JOBS?.VIEW
   const closeJobAction = roleTemplate?.JOBS?.CLOSE_JOB
+  const reopenJobAction = roleTemplate?.JOBS?.REOPEN_JOB
+  const cancelJobAction = roleTemplate?.JOBS?.CANCEL_JOB
 
   const viewData = watch(getKeyName(viewAction.id))
-  const editData = watch(getKeyName(editAction.id))
+  const editPendingApprovalData = watch(
+    getKeyName(editPendingApprovalAction.id)
+  )
+  const editOpeningJobData = watch(getKeyName(editOpeningJobAction.id))
   const createData = watch(getKeyName(createAction.id))
   const deleteData = watch(getKeyName(deleteAction.id))
   const closeJobData = watch(getKeyName(closeJobAction.id))
+  const reopenData = watch(getKeyName(reopenJobAction.id))
+  const cancelData = watch(getKeyName(cancelJobAction.id))
 
-  const state = [createData, viewData, editData, deleteData, closeJobData]
+  const state = [
+    createData,
+    viewData,
+    editOpeningJobData,
+    deleteData,
+    closeJobData,
+    editPendingApprovalData,
+    reopenData,
+    cancelData,
+  ]
 
   const disabled = !(
     viewData.for_all ||
@@ -39,9 +56,12 @@ function JobPermissionGroup({ roleTemplate }: PermissionGroupProps) {
       }
       setValue(getKeyName(viewAction.id), data)
       setValue(getKeyName(createAction.id), data)
-      setValue(getKeyName(editAction.id), data)
+      setValue(getKeyName(editPendingApprovalData.id), data)
+      setValue(getKeyName(editOpeningJobData.id), data)
       setValue(getKeyName(deleteAction.id), data)
       setValue(getKeyName(closeJobAction.id), data)
+      setValue(getKeyName(reopenJobAction.id), data)
+      setValue(getKeyName(cancelJobAction.id), data)
     }
   }, [disabled])
 
@@ -126,20 +146,20 @@ function JobPermissionGroup({ roleTemplate }: PermissionGroupProps) {
         />
         <Controller
           control={control}
-          name={getKeyName(editAction.id)}
+          name={getKeyName(editPendingApprovalAction.id)}
           render={({ field }) => (
             <ListCheckBox
               disabled={disabled}
-              title={editAction?.title ?? ''}
-              description={editAction?.description ?? ''}
-              for_all={editAction?.for_all ?? false}
-              for_owner={editAction?.for_owner ?? false}
-              for_team={editAction?.for_team ?? false}
+              title={editPendingApprovalAction?.title ?? ''}
+              description={editPendingApprovalAction?.description ?? ''}
+              for_all={editPendingApprovalAction?.for_all ?? false}
+              for_owner={editPendingApprovalAction?.for_owner ?? false}
+              for_team={editPendingApprovalAction?.for_team ?? false}
               onCheck={(key) => {
                 const data = getCheck(key, field.value, {
-                  for_all: editAction.for_all,
-                  for_owner: editAction.for_owner,
-                  for_team: editAction.for_team,
+                  for_all: editPendingApprovalAction.for_all,
+                  for_owner: editPendingApprovalAction.for_owner,
+                  for_team: editPendingApprovalAction.for_team,
                 })
                 field.onChange(data)
               }}
@@ -149,20 +169,20 @@ function JobPermissionGroup({ roleTemplate }: PermissionGroupProps) {
         />
         <Controller
           control={control}
-          name={getKeyName(deleteAction.id)}
+          name={getKeyName(editOpeningJobAction.id)}
           render={({ field }) => (
             <ListCheckBox
               disabled={disabled}
-              title={deleteAction?.title ?? ''}
-              description={deleteAction?.description ?? ''}
-              for_all={deleteAction?.for_all ?? false}
-              for_owner={deleteAction?.for_owner ?? false}
-              for_team={deleteAction?.for_team ?? false}
+              title={editOpeningJobAction?.title ?? ''}
+              description={editOpeningJobAction?.description ?? ''}
+              for_all={editOpeningJobAction?.for_all ?? false}
+              for_owner={editOpeningJobAction?.for_owner ?? false}
+              for_team={editOpeningJobAction?.for_team ?? false}
               onCheck={(key) => {
                 const data = getCheck(key, field.value, {
-                  for_all: deleteAction.for_all,
-                  for_owner: deleteAction.for_owner,
-                  for_team: deleteAction.for_team,
+                  for_all: editOpeningJobAction.for_all,
+                  for_owner: editOpeningJobAction.for_owner,
+                  for_team: editOpeningJobAction.for_team,
                 })
                 field.onChange(data)
               }}
@@ -175,7 +195,6 @@ function JobPermissionGroup({ roleTemplate }: PermissionGroupProps) {
           name={getKeyName(closeJobAction.id)}
           render={({ field }) => (
             <ListCheckBox
-              hiddenBorder
               disabled={disabled}
               title={closeJobAction?.title ?? ''}
               description={closeJobAction?.description ?? ''}
@@ -187,6 +206,76 @@ function JobPermissionGroup({ roleTemplate }: PermissionGroupProps) {
                   for_all: closeJobAction.for_all,
                   for_owner: closeJobAction.for_owner,
                   for_team: closeJobAction.for_team,
+                })
+                field.onChange(data)
+              }}
+              value={field.value}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name={getKeyName(cancelJobAction.id)}
+          render={({ field }) => (
+            <ListCheckBox
+              disabled={disabled}
+              title={cancelJobAction?.title ?? ''}
+              description={cancelJobAction?.description ?? ''}
+              for_all={cancelJobAction?.for_all ?? false}
+              for_owner={cancelJobAction?.for_owner ?? false}
+              for_team={cancelJobAction?.for_team ?? false}
+              onCheck={(key) => {
+                const data = getCheck(key, field.value, {
+                  for_all: cancelJobAction.for_all,
+                  for_owner: cancelJobAction.for_owner,
+                  for_team: cancelJobAction.for_team,
+                })
+                field.onChange(data)
+              }}
+              value={field.value}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name={getKeyName(reopenJobAction.id)}
+          render={({ field }) => (
+            <ListCheckBox
+              disabled={disabled}
+              title={reopenJobAction?.title ?? ''}
+              description={reopenJobAction?.description ?? ''}
+              for_all={reopenJobAction?.for_all ?? false}
+              for_owner={reopenJobAction?.for_owner ?? false}
+              for_team={reopenJobAction?.for_team ?? false}
+              onCheck={(key) => {
+                const data = getCheck(key, field.value, {
+                  for_all: reopenJobAction.for_all,
+                  for_owner: reopenJobAction.for_owner,
+                  for_team: reopenJobAction.for_team,
+                })
+                field.onChange(data)
+              }}
+              value={field.value}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name={getKeyName(deleteAction.id)}
+          render={({ field }) => (
+            <ListCheckBox
+              hiddenBorder
+              disabled={disabled}
+              title={deleteAction?.title ?? ''}
+              description={deleteAction?.description ?? ''}
+              for_all={deleteAction?.for_all ?? false}
+              for_owner={deleteAction?.for_owner ?? false}
+              for_team={deleteAction?.for_team ?? false}
+              onCheck={(key) => {
+                const data = getCheck(key, field.value, {
+                  for_all: deleteAction.for_all,
+                  for_owner: deleteAction.for_owner,
+                  for_team: deleteAction.for_team,
                 })
                 field.onChange(data)
               }}

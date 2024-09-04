@@ -12,18 +12,34 @@ function JobPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
   const { watch } = useFormContext()
   const [open, setOpen] = useState(true)
   const createAction = roleTemplate?.JOBS?.CREATE
-  const editAction = roleTemplate?.JOBS?.EDIT
+  const editPendingApprovalAction = roleTemplate?.JOBS?.EDIT_PENDING_APPROVAL
+  const editOpeningJobAction = roleTemplate?.JOBS?.EDIT_OPENING_JOB
   const deleteAction = roleTemplate?.JOBS?.DELETE
   const viewAction = roleTemplate?.JOBS?.VIEW
   const closeJobAction = roleTemplate?.JOBS?.CLOSE_JOB
+  const reopenJobAction = roleTemplate?.JOBS?.REOPEN_JOB
+  const cancelJobAction = roleTemplate?.JOBS?.CANCEL_JOB
 
   const viewData = watch(getKeyName(viewAction.id))
-  const editData = watch(getKeyName(editAction.id))
+  const editOpeningJobData = watch(getKeyName(editOpeningJobAction.id))
   const createData = watch(getKeyName(createAction.id))
   const deleteData = watch(getKeyName(deleteAction.id))
   const closeJobData = watch(getKeyName(closeJobAction.id))
+  const reopenData = watch(getKeyName(reopenJobAction.id))
+  const cancelData = watch(getKeyName(cancelJobAction.id))
+  const editPendingApprovalData = watch(
+    getKeyName(editPendingApprovalAction.id)
+  )
 
-  const state = [createData, viewData, editData, deleteData, closeJobData]
+  const state = [
+    createData,
+    reopenData,
+    cancelData,
+    deleteData,
+    closeJobData,
+    editOpeningJobData,
+    editPendingApprovalData,
+  ]
   const countChecked = useGetCountChecked(state)
   return (
     <CollapseGroup.CollapseContainer
@@ -56,18 +72,40 @@ function JobPermissionGroupDetail({ roleTemplate }: PermissionGroupProps) {
       </CollapseGroup.CollapseHeader>
       <CollapseGroup.CollapseBody>
         <ListCheckBoxDetail customPermission={viewAction} value={viewData} />
+
         <ListCheckBoxDetail
           customPermission={createAction}
           value={createData}
         />
-        <ListCheckBoxDetail customPermission={editAction} value={editData} />
+
         <ListCheckBoxDetail
-          customPermission={deleteAction}
-          value={deleteData}
+          customPermission={editOpeningJobAction}
+          value={editOpeningJobData}
         />
+
+        <ListCheckBoxDetail
+          customPermission={editPendingApprovalAction}
+          value={editPendingApprovalData}
+        />
+
         <ListCheckBoxDetail
           customPermission={closeJobAction}
           value={closeJobData}
+        />
+
+        <ListCheckBoxDetail
+          customPermission={cancelJobAction}
+          value={cancelData}
+        />
+
+        <ListCheckBoxDetail
+          customPermission={reopenJobAction}
+          value={reopenData}
+        />
+
+        <ListCheckBoxDetail
+          customPermission={deleteAction}
+          value={deleteData}
         />
       </CollapseGroup.CollapseBody>
     </CollapseGroup.CollapseContainer>
