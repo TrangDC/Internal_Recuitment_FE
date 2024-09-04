@@ -56,8 +56,8 @@ function JobPermissionGroup({ roleTemplate }: PermissionGroupProps) {
       }
       setValue(getKeyName(viewAction.id), data)
       setValue(getKeyName(createAction.id), data)
-      setValue(getKeyName(editPendingApprovalData.id), data)
-      setValue(getKeyName(editOpeningJobData.id), data)
+      setValue(getKeyName(editPendingApprovalAction.id), data)
+      setValue(getKeyName(editOpeningJobAction.id), data)
       setValue(getKeyName(deleteAction.id), data)
       setValue(getKeyName(closeJobAction.id), data)
       setValue(getKeyName(reopenJobAction.id), data)
@@ -134,9 +134,9 @@ function JobPermissionGroup({ roleTemplate }: PermissionGroupProps) {
               for_team={createAction?.for_team ?? false}
               onCheck={(key) => {
                 const data = getCheck(key, field.value, {
-                  for_all: viewAction.for_all,
-                  for_owner: viewAction.for_owner,
-                  for_team: viewAction.for_team,
+                  for_all: createAction.for_all,
+                  for_owner: createAction.for_owner,
+                  for_team: createAction.for_team,
                 })
                 field.onChange(data)
               }}
