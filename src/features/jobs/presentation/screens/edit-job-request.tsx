@@ -278,6 +278,7 @@ const EditJobRequest = () => {
                           onChange={(value) => {
                             field.onChange(value ?? '')
                           }}
+                          disabled
                           multiple={false}
                           textFieldProps={{
                             required: true,
@@ -358,8 +359,8 @@ const EditJobRequest = () => {
                         <LevelAutoComplete
                           multiple={false}
                           value={field.value ?? ''}
-                          onChange={(data: any) => {
-                            field.onChange(data.value)
+                          onChange={(data) => {
+                            field.onChange(data?.value)
                           }}
                           textFieldProps={{
                             label: (

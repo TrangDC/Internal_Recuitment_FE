@@ -8,7 +8,7 @@ export const useCountPendingApproval = () => {
   const { countPendingJob, queryKey } = useGraphql()
 
   const { data, ...otherValue } = useQuery({
-    queryKey: [queryKey],
+    queryKey: [queryKey, 'count'],
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(countPendingJob, {
         orderBy: { direction: 'DESC', field: 'created_at' },
