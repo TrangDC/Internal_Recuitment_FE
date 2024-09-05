@@ -69,7 +69,10 @@ function useBuildAllJobsActionsTable({
         },
         title: 'Close request',
         Icon: <CloseIcon />,
-        disabled: (data) => data.is_able_to_close === false,
+        disabled: (data) =>
+          data.is_able_to_close === false ||
+          data.status === STATUS_HIRING_JOB.CLOSED ||
+          data.status === STATUS_HIRING_JOB.CANCELLED,
       },
       reopen: {
         id: ActionAllJobsTable.REOPEN,
@@ -78,6 +81,7 @@ function useBuildAllJobsActionsTable({
         },
         title: 'Reopen Job',
         Icon: <CloseIcon />,
+        disabled: (data) => data.status === STATUS_HIRING_JOB.CANCELLED,
       },
       cancel: {
         id: ActionAllJobsTable.CANCEL,
@@ -86,7 +90,9 @@ function useBuildAllJobsActionsTable({
         },
         title: 'Cancel request',
         Icon: <CancelIcon />,
-        disabled: (data) => data.is_able_to_cancel === false,
+        disabled: (data) =>
+          data.is_able_to_cancel === false ||
+          data.status === STATUS_HIRING_JOB.CANCELLED,
       },
       delete: {
         id: ActionAllJobsTable.DELETE,
@@ -95,6 +101,9 @@ function useBuildAllJobsActionsTable({
         },
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
+        disabled: (data) =>
+          data.status === STATUS_HIRING_JOB.CANCELLED ||
+          data.status === STATUS_HIRING_JOB.CLOSED,
       },
     },
   })

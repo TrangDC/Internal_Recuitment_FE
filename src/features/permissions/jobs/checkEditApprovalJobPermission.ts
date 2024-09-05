@@ -19,9 +19,7 @@ function checkEditApprovalJobPermission({
     role,
     checkBy: {
       compare: 'hasAny',
-      permissions: [
-        'EDIT_PENDING_APPROVAL.everything',
-      ],
+      permissions: ['EDIT_PENDING_APPROVAL.everything'],
     },
     module: 'JOBS',
   })
