@@ -125,10 +125,17 @@ function editApprovalJobAction({
   return newActions
 }
 
-function deleteAction({ newActions, role, inTeam, isOwner }: ActionProps) {
+function deleteAction({
+  newActions,
+  role,
+  inTeam,
+  isOwner,
+  isRecInCharge,
+}: ActionProps) {
   const hasDeletePermission = checkDeleteJobPermission({
     inTeam,
-    isOwner,
+    isRequester: isOwner,
+    isRecInCharge,
     role,
   })
   if (!hasDeletePermission)
@@ -158,11 +165,18 @@ function closeJobsAction({
   return newActions
 }
 
-function reopenJobsAction({ newActions, role, inTeam, isOwner }: ActionProps) {
+function reopenJobsAction({
+  newActions,
+  role,
+  inTeam,
+  isOwner,
+  isRecInCharge,
+}: ActionProps) {
   const hasReopenJob = checkReopenJobPermission({
     inTeam,
-    isOwner,
+    isRequester: isOwner,
     role,
+    isRecInCharge,
   })
   if (!hasReopenJob)
     return newActions.filter(
@@ -171,11 +185,18 @@ function reopenJobsAction({ newActions, role, inTeam, isOwner }: ActionProps) {
   return newActions
 }
 
-function cancelJobsAction({ newActions, role, inTeam, isOwner }: ActionProps) {
+function cancelJobsAction({
+  newActions,
+  role,
+  inTeam,
+  isOwner,
+  isRecInCharge,
+}: ActionProps) {
   const hasCancelJob = checkCancelJobPermission({
     inTeam,
-    isOwner,
+    isRequester: isOwner,
     role,
+    isRecInCharge,
   })
 
   if (!hasCancelJob)

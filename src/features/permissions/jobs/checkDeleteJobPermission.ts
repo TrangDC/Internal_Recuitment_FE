@@ -4,13 +4,15 @@ import PermissionStructureImpl from 'features/authorization/domain/interfaces/pe
 type CheckDeleteJobPermissionParams = {
   inTeam: boolean
   role: PermissionStructureImpl | null
-  isOwner: boolean
+  isRequester: boolean
+  isRecInCharge: boolean
 }
 
 function checkDeleteJobPermission({
   role,
   inTeam,
-  isOwner,
+  isRequester,
+  isRecInCharge,
 }: CheckDeleteJobPermissionParams) {
   const deletePermission = checkPermissions({
     role,
@@ -40,7 +42,7 @@ function checkDeleteJobPermission({
   })
   if (!deletePermission) return false
   if (deleteTeamOnly && !inTeam) return false
-  if (deleteOwnedOnly && !isOwner) return false
+  if (deleteOwnedOnly && !isRequester && !isRecInCharge) return false
   return true
 }
 
