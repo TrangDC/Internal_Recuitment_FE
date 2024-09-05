@@ -21,6 +21,8 @@ import HiringJob, {
 import useGenerateJD from './useGenerateJd'
 import { formatJobDescription } from 'features/jobs/shared/utils'
 import { toast } from 'react-toastify'
+import useEditResourceWithoutGetting from 'shared/hooks/crud-hook/useEditResourceWithoutGetting'
+import { JobStatus } from 'shared/class/job-status'
 
 type UseEditJobProps = {
   id: string
@@ -29,14 +31,19 @@ type UseEditJobProps = {
 
 function useUpdateJob(props: UseEditJobProps) {
   const { id, onSuccess } = props
-  const { updateJob, getJobDetail, queryKey } = useGraphql()
+  const {
+    updateOpenedHiringJob,
+    updatePendingApprovalsHiringJob,
+    getJobDetail,
+    queryKey,
+  } = useGraphql()
   const { useEditReturn, useFormReturn, isGetting } = useEditResource<
     HiringJob,
     FormDataSchemaUpdate,
     EditHiringJobArguments
   >({
     resolver: yupResolver(schemaUpdate),
-    editBuildQuery: updateJob,
+    editBuildQuery: updateOpenedHiringJob,
     oneBuildQuery: getJobDetail,
     queryKey: [queryKey],
     id,
@@ -66,6 +73,17 @@ function useUpdateJob(props: UseEditJobProps) {
     },
   })
 
+  const actionPendingApproval = useEditResourceWithoutGetting<
+    FormDataSchemaUpdate,
+    EditHiringJobArguments
+  >({
+    resolver: yupResolver(schemaUpdate),
+    editBuildQuery: updatePendingApprovalsHiringJob,
+    queryKey: [queryKey],
+    onSuccess,
+    formatDefaultValues: {},
+  })
+
   const {
     handleSubmit,
     control,
@@ -75,6 +93,8 @@ function useUpdateJob(props: UseEditJobProps) {
     watch,
     clearErrors,
   } = useFormReturn
+  const mutatePendingApproval = actionPendingApproval.useEditReturn.mutate
+
   const isValid = !formState.isValid || !formState.isDirty
   const { isPending, mutate } = useEditReturn
 
@@ -95,8 +115,7 @@ function useUpdateJob(props: UseEditJobProps) {
           salary_to: convertCurrencyToNumber(value.salary_to),
           amount: Number(value.amount),
           entity_skill_records: entity_skill,
-          // created_by: value?.created_by,
-          description: value?.description,
+          description: value?.description ?? '',
           hiring_team_id: value?.hiring_team_id,
           location: value?.location,
           name: value?.name,
@@ -109,7 +128,17 @@ function useUpdateJob(props: UseEditJobProps) {
         },
         note: note,
       }
-      mutate(payload)
+
+      switch (value?.status) {
+        case JobStatus.STATUS_HIRING_JOB.OPENED:
+          mutate(payload)
+          break
+        case JobStatus.STATUS_HIRING_JOB.PENDING_APPROVALS:
+          mutatePendingApproval(payload)
+          break
+        default:
+          return null
+      }
     })()
   }
 
