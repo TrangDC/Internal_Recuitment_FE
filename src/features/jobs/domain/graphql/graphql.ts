@@ -229,8 +229,8 @@ const useGraphql = () => {
           name
         }
         rec_in_charge {
-            id
-            name
+          id
+          name
         }
         note
         opened_at

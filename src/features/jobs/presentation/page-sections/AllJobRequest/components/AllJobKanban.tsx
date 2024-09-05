@@ -87,7 +87,8 @@ const AllJobKanban = () => {
                       const hasOpenPermission = checkCancelJobPermission({
                         inTeam,
                         role,
-                        isOwner,
+                        isRecInCharge,
+                        isRequester: isOwner,
                       })
                       if (hasOpenPermission) handleOpenCancel(cloneData.id)
                       return
@@ -109,7 +110,8 @@ const AllJobKanban = () => {
                       const hasOpenPermission = checkCancelJobPermission({
                         inTeam,
                         role,
-                        isOwner,
+                        isRecInCharge,
+                        isRequester: isOwner,
                       })
                       if (hasOpenPermission) handleOpenCancel(cloneData.id)
                       return
@@ -121,7 +123,8 @@ const AllJobKanban = () => {
                       const hasOpenPermission = checkReopenJobPermission({
                         inTeam,
                         role,
-                        isOwner,
+                        isRecInCharge,
+                        isRequester: isOwner,
                       })
                       if (hasOpenPermission) handleOpenReopen(cloneData.id)
                       return
