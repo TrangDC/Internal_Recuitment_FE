@@ -134,9 +134,7 @@ function useBuildActionTableCandidateJobs({
         title: 'Delete',
         Icon: <DeleteIcon />,
         disabled: (rowData) => {
-          const disabledStatuses = [
-            application_data.applied.value,
-          ]
+          const disabledStatuses = [application_data.applied.value]
 
           return !disabledStatuses.includes(rowData?.status)
         },
