@@ -338,7 +338,7 @@
         "edit_pending": "Edit Pending Approval job request",
         "edit_opened": "Edit Opening job request",
         "delete": "Delete",
-        "close_job": "Close job",
+        "close_job": "Close",
         "cancel": "Cancel",
         "reopen": "Reopen"
       },

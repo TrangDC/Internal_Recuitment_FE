@@ -4,13 +4,15 @@ import PermissionStructureImpl from 'features/authorization/domain/interfaces/pe
 type CheckCancelJobPermissionParams = {
   inTeam: boolean
   role: PermissionStructureImpl | null
-  isOwner: boolean
+  isRequester: boolean
+  isRecInCharge: boolean
 }
 
 function checkCancelJobPermission({
   role,
   inTeam,
-  isOwner,
+  isRequester,
+  isRecInCharge,
 }: CheckCancelJobPermissionParams) {
   const cancelJobPermission = checkPermissions({
     role,
@@ -45,7 +47,7 @@ function checkCancelJobPermission({
 
   if (!cancelJobPermission) return false
   if (cancelJobTeamOnly && !inTeam) return false
-  if (cancelJobOwnedOnly && !isOwner) return false
+  if (cancelJobOwnedOnly && !isRecInCharge && !isRequester) return false
   return true
 }
 

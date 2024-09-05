@@ -4,13 +4,15 @@ import PermissionStructureImpl from 'features/authorization/domain/interfaces/pe
 type CheckReopenJobPermissionParams = {
   inTeam: boolean
   role: PermissionStructureImpl | null
-  isOwner: boolean
+  isRequester: boolean
+  isRecInCharge: boolean
 }
 
 function checkReopenJobPermission({
   role,
   inTeam,
-  isOwner,
+  isRequester,
+  isRecInCharge,
 }: CheckReopenJobPermissionParams) {
   const reopenJobPermission = checkPermissions({
     role,
@@ -45,7 +47,7 @@ function checkReopenJobPermission({
 
   if (!reopenJobPermission) return false
   if (reopenJobTeamOnly && !inTeam) return false
-  if (reopenJobOwnedOnly && !isOwner) return false
+  if (reopenJobOwnedOnly && !isRequester && !isRecInCharge) return false
   return true
 }
 

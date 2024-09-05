@@ -16,6 +16,10 @@ import CancelModal from '../../CancelModal'
 import { cloneDeep } from 'lodash'
 import HiringJob from 'shared/schema/database/hiring_job'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
+import checkReopenJobPermission from 'features/permissions/jobs/checkReopenJobPermission'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import checkCloseJobPermission from 'features/permissions/jobs/checkCloseJobPermission'
+import checkCancelJobPermission from 'features/permissions/jobs/checkCancelJobPermission'
 
 const { STATUS_HIRING_JOB, STATUS_STYLE } = JobStatus
 const AllJobKanban = () => {
@@ -25,7 +29,7 @@ const AllJobKanban = () => {
     total_data: { total_current },
     actions: { fetchNextPage },
   } = useContextKanbanJob()
-
+  const { role, user } = useAuthorization()
   const { cancelled, closed, opened, pending_approvals } = data
   const { handleFailed } = usePopup()
 
@@ -59,6 +63,12 @@ const AllJobKanban = () => {
             <DragDropProvider
               onDragEnd={({ destinationId, data, beginId }) => {
                 const cloneData = cloneDeep(data) as HiringJob
+                const inTeam =
+                  user?.teamId === cloneData.hiring_team.id ||
+                  user?.rectTeamId === cloneData?.rec_team?.id
+                const recInChargeId = cloneData?.rec_in_charge?.id
+                const isOwner = user?.id === cloneData?.user?.id
+                const isRecInCharge = user?.id === recInChargeId
                 if (!destinationId) return
                 //get list status is enabled dragging for each status hiring process
                 const listChange = ENABLED_CHANGE_STATUS_JOB[cloneData?.status]
@@ -74,25 +84,46 @@ const AllJobKanban = () => {
                         })
                         return
                       }
-                      handleOpenCancel(cloneData.id)
+                      const hasOpenPermission = checkCancelJobPermission({
+                        inTeam,
+                        role,
+                        isOwner,
+                      })
+                      if (hasOpenPermission) handleOpenCancel(cloneData.id)
                       return
                     }
                     if (destinationId === STATUS_HIRING_JOB.CLOSED) {
-                      handleOpenClose(cloneData.id)
+                      const hasOpenPermission = checkCloseJobPermission({
+                        inTeam,
+                        isRequester: isOwner,
+                        isRecInCharge,
+                        role,
+                      })
+                      if (hasOpenPermission) handleOpenClose(cloneData.id)
                       return
                     }
                     break
 
                   case STATUS_HIRING_JOB.PENDING_APPROVALS:
                     if (destinationId === STATUS_HIRING_JOB.CANCELLED) {
-                      handleOpenCancel(cloneData.id)
+                      const hasOpenPermission = checkCancelJobPermission({
+                        inTeam,
+                        role,
+                        isOwner,
+                      })
+                      if (hasOpenPermission) handleOpenCancel(cloneData.id)
                       return
                     }
                     break
 
                   case STATUS_HIRING_JOB.CLOSED:
                     if (destinationId === STATUS_HIRING_JOB.OPENED) {
-                      handleOpenReopen(cloneData.id)
+                      const hasOpenPermission = checkReopenJobPermission({
+                        inTeam,
+                        role,
+                        isOwner,
+                      })
+                      if (hasOpenPermission) handleOpenReopen(cloneData.id)
                       return
                     }
                     break
