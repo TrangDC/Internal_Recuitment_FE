@@ -127,6 +127,40 @@ const useGraphql = () => {
     },
   })
 
+  const updateOpenedHiringJob = GraphQLClientService.buildQuery({
+    operation: 'UpdateOpenedHiringJob',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        id
+      }
+    `,
+    params: {
+      input: 'UpdateHiringJobInput!',
+      id: 'ID!',
+      note: 'String!',
+    },
+  })
+
+  const updatePendingApprovalsHiringJob = GraphQLClientService.buildQuery({
+    operation: 'UpdatePendingApprovalsHiringJob',
+    options: {
+      type: 'mutation',
+    },
+    node: `
+      data {
+        id
+      }
+    `,
+    params: {
+      input: 'UpdateHiringJobInput!',
+      id: 'ID!',
+      note: 'String!',
+    },
+  })
+
   const deleteJob = GraphQLClientService.buildQuery({
     operation: 'DeleteHiringJob',
     options: {
@@ -499,6 +533,8 @@ const useGraphql = () => {
     cancelHiringJob,
     closeHiringJob,
     reopenHiringJob,
+    updateOpenedHiringJob,
+    updatePendingApprovalsHiringJob,
   }
 }
 

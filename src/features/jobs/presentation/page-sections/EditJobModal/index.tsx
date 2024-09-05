@@ -443,7 +443,7 @@ function EditJobModal({ open, setOpen, id }: IEditJobModal) {
                       <EditorBoxField
                         label={'Job description'}
                         required
-                        value={field.value}
+                        value={field.value ?? ''}
                         loading={isGetting}
                         pluginCustomize={[
                           'talenaMakeLonger',

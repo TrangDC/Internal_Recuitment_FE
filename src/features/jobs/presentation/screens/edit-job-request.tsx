@@ -507,7 +507,6 @@ const EditJobRequest = () => {
                                   </TooltipComponent>
                                 </FlexBox>
                               ),
-                              required: true,
                             }}
                           />
                           <HelperTextForm
@@ -572,7 +571,7 @@ const EditJobRequest = () => {
                       <FlexBox flexDirection={'column'}>
                         <EditorBoxField
                           label={'Job description'}
-                          value={field.value}
+                          value={field.value ?? ''}
                           pluginCustomize={[
                             'talenaMakeLonger',
                             'talenaMakeShorter',
