@@ -17,10 +17,13 @@ function ReopenButtonPermission({
   const { role, user } = useAuthorization()
   const inTeam = user?.teamId === jobDetail.hiring_team?.id
   const isOwner = user?.id === jobDetail.user.id
+  const recInChargeId = jobDetail?.rec_in_charge?.id
+  const isRecInCharge = user?.id === recInChargeId
   const hasPermission = checkReopenJobPermission({
     inTeam,
-    isOwner,
+    isRequester: isOwner,
     role,
+    isRecInCharge,
   })
   if (!hasPermission) return null
   return (
