@@ -19,14 +19,10 @@ function checkEditRequestJobPermission({
     role,
     checkBy: {
       compare: 'hasAny',
-      permissions: [
-        'EDIT_OPENING_JOB.everything',
-      ],
+      permissions: ['EDIT_OPENING_JOB.everything'],
     },
     module: 'JOBS',
   })
-
-  console.log('editAllPermission', editAllPermission)
 
   const editTeamOnly = checkPermissions({
     role,
@@ -45,7 +41,7 @@ function checkEditRequestJobPermission({
     },
     module: 'JOBS',
   })
-  if (editAllPermission  && status === 'opened') return true
+  if (editAllPermission && status === 'opened') return true
   if (editTeamOnly && inTeam && status === 'opened') return true
   if (editOwnerOnly && isOwner && status === 'opened') return true
   return false

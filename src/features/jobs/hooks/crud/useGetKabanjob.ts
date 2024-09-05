@@ -27,6 +27,14 @@ const getKanbanJob = GraphQLClientService.buildQuery({
                 id
                 name
             }
+            rec_team {
+              id
+              name
+            }
+            rec_in_charge {
+              id
+              name
+            }
             total_candidates_recruited
             amount
             entity_skill_types {
@@ -68,6 +76,14 @@ const getKanbanJob = GraphQLClientService.buildQuery({
                     orderId
                 }
             }
+            rec_team {
+              id
+              name
+            }
+            rec_in_charge {
+              id
+              name
+            }
             user {
               id
             }
@@ -82,6 +98,14 @@ const getKanbanJob = GraphQLClientService.buildQuery({
             hiring_team {
                 id
                 name
+            }
+            rec_team {
+              id
+              name
+            }
+            rec_in_charge {
+              id
+              name
             }
             total_candidates_recruited
             amount
@@ -110,6 +134,14 @@ const getKanbanJob = GraphQLClientService.buildQuery({
             hiring_team {
                 id
                 name
+            }
+            rec_team {
+              id
+              name
+            }
+            rec_in_charge {
+              id
+              name
             }
             total_candidates_recruited
             amount

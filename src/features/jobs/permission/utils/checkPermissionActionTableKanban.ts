@@ -32,7 +32,8 @@ function checkPermissionActionTableKanban({
 }): TOptionItem<HiringJob>[] {
   let newActions = [...actions]
   const job = rowData
-  const inTeam = me?.teamId === job.hiring_team.id
+  const inTeam =
+    me?.teamId === job.hiring_team.id || me?.rectTeamId === job?.rec_team?.id
   const recInChargeId = job?.rec_in_charge?.id
   const status = job.status
   const isOwner = me?.id === job?.user?.id

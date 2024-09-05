@@ -28,10 +28,10 @@ function checkPermissionActionTable({
   const job = rowData.row.original
   const recInChargeId = job?.rec_in_charge?.id
   const status = job.status
-  const inTeam = me?.teamId === job.hiring_team.id
+  const inTeam =
+    me?.teamId === job.hiring_team.id || me?.rectTeamId === job?.rec_team?.id
   const isOwner = me?.id === job.user.id
   const isRecInCharge = me?.id === recInChargeId
-
   newActions = editAction({
     newActions,
     inTeam,
