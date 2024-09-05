@@ -24,6 +24,7 @@ const useCandidateJobGraphql = () => {
             id
             name
             location
+            status
             hiring_team {
                id
                name
