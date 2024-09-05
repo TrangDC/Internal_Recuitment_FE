@@ -1,7 +1,7 @@
 import { GenerateAction } from '.'
 
 export const JOBS_ACTIONS = {
-  VIEW: 'GetHiringJob,GetAllHiringJobs',
+  VIEW: 'GetHiringJob,GetAllHiringJobs,GetAllHiringJobsGroupByStatus',
   CREATE: 'CreateHiringJob',
   EDIT_PENDING_APPROVAL: 'UpdatePendingApprovalsHiringJob',
   EDIT_OPENING_JOB: 'UpdateOpenedHiringJob',
