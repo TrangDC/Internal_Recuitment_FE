@@ -81,7 +81,9 @@ function useBuildAllJobsActionsTable({
         },
         title: 'Reopen Job',
         Icon: <CloseIcon />,
-        disabled: (data) => data.status === STATUS_HIRING_JOB.CANCELLED,
+        disabled: (data) =>
+          data.status === STATUS_HIRING_JOB.CANCELLED ||
+          data.status === STATUS_HIRING_JOB.OPENED,
       },
       cancel: {
         id: ActionAllJobsTable.CANCEL,
@@ -103,7 +105,8 @@ function useBuildAllJobsActionsTable({
         Icon: <DeleteIcon />,
         disabled: (data) =>
           data.status === STATUS_HIRING_JOB.CANCELLED ||
-          data.status === STATUS_HIRING_JOB.CLOSED,
+          data.status === STATUS_HIRING_JOB.CLOSED ||
+          data.status === STATUS_HIRING_JOB.OPENED,
       },
     },
   })

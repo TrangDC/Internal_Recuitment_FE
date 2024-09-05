@@ -4,6 +4,7 @@ import { ActionAllJobsTable } from 'features/jobs/hooks/table/useAllJobsPermissi
 import checkCancelJobPermission from 'features/permissions/jobs/checkCancelJobPermission'
 import checkCloseJobPermission from 'features/permissions/jobs/checkCloseJobPermission'
 import checkDeleteJobPermission from 'features/permissions/jobs/checkDeleteJobPermission'
+import checkEditApprovalAndOpenJobPermission from 'features/permissions/jobs/checkEditApprovalAndOpenJobPermission'
 import checkEditApprovalJobPermission from 'features/permissions/jobs/checkEditApprovalJobPermission'
 import checkEditRequestJobPermission from 'features/permissions/jobs/checkEditRequestJobPermission'
 import checkReopenJobPermission from 'features/permissions/jobs/checkReopenJobPermission'
@@ -32,21 +33,14 @@ function checkPermissionActionTableKanban({
 }): TOptionItem<HiringJob>[] {
   let newActions = [...actions]
   const job = rowData
+  console.log('job', job)
   const inTeam =
     me?.teamId === job.hiring_team.id || me?.rectTeamId === job?.rec_team?.id
   const recInChargeId = job?.rec_in_charge?.id
   const status = job.status
   const isOwner = me?.id === job?.user?.id
   const isRecInCharge = me?.id === recInChargeId
-  newActions = editOpenJobAction({
-    newActions,
-    inTeam,
-    role,
-    isOwner,
-    isRecInCharge,
-    status,
-  })
-  newActions = editApprovalJobAction({
+  newActions = editAction({
     newActions,
     inTeam,
     role,
@@ -89,32 +83,14 @@ function checkPermissionActionTableKanban({
   return newActions
 }
 
-function editOpenJobAction({
+function editAction({
   newActions,
   inTeam,
   role,
   isOwner,
   status,
 }: ActionProps) {
-  const hasEditPermission = checkEditRequestJobPermission({
-    inTeam,
-    isOwner,
-    role,
-    status,
-  })
-  if (!hasEditPermission)
-    return newActions.filter((action) => action.id !== ActionAllJobsTable.EDIT)
-  return newActions
-}
-
-function editApprovalJobAction({
-  newActions,
-  inTeam,
-  role,
-  isOwner,
-  status,
-}: ActionProps) {
-  const hasEditPermission = checkEditApprovalJobPermission({
+  const hasEditPermission = checkEditApprovalAndOpenJobPermission({
     inTeam,
     isOwner,
     role,
