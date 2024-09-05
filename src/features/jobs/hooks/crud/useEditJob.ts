@@ -94,8 +94,8 @@ function useUpdateJob(props: UseEditJobProps) {
     clearErrors,
   } = useFormReturn
   const mutatePendingApproval = actionPendingApproval.useEditReturn.mutate
-
-  const isValid = !formState.isValid || !formState.isDirty
+  const { isValid, isDirty } = formState
+  const isValidEdit = !isValid || !isDirty
   const { isPending, mutate } = useEditReturn
 
   function onSubmit(note: string) {
@@ -196,7 +196,7 @@ function useUpdateJob(props: UseEditJobProps) {
 
   return {
     control,
-    isValid,
+    isValid: isValidEdit,
     isPending,
     loadingBtnGenerate: loading,
     watch,

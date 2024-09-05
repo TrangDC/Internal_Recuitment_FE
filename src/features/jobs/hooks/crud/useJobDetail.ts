@@ -9,7 +9,7 @@ const useJobDetail = (id: String) => {
   const { getJobDetail, queryKey } = useGraphql()
 
   const { data, ...otherValue } = useQuery({
-    queryKey: [queryKey],
+    queryKey: [queryKey, id],
     queryFn: async () =>
       GraphQLClientService.fetchGraphQL(getJobDetail, {
         id,
