@@ -53,7 +53,10 @@ function useEditResource<Response, FormData extends FieldValues, Input>({
     },
     onSuccess: (data) => {
       if (isLeft(data)) {
-        onError?.(unwrapEither(data))
+        if (onError) {
+          return onError?.(unwrapEither(data))
+        }
+
         // return NotificationService.showError(t(unwrapEither(data).message))
         return handleFailed({
           title: NotificationService.generateMessageFailed('EDIT'),
@@ -63,14 +66,20 @@ function useEditResource<Response, FormData extends FieldValues, Input>({
       queryClient.invalidateQueries({
         queryKey: queryKey,
       })
-      onSuccess?.(unwrapEither(data))
+      if (onSuccess) {
+        return onSuccess?.(unwrapEither(data))
+      }
+
       // return NotificationService.showSuccess('EDIT')
       return handleSuccess({
         title: NotificationService.generateMessage('EDIT'),
       })
     },
     onError(error) {
-      onError?.(error)
+      if (onError) {
+        return onError?.(error)
+      }
+
       // NotificationService.showError(error.message)
       return handleFailed({
         title: NotificationService.generateMessageFailed('EDIT'),

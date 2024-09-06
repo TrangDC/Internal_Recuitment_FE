@@ -51,7 +51,9 @@ function useCreateResource<T, P extends FieldValues>({
     },
     onSuccess: (data) => {
       if (isLeft(data)) {
-        onError?.(unwrapEither(data))
+        if(onError) {
+          return onError?.(unwrapEither(data))
+        }
         // return NotificationService.showError(t(unwrapEither(data).message))
         return handleFailed({
           title: NotificationService.generateMessageFailed('CREATE'),
@@ -59,7 +61,10 @@ function useCreateResource<T, P extends FieldValues>({
         })
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
-      onSuccess?.(unwrapEither(data))
+      if(onSuccess) {
+        return  onSuccess?.(unwrapEither(data))
+      }
+     
       if (show_modal) {
         return handleSuccess({
           title: NotificationService.generateMessage('CREATE'),
@@ -68,7 +73,9 @@ function useCreateResource<T, P extends FieldValues>({
       // return NotificationService.showSuccess('CREATE')
     },
     onError(error) {
-      onError?.(error)
+      if(onError) {
+        return  onError?.(error);
+      }
       // NotificationService.showError(error.message)
       return handleFailed({
         title: NotificationService.generateMessageFailed('CREATE'),

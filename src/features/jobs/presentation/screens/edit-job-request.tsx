@@ -427,7 +427,7 @@ const EditJobRequest = () => {
                           disabled={true}
                           textFieldProps={{
                             required: true,
-                            label: 'Priority',
+                            label: 'Status',
                           }}
                         />
                         <HelperTextForm

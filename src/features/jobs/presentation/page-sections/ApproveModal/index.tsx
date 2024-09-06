@@ -9,6 +9,7 @@ import HelperTextForm from 'shared/components/forms/HelperTextForm'
 import AppButton from 'shared/components/buttons/AppButton'
 import ButtonLoading from 'shared/components/buttons/ButtonLoading'
 import useChangeApprovals from 'features/jobs/hooks/crud/useApprovalJob'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 interface IApproveModal {
   open: boolean
@@ -18,9 +19,13 @@ interface IApproveModal {
 }
 
 function ApproveModal({ open, setOpen, onSuccess, listRecord }: IApproveModal) {
+  const { handleSuccess } = usePopup();
   const { action, control, isPending, isValid } = useChangeApprovals({
     onSuccess: () => {
       setOpen(false)
+      handleSuccess({
+        title: 'Approve successfully'
+      })
       onSuccess?.()
     },
     defaultValue: {

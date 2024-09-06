@@ -12,6 +12,8 @@ import HiringJob, {
   HiringJobStatus,
   UpdateHiringJobStatusArguments,
 } from 'shared/schema/database/hiring_job'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
+import { t } from 'i18next'
 
 type UseChangeStatusProps = {
   id: string
@@ -21,6 +23,7 @@ type UseChangeStatusProps = {
 
 function useCancelJob(props: UseChangeStatusProps) {
   const { id, onSuccess } = props
+  const {handleFailed, handleSuccess} = usePopup();
   const queryClient = useQueryClient()
   const { cancelHiringJob, queryKey, getJobDetail } = useGraphql()
   const { useEditReturn, useFormReturn } = useUpdateResourceOther<
@@ -33,10 +36,20 @@ function useCancelJob(props: UseChangeStatusProps) {
     oneBuildQuery: getJobDetail,
     queryKey: [queryKey],
     id,
+    onError: (data) => {
+      handleFailed({
+        title: "Failed to cancel request",
+        content: t(data?.message) ?? ''
+      })
+    },
     onSuccess: (data) => {
       onSuccess?.(data)
       queryClient.invalidateQueries({
         queryKey: [MODLUE_QUERY_KEY.GROUP_CANDIDATE_STATUS],
+      })
+
+      handleSuccess({
+        title: "Cancel successfully",
       })
     },
     formatDefaultValues(data) {
