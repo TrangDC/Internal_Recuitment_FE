@@ -8,7 +8,6 @@ import useBuildActionsKanbanJobs from 'features/jobs/hooks/table/useBuildActions
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import checkPermissionActionKanBan from 'features/jobs/permission/utils/checkPermissionActionKanBan'
 import CandidateJob from 'shared/schema/database/candidate_job'
-import { useContextCandidateDetail } from '../context/CandidateDetailContext'
 import { useContextChangeStatus } from 'features/application/presentation/page-sections/ApplicationPage/context/ChangeStatusContext'
 
 interface IActionGroupButtons {

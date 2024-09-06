@@ -23,7 +23,6 @@ import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complet
 import useValidProcessingCandidate from 'features/candidatejob/hooks/crud/useValidProcessingCandidate'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
 import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
-import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 interface IApplyJobModal {
   open: boolean
   setOpen: (value: boolean) => void

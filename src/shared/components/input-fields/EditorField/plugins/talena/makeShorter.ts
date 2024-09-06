@@ -1,5 +1,3 @@
-import TalenaApiService from 'services/talena-api-services'
-import { isRight, unwrapEither } from 'shared/utils/handleEither'
 import { Editor as TinyMCEEditor } from 'tinymce'
 import openDialog from './openDialog'
 

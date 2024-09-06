@@ -24,7 +24,6 @@ import useApplyToJobDetail from 'features/jobs/hooks/crud/useApplyJobDetail'
 import CandidateAutoComplete from 'shared/components/autocomplete/candidate-auto-complete'
 import HiringJob from 'shared/schema/database/hiring_job'
 import CandidateJob from 'shared/schema/database/candidate_job'
-import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
 
 interface IApplyJobModal {

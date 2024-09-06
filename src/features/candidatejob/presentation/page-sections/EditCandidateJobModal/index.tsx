@@ -11,7 +11,6 @@ import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
 import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
-import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 
 type EditCandidateJobModalProps = {
   open: boolean

@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid } from '@mui/material'
+import { Box, Divider, Grid } from '@mui/material'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Text13sb, Text15md, Tiny12md } from 'shared/components/Typography'
 import ApprovalProcess from './ApprovalProcess'
@@ -16,8 +16,6 @@ import ChipJob from 'shared/class/job-status/components/ChipJob'
 import CustomIframe from 'shared/components/CustomIframe'
 import { capitalizeFirstLetter } from 'shared/utils/convert-string'
 import RequestResolutionTime from '../components/RequestResolutionTime'
-import ButtonAdd from 'shared/components/utils/buttonAdd'
-import EditIcon from 'shared/components/icons/EditIcon'
 import EditJobPermissions from 'features/jobs/permission/components/EditJobPermission'
 
 function JobInformation() {

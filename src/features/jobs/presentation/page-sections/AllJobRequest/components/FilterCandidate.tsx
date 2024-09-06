@@ -5,7 +5,6 @@ import { useContextKanbanJob } from '../context/KanbanJobContext'
 import useTextTranslation from 'shared/constants/text'
 import { Add } from '@mui/icons-material'
 import useActionTable from '../../../../hooks/table/useActionTable'
-import CreateJobModal from '../../CreateJobModal'
 import { BtnPrimary } from 'shared/styles'
 import { Span } from 'shared/components/Typography'
 import FlexBox from 'shared/components/flexbox/FlexBox'
@@ -32,7 +31,7 @@ import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charg
 const FilterCandidate = () => {
   const translation = useTextTranslation()
 
-  const { openCreate, setOpenCreate, openCreateApply, setOpenCreateApply } =
+  const { openCreateApply, setOpenCreateApply } =
     useActionTable()
   const { action_filter, actions } = useContextKanbanJob()
   const { useFilterReturn, useSearchListReturn } = action_filter
@@ -332,10 +331,6 @@ const FilterCandidate = () => {
           </Cant>
         </FlexBox>
       </DivHeaderWrapper>
-
-      {openCreate && (
-        <CreateJobModal open={openCreate} setOpen={setOpenCreate} />
-      )}
 
       {openCreateApply && (
         <ApplyJobModal
