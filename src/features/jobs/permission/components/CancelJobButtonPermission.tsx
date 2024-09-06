@@ -40,7 +40,7 @@ function CancelButtonPermission({
       }
       variant="outlined"
     >
-      <Span>Cancel Job</Span>
+      <Span>Cancel request</Span>
     </AppButton>
   )
 }

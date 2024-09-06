@@ -15,7 +15,6 @@ import { SpanText, TinyText } from 'shared/components/form/styles'
 import useActionTable from '../../hooks/table/useActionTable'
 import { LOCATION_LABEL } from 'shared/constants/constants'
 import IconScreen from 'shared/components/utils/IconScreen'
-import { JobStatus } from 'shared/class/job-status'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
 import ChipPriority from 'shared/class/priority/components/ChipPriority'
 import CloseJobButtonPermission from 'features/jobs/permission/components/CloseJobButtonPermission'
@@ -31,8 +30,6 @@ import CancelModal from '../page-sections/CancelModal'
 import ExPoint from 'shared/components/icons/ExPoint'
 import TooltipComponent from 'shared/components/tooltip'
 import { t } from 'i18next'
-
-const { STATUS_HIRING_JOB } = JobStatus
 
 const JobOverview = () => {
   const { id } = useParams()
@@ -52,12 +49,6 @@ const JobOverview = () => {
     openReopen,
     setOpenReopen,
   } = useActionTable()
-
-  const showReopenBtn = jobDetail?.status === STATUS_HIRING_JOB.CLOSED
-  const showCloseBtn = jobDetail?.status === STATUS_HIRING_JOB.OPENED
-  const showCancelBtn =
-    jobDetail?.status === STATUS_HIRING_JOB.OPENED &&
-    jobDetail?.is_able_to_cancel
 
   return (
     <Box pt={2} pb={4}>
@@ -106,7 +97,7 @@ const JobOverview = () => {
                     <FlexBox gap={0.5} alignItems={'center'}>
                       <SpanText>Hiring team</SpanText>
                       <TooltipComponent
-                        title={t('tooltip.job_request.approver')}
+                        title={t('tooltip.job_request.hiring_team')}
                       >
                         <ExPoint />
                       </TooltipComponent>

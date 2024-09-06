@@ -37,7 +37,7 @@ function CloseJobButtonPermission({
       disabled={checkDisabledActionJobButton('close', status)}
       variant="outlined"
     >
-      <Span>Close Job</Span>
+      <Span>Close request</Span>
     </AppButton>
   )
 }
