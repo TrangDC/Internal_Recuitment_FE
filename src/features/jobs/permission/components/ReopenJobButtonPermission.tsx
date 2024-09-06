@@ -1,6 +1,8 @@
 import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
+import { checkDisabledActionJobButton } from 'features/jobs/shared/utils'
 import checkReopenJobPermission from 'features/permissions/jobs/checkReopenJobPermission'
+import AppButton from 'shared/components/buttons/AppButton'
 import { Span } from 'shared/components/Typography'
 import HiringJob from 'shared/schema/database/hiring_job'
 import { BtnPrimary } from 'shared/styles'
@@ -15,8 +17,11 @@ function ReopenButtonPermission({
   handleOpenReopen,
 }: ReopenButtonPermissionProps) {
   const { role, user } = useAuthorization()
-  const inTeam = user?.teamId === jobDetail.hiring_team?.id
-  const isOwner = user?.id === jobDetail.user.id
+  const inTeam =
+    user?.teamId === jobDetail.hiring_team?.id ||
+    user?.rectTeamId === jobDetail?.rec_team?.id
+  const isOwner = user?.id === jobDetail?.user?.id
+  const status = jobDetail?.status
   const recInChargeId = jobDetail?.rec_in_charge?.id
   const isRecInCharge = user?.id === recInChargeId
   const hasPermission = checkReopenJobPermission({
@@ -27,13 +32,15 @@ function ReopenButtonPermission({
   })
   if (!hasPermission) return null
   return (
-    <BtnPrimary
+    <AppButton
       onClick={() => {
         handleOpenReopen(jobDetail?.id)
       }}
+      disabled={checkDisabledActionJobButton('reopen', status)}
+      variant="outlined"
     >
       <Span>Reopen Job</Span>
-    </BtnPrimary>
+    </AppButton>
   )
 }
 

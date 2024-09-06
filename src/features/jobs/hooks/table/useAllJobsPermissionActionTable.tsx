@@ -1,3 +1,4 @@
+import { checkDisabledActionJobButton } from 'features/jobs/shared/utils'
 import _ from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import { JobStatus } from 'shared/class/job-status'
@@ -59,7 +60,7 @@ function useBuildAllJobsActionsTable({
         title: translation.COMMON.edit,
         Icon: <EditIcon />,
         disabled: (rowData) => {
-          return rowData.status === STATUS_HIRING_JOB.CLOSED
+          return checkDisabledActionJobButton('edit', rowData?.status)
         },
       },
       close_job: {
@@ -71,8 +72,7 @@ function useBuildAllJobsActionsTable({
         Icon: <CloseIcon />,
         disabled: (data) =>
           data.is_able_to_close === false ||
-          data.status === STATUS_HIRING_JOB.CLOSED ||
-          data.status === STATUS_HIRING_JOB.CANCELLED,
+          checkDisabledActionJobButton('close', data?.status),
       },
       reopen: {
         id: ActionAllJobsTable.REOPEN,
@@ -82,8 +82,7 @@ function useBuildAllJobsActionsTable({
         title: 'Reopen Job',
         Icon: <CloseIcon />,
         disabled: (data) =>
-          data.status === STATUS_HIRING_JOB.CANCELLED ||
-          data.status === STATUS_HIRING_JOB.OPENED,
+          checkDisabledActionJobButton('reopen', data?.status),
       },
       cancel: {
         id: ActionAllJobsTable.CANCEL,
@@ -94,7 +93,7 @@ function useBuildAllJobsActionsTable({
         Icon: <CancelIcon />,
         disabled: (data) =>
           data.is_able_to_cancel === false ||
-          data.status === STATUS_HIRING_JOB.CANCELLED,
+          checkDisabledActionJobButton('cancel', data?.status),
       },
       delete: {
         id: ActionAllJobsTable.DELETE,
@@ -104,9 +103,7 @@ function useBuildAllJobsActionsTable({
         title: translation.COMMON.delete,
         Icon: <DeleteIcon />,
         disabled: (data) =>
-          data.status === STATUS_HIRING_JOB.CANCELLED ||
-          data.status === STATUS_HIRING_JOB.CLOSED ||
-          data.status === STATUS_HIRING_JOB.OPENED,
+          checkDisabledActionJobButton('delete', data?.status),
       },
     },
   })

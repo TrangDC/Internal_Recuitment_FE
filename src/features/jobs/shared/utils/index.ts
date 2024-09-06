@@ -1,4 +1,7 @@
-import { JobDescriptionData } from "features/jobs/domain/interfaces";
+import { JobDescriptionData } from 'features/jobs/domain/interfaces'
+import { ACTION_JOB_BY_STATUS } from '../constants'
+import _ from 'lodash'
+import { HiringJobStatus } from 'shared/schema/database/hiring_job'
 
 export function formatJobDescription(data: JobDescriptionData): string {
   return `
@@ -26,4 +29,15 @@ export function formatJobDescription(data: JobDescriptionData): string {
       </ul>
     </benefit-component>
   `
+}
+
+type ActionKey = typeof ACTION_JOB_BY_STATUS
+
+export function checkDisabledActionJobButton(
+  key: keyof ActionKey,
+  status: HiringJobStatus
+) {
+  const statusList = _.get(ACTION_JOB_BY_STATUS, key)
+  const hasStatus = _.filter(statusList, (d) => d === status).length > 0
+  return !hasStatus
 }

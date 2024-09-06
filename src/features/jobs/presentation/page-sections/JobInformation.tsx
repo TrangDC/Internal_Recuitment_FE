@@ -18,6 +18,7 @@ import { capitalizeFirstLetter } from 'shared/utils/convert-string'
 import RequestResolutionTime from '../components/RequestResolutionTime'
 import ButtonAdd from 'shared/components/utils/buttonAdd'
 import EditIcon from 'shared/components/icons/EditIcon'
+import EditJobPermissions from 'features/jobs/permission/components/EditJobPermission'
 
 function JobInformation() {
   const { id } = useParams()
@@ -261,16 +262,12 @@ function JobInformation() {
         borderTop={'1px solid #E3E6EB'}
         justifyContent={'flex-end'}
       >
-        <ButtonAdd
-          icon_style={{
-            color: 'white !important',
-          }}
-          Icon={EditIcon}
-          textLable="Edit"
+        <EditJobPermissions
           onClick={() => {
             navigate(`/dashboard/edit-job-request/${id}`)
           }}
-        ></ButtonAdd>
+          jobDetails={jobDetail}
+        ></EditJobPermissions>
       </FlexBox>
     </Box>
   )

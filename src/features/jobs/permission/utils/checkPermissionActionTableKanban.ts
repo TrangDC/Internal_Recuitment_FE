@@ -5,8 +5,6 @@ import checkCancelJobPermission from 'features/permissions/jobs/checkCancelJobPe
 import checkCloseJobPermission from 'features/permissions/jobs/checkCloseJobPermission'
 import checkDeleteJobPermission from 'features/permissions/jobs/checkDeleteJobPermission'
 import checkEditApprovalAndOpenJobPermission from 'features/permissions/jobs/checkEditApprovalAndOpenJobPermission'
-import checkEditApprovalJobPermission from 'features/permissions/jobs/checkEditApprovalJobPermission'
-import checkEditRequestJobPermission from 'features/permissions/jobs/checkEditRequestJobPermission'
 import checkReopenJobPermission from 'features/permissions/jobs/checkReopenJobPermission'
 import { TOptionItem } from 'shared/components/ActionGroupButtons'
 import HiringJob, { HiringJobStatus } from 'shared/schema/database/hiring_job'
@@ -33,7 +31,6 @@ function checkPermissionActionTableKanban({
 }): TOptionItem<HiringJob>[] {
   let newActions = [...actions]
   const job = rowData
-  console.log('job', job)
   const inTeam =
     me?.teamId === job.hiring_team.id || me?.rectTeamId === job?.rec_team?.id
   const recInChargeId = job?.rec_in_charge?.id
