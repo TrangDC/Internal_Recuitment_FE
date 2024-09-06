@@ -312,7 +312,7 @@ const ListApprovalPending = () => {
             </FlexBox>
           </DivHeaderWrapper>
           <FlexBox>
-            <Tiny>{rowSelected.length} records selected</Tiny>
+            <Tiny>{rowSelected.length} record(s) selected</Tiny>
           </FlexBox>
         </HeadingWrapper>
         <Box>

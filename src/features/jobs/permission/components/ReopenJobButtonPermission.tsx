@@ -39,7 +39,7 @@ function ReopenButtonPermission({
       disabled={checkDisabledActionJobButton('reopen', status)}
       variant="outlined"
     >
-      <Span>Reopen Job</Span>
+      <Span>Reopen</Span>
     </AppButton>
   )
 }

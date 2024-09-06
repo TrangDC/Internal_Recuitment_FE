@@ -9,7 +9,7 @@ const MyApprovalTitle = () => {
   return (
     <FlexBox gap={0.75}>
       My approvals
-      <BoxCircle sx={{ backgroundColor: '#82868C' }}>
+      <BoxCircle>
         <TinyText>{totalRecord}</TinyText>
       </BoxCircle>
     </FlexBox>

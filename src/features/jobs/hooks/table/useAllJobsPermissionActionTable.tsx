@@ -20,8 +20,6 @@ export enum ActionAllJobsTable {
   CANCEL = 'cancel',
 }
 
-const { STATUS_HIRING_JOB } = JobStatus
-
 type UseBuildAllJobsActionsTableProps = {
   handleOpenCancel: (id: string) => void
   handleOpenDelete: (id: string) => void
