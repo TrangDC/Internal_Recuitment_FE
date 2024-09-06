@@ -12,6 +12,7 @@ import HiringJob, {
   HiringJobStatus,
   UpdateHiringJobStatusArguments,
 } from 'shared/schema/database/hiring_job'
+import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 type UseChangeStatusProps = {
   id: string
@@ -22,6 +23,7 @@ type UseChangeStatusProps = {
 function useReopenJob(props: UseChangeStatusProps) {
   const { id, onSuccess } = props
   const queryClient = useQueryClient()
+  const { handleSuccess} = usePopup();
   const { reopenHiringJob, queryKey, getJobDetail } = useGraphql()
   const { useEditReturn, useFormReturn } = useUpdateResourceOther<
     HiringJob,
@@ -37,6 +39,10 @@ function useReopenJob(props: UseChangeStatusProps) {
       onSuccess?.(data)
       queryClient.invalidateQueries({
         queryKey: [MODLUE_QUERY_KEY.GROUP_CANDIDATE_STATUS],
+      })
+
+      handleSuccess({
+        title: "Reopen successfully",
       })
     },
     formatDefaultValues(data) {

@@ -163,6 +163,10 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                       value={field.value}
                       multiple={false}
                       onChange={field.onChange}
+                      filter={{
+                        is_black_list: false,
+                        ignore_statuses: ['hired'],
+                      }}
                       textFieldProps={{
                         required: true,
                         label: 'Candidates',
