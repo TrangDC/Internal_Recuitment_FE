@@ -38,7 +38,6 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
       return {
         attachments: [],
         rec_in_charge_id: data?.rec_in_charge?.id ?? '',
-        rec_team: data?.rec_team?.id ?? '',
       }
     },
   })
@@ -46,6 +45,7 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
   const { handleSubmit, watch, control, formState, getValues, resetField } =
     useFormReturn
   const { isPending, mutate } = useEditReturn
+  const isValid = !formState.isValid || !formState.isDirty
 
   function onSubmit(note: string) {
     handleSubmit((value) => {
@@ -66,12 +66,12 @@ function useEditJobApplication(props: UseEditJobApplicationProps) {
 
   const attachments = watch('attachments')
   const isValidAttachments = useMemo(() => {
-    if (!Array.isArray(attachments) || isEmpty(attachments)) return false
+    if (!Array.isArray(attachments)) return false
     return attachments.every((file) => file.status === 'success')
   }, [attachments])
 
   return {
-    isValid: !isValidAttachments,
+    isValid:  !isValidAttachments || isValid,
     onSubmit,
     isPending,
     useFormReturn,

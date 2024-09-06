@@ -80,7 +80,7 @@ const AllJobKanban = () => {
                         handleFailed({
                           title: 'Failed to cancel request',
                           content:
-                            'Job request cannot be cancelled as there is a hired candidate.',
+                            'This job request has at least one candidate who has been hired and can no longer be cancelled.',
                         })
                         return
                       }

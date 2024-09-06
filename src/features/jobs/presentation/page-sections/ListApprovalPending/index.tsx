@@ -33,6 +33,8 @@ import ApproveModal from '../ApproveModal'
 import RejectModal from '../RejectModal'
 import { useState } from 'react'
 import HiringJob from 'shared/schema/database/hiring_job'
+import { useQueryClient } from '@tanstack/react-query'
+import { MODLUE_QUERY_KEY } from 'shared/interfaces/common'
 
 const ListApprovalPending = () => {
   const {
@@ -80,6 +82,13 @@ const ListApprovalPending = () => {
     columns: columnsApproval,
     eventTable,
   })
+
+  const queryClient = useQueryClient()
+  const handleRefreshList = () => {
+    queryClient.invalidateQueries({
+      queryKey: [MODLUE_QUERY_KEY.COUNT_JOB],
+    })
+  }
 
   const disabledBtn = rowSelected.length === 0
 
@@ -324,6 +333,7 @@ const ListApprovalPending = () => {
           onSuccess={() => {
             resetRowSelected()
             setListRecord([])
+            handleRefreshList()
           }}
         />
       )}
@@ -336,6 +346,7 @@ const ListApprovalPending = () => {
           onSuccess={() => {
             resetRowSelected()
             setListRecord([])
+            handleRefreshList()
           }}
         />
       )}
