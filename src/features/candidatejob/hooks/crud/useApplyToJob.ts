@@ -8,6 +8,7 @@ import {
   CreateCandidateJobArguments,
   LevelCandidateJob,
 } from 'shared/schema/database/candidate_job'
+import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 
 interface useApplyToJobProps {
   defaultValues?: Partial<FormDataSchema>
@@ -16,7 +17,7 @@ interface useApplyToJobProps {
 
 function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
   const { defaultValues, callbackSuccess } = props
-
+  const { user } = useAuthorization();
   const { createCandidateJob, queryKey } = useGraphql()
   const { useCreateReturn, useFormReturn } = useCreateResource<
     CreateCandidateJobArguments,
@@ -29,6 +30,7 @@ function useApplyToJob(props: useApplyToJobProps = { defaultValues: {} }) {
       offer_expiration_date: null,
       onboard_date: null,
       level: null,
+      rec_in_charge_id: user?.id,
       ...defaultValues,
     },
     resolver: yupResolver(schema),
