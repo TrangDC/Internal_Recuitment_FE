@@ -226,24 +226,18 @@ const JobOverview = () => {
               </FlexBox>
 
               <FlexBox gap={1} justifyContent={'flex-end'}>
-                {showCancelBtn && (
-                  <CancelButtonPermission
-                    handleOpenCancel={handleOpenCancel}
-                    jobDetail={jobDetail}
-                  />
-                )}
-                {showReopenBtn && (
-                  <ReopenButtonPermission
-                    handleOpenReopen={handleOpenReopen}
-                    jobDetail={jobDetail}
-                  />
-                )}
-                {showCloseBtn && (
-                  <CloseJobButtonPermission
-                    handleOpenClose={handleOpenClose}
-                    jobDetail={jobDetail}
-                  />
-                )}
+                <CancelButtonPermission
+                  handleOpenCancel={handleOpenCancel}
+                  jobDetail={jobDetail}
+                />
+                <ReopenButtonPermission
+                  handleOpenReopen={handleOpenReopen}
+                  jobDetail={jobDetail}
+                />
+                <CloseJobButtonPermission
+                  handleOpenClose={handleOpenClose}
+                  jobDetail={jobDetail}
+                />
                 <Link
                   to={`/dashboard/job-detail/${jobDetail?.id}`}
                   target="_blank"
