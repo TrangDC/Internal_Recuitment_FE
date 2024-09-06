@@ -287,7 +287,7 @@ const useGraphql = () => {
               id
               name
               work_email
-              hiring_team {
+              member_of_hiring_team {
                 id
               }
             }
@@ -336,7 +336,7 @@ const useGraphql = () => {
               id
               name
               work_email
-               hiring_team {
+              member_of_hiring_team {
                 id
               }
             }
@@ -385,7 +385,7 @@ const useGraphql = () => {
               id
               name
               work_email
-               hiring_team {
+              member_of_hiring_team {
                 id
               }
             }
@@ -435,7 +435,7 @@ const useGraphql = () => {
               id
               name
               work_email
-               hiring_team {
+              member_of_hiring_team {
                 id
               }
             }
@@ -484,7 +484,7 @@ const useGraphql = () => {
               id
               name
               work_email
-              hiring_team {
+              member_of_hiring_team {
                 id
               }
             }
@@ -534,7 +534,7 @@ const useGraphql = () => {
               id
               name
               work_email
-              hiring_team {
+              member_of_hiring_team {
                 id
               }
             }

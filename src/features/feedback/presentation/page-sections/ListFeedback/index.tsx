@@ -126,7 +126,7 @@ const ListFeedBack = ({ listFeedback, show_feedback = true }: Props) => {
                       <DeleteFeedbackButtonPermission
                         ownerId={feedback?.owner?.id ?? ''}
                         feedbackOfTeamId={
-                          feedback?.owner?.hiring_team?.id ?? ''
+                          feedback?.owner?.member_of_hiring_team?.id ?? ''
                         }
                         onClick={() => {
                           handleOpenDelete(feedback.id)
