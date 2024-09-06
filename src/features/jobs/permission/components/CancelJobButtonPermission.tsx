@@ -1,4 +1,3 @@
-import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import { checkDisabledActionJobButton } from 'features/jobs/shared/utils'
 import checkCancelJobPermission from 'features/permissions/jobs/checkCancelJobPermission'

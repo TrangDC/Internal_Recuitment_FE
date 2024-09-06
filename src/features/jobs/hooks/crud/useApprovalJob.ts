@@ -10,7 +10,6 @@ import {
   HiringJobStatusStep,
   UpdateHiringJobStepInputArguments,
 } from 'shared/schema/database/hiring_job'
-import usePopup from 'contexts/popupProvider/hooks/usePopup'
 
 type UseChangeStatusProps = {
   onSuccess: (data: BaseRecord) => void

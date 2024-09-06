@@ -4,7 +4,6 @@ import checkCloseJobPermission from 'features/permissions/jobs/checkCloseJobPerm
 import AppButton from 'shared/components/buttons/AppButton'
 import { Span } from 'shared/components/Typography'
 import HiringJob from 'shared/schema/database/hiring_job'
-import { BtnPrimary } from 'shared/styles'
 
 type CloseJobButtonPermissionProps = {
   jobDetail: HiringJob

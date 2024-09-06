@@ -54,7 +54,6 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
   const hiring_team_id = watch('hiring_team_id')
 
   const candidateId = watch('candidate_id')
-  const rec_team = watch('rec_team_id')
   const { isValidCandidate } = useValidProcessingCandidate(candidateId)
 
   const isValidAttachments = useMemo(() => {
@@ -303,35 +302,6 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
             <FormControl fullWidth>
               <Controller
                 control={control}
-                name="rec_team_id"
-                render={({ field, fieldState }) => (
-                  <FlexBox flexDirection={'column'}>
-                    <RecTeamsAutoComplete
-                      name="rec_team_id"
-                      value={field.value}
-                      multiple={false}
-                      textFieldProps={{
-                        required: true,
-                        label: 'REC team',
-                      }}
-                      onChange={(value) => {
-                        field.onChange(value)
-                        resetField('rec_in_charge_id')
-                      }}
-                    />
-                    <HelperTextForm
-                      message={fieldState.error?.message}
-                    ></HelperTextForm>
-                  </FlexBox>
-                )}
-              />
-            </FormControl>
-          </FlexBox>
-
-          <FlexBox justifyContent={'center'} alignItems={'center'}>
-            <FormControl fullWidth>
-              <Controller
-                control={control}
                 name="rec_in_charge_id"
                 render={({ field, fieldState }) => (
                   <FlexBox flexDirection={'column'}>
@@ -342,10 +312,6 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                         required: true,
                         label: 'REC in charge',
                       }}
-                      filter={{
-                        rec_team_ids: rec_team ? [rec_team] : undefined,
-                      }}
-                      disabled={!rec_team}
                       hasAssigned={false}
                       onChange={(item) => {
                         field.onChange(item?.value ?? '')

@@ -16,12 +16,14 @@ import useBuildAllJobsActionsTable from 'features/jobs/hooks/table/useAllJobsPer
 import useActionTable from 'features/jobs/hooks/table/useActionTable'
 import useJobTable from 'features/jobs/hooks/table/useJobTable'
 import {
-  CloseJobModal,
   DeleteJobModal,
 } from 'features/jobs/presentation/page-sections'
 import { JobStatus } from 'shared/class/job-status'
 import { Span } from 'shared/components/Typography'
 import { TinyText } from 'shared/components/form/styles'
+import CloseJobModal from 'features/jobs/presentation/page-sections/CloseJobModal'
+import ReopenJobModal from 'features/jobs/presentation/page-sections/ReopenModal'
+import CancelModal from 'features/jobs/presentation/page-sections/CancelModal'
 
 const { STATUS_HIRING_JOB } = JobStatus
 const OpeningJobRequest = () => {
@@ -36,15 +38,18 @@ const OpeningJobRequest = () => {
   const navigate = useNavigate()
 
   const {
-    setOpenCreate,
     openDelete,
     setOpenDelete,
     handleOpenDelete,
-    openStatus,
-    setOpenStatus,
     handleOpenCancel,
     handleOpenClose,
     handleOpenReopen,
+    openClose,
+    setOpenClose,
+    openReopen,
+    setOpenReopen,
+    openCancel,
+    setOpenCancel,
     rowId,
   } = useActionTable()
 
@@ -104,10 +109,27 @@ const OpeningJobRequest = () => {
         />
       )}
 
-      {openStatus && (
+
+      {openClose && (
         <CloseJobModal
-          open={openStatus}
-          setOpen={setOpenStatus}
+          open={openClose}
+          setOpen={setOpenClose}
+          id={rowId.current}
+        />
+      )}
+
+      {openReopen && (
+        <ReopenJobModal
+          open={openReopen}
+          setOpen={setOpenReopen}
+          id={rowId.current}
+        />
+      )}
+
+      {openCancel && (
+        <CancelModal
+          open={openCancel}
+          setOpen={setOpenCancel}
           id={rowId.current}
         />
       )}

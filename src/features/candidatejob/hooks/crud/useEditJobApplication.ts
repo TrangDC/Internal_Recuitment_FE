@@ -7,7 +7,6 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import { removeStatusAttachment } from 'shared/utils/utils'
 import { useMemo } from 'react'
-import { isEmpty } from 'lodash'
 import CandidateJob, {
   UpdateCandidateJobAttachmentArguments,
 } from 'shared/schema/database/candidate_job'

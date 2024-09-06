@@ -15,32 +15,34 @@ import { TinyText } from 'shared/components/form/styles'
 import { JobStatus } from 'shared/class/job-status'
 import useJobTable from 'features/jobs/hooks/table/useJobTable'
 import {
-  CloseJobModal,
-  CreateJobModal,
   DeleteJobModal,
-  EditJobModal,
 } from 'features/jobs/presentation/page-sections'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import CloseJobModal from 'features/jobs/presentation/page-sections/CloseJobModal'
+import ReopenJobModal from 'features/jobs/presentation/page-sections/ReopenModal'
+import CancelModal from 'features/jobs/presentation/page-sections/CancelModal'
 
 const { STATUS_HIRING_JOB } = JobStatus
 const OpeningJobRequest = () => {
   const {
-    openCreate,
     setOpenCreate,
-    openEdit,
     openDelete,
     setOpenDelete,
     handleOpenDelete,
-    openStatus,
-    setOpenStatus,
     handleOpenCancel,
     handleOpenClose,
     handleOpenReopen,
     rowId,
-    setOpenEdit,
+    openCancel,
+    setOpenCancel,
+    openReopen,
+    setOpenReopen,
+    openClose,
+    setOpenClose
   } = useActionTable()
 
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const { useTableReturn } = useJobTable({
     filters: {
@@ -82,7 +84,7 @@ const OpeningJobRequest = () => {
           <ButtonAdd
             Icon={Add}
             textLable="Add a new request"
-            onClick={() => setOpenCreate(true)}
+            onClick={() => navigate('/dashboard/add-new-job-request')}
           />
         </Cant>
       </FlexBox>
@@ -92,17 +94,6 @@ const OpeningJobRequest = () => {
         )}
       </WrapperBox>
 
-      {openCreate && (
-        <CreateJobModal open={openCreate} setOpen={setOpenCreate} />
-      )}
-      {openEdit && (
-        <EditJobModal
-          open={openEdit}
-          setOpen={setOpenEdit}
-          id={rowId.current}
-        />
-      )}
-
       {openDelete && (
         <DeleteJobModal
           open={openDelete}
@@ -111,10 +102,27 @@ const OpeningJobRequest = () => {
         />
       )}
 
-      {openStatus && (
+
+      {openClose && (
         <CloseJobModal
-          open={openStatus}
-          setOpen={setOpenStatus}
+          open={openClose}
+          setOpen={setOpenClose}
+          id={rowId.current}
+        />
+      )}
+
+      {openReopen && (
+        <ReopenJobModal
+          open={openReopen}
+          setOpen={setOpenReopen}
+          id={rowId.current}
+        />
+      )}
+
+      {openCancel && (
+        <CancelModal
+          open={openCancel}
+          setOpen={setOpenCancel}
           id={rowId.current}
         />
       )}

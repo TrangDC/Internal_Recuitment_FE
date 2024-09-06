@@ -1,11 +1,9 @@
-import { checkPermissions } from 'features/authorization/domain/functions/functions'
 import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import { checkDisabledActionJobButton } from 'features/jobs/shared/utils'
 import checkReopenJobPermission from 'features/permissions/jobs/checkReopenJobPermission'
 import AppButton from 'shared/components/buttons/AppButton'
 import { Span } from 'shared/components/Typography'
 import HiringJob from 'shared/schema/database/hiring_job'
-import { BtnPrimary } from 'shared/styles'
 
 type ReopenButtonPermissionProps = {
   jobDetail: HiringJob

@@ -193,7 +193,6 @@ export const schemaApplyJob = yup.object({
       return schema.required(RULE_MESSAGES.MC1('level'))
     })
     .nullable(),
-  rec_team_id: yup.string().required(RULE_MESSAGES.MC1('REC team')),
   rec_in_charge_id: yup.string().required(RULE_MESSAGES.MC1('REC in charge')),
 })
 

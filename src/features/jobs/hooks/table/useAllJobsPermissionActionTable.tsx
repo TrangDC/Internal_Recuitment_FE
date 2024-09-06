@@ -1,5 +1,4 @@
 import { checkDisabledActionJobButton } from 'features/jobs/shared/utils'
-import _ from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import { JobStatus } from 'shared/class/job-status'
 import CancelIcon from 'shared/components/icons/CancelIcon'
