@@ -323,7 +323,7 @@ const EditJobRequest = () => {
                         <NumberField
                           label={
                             <FlexBox gap={0.5} alignItems={'baseline'}>
-                              <SpanText>Staff needed</SpanText>
+                              <SpanText>Quantity</SpanText>
                               <SpanText color="#DB6C56">*</SpanText>
                               <TooltipComponent
                                 title={t('tooltip.job_request.staff_needed')}

@@ -132,7 +132,7 @@ function JobInformation() {
               <Grid item width={widthItemHir}>
                 <Box>
                   <Tiny12md color={'text.500'} marginBottom={1}>
-                    Staff needed
+                    Quantity
                   </Tiny12md>
                   <BoxCircle>
                     <TinyText sx={{ color: 'white !important' }}>
