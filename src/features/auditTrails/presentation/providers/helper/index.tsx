@@ -1,5 +1,6 @@
 import { Box, styled } from '@mui/material'
 import dayjs from 'dayjs'
+import { t } from 'i18next'
 import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
 import { JobStatus } from 'shared/class/job-status'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
@@ -20,6 +21,7 @@ import { failed_reason_data } from 'shared/components/autocomplete/failed-reason
 import { HIRING_PLATFORM_LABEL } from 'shared/components/autocomplete/hiring-platform-auto-complete'
 import { LEVEL_STATE } from 'shared/components/autocomplete/level-auto-complete'
 import { SEND_TO_LABEL } from 'shared/components/autocomplete/send-to-autocomplete/hooks/useSendTo'
+import { ChipLimit } from 'shared/components/chip-stack'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import {
   CURRENCY_TEXT_LABEL,
@@ -141,6 +143,16 @@ export function renderListItem(text: string) {
   return Array.from(text).join(', ')
 }
 
+export function renderChipItem(text: string) {
+  const chips = Array.from(text);
+
+  return <ChipLimit chips={chips} />
+}
+
+export function renderTextPermissions(text: string) {
+  return t(text)
+}
+
 export function renderYesNo(text: string) {
   const boolean = getLastString(text)
   return boolean.charAt(0).toUpperCase() + boolean.slice(1)
@@ -229,9 +241,9 @@ export const renderLink = (text: string) => {
   )
 }
 
-type ApproveTeam = {name: string, order_id: number}
+type ApproveTeam = { name: string, order_id: number }
 export const renderApprovers = (text: string) => {
-  const approves: ApproveTeam[]= Array.from(JSON.parse(text))
+  const approves: ApproveTeam[] = Array.from(JSON.parse(text))
 
   return (
     <FlexBox flexDirection={'column'} gap={1}>

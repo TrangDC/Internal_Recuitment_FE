@@ -33,7 +33,7 @@ const AuditTrailsList = ({ record_changes }: Props) => {
   const auditTrailsData: Record[] = useMemo(() => {
     return Array.isArray(record_changes) ? record_changes : [record_changes]
   }, [record_changes])
-
+console.log("auditTrailsData", auditTrailsData)
   return (
     <Box>
       {!isEmpty(auditTrailsData) &&

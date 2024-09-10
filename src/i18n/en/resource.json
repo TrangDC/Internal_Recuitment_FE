@@ -80,6 +80,11 @@
   "sub_title_update_record": "What information or note have you updated the record?",
   "add_new_rec_team": "Thêm đội tuyển dụng",
   "model": {
+    "entity_permissions": {
+      "for_all": "Everything",
+      "for_team": "Team Only",
+      "for_owner": "Owned Only"
+    },
     "candidate_notes": {
       "model_name": "Candidate note",
       "name": "Name",
@@ -229,6 +234,10 @@
       }
     },
     "users": {
+      "model_name": "User",
+      "hiring_team": "Hiring team",
+      "roles": "Role",
+      "rec_team": "REC team",
       "validation": {
         "work_email_exist": "Email has already existed",
         "user_is_leader_of_another_rec_team": "This user is being a leader for the current recruitment team. Please try again!"
@@ -284,6 +293,21 @@
       }
     },
     "permisson_groups": {
+      "candidate_activities": {
+        "model_name": "Candidate activities"
+      },
+      "email_templates": {
+        "model_name": "Email templates"
+      },
+      "rec_teams": {
+        "model_name": "REC team"
+      },
+      "job_positions": {
+        "model_name": "Job positions"
+      },
+      "report": {
+        "model_name": "Report"
+      },
       "hiring_teams": {
         "model_name": "Hiring team"
       },

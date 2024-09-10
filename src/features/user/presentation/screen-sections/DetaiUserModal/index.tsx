@@ -12,6 +12,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from 'shared/components/icons/EditIcon'
 import User from 'shared/schema/database/user'
 import useUserDetail from 'features/user/hooks/crud/useUserDetail'
+import HistoryLogSectionsDetail from '../UserHistoryLog'
 interface IDetaiUserModal {
   open: boolean
   setOpen: (value: boolean) => void
@@ -146,6 +147,7 @@ function DetailUserModal({
                 roleTemplate={permissionGroup}
                 isGetting={isGetting}
               />
+                <HistoryLogSectionsDetail userId={id} />
             </FlexBox>
           </BaseModal.ContentMain>
         </BaseModal.Wrapper>
