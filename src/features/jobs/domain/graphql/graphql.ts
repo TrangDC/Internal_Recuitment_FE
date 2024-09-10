@@ -322,6 +322,7 @@ const useGraphql = () => {
     },
     params: {
       input: 'UpdateHiringJobStepInput!',
+      note: 'String!'
     },
   })
 

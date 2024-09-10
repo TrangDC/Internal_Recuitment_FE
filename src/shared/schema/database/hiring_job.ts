@@ -85,6 +85,7 @@ export type UpdateHiringJobStepInput = {
 
 export type UpdateHiringJobStepInputArguments = {
   input: UpdateHiringJobStepInput
+  note: string
 }
 
 export type DeleteHiringJobArguments = {

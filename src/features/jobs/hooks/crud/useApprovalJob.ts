@@ -29,6 +29,7 @@ function useChangeApprovals(props: UseChangeStatusProps) {
     defaultValues: {
       hiring_job_ids: [],
       status: '',
+      note: '',
       ...defaultValue,
     },
     resolver: yupResolver(schemaUpdateStepStatus),
@@ -48,6 +49,7 @@ function useChangeApprovals(props: UseChangeStatusProps) {
           hiring_job_ids: value?.hiring_job_ids,
           status: value?.status as HiringJobStatusStep,
         },
+       note: value?.note ?? '',
       }
       mutate(payload)
     })()

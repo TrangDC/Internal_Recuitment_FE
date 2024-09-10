@@ -1,6 +1,7 @@
 import { Box, styled } from '@mui/material'
 import dayjs from 'dayjs'
 import ChipCandidate from 'shared/class/candidate/components/ChipCandidate'
+import { JobStatus } from 'shared/class/job-status'
 import ChipJob from 'shared/class/job-status/components/ChipJob'
 import {
   TYPE_PRIORITY_STATUS,
@@ -17,6 +18,7 @@ import {
 import { EVENT_EMAIL } from 'shared/components/autocomplete/event-email-autocomplete'
 import { failed_reason_data } from 'shared/components/autocomplete/failed-reason-auto-complete'
 import { HIRING_PLATFORM_LABEL } from 'shared/components/autocomplete/hiring-platform-auto-complete'
+import { LEVEL_STATE } from 'shared/components/autocomplete/level-auto-complete'
 import { SEND_TO_LABEL } from 'shared/components/autocomplete/send-to-autocomplete/hooks/useSendTo'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import {
@@ -67,6 +69,13 @@ export function renderStatusHiringJob(text: string) {
   return <ChipJob status={status as HiringJobStatus} />
 }
 
+const { STATUS_HIRING_JOB_STEP } = JobStatus;
+type TYPE_STATUS_HIRING_JOB_STEP = keyof typeof STATUS_HIRING_JOB_STEP
+export function renderStatusHiringJobStep(text: string) {
+  const status = getLastString(text)
+  return STATUS_HIRING_JOB_STEP?.[status as TYPE_STATUS_HIRING_JOB_STEP]?.label;
+}
+
 export function renderStatusCandidateJob(text: string) {
   const status = getLastString(text)
   return <ChipCandidate status={status as CandidateStatusEnum} />
@@ -77,6 +86,12 @@ export function renderPriority(text: string) {
   const value_status = getPriorityByStatus(status)
 
   return <ChipPriority status={value_status as TYPE_PRIORITY_STATUS} />
+}
+
+type TYPE_LEVEL = keyof typeof LEVEL_STATE
+export function renderLevel(text: string) {
+  const status = getLastString(text);
+  return LEVEL_STATE?.[status as TYPE_LEVEL]?.label;
 }
 
 type TYPE_SALARY_TYPE = keyof typeof SALARY_TYPE_TEXT

@@ -1,5 +1,5 @@
 import { renderValueReturn } from '.'
-import { renderCurrencyEN, renderCurrencyEnum, renderDescription, renderListItem, renderLocation, renderPriority, renderSalaryByType, renderStatusHiringJob, renderText } from '../helper'
+import { renderCurrencyEN, renderCurrencyEnum, renderDescription, renderLevel, renderListItem, renderLocation, renderPriority, renderSalaryByType, renderStatusHiringJob, renderText } from '../helper'
 
 enum Field {
   DESCRIPTION = 'description',
@@ -11,6 +11,7 @@ enum Field {
   SALARY_TYPE = 'salary_type',
   LOCATION = 'location',
   SKILLS = 'skills',
+  LEVEL = 'level'
 }
 
 const audit_trails_hiring_job: Record<Field, renderValueReturn> = {
@@ -23,6 +24,7 @@ const audit_trails_hiring_job: Record<Field, renderValueReturn> = {
   [Field.SALARY_TYPE]: renderSalaryByType,
   [Field.LOCATION]: renderLocation,
   [Field.SKILLS]: renderListItem,
+  [Field.LEVEL]: renderLevel
 }
 export function renderFieldHiringJob(field: string): renderValueReturn {
   return audit_trails_hiring_job[field as Field] ?? renderText

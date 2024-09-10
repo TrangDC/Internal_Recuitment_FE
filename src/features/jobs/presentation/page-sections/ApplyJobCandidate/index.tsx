@@ -23,7 +23,6 @@ import CandidateJob from 'shared/schema/database/candidate_job'
 import LevelAutoComplete from 'shared/components/autocomplete/level-auto-complete'
 import useValidProcessingCandidate from 'features/candidatejob/hooks/crud/useValidProcessingCandidate'
 import usePopup from 'contexts/popupProvider/hooks/usePopup'
-import RecTeamsAutoComplete from 'shared/components/autocomplete/rec-team-auto-complete'
 import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
 
 interface IApplyJobModal {
