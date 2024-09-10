@@ -109,7 +109,7 @@ export const columns_opening = (
     }),
     columnHelper.accessor((row) => row.amount, {
       id: 'amount',
-      header: () => <span>Staff needed</span>,
+      header: () => <span>Quantity</span>,
       cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
       size: 150,
     }),
@@ -250,7 +250,7 @@ export const columns_pending_approvals = (
     }),
     columnHelper.accessor((row) => row.amount, {
       id: 'amount',
-      header: () => <span>Staff needed</span>,
+      header: () => <span>Quantity</span>,
       cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
       size: 150,
     }),
@@ -420,7 +420,7 @@ export const columnsApproval = (
     }),
     columnHelper.accessor((row) => row.amount, {
       id: 'amount',
-      header: () => <span>Staff needed</span>,
+      header: () => <span>Quantity</span>,
       cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
       size: 150,
     }),
@@ -609,7 +609,7 @@ export const columns = (
     }),
     columnHelper.accessor((row) => row.amount, {
       id: 'amount',
-      header: () => <span>Staff needed</span>,
+      header: () => <span>Quantity</span>,
       cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
       size: 150,
     }),
@@ -740,7 +740,7 @@ export const columns_rejected_approvals = (
     }),
     columnHelper.accessor((row) => row.amount, {
       id: 'amount',
-      header: () => <span>Staff needed</span>,
+      header: () => <span>Quantity</span>,
       cell: (info) => <StyleTinyText>{info.getValue()}</StyleTinyText>,
       size: 150,
     }),

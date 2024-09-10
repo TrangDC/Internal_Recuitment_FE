@@ -5,14 +5,12 @@ import { H3, Text13md, Text13sb, Tiny12md } from 'shared/components/Typography'
 import { format } from 'date-fns'
 import Cake from 'shared/components/icons/Cake'
 import Address from 'shared/components/icons/Address'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ChipLimit } from 'shared/components/chip-stack'
 import { CANDIDATE_SOURCE_LABEL } from 'shared/components/autocomplete/candidate-source-auto-complete'
 import { renderReferenceValueByType } from 'features/auditTrails/presentation/providers/helper'
 import dayjs from 'dayjs'
 import ShowFile from 'shared/components/input-fields/ItemFile'
-import DownloadIcon from 'shared/components/icons/DownloadIcon'
-import { downloadOneFile } from 'features/candidatejob/shared/helper'
 import useGetUrlGetAttachment from 'shared/hooks/graphql/useGetUrlAttachment'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
 import DescriptionIcon from '@mui/icons-material/Description'
@@ -25,6 +23,9 @@ import CreateCandidateNoteModal from '../CreateCandidateNoteModal'
 import CreateHistoryCallModal from '../CreateHistoryCallModal'
 import AvatarUpload from 'shared/components/upload/AvatarUpload'
 import Cant from 'features/authorization/presentation/components/Cant'
+import ViewIcon from 'shared/components/icons/View'
+import { isRight, unwrapEither } from 'shared/utils/handleEither'
+import { openPDFInNewTab } from 'shared/utils/upload-file'
 
 const CandidateProfile = () => {
   const { candidateInfor, avatar } = useCandidateInforContext()
@@ -32,6 +33,28 @@ const CandidateProfile = () => {
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
   const [open, setOpen] = useState(false)
   const [openHistoryCall, setOpenHistoryCall] = useState(false)
+  const [url, setUrl] = useState('')
+
+  useEffect(() => {
+    if (
+      Array.isArray(attachments) &&
+      attachments[0]?.document_name &&
+      attachments[0]?.document_id
+    ) {
+      handleGetUrlDownload({
+        action: 'DOWNLOAD',
+        fileName: attachments[0]?.document_name ?? '',
+        folder: 'candidate',
+        id: attachments[0]?.document_id ?? '',
+      }).then((data) => {
+        if (isRight(data)) {
+          const urlFile =
+            unwrapEither(data)?.['CreateAttachmentSASURL']?.url ?? ''
+          setUrl(urlFile)
+        }
+      })
+    }
+  }, [attachments])
 
   const [showMore, setShowMore] = useState(false)
   const candidate_skills = useMemo(() => {
@@ -39,8 +62,8 @@ const CandidateProfile = () => {
     const skill_types = candidateInfor.entity_skill_types
     return skill_types
       ? skill_types.flatMap((type) => {
-          return type.entity_skills.map((skill) => skill.name)
-        })
+        return type.entity_skills.map((skill) => skill.name)
+      })
       : []
   }, [candidateInfor])
   const MAX_LENGTH = 30
@@ -287,11 +310,9 @@ const CandidateProfile = () => {
                 <ShowFile
                   name={item.document_name}
                   onClick={() => {
-                    if (item) {
-                      downloadOneFile(item, handleGetUrlDownload)
-                    }
+                    if (url) openPDFInNewTab(url)
                   }}
-                  IconEnd={<DownloadIcon />}
+                  IconEnd={<ViewIcon />}
                 />
               </Box>
             ))}

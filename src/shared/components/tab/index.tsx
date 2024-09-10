@@ -94,6 +94,7 @@ interface TabProps {
   tabWrapperSx?: SxProps
   tabPanelSx?: SxProps
   boxSx?: SxProps
+  endPanel?: React.ReactNode
 }
 
 const TabCustomize = ({
@@ -102,6 +103,7 @@ const TabCustomize = ({
   tabWrapperSx,
   boxSx,
   tabPanelSx,
+  endPanel
 }: TabProps) => {
   const [value, setValue] = useState<string>('0')
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -138,6 +140,7 @@ const TabCustomize = ({
               )
             })}
           </TabListWrapper>
+          {endPanel}
         </Box>
         <Box sx={{ width: '100%' }}>
           {renderItem.map((item, index) => {

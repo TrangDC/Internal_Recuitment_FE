@@ -112,7 +112,7 @@ const JobOverview = () => {
                     flexDirection={'column'}
                   >
                     <FlexBox gap={0.5} alignItems={'center'}>
-                      <SpanText>Staff needed</SpanText>
+                      <SpanText>Quantity</SpanText>
                       <TooltipComponent
                         title={t('tooltip.job_request.staff_needed')}
                       >
