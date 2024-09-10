@@ -122,7 +122,7 @@ function JobInformation() {
                   <Tiny12md color={'text.500'} marginBottom={1}>
                     Skills needed
                   </Tiny12md>
-                  <FlexBox>
+                  <FlexBox flexWrap={'wrap'} rowGap={1}>
                     {job_skills.map((skills) => (
                       <ChipSkill label={skills} />
                     ))}

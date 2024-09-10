@@ -7,6 +7,13 @@ const STATUS_HIRING_JOB = {
   CANCELLED: 'cancelled',
 }
 
+const STATUS_HIRING_JOB_STEP = {
+  waiting: {label: 'Waiting', value: 'waiting'},
+  pending: {label: 'Pending', value: 'pending'},
+  accepted: {label: 'Accepted', value: 'accepted'},
+  rejected: {label: 'Rejected', value: 'rejected'},
+}
+
 const STATUS_STYLE = {
   [STATUS_HIRING_JOB.PENDING_APPROVALS]: {
     backgroundColor: '#FFAF46',
@@ -33,6 +40,7 @@ const STATUS_STYLE = {
 export class JobStatus {
   static STATUS_HIRING_JOB = STATUS_HIRING_JOB
   static STATUS_STYLE = STATUS_STYLE
+  static STATUS_HIRING_JOB_STEP = STATUS_HIRING_JOB_STEP
 
   static getDataByStatus(status: HiringJobStatus) {
     return this.STATUS_STYLE[status]

@@ -32,7 +32,6 @@ function EditCandidateJobModal({
     control,
     formState,
     getValues,
-    resetField,
   } = useEditJobApplication({
     id: candidateId,
     onSuccess(data) {

@@ -10,6 +10,7 @@ import { renderFieldCandidateJobFeedback } from './candidate-job-feedback'
 import { renderFieldCandidateInterview } from './candidate-job-interview'
 import { renderFieldHiringJob } from './hiring-job'
 import { renderFieldCandidateJob } from './candidate-job'
+import { renderFieldHiringJobStep } from './hiring-job-steps'
 
 export type renderValueReturn = (text: string, records: BaseRecord) => any
 
@@ -27,6 +28,7 @@ const audit_trails_by_model = {
   candidate_interviews: renderFieldCandidateInterview,
   email_templates: renderFieldEmailTemplate,
   hiring_teams: renderFieldTeam,
+  hiring_job_steps: renderFieldHiringJobStep
 }
 
 const show_field_by_model = {
@@ -42,6 +44,7 @@ export const renderTextRecord = (
   records: BaseRecord
 ): renderTextRecordReturn => {
   const [path, model, field] = convertStringToArray(field_string)
+ 
   let renderValue: renderValueReturn = audit_trails_by_model?.[model as TYPE_AUDIT_MODEL]?.(field) ?? renderText
   const record_value = renderValue(recordString, records)
   const show_value = show_field_by_model?.[model as TYPE_SHOW_FIELD_BY_MODEL]?.(field) ?? true;

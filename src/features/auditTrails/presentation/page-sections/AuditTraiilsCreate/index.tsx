@@ -11,12 +11,15 @@ import { TinyText } from 'shared/components/form/styles'
 import { renderTextRecord } from '../../providers/functions'
 import { getLastString } from 'shared/utils/convert-string'
 import { Tiny } from 'shared/components/Typography'
+import { Fragment } from 'react/jsx-runtime'
 
+
+type FieldValue = {
+  field: string
+  value: string
+}
 interface Props {
-  data: {
-    field: string
-    value: string
-  }[]
+  data: FieldValue[]
   type: 'Create' | 'Update' | 'Delete'
   module: string
 }
@@ -26,33 +29,47 @@ const AuditTrailsCreate = ({ data, type, module }: Props) => {
 
   return (
     <DateFieldBody>
-      <FlexBox flexDirection={'column'} gap={'8px'}>
+      <FlexBox flexDirection={'column'} gap={1}>
         <FlexBox alignItems={'flex-start'} flexDirection={'column'}>
-          <Tiny sx={{textDecoration: 'underline'}}>{t(module)}</Tiny>
+          <Tiny sx={{ textDecoration: 'underline' }}>{t(module)}</Tiny>
           <StyleChip label={type} sx={{ backgroundColor: '#ffaf46' }} />
         </FlexBox>
-        <FlexBox flexDirection={'column'} gap={'8px'}>
+        <FlexBox flexDirection={'column'} gap={1}>
           {data.map((item, idx) => {
-            const isDescription =  getLastString(item.field) === 'description'
-            const { record_value, show_value } = renderTextRecord(item.field, item.value, data)
+            if (Array.isArray(item)) {
+              return item.map((subItem, idxSub) => {
+                return <Fragment key={idxSub}>{ViewValue({ item: subItem, data: item })}</Fragment>
+              })
+            }
 
-            if(!show_value) return;
-
-            return (
-              <FieldRecord key={idx} sx={{
-                order: isDescription ? 99 : 'inherit'
-              }}>
-                <TinyText >{t(item.field)}: </TinyText>
-                <DateFieldDivison>
-                  <ArrowForwardIcon sx={{ color: '#2499EF !important' }}/>
-                  <TinyText>{record_value}</TinyText>
-                </DateFieldDivison>
-              </FieldRecord>
-            )
+            return <Fragment key={idx}>
+              {ViewValue({ item, data })}
+            </Fragment>
           })}
         </FlexBox>
       </FlexBox>
     </DateFieldBody>
+  )
+}
+
+const ViewValue = ({ item, data }: { item: FieldValue, data: FieldValue[] }) => {
+  const { t } = useTranslation()
+
+  const isDescription = typeof item.field === 'string' ? getLastString(item.field) === 'description' : false;
+  const { record_value, show_value } = renderTextRecord(item.field, item.value, data)
+
+  if (!show_value) return;
+
+  return (
+    <FieldRecord sx={{
+      order: isDescription ? 99 : 'inherit'
+    }}>
+      <TinyText >{t(item.field)}: </TinyText>
+      <DateFieldDivison>
+        <ArrowForwardIcon sx={{ color: '#2499EF !important' }} />
+        <TinyText>{record_value}</TinyText>
+      </DateFieldDivison>
+    </FieldRecord>
   )
 }
 

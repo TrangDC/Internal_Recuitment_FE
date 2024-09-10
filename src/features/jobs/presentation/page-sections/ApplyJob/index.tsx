@@ -48,7 +48,6 @@ function ApplyJobModalDetail({
     formState,
     getValues,
     trigger,
-    resetField,
   } = useApplyToJobDetail({
     callbackSuccess: (data) => {
       setOpen(false)

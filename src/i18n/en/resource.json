@@ -139,6 +139,11 @@
       "status": "Status",
       "send_to": "Send to"
     },
+    "hiring_job_steps": {
+      "model_name": "Approval process",
+      "user": "Approve",
+      "status": "Status"
+    },
     "hiring_jobs": {
       "skills": "Skill",
       "model_name": "Job",
@@ -155,6 +160,9 @@
       "currency": "Unit",
       "priority": "Priority",
       "job_position": "Job position",
+      "level": "Staff level",
+      "rec_team": "REC team",
+      "rec_in_charge": "REC in charge",
       "validation": {
         "amount_neq_zero": "Number of staff required must be greater than 0",
         "name_exist": "Job name has already existed",
