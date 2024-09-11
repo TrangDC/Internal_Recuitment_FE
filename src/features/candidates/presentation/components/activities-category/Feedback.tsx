@@ -22,7 +22,7 @@ type FeedbackProps = {
 }
 
 function Feedback({ candidateJobFeedback }: FeedbackProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
   return (
     <FlexBox
@@ -40,8 +40,10 @@ function Feedback({ candidateJobFeedback }: FeedbackProps) {
         marginBottom={1}
         width={'100%'}
       >
-        <FlexBox alignItems={'center'} onClick={() => setOpen((prev) => !prev)}>
-          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        <FlexBox alignItems={'center'}
+        //  onClick={() => setOpen((prev) => !prev)}
+         >
+          {/* {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />} */}
           <FlexBox gap={1}>
             <Text13sb marginLeft={1}>Feedback</Text13sb>
             <Link
@@ -62,11 +64,11 @@ function Feedback({ candidateJobFeedback }: FeedbackProps) {
           {dayjs(candidateJobFeedback.created_at).format('DD/MM/YYYY, HH:mm')}
         </Tiny12md>
       </FlexBox>
-      <FlexBox flexDirection={'column'} marginLeft={4}>
+      <FlexBox flexDirection={'column'} marginLeft={1}>
         <Text13md>{candidateJobFeedback.feedback}</Text13md>
       </FlexBox>
       <Collapse in={open} unmountOnExit>
-        <FlexBox marginLeft={4} gap={1}>
+        <FlexBox marginLeft={1} gap={1}>
           {candidateJobFeedback.attachments.map((i) => (
             <ShowFile
               key={i.id}

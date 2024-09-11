@@ -25,7 +25,7 @@ type NodeProps = {
 }
 
 function Note({ candidateNote, actions }: NodeProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
   const { role, user } = useAuthorization()
   const removeHistoryLog = candidateNote.edited
@@ -53,8 +53,10 @@ function Note({ candidateNote, actions }: NodeProps) {
         marginBottom={1}
         width={'100%'}
       >
-        <FlexBox alignItems={'center'} onClick={() => setOpen((prev) => !prev)}>
-          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        <FlexBox alignItems={'center'}
+        //  onClick={() => setOpen((prev) => !prev)}
+         >
+          {/* {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />} */}
           <FlexBox gap={1} alignItems={'center'}>
             <Text13sb marginLeft={1}>{candidateNote.name}</Text13sb>
             <Tiny12md color={'grey.500'}>Created by</Tiny12md>
@@ -79,14 +81,14 @@ function Note({ candidateNote, actions }: NodeProps) {
           />
         </FlexBox>
       </FlexBox>
-      <FlexBox flexDirection={'column'} gap={1} marginLeft={4}>
+      <FlexBox flexDirection={'column'} gap={1} marginLeft={1}>
         <FlexBox flexDirection={'column'}>
           <Tiny12md color={'grey.500'}>Description</Tiny12md>
           <Text13sb>{candidateNote.description}</Text13sb>
         </FlexBox>
       </FlexBox>
       <Collapse in={open} unmountOnExit>
-        <FlexBox flexWrap={'wrap'} gap={'10px'} marginLeft={4} marginTop={1}>
+        <FlexBox flexWrap={'wrap'} gap={'10px'} marginLeft={1} marginTop={1}>
           {candidateNote.attachments.map((a) => (
             <ShowFile
               key={a.id}

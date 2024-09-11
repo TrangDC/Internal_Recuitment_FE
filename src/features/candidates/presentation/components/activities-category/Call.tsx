@@ -2,8 +2,6 @@ import { Collapse } from '@mui/material'
 import { useState } from 'react'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Text13sb, Tiny12md } from 'shared/components/Typography'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import ShowFile from 'shared/components/input-fields/ItemFile'
 import DownloadIcon from 'shared/components/icons/DownloadIcon'
 import { CandidateHistoryCall } from 'shared/schema/database/candidate_history_calls'
@@ -26,7 +24,7 @@ type CallProps = {
 }
 
 function Call({ candidateHistoryCall, actions }: CallProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const { role, user } = useAuthorization()
   const { handleGetUrlDownload } = useGetUrlGetAttachment()
   const date = dayjs(candidateHistoryCall.date).format('DD/MM/YYYY')
@@ -62,8 +60,10 @@ function Call({ candidateHistoryCall, actions }: CallProps) {
         marginBottom={1}
         width={'100%'}
       >
-        <FlexBox alignItems={'center'} onClick={() => setOpen((prev) => !prev)}>
-          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        <FlexBox alignItems={'center'} 
+        // onClick={() => setOpen((prev) => !prev)}
+        >
+          {/* {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />} */}
           <FlexBox gap={1} alignItems={'center'}>
             <Text13sb marginLeft={1}>{candidateHistoryCall.name}</Text13sb>
             <Tiny12md color={'grey.500'}>Created by</Tiny12md>
@@ -88,7 +88,7 @@ function Call({ candidateHistoryCall, actions }: CallProps) {
           />
         </FlexBox>
       </FlexBox>
-      <FlexBox gap={3} marginLeft={4}>
+      <FlexBox gap={3} marginLeft={1}>
         <FlexBox flexDirection={'column'}>
           <Tiny12md color={'grey.500'}>Contact time</Tiny12md>
           <Text13sb>{dateLabel}</Text13sb>
@@ -107,7 +107,7 @@ function Call({ candidateHistoryCall, actions }: CallProps) {
         )} */}
       </FlexBox>
       <Collapse in={open} unmountOnExit>
-        <FlexBox marginLeft={4} marginTop={1} flexDirection={'column'} gap={1}>
+        <FlexBox marginLeft={1} marginTop={1} flexDirection={'column'} gap={1}>
           <FlexBox flexDirection={'column'}>
             <Tiny12md color={'grey.500'}>Description</Tiny12md>
             <Text13sb>{candidateHistoryCall.description}</Text13sb>
