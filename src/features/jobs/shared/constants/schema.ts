@@ -165,14 +165,14 @@ export const schemaApplyJob = yup.object({
       'Onboard date must be after  Offer expiration date',
       function (value) {
         const { onboard_date } = this.parent
-        if (!onboard_date) return true
+        if (!onboard_date || !value) return true
         return dayjs(value).isBefore(dayjs(onboard_date))
       }
     )
-    .when(['status'], ([status], schema) => {
-      if (status !== application_data.offering.value) return schema
-      return schema.required(RULE_MESSAGES.MC1('Offer expiration date'))
-    })
+    // .when(['status'], ([status], schema) => {
+    //   if (status !== application_data.offering.value) return schema
+    //   return schema.required(RULE_MESSAGES.MC1('Offer expiration date'))
+    // })
     .nullable(),
   onboard_date: yup
     .date()
@@ -181,10 +181,10 @@ export const schemaApplyJob = yup.object({
       dayjs().startOf('day').toDate(),
       'Onboard date must be after or equal current date'
     )
-    .when(['status'], ([status], schema) => {
-      if (status !== application_data.offering.value) return schema
-      return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
-    })
+    // .when(['status'], ([status], schema) => {
+    //   if (status !== application_data.offering.value) return schema
+    //   return schema.required(RULE_MESSAGES.MC1('Candidate onboard date'))
+    // })
     .nullable(),
   level: yup
     .string()

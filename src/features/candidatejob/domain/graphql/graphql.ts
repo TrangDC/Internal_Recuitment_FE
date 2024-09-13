@@ -568,8 +568,8 @@ const useGraphql = () => {
     },
   })
 
-  const updateCandidateJobAttachment = GraphQLClientService.buildQuery({
-    operation: 'UpdateCandidateJobAttachment',
+  const updateCandidateJob = GraphQLClientService.buildQuery({
+    operation: 'UpdateCandidateJob',
     options: {
       type: 'mutation',
     },
@@ -580,7 +580,7 @@ const useGraphql = () => {
     `,
     params: {
       id: 'ID!',
-      input: 'UpdateCandidateAttachment!',
+      input: 'UpdateCandidateJobInput!',
       note: 'String',
     },
   })
@@ -606,7 +606,7 @@ const useGraphql = () => {
     getCandidateJob,
     getCandidateJobInterview,
     deleteCandidateJob,
-    updateCandidateJobAttachment,
+    updateCandidateJob,
     validProcessingCandidateJobExistByCandidateID,
   }
 }

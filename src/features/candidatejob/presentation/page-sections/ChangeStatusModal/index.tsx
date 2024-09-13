@@ -237,7 +237,6 @@ function ChangeStatusModal({
                           textFieldProps={{
                             fullWidth: true,
                             size: 'small',
-                            required: true,
                           }}
                         />
                         <HelperTextForm
@@ -265,7 +264,6 @@ function ChangeStatusModal({
                           textFieldProps={{
                             fullWidth: true,
                             size: 'small',
-                            required: true,
                           }}
                         />
                         <HelperTextForm

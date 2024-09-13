@@ -260,7 +260,6 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                         textFieldProps={{
                           fullWidth: true,
                           size: 'small',
-                          required: true,
                         }}
                       />
                       <HelperTextForm
@@ -288,7 +287,6 @@ function ApplyJobModal({ open, setOpen, onSuccess }: IApplyJobModal) {
                         textFieldProps={{
                           fullWidth: true,
                           size: 'small',
-                          required: true,
                         }}
                       />
                       <HelperTextForm

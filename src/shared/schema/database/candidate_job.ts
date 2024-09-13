@@ -107,6 +107,8 @@ export type UpdateCandidateJobAttachmentArguments = {
 export type UpdateCandidateAttachment = {
   attachments: Attachments[]
   rec_in_charge_id: string
+  onboard_date: string | null
+  offer_expiration_date: string | null
 }
 
 export default CandidateJob
