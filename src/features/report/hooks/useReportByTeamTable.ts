@@ -13,6 +13,7 @@ function useReportByTeamTable() {
       direction: 'ASC',
       field: 'hiring_team_name',
     },
+    perPage: 100,
   })
 
   const sortData: CandidateConversionRateReport2[] = useTableReturn.sortData

@@ -27,6 +27,7 @@ import TablePagination from './components/TablePagination'
 interface ICustomTable<T> {
   columns: ColumnDef<T, any>[]
   useTableReturn: IuseCustomTableReturn
+  showPagination?: boolean
 }
 
 declare module '@tanstack/react-table' {
@@ -52,7 +53,7 @@ const DivHeader = styled('div')(({ theme }) => ({
 }))
 
 const CustomTable = <T extends object>(props: ICustomTable<T>) => {
-  const { columns, useTableReturn } = props
+  const { columns, useTableReturn, showPagination = true } = props
   const { handleSorTable } = useTableReturn
 
   const {
@@ -196,7 +197,7 @@ const CustomTable = <T extends object>(props: ICustomTable<T>) => {
           </Table>
         </Scrollbar>
       </TableContainer>
-      {sortData.length > 0 && (
+      {sortData.length > 0 && showPagination && (
         <TablePagination
           totalPage={totalPage}
           pagination={pagination}

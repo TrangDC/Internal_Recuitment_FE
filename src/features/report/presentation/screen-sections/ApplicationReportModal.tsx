@@ -7,6 +7,9 @@ import { Span, Tiny12md } from 'shared/components/Typography'
 import Processing from '../charts/ProcessingReport'
 import { ReportFilter } from 'shared/schema/chart/report'
 import FlexBox from 'shared/components/flexbox/FlexBox'
+import { BtnPrimary } from 'shared/styles'
+import DownloadIcon from 'shared/components/icons/DownloadIcon'
+import { useCallback, useRef } from 'react'
 
 interface ApplicationReportPopupProps {
   open: boolean
@@ -19,20 +22,33 @@ interface ApplicationReportPopupProps {
   }
 }
 
+export interface ProcessingRef {
+  onExport: () => void;
+}
+
 function ApplicationReportModal(props: ApplicationReportPopupProps) {
   const { open, setOpen, filters, labelBy, teamSelected } = props
-  
+  const reportRef = useRef<ProcessingRef | null>(null);
+
   const renderItem = [
     {
       label: 'Processing',
-      Component: () => <Processing filters={filters} />,
+      Component: () => <Processing filters={filters} ref={reportRef}/>,
     },
-    { label: 'Failed', Component: () => <Failed filters={filters} /> },
+    { label: 'Failed', Component: () => <Failed filters={filters} ref={reportRef}/> },
     {
       label: 'Hired',
-      Component: () => <OfferedLost filters={filters} />,
+      Component: () => <OfferedLost filters={filters} ref={reportRef}/>,
     },
   ]
+
+  const onExport = useCallback(() => {
+    if(reportRef.current?.onExport) {
+      return reportRef.current?.onExport();
+    }
+
+    return {}
+  }, [reportRef.current])
 
   return (
     <BaseModal.Wrapper open={open} setOpen={setOpen} >
@@ -48,12 +64,12 @@ function ApplicationReportModal(props: ApplicationReportPopupProps) {
         >
           <TabCustomize renderItem={renderItem} />
           <FlexBox position={'absolute'} top={30} right={16} gap={1.25} alignItems={'center'}>
-           <FlexBox alignItems={'center'} gap={0.5}>
-           <Tiny12md color={'#4D607A'}>
-              Hiring team
-            </Tiny12md>
-            <Span sx={{fontSize: '13px', color: '#0B0E1E', fontWeight: 600}}>{teamSelected?.title}</Span>
-           </FlexBox>
+            <FlexBox alignItems={'center'} gap={0.5}>
+              <Tiny12md color={'#4D607A'}>
+                Hiring team
+              </Tiny12md>
+              <Span sx={{ fontSize: '13px', color: '#0B0E1E', fontWeight: 600 }}>{teamSelected?.title}</Span>
+            </FlexBox>
             <Span height={'20px'} overflow={'hidden'}> | </Span>
             <Tiny12md color={'#4D607A'}>
               {labelBy}
@@ -61,6 +77,13 @@ function ApplicationReportModal(props: ApplicationReportPopupProps) {
           </FlexBox>
         </Box>
       </BaseModal.ContentMain>
+      <BaseModal.Footer>
+        <BtnPrimary
+        onClick={() => onExport()}
+        >
+          <DownloadIcon sx={{ color: '#1F84EB', fontSize: '15px' }} /><Span>Export</Span>
+        </BtnPrimary>
+      </BaseModal.Footer>
     </BaseModal.Wrapper>
   )
 }
