@@ -1,5 +1,6 @@
 import { Box, FormControl } from '@mui/material'
 import useCreateJob from 'features/jobs/hooks/crud/useCreateJob'
+import CreateSelectionMemberPermission from 'features/jobs/permission/components/CreateSelectionMemberPermission'
 import CreateSelectionTeamPermission from 'features/jobs/permission/components/CreateSelectionTeamPermission'
 import { SALARY_RENDER } from 'features/jobs/shared/constants'
 import { FormDataSchema } from 'features/jobs/shared/constants/schema'
@@ -253,20 +254,11 @@ const AddNewJob = () => {
                     name="created_by"
                     render={({ field, fieldState }) => (
                       <Fragment>
-                        <MemberAutoComplete
-                          name={field.name}
-                          value={field.value}
+                        <CreateSelectionMemberPermission name={field.name}
+                          value={field?.value ?? ''}
                           onChange={(value) => {
                             field.onChange(value ?? '')
-                          }}
-                          multiple={false}
-                          disabled={true}
-                          textFieldProps={{
-                            required: true,
-                            label: 'Requester',
-                            disabled: true,
-                          }}
-                        />
+                          }} />
                         <HelperTextForm
                           message={fieldState.error?.message}
                         ></HelperTextForm>

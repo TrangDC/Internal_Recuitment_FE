@@ -3,7 +3,7 @@ import { GenerateAction } from '.'
 export const CANDIDATE_JOB_ACTIONS = {
   VIEW: 'GetCandidateJob,GetAllCandidateJobs,GetCandidateJobGroupByStatus,GetCandidateJobGroupByInterview',
   CREATE: 'CreateCandidateJob',
-  EDIT: 'UpdateCandidateJobAttachment',
+  EDIT: 'UpdateCandidateJob',
   DELETE: 'DeleteCandidateJob',
   CHANGE_STATUS: 'UpdateCandidateJobStatus',
 }

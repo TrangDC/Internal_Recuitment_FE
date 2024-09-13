@@ -1,5 +1,6 @@
 import { Box, FormControl } from '@mui/material'
 import useUpdateJob from 'features/jobs/hooks/crud/useEditJob'
+import CreateSelectionMemberPermission from 'features/jobs/permission/components/CreateSelectionMemberPermission'
 import CreateSelectionTeamPermission from 'features/jobs/permission/components/CreateSelectionTeamPermission'
 import { SALARY_RENDER } from 'features/jobs/shared/constants'
 import { FormDataSchema } from 'features/jobs/shared/constants/schema'
@@ -272,19 +273,11 @@ const EditJobRequest = () => {
                     name="created_by"
                     render={({ field, fieldState }) => (
                       <Fragment>
-                        <MemberAutoComplete
-                          name={field.name}
-                          value={field.value}
+                        <CreateSelectionMemberPermission name={field.name}
+                          value={field?.value ?? ''}
                           onChange={(value) => {
                             field.onChange(value ?? '')
-                          }}
-                          disabled
-                          multiple={false}
-                          textFieldProps={{
-                            required: true,
-                            label: 'Requester',
-                          }}
-                        />
+                          }} />
                         <HelperTextForm
                           message={fieldState.error?.message}
                         ></HelperTextForm>

@@ -125,6 +125,7 @@ function useUpdateJob(props: UseEditJobProps) {
           rec_team_id: value?.rec_team_id,
           note: value?.note ?? '',
           rec_in_charge_id: value?.rec_in_charge_id,
+          created_by: value?.created_by ?? '',
         },
         note: note,
       }

@@ -121,7 +121,7 @@ export type UpdateHiringJobInput = {
   salary_to: number
   hiring_team_id: string
   currency: string
-  // created_by: string
+  created_by: string
   description: string
   priority: number
   entity_skill_records: EntitySkillRecordInput[]
