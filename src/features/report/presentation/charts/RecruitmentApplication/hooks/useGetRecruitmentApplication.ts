@@ -11,7 +11,8 @@ import { ReportApplication } from 'shared/schema/chart/aplication_column_bar_cha
 const applicationLabels = {
   ex_staff: 'Ex-staff',
   offer_lost: 'Offered lost',
-  kiv: 'KIV',
+  failed_interview: 'Failed Interview',
+  failed_cv: 'Failed CV',
   hired: 'Hired',
   offering: 'Offering',
   interviewing: 'Interviewing',
@@ -48,7 +49,7 @@ function useGetRecruitmentApplication({
   const seriesData = Object.keys(applicationLabels).reduce((acc, key) => {
     return _.set(acc, key, [])
   }, {} as any)
-
+// console.log("seriesData", seriesData)
   applicationReport.forEach((node) => {
     Object.keys(seriesData).forEach((key) => {
       const count = _.get(node, key, 0)
@@ -73,11 +74,12 @@ function useGetRecruitmentApplication({
     const ex_staff = current?.ex_staff ?? 0
     const hired = current?.hired ?? 0
     const interviewing = current?.interviewing ?? 0
-    const kiv = current?.kiv ?? 0
+    const failed_cv = current?.failed_cv ?? 0;
+    const failed_interview = current?.failed_interview ?? 0;
     const offer_lost = current?.offer_lost ?? 0
     const offering = current?.offering ?? 0
     const total =
-      applied + ex_staff + hired + interviewing + kiv + offer_lost + offering
+      applied + ex_staff + hired + interviewing + failed_cv + failed_interview + offer_lost + offering
     return acc + total
   }, 0)
 

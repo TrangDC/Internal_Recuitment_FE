@@ -40,4 +40,8 @@ export enum MODLUE_QUERY_KEY {
   CANDIDATE_ACTIVITY = 'candidate_activity',
   CANDIDATE_EMAIL = 'candidate_email',
   COUNT_JOB = 'count_job',
+  //report
+  REPORT_APPLICATION_FAILED = 'report_application_failed',
+  REPORT_APPLICATION_PROCESSING = 'report_application_processing',
+  REPORT_APPLICATION_HIRED = 'report_application_hired'
 }

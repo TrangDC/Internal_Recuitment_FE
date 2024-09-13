@@ -231,7 +231,6 @@ const JobOverview = () => {
                 />
                 <Link
                   to={`/dashboard/job-detail/${jobDetail?.id}`}
-                  target="_blank"
                 >
                   <BtnPrimary>
                     <Span>View Details</Span>

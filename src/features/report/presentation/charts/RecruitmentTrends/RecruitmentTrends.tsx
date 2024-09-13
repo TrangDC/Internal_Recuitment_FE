@@ -59,6 +59,7 @@ function RecruitmentTrends() {
 
   const { options } = useRecruitmentTrendsOptions({
     categories,
+    totalCandidate: totalCandidate,
   })
 
   function selectedType(value: ReportFilterPeriod) {

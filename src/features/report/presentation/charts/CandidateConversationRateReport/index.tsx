@@ -11,7 +11,8 @@ import { ReportFilterPeriod } from 'shared/schema/chart/report'
 import { handleFormatFilters } from 'features/report/shared/utils/utils'
 import CandidateConversionRateReportModal from '../../screen-sections/CandidateConversionRateReportModal'
 import { handleFormatLabelDate } from '../../components/date/range-date/utils'
-
+import Chart from 'react-apexcharts'
+import useCandidateConversationReportOptions from './hooks/useCandidateConversationRateReportOption'
 export interface CandidateConversationFilters {
   value: ValueRangeDate | null
   filterType: ReportFilterPeriod
@@ -29,9 +30,10 @@ function CandidateConversationRateReport() {
   const [filters, setFilters] =
     useState<CandidateConversationFilters>(defaultFilters)
   const reportFilter = handleFormatFilters(filters)
-  const { series } = useGetCandidateConversationRateReport({
+  const { series, seriesList, isLoading } = useGetCandidateConversationRateReport({
     filters: reportFilter,
   })
+
   const labels = [
     {
       color: '#FFAF46',
@@ -50,6 +52,8 @@ function CandidateConversationRateReport() {
       title: 'Hired',
     },
   ]
+
+  const { options } = useCandidateConversationReportOptions()
 
   function handleOpenModal() {
     setOpen(true)
@@ -100,8 +104,15 @@ function CandidateConversationRateReport() {
         )}
       </FlexBox> */}
       <Box marginTop={4}>
-        <FunnelChart funnelStep={series} labels={labels} width={200} />
+        {!isLoading && <Chart type="bar" options={options} height={250} 
+          series={[{
+            data: seriesList
+          }]}
+        />}
       </Box>
+      {/* <Box marginTop={4}>
+        <FunnelChart funnelStep={series} labels={labels} width={200} />
+      </Box> */}
       {open && (
         <CandidateConversionRateReportModal
           open={open}

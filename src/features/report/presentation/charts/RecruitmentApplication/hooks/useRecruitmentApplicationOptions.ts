@@ -79,6 +79,7 @@ function useRecruitmentApplicationOptions(
       colors: [
         '#FF5084',
         '#82868C',
+        '#1F84EB',
         '#FF9777',
         '#A798FF',
         '#2CC5BD',
