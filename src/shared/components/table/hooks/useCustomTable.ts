@@ -57,7 +57,7 @@ const useCustomTable = ({
       field: 'created_at',
     },
     page: 1,
-    perPage: 10,
+    perPage: perPage,
     state: 'INIT',
   })
 

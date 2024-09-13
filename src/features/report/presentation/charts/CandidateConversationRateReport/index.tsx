@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import TinyButton from 'shared/components/buttons/TinyButton'
-import FunnelChart from 'shared/components/chats/funnelChart'
 import FlexBox from 'shared/components/flexbox/FlexBox'
 import { Text14sb } from 'shared/components/Typography'
 import useGetCandidateConversationRateReport from './hooks/useGetCandidateConversationRateReport'
