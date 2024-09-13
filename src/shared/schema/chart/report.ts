@@ -6,6 +6,7 @@ export type ReportFilter = {
   filter_period: ReportFilterPeriod
   from_date: string
   to_date: string
+  hiring_team_id?: string
 }
 
 export type ReportCandidateConversionRateChartResponse = {
@@ -56,6 +57,7 @@ export interface CandidateConversionRateReport2
   extends CandidateConversionRateReport {
   id: string
   hiring_team_name: string
+  job_position_name: string
 }
 
 export type CandidateJobStepByCandidateJobStatus = {

@@ -1,39 +1,41 @@
 import { Box } from '@mui/material'
 import BaseModal from 'shared/components/modal'
 import TabCustomize from 'shared/components/tab'
-import OfferedLost from '../screen-sections/OfferedLost'
-import KIV from '../screen-sections/KIV'
-import { Tiny12md } from 'shared/components/Typography'
+import OfferedLost from './Hired'
+import Failed from './Failed'
+import { Span, Tiny12md } from 'shared/components/Typography'
 import Processing from '../charts/ProcessingReport'
 import { ReportFilter } from 'shared/schema/chart/report'
-import useGetApplicantReportByStatusReport from 'features/report/hooks/useGetApplicantReportByStatusReport'
+import FlexBox from 'shared/components/flexbox/FlexBox'
 
 interface ApplicationReportPopupProps {
   open: boolean
   setOpen: (value: boolean) => void
   filters: ReportFilter
   labelBy: string
+  teamSelected: {
+    title: string
+    value: string
+  }
 }
 
 function ApplicationReportModal(props: ApplicationReportPopupProps) {
-  const { open, setOpen, filters, labelBy } = props
-  const { kivData, offerLostData, processingData } =
-    useGetApplicantReportByStatusReport({
-      filters,
-    })
+  const { open, setOpen, filters, labelBy, teamSelected } = props
+  
   const renderItem = [
     {
       label: 'Processing',
-      Component: () => <Processing data={processingData} />,
+      Component: () => <Processing filters={filters} />,
     },
-    { label: 'KIV', Component: () => <KIV data={kivData} /> },
+    { label: 'Failed', Component: () => <Failed filters={filters} /> },
     {
-      label: 'Offered lost',
-      Component: () => <OfferedLost data={offerLostData} />,
+      label: 'Hired',
+      Component: () => <OfferedLost filters={filters} />,
     },
   ]
+
   return (
-    <BaseModal.Wrapper open={open} setOpen={setOpen}>
+    <BaseModal.Wrapper open={open} setOpen={setOpen} >
       <BaseModal.Header
         title="Applicant report"
         setOpen={setOpen}
@@ -45,9 +47,18 @@ function ApplicationReportModal(props: ApplicationReportPopupProps) {
           position={'relative'}
         >
           <TabCustomize renderItem={renderItem} />
-          <Tiny12md color={'#4D607A'} position={'absolute'} top={30} right={16}>
-            {labelBy}
-          </Tiny12md>
+          <FlexBox position={'absolute'} top={30} right={16} gap={1.25} alignItems={'center'}>
+           <FlexBox alignItems={'center'} gap={0.5}>
+           <Tiny12md color={'#4D607A'}>
+              Hiring team
+            </Tiny12md>
+            <Span sx={{fontSize: '13px', color: '#0B0E1E', fontWeight: 600}}>{teamSelected?.title}</Span>
+           </FlexBox>
+            <Span height={'20px'} overflow={'hidden'}> | </Span>
+            <Tiny12md color={'#4D607A'}>
+              {labelBy}
+            </Tiny12md>
+          </FlexBox>
         </Box>
       </BaseModal.ContentMain>
     </BaseModal.Wrapper>

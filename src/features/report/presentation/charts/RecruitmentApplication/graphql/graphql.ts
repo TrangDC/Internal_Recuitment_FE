@@ -16,7 +16,8 @@ const useGraphql = () => {
           interviewing
           offering
           hired
-          kiv
+          failed_cv
+          failed_interview
           offer_lost
           ex_staff
         }
@@ -26,9 +27,37 @@ const useGraphql = () => {
       filter: ' ReportFilter!',
     },
   })
+
+  const getAllTeam = GraphQLClientService.buildQuery({
+    operation: 'GetAllHiringTeams',
+    options: {
+      type: 'query',
+    },
+    node: `
+      edges {
+        node {
+          id
+          name
+        }
+      }
+      pagination {
+        page
+        perPage
+        total
+      }
+    `,
+    params: {
+      pagination: 'PaginationInput',
+      filter: 'HiringTeamFilter',
+      orderBy: 'HiringTeamOrderBy!',
+      freeWord: 'HiringTeamFreeWord',
+    },
+  })
+
   return {
     getRecruitmentReport,
     queryKey,
+    getAllTeam
   }
 }
 

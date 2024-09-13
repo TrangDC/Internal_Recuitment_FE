@@ -20,6 +20,7 @@ import {
   handleCheckDateChange,
   handleFormatLabelDate,
 } from '../../components/date/range-date/utils'
+import useGetAllHiringTeam from './hooks/useGetAllHiringTeam'
 
 const selectItems = [
   {
@@ -58,9 +59,18 @@ function RecruitmentApplication() {
   const [filters, setFilters] =
     useState<RecruitmentTrendFilters>(defaultFilters)
   const filterReport = handleFormatFilters(filters)
+
+  const [selectedTeam, setSelectedTeam] = useState('all');
+
+  const { listHiringTeam } = useGetAllHiringTeam();
+  const filterApplication = {
+    ...filterReport,
+    hiring_team_id: selectedTeam !== 'all' ? selectedTeam : undefined,
+  }
+
   const { categories, isLoading, series, totalCandidate } =
     useGetRecruitmentApplication({
-      filters: filterReport,
+      filters: filterApplication,
     })
 
   const { options } = useRecruitmentApplicationOptions({
@@ -103,8 +113,9 @@ function RecruitmentApplication() {
     })
   }
   const labelBy = filters.value
-    ? handleFormatLabelDate(filters.filterType, filters.value)
+    ? handleFormatLabelDate(filters.filterType, filters.value) 
     : ''
+    const teamSelected = listHiringTeam.find((item) => item.value === selectedTeam)
 
   return (
     <Box position={'relative'}>
@@ -113,6 +124,13 @@ function RecruitmentApplication() {
           Applicant report
         </Text14sb>
         <FlexBox gap={1}>
+        <TinySelected
+            onChange={(hiringTeam: string) => {
+              setSelectedTeam(hiringTeam)
+            }}
+            value={selectedTeam}
+            selectItems={listHiringTeam}
+          />
           <TinySelected
             onChange={selectedType}
             value={filters.filterType}
@@ -128,18 +146,19 @@ function RecruitmentApplication() {
         </FlexBox>
       </FlexBox>
       {!isLoading && (
-        <Chart type="bar" options={options} height={256} series={series} />
+        <Chart type="bar" options={options} height={285} series={series} />
       )}
-      {categories.length > 0 && (
+      {/* {categories.length > 0 && (
         <FlexBox position={'absolute'} bottom={20} right={0} gap={'5px'}>
           <Tiny12md color={'#4D607A'}>Total applications</Tiny12md>
           <Tiny12 color={'#0B0E1E'}>{totalCandidate}</Tiny12>
         </FlexBox>
-      )}
+      )} */}
       {open && (
         <ApplicationReportModal
-          filters={filterReport}
+          filters={filterApplication}
           labelBy={labelBy}
+          teamSelected={teamSelected}
           open={open}
           setOpen={setOpen}
         />

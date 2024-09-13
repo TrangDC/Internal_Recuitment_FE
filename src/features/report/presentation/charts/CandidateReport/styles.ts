@@ -72,6 +72,11 @@ type RenderTooltipParams = {
   rows: Rows[]
 }
 
+type RenderTooltipHiredParams = {
+  rows: Rows[]
+  lable: string
+}
+
 export function renderTooltip(prams: RenderTooltipParams) {
   const { rows } = prams
   const listItems = rows
@@ -92,6 +97,79 @@ export function renderTooltip(prams: RenderTooltipParams) {
     <div style="${styleToString(tooltipStyled)}">
         <ul style="${styleToString(ulStyled)}"> 
            ${listItems}
+        </ul>
+    </div>
+    <div style="${styleToString(arrowStyle)}"></div>
+    `
+}
+
+export function renderTooltipHired(prams: RenderTooltipHiredParams) {
+  const { rows, lable } = prams
+  const listItems = rows
+    .map(
+      (item) => `
+        <li>
+          <div style="${styleToString(containerTextStyled)}">
+             <div style="${styleToString(dotStyled(item.color))}"></div>
+             ${item.percentage && `<div style="${styleToString(percentageStyled(item.color))}">${item.percentage}</div>`}
+             <div style="${styleToString(nameStyled)}">${item.title}</div>
+            <div style="${styleToString(countStyled)}">${item.count}</div>
+          </div>
+        </li>
+      `
+    )
+    .join('')
+
+  const nameJob = ` 
+        <li>
+          <div style="${styleToString(containerTextStyled)}">
+            <div style="${styleToString(countStyled)}">${lable}</div>
+          </div>
+        </li>`
+
+  return `
+  
+    <div style="${styleToString(tooltipStyled)}">
+        <ul style="${styleToString(ulStyled)}"> 
+          ${nameJob}
+           ${listItems}
+        </ul>
+    </div>
+    <div style="${styleToString(arrowStyle)}"></div>
+    `
+}
+
+export function renderTooltipProcessing(prams: RenderTooltipHiredParams) {
+  const { rows, lable } = prams
+
+  const listItems = rows
+    .map(
+      (item) => `
+        <li>
+          <div style="${styleToString(containerTextStyled)}">
+             <div style="${styleToString(dotStyled(item.color))}"></div>
+             ${item.percentage && `<div style="${styleToString(percentageStyled(item.color))}">${item.percentage}</div>`}
+             <div style="${styleToString(nameStyled)}">${item.title}</div>
+            <div style="${styleToString(countStyled)}">${item.count}</div>
+          </div>
+        </li>
+      `
+    )
+    .join('')
+
+  const nameJob = ` 
+        <li>
+          <div style="${styleToString(containerTextStyled)}">
+            <div style="${styleToString(countStyled)}">${lable}</div>
+          </div>
+        </li>`
+
+  return `
+  
+    <div style="${styleToString(tooltipStyled)}">
+        <ul style="${styleToString(ulStyled)}"> 
+          ${nameJob}
+          ${listItems}
         </ul>
     </div>
     <div style="${styleToString(arrowStyle)}"></div>

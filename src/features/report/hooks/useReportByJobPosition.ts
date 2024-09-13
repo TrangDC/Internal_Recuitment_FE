@@ -1,13 +1,14 @@
 import { CandidateConversionRateReport2 } from 'shared/schema/chart/report'
 import { getPercentage } from 'shared/utils/convert-string'
 import useGraphql from '../domain/graphql/CandidateJobStepReportByTeam.graphql'
-import { HiringTeamTableData } from '../domain/interface'
+// import { HiringTeamTableData } from '../domain/interface'
 import { useCustomTable } from 'shared/components/table'
+import { JobPositionTableData } from '../domain/interface'
 
-function useReportByTeamTable() {
-  const { reportCandidateConversionRateByHiringTeam, queryKey } = useGraphql()
+function useReportByTeamJobPosition() {
+  const { reportCandidateConversionRateByJobPosition, queryKey } = useGraphql()
   const useTableReturn = useCustomTable({
-    buildQuery: reportCandidateConversionRateByHiringTeam,
+    buildQuery: reportCandidateConversionRateByJobPosition,
     queryKey,
     orderBy: {
       direction: 'ASC',
@@ -17,7 +18,7 @@ function useReportByTeamTable() {
 
   const sortData: CandidateConversionRateReport2[] = useTableReturn.sortData
 
-  const hiringTeam: HiringTeamTableData[] = sortData.map((item) => {
+  const jobPosition: JobPositionTableData[] = sortData.map((item) => {
     const applied = item.applied ?? 0
     const hired = item.hired ?? 0
     const interviewing = item.interviewing ?? 0
@@ -27,7 +28,8 @@ function useReportByTeamTable() {
     const interviewingPercentage = getPercentage(interviewing, applied)
     const offeringPercentage = getPercentage(offering, interviewing)
 
-    const data: HiringTeamTableData = {
+    const data: JobPositionTableData = {
+      job_position_name: item.job_position_name,
       teamName: item.hiring_team_name,
       indicator: '',
       applied: {
@@ -48,9 +50,9 @@ function useReportByTeamTable() {
   return {
     useTableReturn: {
       ...useTableReturn,
-      sortData: hiringTeam,
+      sortData: jobPosition,
     },
   }
 }
 
-export default useReportByTeamTable
+export default useReportByTeamJobPosition

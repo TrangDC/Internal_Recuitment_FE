@@ -49,7 +49,7 @@ function TinySelected<T>({
       value={value}
     >
       {selectItems.map((item) => (
-        <MenuItem value={item.value} key={item.value}>
+        <MenuItem value={item.value} key={item.value} data-title={item.title}>
           {item.title}
         </MenuItem>
       ))}

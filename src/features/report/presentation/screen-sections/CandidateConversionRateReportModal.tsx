@@ -3,6 +3,7 @@ import BaseModal from 'shared/components/modal'
 import TabCustomize from 'shared/components/tab'
 import ByHiringTeamTable from './ByHiringTeamTable'
 import { ReportFilter } from 'shared/schema/chart/report'
+import ByJobPositionTable from './ByJobPositionTable'
 
 interface CandidateConversionRateReportModalProps {
   open: boolean
@@ -19,6 +20,10 @@ function CandidateConversionRateReportModal(
     {
       label: 'By Hiring team',
       Component: () => <ByHiringTeamTable />,
+    },
+    {
+      label: 'By Job position',
+      Component: () => <ByJobPositionTable />,
     },
   ]
   return (

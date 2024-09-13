@@ -24,7 +24,7 @@ export type INavigation = ILabelSideBar | IMenuSideBar
 export const navigation: INavigation[] = [
   { type: 'label', label: 'Function' },
   {
-    name: 'Report',
+    name: 'Recruitment report',
     path: '/dashboard/reports',
     icon: duotone.ReportIcon,
     type: 'link',

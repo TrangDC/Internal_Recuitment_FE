@@ -2,6 +2,10 @@ import { SxProps } from '@mui/material'
 import { ApexOptions } from 'apexcharts'
 import { useMemo } from 'react'
 import { getPercentage, styleToString } from 'shared/utils/convert-string'
+import { bStyle } from '../../RecruitmentTrends/style'
+import { renderTooltipProcessing } from '../../CandidateReport/styles'
+import { calculateColumnTotal } from 'shared/utils/chart'
+import _ from 'lodash'
 
 const spanStyle: SxProps = {
   fontSize: '12px',
@@ -14,7 +18,13 @@ function makeStylePercentagesLabel(color: string): string {
   })
 }
 
-function useGetProcessingReportOptions() {
+type useGetProcessingReportOptionsProps = {
+  categories: string[]
+}
+
+function useGetProcessingReportOptions(props: useGetProcessingReportOptionsProps) {
+  const { categories } = props;
+
   const options: ApexOptions = useMemo(() => {
     return {
       chart: {
@@ -28,16 +38,15 @@ function useGetProcessingReportOptions() {
       plotOptions: {
         bar: {
           barHeight: '100%',
-          distributed: true,
-          horizontal: true,
-          borderRadius: 10,
+          horizontal: false,
+          borderRadius: 2,
           borderRadiusApplication: 'end',
           dataLabels: {
             position: 'bottom',
           },
         },
       },
-      colors: ['#FFAF46', '#5CBAFE', '#2CC5BD', '#A798FF'],
+      colors: ['#1F84EB', '#BABFC5'],
       dataLabels: {
         enabled: false,
       },
@@ -53,19 +62,32 @@ function useGetProcessingReportOptions() {
         },
       },
       stroke: {
-        width: 12,
-        colors: ['#fff'],
+        show: false,
       },
       xaxis: {
-        categories: [
-          'Invited to interview',
-          'Interviewing',
-          'Done',
-          'Cancelled',
-        ],
+        categories: categories,
       },
       legend: {
-        show: false,
+        fontSize: '12',
+        position: 'bottom',
+        horizontalAlign: 'center',
+        fontWeight: 500,
+        offsetX: 10,
+        offsetY: 5,
+        inverseOrder: false,
+        itemMargin: {
+          horizontal: 10,
+        },
+        formatter(legendName, opts) {
+          const seriesIndex = opts.seriesIndex
+          const total = opts.w.globals.series[seriesIndex].reduce(
+            (w: number, cu: number) => {
+              return w + cu
+            },
+            0
+          )
+          return `<span style="${styleToString(spanStyle)}">${legendName}</span><b style="${styleToString(bStyle)}">${total}</b>`
+        },
       },
       grid: {
         xaxis: {
@@ -75,7 +97,7 @@ function useGetProcessingReportOptions() {
         },
         yaxis: {
           lines: {
-            show: false,
+            show: true,
           },
         },
       },
@@ -84,29 +106,52 @@ function useGetProcessingReportOptions() {
         x: {
           show: false,
         },
-        y: {
-          title: {
-            formatter() {
-              return ''
-            },
-          },
-          formatter(val, opts) {
-            const labels = opts.w.globals.labels
-            const colors = opts.w.globals.colors
-            const dataPointIndex = opts.dataPointIndex
-            const color = colors[dataPointIndex]
-            const total = opts.series[0].reduce((acc: number, n: number) => {
-              return acc + n
-            }, 0)
-            const percentages = opts.series[0].map((value: number) => {
-              return getPercentage(value, total)
-            })
-            return `<span style="${makeStylePercentagesLabel(color)}">${percentages[dataPointIndex]}%</span><span style="${styleToString(spanStyle)}"> ${labels[dataPointIndex]}</span> <b>${val}</b>`
-          },
+        // y: {
+        //   title: {
+        //     formatter() {
+        //       return ''
+        //     },
+        //   },
+        //   formatter(val, opts) {
+        //     const labels = opts.w.globals.labels
+        //     const colors = opts.w.globals.colors
+        //     const dataPointIndex = opts.dataPointIndex
+        //     const color = colors[dataPointIndex]
+        //     const total = opts.series[0].reduce((acc: number, n: number) => {
+        //       return acc + n
+        //     }, 0)
+        //     const percentages = opts.series[0].map((value: number) => {
+        //       return getPercentage(value, total)
+        //     })
+        //     return `<span style="${makeStylePercentagesLabel(color)}">${percentages[dataPointIndex]}%</span><span style="${styleToString(spanStyle)}"> ${labels[dataPointIndex]}</span> <b>${val}</b>`
+        //   },
+        // },
+        custom(options) {
+          const dataPointIndex = options.dataPointIndex
+          const colors = options.w.globals.colors
+          const seriesNames = options.w.globals.seriesNames
+          const series = options.series
+          const total = calculateColumnTotal(series, dataPointIndex)
+          const lable = options.w.config.xaxis.categories[dataPointIndex];
+
+          const rows = series.map((item: number[], index: number) => {
+            return {
+              title: seriesNames[index],
+              count: item[dataPointIndex],
+              percentage: `${getPercentage(item[dataPointIndex], total)}%`,
+              color: colors[index],
+            }
+          })
+
+          return renderTooltipProcessing({
+            rows: rows,
+            lable: lable,
+          })
         },
       },
     }
-  }, [])
+
+  }, [categories])
   return {
     options,
   }

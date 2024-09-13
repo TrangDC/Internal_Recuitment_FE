@@ -40,7 +40,6 @@ export const columns_opening = (
       cell: (info) => (
         <LinkText
           to={`/dashboard/job-overview/${info.row.original.id}`}
-          target="_blank"
           rel="noopener noreferrer"
         >
           {info.getValue()}
@@ -181,7 +180,6 @@ export const columns_pending_approvals = (
       cell: (info) => (
         <LinkText
           to={`/dashboard/job-detail/${info.row.original.id}`}
-          target="_blank"
           rel="noopener noreferrer"
         >
           {info.getValue()}
@@ -370,7 +368,6 @@ export const columnsApproval = (
       cell: (info) => (
         <LinkText
           to={`/dashboard/job-overview/${info.row.original.id}`}
-          target="_blank"
           rel="noopener noreferrer"
         >
           {info.getValue()}
@@ -681,7 +678,6 @@ export const columns_rejected_approvals = (
       cell: (info) => (
         <LinkText
           to={`/dashboard/job-detail/${info.row.original.id}`}
-          target="_blank"
           rel="noopener noreferrer"
         >
           {info.getValue()}

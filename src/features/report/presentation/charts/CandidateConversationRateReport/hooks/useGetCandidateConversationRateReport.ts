@@ -60,8 +60,11 @@ function useGetCandidateConversationRateReport({
     },
   ]
 
+  const seriesList: number[] = [100, interviewingPercentage, offeringPercentage, hiredPercentage]
+
   return {
     series: seriesData,
+    seriesList: seriesList,
     isLoading,
   }
 }

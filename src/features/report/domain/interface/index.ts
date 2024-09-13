@@ -14,6 +14,17 @@ export type HiringTeamTableValue = {
 
 export type HiringTeamTableData = {
   teamName: string
+  job_position_name?: string
+  indicator: string
+  applied: HiringTeamTableValue
+  interviewing: HiringTeamTableValue
+  offering: HiringTeamTableValue
+  hired: HiringTeamTableValue
+}
+
+export type JobPositionTableData = {
+  teamName: string
+  job_position_name: string
   indicator: string
   applied: HiringTeamTableValue
   interviewing: HiringTeamTableValue
