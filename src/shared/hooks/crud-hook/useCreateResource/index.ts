@@ -61,9 +61,7 @@ function useCreateResource<T, P extends FieldValues>({
         })
       }
       queryClient.invalidateQueries({ queryKey: mutationKey })
-      if(onSuccess) {
-        return  onSuccess?.(unwrapEither(data))
-      }
+      onSuccess?.(unwrapEither(data))
      
       if (show_modal) {
         return handleSuccess({

@@ -11,6 +11,9 @@ import ButtonEdit from 'shared/components/buttons/buttonEdit'
 import { ConfirmableModalProvider } from 'contexts/ConfirmableModalContext'
 import InputFileUpload from 'shared/components/form/inputFileUpload'
 import RecInChargeAutoComplete from 'shared/components/autocomplete/rec-in-charge-auto-complete'
+import { JobStatus } from 'shared/class/job-status'
+import { application_data, options_status } from 'shared/components/autocomplete/candidate-status-auto-complete'
+import AppDateField from 'shared/components/input-fields/DateField'
 
 type EditCandidateJobModalProps = {
   open: boolean
@@ -32,6 +35,8 @@ function EditCandidateJobModal({
     control,
     formState,
     getValues,
+    watch,
+    trigger
   } = useEditJobApplication({
     id: candidateId,
     onSuccess(data) {
@@ -40,6 +45,9 @@ function EditCandidateJobModal({
     },
   })
 
+  const status = watch('status');
+  const show_date_onboard = status === application_data.offering.value;
+  console.log("🚀 ~ status:", status, show_date_onboard)
   const translation = useTextTranslation()
 
   return (
@@ -51,6 +59,63 @@ function EditCandidateJobModal({
         ></BaseModal.Header>
         <BaseModal.ContentMain maxHeight="500px">
           <FlexBox flexDirection={'column'} gap={2} marginTop={1}>
+          {show_date_onboard && (
+            <FlexBox gap={2}>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="offer_expiration_date"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppDateField
+                        label={'Offer expiration date'}
+                        value={field.value}
+                        format="dd/MM/yyyy"
+                        onChange={(value) => {
+                          field.onChange(value)
+                        }}
+                        minDate={new Date()}
+                        textFieldProps={{
+                          fullWidth: true,
+                          size: 'small',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <Controller
+                  control={control}
+                  name="onboard_date"
+                  render={({ field, fieldState }) => (
+                    <FlexBox flexDirection={'column'}>
+                      <AppDateField
+                        label={'Candidate onboard date'}
+                        value={field.value}
+                        format="dd/MM/yyyy"
+                        onChange={(value) => {
+                          field.onChange(value)
+                          trigger('offer_expiration_date')
+                        }}
+                        minDate={new Date()}
+                        textFieldProps={{
+                          fullWidth: true,
+                          size: 'small',
+                        }}
+                      />
+                      <HelperTextForm
+                        message={fieldState.error?.message}
+                      ></HelperTextForm>
+                    </FlexBox>
+                  )}
+                />
+              </FormControl>
+            </FlexBox>
+          )}
             <FlexBox justifyContent={'center'} alignItems={'center'}>
               <FormControl fullWidth>
                 <Controller
