@@ -6,7 +6,7 @@ import {
   DivActionHeader,
   ListInterviewContainer,
 } from '../../../shared/styles'
-import { Span } from 'shared/components/Typography'
+import { Span, Tiny } from 'shared/components/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -39,7 +39,6 @@ import ChangeCandidateInterviewStatusModal from '../changeCandidateInterviewStat
 import ChipInterviewStatus from 'shared/components/chip/ChipInterviewStatus'
 import CandidateJob from 'shared/schema/database/candidate_job'
 import CandidateInterview from 'shared/schema/database/candidate_interview'
-
 interface Props {
   jobApplicationDetail: CandidateJob
   listInterview: CandidateInterview[]
@@ -145,6 +144,14 @@ const ListInterview = ({ jobApplicationDetail, listInterview, show_interview }: 
                       </FlexBox>
                     </FlexBox>
 
+                    <FlexBox>
+                      <Box>
+                        <SpanText>{format(
+                          new Date(interview.created_at),
+                          'HH:mm, dd/MM/yyyy'
+                        )} </SpanText>
+                      </Box>
+                    </FlexBox>
                     <FlexBox gap={'60px'}>
                       <Box>
                         <SpanText>Date and time</SpanText>

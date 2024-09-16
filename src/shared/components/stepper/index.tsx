@@ -1,10 +1,14 @@
 import { StepConnector, StepConnectorProps, styled } from '@mui/material'
-import { TinyText } from '../form/styles'
+import { SpanText, TinyText } from '../form/styles'
 import { get, isEmpty } from 'lodash'
 import FlexBox from '../flexbox/FlexBox'
 import CheckIcon from '../icons/CheckIcon'
 import { STATUS_CANDIDATE_TEXT } from 'shared/constants/constants'
 import { StepType } from 'features/candidatejob/domain/interfaces'
+import { format } from 'date-fns'
+import { CandidateStatusEnum } from 'shared/schema'
+import InProcessIcon from '../icons/InProcessIcon'
+import Close from '../icons/Close'
 
 const StepperContainer = styled(FlexBox)(({ theme }) => ({
   width: '100%',
@@ -14,12 +18,6 @@ const StepperContainer = styled(FlexBox)(({ theme }) => ({
     color: '#82868C',
   },
 
-  '& .active .box-step svg path': {
-    fill: theme.palette.primary[600],
-  },
-  '& .active .box-step': {
-    borderColor: theme.palette.primary[600],
-  },
   '& .active .MuiStepConnector-root span': {
     borderColor: theme.palette.primary[600],
     borderWidth: '2px',
@@ -27,28 +25,14 @@ const StepperContainer = styled(FlexBox)(({ theme }) => ({
   '& .active p': {
     color: '#2A2E37',
   },
-
-  '& .completed .box-step svg path': {
-    fill: 'white',
-  },
-  '& .completed .box-step': {
-    borderColor: '#1F84EB',
-    backgroundColor: '#1F84EB',
-  },
-  '& .completed p': {
-    color: '#1F84EB',
-  },
 }))
 
 const StepConnecterStyle = styled(StepConnector)(({ theme }) => ({
   width: '100%',
-
-  '&.active span': {
-    borderColor: '#1F84EB',
-  },
+  borderColor: '#82868C !important',
 
   '& span': {
-    borderWidth: '1.5px',
+    borderColor: '#82868C !important',
   },
 }))
 
@@ -60,8 +44,8 @@ const BoxStep = styled(FlexBox)(({ theme }) => ({
   justifyContent: 'center',
   borderRadius: '50%',
   cursor: 'pointer',
+  borderColor: '#82868C !important'
 }))
-
 interface StepProps {
   steps: StepType[]
   keySelect?: string
@@ -76,10 +60,13 @@ const StepperComponent = ({
   inputStepConnector = {},
   onChange,
 }: StepProps) => {
+  
   return (
     <StepperContainer>
       {!isEmpty(steps) &&
         steps.map((step, idx) => {
+          const {Icon, mainColor} = getStyleByCandidateStatus({status: step.candidate_job_status, isCheck: idx + 1 !== steps.length});
+
           return (
             <FlexBox
               alignItems={'center'}
@@ -94,13 +81,21 @@ const StepperComponent = ({
                 onClick={() => {
                   onChange?.({ data: step, value: step.candidate_job_status })
                 }}
+                sx={{
+                  borderColor: `${mainColor} !important`
+                }}
               >
-                <CheckIcon />
+                <Icon sx={{color: mainColor}}/>
               </BoxStep>
-              <TinyText>
-                {/* @ts-ignore */}
-                {STATUS_CANDIDATE_TEXT?.[get(step, 'candidate_job_status')]}
-              </TinyText>
+              <FlexBox flexDirection={'column'} gap={0.5}>
+                <TinyText color={`${mainColor} !important`}>
+                  {STATUS_CANDIDATE_TEXT?.[get(step, 'candidate_job_status')]}
+                </TinyText>
+                <SpanText color={'#82868C'}>{format(
+                  new Date(step.updated_at),
+                  'HH:mm, dd/MM/yyyy'
+                )} </SpanText>
+              </FlexBox>
 
               {steps.length - idx > 1 ? (
                 <StepConnecterStyle
@@ -119,3 +114,39 @@ const StepperComponent = ({
 }
 
 export default StepperComponent
+
+type ParamGetStyleCandidateStatus = {
+  status: CandidateStatusEnum
+  isCheck: boolean
+}
+function getStyleByCandidateStatus ({status, isCheck = true}: ParamGetStyleCandidateStatus) {
+  const result = {
+    Icon:  CheckIcon,
+    mainColor: '#82868C'
+  }
+
+  if(isCheck) return result;
+
+  switch(status) {
+    case 'applied':
+    case 'interviewing':
+    case 'offering':
+      result.Icon = InProcessIcon;
+      result.mainColor = '#2499EF';
+    break;
+    case 'hired':
+    case 'ex_staff':
+      result.mainColor = '#20A4A9';
+    break;
+    case 'failed_cv':
+    case 'failed_interview':
+    case 'offer_lost':
+      result.Icon = Close;
+      result.mainColor = '#FC105C';
+    break;
+    default:
+      throw new Error("Status not in application")
+  }
+
+  return result;
+} 

@@ -253,8 +253,7 @@ const useGraphql = () => {
     },
     node: `
       data {
-        applied {
-          interview {
+        interview {
             id
             title
             description
@@ -264,6 +263,7 @@ const useGraphql = () => {
             end_at
             location
             meeting_link
+            candidate_job_status
             status
             interviewer {
               id
@@ -283,6 +283,7 @@ const useGraphql = () => {
           feedback {
             id
             created_by
+            candidate_job_status
             owner {
               id
               name
@@ -301,255 +302,6 @@ const useGraphql = () => {
             created_at
             updated_at
           }
-        }
-        interviewing {
-          interview {
-            id
-            title
-            description
-            candidate_job_id
-            interview_date
-            start_from
-            end_at
-            location
-            meeting_link
-            status
-            interviewer {
-              id
-              name
-              work_email
-            }
-            owner {
-              id
-              name
-              work_email
-            }
-            edit_able
-            edited
-            created_at
-            updated_at
-          }
-          feedback {
-            id
-            created_by
-            owner {
-              id
-              name
-              work_email
-              member_of_hiring_team {
-                id
-              }
-            }
-            feedback
-            attachments {
-              id
-              document_name
-              document_id
-            }
-            edited
-            created_at
-            updated_at
-          }
-        }
-        offering {
-          interview {
-            id
-            title
-            description
-            candidate_job_id
-            interview_date
-            start_from
-            end_at
-            location
-            status
-            meeting_link
-            interviewer {
-              id
-              name
-              work_email
-            }
-            owner {
-              id
-              name
-              work_email
-            }
-            edit_able
-            edited
-            created_at
-            updated_at
-          }
-          feedback {
-            id
-            created_by
-            owner {
-              id
-              name
-              work_email
-              member_of_hiring_team {
-                id
-              }
-            }
-            feedback
-            attachments {
-              id
-              document_name
-              document_id
-            }
-            edited
-            created_at
-            updated_at
-          }
-        }
-
-        hired {
-          interview {
-            id
-            title
-            description
-            candidate_job_id
-            interview_date
-            start_from
-            end_at
-            location
-            status
-            meeting_link
-            interviewer {
-              id
-              name
-              work_email
-            }
-            owner {
-              id
-              name
-              work_email
-            }
-            edit_able
-            edited
-            created_at
-            updated_at
-          }
-          feedback {
-            id
-            created_by
-            owner {
-              id
-              name
-              work_email
-              member_of_hiring_team {
-                id
-              }
-            }
-            feedback
-            attachments {
-              id
-              document_name
-              document_id
-            }
-            edited
-            created_at
-            updated_at
-          }
-        }
-        offer_lost {
-          interview {
-            id
-            title
-            description
-            candidate_job_id
-            interview_date
-            start_from
-            end_at
-            location
-            status
-            meeting_link
-            interviewer {
-              id
-              name
-              work_email
-            }
-            owner {
-              id
-              name
-              work_email
-            }
-            edit_able
-            edited
-            created_at
-            updated_at
-          }
-          feedback {
-            id
-            created_by
-            owner {
-              id
-              name
-              work_email
-              member_of_hiring_team {
-                id
-              }
-            }
-            feedback
-            attachments {
-              id
-              document_name
-              document_id
-            }
-            edited
-            created_at
-            updated_at
-          }
-        }
-
-        ex_staff {
-          interview {
-            id
-            title
-            description
-            candidate_job_id
-            interview_date
-            start_from
-            end_at
-            location
-            status
-            meeting_link
-            interviewer {
-              id
-              name
-              work_email
-            }
-            owner {
-              id
-              name
-              work_email
-            }
-            edit_able
-            edited
-            created_at
-            updated_at
-          }
-          feedback {
-            id
-            created_by
-            owner {
-              id
-              name
-              work_email
-              member_of_hiring_team {
-                id
-              }
-            }
-            feedback
-            attachments {
-              id
-              document_name
-              document_id
-            }
-            edited
-            created_at
-            updated_at
-          }
-        }
-        
       }
     `,
     params: {

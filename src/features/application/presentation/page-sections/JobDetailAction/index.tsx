@@ -8,8 +8,6 @@ import { useParams } from 'react-router-dom'
 import { ListInterview } from 'features/interviews/presentation/page-sections'
 import Cant from 'features/authorization/presentation/components/Cant'
 import CandidateJob from 'shared/schema/database/candidate_job'
-import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
-import CandidateInterview from 'shared/schema/database/candidate_interview'
 import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 
 const JobDetailAction = ({
@@ -19,15 +17,7 @@ const JobDetailAction = ({
 }) => {
   const { id } = useParams()
   const [statusSelected, setStatusSelected] = useState<string>()
-
   const { candidateJobInterview } = useGetCandidateJobInterview(id as string)
-  const listEnabled: {
-    feedback: CandidateJobFeedback[]
-    interview: CandidateInterview[]
-  } = useMemo(() => {
-    //@ts-ignore
-    return candidateJobInterview?.[statusSelected]
-  }, [statusSelected, candidateJobInterview])
 
   useEffect(() => {
     jobApplicationDetail?.status &&
@@ -65,7 +55,7 @@ const JobDetailAction = ({
           <DivAction>
             <ListInterview
               jobApplicationDetail={jobApplicationDetail}
-              listInterview={listEnabled?.interview}
+              listInterview={candidateJobInterview.interview ?? []}
               show_interview={show_interview}
             />
           </DivAction>
@@ -82,7 +72,7 @@ const JobDetailAction = ({
           }}
         >
           <ListFeedBack
-            listFeedback={listEnabled?.feedback}
+            listFeedback={candidateJobInterview.feedback ?? []}
             show_feedback={show_feedback}
           />
         </Cant>

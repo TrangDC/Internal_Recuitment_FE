@@ -1,3 +1,4 @@
+import { CandidateStatusEnum } from '..'
 import Attachment from './attachment'
 import CandidateJob, { NewAttachmentInput } from './candidate_job'
 import User from './user'
@@ -11,6 +12,7 @@ interface CandidateJobFeedback {
   feedback: string
   edited: boolean
   attachments: Attachment[]
+  candidate_job_status: CandidateStatusEnum
   created_at: string
   updated_at: string
 }
