@@ -31,6 +31,7 @@ import { downloadOneFile } from '../../../shared/helper'
 import Cant from 'features/authorization/presentation/components/Cant'
 import DeleteFeedbackButtonPermission from 'features/feedback/permission/components/DeleteFeedbackButtonPermission'
 import CandidateJobFeedback from 'shared/schema/database/candidate_job_feedback'
+import { application_data } from 'shared/components/autocomplete/candidate-status-auto-complete'
 
 interface Props {
   listFeedback: CandidateJobFeedback[]
@@ -136,16 +137,23 @@ const ListFeedBack = ({ listFeedback, show_feedback = true }: Props) => {
                   </FlexBox>
                 </FlexBox>
 
-                <FlexBox gap={'60px'}>
-                  <Box>
-                    <SpanText>
-                      {format(
-                        new Date(feedback.created_at),
-                        'HH:mm, dd/MM/yyyy'
-                      )}
-                    </SpanText>
-                  </Box>
-                </FlexBox>
+                <FlexBox>
+                      <Box>
+                        <FlexBox gap={1}>
+                          <SpanText>{format(
+                            new Date(feedback.created_at),
+                            'HH:mm, dd/MM/yyyy'
+                          )} </SpanText>
+
+                          <FlexBox gap={0.25}>
+                            <SpanText> At</SpanText>
+                            <SpanText fontWeight={600} color={'#4D607A'}>{application_data?.[feedback?.candidate_job_status]?.label}</SpanText>
+                            <SpanText>
+                              Stage</SpanText>
+                          </FlexBox>
+                        </FlexBox>
+                      </Box>
+                    </FlexBox>
               </FlexBox>
               <FlexBox flexDirection={'column'} gap={'10px'}>
                 <Box>

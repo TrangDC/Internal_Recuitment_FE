@@ -1,3 +1,4 @@
+import { CandidateStatusEnum } from '..'
 import CandidateJob from './candidate_job'
 import User from './user'
 
@@ -23,6 +24,7 @@ export interface CandidateInterview {
   edited: boolean
   location: string
   meeting_link: string
+  candidate_job_status: CandidateStatusEnum
   created_at: string
   updated_at: string
 }
