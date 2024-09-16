@@ -23,6 +23,12 @@ import { formatJobDescription } from 'features/jobs/shared/utils'
 import { toast } from 'react-toastify'
 import useEditResourceWithoutGetting from 'shared/hooks/crud-hook/useEditResourceWithoutGetting'
 import { JobStatus } from 'shared/class/job-status'
+import {
+  TalenaEmploymentType,
+  TalenaSalaryType,
+  TalenaWorkModel,
+  TransferEnumsTRECtoTalena,
+} from 'services/talena-api-services'
 
 type UseEditJobProps = {
   id: string
@@ -188,10 +194,14 @@ function useUpdateJob(props: UseEditJobProps) {
       salary_to: parseInt(data.salary_to.replace(/,/g, ''), 10),
       currency:
         data.salary_type === 'negotiate' ? 'negotiate' : data.salary_type,
-      employee_level: data.level,
+      employee_level: TransferEnumsTRECtoTalena.toEmployeeLevel(data.level),
       working_hour_from: '8:30',
       working_hour_to: '17:30',
-      employment_type: 'fulltime',
+      employment_type: TalenaEmploymentType.FULLTIME,
+      negotiable: data.salary_type === 'negotiate',
+      note: '',
+      salaryType: TalenaSalaryType.HOURLY,
+      work_model: TalenaWorkModel.REMOTE,
     })
   }
 
@@ -199,7 +209,7 @@ function useUpdateJob(props: UseEditJobProps) {
     control,
     isValid: isValidEdit,
     isPending,
-    loadingBtnGenerate: loading,
+    loadingBtnGenerate: loading === 'UPLOADING',
     watch,
     actions: {
       onSubmit,
