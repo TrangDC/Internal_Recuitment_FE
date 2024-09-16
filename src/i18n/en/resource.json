@@ -230,7 +230,8 @@
         "hiring_job_exist": "There are already job requests for this team, cannot delete this team.",
         "name_exist": "Name has already existed",
         "user_in_another_hiring_team": "This manager already in another team",
-        "cannot_delete_team": "There are already jobs or interviewers for this team, can not delete this team."
+        "cannot_delete_team": "There are already jobs or interviewers for this team, can not delete this team.",
+         "invalid_update_approvers": "The hiring team is currently responsible for job requests that are in the middle of the approval process."
       }
     },
     "users": {
