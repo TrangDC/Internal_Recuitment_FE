@@ -273,11 +273,13 @@ const EditJobRequest = () => {
                     name="created_by"
                     render={({ field, fieldState }) => (
                       <Fragment>
-                        <CreateSelectionMemberPermission name={field.name}
+                        <CreateSelectionMemberPermission
+                          name={field.name}
                           value={field?.value ?? ''}
                           onChange={(value) => {
                             field.onChange(value ?? '')
-                          }} />
+                          }}
+                        />
                         <HelperTextForm
                           message={fieldState.error?.message}
                         ></HelperTextForm>
@@ -550,7 +552,7 @@ const EditJobRequest = () => {
                   startIcon={<AiIcon />}
                   disabled={isValid}
                   handlesubmit={handleGenerateJD}
-                  loading={loadingBtnGenerate === 'UPLOADING' ? true : false}
+                  loading={loadingBtnGenerate}
                   type="button"
                 >
                   Generate JD by AI
@@ -602,7 +604,7 @@ const EditJobRequest = () => {
               {translation.COMMON.cancel}
             </AppButton>
             <ButtonEdit
-              disabled={isValid || loadingBtnGenerate === 'UPLOADING'}
+              disabled={isValid || loadingBtnGenerate}
               handlesubmit={onSubmit}
               loading={isPending}
             >

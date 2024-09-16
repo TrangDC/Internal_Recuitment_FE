@@ -12,6 +12,12 @@ import { useAuthorization } from 'features/authorization/hooks/useAuthorization'
 import useGenerateJD from './useGenerateJd'
 import toast from 'react-hot-toast'
 import { formatJobDescription } from 'features/jobs/shared/utils'
+import {
+  TalenaEmploymentType,
+  TalenaSalaryType,
+  TalenaWorkModel,
+  TransferEnumsTRECtoTalena,
+} from 'services/talena-api-services'
 
 interface createJobProps {
   defaultValues?: Partial<FormDataSchema>
@@ -102,6 +108,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
 
   function handleGenerateJD() {
     const data = getValues()
+    console.log('data', data)
     generateJD({
       name: data.name,
       title: data.name,
@@ -110,10 +117,14 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
       salary_to: parseInt(data.salary_to.replace(/,/g, ''), 10),
       currency:
         data.salary_type === 'negotiate' ? 'negotiate' : data.salary_type,
-      employee_level: data.level,
+      employee_level: TransferEnumsTRECtoTalena.toEmployeeLevel(data.level),
       working_hour_from: '8:30',
       working_hour_to: '17:30',
-      employment_type: 'fulltime',
+      employment_type: TalenaEmploymentType.FULLTIME,
+      negotiable: data.salary_type === 'negotiate',
+      note: '',
+      salaryType: TalenaSalaryType.HOURLY,
+      work_model: TalenaWorkModel.ONSITE,
     })
   }
 
@@ -124,7 +135,7 @@ function useCreateJob(props: createJobProps = { defaultValues: {} }) {
     setValue,
     formState,
     getValues,
-    loadingBtnGenerate: loading,
+    loadingBtnGenerate: loading === 'UPLOADING',
     action: {
       resetSalary,
       onSubmit,

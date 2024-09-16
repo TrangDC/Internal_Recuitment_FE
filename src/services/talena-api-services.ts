@@ -1,3 +1,4 @@
+import { Class } from '@mui/icons-material'
 import talenaApi from 'configs/api/talena'
 import { talenaClient } from 'middleware/talena-middleware'
 import { Either } from 'shared/interfaces/common'
@@ -8,27 +9,71 @@ import TalenaToken from 'shared/schema/talenaToken'
 import { makeLeft, makeRight } from 'shared/utils/handleEither'
 
 export type GenerateJDPayload = {
-  application_form?: []
-  currency: string
-  employee_level: string
-  employment_type: string
   name: string
-  questions?: []
-  salary_from: number
-  salary_to: number
   title: string
   working_hour_from: string
   working_hour_to: string
   working_location: string
+  negotiable: boolean
+  salaryType: TalenaSalaryType
+  currency: string
+  salary_from: number
+  salary_to: number
+  work_model: TalenaWorkModel
+  employment_type: TalenaEmploymentType
+  employee_level: TalenaEmployeeLevel
+  note: string
 }
 
-export type CommandRewrite = 'MAKE_LONGER' | 'MAKE_SHORTER' | 'CORRECT_GRAMMAR' | 'MAKE_MORE_PROFESSIONAL'
+export class TransferEnumsTRECtoTalena {
+  static toEmployeeLevel(data: string): TalenaEmployeeLevel {
+    if (data === 'fresher') return TalenaEmployeeLevel.INTERN
+    if (data === 'intern') return TalenaEmployeeLevel.INTERN
+    if (data === 'junior') return TalenaEmployeeLevel.JUNIOR
+    if (data === 'middle') return TalenaEmployeeLevel.MIDDLE
+    if (data === 'senior') return TalenaEmployeeLevel.SENIOR
+    return TalenaEmployeeLevel.SENIOR
+  }
+}
+
+export enum TalenaWorkModel {
+  ONSITE = 'ONSITE',
+  REMOTE = 'REMOTE',
+  HYBRID = 'HYBRID',
+}
+
+export enum TalenaSalaryType {
+  HOURLY = 'HOURLY',
+}
+
+export enum TalenaEmploymentType {
+  FULLTIME = 'FULLTIME',
+  PARTTIME = 'PARTTIME',
+  CONTRACTOR = 'CONTRACTOR',
+}
+
+export enum TalenaEmployeeLevel {
+  SENIOR = 'SENIOR',
+  MIDDLE = 'MIDDLE',
+  JUNIOR = 'JUNIOR',
+  INTERN = 'INTERN',
+  FRESHER = 'FRESHER',
+}
+
+export type CommandRewrite =
+  | 'MAKE_LONGER'
+  | 'MAKE_SHORTER'
+  | 'CORRECT_GRAMMAR'
+  | 'MAKE_MORE_PROFESSIONAL'
 
 export type RewritePayload = {
-  command:'MAKE_LONGER' | 'MAKE_SHORTER' | 'CORRECT_GRAMMAR' | 'MAKE_MORE_PROFESSIONAL'
-  text:string
+  command:
+    | 'MAKE_LONGER'
+    | 'MAKE_SHORTER'
+    | 'CORRECT_GRAMMAR'
+    | 'MAKE_MORE_PROFESSIONAL'
+  text: string
 }
-
 
 class TalenaApiService {
   static async getToken(): Promise<Either<null, TalenaToken>> {
