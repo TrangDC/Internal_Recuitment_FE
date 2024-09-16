@@ -308,7 +308,7 @@ const AllJob = () => {
               <Cant
                 checkBy={{
                   compare: 'hasAny',
-                  permissions: ['CREATE.everything', 'CREATE.teamOnly'],
+                  permissions: ['CREATE.ownedOnly', 'CREATE.everything', 'CREATE.teamOnly'],
                 }}
                 module="JOBS"
               >
