@@ -39,7 +39,7 @@ const TeamList = () => {
     search,
     filters: dataFilterWithValue,
   })
-  console.log("useTableReturn", useTableReturn)
+
   const { actions } = useBuildActionsTableTeam(useActionTableReturn)
   const { columnTable } = useBuildColumnTable({
     columns,
